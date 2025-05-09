@@ -36,7 +36,7 @@ Options:
   --gen-dict=WORDS          DEBUG: Generate dictionary for specific words. Pass multiple words
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.
-                            --format=FORMAT     Format can be dictorg, kobo, mobi, stardict [default: kobo]
+                            --format=FORMAT     Format can be dictorg, kobo, mobi, pocketdic, stardict [default: kobo]
   --release                 DEV: Generate the description of a GitHub release.
 
 If no argument given, --download, --parse, --render, and --convert will be done automatically.

@@ -8,7 +8,7 @@ from .convert import (
     DictFileFormat,
     DictOrgFormat,
     KoboFormat,
-    PocketFormat,
+    PocketBookFormat,
     StarDictFormat,
     XDXFFormat,
     make_variants,
@@ -43,7 +43,7 @@ def main(locale: str, words: str, output: str, *, format: str = "kobo") -> int:
             run_mobi_formatter(output_dir, Path(f"data-{args[-1]}.json"), locale, all_words, variants)
         case "pocketdic":
             run_formatter(XDXFFormat, *args)
-            run_formatter(PocketFormat, *args)
+            # run_formatter(PocketBookFormat, *args)
         case "stardict":
             run_formatter(DictFileFormat, *args)
             run_formatter(StarDictFormat, *args)
