@@ -1378,11 +1378,17 @@ def render_form_of_t(tpl: str, parts: list[str], data: defaultdict[str, str], *,
     >>> render_form_of_t("pronunciation spelling of", ["en", "everything"], defaultdict(str, {"from": "AAVE"}))
     '<i>Pronunciation spelling of</i> <b>everything</b><i>, representing African-American Vernacular English</i>'
 
+    >>> render_form_of_t("spelling of", ["en", "British alternative", "NORAD"], defaultdict(str))
+    '<i>British alternative spelling of</i> <b>NORAD</b>'
     """
     from . import templates_italic
 
     form = form_of_templates[tpl]
     starter = form["value"]
+
+    if "{{{2}}}" in starter:
+        starter = starter.replace("{{{2}}}", parts[1])
+
     lang = data["1"] or (parts.pop(0) if parts else "")
     initial_cap = (
         (initial_cap_raw := form["initial-cap"]) == "English only" and lang == "en" or initial_cap_raw == "yes"
