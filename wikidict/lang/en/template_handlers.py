@@ -35,6 +35,43 @@ from .transliterator import transliterate
 log = logging.getLogger(__name__)
 
 
+# Source: https://en.wiktionary.org/w/index.php?title=Module:sem-arb-utilities&oldid=85728127#L-31
+AR_RADICALS = {
+    "ء": "ʔ",
+    "ب": "b",
+    "ت": "t",
+    "ث": "ṯ",
+    "ج": "j",
+    "ح": "ḥ",
+    "خ": "ḏ",
+    "د": "d",
+    "ذ": "ḏ",
+    "ر": "r",
+    "ز": "z",
+    "س": "s",
+    "ش": "š",
+    "ص": "ṣ",
+    "ض": "ḍ",
+    "ط": "ṭ",
+    "ظ": "ẓ",
+    "ع": "ʕ",
+    "غ": "ḡ",
+    "ف": "f",
+    "ق": "q",
+    "ك": "k",
+    "ل": "l",
+    "م": "m",
+    "ن": "n",
+    "ه": "h",
+    "و": "w",
+    "ي": "y",
+    "گ": "g",
+    "چ": "č",
+    "پ": "p",
+    "ڭ": "g",
+}
+
+
 def gender_number_specs(parts: str) -> str:
     """
     Source: https://en.wiktionary.org/wiki/Module:gender_and_number
@@ -312,6 +349,20 @@ def render_ar_passive_participle(tpl: str, parts: list[str], data: defaultdict[s
     if data["noderived"]:
         return "passive participle"
     return f"{'d' if data['lc'] else 'D'}erived from the passive participle"
+
+
+def render_ar_root(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_root("ar-root", ["ع ل ي"], defaultdict(str))
+    'ع ل ي (ʕ l y)'
+    >>> render_ar_root("ar-root", ["ع ل ي", "ع ل ي"], defaultdict(str))
+    'ع ل ي (ʕ l y), ع ل ي (ʕ l y)'
+    >>> render_ar_root("ar-root", ["ع ل ي"], defaultdict(str, {"notext": "1"}))
+    ''
+    """
+    if data["notext"]:
+        return ""
+    return ", ".join(f"{root} ({' '.join(AR_RADICALS[char] for char in root.split(' '))})" for root in parts)
 
 
 def render_bce(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -3579,6 +3630,7 @@ template_mapping = {
     "ar-active participle": render_ar_active_participle,
     "ar-instance noun": render_ar_instance_noun,
     "ar-passive participle": render_ar_passive_participle,
+    "ar-root": render_ar_root,
     "blockquote": render_blockquote,
     "bond credit rating": render_bond_credit_rating,
     "century": render_century,
