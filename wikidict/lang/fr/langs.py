@@ -5576,6 +5576,7 @@ langs = {
     "snc": "sinaugoro",
     "sne": "bau bidayuh",
     "snf": "noon",
+    "sng": "sanga (République démocratique du Congo)",
     "snj": "sango riverain",
     "snk": "soninké",
     "snl": "sangil",
@@ -6738,6 +6739,7 @@ langs = {
     "xsi": "sio",
     "xsl": "esclave du Sud",
     "xsm": "kassem",
+    "xsn": "sanga (Nigéria)",
     "xso": "solano",
     "xsp": "silopi",
     "xsq": "makhuwa-saka",
@@ -7148,5 +7150,5 @@ langs = {
     "zza": "zazaki",
     "zzj": "zhuang de Zuojiang",
     "èque": "èque",
-}  # 7,143
+}  # 7,145
 # END

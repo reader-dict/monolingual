@@ -1752,7 +1752,7 @@ labels = {
     "internet": "Internet",
     "internet slang": "Internet {{glossary|slang}}",
     "intransitive": "intransitive",
-    "intrusive r": "intrusive ''r''",
+    "intrusive r": "intrusive R",
     "ironic": "ironic",
     "isation": "non-Oxford British spelling",
     "isation form": "non-Oxford British spelling",
@@ -1821,6 +1821,8 @@ labels = {
     "linguistic": "linguistics",
     "linguistic morphology": "linguistic morphology",
     "linguistics": "linguistics",
+    "linking w": "linking W",
+    "linking y": "linking Y",
     "lipid": "biochemistry",
     "literal": "literal",
     "literally": "literally",
@@ -2051,7 +2053,7 @@ labels = {
     "non-happy-tensing": "non-''happy''-tensing",
     "non-horse-hoarse": "non-''horse''–''hoarse'' merger",
     "non-hurry-furry": "non-''hurry''–''furry'' merger",
-    "non-intrusive r": "non-intrusive ''r''",
+    "non-intrusive r": "non-intrusive R",
     "non-l-vocalisation": "non-''l''-vocalization",
     "non-l-vocalization": "non-''l''-vocalization",
     "non-lot-cloth split": "non-''lot''–''cloth'' split",
@@ -2745,7 +2747,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,740
+}  # 2,742
 
 syntaxes = {
     "&": {
