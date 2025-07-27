@@ -239,6 +239,8 @@ def last_template_handler(
         'αἰτία (<i>aitía</i>, «aitía»)'
         >>> last_template_handler(["m", "la", "*fūricāre", "trad=furgar"], "ca")
         '<i>*fūricāre</i> («furgar»)'
+        >>> last_template_handler(["m", "xib", "*Icosia"], "ca")
+        '<i>*Icosia</i>'
 
         >>> last_template_handler(["lleng", "la", "√ⵎⵣⵖ"], "ca")
         '√ⵎⵣⵖ'

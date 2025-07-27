@@ -51,7 +51,11 @@ def transliterate(locale: str, text: str) -> str:
         'Ukraïna'
         >>> transliterate("xib", "ba")  # doctest: +ELLIPSIS
         '<svg ...'
+        >>> transliterate("xib", "*Icosia")
+        ''
         >>> transliterate("zh", "汉字")
         'hànzì'
     """
+    if locale == "xib" and text.startswith("*"):
+        return ""
     return func(text, locale=locale) if (func := transliterations.get(locale)) else ""
