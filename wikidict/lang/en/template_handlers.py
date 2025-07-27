@@ -2860,11 +2860,11 @@ def render_pseudo_loan(tpl: str, parts: list[str], data: defaultdict[str, str], 
     'Pseudo-loan from Danish'
 
     >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I"}))
-    'Pseudo-anglicism, derived from Latin <i>ego</i> (“I”) +&nbsp;shooter'
+    'Pseudo-anglicism, derived from Latin <i>ego</i> (“I”) +&nbsp;<i>shooter</i>'
     >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I", "notext": "1"}))
-    'Latin <i>ego</i> (“I”) +&nbsp;shooter'
+    'Latin <i>ego</i> (“I”) +&nbsp;<i>shooter</i>'
     >>> render_pseudo_loan("pseudo-loan", ["ja", "en", "office", "lady"], defaultdict(str))
-    'Wasei eigo (和製英語; pseudo-anglicism), derived from office +&nbsp;lady'
+    'Wasei eigo (和製英語; pseudo-anglicism), derived from <i>office</i> +&nbsp;<i>lady</i>'
     >>> render_pseudo_loan("pseudo-loan", ["en", "enm", "<i>the</i> +&nbsp;<i>old</i>"], defaultdict(str))
     'Pseudo-loan from Middle English, derived from <i>the</i> +&nbsp;<i>old</i>'
     """
@@ -2901,6 +2901,8 @@ def render_pseudo_loan(tpl: str, parts: list[str], data: defaultdict[str, str], 
                 lang, value = part.split(":", 1)
                 lang = langs[lang]
                 part = f"{lang} <i>{value}</i>"
+            else:
+                part = italic(part)
             if t := data[f"t{idx}"]:
                 part += f" (“{t}”)"
             derivations.append(part)
