@@ -2850,6 +2850,65 @@ def render_pseudo_acronym_of(tpl: str, parts: list[str], data: defaultdict[str, 
     return text
 
 
+def render_pseudo_loan(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_pseudo_loan("pseudo-loan", ["fr", "en"], defaultdict(str))
+    'Pseudo-anglicism'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "fr"], defaultdict(str))
+    'Pseudo-Gallicism'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "da"], defaultdict(str))
+    'Pseudo-loan from Danish'
+
+    >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I"}))
+    'Pseudo-anglicism, derived from Latin <i>ego</i> (“I”) +&nbsp;shooter'
+    >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I", "notext": "1"}))
+    'Latin <i>ego</i> (“I”) +&nbsp;shooter'
+    >>> render_pseudo_loan("pseudo-loan", ["ja", "en", "office", "lady"], defaultdict(str))
+    'Wasei eigo (和製英語; pseudo-anglicism), derived from office +&nbsp;lady'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "enm", "<i>the</i> +&nbsp;<i>old</i>"], defaultdict(str))
+    'Pseudo-loan from Middle English, derived from <i>the</i> +&nbsp;<i>old</i>'
+    """
+    pseudo_loan_by_source = {
+        "ar": "Arabism",
+        "de": "Germanism",
+        "en": "anglicism",
+        "es": "Hispanism",
+        "fr": "Gallicism",
+        "it": "Italianism",
+        "ja": "Japonism",
+        "la": "Latinism",
+    }
+
+    text = ""
+    lang_code = parts.pop(0)
+    lang_src = parts.pop(0)
+    nocap = "nocap" in data
+
+    if not data["notext"]:
+        if lang_code == "ja" and lang_src == "en":
+            text += f"{'w' if nocap else 'W'}asei eigo (和製英語; pseudo-anglicism)"
+        elif plbs := pseudo_loan_by_source.get(lang_src, ""):
+            text += f"{'p' if nocap else 'P'}seudo-{plbs}"
+        else:
+            text += f"{'p' if nocap else 'P'}seudo-loan from {langs[lang_src]}"
+        if parts:
+            text += f"{'' if nocap else ','} derived from "
+
+    if parts:
+        derivations: list[str] = []
+        for idx, part in enumerate(parts, 1):
+            if ":" in part:
+                lang, value = part.split(":", 1)
+                lang = langs[lang]
+                part = f"{lang} <i>{value}</i>"
+            if t := data[f"t{idx}"]:
+                part += f" (“{t}”)"
+            derivations.append(part)
+        text += concat(derivations, " +&nbsp;")
+
+    return text
+
+
 def render_rebracketing(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_rebracketing("rebracketing", ["en", "marathon"], defaultdict(str))
@@ -3650,6 +3709,7 @@ template_mapping = {
     **dict.fromkeys({"onomatopoeic", "onomatopoeia", "onomatopeic", "onom"}, render_onomatopoeic),
     **dict.fromkeys({"pedia", "pedialite"}, render_pedia),
     **dict.fromkeys({"pseudo-acronym of", "pseudo-acronym"}, render_pseudo_acronym_of),
+    **dict.fromkeys({"pseudo-loan", "pseudoloan", "pl"}, render_pseudo_loan),
     **dict.fromkeys({"reduplication of", "reduplication", "redup", "rdp"}, render_reduplication),
     **dict.fromkeys({"SI-unit-abb", "SI-unit-abbnp"}, render_si_unit_abb),
     **dict.fromkeys({"SI-unit", "SI-unit-np"}, render_si_unit),
