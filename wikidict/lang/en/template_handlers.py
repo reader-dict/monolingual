@@ -1558,6 +1558,56 @@ def render_historical_given_name(tpl: str, parts: list[str], data: defaultdict[s
     return italic(phrase)
 
 
+def render_iata(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_iata("IATA", ["London", "", "United Kingdom"], defaultdict(str, {"met": "1", "a1": "Heathrow Airport", "a2": "Gatwick Airport", "a3": "Stansted Airport", "a4": "Luton Airport", "a5": "London City Airport", "a6": "Southend Airport", "a7": "Biggin Hill Airport"}))
+    '(<i>international standards, aviation</i>) <i>IATA metropolitan area code for</i> <b>London</b>, United Kingdom, <i>collectively referring to the airport system of Heathrow Airport, Gatwick Airport, Stansted Airport, Luton Airport, London City Airport, Southend Airport and Biggin Hill Airport</i>.'
+
+    >>> render_iata("IATA", ["Anaa Airport", "", "Anaa", "", "French Polynesia"], defaultdict(str))
+    '(<i>international standards, aviation</i>) <i>IATA airport code for</i> <b>Anaa Airport</b>, <i>which serves Anaa, French Polynesia</i>.'
+    >>> render_iata("IATA", ["Anaa Airport", "", "Anaa", "", "French Polynesia"], defaultdict(str, {"mil": "1", "until": "2025"}))
+    '(<i>international standards, aviation</i>) <i>IATA airport code for</i> <b>Anaa Airport</b>, <i>in Anaa, French Polynesia until 2025</i>.'
+    """
+
+    def p2_or_p1() -> str:
+        name1 = parts.pop(0)
+        name2 = parts.pop(0) if parts else ""
+        return name2 or name1
+
+    label = "international standards, aviation"
+    if data["obs"]:
+        label += ", obsolete"
+    label = f"(<i>{label}</i>) <i>"
+    if data["obs"]:
+        label += "Former "
+    label += "IATA"
+
+    # Metropolitan area code mode
+    if data["met"]:
+        met_parts = [f"metropolitan area code for</i> <b>{p2_or_p1()}</b>"]
+        while parts:
+            met_parts.append(p2_or_p1())
+        met_desc = ", ".join(met_parts)
+        text = f"{label} {met_desc}, <i>collectively referring to the airport system of {data['a1']}"
+
+        if airports := [airport for idx in range(2, 8) if (airport := data[f"a{idx}"])]:
+            text += f", {concat(airports, ', ', last_sep=' and ')}"
+        return f"{text}</i>."
+
+    # Airport code mode
+    text = f"{label} airport code for</i> <b>{p2_or_p1()}</b>"
+    extras = []
+    if parts:
+        extras.append(f"{'in' if data['mil'] else 'which serves'} {p2_or_p1()}")
+    while parts:
+        extras.append(p2_or_p1())
+    if extras:
+        text += f", <i>{', '.join(extras)}"
+    if until := data["until"]:
+        text += f" until {until}"
+    return f"{text}</i>."
+
+
 def render_ipa_char(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_ipa_char("historical given name", ["[tʃ]"], defaultdict(str))
@@ -3553,6 +3603,7 @@ template_mapping = {
     "he-m": render_he_m,
     "he-root": render_he_root,
     "historical given name": render_historical_given_name,
+    "IATA": render_iata,
     "ISO 217": render_iso_217,
     "ISO 639": render_iso_639,
     "ISO 3166": render_iso_3166,
