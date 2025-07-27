@@ -2105,7 +2105,7 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_morphology("affix", ["mul", "dys-", "schēma"], defaultdict(str, {"lang1":"NL.","t1":"difficult, impaired, abnormal, bad","lang2":"la", "g2": "f,n", "t2":"shape, form"}))
     'New Latin <i>dys-</i> (“difficult, impaired, abnormal, bad”)&nbsp;+&nbsp;Latin <i>schēma</i> <i>f or n</i> (“shape, form”)'
     >>> render_morphology("aff", ["en", "'gram<t:Instagram>", "-er<id:occupation>"], defaultdict(str))
-    "<i>'gram</i> and <i>-er</i>"
+    "<i>'gram</i> (“Instagram”) and <i>-er</i>"
 
     >>> render_morphology("blend", ["he", "תַּשְׁבֵּץ", "חֵץ"], defaultdict(str, {"tr1":"tashbéts", "t1":"crossword", "t2":"arrow", "tr2":"chets"}))
     'Blend of <i>תַּשְׁבֵּץ</i> (<i>tashbéts</i>, “crossword”)&nbsp;+&nbsp;<i>חֵץ</i> (<i>chets</i>, “arrow”)'
@@ -2204,10 +2204,12 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     if not parts:
         return f"{italic(data['2'])}&nbsp;+&nbsp;{italic(data['3'])}"
 
-    for idx in range(len(parts)):
-        part = parts[idx]
+    for idx, part in enumerate(parts):
         if "<" in part:
-            parts[idx] = part.split("<", 1)[0]
+            part, rest = part.split("<", 1)
+            kind, value = rest[:-1].split(":", 1)
+            data[f"{kind}{idx}"] = value
+            parts[idx] = part
 
     compound = [
         "af",
