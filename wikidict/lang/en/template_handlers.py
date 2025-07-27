@@ -10,6 +10,7 @@ from num2words import num2words
 
 from ...user_functions import (
     capitalize,
+    chinese,
     concat,
     extract_keywords_from,
     italic,
@@ -30,6 +31,7 @@ from .places import (
     recognized_placetypes,
     recognized_qualifiers,
 )
+from .scripts import scripts
 from .transliterator import transliterate
 
 log = logging.getLogger(__name__)
@@ -1347,6 +1349,78 @@ def render_fa_xlit(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         return romanize_ira(result)
 
     return f"{cls_tr(parts[0])}&nbsp;/ {ira_tr(parts[0])}"
+
+
+def render_form_of_t(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_form_of_t("eye dialect of", ["en", "ye#Etymology 6"], defaultdict(str, {"t": "t", "from": "from", "from2": "from2"}))
+    '<i>Eye dialect spelling of</i> <b>ye</b> (“t”)<i>, representing from and from2 English</i>'
+
+    >>> render_form_of_t("alternative spelling of", ["en" , "ye"], defaultdict(str, {"from": "from", "from2": "from2"}))
+    '<i>From and from2 spelling of</i> <b>ye</b>'
+
+    >>> render_form_of_t("initialism of", ["en", "w:Shockwave Flash"], defaultdict(str))
+    '<i>Initialism of</i> <b>Shockwave Flash</b>'
+    >>> render_form_of_t("initialism of", ["en", "optical character reader"], defaultdict(str, {"dot": "&nbsp;(the scanning device)"}))
+    '<i>Initialism of</i> <b>optical character reader</b>&nbsp;(the scanning device)'
+    >>> render_form_of_t("initialism of", ["en", "optical character reader"], defaultdict(str, {"tr": "tr", "t": "t", "ts": "ts"}))
+    '<i>Initialism of</i> <b>optical character reader</b> (<i>tr</i> /ts/, “t”)'
+    >>> render_form_of_t("initialism of", ["en", "OCR", "optical character reader"], defaultdict(str, {"nodot": "1", "nocap": "1"}))
+    '<i>initialism of</i> <b>optical character reader</b>'
+
+    >>> render_form_of_t("standard spelling of", ["en", "Irish Traveller"], defaultdict(str, {"from": "Irish English"}))
+    '<i>Irish English standard spelling of</i> <b>Irish Traveller</b>'
+    >>> render_form_of_t("standard spelling of", ["en", "enroll"], defaultdict(str))
+    '<i>Standard spelling of</i> <b>enroll</b>'
+    >>> render_form_of_t("cens sp", ["en", "bitch"], defaultdict(str))
+    '<i>Censored spelling of</i> <b>bitch</b>'
+
+    >>> render_form_of_t("pronunciation spelling of", ["en", "everything"], defaultdict(str, {"from": "AAVE"}))
+    '<i>Pronunciation spelling of</i> <b>everything</b><i>, representing African-American Vernacular English</i>'
+
+    """
+    from . import templates_italic
+
+    form = form_of_templates[tpl]
+    starter = form["value"]
+    lang = data["1"] or (parts.pop(0) if parts else "")
+    initial_cap = (
+        (initial_cap_raw := form["initial-cap"]) == "English only" and lang == "en" or initial_cap_raw == "yes"
+    )
+    ender = ""
+    word = (data["2"] or (parts.pop(0) if parts else "")).split("#", 1)[0]
+
+    text = data["alt"] or data["3"] or (parts.pop(0) if parts else "")
+    gloss = data["t"] or data["gloss"] or data["4"] or (parts.pop(0) if parts else "")
+    word = text or word
+    if word.startswith("w:"):
+        word = word[2:]
+
+    if fromtext := join_names(data, "from", " and "):
+        from_suffix = "form of"
+        if tpl == "standard spelling of":
+            from_suffix = "standard spelling of"
+        elif tpl == "alternative spelling of":
+            from_suffix = "spelling of"
+        elif tpl in {
+            "eye dialect of",
+            "pronunciation spelling of",
+            "pronunciation variant of",
+        }:
+            ender = italic(f", representing {templates_italic.get(data['from'], fromtext)} {langs[lang]}")
+        if not ender:
+            starter = f"{fromtext} {from_suffix}"
+
+    if initial_cap and not data["nocap"]:
+        starter = capitalize(starter)
+    phrase = italic(starter)
+    phrase += f" {strong(word)}"
+    phrase += gloss_tr_poss(data, gloss)
+    if ender:
+        phrase += ender
+    if dot := data["dot"]:
+        phrase += dot
+    return phrase
 
 
 def render_frac(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -3036,6 +3110,14 @@ def render_rq(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
     return f"“{data['text']}”"
 
 
+def render_script(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_script("script", ["Cpmn"], defaultdict(str))
+    'Cypro-Minoan'
+    """
+    return scripts[parts[0]]
+
+
 def render_semantic_shift(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_semantic_shift("ss", ["en"], defaultdict(str))
@@ -3620,6 +3702,14 @@ def render_xlit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     return transliterate(parts[0], parts[1])
 
 
+def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str, {"tr": "siáu"}))
+    '痟 (<i>siáu</i>, “mad”)'
+    """
+    return chinese(parts, data)
+
+
 template_mapping = {
     "&lit": render_lit,
     "abbreviated": render_abbreviated,
@@ -3800,6 +3890,7 @@ template_mapping = {
     **dict.fromkeys({"coinage", "coined", "coin"}, render_coinage),
     **dict.fromkeys({"contraction", "contr"}, render_contraction),
     **dict.fromkeys({"el-UK-US", "l-UK-US"}, render_el_uk_us),
+    **dict.fromkeys(form_of_templates.keys(), render_form_of_t),
     **dict.fromkeys({"filter-avoidance spelling of", "fa sp"}, render_fa_sp),
     **dict.fromkeys({"IPAchar", "ipachar", "ic"}, render_ipa_char),
     **dict.fromkeys({"ISO 216", "ISO 269"}, render_iso_216),
@@ -3831,6 +3922,7 @@ template_mapping = {
     **dict.fromkeys({"used in phrasal verbs", "phrasal verb"}, render_used_in_phrasal_verbs),
     **dict.fromkeys({"vernacular", "vern"}, render_vern),
     **dict.fromkeys({"wasei eigo", "waei"}, render_wasei_eigo),
+    **dict.fromkeys({"zh-l", "zh-m"}, render_zh_l),
     #
     # Variants
     #

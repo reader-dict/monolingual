@@ -4,7 +4,6 @@ import re
 
 from ...user_functions import flatten, unique
 from .labels import labels
-from .scripts import scripts
 
 # Float number separator
 float_separator = "."
@@ -508,49 +507,10 @@ def last_template_handler(
     all_templates: list[tuple[str, str, str]] | None = None,
     variant_only: bool = False,
 ) -> str:
-    """
-    Will be call in utils.py::transform() when all template handlers were not used.
+    """Will be call in utils.py::transform() when all template handlers were not used."""
 
-        >>> last_template_handler(["eye dialect of", "en" , "ye#Etymology 6", "t=t", "from=from", "from2=from2"], "en")
-        '<i>Eye dialect spelling of</i> <b>ye</b> (“t”)<i>, representing from and from2 English</i>'
-        >>> last_template_handler(["alternative spelling of", "en" , "ye", "from=from", "from2=from2"], "en")
-        '<i>From and from2 spelling of</i> <b>ye</b>'
-
-        >>> last_template_handler(["initialism of", "en", "w:Shockwave Flash"], "en")
-        '<i>Initialism of</i> <b>Shockwave Flash</b>'
-        >>> last_template_handler(["initialism of", "en", "optical character reader", "dot=&nbsp;(the scanning device)"], "en")
-        '<i>Initialism of</i> <b>optical character reader</b>&nbsp;(the scanning device)'
-        >>> last_template_handler(["init of", "en", "optical character reader", "tr=tr", "t=t", "ts=ts"], "en")
-        '<i>Initialism of</i> <b>optical character reader</b> (<i>tr</i> /ts/, “t”)'
-        >>> last_template_handler(["init of", "en", "OCR", "optical character reader", "nodot=1"], "en")
-        '<i>Initialism of</i> <b>optical character reader</b>'
-        >>> last_template_handler(["init of", "en", "OCR", "optical character reader", "nodot=1", "nocap=1"], "en")
-        '<i>initialism of</i> <b>optical character reader</b>'
-        >>> last_template_handler(["init of", "fr", "OCR", "optical character reader"], "en")
-        '<i>initialism of</i> <b>optical character reader</b>'
-
-        >>> last_template_handler(["standard spelling of", "en", "from=Irish English", "Irish Traveller"], "en")
-        '<i>Irish English standard spelling of</i> <b>Irish Traveller</b>'
-        >>> last_template_handler(["standard spelling of", "en", "enroll"], "en")
-        '<i>Standard spelling of</i> <b>enroll</b>'
-        >>> last_template_handler(["cens sp", "en", "bitch"], "en")
-        '<i>Censored spelling of</i> <b>bitch</b>'
-
-        >>> last_template_handler(["pronunciation spelling of", "en", "everything", "from=AAVE"], "en")
-        '<i>Pronunciation spelling of</i> <b>everything</b><i>, representing African-American Vernacular English</i>'
-
-        >>> last_template_handler(["script", "Cpmn"], "en")
-        'Cypro-Minoan'
-
-        >>> last_template_handler(["zh-m", "痟", "tr=siáu", "mad"], "en")
-        '痟 (<i>siáu</i>, “mad”)'
-    """
-
-    from ...user_functions import capitalize, chinese, extract_keywords_from, italic, strong
     from .. import defaults
-    from .form_of import form_of_templates
-    from .langs import langs
-    from .template_handlers import gloss_tr_poss, join_names, lookup_template, render_template
+    from .template_handlers import lookup_template, render_template
 
     tpl, *parts = template
 
@@ -567,56 +527,6 @@ def last_template_handler(
         if tpl == "xlit" and not text and all_templates is not None:
             all_templates.append((f"{tpl}:{parts[0]}", word, "missed"))
         return text
-
-    data = extract_keywords_from(parts)
-
-    if tpl in form_of_templates:
-        form = form_of_templates[tpl]
-        starter = form["value"]
-        lang = data["1"] or (parts.pop(0) if parts else "")
-        initial_cap = (
-            (initial_cap_raw := form["initial-cap"]) == "English only" and lang == "en" or initial_cap_raw == "yes"
-        )
-        ender = ""
-        word = (data["2"] or (parts.pop(0) if parts else "")).split("#", 1)[0]
-
-        text = data["alt"] or data["3"] or (parts.pop(0) if parts else "")
-        gloss = data["t"] or data["gloss"] or data["4"] or (parts.pop(0) if parts else "")
-        word = text or word
-        if word.startswith("w:"):
-            word = word[2:]
-
-        if fromtext := join_names(data, "from", " and "):
-            from_suffix = "form of"
-            if tpl == "standard spelling of":
-                from_suffix = "standard spelling of"
-            elif tpl == "alternative spelling of":
-                from_suffix = "spelling of"
-            elif tpl in (
-                "eye dialect of",
-                "pronunciation spelling of",
-                "pronunciation variant of",
-            ):
-                ender = italic(f", representing {templates_italic.get(data['from'], fromtext)} {langs[lang]}")
-            if not ender:
-                starter = f"{fromtext} {from_suffix}"
-
-        if initial_cap and not data["nocap"]:
-            starter = capitalize(starter)
-        phrase = italic(starter)
-        phrase += f" {strong(word)}"
-        phrase += gloss_tr_poss(data, gloss)
-        if ender:
-            phrase += ender
-        if dot := data["dot"]:
-            phrase += dot
-        return phrase
-
-    if tpl in {"sc", "script"}:
-        return scripts[parts[0]]
-
-    if tpl in ("zh-l", "zh-m"):
-        return chinese(parts, data)
 
     return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
 
