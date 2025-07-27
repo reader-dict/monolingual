@@ -1928,7 +1928,7 @@ recognized_placetypes = {
     "former nicknames for cities!": {
         "fallback": "",
         "article": "",
-        "display": "no-longer-used nicknames for cities, e.g. the Eternal City for Kyoto during the {{w|Heian period}} (c. 800-1100 {{AD}})",
+        "display": "no-longer-used nicknames for cities, e.g. the Eternal City for Kyoto during the {{w|Heian period}} ({{circa2|800–1100|short=yes}} {{AD}})",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",

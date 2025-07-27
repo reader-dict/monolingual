@@ -72,7 +72,7 @@ results: dict[str, dict[str, str]] = {}
 while next_page_url:
     next_page_url = process_category_page(next_page_url, results)
 
-print("racines_schemes_arabes = {")
+print("racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {")
 for k, v in sorted(results.items()):
     print(f'    "{k}" : {{')
     for k1, v1 in sorted(v.items()):
