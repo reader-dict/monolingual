@@ -318,35 +318,27 @@ def find_all_sections(
 ) -> tuple[list[wtp.Section], list[tuple[str, wtp.Section]]]:
     """Find all sections holding definitions."""
     parsed = wtp.parse(code)
-    all_sections = []
+    all_sections: list[tuple[str, wtp.Section]] = []
     level = lang.section_level[lang_dst]
+    head_sections = tuple(hs.replace(" ", "") for hs in lang.head_sections[lang_dst])
 
     # Add fake section for etymology if in the leading part
     if lang_src == "ca":
-        etyl_data = etyl_data_section = leading_lines = ""
         etyl_l_sections = lang.etyl_section[lang_dst]
+        for leading_part in parsed.get_sections(include_subsections=False, level=level):
+            if not section_title(lang_dst, leading_part).startswith(head_sections):
+                continue
 
-        leading_part = parsed.get_sections(include_subsections=False, level=level)
-        if leading_part:
-            leading_lines = leading_part[0].contents.split("\n")
-
-        for etyl_l_section in etyl_l_sections:
-            for line in leading_lines:
-                if line.startswith(etyl_l_section):
-                    etyl_data = line
-                    etyl_data_section = etyl_l_section
-                    break
-
-        if etyl_data:
-            all_sections.append(
+            all_sections.extend(
                 (
-                    etyl_data_section,
-                    wtp.Section(f"=== {etyl_data_section} ===\n{etyl_data}"),
+                    etyl_l_sections[0],
+                    wtp.Section(f"=== {etyl_l_sections[0]} ===\n{line}"),
                 )
+                for line in leading_part.contents.split("\n")
+                if line.startswith(etyl_l_sections)
             )
 
     # Get interesting top sections
-    head_sections = tuple(hs.replace(" ", "") for hs in lang.head_sections[lang_dst])
     top_sections = [
         section
         for section in parsed.get_sections(level=level)

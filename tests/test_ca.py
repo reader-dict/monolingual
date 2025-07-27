@@ -63,7 +63,12 @@ from wikidict.utils import process_templates
             "bot",
             [],
             ["m"],
-            ["[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> («bóta»), segle XIII."],
+            [
+                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> («bóta»), segle XIII.",
+                "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
+                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> («barca petita»), actualment <i>boat</i>.",
+                "[4] Informàtica: afèresi de <i>robot</i>, calc de l’anglès <i>bot</i>, segle XX.",
+            ],
             {
                 "Nom": [
                     "Recipient de cuir, originalment de boc per a contenir vi.",
@@ -226,7 +231,9 @@ from wikidict.utils import process_templates
             "el",
             ["/əɫ/"],
             ["f"],
-            [],
+            [
+                "Del català antic <i>lo</i>, per fals tall sil·làbic de <i>·l</i>, forma reduïda darrere d’una <i>e</i>, segle XIV. Per exemple: <i>que lo &gt; que·l &gt; qu’el &gt; que el; de lo &gt; del; e lo &gt; e·l &gt; i el</i>."
+            ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del grec modern."],
                 "Article": [
@@ -271,7 +278,12 @@ from wikidict.utils import process_templates
             "si",
             [],
             ["m"],
-            [],
+            [
+                "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
+                "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
+                "[3] Nota musical: de les inicials llatines <i>Sancte</i> <i>Ioannes</i> de l'himne <i>Ut queant laxis</i> de Pau el Diaca d'on es va extraure l'escala musical, segle XIII.",
+                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> («ell»).",
+            ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],
                 "Conjunció": ["<i>Nexe condicional que introdueix un supòsit, una premissa.</i>"],
