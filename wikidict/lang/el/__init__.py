@@ -308,30 +308,6 @@ templates_other["ονομαΑ"] = templates_other["παρωχ-ονομαΑ"]
 templates_other["πληθ"] = templates_other["πληθυντικός"]
 templates_other["πολυ"] = templates_other["πολυτ γραφή"]
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/el
-release_description = """\
-### 🌟 Προκειμένου να ενημερώνεται τακτικά, αυτό το έργο χρειάζεται υποστήριξη- [κάντε κλικ εδώ](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) για να κάνετε δωρεά. 🌟
-
-<br/>
-
-
-Αριθμός λέξεων: {words_count}
-Εξαγωγή Βικιλεξικού: {dump_date}
-
-Πλήρης έκδοση:
-{download_links_full}
-
-Έκδοση χωρίς ετυμολογία:
-{download_links_noetym}
-
-<sub>Ημερομηνία δημιουργίας: {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Βικιλεξικό (ɔ) {year}"
-
-
 _genders = {
     "θ": "θηλυκό",
     "α": "αρσενικό",

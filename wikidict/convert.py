@@ -13,7 +13,7 @@ import os
 import shutil
 from collections import defaultdict
 from copy import deepcopy
-from datetime import date, timedelta
+from datetime import UTC, datetime, timedelta
 from functools import partial
 from pathlib import Path
 from time import monotonic
@@ -24,7 +24,7 @@ from jinja2 import Template
 from marisa_trie import Trie
 from pyglossary.glossary_v2 import ConvertArgs, Glossary
 
-from . import constants, lang, render, user_functions, utils
+from . import constants, render, user_functions, utils
 from .stubs import Word
 
 if TYPE_CHECKING:
@@ -188,15 +188,20 @@ class BaseFormat:
 
     @property
     def description(self) -> str:
-        return lang.wiktionary[self.lang_src].format(year=date.today().year)
+        return f"© {constants.PROJECT} {datetime.now(tz=UTC).year}"
 
     @property
     def title(self) -> str:
-        return constants.TITLE.format(constants.PROJECT, self.lang_src.upper(), self.lang_dst.upper())
+        return constants.TITLE.format(
+            project=constants.PROJECT,
+            langs=(
+                self.lang_src.upper() if self.lang_src == self.lang_dst else f"{self.lang_src}-{self.lang_dst}".upper()
+            ),
+        )
 
     @property
     def website(self) -> str:
-        return constants.GH_REPOS
+        return constants.WEBSITE
 
     def dictionary_file(self, output_file: str) -> Path:
         return self.output_dir / output_file.format(
@@ -316,29 +321,12 @@ class BaseFormat:
 class KoboFormat(BaseFormat):
     """Save the data into Kobo-specific ZIP file."""
 
-    add_install = True
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"
     template = WORD_TPL_KOBO
 
     def process(self) -> None:
         self.groups = self.make_groups(self.words)
         self.save()
-
-    def sanitize(self, content: str) -> str:
-        """Sanitize the INSTALL.txt file content."""
-        content = content.replace(":arrow_right:", "->")
-        content = content.replace("`", '"')
-        content = content.replace("<sub>", "")
-        content = content.replace("</sub>", "")
-
-        for etym_suffix in {"", constants.NO_ETYMOLOGY_SUFFIX}:
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.mobi.zip)", "")
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.df.bz2)", "")
-            content = content.replace(f" (dicthtml-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-            content = content.replace(f" (dictorg-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-
-        return content
 
     @staticmethod
     def craft_index(wordlist: list[str], output_dir: Path) -> Path:
@@ -393,13 +381,6 @@ class KoboFormat(BaseFormat):
             fh.comment = bytes(self.description, "utf-8")
 
             # Unrelated files, just for history
-            if self.add_install:
-                fh.writestr(
-                    constants.ZIP_INSTALL,
-                    self.sanitize(
-                        utils.format_description(self.lang_src, self.lang_dst, len(self.words), self.snapshot)
-                    ),
-                )
             fh.writestr(constants.ZIP_WORDS_COUNT, str(self.words_count + self.variants_count))
             fh.writestr(constants.ZIP_WORDS_SNAPSHOT, self.snapshot)
 

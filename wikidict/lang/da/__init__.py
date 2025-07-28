@@ -161,29 +161,6 @@ templates_multi = {
     "ZHchar": "parts[-1]",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/da
-release_description = """\
-### 🌟 For at kunne blive opdateret regelmæssigt har dette projekt brug for støtte; [klik her](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) for at donere. 🌟
-
-<br/>
-
-
-Ordtælling: {words_count}
-Dump Wiktionary: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-free version:
-{download_links_noetym}
-
-<sub>Opdateret den {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
-
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """

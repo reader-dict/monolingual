@@ -195,30 +195,6 @@ templates_markierung = {
 }
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/de
-release_description = """\
-### 🌟 Um regelmäßig aktualisiert werden zu können, benötigt dieses Projekt Unterstützung; [hier klicken](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) um zu spenden. 🌟
-
-<br/>
-
-
-Anzahl Worte: {words_count}
-Wiktionary-Dump vom: {dump_date}
-
-Vollständige version:
-{download_links_full}
-
-Version ohne etymologien:
-{download_links_noetym}
-
-<sub>Letzte Aktualisierung: {creation_date}.</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "de")

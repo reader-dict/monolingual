@@ -55,8 +55,8 @@ def test_simple(craft_data: Callable[[str], bytes]) -> None:
     # List of requests responses to falsify:
     #   - fetch_snapshots()
     #   - fetch_pages()
-    responses.add(responses.GET, BASE_URL.format("fr"), body=WIKTIONARY_INDEX)
-    responses.add(responses.GET, DUMP_URL.format("fr", dump), body=craft_data("fr"))
+    responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
+    responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=dump), body=craft_data("fr"))
 
     # Start the whole process
     assert download.main("fr") == 0
@@ -82,7 +82,7 @@ def test_download_already_done(craft_data: Callable[[str], bytes]) -> None:
 
     # List of requests responses to falsify:
     #   - fetch_snapshots()
-    responses.add(responses.GET, BASE_URL.format("fr"), body=WIKTIONARY_INDEX)
+    responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
 
     # Start the whole process
     assert download.main("fr") == 0
@@ -106,10 +106,10 @@ def test_ongoing_dump(craft_data: Callable[[str], bytes]) -> None:
     # List of requests responses to falsify:
     #   - fetch_snapshots()
     #   - fetch_pages() for 20200514, 20200301, and 20200220
-    responses.add(responses.GET, BASE_URL.format("fr"), body=WIKTIONARY_INDEX)
+    responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
     for dump in DUMPS[:-3:-1]:
-        responses.add(responses.GET, DUMP_URL.format("fr", dump), status=404)
-    responses.add(responses.GET, DUMP_URL.format("fr", expected_dump), body=craft_data("fr"))
+        responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=dump), status=404)
+    responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=expected_dump), body=craft_data("fr"))
 
     # Start the whole process
     assert download.main("fr") == 0
@@ -138,9 +138,9 @@ def test_no_dump_found(craft_data: Callable[[str], bytes]) -> None:
     # List of requests responses to falsify:
     #   - fetch_snapshots()
     #   - fetch_pages() for all dumps
-    responses.add(responses.GET, BASE_URL.format("fr"), body=WIKTIONARY_INDEX)
+    responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
     for dump in DUMPS:
-        responses.add(responses.GET, DUMP_URL.format("fr", dump), status=404)
+        responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=dump), status=404)
 
     # Start the whole process
     assert download.main("fr") == 1

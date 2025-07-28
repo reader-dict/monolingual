@@ -445,30 +445,6 @@ templates_other["en dash"] = templates_other["ndash"]
 templates_other["Genericized trademark"] = templates_other["genericized trademark"]
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/en
-release_description = """\
-### 🌟 In order to be regularly updated, this project needs support; [click here](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) to donate. 🌟
-
-<br/>
-
-
-Words count: {words_count}
-Wiktionary dump: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-free version:
-{download_links_noetym}
-
-<sub>Updated on {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "en")

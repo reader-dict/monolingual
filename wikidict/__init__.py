@@ -2,7 +2,7 @@
 Finally descent dictionaries based on Wiktionary for your beloved eBook reader.
 
 You can always get the latest version of this module at:
-    https://github.com/BoboTiG/ebook-reader-dict
+    https://github.com/reader-dict/monolingual
 """
 
 __version__ = "5.0.0"

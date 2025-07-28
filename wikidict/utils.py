@@ -20,12 +20,10 @@ from .hiero_utils import render_hiero
 from .lang import (
     last_template_handler,
     random_word_url,
-    release_description,
     templates_ignored,
     templates_italic,
     templates_multi,
     templates_other,
-    thousands_separator,
 )
 from .user_functions import *  # noqa: F403
 
@@ -191,38 +189,6 @@ def guess_locales(locale: str, *, use_log: bool = True) -> tuple[str, str]:
         )
 
     return lang_src, lang_dst
-
-
-def format_description(lang_src: str, lang_dst: str, words: int, snapshot: str) -> str:
-    """Generate the release description."""
-
-    # Format the words count
-    words_count = f"{words:,}".replace(",", thousands_separator[lang_src])
-
-    # Format the snapshot's date
-    dump_date = f"{snapshot[:4]}-{snapshot[4:6]}-{snapshot[6:8]}"
-
-    # Format download links
-    _links_full: dict[str, str] = {}
-    _links_etym_free: dict[str, str] = {}
-    for etym_suffix in {"", constants.NO_ETYMOLOGY_SUFFIX}:
-        obj = _links_etym_free if etym_suffix else _links_full
-        obj.update(
-            {
-                "dictfile": f"- [DictFile]({constants.DOWNLOAD_URL_DICTFILE.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.df.bz2)",
-                "dicthtml": f"- [Kobo]({constants.DOWNLOAD_URL_KOBO.format(lang_src, lang_dst, etym_suffix)}) (dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-                "dictorg": f"- [DICT.org]({constants.DOWNLOAD_URL_DICTORGFILE.format(lang_src, lang_dst, etym_suffix)}) (dictorg-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-                "mobi": f"- [Kindle]({constants.DOWNLOAD_URL_MOBI.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.mobi.zip)",
-                "stardict": f"- [StarDict]({constants.DOWNLOAD_URL_STARDICT.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-            }
-        )
-    download_links_full = "\n".join(sorted(_links_full.values()))
-    download_links_noetym = "\n".join(sorted(_links_etym_free.values()))
-
-    # Format the creation's date
-    creation_date = NOW.isoformat()
-
-    return release_description[lang_src].format(**locals())
 
 
 @cache

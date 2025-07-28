@@ -70,29 +70,6 @@ templates_multi = {
     "trad": "parts[-1]",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/ro
-release_description = """\
-### 🌟 Pentru a fi actualizat periodic, acest proiect are nevoie de sprijin; [faceți clic aici](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) pentru a dona. 🌟
-
-<br/>
-
-
-Număr de cuvinte: {words_count}
-Extragerea datelor din Wikționar: {dump_date}
-
-Versiunea completă:
-{download_links_full}
-
-Versiune fără etimologie:
-{download_links_noetym}
-
-<sub>Ultima actualizare în {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wikționar (ɔ) {year}"
-
 
 def find_genders(code: str, locale: str) -> list[str]:
     """

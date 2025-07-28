@@ -95,30 +95,6 @@ templates_multi = {
 }
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/ca
-release_description = """\
-### 🌟 Per tal d'actualitzar-se periòdicament, aquest projecte necessita suport; [feu clic aquí](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) per donar. 🌟
-
-<br/>
-
-
-Les paraules compten: {words_count}
-Abocador Viccionari: {dump_date}
-
-Versió completa:
-{download_links_full}
-
-Versió sense etimologia:
-{download_links_noetym}
-
-<sub>Actualitzat el {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Viccionari (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "ca")

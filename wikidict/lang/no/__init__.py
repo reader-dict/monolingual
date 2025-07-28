@@ -137,29 +137,6 @@ templates_other = {
     "tr": "tyrkisk",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/no
-release_description = """\
-### 🌟 For å kunne oppdateres jevnlig trenger dette prosjektet støtte; [klikk her](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) for å donere. 🌟
-
-<br/>
-
-
-Ord räknas: {words_count}
-Dumpa Wiktionary: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-free version:
-{download_links_noetym}
-
-<sub>Uppdaterad på {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
-
 
 def find_genders(code: str, locale: str) -> list[str]:
     """

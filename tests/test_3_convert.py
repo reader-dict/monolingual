@@ -10,30 +10,6 @@ from wikidict import constants, convert
 from wikidict.constants import ASSET_CHECKSUM_ALGO
 from wikidict.stubs import Variants, Word, Words
 
-EXPECTED_INSTALL_TXT_FR = """### 🌟 Afin d'être régulièrement mis à jour, ce projet a besoin de soutien ; [cliquez ici](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) pour faire un don. 🌟
-
-<br/>
-
-
-Nombre de mots : 46
-Export Wiktionnaire : 2020-12-17
-
-Version complète :
-- [DICT.org](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dictorg-fr-fr.zip)
-- [DictFile](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.df.bz2)
-- [Kindle](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.mobi.zip)
-- [Kobo](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dicthtml-fr-fr.zip)
-- [StarDict](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.zip)
-
-Version sans étymologies :
-- [DICT.org](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dictorg-fr-fr-noetym.zip)
-- [DictFile](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.df.bz2)
-- [Kindle](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.mobi.zip)
-- [Kobo](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dicthtml-fr-fr-noetym.zip)
-- [StarDict](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.zip)
-
-Mis à jour le"""
-
 WORDS = {
     "empty": Word([], [], [], {}, []),
     "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, []),
@@ -121,7 +97,6 @@ def test_simple() -> None:
     # Check the Kobo ZIP content
     expected_files = [
         "11.html",
-        constants.ZIP_INSTALL,
         "aa.html",
         "ac.html",
         "ba.html",
@@ -211,11 +186,6 @@ def test_simple() -> None:
         # testfile returns the name of the first corrupt file, or None
         errors = fh.testzip()
         assert errors is None
-
-        # Check content of INSTALL.txt
-        install_txt = fh.read(constants.ZIP_INSTALL).decode()
-        print(install_txt)
-        assert install_txt.startswith(EXPECTED_INSTALL_TXT_FR)
 
         # Check the trie
         trie = Trie()

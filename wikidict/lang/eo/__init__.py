@@ -182,30 +182,6 @@ templates_other["MUZ"] = templates_other["𝅘𝅥𝅰"]
 templates_other["Poe."] = templates_other["poe."]
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/eo
-release_description = """\
-### 🌟 Por esti regule ĝisdatigita, ĉi tiu projekto bezonas subtenon; [Alklaku ĉi tie](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) por donaci. 🌟
-
-<br/>
-
-
-Vortoj kalkulas: {words_count}
-Vikivortaro rubejo: {dump_date}
-
-Plena versio:
-{download_links_full}
-
-Etimologio-libera versio:
-{download_links_noetym}
-
-<sub>Ĝisdatigita je {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Vikivortaro (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "eo")
