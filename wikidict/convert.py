@@ -167,7 +167,7 @@ class BaseFormat:
         *,
         include_etymology: bool = True,
     ) -> None:
-        self.lang_src, self.lang_dst = utils.guess_locales(locale)
+        self._lang_src, self._lang_dst = utils.guess_locales(locale)
         self.output_dir = output_dir
         self.words = words
         self.variants = variants
@@ -176,12 +176,11 @@ class BaseFormat:
         self.start = monotonic()
         self.words_count = 0
         self.variants_count = 0
-        self.id = f"{type(self).__name__} {self.lang_src.upper()}-{self.lang_dst.upper()} {'' if include_etymology else 'no'}etym"
 
         logging.basicConfig(level=logging.INFO)
         log.info(
             "[%s] Starting the conversion with %s words, and %s variants ...",
-            self.id,
+            self.id(),
             f"{len(words):,}",
             f"{len(variants):,}",
         )
@@ -190,12 +189,16 @@ class BaseFormat:
     def description(self) -> str:
         return f"© {constants.PROJECT} {datetime.now(tz=UTC).year}"
 
-    @property
+    def id(self) -> str:
+        return f"{type(self).__name__} {self.effective_lang_src().upper()}-{self.effective_lang_dst().upper()} {'' if self.include_etymology else 'no'}etym"
+
     def title(self) -> str:
         return constants.TITLE.format(
             project=constants.PROJECT,
             langs=(
-                self.lang_src.upper() if self.lang_src == self.lang_dst else f"{self.lang_src}-{self.lang_dst}".upper()
+                self._lang_src.upper()
+                if self._lang_src == self._lang_dst
+                else f"{self.effective_lang_src()}-{self.effective_lang_dst()}".upper()
             ),
         )
 
@@ -203,10 +206,16 @@ class BaseFormat:
     def website(self) -> str:
         return constants.WEBSITE
 
+    def effective_lang_src(self) -> str:
+        return self._lang_src
+
+    def effective_lang_dst(self) -> str:
+        return self._lang_dst
+
     def dictionary_file(self, output_file: str) -> Path:
         return self.output_dir / output_file.format(
-            lang_src=self.lang_src,
-            lang_dst=self.lang_dst,
+            lang_src=self.effective_lang_src(),
+            lang_dst=self.effective_lang_dst(),
             etym_suffix="" if self.include_etymology else constants.NO_ETYMOLOGY_SUFFIX,
         )
 
@@ -288,22 +297,22 @@ class BaseFormat:
         checksum = hashlib.new(constants.ASSET_CHECKSUM_ALGO, file.read_bytes()).hexdigest()
         checksum_file = file.with_suffix(f"{file.suffix}.{constants.ASSET_CHECKSUM_ALGO}")
         checksum_file.write_text(f"{checksum} {file.name}")
-        log.info("[%s] Crafted %s (%s)", self.id, checksum_file.name, checksum)
+        log.info("[%s] Crafted %s (%s)", self.id(), checksum_file.name, checksum)
 
     def summary(self, file: Path) -> None:
         if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__}:
             log.info(
                 "[%s] Effective words + variants: %s + %s => %s",
-                self.id,
+                self.id(),
                 f"{self.words_count:,}",
                 f"{self.variants_count:,}",
                 f"{self.words_count + self.variants_count:,}",
             )
-            log.info("[%s] utils.guess_prefix() %s", self.id, utils.guess_prefix.cache_info())
+            log.info("[%s] utils.guess_prefix() %s", self.id(), utils.guess_prefix.cache_info())
 
         log.info(
             "[%s] Generated %s (%s bytes) in %s",
-            self.id,
+            self.id(),
             file.name,
             f"{file.stat().st_size:,}",
             timedelta(seconds=monotonic() - self.start),
@@ -312,7 +321,7 @@ class BaseFormat:
 
         log.info(
             "[%s] Finished the conversion with %s words, and %s variants, as expected.",
-            self.id,
+            self.id(),
             f"{len(self.words):,}",
             f"{len(self.variants):,}",
         )
@@ -425,12 +434,6 @@ class DictFileFormat(BaseFormat):
     output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df"
     template = WORD_TPL_DICTFILE
 
-    def get_glossary_lang_dst(self) -> str:
-        return self.lang_dst
-
-    def get_glossary_lang_src(self) -> str:
-        return self.lang_src
-
     def process(self) -> None:
         file = self.dictionary_file(self.output_file)
         words = self.words
@@ -499,12 +502,12 @@ class ConverterFromDictFile(DictFileFormat):
             writer_cls.getBookname = get_bookname
 
         glos.setInfo("description", self.description)
-        glos.setInfo("title", self.title)
+        glos.setInfo("title", self.title())
         glos.setInfo("website", self.website)
         glos.setInfo("date", f"{self.snapshot[:4]}-{self.snapshot[4:6]}-{self.snapshot[6:8]}")
 
-        glos.sourceLangName = self.get_glossary_lang_src()
-        glos.targetLangName = self.get_glossary_lang_dst()
+        glos.sourceLangName = self.effective_lang_src()
+        glos.targetLangName = self.effective_lang_dst()
 
         self.output_dir_tmp.mkdir()
         glos.convert(
@@ -588,22 +591,6 @@ class MobiFormat(ConverterFromDictFile):
         "keep": True,
         "kindlegen_path": str(constants.KINDLEGEN_FILE),
     }
-
-    def get_glossary_lang_dst(self) -> str:
-        """
-        Workaround for Esperanto (EO) not being supported by kindlegen.
-        According to https://higherlanguage.com/languages-similar-to-esperanto/,
-        French seems the most similar lang that is available on kindlegen, so French it is.
-        """
-        return "fr" if self.lang_dst == "eo" else self.lang_dst
-
-    def get_glossary_lang_src(self) -> str:
-        """
-        Workaround for Esperanto (EO) not being supported by kindlegen.
-        According to https://higherlanguage.com/languages-similar-to-esperanto/,
-        French seems the most similar lang that is available on kindlegen, so French it is.
-        """
-        return "fr" if self.lang_src == "eo" else self.lang_src
 
     def _compress(self) -> Path:
         # Move the relevant file at the top-level data folder, and rename it for more accuracy
