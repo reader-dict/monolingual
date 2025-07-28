@@ -1528,7 +1528,11 @@ labels = {
     "fluid mechanics": "fluid mechanics",
     "focus": "focus",
     "folk poetic": "folk poetic",
+    "folk songs": "used in folk songs",
+    "folk tales": "used in folk tales",
     "folklore": "folklore",
+    "folksongs": "used in folk songs",
+    "folktales": "used in folk tales",
     "foot-goose": "''foot''-''goose'' merger",
     "foot-strut split": "''foot''-''strut'' split",
     "football": "soccer",
@@ -2139,8 +2143,6 @@ labels = {
     "online": "Internet",
     "online games": "online gaming",
     "online gaming": "online gaming",
-    "only used in songs": "used only in songs",
-    "only used in tales": "used only in tales",
     "onomastics": "onomastics",
     "onomatopoeia": "onomatopoeia",
     "opera": "opera",
@@ -2469,7 +2471,6 @@ labels = {
     "solemn": "solemn",
     "sometimes": "sometimes",
     "somewhat": "somewhat",
-    "songs": "used only in songs",
     "sound": "sound",
     "sound engineering": "sound engineering",
     "south England": "Southern England",
@@ -2555,7 +2556,6 @@ labels = {
     "t-glottalisation": "''t''-glottalization",
     "t-glottalization": "''t''-glottalization",
     "table tennis": "table tennis",
-    "tales": "used only in tales",
     "tar-tire": "tar-tire merger",
     "tar-tire-tower": "tar-tire-tower merger",
     "tarot": "tarot",
@@ -2647,8 +2647,10 @@ labels = {
     "urban studies": "urban studies",
     "urbanism": "urban studies",
     "urology": "urology",
-    "used only in songs": "used only in songs",
-    "used only in tales": "used only in tales",
+    "used in folk songs": "used in folk songs",
+    "used in folk tales": "used in folk tales",
+    "used in folksongs": "used in folk songs",
+    "used in folktales": "used in folk tales",
     "usually": "usually",
     "usually in plural": "usually in the plural",
     "usually in the negative": "chiefly in the negative",
@@ -2747,7 +2749,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,742
+}  # 2,744
 
 syntaxes = {
     "&": {

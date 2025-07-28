@@ -7,6 +7,7 @@ Auto-generated with `python -m scripts`.
 dialects = {
     "AR": "argentina",
     "AT": "aŭstra",
+    "BR": "brazila",
     "CH": "svisa",
     "CO": "kolombia",
     "CU": "kuba",
@@ -32,5 +33,5 @@ dialects = {
     "qebe": "kvebeka",
     "skon": "skonregiona",
     "sud": "sudgermana",
-}  # 27
+}  # 28
 # END
