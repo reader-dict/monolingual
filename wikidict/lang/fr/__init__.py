@@ -3,8 +3,6 @@
 import re
 
 from ...user_functions import flatten, unique
-from .ar_pronunciation import toIPA
-from .arabiser import appliquer, arabiser
 from .contexts import contexts
 from .domain_templates import domain_templates
 from .regions import regions
@@ -635,26 +633,6 @@ def last_template_handler(
         >>> last_template_handler(["Légifrance", "base=CPP", "numéro=230-45"], "fr")
         ''
 
-        >>> last_template_handler(["ar-ab", "lubné"], "fr")
-        'لُبْنَى'
-
-        >>> last_template_handler(["ar-cf", "ar-*i*â*ũ", "ar-ktb"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">كِتَابٌ</span></span> <small>(kitâbũ)</small> («&nbsp;livre, écriture ; pièce écrite&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*i*a*ũ", "ar-jnn"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">جِنَنٌ</span></span> <small>(jinanũ)</small>'
-
-        >>> last_template_handler(["ar-mot", "elHasan_"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">الحَسَن</span></span> <small>(elHasan_)</small>'
-
-        >>> last_template_handler(["ar-racine/nom", "ar-ktb"], "fr")
-        "كتب: relatif à l'action d'écrire, relier"
-
-        >>> last_template_handler(["ar-sch", "ar-*â*a*a"], "fr")
-        'زَارَزَ'
-
-        >>> last_template_handler(["ar-terme", "mu'ad²ibũ"], "fr")
-        "مُؤَدِّبٌ (<i>mu'ad²ibũ</i>) /mu.ʔad.di.bun/"
-
         >>> last_template_handler(["nom langue", "gcr"], "fr")
         'créole guyanais'
         >>> last_template_handler(["langue", "gcr"], "fr")
@@ -771,45 +749,6 @@ def last_template_handler(
         if tpl == "langue":
             phrase = phrase[0].capitalize() + phrase[1:]
         return phrase
-
-    if tpl in {"ar-ab", "ar-mo"}:
-        return arabiser(parts[0])
-
-    if tpl == "ar-cf":
-        scheme = appliquer(parts[0], parts[1], var=parts[2] if len(parts) > 2 else "")
-        w = arabiser(scheme)
-        from ...utils import clean
-        from .racines_arabes import racines_schemes_arabes
-
-        sens = (
-            f"ici, «&nbsp;{data['ici']}&nbsp;»"
-            if data["ici"]
-            else f"«&nbsp;{clean(racines_schemes_arabes[parts[1]][parts[0]][1])}&nbsp;»"
-            if parts[1] in racines_schemes_arabes and parts[0] in racines_schemes_arabes[parts[1]]
-            else ""
-        )
-        sens = f" ({sens})" if sens else ""
-
-        return (
-            f'<span style="line-height: 0px;"><span style="font-size:larger">{w}</span></span>'
-            f" <small>({scheme})</small>"
-            f"{sens}"
-        )
-
-    if tpl == "ar-mot":
-        return f'<span style="line-height: 0px;"><span style="font-size:larger">{arabiser(parts[0])}</span></span> <small>({parts[0]})</small>'
-
-    if tpl == "ar-racine/nom":
-        from .racines_arabes import racines_schemes_arabes
-
-        return f"{arabiser(parts[0].split('-')[1])}: {racines_schemes_arabes[parts[0]]['aa_sens']}"
-
-    if tpl == "ar-sch":
-        return arabiser(appliquer(parts[0], parts[1] if len(parts) > 1 else "ar-zrzr"))
-
-    if tpl == "ar-terme":
-        arab = arabiser(parts[0])
-        return f"{arab} ({italic(parts[0])}) /{toIPA(arabic=arab)}/"
 
     if tpl == "nucléide":
         return (

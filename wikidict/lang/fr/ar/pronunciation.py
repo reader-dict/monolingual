@@ -176,7 +176,7 @@ def toIPA(*, arabic: str = "", tr: str = "") -> str:
     if tr:
         translit = tr
     elif arabic:
-        from .ar_translit import tr as transliterate
+        from .translit import tr as transliterate
 
         translit = transliterate(arabic)
         if not translit:

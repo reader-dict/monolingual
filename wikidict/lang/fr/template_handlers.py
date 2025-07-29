@@ -14,7 +14,9 @@ from ...user_functions import (
     term,
     underline,
 )
-from ...utils import process_special_pipe_template
+from ...utils import clean, process_special_pipe_template
+from .ar import arabiser, racines_arabes
+from .ar import pronunciation as ar_pron
 from .langs import langs
 from .transliterator import transliterate
 
@@ -106,6 +108,75 @@ def render_acronyme(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     if data["texte"] or data["de"]:
         return f"Acronyme de {italic(data['texte'] or data['de'])}"
     return italic("(Acronyme)")
+
+
+def render_ar_ab(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_ab("ar-ab", ["lubné"], defaultdict(str))
+    'لُبْنَى'
+    """
+    return arabiser.arabiser(parts[0])
+
+
+def render_ar_cf(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_cf("ar-cf", ["ar-*i*â*ũ", "ar-ktb"], defaultdict(str))
+    '<span style="line-height: 0px;"><span style="font-size:larger">كِتَابٌ</span></span> <small>(kitâbũ)</small> («&nbsp;livre, écriture ; pièce écrite&nbsp;»)'
+    >>> render_ar_cf("ar-cf", ["ar-*i*a*ũ", "ar-jnn"], defaultdict(str))
+    '<span style="line-height: 0px;"><span style="font-size:larger">جِنَنٌ</span></span> <small>(jinanũ)</small>'
+    """
+    scheme = arabiser.appliquer(parts[0], parts[1], var=parts[2] if len(parts) > 2 else "")
+    w = arabiser.arabiser(scheme)
+
+    racines_schemes_arabes = racines_arabes.racines_schemes_arabes
+
+    sens = (
+        f"ici, «&nbsp;{data['ici']}&nbsp;»"
+        if data["ici"]
+        else f"«&nbsp;{clean(racines_schemes_arabes[parts[1]][parts[0]][1])}&nbsp;»"
+        if parts[1] in racines_schemes_arabes and parts[0] in racines_schemes_arabes[parts[1]]
+        else ""
+    )
+    sens = f" ({sens})" if sens else ""
+
+    return (
+        f'<span style="line-height: 0px;"><span style="font-size:larger">{w}</span></span>'
+        f" <small>({scheme})</small>"
+        f"{sens}"
+    )
+
+
+def render_ar_mot(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_mot("ar-mot", ["elHasan_"], defaultdict(str))
+    '<span style="line-height: 0px;"><span style="font-size:larger">الحَسَن</span></span> <small>(elHasan_)</small>'
+    """
+    return f'<span style="line-height: 0px;"><span style="font-size:larger">{arabiser.arabiser(parts[0])}</span></span> <small>({parts[0]})</small>'
+
+
+def render_ar_root(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_root("ar-racine/nom", ["ar-ktb"], defaultdict(str))
+    "كتب: relatif à l'action d'écrire, relier"
+    """
+    return f"{arabiser.arabiser(parts[0].split('-')[1])}: {racines_arabes.racines_schemes_arabes[parts[0]]['aa_sens']}"
+
+
+def render_ar_sch(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_sch("ar-sch", ["ar-*â*a*a"], defaultdict(str))
+    'زَارَزَ'
+    """
+    return arabiser.arabiser(arabiser.appliquer(parts[0], parts[1] if len(parts) > 1 else "ar-zrzr"))
+
+
+def render_ar_terme(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_terme("ar-terme", ["mu'ad²ibũ"], defaultdict(str))
+    "مُؤَدِّبٌ (<i>mu'ad²ibũ</i>) /mu.ʔad.di.bun/"
+    """
+    arab = arabiser.arabiser(parts[0])
+    return f"{arab} ({italic(parts[0])}) /{ar_pron.toIPA(arabic=arab)}/"
 
 
 def render_modele_etym(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -1755,6 +1826,11 @@ template_mapping = {
     "abréviation": render_abreviation,
     "acronyme": render_acronyme,
     "agglutination": render_modele_etym,
+    "ar-cf": render_ar_cf,
+    "ar-mot": render_ar_mot,
+    "ar-racine/nom": render_ar_root,
+    "ar-sch": render_ar_sch,
+    "ar-terme": render_ar_terme,
     "antonomase": render_modele_etym,
     "aphérèse": render_apherese,
     "apocope": render_apherese,
@@ -1852,6 +1928,7 @@ template_mapping = {
     "univerbation": render_modele_etym,
     "ws": render_wikisource,
     "zh-lien": render_zh_lien,
+    **dict.fromkeys({"ar-ab", "ar-mo"}, render_ar_ab),
     #
     # Variants
     #
