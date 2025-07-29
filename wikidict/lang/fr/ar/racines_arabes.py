@@ -9014,7 +9014,6 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a*i*a-a": ("(1)", "être noir"),
         "ar-*a*²a*a": ("(2)", "noircir"),
         "ar-*a*â*ũ": ("", "objet noir"),
-        "ar-*i**ân@ũ": ("", "loup"),
         "ar-*u**@ũ": ("", "pied de montagne"),
         "ar-*u**âniy²ũ": ("", "nègre"),
         "ar-*u**ânũ": ("", "Soudan"),
@@ -9031,7 +9030,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-mu*a*²a*@ũ": ("", "brouillon"),
         "ar-mu*a*²a*ũ": ("", "noirci"),
         "ar-ta**î*ũ": ("", "noircissement"),
-    },  # 27
+    },  # 26
     "ar-sWr": {
         "aa_sens": "assaut, rangée",
         "ar-***ũ": ("", ""),
@@ -9333,6 +9332,10 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-tama**a*a": ("", "se convertir, devenir musulman"),
         "ar-u*ay*i*ũ": ("", "artère entre le majeur et l'auriculaire"),
     },  # 42
+    "ar-smW": {
+        "aa_sens": "hauteur, cieux ; nom",
+        "ar-*a*â*iy²ũ": ("", "céleste, du ciel"),
+    },  # 2
     "ar-smd": {
         "aa_sens": "fumier / redresser",
         "ar-***ũ": ("", ""),
@@ -9392,7 +9395,6 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a*i*iy²ũ": ("", "haut, sublime ; homonyme"),
         "ar-*a*²a*a": ("", "nommer"),
         "ar-*a*â*@ũ": ("", "élévation"),
-        "ar-*a*â*iy²ũ": ("", "céleste, du ciel"),
         "ar-*a*â*âtũ": ("", "({{p}}) cieux, toits"),
         "ar-*a*â*ũ": ("", "ciel ; toit"),
         "ar-*ta*a*a": ("", "faire visite à quelqu'un"),
@@ -9404,7 +9406,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-mi**a*@ũ": ("", "guêtre de chasseur"),
         "ar-ta*a*²a*a": ("", "être sublime ; être appelé"),
         "ar-ta*â*a*a": ("", "rivaliser de gloire ; s'élever"),
-    },  # 20
+    },  # 19
     "ar-snw": {
         "aa_sens": "puiser, aridité",
         "ar-**a*²a": ("(9)", ""),
@@ -10368,13 +10370,14 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
     },  # 5
     "ar-zWr": {
         "aa_sens": "éloignement",
+        "ar-**â*²a": ("(11)", "se détourner"),
         "ar-*a*a*ũ": ("", "vice du poitrail"),
         "ar-*a*i*a-a": ("", "être penché"),
         "ar-*i*â*ũ": ("", "corde d'appui"),
         "ar-*â*i*@ũ": ("", "gésier"),
         "ar-*â*u*@ũ": ("", "gésier"),
         "ar-a**a*ũ": ("", "oblique"),
-    },  # 7
+    },  # 8
     "ar-zbb": {
         "aa_sens": "sortir le jus",
         "ar-**a*²a": ("(9)", ""),
@@ -10607,7 +10610,6 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
     "ar-zwr": {
         "aa_sens": "éloignement",
         "ar-**a*²a": ("(9)", "se détourner"),
-        "ar-**â*²a": ("(11)", "se détourner"),
         "ar-*a**@ũ": ("", "distance ; fois"),
         "ar-*a**ũ": ("", "thorax, poitrine"),
         "ar-*a*a*@ũ": ("", "troupeau de chameau ; gésier"),
@@ -10634,7 +10636,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-sta**a*a": ("(10)", "prier de visiter"),
         "ar-ta*a*²a*a": ("(5)", ""),
         "ar-ta*â*a*a": ("(6)", "se faire des visites"),
-    },  # 29
+    },  # 28
     "ar-zyt": {
         "aa_sens": "huile",
         "ar-***ũ": ("", ""),
@@ -10662,5 +10664,5 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a**û*iy²ũ": ("", "d'huile"),
         "ar-*a**û*ũ": ("", "{{p}} oliviers"),
     },  # 6
-}  # 364
+}  # 365
 # END
