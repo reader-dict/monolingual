@@ -288,6 +288,34 @@ def render_aka(tpl: str, parts: list[str], data: defaultdict[str, str], *, word:
     return text
 
 
+def render_alter(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_alter("alt", ["en", "chichling"], defaultdict(str))
+    'chichling'
+    >>> render_alter("alt", ["en", "multilateralize", "", "UK", "Ireland", "Australia", "and", "New Zealand", ""], defaultdict(str), word="multilateralise")
+    'multilateralize (<i>UK, Ireland, Australia and New Zealand</i>)'
+    >>> render_alter("alt", ["en", "multilateralize", "", "UK", "Ireland", "Australia", "New Zealand"], defaultdict(str), word="multilateralise")
+    'multilateralize (<i>UK, Ireland, Australia, New Zealand</i>)'
+    """
+    terms: list[str] = []
+    labels: list[str] = []
+    current_list = terms
+    for part in parts[1:]:
+        if part:
+            current_list.append(part)
+        else:
+            current_list = labels
+
+    if len(labels) > 2 and labels[-2] == "and":
+        labels[-3] = f"{labels[-3]} and {labels[-1]}"
+        labels = labels[:-2]
+
+    text = ", ".join(terms)
+    if labels:
+        text += f" (<i>{', '.join(labels)}</i>)"
+    return text
+
+
 def render_ante2(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_ante2("ante2", ["1702"], defaultdict(str))
@@ -3892,6 +3920,7 @@ template_mapping = {
         },
         render_morphology,
     ),
+    **dict.fromkeys({"alter", "alt"}, render_alter),
     **dict.fromkeys({"ante", "a.", "circa", "c.", "post", "p."}, render_dating),
     **dict.fromkeys({"cap", "U"}, render_cap),
     **dict.fromkeys({"circa2", "post2"}, render_dating_full_and_short),
