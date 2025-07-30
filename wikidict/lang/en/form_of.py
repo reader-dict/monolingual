@@ -127,7 +127,7 @@ form_of_templates = {
     "verb form of": {"value": "inflection of:", "initial-cap": "no"},
 }  # 117
 
-# Aliases (76)
+# Aliases (81)
 form_of_templates["abbr of"] = form_of_templates["abbreviation of"]
 form_of_templates["abbrev of"] = form_of_templates["abbreviation of"]
 form_of_templates["alt case"] = form_of_templates["alternative case form of"]
@@ -159,7 +159,11 @@ form_of_templates["comparative degree of"] = form_of_templates["comparative of"]
 form_of_templates["contr of"] = form_of_templates["contraction of"]
 form_of_templates["dated form"] = form_of_templates["dated form of"]
 form_of_templates["dated sp"] = form_of_templates["dated spelling of"]
+form_of_templates["delib missp"] = form_of_templates["deliberate misspelling of"]
+form_of_templates["delib missp of"] = form_of_templates["deliberate misspelling of"]
 form_of_templates["dim of"] = form_of_templates["diminutive of"]
+form_of_templates["dmissp"] = form_of_templates["deliberate misspelling of"]
+form_of_templates["dmissp of"] = form_of_templates["deliberate misspelling of"]
 form_of_templates["euph form"] = form_of_templates["euphemistic form of"]
 form_of_templates["femeq"] = form_of_templates["female equivalent of"]
 form_of_templates["freq of"] = form_of_templates["frequentative of"]
@@ -169,6 +173,7 @@ form_of_templates["inf form"] = form_of_templates["informal form of"]
 form_of_templates["infl of"] = form_of_templates["inflection of"]
 form_of_templates["init of"] = form_of_templates["initialism of"]
 form_of_templates["missp"] = form_of_templates["misspelling of"]
+form_of_templates["missp of"] = form_of_templates["misspelling of"]
 form_of_templates["nom of"] = form_of_templates["nominalization of"]
 form_of_templates["nstd form"] = form_of_templates["nonstandard form of"]
 form_of_templates["nstd sp"] = form_of_templates["nonstandard spelling of"]
