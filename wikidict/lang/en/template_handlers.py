@@ -2356,6 +2356,8 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     '<i>toto</i>&nbsp;+&nbsp;<i>-alt2</i> (<i>-tr2</i>, “t2”, pos2)'
     >>> render_morphology("suffix", ["en", "", "cide"], defaultdict(str))
     '&nbsp;+&nbsp;<i>-cide</i>'
+    >>> render_morphology("suffix", ["mul", "<i>Mithrax</i>", "ulus"], defaultdict(str))
+    '<i>Mithrax</i>&nbsp;+&nbsp;<i>-ulus</i>'
 
     >>> render_morphology("suffixusex", ["ang", "nama", "naman"], defaultdict(str, {"g1": "m", "t1": "name", "t2": "names"}))
     '<i>nama</i> <i>m</i> (“name”)&nbsp;+&nbsp;<i>-en → naman</i> (“names”)'
@@ -2386,7 +2388,7 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
         return f"{italic(data['2'])}&nbsp;+&nbsp;{italic(data['3'])}"
 
     for idx, part in enumerate(parts):
-        if "<" in part:
+        if "<" in part and ":" in part:
             part, rest = part.split("<", 1)
             kind, value = rest[:-1].split(":", 1)
             data[f"{kind}{idx}"] = value
