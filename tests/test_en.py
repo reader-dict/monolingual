@@ -362,7 +362,8 @@ from wikidict.utils import process_templates
             ["/wəɹd/", "/wɜːd/", "/wɝd/"],
             [],
             [
-                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <b>vrata</b>."
+                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <b>vrata</b>.",
+                "Variant of <i>worth</i> (“to become, turn into, grow, get”), from Middle English <i>worthen</i>, from Old English <i>weorþan</i> (“to turn into, become, grow”), from Proto-West Germanic <i>*werþan</i>, from Proto-Germanic <i>*werþaną</i> (“to turn, turn into, become”). More at worth § Verb.",
             ],
             {
                 "Interjection": [

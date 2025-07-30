@@ -3095,9 +3095,9 @@ def render_pseudo_loan(tpl: str, parts: list[str], data: defaultdict[str, str], 
     text = ""
     lang_code = parts.pop(0)
     lang_src = parts.pop(0)
-    nocap = "nocap" in data
 
     if not data["notext"]:
+        nocap = "nocap" in data
         if lang_code == "ja" and lang_src == "en":
             text += f"{'w' if nocap else 'W'}asei eigo (和製英語; pseudo-anglicism)"
         elif plbs := pseudo_loan_by_source.get(lang_src, ""):
@@ -3154,6 +3154,20 @@ def render_script(tpl: str, parts: list[str], data: defaultdict[str, str], *, wo
     'Cypro-Minoan'
     """
     return scripts[parts[0]]
+
+
+def render_section_link(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_section_link("section link", ["w:Colombo#Etymology"], defaultdict(str))
+    'Colombo § Etymology (on Wikipedia)'
+    >>> render_section_link("section link", ["Mississippi#Etymology 2"], defaultdict(str))
+    'Mississippi § Etymology 2'
+    """
+    on_wikipedia = parts[0].startswith("w:")
+    text = parts[0].removeprefix("w:").replace("#", " § ")
+    if on_wikipedia:
+        text += " (on Wikipedia)"
+    return text
 
 
 def render_semantic_shift(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -3946,6 +3960,7 @@ template_mapping = {
     **dict.fromkeys({"pseudo-acronym of", "pseudo-acronym"}, render_pseudo_acronym_of),
     **dict.fromkeys({"pseudo-loan", "pseudoloan", "pl"}, render_pseudo_loan),
     **dict.fromkeys({"reduplication of", "reduplication", "redup", "rdp"}, render_reduplication),
+    **dict.fromkeys({"section link", "format link"}, render_section_link),
     **dict.fromkeys({"SI-unit-abb", "SI-unit-abbnp"}, render_si_unit_abb),
     **dict.fromkeys({"SI-unit", "SI-unit-np"}, render_si_unit),
     **dict.fromkeys({"semantic shift", "ss"}, render_semantic_shift),
