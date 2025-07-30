@@ -2287,6 +2287,8 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     'New Latin <i>dys-</i> (“difficult, impaired, abnormal, bad”)&nbsp;+&nbsp;Latin <i>schēma</i> <i>f or n</i> (“shape, form”)'
     >>> render_morphology("aff", ["en", "'gram<t:Instagram>", "-er<id:occupation>"], defaultdict(str))
     "<i>'gram</i> (“Instagram”) and <i>-er</i>"
+    >>> render_morphology("aff", ["mul", "Scarabaeus<g:m>", "la:-olus<g:m><pos:diminutive suffix>"], defaultdict(str), word="Scarabaeolus")
+    '<i>Scarabaeus</i> <i>m</i> and Latin <i>-olus</i> <i>m</i> (diminutive suffix)'
 
     >>> render_morphology("blend", ["he", "תַּשְׁבֵּץ", "חֵץ"], defaultdict(str, {"tr1":"tashbéts", "t1":"crossword", "t2":"arrow", "tr2":"chets"}))
     'Blend of <i>תַּשְׁבֵּץ</i> (<i>tashbéts</i>, “crossword”)&nbsp;+&nbsp;<i>חֵץ</i> (<i>chets</i>, “arrow”)'
@@ -2387,12 +2389,12 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     if not parts:
         return f"{italic(data['2'])}&nbsp;+&nbsp;{italic(data['3'])}"
 
+    regex = re.compile(r"<(\w+):([^>]+)>")
     for idx, part in enumerate(parts):
-        if "<" in part and ":" in part:
-            part, rest = part.split("<", 1)
-            kind, value = rest[:-1].split(":", 1)
-            data[f"{kind}{idx}"] = value
-            parts[idx] = part
+        if specials := regex.findall(part):
+            for kind, value in specials:
+                data[f"{kind}{idx}"] = value
+            parts[idx] = part[: regex.search(part).start()]  # type: ignore[union-attr]
 
     compound = [
         "af",
