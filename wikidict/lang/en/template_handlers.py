@@ -618,6 +618,47 @@ def render_contraction(tpl: str, parts: list[str], data: defaultdict[str, str], 
     return misc_variant("contraction", tpl, parts, data, word=word)
 
 
+def render_descendant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_descendant("desc", ["en", "peace"], defaultdict(str, {"bor": "1"}))
+    'English: peace'
+    >>> render_descendant("desc", ["en", "-"], defaultdict(str, {"bor": "1"}))
+    'English:'
+    >>> render_descendant("desc", ["en", "peace"], defaultdict(str, {"clq": "1"}))
+    'English: peace (<i>calque</i>)'
+    >>> render_descendant("desc", ["gl", "esmiuzar"], defaultdict(str, {"der": "1"}))
+    'Galician: esmiuzar'
+    >>> render_descendant("desc", ["sh", "бу̀ва"], defaultdict(str, {"sclb": "1"}))
+    'Serbo-Croatian script: бу̀ва'
+    >>> render_descendant("desc", ["gl", "esmiuzar"], defaultdict(str, {"nolb": "1"}))
+    'esmiuzar'
+    >>> render_descendant("desc", ["grc", "ἄπιος"], defaultdict(str, {"t": "pear tree"}))
+    'Ancient Greek: ἄπιος (“pear tree”)'
+    """
+    lang = parts.pop(0)
+    text = ""
+    if not data["nolb"]:
+        text += f"{langs[lang]}"
+        if data["sclb"]:
+            text += " script"
+        text += ": "
+    if parts[0] != "-":
+        text += parts[0]
+
+    more: list[str] = []
+    if trans := transliterate(lang, parts[0]):
+        more.append(trans)
+    if t := data["t"]:
+        more.append(f"“{t}”")
+    if more:
+        text += f" ({', '.join(more)})"
+
+    if data["clq"]:
+        text += " (<i>calque</i>)"
+
+    return text.strip()
+
+
 def render_lang_def(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     def ordinal_to_word(num: str) -> str:
         return str(num2words(num, lang="en", to="ordinal"))
@@ -3942,6 +3983,7 @@ template_mapping = {
     **dict.fromkeys({"codepoint", "unichar"}, render_codepoint),
     **dict.fromkeys({"coinage", "coined", "coin"}, render_coinage),
     **dict.fromkeys({"contraction", "contr"}, render_contraction),
+    **dict.fromkeys({"descendant", "desc"}, render_descendant),
     **dict.fromkeys({"el-UK-US", "l-UK-US"}, render_el_uk_us),
     **dict.fromkeys(form_of_templates.keys(), render_form_of_t),
     **dict.fromkeys({"filter-avoidance spelling of", "fa sp"}, render_fa_sp),
