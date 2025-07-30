@@ -4,6 +4,7 @@ import math
 import re
 import unicodedata
 from collections import defaultdict
+from collections.abc import Iterator
 from typing import TypedDict
 
 from num2words import num2words
@@ -493,6 +494,310 @@ def render_century(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         phrase = f"from {ordinal(parts[0])} c."
 
     return small(f"[{phrase}]")
+
+
+def render_chemical_formula(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_chemical_formula("chemf", [r"W(CO)3(PiPr3)2(\\h{2}H2)"], defaultdict(str))
+    'W(CO)<sub>3</sub>(PiPr<sub>3</sub>)<sub>2</sub>(η<sup>2</sup>-H<sub>2</sub>)'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Module:chemical_formula&oldid=78845668
+    from html import unescape
+
+    am = {
+        "H": "Hydrogen",
+        "He": "Helium",
+        "Li": "Lithium",
+        "Be": "Beryllium",
+        "B": "Boron",
+        "C": "Carbon",
+        "N": "Nitrogen",
+        "O": "Oxygen",
+        "F": "Fluorine",
+        "Ne": "Neon",
+        "Na": "Sodium",
+        "Mg": "Magnesium",
+        "Al": "Aluminium",
+        "Si": "Silicon",
+        "P": "Phosphorus",
+        "S": "Sulfur",
+        "Cl": "Chlorine",
+        "Ar": "Argon",
+        "K": "Potassium",
+        "Ca": "Calcium",
+        "Sc": "Scandium",
+        "Ti": "Titanium",
+        "V": "Vanadium",
+        "Cr": "Chromium",
+        "Mn": "Manganese",
+        "Fe": "Iron",
+        "Co": "Cobalt",
+        "Ni": "Nickel",
+        "Cu": "Copper",
+        "Zn": "Zinc",
+        "Ga": "Gallium",
+        "Ge": "Germanium",
+        "As": "Arsenic",
+        "Se": "Selenium",
+        "Br": "Bromine",
+        "Kr": "Krypton",
+        "Rb": "Rubidium",
+        "Sr": "Strontium",
+        "Y": "Yttrium",
+        "Zr": "Zirconium",
+        "Nb": "Niobium",
+        "Mo": "Molybdenum",
+        "Tc": "Technetium",
+        "Ru": "Ruthenium",
+        "Rh": "Rhodium",
+        "Pd": "Palladium",
+        "Ag": "Silver",
+        "Cd": "Cadmium",
+        "In": "Indium",
+        "Sn": "Tin",
+        "Sb": "Antimony",
+        "Te": "Tellurium",
+        "I": "Iodine",
+        "Xe": "Xenon",
+        "Cs": "Caesium",
+        "Ba": "Barium",
+        "La": "Lanthanum",
+        "Ce": "Cerium",
+        "Pr": "Praseodymium",
+        "Nd": "Neodymium",
+        "Pm": "Promethium",
+        "Sm": "Samarium",
+        "Eu": "Europium",
+        "Gd": "Gadolinium",
+        "Tb": "Terbium",
+        "Dy": "Dysprosium",
+        "Ho": "Holmium",
+        "Er": "Erbium",
+        "Tm": "Thulium",
+        "Yb": "Ytterbium",
+        "Lu": "Lutetium",
+        "Hf": "Hafnium",
+        "Ta": "Tantalum",
+        "W": "Tungsten",
+        "Re": "Rhenium",
+        "Os": "Osmium",
+        "Ir": "Iridium",
+        "Pt": "Platinum",
+        "Au": "Gold",
+        "Hg": "Mercury (element)",
+        "Tl": "Thallium",
+        "Pb": "Lead",
+        "Bi": "Bismuth",
+        "Po": "Polonium",
+        "At": "Astatine",
+        "Rn": "Radon",
+        "Fr": "Francium",
+        "Ra": "Radium",
+        "Ac": "Actinium",
+        "Th": "Thorium",
+        "Pa": "Protactinium",
+        "U": "Uranium",
+        "Np": "Neptunium",
+        "Pu": "Plutonium",
+        "Am": "Americium",
+        "Cm": "Curium",
+        "Bk": "Berkelium",
+        "Cf": "Californium",
+        "Es": "Einsteinium",
+        "Fm": "Fermium",
+        "Md": "Mendelevium",
+        "No": "Nobelium",
+        "Lr": "Lawrencium",
+        "Rf": "Rutherfordium",
+        "Db": "Dubnium",
+        "Sg": "Seaborgium",
+        "Bh": "Bohrium",
+        "Hs": "Hassium",
+        "Mt": "Meitnerium",
+        "Ds": "Darmstadtium",
+        "Rg": "Roentgenium",
+        "Cp": "Copernicium",
+        "Nh": "Nihonium",
+        "Fl": "Flerovium",
+        "Mc": "Moscovium",
+        "Lv": "Livermorium",
+        "Ts": "Tennessine",
+        "Og": "Oganesson",
+        "Bn": "Benzyl group",
+        "Bz": "Benzoyl group",
+        "D": "Deuterium",
+        "Et": "Ethyl group",
+        "Ln": "Lanthanide",
+        "Nu": "Nucleophile",
+        "Ph": "Phenyl group",
+        "R": "Substituent",
+        "T": "Tritium",
+        "Tf": "Trifluoromethylsulfonyl group",
+        "X": "Halogen",
+    }
+
+    # Token types
+    T_ELEM = 0
+    T_NUM = 1
+    T_OPEN = 2
+    T_CLOSE = 3
+    T_PM_CHARGE = 4
+    T_WATER = 6
+    T_CRYSTAL = 9
+    T_CHARGE = 8
+    T_SUF_CHARGE = 10
+    T_SUF_CHARGE2 = 12
+    T_SPECIAL = 14
+    T_SPECIAL2 = 16
+    T_ARROW_R = 17
+    T_ARROW_EQ = 18
+    T_UNDERSCORE = 19
+    T_CARET = 20
+    T_LINKOPEN = 21
+    T_NOCHANGE = 30
+
+    def su(up: str, down: str) -> str:
+        if not up:
+            return f"<sub>{down}</sub>"
+        return f"{up}{down}" if down else f"<sup>{up}</sup>"
+
+    def item(f: str) -> Iterator[tuple[int, str]]:
+        i = 0
+        n = len(f)
+
+        while i < n:
+            t: int | None = None
+            x: str | None = None
+
+            if i == 0 and re.match(r"[0-9]", f[i:]):
+                m = re.match(r"[\d.]+", f[i:])
+                if m:
+                    x = m.group()
+                    t = T_NOCHANGE
+                    i += len(x)
+                    yield t, x
+                    continue
+
+            # Try matching various tokens in order of specificity
+            for regex, _t in (
+                (r"^\s+[\d.]+", T_NOCHANGE),
+                (r"^\s[+]", T_NOCHANGE),
+                (r"^&#[\w\d]+;", T_NOCHANGE),
+                (r"^<->", T_ARROW_EQ),
+                (r"^->", T_ARROW_R),
+                (r"^[A-Z][a-z]*", T_ELEM),
+                (r"^\d+[+-]", T_SUF_CHARGE),
+                (r"^\d+\(\d*[+-]\)", T_SUF_CHARGE2),
+                (r"^\(\d*[+-]\)", T_CHARGE),
+                (r"^[\d.]+", T_NUM),
+                (r"^[\(\{\[]", T_OPEN),
+                (r"^[\)\}\]]", T_CLOSE),
+                (r"^[+-]", T_PM_CHARGE),
+                (r"^\*[\d.]*H2O", T_WATER),
+                (r"^\*[\d.]*", T_CRYSTAL),
+                (r"^[\\].\{\d+\}", T_SPECIAL2),
+                (r"^[\\].", T_SPECIAL),
+                (r"^_{[^}]*}", T_UNDERSCORE),
+                (r"^\^{[^}]*}", T_CARET),
+                (r"^.", T_NOCHANGE),
+            ):
+                m = re.match(regex, f[i:])
+                if m:
+                    x = m.group()
+                    t = _t
+                    i += len(x)
+                    yield t, x
+                    break
+        i += 1
+
+    f = unescape(parts[0]).replace("–", "-").replace("−", "-")
+    formula: str = ""
+    seen: dict[str, bool] = {}
+
+    for t, x in item(f):
+        if t == T_ELEM:
+            if x not in am or seen.get(x):
+                formula += x
+            else:
+                formula += x
+                seen[x] = True
+        elif t == T_NUM:
+            formula += su("", x)
+        elif t == T_LINKOPEN:
+            formula += x
+        elif t == T_OPEN:
+            formula += x
+        elif t == T_CLOSE:
+            formula += x
+        elif t == T_PM_CHARGE:
+            formula += su(x.replace("-", "−"), "")
+        elif t == T_SUF_CHARGE:
+            m1 = re.search(r"[+-]", x)
+            m2 = re.search(r"\d+", x)
+            if m1 and m2:
+                formula += su(m1.group().replace("-", "−"), m2.group())
+        elif t == T_SUF_CHARGE2:
+            m1 = re.search(r"\(\d*[+-]", x)
+            m2 = re.search(r"\d+", x)
+            if m1 and m2:
+                formula += su(m1.group().replace("-", "−")[1:], m2.group())
+        elif t == T_CHARGE:
+            m1 = re.search(r"\d+", x)
+            formula += "<sup>"
+            if m1:
+                formula += m1.group()
+            m2 = re.search(r"[+-]", x)
+            if m2:
+                formula += m2.group().replace("-", "−")
+            formula += "</sup>"
+        elif t == T_CRYSTAL:
+            formula += "&middot;" + x.lstrip("*")
+        elif t == T_SPECIAL:
+            parameter = x[1]
+            if parameter == "s":
+                formula += "−"
+            elif parameter == "d":
+                formula += "="
+            elif parameter == "t":
+                formula += "≡"
+            elif parameter == "q":
+                formula += "≣"
+            elif parameter == "h":
+                formula += "η"
+            elif parameter == "*":
+                formula += "*"
+            elif parameter == "-":
+                formula += "-"
+            elif parameter == "\\":
+                formula += "\\"
+            elif parameter == "'":
+                formula += "&#39;"
+        elif t == T_SPECIAL2:
+            parameter = x[1]
+            m = re.search(r"\d+", x)
+            if parameter == "h" and m:
+                formula += f"η<sup>{m.group()}</sup>-"
+            elif parameter == "m" and m:
+                formula += f"μ<sub>{m.group()}</sub>-"
+        elif t == T_WATER:
+            m = re.match(r"^\*[\d.]", x)
+            mnum = re.search(r"[\d.]+", x)
+            if m and mnum:
+                formula += f"&middot;{mnum.group()}H<sub>2</sub>O"
+            else:
+                formula += "&middot;" + "H<sub>2</sub>O"
+        elif t == T_UNDERSCORE:
+            formula += su("", x.replace("-", "−")[2:-1])
+        elif t == T_CARET:
+            formula += su(x.replace("-", "−")[2:-1], "")
+        elif t == T_ARROW_R:
+            formula += " → "
+        elif t == T_ARROW_EQ:
+            formula += " ⇌ "
+        elif t == T_NOCHANGE:
+            formula += x
+
+    return formula
 
 
 def render_chemical_symbol(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -3978,6 +4283,7 @@ template_mapping = {
     **dict.fromkeys({"alter", "alt"}, render_alter),
     **dict.fromkeys({"ante", "a.", "circa", "c.", "post", "p."}, render_dating),
     **dict.fromkeys({"cap", "U"}, render_cap),
+    **dict.fromkeys({"chemical formula", "chemf"}, render_chemical_formula),
     **dict.fromkeys({"circa2", "post2"}, render_dating_full_and_short),
     **dict.fromkeys({"clipping", "clip"}, render_clipping),
     **dict.fromkeys({"codepoint", "unichar"}, render_codepoint),
