@@ -517,23 +517,6 @@ def last_template_handler(
         >>> last_template_handler(["der", "sa", "el","बलि-द्वीप", "tr=bali-dvīpa", "tnl=νησιά προσφορών"], "el")
         '<i>σανσκριτική</i> बलि-द्वीप (bali-dvīpa, νησιά προσφορών)'
 
-        >>> last_template_handler(["γρ", "πολυπαλλόμενο σύμφωνο", "συνών"], "el")
-        '<i>συνώνυμο του</i> <b>πολυπαλλόμενο σύμφωνο</b>'
-        >>> last_template_handler(["γρ", "τραπεζομάντιλο"], "el")
-        '<i>άλλη γραφή του</i> <b>τραπεζομάντιλο</b>'
-        >>> last_template_handler(["γρ", "ελαιόδενδρο", "μορφή"], "el")
-        '<i>άλλη μορφή του</i> <b>ελαιόδενδρο</b>'
-        >>> last_template_handler(["γρ", "ελαιόδενδρο", "πολυ", "εμφ=ελαιόδενδρο(ν)"], "el")
-        '<i>πολυτονική γραφή του</i> <b>ελαιόδενδρο(ν)</b>'
-        >>> last_template_handler(["γρ", "ποιέω", "ασυν", "grc"], "el")
-        '<i>ασυναίρετη μορφή του</i> <b>ποιέω</b>'
-        >>> last_template_handler(["γρ", "ποιέω", "ασυν", "grc", "εμφ=ποι-έω"], "el")
-        '<i>ασυναίρετη μορφή του</i> <b>ποι-έω</b>'
-        >>> last_template_handler(["γρ", "colour", "", "en"], "el")
-        '<i>άλλη γραφή του</i> <b>colour</b>'
-        >>> last_template_handler(["γρ", "colour", "freestyle text", "en"], "el")
-        '<i>freestyle text</i> <b>colour</b>'
-
         >>> last_template_handler(["πρόσφ", "μαλλί", "-ης"], "el")
         'μαλλί + -ης'
         >>> last_template_handler(["πρόσφ", "μαλλί", ".1=μαλλ(ί)", "-ης"], "el")
@@ -900,25 +883,6 @@ def last_template_handler(
         "μετων": "μετωνυμία",
     }.get(tpl, ""):
         return italic(text) if data["0"] else term(text)
-
-    if tpl == "γρ":
-        desc = parts[1] if len(parts) > 1 else ""
-        desc = {
-            "": "άλλη γραφή του",
-            "απλοπ": "απλοποιημένη γραφή του",
-            "μη απλοπ": "απλοποιημένη γραφή του",
-            "ασυν": "ασυναίρετη μορφή του",
-            "ετυμ": "ετυμολογική γραφή του",
-            "μονο": "μονοτονική γραφή του",
-            "μορφή": "άλλη μορφή του",
-            "πολυ": "πολυτονική γραφή του",
-            "πολ": "πολυτονική γραφή του",
-            "παρωχ": "παρωχημένη γραφή του",
-            "σνρ": "συνηρημένη μορφή του",
-            "συνων": "συνώνυμο του",
-            "συνών": "συνώνυμο του",
-        }.get(desc, desc)
-        return f"{italic(desc)} {strong(data['εμφ'] or parts[0])}"
 
     if tpl in {"πρόσφ", "προσφ"}:
         words = [data[f".{idx}"] or part for idx, part in enumerate(parts, 1)]
