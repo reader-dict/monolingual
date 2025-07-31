@@ -16,11 +16,13 @@ transliterations = {
 transliterations["ady"] = transliterations["ar"]
 transliterations["av"] = transliterations["ar"]
 transliterations["ce"] = transliterations["ar"]
-transliterations["inh"] = transliterations["ar"]
-transliterations["kbd"] = transliterations["ar"]
 transliterations["crp-rsn"] = transliterations["ru"]
 transliterations["crp-slb"] = transliterations["ru"]
 transliterations["crp-tpr"] = transliterations["ru"]
+transliterations["inh"] = transliterations["ar"]
+transliterations["kbd"] = transliterations["ar"]
+transliterations["kfr"] = transliterations["gu"]
+transliterations["vgr"] = transliterations["gu"]
 
 
 def transliterate(locale: str, text: str) -> str:

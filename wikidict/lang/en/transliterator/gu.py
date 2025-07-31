@@ -173,9 +173,71 @@ def tr(text: str) -> str:
 
 def transliterate(text: str, locale: str = "") -> str:
     """
-    Test cases: https://en.wiktionary.org/w/index.php?title=Module:ar-translit/testcases&oldid=78710147
+    Test cases: https://en.wiktionary.org/w/index.php?title=Module:gu-translit/testcases&oldid=50056094
 
-    >>> transliterate("અમ્રાઈવાડી")
-    'amrāīvāḍī'
+    >>> transliterate("રુગ્ણાલય")
+    'rugṇālya'
+    >>> transliterate("અતિવલય")
+    'ativalya'
+    >>> transliterate("ક્ષમા")
+    'kṣamā'
+    >>> transliterate("ગોળો")
+    'goḷo'
+    >>> transliterate("ગુજરાતી")
+    'gujrātī'
+    >>> transliterate("બત્તી")
+    'battī'
+    >>> transliterate("ઉંદર")
+    'undar'
+    >>> transliterate("એરું")
+    'erũ'
+    >>> transliterate("હ્યત઼્")
+    'hyat̰'
+    >>> transliterate("સંપત્તિ")
+    'sampatti'
+    >>> transliterate("જિંદગી")
+    'jindgī'
+    >>> transliterate("સંન્યાસી")
+    'sannyāsī'
+    >>> transliterate("પૂછવું")
+    'pūchvũ'
+    >>> transliterate("છોકરું")
+    'chokrũ'
+    >>> transliterate("ઊંચાં")
+    'ū̃cā̃'
+    >>> transliterate("ખડબચડું")
+    'khaḍbacḍũ'
+    >>> transliterate("સમજાવવું")
+    'samjāvvũ'
+    >>> transliterate("વાંકું")
+    'vā̃kũ'
+    >>> transliterate("બળજબરી")
+    'baḷjabrī'
+    >>> transliterate("વર્તવું")
+    'vartavũ'
+    >>> transliterate("એંસી")
+    'ẽsī'
+    >>> transliterate("ઇચ્છવું")
+    'icchavũ'
+    >>> transliterate("વિદુગ્ધધુ")
+    'vidugdhadhu'
+    >>> transliterate("આંતર")
+    'āntar'
+    >>> transliterate("અતિઘણું")
+    'atighṇũ'
+    >>> transliterate("ઉદાહરણ")
+    'udāhraṇ'
+    >>> transliterate("અતિશયોક્તિ")
+    'atiśyokti'
+    >>> transliterate("કેળવણી")
+    'keḷvaṇī'
+    >>> transliterate("ચકચકિત")
+    'cakackit'
+    >>> transliterate("દસ્તાવેજીકરણ")
+    'dastāvejīkraṇ'
+    >>> transliterate("જાળવવું")
+    'jāḷvavũ'
+    >>> transliterate("ગઈ")
+    'gaī'
     """
     return tr(text)
