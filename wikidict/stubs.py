@@ -9,7 +9,7 @@ Parts = tuple[str, ...]
 Variants = dict[str, list[str]]
 
 
-@dataclass
+@dataclass(slots=True)
 class Word:
     pronunciations: list[str]
     genders: list[str]
