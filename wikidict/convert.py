@@ -271,7 +271,7 @@ class BaseFormat:
                     variants = [
                         variant.lower().strip()
                         for variant in variants
-                        if variant not in {word, current_word} and guess_prefix(variant) == current_word_group_prefix
+                        if guess_prefix(variant) == current_word_group_prefix
                     ]
 
                 if len(variants := list(set(variants))) > MAX_VARIANTS:
