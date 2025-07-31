@@ -682,9 +682,9 @@ def clean(text: str) -> str:
 
     # HTML
     # Source: https://github.com/5j9/wikitextparser/blob/b24033b/wikitextparser/_wikitext.py#L83
-    text = sub2(r"'''(\0*+[^'\n]++.*?)(?:''')", "<b>\\1</b>", text)
+    text = sub2(r"'''(\0*+[^'\n]++.*?)(?:''')", r"<b>\1</b>", text)
     # ''foo'' → <i>foo></i>
-    text = sub2(r"''(\0*+[^'\n]++.*?)(?:'')", "<i>\\1</i>", text)
+    text = sub2(r"''(\0*+[^'\n]++.*?)(?:'')", r"<i>\1</i>", text)
     # (outside of {{code|...}}) <br> / <br /> → ''
     text = sub(r"(?<!code\|html\|)<br[^>]*/?>", "", text)
 
@@ -697,13 +697,13 @@ def clean(text: str) -> str:
     text = sub(r"<gallery>[\s\S]*?</gallery>", "", text)
 
     # Local links
-    text = sub(r"\[\[([^||:\]]+)\]\]", "\\1", text)  # [[a]] → a
+    text = sub(r"\[\[([^|:\]]+)\]\]", r"\1", text)  # [[a]] → a
 
     # Links
     # Internal: [[{{a|b}}]] → {{a|b}}
-    text = sub(r"\[\[({{[^}]+}})\]\]", "\\1", text)
+    text = sub(r"\[\[({{[^}]+}})\]\]", r"\1", text)
     # Internal: [[a|b]] → b
-    text = sub(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]", "\\1", text)
+    text = sub(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]", r"\1", text)
     # External: [[http://example.com Some text]] → ''
     text = sub(r"\[\[https?://[^\s]+\s[^\]]+\]\]", "", text)
     # External: [http://example.com] → ''
@@ -744,9 +744,9 @@ def clean(text: str) -> str:
     text = sub(r"\s{1,}\.", ".", text)
 
     # <<bar>> → foo
-    text = sub(r"<<([^/>]+)>>", "\\1", text)
+    text = sub(r"<<([^/>]+)>>", r"\1", text)
     # <<foo/bar>> → bar
-    # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", "\\1", text)
+    # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", text)
 
     # Convert single "< ", and " >" to HTML quotes
     text = text.replace("< ", "&lt; ").replace(" >", " &gt;")
