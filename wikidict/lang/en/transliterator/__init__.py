@@ -3,6 +3,7 @@ Transliterator used across multiple templates.
 """
 
 from .ar import transliterate as transliterate_ar
+from .bn import transliterate as transliterate_bn
 from .fa import transliterate as transliterate_fa
 from .gu import transliterate as transliterate_gu
 from .mr import transliterate as transliterate_mr
@@ -10,6 +11,7 @@ from .ru import transliterate as transliterate_ru
 
 transliterations = {
     "ar": transliterate_ar,
+    "bn": transliterate_bn,
     "fa": transliterate_fa,
     "gu": transliterate_gu,
     "mr": transliterate_mr,
@@ -36,6 +38,8 @@ def transliterate(locale: str, text: str) -> str:
 
     >>> transliterate("ar", "عُظْمَى")
     'ʕuẓmā'
+    >>> transliterate("bn", "চাঁদ্নি চক")
+    'cãdni cok'
     >>> transliterate("fa", "سَرْاَنْجَام")
     'sar-anjām'
     >>> transliterate("gu", "અમ્રાઈવાડી")
