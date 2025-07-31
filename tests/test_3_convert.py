@@ -473,22 +473,12 @@ def test_df_format(tmp_path: Path) -> None:
         output.read_text(encoding="utf-8")
         == r"""@ estre
 : \ɛtʁ\
+& suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol></html>
 
 @ être
 : \ɛtʁ\ <i>m</i>.
-<html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol></html>
-
-@ suis
-: <b>estre</b> \ɛtʁ\
-<html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol></html>
-
-@ suis
-: <b>suivre</b> \sɥivʁ\
-<html><p><b>Verbe</b></p><ol><li>Définition de 'suivre'.</li></ol></html>
-
-@ suis
-: <b>être</b> \ɛtʁ\ <i>m</i>.
+& suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol></html>
 
 @ suivre
@@ -509,13 +499,13 @@ def test_df_format_variants_different_prefix(tmp_path: Path) -> None:
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count("@ suis") == 3
-    assert ": <b>estre</b>" in suis
-    assert ": <b>suivre</b>" in suis
-    assert ": <b>être</b>" in suis
-    assert "&" not in estre  # Because group prefixes are differents
+    assert "@ suis" not in suis
+    assert ": <b>estre</b>" not in suis
+    assert ": <b>suivre</b>" not in suis
+    assert ": <b>être</b>" not in suis
+    assert estre.count("&") == 1 and "& suis" in estre
     assert "&" not in suis  # Because variant == word
-    assert "&" not in être  # Because group prefixes are differents
+    assert être.count("&") == 1 and "& suis" in être
     assert "& suis" in suivre  # Because group prefixes are the same
 
 

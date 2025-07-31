@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import json
 import logging
 import multiprocessing
@@ -13,7 +14,7 @@ from datetime import timedelta
 from functools import partial
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import wikitextparser as wtp
 import wikitextparser._spans
@@ -668,8 +669,15 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
 def save(output: Path, words: Words) -> None:
     """Persist data."""
+
+    class EnhancedJSONEncoder(json.JSONEncoder):
+        def default(self, o: object) -> Any:
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)  # type: ignore[arg-type]
+            return super().default(o)
+
     with output.open(mode="w", encoding="utf-8") as fh:
-        json.dump(words, fh, ensure_ascii=False, indent=4, sort_keys=True)
+        json.dump(words, fh, cls=EnhancedJSONEncoder, ensure_ascii=False, indent=4, sort_keys=True)
     log.info("Saved %s words into %s", f"{len(words):,}", output)
 
 

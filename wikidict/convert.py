@@ -220,7 +220,11 @@ class BaseFormat:
         )
 
     def handle_word(self, word: str, words: Words) -> Generator[str]:
-        details = deepcopy(words[word])
+        # Prevent storing variants definitions in DictFile & co
+        if (chosen_word := words[word]).is_variant and not isinstance(self, KoboFormat):
+            return
+
+        details = deepcopy(chosen_word)
         current_words = {word: details}
         guess_prefix = utils.guess_prefix
         word_group_prefix = guess_prefix(word)
@@ -253,21 +257,22 @@ class BaseFormat:
                     ):
                         variants.extend(new_variants)
 
-                # Filter out variants:
-                #   - variants being identical to the word (it happens when altering `current_words`, cf [***])
-                #   - with a different prefix that their word
-                current_word_group_prefix = guess_prefix(current_word)
-                variants = [
-                    variant
-                    for variant in variants
-                    if variant != word
-                    and variant != current_word
-                    and guess_prefix(variant) == current_word_group_prefix
-                ]
+                # Filter out variants being identical to the word (it happens when altering `current_words`, cf [***])
+                variants = [variant for variant in variants if variant not in {word, current_word}]
+
+                # Nullify variant words to prevent polluting the dictionary with duplicates
+                for variant in variants:
+                    words[variant].is_variant = True
 
                 if isinstance(self, KoboFormat):
-                    # Variant must be normalized by trimming whitespace and lowercasing it
-                    variants = [variant.lower().strip() for variant in variants]
+                    # Filter out variants with a different prefix that their word.
+                    # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
+                    current_word_group_prefix = guess_prefix(current_word)
+                    variants = [
+                        variant.lower().strip()
+                        for variant in variants
+                        if variant not in {word, current_word} and guess_prefix(variant) == current_word_group_prefix
+                    ]
 
                 if len(variants := list(set(variants))) > MAX_VARIANTS:
                     log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
@@ -726,7 +731,7 @@ def load(file: Path) -> Words:
     """Load the big JSON file containing all words and their details."""
     log.info("Loading %s ...", file)
     with file.open(encoding="utf-8") as fh:
-        words: Words = {key: Word(*values) for key, values in json.load(fh).items()}
+        words: Words = {key: Word(**values) for key, values in json.load(fh).items()}
     log.info("Loaded %s words from %s", f"{len(words):,}", file)
     return words
 
