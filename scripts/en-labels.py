@@ -60,6 +60,8 @@ def clean_display(display: str) -> str:
         display = display.replace("]]", "")
         display = display.replace("[[w:", "")
         display = display.replace("[[", "")
+    if "''" in display:
+        display = re.sub(r"''([^']+)''", r"<i>\1</i>", display)
     return display
 
 
