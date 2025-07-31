@@ -1,5 +1,5 @@
 """
-Python conversion of the ar-translit module.
+Python conversion of the gu-translit module.
 Link:
   - https://en.wiktionary.org/wiki/Module:gu-translit
 
