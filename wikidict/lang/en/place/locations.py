@@ -3,7 +3,7 @@ Source: https://en.wiktionary.org/w/index.php?title=Module:place/locations&oldid
 """
 
 import re
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from typing import Any
 
 
@@ -4864,3 +4864,222 @@ LOCATIONS = (
     VIETNAM_CITIES_GROUP,
     MISC_CITIES_GROUP,
 )
+
+
+def list_or_element_contains(list_or_element: Any, item: Any) -> bool:
+    if isinstance(list_or_element, list):
+        return item in list_or_element
+    return list_or_element == item
+
+
+def key_to_placename(group: dict[str, Any], key: str) -> tuple[str, str]:
+    ktp = group.get("key_to_placename")
+    if ktp is False:
+        return key, key
+    if ktp:
+        full_placename, elliptical_placename = ktp(key)
+        return full_placename, elliptical_placename
+    key = key.split(",")[0]
+    return key, key
+
+
+def placename_to_key(group: dict[str, Any], placename: str) -> str:
+    ptk = group.get("placename_to_key")
+    if ptk is False:
+        return placename
+    if ptk:
+        return ptk(placename)
+    if group.get("default_placetype") == "city":
+        return placename
+    defcon = group.get("default_container")
+    if not defcon:
+        return placename
+    if isinstance(defcon, str):
+        return f"{placename}, {defcon}"
+    if isinstance(defcon, dict) and defcon.get("placetype") in {"country", "constituent country"}:
+        return f"{placename}, {defcon['key']}"
+    return placename
+
+
+def initialize_spec(group: dict[str, Any], key: str, spec: dict[str, Any]) -> None:
+    if spec.get("initialized"):
+        return
+    container = spec.get("container")
+    containers = None
+    container_from_default = False
+    if not container:
+        container = group.get("default_container")
+        container_from_default = True
+    if container:
+        if isinstance(container, str) or (isinstance(container, dict) and container.get("key")):
+            container = [container]
+        containers = []
+        for cont in container:
+            if isinstance(cont, str):
+                if group.get("canonicalize_key_container") and not container_from_default:
+                    cont = group["canonicalize_key_container"](cont)
+                else:
+                    cont = {"key": cont, "placetype": "country"}
+            containers.append(cont)
+    spec["containers"] = containers
+    spec.pop("container", None)
+
+    def value_with_default(val, default_val):
+        return default_val if val is None else val
+
+    def set_or_default(prop: str):
+        spec[prop] = value_with_default(spec.get(prop), group.get(f"default_{prop}"))
+
+    set_or_default("placetype")
+    set_or_default("divs")
+    spec["addl_divs"] = group.get("addl_divs")
+    for prop in [
+        "keydesc",
+        "fulldesc",
+        "addl_parents",
+        "overriding_bare_label_parents",
+        "bare_category_parent_type",
+        "wp",
+        "wpcat",
+        "commonscat",
+        "british_spelling",
+        "the",
+        "no_container_cat",
+        "no_container_parent",
+        "no_generic_place_cat",
+        "no_check_holonym_mismatch",
+        "no_auto_augment_container",
+        "no_include_container_in_desc",
+        "is_city",
+        "is_former_place",
+    ]:
+        set_or_default(prop)
+    spec["is_city"] = value_with_default(spec.get("is_city"), group.get("default_placetype") == "city")
+    spec["initialized"] = True
+
+
+def find_matching_key_in_group(
+    group: dict[str, Any], placetypes: Any, key: str, alias_resolution: str
+) -> tuple[str, dict[str, Any]] | None:
+    spec = group["data"].get(key)
+    if not spec:
+        return None
+
+    def check_correct_placetype(placetype: Any) -> bool:
+        if isinstance(placetype, list):
+            return any(list_or_element_contains(placetypes, pt) for pt in placetype)
+        return list_or_element_contains(placetypes, placetype)
+
+    if spec.get("alias_of"):
+        resolved_key = spec["alias_of"]
+        resolved_spec = group["data"].get(resolved_key)
+        if alias_resolution in {"none", "display"}:
+            placetype = (
+                spec.get("placetype")
+                or (resolved_spec and resolved_spec.get("placetype"))
+                or group.get("default_placetype")
+            )
+            if not check_correct_placetype(placetype):
+                return None
+            if alias_resolution == "display":
+                if spec.get("display") is True:
+                    key = resolved_key
+                elif spec.get("display"):
+                    key = spec["display"]
+            return key, spec
+        key = resolved_key
+        spec = resolved_spec
+    placetype = spec.get("placetype") or group.get("default_placetype")
+    if not check_correct_placetype(placetype):
+        return None
+    initialize_spec(group, key, spec)
+    return key, spec
+
+
+def find_matching_placename_in_group(
+    group: dict[str, Any], placetypes: Any, placename: str, alias_resolution: str
+) -> tuple[str, dict[str, Any]] | None:
+    key = placename_to_key(group, placename)
+    return find_matching_key_in_group(group, placetypes, key, alias_resolution)
+
+
+def find_canonical_key(key: str) -> tuple[dict[str, Any], dict[str, Any]] | None:
+    found_locations: list[tuple[dict[str, Any], dict[str, Any]]] = []
+    for group in LOCATIONS:
+        spec = group["data"].get(key)
+        if not spec:
+            continue
+        if spec.get("alias_of"):
+            continue
+        found_locations.append((group, spec))
+    if not found_locations:
+        return None
+    group, spec = found_locations[0]
+    initialize_spec(group, key, spec)
+    return group, spec
+
+
+def iterate_matching_location(data: dict[str, Any]) -> Iterator[tuple[dict[str, Any], str, dict[str, Any]]]:
+    i = 0
+    n = len(LOCATIONS)
+    while i < n:
+        group = LOCATIONS[i]
+        i += 1
+        if data.get("placename"):
+            result = find_matching_placename_in_group(
+                group, data["placetypes"], data["placename"], data["alias_resolution"]
+            )
+        else:
+            result = find_matching_key_in_group(group, data["placetypes"], data["key"], data["alias_resolution"])
+        if result:
+            key, spec = result
+            yield group, key, spec
+
+
+def get_matching_location(data: dict[str, Any]) -> tuple[dict[str, Any], str, dict[str, Any]] | None:
+    all_found: list[tuple[dict[str, Any], str, dict[str, Any]]] = list(iterate_matching_location(data))
+    return all_found[0] if all_found else None
+
+
+def iterate_containers(group: dict[str, Any], key: str, spec: dict[str, Any]) -> Iterator[list[dict[str, Any]]]:
+    keys_seen = {key: True}
+    iterations = 0
+    last_iteration_containers = [{"group": group, "key": key, "spec": spec}]
+    while True:
+        iterations += 1
+        next_iteration_containers: list[dict[str, Any]] = []
+        for location in last_iteration_containers:
+            containers = location["spec"].get("containers")
+            if containers:
+                for container in containers:
+                    result = get_matching_location(
+                        {
+                            "placetypes": container["placetype"],
+                            "key": container["key"],
+                        }
+                    )
+                    if result:
+                        container_group, container_key, container_spec = result
+                        if not keys_seen.get(container_key):
+                            next_iteration_containers.append(
+                                {
+                                    "group": container_group,
+                                    "key": container_key,
+                                    "spec": container_spec,
+                                }
+                            )
+                            keys_seen[container_key] = True
+        if not next_iteration_containers:
+            break
+        last_iteration_containers = next_iteration_containers
+        yield next_iteration_containers
+
+
+def construct_linked_placename(spec: dict[str, Any], placename: str, display_form: str | None = None) -> str:
+    if display_form and placename != display_form:
+        linked_placename = f"[[{placename}|{display_form}]]"
+    else:
+        linked_placename = f"[[{placename}]]"
+    if spec.get("the"):
+        linked_placename = f"the {linked_placename}"
+    return linked_placename
