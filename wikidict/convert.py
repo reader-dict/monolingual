@@ -221,7 +221,7 @@ class BaseFormat:
 
     def handle_word(self, word: str, words: Words) -> Generator[str]:
         # Prevent storing variants definitions in DictFile & co
-        if (chosen_word := words[word]).is_variant and not isinstance(self, KoboFormat):
+        if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not isinstance(self, KoboFormat):
             return
 
         details = deepcopy(chosen_word)
@@ -229,7 +229,11 @@ class BaseFormat:
         guess_prefix = utils.guess_prefix
         word_group_prefix = guess_prefix(word)
 
-        if details.variants and any(guess_prefix(variant) != word_group_prefix for variant in details.variants):
+        if (
+            details.variants
+            and isinstance(self, KoboFormat)
+            and any(guess_prefix(variant) != word_group_prefix for variant in details.variants)
+        ):
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
             # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
@@ -282,12 +286,10 @@ class BaseFormat:
                 word=word,
                 current_word=(current_word if isinstance(self, KoboFormat) or current_word != word else ""),
                 definitions=current_details.definitions.items(),
-                pronunciation=utils.convert_pronunciation(current_details.pronunciations)
-                if current_details.pronunciations
-                else "",
-                gender=utils.convert_gender(current_details.genders) if current_details.genders else "",
+                pronunciation=utils.convert_pronunciation(current_details.pronunciations),
+                gender=utils.convert_gender(current_details.genders),
                 etymologies=current_details.etymology if self.include_etymology else [],
-                variants=sorted(variants, key=lambda s: (len(s), s)) if variants else [],
+                variants=sorted(variants, key=lambda s: (len(s), s)),
             )
 
     def process(self) -> None:
