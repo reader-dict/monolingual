@@ -1520,6 +1520,8 @@ labels = {
     "firearm mechanisms": "firearms",
     "firearms": "firearms",
     "firefighting": "firefighting",
+    "firework": "pyrotechnics",
+    "fireworks": "pyrotechnics",
     "fish": "zoology",
     "fishing": "fishing",
     "flamenco": "flamenco",
@@ -2753,7 +2755,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,748
+}  # 2,750
 
 syntaxes = {
     "&": {
