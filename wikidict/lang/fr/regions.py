@@ -372,6 +372,7 @@ regions = {
     "KP": "Corée du Nord",
     "KR": "Corée du Sud",
     "Kabylie": "Kabylie",
+    "Kagoshima": "Kagoshima",
     "Karakalpakistan": "Karakalpakistan",
     "Katsina": "Katsina",
     "Kazakhstan": "Kazakhstan",
@@ -856,5 +857,5 @@ regions = {
     "Îles Salomon": "Îles Salomon",
     "Îles d’Aran": "Îles d'Aran",
     "Îles-de-la-Madeleine": "Îles-de-la-Madeleine",
-}  # 851
+}  # 852
 # END
