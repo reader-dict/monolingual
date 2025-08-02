@@ -97,8 +97,8 @@ WORD_TPL_KOBO = Template(
 WORD_TPL_DICTFILE = Template(
     """\
 @ {{ word }}
-{%- if current_word or pronunciation or gender %}
-: {%- if current_word %} <b>{{ current_word }}</b>{%- endif -%}{{ pronunciation }}{{ gender }}
+{%- if pronunciation or gender %}
+:{{ pronunciation }}{{ gender }}
 {%- endif %}
 {%- for variant in variants %}
 & {{ variant }}
