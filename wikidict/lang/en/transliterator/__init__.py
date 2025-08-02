@@ -2,6 +2,8 @@
 Transliterator used across multiple templates.
 """
 
+import logging
+
 from .ar import transliterate as transliterate_ar
 from .bn import transliterate as transliterate_bn
 from .fa import transliterate as transliterate_fa
@@ -69,6 +71,8 @@ for sublang in {
 }:
     transliterations[sublang] = transliterations["hi"]
 
+log = logging.getLogger(__name__)
+
 
 def transliterate(locale: str, text: str) -> str:
     """
@@ -91,4 +95,6 @@ def transliterate(locale: str, text: str) -> str:
     >>> transliterate("ru", "без")
     'bez'
     """
-    return func(text, locale=locale) if (func := transliterations.get(locale)) else ""
+    if not (func := transliterations.get(locale)):
+        log.warning("Missing transliterator: %r", locale)
+    return func(text, locale=locale) if func else ""
