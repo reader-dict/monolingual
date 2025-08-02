@@ -284,7 +284,7 @@ class BaseFormat:
             yield self.render_word(
                 self.template,
                 word=word,
-                current_word=(current_word if isinstance(self, KoboFormat) or current_word != word else ""),
+                current_word=current_word,
                 definitions=current_details.definitions.items(),
                 pronunciation=utils.convert_pronunciation(current_details.pronunciations),
                 gender=utils.convert_gender(current_details.genders),
