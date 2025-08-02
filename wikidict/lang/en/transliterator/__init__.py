@@ -8,6 +8,7 @@ from .fa import transliterate as transliterate_fa
 from .gu import transliterate as transliterate_gu
 from .hi import transliterate as transliterate_hi
 from .mr import transliterate as transliterate_mr
+from .mtei import transliterate as transliterate_mtei
 from .ru import transliterate as transliterate_ru
 
 transliterations = {
@@ -17,6 +18,7 @@ transliterations = {
     "gu": transliterate_gu,
     "hi": transliterate_hi,
     "mr": transliterate_mr,
+    "Mtei": transliterate_mtei,
     "ru": transliterate_ru,
 }
 transliterations["ady"] = transliterations["ar"]
@@ -30,6 +32,8 @@ transliterations["inh"] = transliterations["ar"]
 transliterations["kbd"] = transliterations["ar"]
 transliterations["kfr"] = transliterations["gu"]
 transliterations["kok"] = transliterations["mr"]
+transliterations["mni"] = transliterations["Mtei"]
+transliterations["omp"] = transliterations["Mtei"]
 transliterations["vah"] = transliterations["mr"]
 transliterations["vgr"] = transliterations["gu"]
 for sublang in {
@@ -84,6 +88,8 @@ def transliterate(locale: str, text: str) -> str:
     'amrāīvāḍī'
     >>> transliterate("hi", "संस्कार")
     'sanskār'
+    >>> transliterate("mni", "ꯑꯔꯥꯝꯕꯥꯢ")
+    'ʼarāmbāi'
     >>> transliterate("mr", "च़ांदअणी च़ौक")
     'ċāndaṇī ċauk'
     >>> transliterate("mwr", "शेखाव*टी")

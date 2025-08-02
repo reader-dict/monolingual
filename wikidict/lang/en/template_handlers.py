@@ -1446,6 +1446,8 @@ def render_en_proper_noun(tpl: str, parts: list[str], data: defaultdict[str, str
 
 def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
+    >>> render_foreign_derivation("bor", ["en", "mni", "ꯑꯔꯥꯝꯕꯥꯢ"], defaultdict(str))
+    'Manipuri <i>ꯑꯔꯥꯝꯕꯥꯢ</i> (<i>ʼarāmbāi</i>)'
     >>> render_foreign_derivation("bor", ["en", "ar", "الْعِرَاق", "", "Iraq"], defaultdict(str))
     'Arabic الْعِرَاق (<i>al-ʕirāq</i>, “Iraq”)'
     >>> render_foreign_derivation("bor", [], defaultdict(str, {"1": "en", "2": "ja", "3": "マエバリ"}))
