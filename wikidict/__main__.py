@@ -36,7 +36,7 @@ Options:
   --gen-dict=WORDS          DEBUG: Generate dictionary for specific words. Pass multiple words
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.
-                            --format=FORMAT     Format can be dictorg, kobo, mobi, stardict [default: kobo]
+                            --format=FORMAT     Format can be dictfile, df, dictorg, kobo, dicthtml, kindle, mobi, stardict [default: kobo]
   --show-pos                Show part of speechs.
 
 If no argument given, --download, --parse, --render, --show-pos, and --convert, will be done automatically.

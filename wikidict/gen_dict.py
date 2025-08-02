@@ -34,15 +34,20 @@ def main(locale: str, words: str, output: str, *, format: str = "kobo") -> int:
     )
 
     match format:
+        case "dictfile" | "df":
+            run_formatter(DictFileFormat, *args)
         case "dictorg":
             run_formatter(DictFileFormat, *args)
             run_formatter(DictOrgFormat, *args)
-        case "mobi":
+        case "kobo" | "dicthtml":
+            run_formatter(KoboFormat, *args)
+        case "kindle" | "mobi":
             run_mobi_formatter(output_dir, Path(f"data-{args[-1]}.json"), locale, all_words, variants)
         case "stardict":
             run_formatter(DictFileFormat, *args)
             run_formatter(StarDictFormat, *args)
         case _:
-            run_formatter(KoboFormat, *args)
+            print(f"Unknown {format = }")
+            return 1
 
     return 0
