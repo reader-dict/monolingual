@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 from zipfile import ZipFile
@@ -392,7 +393,34 @@ def test_make_variants() -> None:
     }
 
 
-def test_kobo_format_variants_different_prefix(tmp_path: Path) -> None:
+def test_kobo_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
+    words = deepcopy(WORDS_VARIANTS_FR)
+    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+    variants = convert.make_variants(words)
+    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
+
+    assert formatter.make_groups(words) == {
+        "es": {"estre": words["estre"]},
+        "êt": {"être": words["être"]},
+        "su": {"suis": words["suis"], "suivre": words["suivre"]},
+    }
+
+    estre = "".join(formatter.handle_word("estre", words))
+    être = "".join(formatter.handle_word("être", words))
+    suis = "".join(formatter.handle_word("suis", words))
+    suivre = "".join(formatter.handle_word("suivre", words))
+    assert suis.count('<a name="suis" />') == 4
+    assert "<b>estre</b>" in suis
+    assert "<b>suivre</b>" in suis
+    assert "<b>suis</b>" in suis
+    assert "<b>être</b>" in suis
+    assert "variant" not in estre  # Because group prefixes are differents
+    assert "variant" not in suis  # Because variant == word
+    assert "variant" not in être  # Because group prefixes are differents
+    assert '<var><variant name="suis"/></var>' in suivre  # Because group prefixes are the same
+
+
+def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
     words = WORDS_VARIANTS_FR
     variants = convert.make_variants(words)
     formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
@@ -473,22 +501,12 @@ def test_df_format(tmp_path: Path) -> None:
         output.read_text(encoding="utf-8")
         == r"""@ estre
 : \ɛtʁ\
+& suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol></html>
 
 @ être
 : \ɛtʁ\ <i>m</i>.
-<html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol></html>
-
-@ suis
-: <b>estre</b> \ɛtʁ\
-<html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol></html>
-
-@ suis
-: <b>suivre</b> \sɥivʁ\
-<html><p><b>Verbe</b></p><ol><li>Définition de 'suivre'.</li></ol></html>
-
-@ suis
-: <b>être</b> \ɛtʁ\ <i>m</i>.
+& suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol></html>
 
 @ suivre
@@ -500,7 +518,28 @@ def test_df_format(tmp_path: Path) -> None:
     )
 
 
-def test_df_format_variants_different_prefix(tmp_path: Path) -> None:
+def test_df_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
+    words = deepcopy(WORDS_VARIANTS_FR)
+    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+    variants = convert.make_variants(words)
+    formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
+
+    estre = "".join(formatter.handle_word("estre", words))
+    être = "".join(formatter.handle_word("être", words))
+    suis = "".join(formatter.handle_word("suis", words))
+    suivre = "".join(formatter.handle_word("suivre", words))
+    assert "@ suis" in suis
+    assert ": <b>estre</b>" not in suis
+    assert ": <b>suivre</b>" not in suis
+    assert ": <b>suis</b>" not in suis
+    assert ": <b>être</b>" not in suis
+    assert estre.count("&") == 1 and "& suis" in estre
+    assert "&" not in suis  # Because variant == word
+    assert être.count("&") == 1 and "& suis" in être
+    assert "& suis" in suivre
+
+
+def test_df_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
     words = WORDS_VARIANTS_FR
     variants = convert.make_variants(words)
     formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
@@ -509,14 +548,14 @@ def test_df_format_variants_different_prefix(tmp_path: Path) -> None:
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count("@ suis") == 3
-    assert ": <b>estre</b>" in suis
-    assert ": <b>suivre</b>" in suis
-    assert ": <b>être</b>" in suis
-    assert "&" not in estre  # Because group prefixes are differents
+    assert "@ suis" not in suis
+    assert ": <b>estre</b>" not in suis
+    assert ": <b>suivre</b>" not in suis
+    assert ": <b>être</b>" not in suis
+    assert estre.count("&") == 1 and "& suis" in estre
     assert "&" not in suis  # Because variant == word
-    assert "&" not in être  # Because group prefixes are differents
-    assert "& suis" in suivre  # Because group prefixes are the same
+    assert être.count("&") == 1 and "& suis" in être
+    assert "& suis" in suivre
 
 
 def test_df_format_variants_empty_variant_level_1(tmp_path: Path) -> None:
