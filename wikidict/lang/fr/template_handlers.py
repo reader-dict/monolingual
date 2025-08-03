@@ -589,18 +589,21 @@ def render_compose_double_flexion(tpl: str, parts: list[str], data: defaultdict[
 def render_composé_neutre(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_composé_neutre("composé neutre", ["agenré", "-æ"], defaultdict(str, {"lang": "fr", "mot2": "agenrée"}))
-    'composé de <i>agenré</i>&thinsp;/&thinsp;<i>agenrée</i> et du suffixe <i>-æ</i>, marqueur de genre neutre.'
+    'composé de <i>agenré</i> et de <i>agenrée</i>, avec le suffixe <i>-æ</i>, suffixe néologique ne marquant pas le genre (non standard).'
     >>> render_composé_neutre("composé neutre", ["agenré", "-æ"], defaultdict(str, {"lang": "fr", "mot2": "agenrée", "f": "1", "m": "1"}))
-    'Composée de <i>agenré</i>&thinsp;/&thinsp;<i>agenrée</i> et du suffixe <i>-æ</i>, marqueur de genre neutre.'
+    'Composée de <i>agenré</i> et de <i>agenrée</i>, avec le suffixe <i>-æ</i>, suffixe néologique ne marquant pas le genre (non standard).'
+    >>> render_composé_neutre("composé neutre", [], defaultdict(str, {"1": "attaché", "mot2": "attachée", "2": "-æ", "lang": "fr", "m": "1"}))
+    'Composé de <i>attaché</i> et de <i>attachée</i>, avec le suffixe <i>-æ</i>, suffixe néologique ne marquant pas le genre (non standard).'
+    >>> render_composé_neutre("composé neutre", ["attaché"], defaultdict(str, {"mot2": "attachée", "2": "-æ", "lang": "fr", "m": "1"}))
+    'Composé de <i>attaché</i> et de <i>attachée</i>, avec le suffixe <i>-æ</i>, suffixe néologique ne marquant pas le genre (non standard).'
     """
-    phrase = "Composé" if data["m"] == "1" else "composé"
-    if data["f"] == "1":
-        phrase += "e"
-    phrase += f" de {italic(parts[0])}"
+    phrase = f"{'C' if data['m'] else 'c'}omposé{'e' if data['f'] else ''}"
+    phrase += f" de {italic(data['1'] or parts.pop(0))}"
     if mot2 := data["mot2"]:
-        phrase += f"&thinsp;/&thinsp;{italic(mot2)}"
-    phrase += f" et du suffixe {italic(parts[1])}"
-    return f"{phrase}, marqueur de genre neutre."
+        phrase += f" et de {italic(mot2)}"
+    suffix = data["2"] or parts[0]
+    phrase += f", avec le suffixe {italic(suffix)}"
+    return f"{phrase}, suffixe néologique ne marquant pas le genre (non standard)."
 
 
 def render_cs(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
