@@ -355,6 +355,12 @@ def last_template_handler(
             text += f" к {parts[0]}"
         return text
 
+    if tpl in {"превосх."}:
+        text = italic("превосх. ст.")
+        if parts:
+            text += f" к прил. {parts[0]}"
+        return text
+
     if tpl == "выдел":
         return parts[0]
 
