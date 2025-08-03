@@ -2651,8 +2651,8 @@ def render_metathesis(tpl: str, parts: list[str], data: defaultdict[str, str], *
 
 def render_minced_oath_of(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
-    >>> render_misconstruction("minced oath of", ["en", "asshole//arsehole"], defaultdict(str))
-    'Minced oath ofuction of <i>asshole / arsehole</i>'
+    >>> render_minced_oath_of("minced oath of", ["en", "asshole//arsehole"], defaultdict(str))
+    'Minced oath of <i>asshole / arsehole</i>'
     """
     return misc_variant("minced oath", tpl, parts, data, word=word)
 
@@ -4330,6 +4330,7 @@ template_mapping = {
     **dict.fromkeys({"pseudo-acronym of", "pseudo-acronym"}, render_pseudo_acronym_of),
     **dict.fromkeys({"pseudo-loan", "pseudoloan", "pl"}, render_pseudo_loan),
     **dict.fromkeys({"reduplication of", "reduplication", "redup", "rdp"}, render_reduplication),
+    **dict.fromkeys({"script", "sc"}, render_script),
     **dict.fromkeys({"section link", "format link"}, render_section_link),
     **dict.fromkeys({"SI-unit-abb", "SI-unit-abbnp"}, render_si_unit_abb),
     **dict.fromkeys({"SI-unit", "SI-unit-np"}, render_si_unit),
