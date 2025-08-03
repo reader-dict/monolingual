@@ -11,6 +11,9 @@ labels = {
     "2ch slang": "2channel {{glossary|slang}}",
     "2channel": "2channel {{glossary|slang}}",
     "2channel slang": "2channel {{glossary|slang}}",
+    "3D printer": "3D printing",
+    "3D printers": "3D printing",
+    "3D printing": "3D printing",
     "4chan": "4chan {{glossary|slang}}",
     "4chan lgbt": "4chan /lgbt/ {{glossary|slang}}",
     "4chan slang": "4chan {{glossary|slang}}",
@@ -1242,6 +1245,8 @@ labels = {
     "cockfighting": "cockfighting",
     "coenzyme": "biochemistry",
     "cognate object": "with cognate object",
+    "coin": "numismatics",
+    "coins": "numismatics",
     "collectible card games": "collectible card games",
     "collectible cards": "collectible card games",
     "collective": "collective",
@@ -1808,7 +1813,7 @@ labels = {
     "land law": "property law",
     "landforms": "geography",
     "law": "law",
-    "law enforcement": "law enforcement",
+    "law enforcement": "law enforQ229367)cement",
     "lawn bowls": "bowls",
     "leatherworking": "leatherworking",
     "leet": "leetspeak",
@@ -2251,8 +2256,8 @@ labels = {
     "poison": "toxicology",
     "poker": "poker",
     "poker slang": "poker slang",
-    "police": "law enforcement",
-    "policing": "law enforcement",
+    "police": "law enforQ229367)cement",
+    "policing": "law enforQ229367)cement",
     "polite": "polite",
     "political": "politics",
     "political science": "political science",
@@ -2755,7 +2760,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,750
+}  # 2,755
 
 syntaxes = {
     "&": {
