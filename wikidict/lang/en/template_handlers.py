@@ -1704,6 +1704,21 @@ def render_fa_sp(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     return f"{text}{dot}"
 
 
+def render_fa_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_fa_l("fa-l", ["چِینِی"], defaultdict(str))
+    'چِینِی (čīnī&nbsp;/ čini)'
+    >>> render_fa_l("fa-l", ["چِینِی"], defaultdict(str, {"t": "t"}))
+    'چِینِی (čīnī&nbsp;/ čini, “t”)'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Template:fa-l&oldid=85187891
+
+    more: list[str] = [render_fa_xlit(tpl, parts, data, word=word)]
+    if t := data["t"]:
+        more.append(f"“{t}”")
+    return f"{parts[0]} ({(', '.join(more))})"
+
+
 def render_fa_xlit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_fa_xlit("fa-xlit", ["اَرَاکِی"], defaultdict(str))
@@ -4153,6 +4168,7 @@ template_mapping = {
     "en-noun": render_en_noun,
     "en-proper noun": render_en_proper_noun,
     "etydate": render_etydate,
+    "fa-l": render_fa_l,
     "fa-xlit": render_fa_xlit,
     "frac": render_frac,
     "g": render_g,
