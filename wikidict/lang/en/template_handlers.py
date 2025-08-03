@@ -3133,6 +3133,14 @@ def render_nb(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
     return f"{phrase}]{sep if tpl == '...' else ''}"
 
 
+def render_non_rhotic(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_non_rhotic("non-rhotic", ["en", "burst"], defaultdict(str))
+    'Non-rhotic pronunciation of <i>burst</i>'
+    """
+    return misc_variant("non-rhotic pronunciation", tpl, parts, data, word=word)
+
+
 def render_nuclide(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_nuclide("nuclide", ["2", "1", "H"], defaultdict(str))
@@ -4304,6 +4312,7 @@ template_mapping = {
     **dict.fromkeys({"label", "lb", "lbl", "term-label", "tlb"}, render_label),
     **dict.fromkeys({"Latn-def", "Latn-def-lite"}, render_latn_def),
     **dict.fromkeys({"nb...", "..."}, render_nb),
+    **dict.fromkeys({"non-rhotic", "nonrh", "nrp"}, render_non_rhotic),
     **dict.fromkeys({"only used in", "only in"}, render_only_used_in),
     **dict.fromkeys({"onomatopoeic", "onomatopoeia", "onomatopeic", "onom"}, render_onomatopoeic),
     **dict.fromkeys({"pedia", "pedialite"}, render_pedia),
