@@ -243,6 +243,7 @@ templates_italic = {
     "par troponymie": "Par troponymie",
     "parler bellifontain": "Parler bellifontain",
     "pâtes": "Cuisine",
+    "pseudo-science": "pseudo-science",
     "pyrologie": "pyrologie",
     "réciproque2": "Réciproque",
     "réfléchi": "Réfléchi",
