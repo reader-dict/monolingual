@@ -10,6 +10,7 @@ from .hi import transliterate as transliterate_hi
 from .mr import transliterate as transliterate_mr
 from .mtei import transliterate as transliterate_mtei
 from .ru import transliterate as transliterate_ru
+from .zh import transliterate as transliterate_zh
 
 transliterations = {
     "ar": transliterate_ar,
@@ -20,6 +21,7 @@ transliterations = {
     "mr": transliterate_mr,
     "Mtei": transliterate_mtei,
     "ru": transliterate_ru,
+    "zh": transliterate_zh,
 }
 transliterations["ady"] = transliterations["ar"]
 transliterations["ahr"] = transliterations["mr"]
@@ -72,6 +74,23 @@ for sublang in {
     "xnr",
 }:
     transliterations[sublang] = transliterations["hi"]
+for sublang in {
+    "cdo",
+    "cmn",
+    "csp",
+    "gan",
+    "hsn",
+    "ltc",
+    "lzh",
+    "mnp",
+    "nan-tws",
+    "och",
+    "wuu",
+    "yue",
+    "zhx-sic",
+    "zhx-tai",
+}:
+    transliterations[sublang] = transliterations["zh"]
 
 
 def transliterate(locale: str, text: str) -> str:
@@ -80,6 +99,8 @@ def transliterate(locale: str, text: str) -> str:
 
     >>> transliterate("ar", "عُظْمَى")
     'ʕuẓmā'
+    >>> transliterate("cmn", "^褚")
+    'Chǔ'
     >>> transliterate("bn", "চাঁদ্নি চক")
     'cãdni cok'
     >>> transliterate("fa", "سَرْاَنْجَام")
@@ -96,5 +117,7 @@ def transliterate(locale: str, text: str) -> str:
     'śekhāvaṭī'
     >>> transliterate("ru", "без")
     'bez'
+    >>> transliterate("閩中語", "zh")
+    'mǐnzhōngyǔ'
     """
     return func(text, locale=locale) if (func := transliterations.get(locale)) else ""

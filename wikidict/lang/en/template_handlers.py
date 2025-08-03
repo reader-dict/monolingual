@@ -1558,6 +1558,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     'عَرِيق (<i>ʕarīq</i>, “deep-rooted”)'
     >>> render_foreign_derivation("m", ["grc", "Τ//τ"], defaultdict(str, {"tr": "-"}))
     '<i>Τ / τ</i>'
+    >>> render_foreign_derivation("m", ["cmn", "^褚"], defaultdict(str))
+    '<i>^褚</i> (<i>Chǔ</i>)'
 
     >>> render_foreign_derivation("langname-mention", ["en", "-"], defaultdict(str))
     'English'
