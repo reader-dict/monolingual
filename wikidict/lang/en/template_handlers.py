@@ -4194,7 +4194,7 @@ template_mapping = {
     "vi-l": render_vi_l,
     "xlit": render_xlit,
     **dict.fromkeys({"a", "accent"}, render_accent),
-    **dict.fromkeys({"A.D", "AD", "B.C.E.", "BCE", "B.C.", "BC", "C.E.", "CE"}, render_bce),
+    **dict.fromkeys({"A.D.", "AD", "B.C.E.", "BCE", "B.C.", "BC", "C.E.", "CE"}, render_bce),
     **dict.fromkeys(
         {
             "adapted borrowing",
