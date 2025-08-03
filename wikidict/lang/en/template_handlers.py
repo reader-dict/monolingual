@@ -222,6 +222,8 @@ def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, 
     if parts:
         parts.pop(0)  # Remove the language
     p = data["alt"] or data["2"] or (parts.pop(0) if parts else "") or ""
+    if "//" in p:
+        p = p.replace("//", " / ")
     data["t"] = data["t"] or data["3"] or ""
     starter = "" if data["notext"] in ("1", "yes") else start
     if p and starter:
@@ -2647,6 +2649,14 @@ def render_metathesis(tpl: str, parts: list[str], data: defaultdict[str, str], *
     return misc_variant_no_term("metathesis", tpl, parts, data, word=word)
 
 
+def render_minced_oath_of(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_misconstruction("minced oath of", ["en", "asshole//arsehole"], defaultdict(str))
+    'Minced oath ofuction of <i>asshole / arsehole</i>'
+    """
+    return misc_variant("minced oath", tpl, parts, data, word=word)
+
+
 def render_misconstruction(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_misconstruction("misconstruction", ["en", "commodious"], defaultdict(str))
@@ -4166,6 +4176,7 @@ template_mapping = {
     "lw": render_lw,
     "m-self": render_m_self,
     "metathesis": render_metathesis,
+    "minced oath of": render_minced_oath_of,
     "misconstruction": render_misconstruction,
     "morse code abbreviation": render_morse_code_abbreviation,
     "morse code for": render_morse_code_for,
