@@ -3972,23 +3972,33 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
 
     for sid in sense_id.split(","):
         output = utils.grep(file, f'"{source}": "')
-        pattern = re.compile(
-            rf"#+\s*\{{\{{(?:senseid|sid)\|\w+\|{sid}\}}\}}\s*(.+)"
-            if "{{senseid|" in output or "{{sid|" in output
-            else r"#+\s*(\{\{place\|.+)"
-        )
-        definition = next(line.strip() for line in output.split("\\n") if pattern.search(line))
-        definition = pattern.sub(r"\1", definition)
 
-        # At this point, the definition is something like `{{place|...}}`, and if the `tcl=` arg is used, we need to alter template arguments
-        if "tcl=" in definition:
-            place_arg = re.search(r"\{\{place\|(\w+)", definition)[1]  # type: ignore[index]
-            tcl_args = re.search(r"tcl=([^}]+)\}\}", definition)[1].split(";;")  # type: ignore[index]
-            definition = f"{{{{place|{place_arg}|{'|'.join(tcl_args)}}}}}"
+        if "{{senseid|" in output or "{{sid|" in output or "{{place|" in output:
+            pattern = re.compile(
+                rf"#+\s*\{{\{{(?:senseid|sid)\|\w+\|{sid or '[^|}]+'}\}}\}}\s*(.+)"
+                if "{{senseid|" in output or "{{sid|" in output
+                else r"#+\s*(\{\{place\|.+)"
+            )
+            definition = next(line.strip() for line in output.split("\\n") if pattern.search(line))
+            definition = pattern.sub(r"\1", definition)
 
-        definition = re.sub(r"<<\w+/([^>]+)>>", r"\1", definition)
-        definition = utils.process_templates(word, definition, "en")
-        definition = definition.split(".", 1)[0]
+            # At this point, the definition is something like `{{place|...}}`, and if the `tcl=` arg is used, we need to alter template arguments
+            if "tcl=" in definition:
+                place_arg = re.search(r"\{\{place\|(\w+)", definition)[1]  # type: ignore[index]
+                tcl_args = re.search(r"tcl=([^}]+)\}\}", definition)[1].split(";;")  # type: ignore[index]
+                definition = f"{{{{place|{place_arg}|{'|'.join(tcl_args)}}}}}"
+
+            definition = re.sub(r"<<\w+/([^>]+)>>", r"\1", definition)
+            definition = utils.process_templates(word, definition, "en")
+            definition = definition.split(".", 1)[0]
+        else:
+            # No `{{place}}` nor `senseid`, lets use the first definition then
+            from ...render import parse_word
+
+            output = output.removeprefix(f'"{source}": "').removesuffix('",')
+            parsed = parse_word(word, output.replace("\\n", "\n"), "en")
+            definition = str(parsed.definitions["Proper Noun"][0]).removesuffix(".")
+
         definitions.append(definition)
 
     if parts[0] == "en" and source_origin[0] != "@":
