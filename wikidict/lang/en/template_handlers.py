@@ -3047,6 +3047,8 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     '<i>a transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b>, <i>equivalent to Nicholas</i>'
     >>> render_name_translit("name translit", ["en", "grc", "Ἀέτιος"], defaultdict(str, {"type":"male given name", "xlit": "Aetius"}))
     '<i>a transliteration of the Ancient Greek male given name</i> <b>Ἀέτιος</b>, <i><b>Aetius</b></i>'
+    >>> render_name_translit("name translit", ["zh", "ru", "Хрущёв<xlit:Khrushchev>"], defaultdict(str, {"type": "surname"}))
+    '<i>a transliteration of the Russian surname</i> <b>Хрущёв</b> (<i>Xruščóv</i>), <i>Khrushchev</i>'
     """
     parts.pop(0)  # Destination language
     src_langs = parts.pop(0)
@@ -3064,18 +3066,17 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     text += f" {strong(what)}"
 
     if rest:
-        if transliterated:
-            transliterated = f"{italic(transliterated)}, "
-
         kind, value = rest.split(":", 1)
         value = value.rstrip(">")
         match kind:
             case "eq":
                 text += f", {italic(f'equivalent to {value}')}"
             case "t":
-                text += f" ({transliterated}“{italic(value)}”)"
+                text += f" ({italic(transliterated)}, “{italic(value)}”)"
             case "tr":
                 text += f" ({italic(value)})"
+            case "xlit":
+                text += f" ({italic(transliterated)}), {italic(value)}"
             case _:
                 assert 0, f"Unhandled {kind=} in render_name_translit()"
     elif transliterated:
