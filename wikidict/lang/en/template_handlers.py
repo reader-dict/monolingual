@@ -3815,7 +3815,7 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     '<i>a male given name in Latin</i>, <b>Aetius</b>'
 
     >>> render_surname("foreign name", ["zh", "hi,pa", "hi:सिंह", "pa:ਸਿੰਘ"], defaultdict(str, {"type": "surname", "tr1": "siṅh", "tr2": "siṅgh"}))
-    ''
+    '<i>a surname in Hindi or Punjabi</i>, <b>सिंह</b> (<b>sĩh</b>) or <b>ਸਿੰਘ</b>'
     """
     if parts:
         parts.pop(0)  # Remove the lang
@@ -3885,14 +3885,18 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     final = italic(", ".join(text))
 
     if tpl == "foreign name" and len(parts) > 1:
-        more: list[str]
+        more: list[str] = []
+
         for part in parts[1:]:
             if ":" in part:
-                pass
+                lang, trad = part.split(":", 1)
             else:
-                final += f", <b>{parts[1]}</b>"
-                if trans := transliterate(parts[0], parts[1]):
-                    final += f" ({trans})"
+                lang, trad = parts[0], part
+
+            trad = f"<b>{trad}</b>"
+            if trans := transliterate(lang, trad):
+                trad += f" ({trans})"
+            more.append(trad)
 
         final += f", {concat(more, ', ', last_sep=' or ')}"
 
