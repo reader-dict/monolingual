@@ -28,13 +28,12 @@ def render_этимология(tpl: str, parts: list[str], data: defaultdict[st
     'швед. Uppsala ‘верхняя часть селения Сала’, от upp ‘вверху’ + sala ‘гористый’'
 
     >>> render_этимология("этимология", ["-б"], defaultdict(str), word="девятилетний")
-    '{{unhandled etymology|-б}}'
+    ''
     """
     if not (which_one := parts[0] if parts else ""):
         return "??"
 
-    if not (text := etymologies.get(which_one)):
-        return f"{{{{unhandled etymology|{parts[0]}}}}}"
+    text = etymologies.get(which_one, "")
 
     if "{{{" in text:
         text = REMOVE_CATEGORY("", text)
