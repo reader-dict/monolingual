@@ -4169,7 +4169,11 @@ def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     """
     >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str, {"tr": "siáu"}))
     '痟 (<i>siáu</i>, “mad”)'
+    >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str))
+    '痟 (<i>siáu</i>, “mad”)'
     """
+    if not data["tr"]:
+        data["tr"] = transliterate("zh", parts[0])
     return chinese(parts, data)
 
 
