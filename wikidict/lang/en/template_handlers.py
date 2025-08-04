@@ -3813,6 +3813,9 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     '<i>a male given name in Ancient Greek</i>, <b>Σωκράτης</b>'
     >>> render_surname("foreign name", ["en", "la", "Aetius"], defaultdict(str, {"type":"male given name"}))
     '<i>a male given name in Latin</i>, <b>Aetius</b>'
+
+    >>> render_surname("foreign name", ["zh", "hi,pa", "hi:सिंह", "pa:ਸਿੰਘ"], defaultdict(str, {"type": "surname", "tr1": "siṅh", "tr2": "siṅgh"}))
+    ''
     """
     if parts:
         parts.pop(0)  # Remove the lang
@@ -3855,7 +3858,7 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         starter += f"{parts[0]} "
     starter += data["type"] or {"foreign name": "surname"}.get(tpl, tpl)
     if parts and parts[0] and tpl == "foreign name":
-        starter += f" in {langs[parts[0]]}"
+        starter += f" in {concat([langs[part] for part in parts[0].split(',')], ', ', last_sep=' or ')}"
 
     if xlit := data["xlit"]:
         text.extend((starter, xlit))
@@ -3882,9 +3885,16 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     final = italic(", ".join(text))
 
     if tpl == "foreign name" and len(parts) > 1:
-        final += f", <b>{parts[1]}</b>"
-        if trans := transliterate(parts[0], parts[1]):
-            final += f" ({trans})"
+        more: list[str]
+        for part in parts[1:]:
+            if ":" in part:
+                pass
+            else:
+                final += f", <b>{parts[1]}</b>"
+                if trans := transliterate(parts[0], parts[1]):
+                    final += f" ({trans})"
+
+        final += f", {concat(more, ', ', last_sep=' or ')}"
 
     return final
 
