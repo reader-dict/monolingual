@@ -1242,7 +1242,7 @@ def alter_demonym_parts(parts: list[str]) -> list[str]:
     for idx, part in enumerate(parts.copy()):
         has_changed = False
         if "<<" in part:
-            part = re.sub(r"<<(\w+)(?::also)?:(\w+)(?::also)?/([^>]+)>>", rpl, part)
+            part = re.sub(r"<<(\w+)(?::(?:also|the))?:(\w+)(?::(?:also|the))?/([^>]+)>>", rpl, part)
             has_changed = True
 
         if "<q:" in part:
@@ -1290,6 +1290,8 @@ def render_demonym_adj(tpl: str, parts: list[str], data: defaultdict[str, str], 
     'Of, from or relating to the region of Frisia: Either West Frisia (the Dutch province of Friesland); North Frisia (in the German state of Schleswig-Holstein, near the Danish border); or East Frisia (in the German state of Lower Saxony, near the Dutch border).'
     >>> render_demonym_adj("demonym-adj", ["it", "Sanremo<gloss:town in Liguria>"], defaultdict(str))
     'of, from or relating to Sanremo (town in Liguria)'
+    >>> render_demonym_adj("demonym-adj", ["es", "the <<city:the:pref/Gold Coast>>, <<s/Queensland>>, <<c/Australia>>"], defaultdict(str))
+    'of, from or relating to the city of Gold Coast, Queensland, Australia'
     """
     is_english = parts[0] == "en"
     has_parenthesis = bool(data["t"])
