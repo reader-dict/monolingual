@@ -189,7 +189,7 @@ def tr(text: str, lang: str) -> str:
 
 def transliterate(text: str, locale: str = "") -> str:
     """
-    Test cases: hhttps://en.wiktionary.org/w/index.php?title=Module:ml-translit/testcases&oldid=63954274
+    Test cases: https://en.wiktionary.org/w/index.php?title=Module:ml-translit/testcases&oldid=63954274
 
     >>> transliterate("ഡിസംബര്")
     'ḍisambar'

@@ -3984,6 +3984,8 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
 
     if ":" in source:
         source = source.split(":")[-1]
+    elif source == "+":
+        source_origin = source = word
 
     for sid in sense_id.split(","):
         output = utils.grep(file, f'"{source}": "')
@@ -4008,18 +4010,16 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
             definition = definition.split(".", 1)[0]
         else:
             # No `{{place}}` nor `senseid`, lets use the first definition then
-            from ...render import parse_word
-
             output = output.removeprefix(f'"{source}": "').removesuffix('",')
-            parsed = parse_word(word, output.replace("\\n", "\n"), "en")
+            parsed = render.parse_word(word, output.replace("\\n", "\n"), "en")
             definition = str(parsed.definitions["Proper Noun"][0]).removesuffix(".")
 
         definitions.append(definition)
 
     if parts[0] == "en" and source_origin[0] != "@":
-        return "\n".join(definitions)
+        return "</li><li>".join(definitions)
 
-    return f"{at_transformer(source_origin)} ({'\n'.join(definitions)})"
+    return f"{at_transformer(source_origin)} ({'</li><li>'.join(definitions)})"
 
 
 def render_uncertain(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
