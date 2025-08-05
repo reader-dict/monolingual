@@ -118,6 +118,6 @@ def transliterate(locale: str, text: str) -> str:
     >>> transliterate("ru", "без")
     'bez'
     >>> transliterate("zh", "閩中語")
-    'mǐnzhōngyǔ'
+    'mǐnzhōngyǔ'
     """
     return func(text, locale=locale) if (func := transliterations.get(locale)) else ""

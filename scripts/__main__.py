@@ -27,6 +27,7 @@ FILES = {
     "en-labels.py": "wikidict/lang/en/labels.py",
     "en-langs.py": "wikidict/lang/en/langs.py",
     "en-places.py": "wikidict/lang/en/places.py",
+    "en-pronunciations.py": "wikidict/lang/en/transliterator/pronunciations.py",
     "eo-dialects.py": "wikidict/lang/eo/dialects.py",
     "eo-langs.py": "wikidict/lang/eo/langs.py",
     "eo-tags.py": "wikidict/lang/eo/tags.py",

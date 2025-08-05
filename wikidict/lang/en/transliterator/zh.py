@@ -10,6 +10,8 @@ Current version from 2025-04-10 06:45
 
 import re
 
+from . import pronunciations
+
 # Source: [1]
 MT = {
     "腌": ["ā", "āng"],
@@ -522,15 +524,6 @@ MT = {
     "纵": ["zòng", "zōng"],
     "鱒": ["zūn", "zùn"],
     "鳟": ["zūn", "zùn"],
-    # Added manually
-    "^": ["^", ""],
-    " ": [" ", ""],
-    "/": ["/", ""],
-    "一": ["yī", ""],
-    "不": ["bù", ""],
-    "語": ["yǔ", ""],
-    "褚": ["chǔ", ""],
-    "痟": ["siáu", ""],
 }
 
 
@@ -552,7 +545,7 @@ def tr(text: str, lang: str) -> str:
         text = text.replace("#", "")
 
         def rpl(char: str) -> str:
-            return res[0] if (res := MT.get(char)) else char
+            return res[0] if (res := MT.get(char)) else pronunciations.cmn.get(char, char)
 
         translated = "".join(rpl(char) for char in text)
         if text == translated:
@@ -560,13 +553,18 @@ def tr(text: str, lang: str) -> str:
         return re.sub(r"\^('?.)", lambda m: m[1].upper(), translated)
 
     if lang in {"csp", "yue", "zhx-tai"}:
-        return re.sub(r"\d[\d\*\-]*(?![\d\*])", r"<sup>\g<0></sup>", text)
+        translated = "".join(pronunciations.yue.get(char, char) for char in text)
+        translated = re.sub(r"\d[\d\*\-]*(?![\d\*])", r"<sup>\g<0></sup> ", translated)
+        if text == translated:
+            return ""
+        return translated.rstrip()
 
+    assert 0
     if lang == "hak":
         # TODO: Implementation needed
         pass
 
-    if lang in ("ltc", "och"):
+    if lang in {"ltc", "och"}:
         delimiter = "," if lang == "ltc" else ";"
         index = text.split(delimiter)
 
@@ -603,7 +601,7 @@ def tr(text: str, lang: str) -> str:
 
         text = " ".join(str(item) for item in index)
         if lang == "och":
-            text = "*" + text
+            text = f"*{text}"
 
         return text
 
@@ -636,11 +634,13 @@ def transliterate(text: str, locale: str = "") -> str:
     """
     >> transliterate("褚", "cmn")
     'chǔ'
-    >> transliterate("^褚", "cmn")
-    'Chǔ'
+    >> transliterate("株洲", "cmn")
+    'zhūzhōu'
+    >>> transliterate("西營盤", "yue")
+    'sai<sup>1</sup> jing<sup>4</sup> pun<sup>4</sup>'
     >>> transliterate("閩中語", "zh")
-    'mǐnzhōngyǔ'
+    'mǐnzhōngyǔ'
     >>> transliterate("^閩中語 / ^閩中語", "zh")
-    'Mǐnzhōngyǔ / Mǐnzhōngyǔ'
+    'Mǐnzhōngyǔ / Mǐnzhōngyǔ'
     """
     return tr(text, locale)

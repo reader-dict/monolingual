@@ -1492,7 +1492,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("pcal", ["en" , "de", "Leberwurst"], defaultdict(str, {"nocap":"1"}))
     'partial calque of German <i>Leberwurst</i>'
     >>> render_foreign_derivation("pclq", ["en" , "zh", "閩中語"], defaultdict(str))
-    'Partial calque of Chinese 閩中語 (<i>mǐnzhōngyǔ</i>)'
+    'Partial calque of Chinese 閩中語 (<i>mǐnzhōngyǔ</i>)'
 
     >>> render_foreign_derivation("sl", ["en", "ru", "пле́нум", "", "plenary session"], defaultdict(str, {"nocap":"1"}))
     'semantic loan of Russian <i>пле́нум</i> (<i>plénum</i>, “plenary session”)'
@@ -4169,8 +4169,8 @@ def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     """
     >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str, {"tr": "siáu"}))
     '痟 (<i>siáu</i>, “mad”)'
-    >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str))
-    '痟 (<i>siáu</i>, “mad”)'
+    >>> render_zh_l("zh-l", ["閩中語", "mad"], defaultdict(str))
+    '閩中語 (<i>mǐnzhōngyǔ</i>, “mad”)'
     """
     if not data["tr"]:
         data["tr"] = transliterate("zh", parts[0])
