@@ -4012,7 +4012,8 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
             # No `{{place}}` nor `senseid`, lets use the first definition then
             output = output.removeprefix(f'"{source}": "').removesuffix('",')
             parsed = render.parse_word(word, output.replace("\\n", "\n"), "en")
-            definition = str(parsed.definitions["Proper Noun"][0]).removesuffix(".")
+            parsed_definitions = parsed.definitions.get("Proper Noun") or parsed.definitions["Noun"]
+            definition = str(parsed_definitions[0]).removesuffix(".")
 
         definitions.append(definition)
 
