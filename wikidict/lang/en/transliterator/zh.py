@@ -9,9 +9,6 @@ Current version from 2025-04-10 06:45
 """
 
 import re
-import unicodedata
-
-import regex
 
 # Source: [1]
 MT = {
@@ -547,7 +544,7 @@ def tr(text: str, lang: str) -> str:
     if not text:
         return text
 
-    if lang in ("zh", "lzh"):
+    if lang in {"zh", "lzh"}:
         lang = "cmn"
 
     if lang == "cmn":
