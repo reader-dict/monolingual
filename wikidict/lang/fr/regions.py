@@ -325,6 +325,7 @@ regions = {
     "Gyeongsang": "Gyeongsang",
     "Géorgie": "Géorgie",
     "Géorgie (pays)": "Géorgie, pays",
+    "Géorgie (États-Unis)": "Géorgie, États-Unis",
     "Gérardmer": "Gérardmer",
     "Gênes": "Gênes",
     "HK": "Hong Kong",
@@ -864,5 +865,5 @@ regions = {
     "Îles Salomon": "Îles Salomon",
     "Îles d’Aran": "Îles d'Aran",
     "Îles-de-la-Madeleine": "Îles-de-la-Madeleine",
-}  # 859
+}  # 860
 # END
