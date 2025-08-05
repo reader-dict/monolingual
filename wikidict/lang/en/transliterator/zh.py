@@ -530,6 +530,7 @@ MT = {
     "不": ["bù", ""],
     "語": ["yǔ", ""],
     "褚": ["chǔ", ""],
+    "痟": ["siáu", ""],
 }
 
 
@@ -549,10 +550,16 @@ def tr(text: str, lang: str) -> str:
 
     if lang == "cmn":
         text = text.replace("#", "")
-        text = "".join(MT[char][0] for char in text)
-        return re.sub(r"\^('?.)", lambda m: m[1].upper(), text)
 
-    if lang in ("csp", "yue", "zhx-tai"):
+        def rpl(char: str) -> str:
+            return res[0] if (res := MT.get(char)) else char
+
+        translated = "".join(rpl(char) for char in text)
+        if text == translated:
+            return ""
+        return re.sub(r"\^('?.)", lambda m: m[1].upper(), translated)
+
+    if lang in {"csp", "yue", "zhx-tai"}:
         return re.sub(r"\d[\d\*\-]*(?![\d\*])", r"<sup>\g<0></sup>", text)
 
     if lang == "hak":
