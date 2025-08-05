@@ -219,8 +219,7 @@ def gloss_tr_poss(data: defaultdict[str, str], gloss: str, *, trans: str = "") -
 
 
 def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
-    if parts:
-        parts.pop(0)  # Remove the language
+    lang = parts.pop(0) if parts else ""
     p = data["alt"] or data["2"] or (parts.pop(0) if parts else "") or ""
     if "//" in p:
         p = p.replace("//", " / ")
@@ -233,7 +232,8 @@ def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, 
         if phrase:
             phrase += " "
         phrase += italic(p.split("#", 1)[0])
-    phrase += gloss_tr_poss(data, data["t"] or data["gloss"] or "")
+    trans = transliterate(lang, p) if lang else ""
+    phrase += gloss_tr_poss(data, data["t"] or data["gloss"] or "", trans=trans)
     return phrase
 
 
@@ -842,7 +842,7 @@ def render_clipping(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     >>> render_clipping("clipping", ["fr", "métropolitain"], defaultdict(str, {"notext": "1"}))
     '<i>métropolitain</i>'
     >>> render_clipping("clipping", ["ru", "ку́бовый краси́тель"], defaultdict(str, {"t": "vat dye", "nocap": "1"}))
-    'clipping of <i>ку́бовый краси́тель</i> (“vat dye”)'
+    'clipping of <i>ку́бовый краси́тель</i> (<i>kúbovyj krasítelʹ</i>, “vat dye”)'
     """
     return misc_variant("clipping", tpl, parts, data, word=word)
 
