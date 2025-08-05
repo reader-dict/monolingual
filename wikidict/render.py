@@ -327,7 +327,7 @@ def find_all_sections(
     if lang_src == "ca":
         etyl_l_sections = lang.etyl_section[lang_dst]
         for leading_part in parsed.get_sections(include_subsections=False, level=level):
-            if not section_title(lang_dst, leading_part).startswith(head_sections):
+            if section_title(lang_dst, leading_part) not in head_sections:
                 continue
 
             all_sections.extend(
@@ -341,9 +341,7 @@ def find_all_sections(
 
     # Get interesting top sections
     top_sections = [
-        section
-        for section in parsed.get_sections(level=level)
-        if section_title(lang_dst, section).startswith(head_sections)
+        section for section in parsed.get_sections(level=level) if section_title(lang_dst, section) in head_sections
     ]
 
     # Get all sections without any filtering
