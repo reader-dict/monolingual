@@ -10,7 +10,7 @@ Current version from 2025-04-10 06:45
 
 import re
 
-from . import pronunciations
+from ..pronunciations import cmn, gan, yue
 
 # Source: [1]
 MT = {
@@ -538,28 +538,49 @@ def tr(text: str, lang: str) -> str:
     if not text:
         return text
 
-    if lang in {"zh", "lzh"}:
+    if lang in {"zh", "lzh", "nan-hlh"}:
         lang = "cmn"
+    elif lang in {"csp", "yue", "zhx-tai"}:
+        lang = "yue"
+    elif lang == "nan-hlh":
+        lang = "nan-tws"
 
     if lang == "cmn":
         text = text.replace("#", "")
 
         def rpl(char: str) -> str:
-            return res[0] if (res := MT.get(char)) else pronunciations.cmn.get(char, char)
+            return res[0] if (res := MT.get(char)) else cmn.pron.get(char, char)
 
         translated = "".join(rpl(char) for char in text)
         if text == translated:
             return ""
         return re.sub(r"\^('?.)", lambda m: m[1].upper(), translated)
 
-    if lang in {"csp", "yue", "zhx-tai"}:
-        translated = "".join(pronunciations.yue.get(char, char) for char in text)
+    if lang == "yue":
+        translated = "".join(yue.pron.get(char, char) for char in text)
         translated = re.sub(r"\d[\d\*\-]*(?![\d\*])", r"<sup>\g<0></sup> ", translated)
         if text == translated:
             return ""
         return translated.rstrip()
 
-    assert 0
+    return ""
+    # TO DO
+
+    if lang == "cdo":
+        # TO DO: https://en.wiktionary.org/wiki/Module:cdo-pron
+        return ""
+
+    if lang == "gan":
+        # TO DO
+        translated = "".join(yue.pron.get(char, char) for char in text)
+        return gan.rom(translated)
+
+    if lang == "nan-tws":
+        # Source: https://en.wiktionary.org/w/index.php?title=Module:nan-pron&oldid=85566090#L-1563
+        text = re.sub(r"([1-8])/", r"\1 / ", text)
+        text = re.sub(r"[1-8]+", r"<sup>\g<0></sup>", text)
+        return text.replace("#", "")
+
     if lang == "hak":
         # TODO: Implementation needed
         pass
@@ -609,10 +630,6 @@ def tr(text: str, lang: str) -> str:
         # TODO: Implementation needed
         pass
 
-    if lang == "nan-tws":
-        # Mock nan-pron module
-        return f"pengim_display({text})"
-
     if lang == "wuu":
         if ":" in text:
             # Mock wuu-pron processing
@@ -632,10 +649,20 @@ def tr(text: str, lang: str) -> str:
 
 def transliterate(text: str, locale: str = "") -> str:
     """
-    >> transliterate("褚", "cmn")
+    >>> transliterate("褚", "cmn")
     'chǔ'
-    >> transliterate("株洲", "cmn")
+    >>> transliterate("株洲", "cmn")
     'zhūzhōu'
+
+    >> transliterate("林", "gan")
+    'lin<sup>4</sup>'
+
+    >>> transliterate("海陸豐", "nan-hlh")
+    'hǎilùfēng'
+
+    >> transliterate("羯", "ltc")
+    'kjot'
+
     >>> transliterate("西營盤", "yue")
     'sai<sup>1</sup> jing<sup>4</sup> pun<sup>4</sup>'
     >>> transliterate("閩中語", "zh")
