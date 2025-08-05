@@ -8,13 +8,12 @@ import gzip
 import hashlib
 import json
 import logging
-import multiprocessing
 import os
 import shutil
+import threading
 from collections import defaultdict
 from copy import deepcopy
 from datetime import UTC, datetime, timedelta
-from functools import partial
 from pathlib import Path
 from time import monotonic
 from typing import TYPE_CHECKING
@@ -760,19 +759,19 @@ def distribute_workload(
     include_etymology: bool = True,
 ) -> None:
     """Run formatters in parallel."""
-    with multiprocessing.Pool(len(formatters)) as pool:
-        pool.map(
-            partial(
-                run_formatter,
-                locale=locale,
-                output_dir=output_dir,
-                words=words,
-                variants=variants,
-                snapshot=file.stem.split("-")[-1],
-                include_etymology=include_etymology,
-            ),
-            formatters,
+    threads = []
+
+    for formatter in formatters:
+        th = threading.Thread(
+            target=run_formatter,
+            args=(formatter, locale, output_dir, words, variants, file.stem.split("-")[-1]),
+            kwargs={"include_etymology": include_etymology},
         )
+        th.start()
+        threads.append(th)
+
+    for th in threads:
+        th.join()
 
 
 def get_latest_json_file(source_dir: Path) -> Path | None:
@@ -799,9 +798,6 @@ def main(locale: str) -> int:
     output_dir = source_dir / "output"
     output_dir.mkdir(exist_ok=True, parents=True)
     args = (output_dir, input_file, locale, words, variants)
-
-    # Force not using `fork()` on GNU/Linux to prevent deadlocks on "slow" machines (see issue #2333)
-    multiprocessing.set_start_method("spawn", force=True)
 
     start = monotonic()
     for include_etymology in [False, True]:
