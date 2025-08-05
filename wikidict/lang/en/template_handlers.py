@@ -1492,7 +1492,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("pcal", ["en" , "de", "Leberwurst"], defaultdict(str, {"nocap":"1"}))
     'partial calque of German <i>Leberwurst</i>'
     >>> render_foreign_derivation("pclq", ["en" , "zh", "閩中語"], defaultdict(str))
-    'Partial calque of Chinese 閩中語'
+    'Partial calque of Chinese 閩中語 (<i>mǐnzhōngyǔ</i>)'
 
     >>> render_foreign_derivation("sl", ["en", "ru", "пле́нум", "", "plenary session"], defaultdict(str, {"nocap":"1"}))
     'semantic loan of Russian <i>пле́нум</i> (<i>plénum</i>, “plenary session”)'
@@ -1573,7 +1573,10 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
         word = parts[1]
         if word.startswith("w:"):
             word = word[2:]
-        return strong(word) if parts[0] in {"en", "mul"} else italic(word)
+        text = strong(word) if parts[0] in {"en", "mul"} else italic(word)
+        if trans := "" if data["tr"] else transliterate(parts[0], word):
+            text += f" (<i>{trans}</i>)"
+        return text
 
     mentions = (
         "back-formation",

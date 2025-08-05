@@ -525,6 +525,14 @@ MT = {
     "纵": ["zòng", "zōng"],
     "鱒": ["zūn", "zùn"],
     "鳟": ["zūn", "zùn"],
+    # Added manually
+    "^": ["^", ""],
+    " ": [" ", ""],
+    "/": ["/", ""],
+    "一": ["yī", ""],
+    "不": ["bù", ""],
+    "語": ["yǔ", ""],
+    "褚": ["chǔ", ""],
 }
 
 
@@ -544,21 +552,7 @@ def tr(text: str, lang: str) -> str:
 
     if lang == "cmn":
         text = text.replace("#", "")
-
-        def replace_char(match: re.Match[str]) -> str:
-            char = match[0]
-            if char == "一":
-                return "yī"
-            elif char == "不":
-                return "bù"
-            elif result := MT.get(char):
-                nfd = unicodedata.normalize("NFD", result[0])
-                return re.sub(r"^[aeiou]", r"\\x01\g<0>", nfd)
-            return char
-
-        text = re.sub(r".", replace_char, text)
-        text = regex.sub(r"(?:(?<=^)|(?<=[\s\p{P}\x00]))(?=[^\s\p{P}\x00])(\^?)\x01", r"\1", text)
-        text = text.replace("\x01", "'")
+        text = "".join(MT[char][0] for char in text)
         return re.sub(r"\^('?.)", lambda m: m[1].upper(), text)
 
     if lang in ("csp", "yue", "zhx-tai"):
@@ -641,6 +635,8 @@ def transliterate(text: str, locale: str = "") -> str:
     >> transliterate("^褚", "cmn")
     'Chǔ'
     >>> transliterate("閩中語", "zh")
-    'mǐnzhōngyǔ'
+    'mǐnzhōngyǔ'
+    >>> transliterate("^閩中語 / ^閩中語", "zh")
+    'Mǐnzhōngyǔ / Mǐnzhōngyǔ'
     """
     return tr(text, locale)
