@@ -1,12 +1,8 @@
-# eBook Reader Dictionaries
+# reader.dict Monolingual Dictionaries
 
 [![Word of the day](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml/badge.svg)](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml)
 
-<br/>
-
-### 🌟 In order to be regularly updated, this project needs support; [click here](https://github.com/reader-dict/monolingual/issues/2339) to donate. 🌟
-
-<br/>
+🎇 Want to know what is being cooked, and what was done in past releases? Have a look at our [dicsussions](https://github.com/reader-dict/monolingual/discussions).
 
 ## Features
 
@@ -22,7 +18,7 @@
 
 ## Special
 
-Find **bilingual, and universal** dictionaries with more than 180 langs at the next-level project: [Reader Dict](https://www.reader-dict.com).
+Find **bilingual, and universal** dictionaries with more than 180 langs at the next-level project: [reader.dict Multilingual Dictionaries](https://www.reader-dict.com).
 
 ## Downloads
 
