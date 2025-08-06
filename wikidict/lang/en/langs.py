@@ -9470,7 +9470,7 @@ langs = {
     "yaf": "Yaka",
     "yag": "Yámana",
     "yah": "Yazghulami",
-    "yai": "Yagnobi",
+    "yai": "Yaghnobi",
     "yaj": "Banda-Yangere",
     "yak": "Yakima",
     "yal": "Yalunka",
