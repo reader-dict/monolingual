@@ -151,6 +151,14 @@ MAX_VARIANTS = 128
 log = logging.getLogger(__name__)
 
 
+class CustomLogFilter(logging.Filter):
+    """Filter for noisy PyGlossary messages."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        msg = record.getMessage()
+        return not msg.startswith(("duplicate language code", "Module 'lxml' not found"))
+
+
 class BaseFormat:
     """Base class for all dictionaries."""
 
@@ -480,6 +488,9 @@ class ConverterFromDictFile(DictFileFormat):
 
     def _convert(self) -> None:
         """Convert the DictFile to the target format."""
+        if pyglossary_logger := logging.getLogger("pyglossary"):
+            pyglossary_logger.addFilter(CustomLogFilter())
+
         # We do not want to use temporary SQLite databases. Without them:
         #   - that's faster;
         #   - it prevents concurrent access issues from secondary formatters;
