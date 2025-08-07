@@ -187,6 +187,7 @@ MERGE = {
         "verbal": "verbo",
     },
     "ro": {
+        "abr": "abreviere",
         "expr": "expresie",
         "top": "substantiv",
     },
