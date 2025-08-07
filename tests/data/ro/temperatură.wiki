@@ -1,7 +1,7 @@
 {{wikipedia}}
 =={{limba|ron}}==
 {{-etimologie-}}
-Din franceză ''[[température]]'' < latină ''[[temperatura]]''.
+* Din franceză ''[[température]]'' < latină ''[[temperatura]]''.
 {{-pronunție-}}
 * {{AFI}}: {{AFI|/tem.pe.raˈtu.rə/}}
 {{-substantiv-|ron}}

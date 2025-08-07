@@ -254,7 +254,7 @@ def find_etymology(
         case "pt":
             items = get_items((r"[:]", r"\*"))
         case "ro":
-            items = get_items(("",), skip=("=== {{etimologie",))
+            items = get_items(("#", r"\*"))
         case "sv":
             # Remove the leading template name, and trailing `}}`
             items = [

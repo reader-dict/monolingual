@@ -12,8 +12,9 @@ float_separator = ","
 thousands_separator = "."
 
 # Markers for sections that contain interesting text to analyse.
-head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
+section_patterns = ("#", r"\*")
 section_sublevels = (3,)
+head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
 etyl_section = ("{{etimologie}}",)
 sections = (
     *etyl_section,

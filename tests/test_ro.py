@@ -22,12 +22,13 @@ from wikidict.utils import process_templates
             ["/kɨnˈta/"],
             ["Din latină <i>cantare</i>."],
             {
+                "Expresie": ["<i><b>Joacă cum îi cântă</b> = face întocmai cum îi poruncește altul</i>"],
                 "Verb": [
                     "(<i>v.intranz. și tranz.</i>) a emite cu vocea sau cu un instrument un șir de sunete muzicale care se rânduiesc într-o melodie, într-un acord etc.",
                     "(<i>despre păsări, insecte etc.</i>) a scoate sunete plăcute la auz. caracteristice speciei.",
                     "(<i>v.intranz. și tranz.</i>) a scrie versuri în cinstea cuiva sau a ceva, a elogia (în versuri) pe cineva sau ceva; a descrie, a povesti ceva în versuri.",
                     "(<i>v.tranz.</i>) (<i>fam.</i>) a îndruga, a înșira vorbe goale.",
-                ]
+                ],
             },
             [],
         ),
@@ -108,7 +109,11 @@ from wikidict.utils import process_templates
                     "gradul, starea de căldură a unui mediu, a unui corp etc.",
                     "stare fiziologică constantă a corpului animal, reprezentând echilibrul dintre căldura produsă și cea pierdută.",
                     "gradul de căldură ridicată a corpului omenesc, reprezentând un simptom patologic; fierbințeală, febră.",
-                ]
+                ],
+                "Unități": [
+                    "Metric (Sistemul Internațional): grad Celsius/centigrade (°C), kelvin (K).",
+                    "Imperial: grade Fahrenheit (°F), grade Rankine (°R).",
+                ],
             },
             [],
         ),
