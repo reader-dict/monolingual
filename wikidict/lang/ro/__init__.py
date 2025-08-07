@@ -137,6 +137,9 @@ random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
+    >>> adjust_wikicode("{{(|adept al liberalismului}}\\n*{{eng}}: {{trad|en|liberal}}\\n{{-}}\\n{{)}}\\nfoo\\n{{bar}}#foo\\n{{(|baz}}\\n*sdf\\n{{)}}", "ro")
+    'foo\\n{{bar}}#foo'
+
     >>> adjust_wikicode("{{-avv-|ANY|ANY}}", "ro")
     '=== {{avv|ANY|ANY}} ==='
 
@@ -169,6 +172,18 @@ def adjust_wikicode(code: str, locale: str) -> str:
     '# {{flexion|fântânioară}}'
     """
     locale_3_chars, lang_name = langs[locale]
+
+    # Wipe out `{{(|...}}...{{)}}`
+    cleaned: list[str] = []
+    in_unwanted_section = False
+    for line in code.splitlines():
+        if line.startswith("{{(|"):
+            in_unwanted_section = True
+        elif line.startswith("{{)}}"):
+            in_unwanted_section = False
+        elif not in_unwanted_section:
+            cleaned.append(line)
+    code = "\n".join(cleaned)
 
     # `{{-avv-|ANY|ANY}}` → === `{{avv|ANY|ANY}} ===`
     code = re.sub(r"^\{\{-(.+)-\|(\w+)\|(\w+)\}\}", r"=== {{\1|\2|\3}} ===", code, flags=re.MULTILINE)
