@@ -197,4 +197,10 @@ MERGE = {
         "top": "substantiv",
         "verbpartikel": "verb",
     },
+    "zh": {
+        "动词": "動詞",  # verb
+        "名词": "名詞",  # noun
+        "發音": "讀音",  # pronunciation
+        "讀音2": "讀音",  # pronunciation
+    },
 }

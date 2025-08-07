@@ -32,6 +32,7 @@ jobs:
           - "ro"
           - "ru"
           - "sv"
+          - "zh"
 
     steps:
       - uses: actions/checkout@v4

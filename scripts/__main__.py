@@ -51,6 +51,9 @@ FILES = {
     "ru-langs.py": "wikidict/lang/ru/langs.py",
     "ru-langs-short.py": "wikidict/lang/ru/langs_short.py",
     "sv-langs.py": "wikidict/lang/sv/langs.py",
+    "zh-labels.py": "wikidict/lang/zh/labels.py",
+    "zh-langs.py": "wikidict/lang/zh/langs.py",
+    "zh-ts.py": "wikidict/lang/zh/m_ts.py",
 }
 
 # En error will be raised when the percentage of deletions from the new content
