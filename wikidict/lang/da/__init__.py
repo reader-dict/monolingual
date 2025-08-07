@@ -138,7 +138,8 @@ templates_multi = {
     # {{fysik}}
     "fysik": "'(' + italic('fysik') + ')'",
     # {{l|da|USA}}
-    "l": "parts[-1]",
+    # {{l|da|USA|America}} (we want "USA")
+    "l": "parts[2]",
     # {{label|militær|våben}}
     "label": "'(' + concat([italic(p) for p in parts[1:]], ', ') + ')'",
     # {{m}}
@@ -389,6 +390,8 @@ def adjust_wikicode(
     '# {{flexion|tale}}'
     >>> adjust_wikicode("# {{flertal af}} {{l|da|tale}}", "da")
     '# {{flexion|{{l|da|tale}}}}'
+    >>> adjust_wikicode("# {{flertal af}} {{l|da|tale|taler}}", "da")
+    '# {{flexion|{{l|da|tale|taler}}}}'
     """
     code = code.replace("----", "")
 
