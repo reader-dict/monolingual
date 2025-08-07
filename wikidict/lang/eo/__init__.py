@@ -266,8 +266,6 @@ def adjust_wikicode(code: str, locale: str) -> str:
     '==== {{xxx}} ===='
     >>> adjust_wikicode("{{xx-x}}", "eo")
     '==== {{xx-x}} ===='
-    >>> adjust_wikicode("===={{Tradukoj}}====", "eo")
-    '== {{Tradukoj}} =='
 
     >>> adjust_wikicode("{{Vorterseparo}}:{{radi|tret}} + {{fina|i}}", "eo")
     '\\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\\n'
@@ -277,6 +275,26 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Wipe out {{Deklinacio-eo}}
     code = code.replace(f"{{{{Deklinacio-{locale}}}}}", "")
 
+    # Wipe out unwanted sub-sections
+    cleaned: list[str] = []
+    in_unwanted_section = False
+    unwanted = (
+        "{{Anagramoj",
+        "{{Ekzemploj",
+        "{{Derivaĵoj",
+        "{{Referencoj",
+        "{{Sinonimoj",
+        "{{Tradukoj",
+        "{{Vortfaradoj",
+        "{{trad-",
+    )
+    for line in code.splitlines():
+        if line.startswith(("{{", "=")):
+            in_unwanted_section = line.startswith(unwanted)
+        if not in_unwanted_section:
+            cleaned.append(line)
+    code = "\n".join(cleaned)
+
     # Variants
     # {{form-eo}} → # {{form-eo}}
     code = code.replace(f"{{{{form-{locale}}}}}", f"# {{{{form-{locale}}}}}")
@@ -284,14 +302,6 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # {{xxx}} → ==== {{xxx}} ====
     # {{xx-x}} → ==== {{xx-x}} ====
     code = re.sub(r"^(\{\{[\w\-]+\}\})", r"==== \1 ====", code, flags=re.MULTILINE)
-
-    # ===={{Tradukoj}}==== → == {{Tradukoj}} ==
-    code = re.sub(
-        r"====\s*(\{\{(?:Ekzemploj|Derivaĵoj|Referencoj|Sinonimoj|Tradukoj|Vortfaradoj|trad-\w+)\}\})\s*====",
-        r"== \1 ==",
-        code,
-        flags=re.MULTILINE,
-    )
 
     # Easier pronunciation
     code = re.sub(r"==== {{Vorterseparo}} ====\s*:(.+)\s*", r"\n{{PRON|`\1`}}\n", code, flags=re.MULTILINE)
