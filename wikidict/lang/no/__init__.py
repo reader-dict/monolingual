@@ -112,8 +112,6 @@ templates_multi = {
     "qualifier": "term(parts[1])",
     # {{suffiks|konsentrere|sjon|språk=no}}
     "suffiks": 'f"{italic(parts[1])} + -{italic(parts[2])}"',
-    # {{Sup|1}}
-    "Sup": "superscript(parts[1])",
     # {{teleskopord|nei|ja|språk=no}}
     "teleskopord": 'f"teleskopord sammensatt av {parts[1]} og {parts[2]}"',
     # {{tidligere bøyningsform|no|sub|jul}}

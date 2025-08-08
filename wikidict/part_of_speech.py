@@ -69,6 +69,12 @@ PATTERNS = {
         # `verb auxiliar` → `verb`
         re.compile(r"(locuțiune|numeral|verb)\s+.*").sub,
     ],
+    "zh": [
+        # `發音1` → `發音`
+        # `發音 1` → `發音`
+        # `發音①` → `發音`
+        re.compile(r"([^\s\d①②③]+).*").sub,
+    ],
 }
 
 # Uniformize POS
@@ -196,5 +202,13 @@ MERGE = {
         "prepositionsfras": "preposition",
         "top": "substantiv",
         "verbpartikel": "verb",
+    },
+    "zh": {
+        "词源": "名詞",  # etymology → noun
+        "詞源": "名詞",  # etymology → noun
+        "名词": "名詞",  # noun
+        "名詞詞": "名詞",  # noun words → noun
+        "發音": "讀音",  # pronunciation
+        "动词": "動詞",  # verb
     },
 }

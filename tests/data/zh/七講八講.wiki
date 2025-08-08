@@ -1,0 +1,18 @@
+==漢語==
+{{zh-forms|s=七讲八讲}}
+
+===發音===
+{{zh-pron
+|mn=xm,twt,ph:chhit-kóng#-poeh-kóng/twk:chhit-kóng#-peh-kóng
+|w=sh:7chiq kaon paq kaon
+|cat=v
+}}
+
+===動詞===
+{{zh-verb}}
+
+# {{lb|zh|漳泉話|吳語}} [[亂講]]、[[胡說]]
+# {{lb|zh|柳州官話}} 用各種方式解釋
+====同義詞====
+{{zh-dial|亂說}}
+
