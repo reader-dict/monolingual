@@ -3,7 +3,7 @@
 import logging
 from collections import defaultdict
 
-from ..user_functions import superscript
+from ..user_functions import subscript, superscript
 
 log = logging.getLogger(__name__)
 
@@ -69,6 +69,8 @@ def last_template_handler(
         >>> last_template_handler(["formatnum", "42000"], "no")
         '42 000'
 
+        >>> last_template_handler(["sub", "42"], "no")
+        '<sub>42</sub>'
         >>> last_template_handler(["sup", "42"], "no")
         '<sup>42</sup>'
     """
@@ -85,6 +87,9 @@ def last_template_handler(
         from . import thousands_separator as locale_aware_ts
 
         return number(parts[0], locale_aware_fs[locale], locale_aware_ts[locale])
+
+    if tpl in {"sub", "Sub"}:
+        return subscript(parts[0])
 
     if tpl in {"sup", "Sup"}:
         return superscript(parts[0])

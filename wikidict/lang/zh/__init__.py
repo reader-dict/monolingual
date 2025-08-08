@@ -9,7 +9,7 @@ float_separator = ","
 thousands_separator = ","
 
 # Markers for sections that contain interesting text to analyse.
-section_patterns = ("#", r"\*")
+section_patterns = ("#", r"\*", ":")
 head_sections = ("漢語", "汉语", "{{漢}}")
 etyl_section = ("词源", "詞源")
 sections = (
@@ -28,6 +28,7 @@ sections = (
     "漢字",  # Chinese character
     "分詞",  # participle
     "分词",  # part of speech
+    "釋義",  # explanation
 )
 
 # Variants
@@ -61,6 +62,7 @@ templates_ignored = (
     "senseid",
     "sid",
     "zh-forms",
+    "zh-pron",
 )
 
 # Templates more complex to manage.
@@ -95,7 +97,9 @@ templates_multi = {
 }
 
 # Templates that will be completed/replaced using custom text.
-# templates_other = {}
+templates_other = {
+    "†": "†",
+}
 
 
 def last_template_handler(
@@ -167,6 +171,11 @@ def adjust_wikicode(code: str, locale: str) -> str:
 
     >>> adjust_wikicode("{{trans-top|...}}\\n...\\n{{trans-bottom}}", "zh")
     ''
+
+    >>> adjust_wikicode("; '''限定代詞'''", "zh")
+    ''
+    >>> adjust_wikicode(";限定代詞", "zh")
+    ''
     """
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
@@ -185,5 +194,9 @@ def adjust_wikicode(code: str, locale: str) -> str:
             elif not in_unwanted_section:
                 cleaned.append(line)
         code = "\n".join(cleaned)
+
+    # `; '''限定代詞'''` → `:: 限定代詞`
+    # `;限定代詞` → `:: 限定代詞`
+    code = re.sub(r"^;\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
 
     return code

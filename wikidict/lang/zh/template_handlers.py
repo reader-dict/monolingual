@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-from ...user_functions import concat, extract_keywords_from, italic, ruby, strong
+from ...user_functions import concat, extract_keywords_from, italic, ruby
 from .langs import langs
 from .m_ts import ts
 from .transliterator import transliterate
@@ -103,6 +103,10 @@ def gender_number_specs(parts: str) -> str:
     return " ".join(text)
 
 
+def larger(text: str) -> str:
+    return f'<span style="font-size:larger">{text}</span>'
+
+
 def gloss_tr_poss(data: defaultdict[str, str], gloss: str, *, trans: str = "") -> str:
     more = []
     text = ""
@@ -158,24 +162,67 @@ def render_cmn_erhua_form_of(tpl: str, parts: list[str], data: defaultdict[str, 
 
 def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
+    >>> render_foreign_derivation("back-formation", ["zh"], defaultdict(str))
+    '逆構詞'
+    >>> render_foreign_derivation("back-formation", ["zh", "咕嚕肉"], defaultdict(str))
+    '<span style="font-size:larger">咕嚕肉／咕噜肉</span> 的逆構詞'
+
     >>> render_foreign_derivation("bor", ["zh", "en", "sandwich"], defaultdict(str))
-    '英語 <i>sandwich</i>'
+    '英語 <span style="font-size:larger">sandwich</span>'
     >>> render_foreign_derivation("bor+", ["zh", "en", "sandwich"], defaultdict(str))
-    '借自英語 <i>sandwich</i>'
+    '借自英語 <span style="font-size:larger">sandwich</span>'
+
+    >>> render_foreign_derivation("calque", ["zh", "sa", "महायान"], defaultdict(str))
+    '仿譯自梵語 <span style="font-size:larger">महायान</span>'
+
+    >>> render_foreign_derivation("cog", ["mkh-vie-pro", "*-taːw", "", "刀"], defaultdict(str))
+    '原始越語 *-taːw (“刀”)'
 
     >>> render_foreign_derivation("der", ["zh", "en", "sandwich"], defaultdict(str))
-    '英語 <i>sandwich</i>'
+    '英語 <span style="font-size:larger">sandwich</span>'
     >>> render_foreign_derivation("der+", ["zh", "en", "sandwich"], defaultdict(str))
-    '派生自英語 <i>sandwich</i>'
+    '派生自英語 <span style="font-size:larger">sandwich</span>'
+
+    >>> render_foreign_derivation("etyl", ["ru", "zh"], defaultdict(str))
+    '俄語'
+
+    >>> render_foreign_derivation("inh", ["zh", "sit-pro", "*m-daj ~ m-di"], defaultdict(str))
+    '原始漢藏語 *m-daj ~ m-di'
+    >>> render_foreign_derivation("inh+", ["zh", "sit-pro", "*m-daj ~ m-di"], defaultdict(str))
+    '繼承自原始漢藏語 *m-daj ~ m-di'
+
+    >>> render_foreign_derivation("l", ["en", "VIP"], defaultdict(str))
+    '<span style="font-size:larger">VIP</span>'
+
+    >>> render_foreign_derivation("lbor", ["zh", "la", "Epicūrus"], defaultdict(str))
+    '古典借詞，源自拉丁語 <span style="font-size:larger">Epicūrus</span>'
+
+    >>> render_foreign_derivation("m", ["mnc", "ᠰᠠᡳᠴᡠᠩᡤᠠ ᡶᡝᠩᡧᡝᠨ"], defaultdict(str))
+    '<span style="font-size:larger">ᠰᠠᡳᠴᡠᠩᡤᠠ ᡶᡝᠩᡧᡝᠨ</span>'
+    >>> render_foreign_derivation("m+", ["mnc", "ᠰᠠᡳᠴᡠᠩᡤᠠ ᡶᡝᠩᡧᡝᠨ"], defaultdict(str))
+    '滿語 <span style="font-size:larger">ᠰᠠᡳᠴᡠᠩᡤᠠ ᡶᡝᠩᡧᡝᠨ</span>'
+
+    >>> render_foreign_derivation("ncog", ["nan-hbl", "跤"], defaultdict(str))
+    '泉漳話 <span style="font-size:larger">跤</span>'
+
+    >>> render_foreign_derivation("obor", ["zh", "ja", "-"], defaultdict(str))
+    '形譯詞自日語'
+    >>> render_foreign_derivation("obor", ["zh", "ja", "aaaa"], defaultdict(str))
+    '形譯詞，源自日語 <span style="font-size:larger">aaaa</span>'
+
+    >>> render_foreign_derivation("pcal", ["zh", "en", "Eiffel Tower"], defaultdict(str))
+    '部分仿譯自英語 <span style="font-size:larger">Eiffel Tower</span>'
+
+    >>> render_foreign_derivation("psm", ["zh", "en", "DotA"], defaultdict(str))
+    '音義兼譯自英語 <span style="font-size:larger">DotA</span>'
+
+    >>> render_foreign_derivation("semantic loan", ["zh", "en", "forget-me-not"], defaultdict(str))
+    '意譯自英語 <span style="font-size:larger">forget-me-not</span>'
+
+    >>> render_foreign_derivation("transliteration", ["zh", "ru", "Пу́тин"], defaultdict(str))
+    '音譯自俄語 <span style="font-size:larger">Пу́тин</span>'
     """
     tpl = tpl.lower()
-
-    # Short path for the {{m|en|WORD}} template
-    if tpl in {"m", "m-lite"} and len(parts) == 2 and not data:
-        word = parts[1]
-        if word.startswith("w:"):
-            word = word[2:]
-        return strong(word) if parts[0] in {"en", "mul"} else italic(word)
 
     mentions = (
         "back-formation",
@@ -196,9 +243,9 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
         "cog-lite",
         "cognate",
         "etyl",
-        "false cognate",
-        "fcog",
-        "langname-mention",
+        # "false cognate",
+        # "fcog",
+        # "langname-mention",
         "m+",
         "nc",
         "ncog",
@@ -209,6 +256,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     if tpl not in dest_lang_ignore and parts:
         parts.pop(0)  # Remove the destination language
 
+    is_back_formation = tpl in {"back-formation", "backformation", "back-form", "backform", "bf"}
     dst_locale = parts.pop(0) if parts else data["2"]
 
     if tpl == "etyl" and parts:
@@ -216,83 +264,78 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
 
     phrase = ""
     starter = ""
-    if data["notext"] != "1":
+    if not data["notext"]:
         if tpl in {"bor+"}:
             starter = "借自"
         # elif tpl in {"adapted borrowing", "abor"}:
         #     if is_from := bool(parts and parts[0] == "-"):
         #         parts.pop(0)
         #     starter = "同化借詞 " + ("from " if is_from else "of ")
-        # elif tpl in {"calque", "cal", "clq"}:
-        #     starter = "calque of "
-        if tpl in {"der+"}:
+        elif tpl in {"calque", "cal", "clq"}:
+            starter = "仿譯自"
+        elif tpl in {"der+"}:
             starter = "派生自"
         # if tpl in {"false cognate", "fcog"}:
         #     starter = "false cognate of "
-        # elif tpl in {"inh+"}:
-        #     starter = "inherited from "
-        # elif tpl in {"partial calque", "pcal", "pclq"}:
-        #     starter = "partial calque of "
-        # elif tpl in {"semantic loan", "sl"}:
-        #     starter = "semantic loan of "
-        # elif tpl in {"learned borrowing", "lbor"}:
-        #     starter = "learned borrowing from "
+        elif tpl in {"inh+"}:
+            starter = "繼承自"
+        elif tpl in {"partial calque", "pcal", "pclq"}:
+            starter = "部分仿譯自"
+        elif tpl in {"semantic loan", "sl"}:
+            starter = "意譯自"
+        elif tpl in {"learned borrowing", "lbor"}:
+            starter = "古典借詞，源自"
         # elif tpl in {"semi-learned borrowing", "slbor"}:
         #     starter = "semi-learned borrowing from "
-        # elif tpl in {"orthographic borrowing", "obor"}:
-        #     starter = "orthographic borrowing from "
+        elif tpl in {"orthographic borrowing", "obor"}:
+            starter = "形譯詞，源自" if parts and parts[0] != "-" else "形譯詞自"
         # elif tpl in {"unadapted borrowing", "ubor"}:
         #     starter = "unadapted borrowing from "
-        # elif tpl in {"phono-semantic matching", "psm"}:
-        #     starter = "phono-semantic matching of "
-        # elif tpl in {"transliteration", "translit"}:
-        #     starter = "transliteration of "
-        # elif tpl in {"back-formation", "backformation", "back-form", "backform", "bf"}:
-        #     starter = "back-formation"
-        #     if parts:
-        #         starter += " from"
-        phrase = starter if data["nocap"] == "1" else starter.capitalize()
+        elif tpl in {"phono-semantic matching", "psm"}:
+            starter = "音義兼譯自"
+        elif tpl in {"transliteration", "translit"}:
+            starter = "音譯自"
+        elif is_back_formation:
+            starter = " 的逆構詞" if parts else "逆構詞"
 
     lang = "translingual" if dst_locale == "mul" else langs.get(dst_locale, "")
-    phrase += lang if tpl not in mentions else ""
+    if tpl not in mentions:
+        phrase += lang
 
     if parts or data["3"]:
         word = parts.pop(0) if parts else data["3"]
         if word.startswith("w:"):
             word = word[2:]
         if word == "-":
-            return phrase
+            return f"{starter}{phrase}"
         if "//" in word:
             word = word.replace("//", " / ")
     else:
         word = ""
 
     word = data["alt"] or word
-    gloss = data["t"] or data["gloss"]
 
     if parts:
         word = parts.pop(0) or word  # 4, alt=
 
-    if tpl in {"l", "l-lite", "link", "ll"}:
-        phrase += f" {word}"
-    elif word:
-        if (
-            (starter == "partial calque of " and dst_locale in {"mul", "zh"})
-            or starter == "adapted borrowing of "
-            or dst_locale in {"ar", "ja"}
-        ):
-            phrase += f" {word}"
-        else:
-            phrase += f" {italic(word)}"
+    if dst_locale == "zh":
+        word = render_zh_l(tpl, [word], data)
+
+    if word:
+        phrase += f" {word if word.startswith('*') else larger(word)}"
+
     if data["g"]:
         phrase += f" {gender_number_specs(data['g'])}"
-    trans = ""  # trans = "" if data["tr"] else transliterate(dst_locale, word)
+
+    gloss = data["t"] or data["gloss"]
     if parts:
         gloss = parts.pop(0)  # 5, t=, gloss=
 
+    trans = "" if data["tr"] else transliterate(dst_locale, word)
     phrase += gloss_tr_poss(data, gloss, trans=trans)
+    phrase = phrase.lstrip()
 
-    return phrase.lstrip()
+    return f"{phrase}{starter}" if is_back_formation else f"{starter}{phrase}"
 
 
 def render_ja_r(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
