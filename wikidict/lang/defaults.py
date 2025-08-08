@@ -3,6 +3,8 @@
 import logging
 from collections import defaultdict
 
+from ..user_functions import superscript
+
 log = logging.getLogger(__name__)
 
 # Float number separator
@@ -66,6 +68,9 @@ def last_template_handler(
         '42 000'
         >>> last_template_handler(["formatnum", "42000"], "no")
         '42 000'
+
+        >>> last_template_handler(["sup", "42"], "no")
+        '<sup>42</sup>'
     """
     from ..user_functions import capitalize, extract_keywords_from, lookup_italic, number, term
 
@@ -80,6 +85,9 @@ def last_template_handler(
         from . import thousands_separator as locale_aware_ts
 
         return number(parts[0], locale_aware_fs[locale], locale_aware_ts[locale])
+
+    if tpl in {"sup", "Sup"}:
+        return superscript(parts[0])
 
     if tpl == "t2i-Egyd":
         return render_demotic(tpl, parts, data, word=word)

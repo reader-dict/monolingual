@@ -360,8 +360,6 @@ templates_multi = {
     "station code": 'f"<i>(rail transport) The station code of</i> <b>{parts[2] or parts[1]}</b> <i>in {parts[3]}</i>."',
     # {{sub|KI}}
     "sub": "subscript(parts[1])",
-    # {{sup|KI}}
-    "sup": "superscript(parts[1])",
     # {{syc-root|ܪ ܩ ܥ}}
     "syc-root": "parts[-1]",
     # {{t|mi|pōhutukawa}}

@@ -277,6 +277,13 @@ def format_pos(locale: str, value: str) -> str:
     'Verb'
     >>> format_pos("ro", "verb")
     'Verb'
+
+    >>> format_pos("zh", "發音 1")
+    '讀音'
+    >>> format_pos("zh", "發音1")
+    '讀音'
+    >>> format_pos("zh", "讀音①")
+    '讀音'
     """
     for pattern in part_of_speech.PATTERNS.get(locale, []):
         value = pattern(r"\1", value)

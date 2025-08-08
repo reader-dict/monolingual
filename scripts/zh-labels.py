@@ -20,21 +20,39 @@ def process_display(display: str) -> str:
     return display
 
 
-def get_labels_data() -> dict[str, str]:
-    text = clean_lua(get_content("https://zh.wiktionary.org/wiki/Module:Labels/data?action=raw"))
+def get_labels_data(url: str) -> dict[str, str]:
+    text = clean_lua(get_content(f"{url}?action=raw"))
     repl = (
+        "addl",
         "aliases",
+        "country",
+        "def",
         "deprecated",
         "deprecated_aliases",
         "display",
         "glossary",
+        "langs",
         "omit_postComma",
+        "omit_postSpace",
+        "omit_preComma",
+        "omit_preSpace",
+        "othercat",
+        "parent",
+        "parent_label",
         "plain_categories",
+        "prep",
         "pos_categories",
+        "region",
         "regional_categories",
+        "nolink",
+        "noreg",
         "sense_categories",
+        "special_display",
         "topical_categories",
         "track",
+        "type",
+        "verb",
+        "Wikidata",
         "Wikipedia",
     )
     text = re.sub(rf"[ \t]+({'|'.join(repl)})[\s]*=", r'    "\1":', text)
@@ -108,8 +126,18 @@ def get_etymology_data() -> dict[str, str]:
     return all_labels
 
 
-labels = get_labels_data() | get_etymology_data()
+labels: dict[str, str] = {}
+for url in [
+    "https://zh.wiktionary.org/wiki/Module:labels/data",
+    "https://zh.wiktionary.org/wiki/Module:labels/data/lang/zh",
+    "https://zh.wiktionary.org/wiki/Module:labels/data/qualifiers",
+    "https://zh.wiktionary.org/wiki/Module:labels/data/regional",
+    "https://zh.wiktionary.org/wiki/Module:labels/data/topical",
+]:
+    labels |= get_labels_data(url)
+
+labels |= get_etymology_data()
 print("labels = {")
 for key, value in sorted(labels.items()):
-    print(f'    "{key}": "{value}",')
+    print(f'    "{key}": {value!r},')
 print(f"}}  # {len(labels):,}")

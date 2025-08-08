@@ -1,9 +1,10 @@
 import re
 from collections import defaultdict
 
-from ...user_functions import chinese, concat, extract_keywords_from, italic, strong
+from ...user_functions import concat, extract_keywords_from, italic, ruby, strong
 from .langs import langs
 from .m_ts import ts
+from .transliterator import transliterate
 
 
 def dot(text: str, data: defaultdict[str, str]) -> str:
@@ -83,7 +84,7 @@ def gender_number_specs(parts: str) -> str:
         "mfbysense": [specs["m"], specs["f"]],
         "mfequiv": [specs["m"], specs["f"]],
     }
-    result = []
+    text = []
 
     for part in parts.split("-"):
         if part in specs_combined:
@@ -94,17 +95,17 @@ def gender_number_specs(parts: str) -> str:
                 res += " 遵詞義"
             elif "equiv" in part:
                 res += " 同義"
-            result.append(res)
-            return " 單 ".join(result)
+            text.append(res)
+            return " 單 ".join(text)
         else:
-            result.append(specs[part])
+            text.append(specs[part])
 
-    return " ".join(result)
+    return " ".join(text)
 
 
 def gloss_tr_poss(data: defaultdict[str, str], gloss: str, *, trans: str = "") -> str:
-    local_phrase = []
-    phrase = ""
+    more = []
+    text = ""
     trts = ""
     if (tr := data["tr"]) and tr != "-":
         trts += italic(tr)
@@ -113,18 +114,32 @@ def gloss_tr_poss(data: defaultdict[str, str], gloss: str, *, trans: str = "") -
             trts += " "
         trts += f"/{data['ts']}/"
     if trts:
-        local_phrase.append(trts)
+        more.append(trts)
     if trans:
-        local_phrase.append(italic(trans))
+        more.append(italic(trans))
     if gloss:
-        local_phrase.append(f"“{gloss}”")
+        more.append(f"“{gloss}”")
     if data["pos"]:
-        local_phrase.append(data["pos"])
+        more.append(data["pos"])
     if data["lit"]:
-        local_phrase.append(f"literally “{data['lit']}”")
-    if local_phrase:
-        phrase += f" ({concat(local_phrase, ', ')})"
-    return phrase
+        more.append(f"字面意思為“{data['lit']}”")
+    if more:
+        text += f" ({concat(more, ', ')})"
+    return text
+
+
+def zh_meaning(parts: list[str]) -> tuple[str, str, list[str]]:
+    trad, simp = [], []
+    trans: list[str] = []
+
+    for arg in parts:
+        if tr := transliterate("zh", arg):
+            trans.append(tr)
+        part = arg.lstrip("^")
+        trad.append(part)
+        simp.append(ts(part))
+
+    return "".join(trad), "".join(simp), trans
 
 
 def render_cmn_erhua_form_of(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -134,12 +149,11 @@ def render_cmn_erhua_form_of(tpl: str, parts: list[str], data: defaultdict[str, 
     >>> render_cmn_erhua_form_of("cmn-erhua form of", ["foo"], defaultdict(str), word="一丁點兒")
     '(官話) 一丁點／一丁点 (“foo”) 的兒化形式。'
     """
-    # TO DO: transliterations
     label = "" if data["nolb"] else "(官話) "
     data["notext"] = "1"
     if parts:
         data["t"] = parts[0]
-    return f"{label}{render_zh_short(tpl, [word[:-1]], data)}{dot(' 的兒化形式', data)}"
+    return f"{label}{render_zh_l(tpl, [word[:-1]], data)} 的兒化形式。"
 
 
 def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -154,6 +168,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("der+", ["zh", "en", "sandwich"], defaultdict(str))
     '派生自英語 <i>sandwich</i>'
     """
+    tpl = tpl.lower()
+
     # Short path for the {{m|en|WORD}} template
     if tpl in {"m", "m-lite"} and len(parts) == 2 and not data:
         word = parts[1]
@@ -279,6 +295,101 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     return phrase.lstrip()
 
 
+def render_ja_r(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ja_r("ja-r", ["羨ましい"], defaultdict(str))
+    '羨ましい'
+    >>> render_ja_r("ja-r", ["羨ましい", "羨ましい"], defaultdict(str))
+    '羨ましい'
+    >>> render_ja_r("ja-r", ["羨ましい", "うらやましい"], defaultdict(str))
+    '<ruby>羨ましい<rt>うらやましい</rt></ruby>'
+    >>> render_ja_r("ja-r", ["羨ましい", "うらやましい", "a"], defaultdict(str, {"lit": "lit"}))
+    '<ruby>羨ましい<rt>うらやましい</rt></ruby> (“a”, 字面意思為“lit”)'
+    >>> render_ja_r("ja-r", ["羨ましい", "", "a"], defaultdict(str, {"lit": "lit"}))
+    '羨ましい (“a”, 字面意思為“lit”)'
+
+    >>> render_ja_r("ja-r", ["任天堂", "^ニンテンドー"], defaultdict(str))
+    '<ruby>任天堂<rt>ニンテンドー</rt></ruby>'
+
+    >>> render_ja_r("ja-r", ["物%の%哀れ", "もの %の% あわれ"], defaultdict(str))
+    '<ruby>物<rt>もの</rt></ruby>の<ruby>哀れ<rt>あわれ</rt></ruby>'
+    >>> render_ja_r("ja-r", ["物 の 哀れ", "もの の あわれ"], defaultdict(str))
+    '<ruby>物<rt>もの</rt></ruby>の<ruby>哀れ<rt>あわれ</rt></ruby>'
+
+    >>> render_ja_r("ryu-r", ["唐手", "とーでぃー"], defaultdict(str, {"t": "Chinese hand"}))
+    '<ruby>唐手<rt>とーでぃー</rt></ruby> (“Chinese hand”)'
+
+    >>> render_ja_r("ja-compound", ["唐手", "とーでぃー"], defaultdict(str, {"t": "Chinese hand", "noquote": "1"}))
+    '<ruby>唐手<rt>とーでぃー</rt></ruby> (Chinese hand)'
+    """
+    if len(parts) == 1 or not parts[1]:
+        text = parts[0]
+    else:
+        if parts[0] == parts[1]:
+            text = parts[0]
+        else:
+            parts[1] = parts[1].removeprefix("^")
+
+            if sep := "%" if "%" in parts[0] else " " if " " in parts[0] else "":
+                texts = [part.strip() for part in parts[0].split(sep)]
+                tops = [part.strip() for part in parts[1].split(sep)]
+                text = "".join(t if t == p else ruby(t, p) for t, p in zip(texts, tops))
+            else:
+                text = ruby(parts[0], parts[1])
+
+    more: list[str] = []
+    if len(parts) > 2:
+        more.append(f"“{parts[2]}”")
+    if lit := data["lit"]:
+        more.append(f"字面意思為“{lit}”")
+    if t := data["t"] or transliterate("ja", parts[0]):
+        more.append(t if data["noquote"] else f"“{t}”")
+    if more:
+        text += f" ({', '.join(more)})"
+
+    return text
+
+
+def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_name_translit("name translit", ["zh", "en,en,en", "Cubitt", "more"], defaultdict(str, {"type": "姓氏", "eq": "eq", "t": "t", "tr": "tr", "xlit": "xlit"}))
+    '英語、英語和英語姓氏 <i>Cubitt</i> (tr，“t”)，xlit 的轉寫，等同於 eq；或來自<i>more</i> 的轉寫'
+    """
+    parts.pop(0)  # Destination language
+    src_langs = parts.pop(0)
+    src_lang = src_langs.split(",", 1)[0]
+
+    origins = concat([langs[src_lang.strip()] for src_lang in src_langs.split(",")], sep="、", last_sep="和")
+    text = f"{origins}{data['type']}"
+    if not parts:
+        return text
+
+    what = parts.pop(0)
+    tr = data["tr"] or transliterate(src_lang, what)
+    t = data["t"]
+    xlit = data["xlit"]
+    eq = data["eq"]
+
+    text += f" {italic(what)}"
+    if tr:
+        text += f" ({tr}，“{t}”)" if t else f" ({t})"
+    elif t:
+        text += f" ({t})"
+
+    if xlit := data["xlit"]:
+        text += f"，{xlit} 的轉寫"
+
+    if eq := data["eq"]:
+        text += f"，等同於 {eq}"
+
+    while parts:
+        text += f"；或來自{italic(parts[0])}"
+        if transliterated := transliterate(src_lang, parts.pop(0)):
+            text += f" ({transliterated})"
+
+    return f"{text} 的轉寫"
+
+
 def render_och_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_och_l("och-l", ["悠"], defaultdict(str))
@@ -286,11 +397,20 @@ def render_och_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     >>> render_och_l("och-l", ["悠", "some def"], defaultdict(str))
     '悠 (上古, “some def”)'
     """
-    # TO DO: transliteration
-    text = f"{parts.pop(0)} (上古"
+    text = f"{parts[0]} (上古"
+    if tr := transliterate("och", parts.pop(0)):
+        text += f", <i>{tr}</i>"
     if parts:
         text += f", “{parts[0]}”"
     return f"{text})"
+
+
+def render_zh_altname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_zh_altname("zh-alt-name", ["七邊形"], defaultdict(str))
+    '七邊形／七边形的別名。'
+    """
+    return f"{render_zh_l(tpl, parts, data, word=word)}的別名。"
 
 
 def render_zh_div(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -322,11 +442,32 @@ def render_zh_div(tpl: str, parts: list[str], data: defaultdict[str, str], *, wo
 
 def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
-    >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str, {"tr": "siáu"}))
-    '痟 (<i>siáu</i>, “mad”)'
+    >>> render_zh_l("zh-l", ["一丁點"], defaultdict(str))
+    '一丁點／一丁点'
+    >>> render_zh_l("zh-l", ["一丁點", "foo"], defaultdict(str, {"lit": "lit", "t": "t", "tr": "tr"}))
+    '一丁點／一丁点 (<i>tr</i>, “t”, 字面意思為“lit”)'
     """
-    # TO DO: add transliterations (ex: https://zh.wiktionary.org/wiki/2019冠狀病毒病)
-    return chinese(parts, data)
+    trad, simp, trans = zh_meaning([parts.pop(0)])
+
+    text = f"{trad}{f'／{simp}' if trad != simp else ''}"
+    tr = data["tr"] or parts.pop(0) if parts else " ".join(trans)
+    gl = data["t"] or (parts.pop(0) if parts else "")
+    if not tr and not gl and not data["lit"]:
+        return text
+
+    text += " ("
+    if tr:
+        text += italic(tr)
+    if gl:
+        if tr:
+            text += ", "
+        text += f"“{gl}”"
+    if data["lit"]:
+        if tr:
+            text += ", 字面意思為"
+        text += f"“{data['lit']}”"
+    text += ")"
+    return text
 
 
 def render_zh_mw(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -384,35 +525,25 @@ def render_zh_short(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     Source: https://zh.wiktionary.org/w/index.php?title=Module:Zh/templates&oldid=9109462#L-239
 
     >>> render_zh_short("zh-short", ["一剎那"], defaultdict(str))
-    '一剎那／一刹那'
-    >>> render_zh_short("zh-short", ["一剎那"], defaultdict(str, {"tr": "siáu"}))
-    '一剎那／一刹那 (siáu)'
+    '一剎那／一刹那 的簡稱。'
+    >>> render_zh_short("zh-short", ["一剎那", "foo"], defaultdict(str, {"lit": "lit", "tr": "tr"}))
+    '一剎那foo／一刹那foo (tr) 的簡稱。'
     """
-    # TO DO: transliterations
     pinyin = data["tr"]
     gloss = re.sub(r"[\u200b\u200c]", "", data["t"])
     notext = data["notext"]
     comb = data["and"]
     noterm = not parts
-    tr: list[str] = []
-    t, s, anno = [], [], []
+    anno = []
 
     start = ""
 
     if comb:
         return f"{start}{' + '.join(parts)}{f': “{gloss}”' if gloss else ''}"
 
-    for arg in parts:
-        # if not pinyin and (trans := transliterate("zh", arg)):
-        #     tr.append(trans)
-        part = arg.lstrip("^")
-        t.append(part)
-        s.append(ts(part))
+    trad, simp, trans = zh_meaning(parts)
 
-    trad = "".join(t)
-    simp = "".join(s)
-
-    pinyin_val = pinyin if pinyin != "-" else (" ".join(tr) if len(tr) == len(t) else "")
+    pinyin_val = pinyin if pinyin and pinyin != "-" else (" ".join(trans) if len(trans) == len(trad) else "")
     if pinyin_val:
         anno.append(pinyin_val)
 
@@ -423,6 +554,7 @@ def render_zh_short(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
         ("" if notext else start)
         + ("" if noterm else trad + (f"／{simp}" if trad != simp else ""))
         + (f" ({', '.join(anno)})" if (pinyin_val or gloss) else "")
+        + " 的簡稱。"
     )
 
 
@@ -440,12 +572,27 @@ def render_zh_x(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     return f"<dl><dt>{form}</dt><dd><i>{trans}</i></dd></dl>"
 
 
+def render_粵(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_粵("粵", [], defaultdict(str))
+    '〈粵〉'
+    >>> render_粵("粵", [], defaultdict(str, {"无": "1"}))
+    '粵'
+    >>> render_粵("粵", ["客家", "客家"], defaultdict(str))
+    '〈粵／客家／客家〉'
+    """
+    text = concat(["粵", *parts], "／")
+    return text if data["无"] else f"〈{text}〉"
+
+
 template_mapping = {
     "och-l": render_och_l,
+    "ja-r": render_ja_r,
     "zh-div": render_zh_div,
     "zh-mw": render_zh_mw,
     "zh-pron": render_zh_pron,
     "zh-x": render_zh_x,
+    "粵": render_粵,
     **dict.fromkeys(
         {
             "adapted borrowing",
@@ -457,8 +604,10 @@ template_mapping = {
             "bf",
             "borrowed",
             "bor",
+            "Bor",
             "bor-lite",
             "bor+",
+            "Bor+",
             "calque",
             "cal",
             "clq",
@@ -510,9 +659,13 @@ template_mapping = {
         },
         render_foreign_derivation,
     ),
-    **dict.fromkeys({"cmn-erhua form of", "zh-erhua form of"}, render_cmn_erhua_form_of),
+    **dict.fromkeys({"cmn-erhua form of", "Cmn-erhua form of", "zh-erhua form of"}, render_cmn_erhua_form_of),
+    **dict.fromkeys({"name translit", "Name translit"}, render_name_translit),
+    **dict.fromkeys({"zh-altname", "Zh-altname", "zh-alt-name", "Zh-alt-name", "中文別名"}, render_zh_altname),
     **dict.fromkeys({"zh-l", "zh-m"}, render_zh_l),
-    **dict.fromkeys({"zh-short", "Zh-short-comp"}, render_zh_short),
+    **dict.fromkeys(
+        {"zh-short", "Zh-short", "zh-short-comp", "Zh-short-comp", "zh-etym-short", "Zh-etym-short"}, render_zh_short
+    ),
 }
 
 

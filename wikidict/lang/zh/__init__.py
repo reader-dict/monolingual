@@ -5,7 +5,7 @@ import re
 # Float number separator
 float_separator = ","
 
-# Thousads separator
+# Thousands separator
 thousands_separator = ","
 
 # Markers for sections that contain interesting text to analyse.
@@ -35,7 +35,7 @@ sections = (
 # Variants
 variant_titles = sections
 variant_templates = (
-    "{{異體}}",  # heteromorph
+    "{{異體",  # heteromorph
 )
 
 # Templates to ignore: the text will be deleted.
@@ -49,6 +49,7 @@ templates_ignored = (
     "cite-book",
     "cln",
     "dead link",
+    "Dead link",
     "def-uncertain",
     "rfdef",
     "Rfdef",
@@ -59,6 +60,8 @@ templates_ignored = (
     "Rfv-etym",
     "rfv-sense",
     "Rfv-sense",
+    "senseid",
+    "sid",
     "zh-forms",
 )
 
@@ -66,14 +69,21 @@ templates_ignored = (
 templates_multi = {
     # {{abbreviation of|zh|留名}}
     "abbreviation of": "f'{parts[2]}之縮寫。'",
+    # {{cmn-pinyin of|塔吉克}}
+    "cmn-pinyin of": "f'<span style=\"font-size:larger\">{concat(parts[1:], '、')}</span>的漢語拼音讀法'",
     # {{misspelling of|zh|稍候}}
     "misspelling of": "f'{parts[2]}的拼寫錯誤。'",
+    # {{zh-character component|彡}}
+    "zh-character component": "f'漢字部件「{parts[1]}」的名稱。'",
     # {{defdate|from 15th c.}}
     **dict.fromkeys(
-        {"defdate", "Defdate"}, "small('（' + parts[1] + (f'–{parts[2]}' if len(parts) > 2 else '') + '）')"
+        {"defdate", "Defdate"},
+        "small('（' + parts[1] + (f'–{parts[2]}' if len(parts) > 2 else '') + '）')",
     ),
     # {{gloss|對患者}}
     **dict.fromkeys({"gloss", "gl"}, "f'（{parts[1]}）'"),
+    # {{IPA|zh|/tʷãɔ̃⁵⁴⁵⁴/}}
+    **dict.fromkeys({"IPA", "Ipa", "IPAchar", "國際音標/字體", "IPAfont"}, "parts[-1]"),
     # {{lang|zh|中華}}
     **dict.fromkeys({"lang", "Lang"}, "parts[-1]"),
     # {{non-gloss definition|用來表示全範圍}}
@@ -127,7 +137,7 @@ def last_template_handler(
 
     extract_keywords_from(parts)
 
-    if tpl in {"lb", "label"}:
+    if tpl in {"label", "lbl", "lb"}:
         text = ""
         sep = "，"
         for label in parts[1:]:
@@ -156,10 +166,26 @@ def adjust_wikicode(code: str, locale: str) -> str:
     """
     >>> adjust_wikicode("{{zh-pron\\n|m=huángmǎguà,er=y\\n|c=wong4 maa5 kwaa3-2\\n|cat=n\\n}}", "zh")
     '# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
+
+    >>> adjust_wikicode("{{trans-top|...}}\\n...\\n{{trans-bottom}}", "zh")
+    ''
     """
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
     # `# {{zh-pron\n|...` → `# {{zh-pron|...`
     code = re.sub(r"^(# \{\{zh-pron.*?\}\})", lambda m: m[0].replace("\n", ""), code, flags=re.DOTALL | re.MULTILINE)
+
+    # Wipe out `{{trans-top|...}}...{{trans-bottom}}`
+    if "{{trans-top" in code:
+        cleaned: list[str] = []
+        in_unwanted_section = False
+        for line in code.splitlines():
+            if line.startswith("{{trans-top"):
+                in_unwanted_section = True
+            elif line.startswith("{{trans-bottom}}"):
+                in_unwanted_section = False
+            elif not in_unwanted_section:
+                cleaned.append(line)
+        code = "\n".join(cleaned)
 
     return code

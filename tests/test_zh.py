@@ -68,13 +68,22 @@ def test_parse_word(
     "wikicode, expected",
     [
         ("{{abbreviation of|zh|留名}}", "留名之縮寫。"),
+        ("{{cmn-pinyin of|塔吉克}}", '<span style="font-size:larger">塔吉克</span>的漢語拼音讀法'),
+        ("{{defdate|from 15th c.}}", "<small>（from 15th c.）</small>"),
         ("{{gloss|對患者}}", "（對患者）"),
         ("{{gl|對患者}}", "（對患者）"),
+        ("{{IPA|zh|/tʷãɔ̃⁵⁴⁵⁴/}}", "/tʷãɔ̃⁵⁴⁵⁴/"),
+        ("{{IPAchar|[kiŋ²¹ naŋ⁵⁵ nˡiʔ⁵]}}", "[kiŋ²¹ naŋ⁵⁵ nˡiʔ⁵]"),
+        ("{{IPAfont|/kʰɑlpin/}}", "/kʰɑlpin/"),
+        ("{{lang|zh|中華}}", "中華"),
         ("{{misspelling of|zh|稍候}}", "稍候的拼寫錯誤。"),
         ("{{n-g|用來表示全範圍}}", "用來表示全範圍"),
         ("{{non-gloss definition|用來表示全範圍}}", "用來表示全範圍"),
         ("{{qual|前句常有“一方面”……}}", "(前句常有“一方面”……)"),
         ("{{qualifier|前句常有“一方面”……}}", "(前句常有“一方面”……)"),
+        ("{{taxlink|Okapia johnstoni|species}}", "<i>Okapia johnstoni</i>"),
+        ("{{zh-character component|彡}}", "漢字部件「彡」的名稱。"),
+        ("{{zh-ref|Schuessler, 2007}}", "Schuessler, 2007"),
     ],
 )
 def test_process_template(wikicode: str, expected: str) -> None:
