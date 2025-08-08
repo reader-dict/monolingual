@@ -26,7 +26,6 @@ from wikidict.utils import process_templates
             {
                 "副詞": ["在短暫的時間之後"],
                 "動詞": ["稍候的拼寫錯誤。"],
-                "讀音": ["官話: shāohòu<br/>粵語: saau<sup>2</sup> hau<sup>6</sup>"],
             },
             [],
         ),
@@ -39,7 +38,6 @@ from wikidict.utils import process_templates
                 "專有名詞": [
                     "源自印度，奉釋迦牟尼為教主的宗教，以解脫生死、明心見性為教義，可以分為北傳佛教、南傳佛教以及禪宗、淨土宗、密宗等派別，信徒分布於東亞、南亞、東南亞，為世界三大宗教之一。"
                 ],
-                "讀音": ["官話: Fójiào<br/>粵語: fat<sup>6</sup> gaau<sup>3</sup>"],
             },
             [],
         ),
