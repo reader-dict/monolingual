@@ -505,7 +505,7 @@ def render_zh_mw(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
 def render_zh_pron(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_zh_pron("zh-pron", [], defaultdict(str, {"m": "huángmǎguà,er=y", "c": "wong4 maa5 kwaa3-2", "cat": "n"}))
-    '官話: huángmǎguà\\n粵語: wong<sup>4</sup> maa<sup>5</sup> kwaa<sup>3-2</sup>'
+    '官話: huángmǎguà<br/>粵語: wong<sup>4</sup> maa<sup>5</sup> kwaa<sup>3-2</sup>'
     """
     text: list[str] = []
 
@@ -517,7 +517,7 @@ def render_zh_pron(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         pron = re.sub(r"([\d\-]+)", r"<sup>\1</sup>", cantonese)
         text.append(f"粵語: {pron}")
 
-    return "\n".join(text)
+    return "<br/>".join(text)
 
 
 def render_zh_short(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
