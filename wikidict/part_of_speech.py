@@ -208,7 +208,6 @@ MERGE = {
         "詞源": "名詞",  # etymology → noun
         "名词": "名詞",  # noun
         "名詞詞": "名詞",  # noun words → noun
-        "發音": "讀音",  # pronunciation
         "动词": "動詞",  # verb
     },
 }

@@ -502,24 +502,6 @@ def render_zh_mw(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     return f'<span style="padding-left:15px;font-size:80%">(量詞：{"；".join(result)})</span>'
 
 
-def render_zh_pron(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
-    """
-    >>> render_zh_pron("zh-pron", [], defaultdict(str, {"m": "huángmǎguà,er=y", "c": "wong4 maa5 kwaa3-2", "cat": "n"}))
-    '官話: huángmǎguà<br/>粵語: wong<sup>4</sup> maa<sup>5</sup> kwaa<sup>3-2</sup>'
-    """
-    text: list[str] = []
-
-    if mandarin := data["m"]:
-        pron = mandarin.split(",", 1)[0]
-        text.append(f"官話: {pron}")
-
-    if cantonese := data["c"]:
-        pron = re.sub(r"([\d\-]+)", r"<sup>\1</sup>", cantonese)
-        text.append(f"粵語: {pron}")
-
-    return "<br/>".join(text)
-
-
 def render_zh_short(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     Source: https://zh.wiktionary.org/w/index.php?title=Module:Zh/templates&oldid=9109462#L-239
@@ -590,7 +572,6 @@ template_mapping = {
     "ja-r": render_ja_r,
     "zh-div": render_zh_div,
     "zh-mw": render_zh_mw,
-    "zh-pron": render_zh_pron,
     "zh-x": render_zh_x,
     "粵": render_粵,
     **dict.fromkeys(

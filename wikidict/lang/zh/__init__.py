@@ -26,8 +26,6 @@ sections = (
     "名詞",  # noun
     "俗語",  # proverb
     "漢字",  # Chinese character
-    "讀音",  # pronunciation
-    "發音",  # pronunciation
     "分詞",  # participle
     "分词",  # part of speech
 )
