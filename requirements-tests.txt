@@ -1,7 +1,6 @@
 -r requirements.txt
 mypy==1.17.0
 pytest==8.4.1
-pytest-cov==6.2.1 
 pytest-dependency==0.6.0
 responses==0.25.7
 ruff==0.12.4
