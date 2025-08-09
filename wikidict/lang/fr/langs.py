@@ -3924,6 +3924,7 @@ langs = {
     "moyen okinawaïen": "moyen okinawaïen",
     "moyen polonais": "moyen polonais",
     "moyen scots": "moyen écossais",
+    "moyen tchouvache": "moyen tchouvache",
     "moyen écossais": "moyen écossais",
     "moyfaw": "moyfaw",
     "moz": "gergiko",
@@ -6375,6 +6376,7 @@ langs = {
     "vieux polonais": "vieux polonais",
     "vieux scots": "vieil écossais",
     "vieux suédois": "vieux suédois",
+    "vieux tchouvache": "vieux tchouvache",
     "vif": "vili",
     "vig": "viemo",
     "vil": "vilela",
@@ -6617,6 +6619,7 @@ langs = {
     "xbi": "kombio",
     "xbm": "moyen breton",
     "xbn": "kenaboi",
+    "xbo": "proto-bulgare",
     "xbr": "kambera",
     "xcb": "cambrien",
     "xce": "celtibère",
@@ -7150,5 +7153,5 @@ langs = {
     "zza": "zazaki",
     "zzj": "zhuang de Zuojiang",
     "èque": "èque",
-}  # 7,145
+}  # 7,148
 # END

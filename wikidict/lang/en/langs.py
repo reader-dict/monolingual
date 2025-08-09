@@ -7513,6 +7513,7 @@ langs = {
     "shg": "Shua",
     "shh": "Shoshone",
     "shi": "Tashelhit",
+    "shi-med": "Medieval Tashelhit",
     "shj": "Shatt",
     "shk": "Shilluk",
     "shl": "Shendu",
@@ -9897,7 +9898,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,892
+}  # 9,893
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)
