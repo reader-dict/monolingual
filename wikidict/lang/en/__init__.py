@@ -18,6 +18,7 @@ section_sublevels = (4, 3)
 etyl_section = ("etymology", *[f"etymology {idx}" for idx in range(1, 20)])
 sections = (
     *etyl_section,
+    # https://en.wiktionary.org/w/index.php?title=Module:headword/data&oldid=85060361#L-41
     "adjective",
     "adverb",
     "article",

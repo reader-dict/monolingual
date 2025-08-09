@@ -14,18 +14,109 @@ head_sections = ("漢語", "汉语", "{{漢}}")
 etyl_section = ("词源", "詞源")
 sections = (
     *etyl_section,
-    "動詞",  # verb
-    "动词",  # verb
-    "副詞",  # adverb
-    "形容詞",  # adjective
+    # https://zh.wiktionary.org/w/index.php?title=Module:Headword/data&oldid=9239080#L-41
+    # abbreviation
+    "縮寫",
+    "缩写",
+    # acronym
+    "首字母縮略詞",
+    "首字母缩略词",
+    # adjective
+    "形容詞",
+    "形容词",
+    # adverb
+    "副詞",
+    "副词",
+    # affix
+    "綴詞",
+    "缀词",
+    # article
+    "冠詞",
+    "冠词",
+    # Chinese character
+    "漢字",
+    "汉字",
+    # conjunction
+    "連詞",
+    "连词",
+    # determiners
+    "限定詞",
+    "限定词",
+    # diacritical marks
+    "附加符號",
+    "附加符号",
+    # idiom
+    "熟語",
+    "熟语",
+    "俗語",
+    "俗语",
+    # infixe
+    "中綴",
+    "中缀",
+    # interfixe
+    "間綴",
+    "间缀",
+    # interjection
+    "感嘆詞",
+    "感叹词",
+    "感歎詞",
+    # letter
+    "字母",
+    # morpheme
+    "詞素",
+    "词素",
+    # noun
+    "名詞",
+    "名词",
+    # number
+    "數字",
+    "数字",
+    # numeral symbol
+    "數字符號",
+    "数字符号",
+    # numeral
+    "數詞",
+    "数词",
+    # particle
+    "助詞",
+    "助词",
+    # phrase
+    "短語",
+    "短语",
+    # prefixe
+    "前綴",
+    "前缀",
+    # preposition
+    "介詞",
+    "介词",
+    # pronoun
+    "代詞",
+    "代词",
+    # proper noun
+    "專有名詞",
+    "专有名词",
+    # proverb
+    "諺語",
+    "谚语",
+    # punctuation mark
+    "標點符號",
+    "标点符号",
+    # suffixe
+    "後綴",
+    "后缀",
+    # syllable
+    "音節",
+    "音节",
+    # symbol
+    "符號",
+    "符号",
+    # verb
+    "動詞",
+    "动词",
+    # others
     "羅馬化",  # romanization
     "含义",  # meaning
     "開光",  # enlightenment
-    "專有名詞",  # proper noun
-    "名词",  # noun
-    "名詞",  # noun
-    "俗語",  # proverb
-    "漢字",  # Chinese character
     "分詞",  # participle
     "分词",  # part of speech
     "釋義",  # explanation
@@ -33,9 +124,7 @@ sections = (
 
 # Variants
 variant_titles = sections
-variant_templates = (
-    "{{異體",  # heteromorph
-)
+variant_templates = ()
 
 # Templates to ignore: the text will be deleted.
 # definitions_to_ignore = ()

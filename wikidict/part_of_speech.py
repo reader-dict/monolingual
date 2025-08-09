@@ -204,10 +204,42 @@ MERGE = {
         "verbpartikel": "verb",
     },
     "zh": {
+        "縮寫": "缩写",  # abbreviation
+        "首字母縮略詞": "首字母缩略词",  # acronym
+        "形容詞": "形容词",  # adjective
+        "副词": "副詞",  # adverb
+        "綴詞": "缀词",  # affix
+        "冠詞": "冠词",  # article
+        "漢字": "汉字",  # Chinese character
+        "連詞": "连词",  # conjunction
+        "限定詞": "限定词",  # determiners
+        "附加符號": "附加符号",  # diacritical marks
         "词源": "名詞",  # etymology → noun
         "詞源": "名詞",  # etymology → noun
+        "熟語": "熟语",  # idiom
+        "俗語": "熟语",  # idiom
+        "俗语": "熟语",  # idiom
+        "中綴": "中缀",  # infixe
+        "間綴": "间缀",  # interfixe
+        "感嘆詞": "感叹词",  # interjection
+        "感歎詞": "感叹词",  # interjection
+        "詞素": "词素",  # morpheme
         "名词": "名詞",  # noun
         "名詞詞": "名詞",  # noun words → noun
+        "數字": "数字",  # number
+        "數字符號": "数字符号",  # numeral symbol
+        "數詞": "数词",  # numeral
+        "助詞": "助词",  # particle
+        "短語": "短语",  # phrase
+        "前綴": "前缀",  # prefixe
+        "介詞": "介词",  # preposition
+        "代詞": "代词",  # pronoun
+        "专有名词": "專有名詞",  # proper noun
+        "諺語": "谚语",  # proverb
+        "標點符號": "标点符号",  # punctuation mark
+        "後綴": "后缀",  # suffixe
+        "音節": "音节",  # syllable
+        "符號": "符号",  # symbol
         "动词": "動詞",  # verb
     },
 }
