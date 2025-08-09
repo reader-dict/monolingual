@@ -174,16 +174,17 @@ def adjust_wikicode(code: str, locale: str) -> str:
     locale_3_chars, lang_name = langs[locale]
 
     # Wipe out `{{(|...}}...{{)}}`
-    cleaned: list[str] = []
-    in_unwanted_section = False
-    for line in code.splitlines():
-        if line.startswith("{{(|"):
-            in_unwanted_section = True
-        elif line.startswith("{{)}}"):
-            in_unwanted_section = False
-        elif not in_unwanted_section:
-            cleaned.append(line)
-    code = "\n".join(cleaned)
+    if "{{(|" in code:
+        cleaned: list[str] = []
+        in_unwanted_section = False
+        for line in code.splitlines():
+            if line.startswith("{{(|"):
+                in_unwanted_section = True
+            elif line.startswith("{{)}}"):
+                in_unwanted_section = False
+            elif not in_unwanted_section:
+                cleaned.append(line)
+        code = "\n".join(cleaned)
 
     # `{{-avv-|ANY|ANY}}` → === `{{avv|ANY|ANY}} ===`
     code = re.sub(r"^\{\{-(.+)-\|(\w+)\|(\w+)\}\}", r"=== {{\1|\2|\3}} ===", code, flags=re.MULTILINE)
