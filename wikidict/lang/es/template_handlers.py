@@ -254,11 +254,15 @@ def render_etim(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     'acuñado por Johann A. Wagner'
     >>> render_etim("etim", ["grc", "κομψος", "elegante", "grc", "γναθος", "mandíbula", ""], defaultdict(str))
     "del griego antiguo <i>κομψος</i> ('elegante') y <i>γναθος</i> ('mandíbula')"
+    >>> render_etim("etim", ["nan", "日本"], defaultdict(str, {"tr": "Ji̍t-pún", "d": "hokkien"}))
+    'del min nan (hokkien) <i>日本</i> (<i>Ji̍t-pún</i>)'
     """
     if parts[0] == "acuñado":
         return f"{parts[0]} por {parts[1]}"
 
     result = f"del {normalizar_nombre(parts.pop(0))}"
+    if d := data["d"]:
+        result += f" ({d})"
     more: list[str] = []
     while parts:
         lplus = render_l(
