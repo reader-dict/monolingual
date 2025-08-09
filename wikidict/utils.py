@@ -293,8 +293,9 @@ def format_pos(locale: str, value: str) -> str:
 
 def grep(file: Path, pattern: str) -> str:
     """Find the given text `pattern` line in `file`."""
-    command = ["/bin/fgrep", pattern, str(file)]
-    return subprocess.check_output(command, env={"LC_ALL": "C"}).strip().decode("utf-8")
+    command = ["/bin/grep", "--text", "--max-count", "1", pattern, str(file)]
+    with subprocess.Popen(command, env={"LC_ALL": "C"}, stdout=subprocess.PIPE) as process:
+        return process.communicate()[0].strip().decode("utf-8")
 
 
 @cache
