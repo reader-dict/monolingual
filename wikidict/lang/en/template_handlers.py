@@ -1775,6 +1775,9 @@ def render_form_of_t(tpl: str, parts: list[str], data: defaultdict[str, str], *,
 
     >>> render_form_of_t("spelling of", ["en", "British alternative", "NORAD"], defaultdict(str))
     '<i>British alternative spelling of</i> <b>NORAD</b>'
+
+    >>> render_form_of_t("ellipsis of", ["en", "w:Boeing B-29 Superfortress"], defaultdict(str, {"addl": "an American bomber plane primarily used in World War II"}))
+    '<i>Ellipsis of</i> <b>Boeing B-29 Superfortress</b>, <i>an American bomber plane primarily used in World War II</i>'
     """
     from . import templates_italic
 
@@ -1816,6 +1819,10 @@ def render_form_of_t(tpl: str, parts: list[str], data: defaultdict[str, str], *,
         starter = capitalize(starter)
     phrase = italic(starter)
     phrase += f" {strong(word)}"
+
+    if addl := data["addl"]:
+        phrase += f", {italic(addl)}"
+
     phrase += gloss_tr_poss(data, gloss)
     if ender:
         phrase += ender
