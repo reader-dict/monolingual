@@ -146,7 +146,7 @@ WORD_TPL_DICTFILE = Template(
 )
 
 # Threshold before issuing a warning to catch potentially problematic variants
-MAX_VARIANTS = 128
+MAX_VARIANTS = 255
 
 log = logging.getLogger(__name__)
 
