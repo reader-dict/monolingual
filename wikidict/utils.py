@@ -279,9 +279,9 @@ def format_pos(locale: str, value: str) -> str:
     'Verb'
 
     >>> format_pos("zh", "發音 1")
-    '讀音'
+    '發音'
     >>> format_pos("zh", "發音1")
-    '讀音'
+    '發音'
     >>> format_pos("zh", "讀音①")
     '讀音'
     """
