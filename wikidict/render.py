@@ -668,6 +668,10 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 def save(output: Path, words: Words) -> None:
     """Persist data."""
 
+    if not words:
+        log.warning("No words to save.")
+        return
+
     class EnhancedJSONEncoder(json.JSONEncoder):
         def default(self, o: object) -> Any:
             if dataclasses.is_dataclass(o):
@@ -695,8 +699,7 @@ def get_output_file(source_dir: Path, snapshot: str) -> Path:
 
 
 def hook_after(words: Words) -> None:
-    if not words:
-        raise ValueError("Empty dictionary?!")
+    pass
 
 
 def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
@@ -717,9 +720,11 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
     workers = workers or multiprocessing.cpu_count()
     hook_after(words := render(in_words, locale, workers))
 
-    output = get_output_file(source_dir, input_file.stem.split("-")[-1])
-    save(output, words)
+    ret = 1
+    if words:
+        output = get_output_file(source_dir, input_file.stem.split("-")[-1])
+        save(output, words)
+        ret = 0
 
     log.info("Render done in %s!", timedelta(seconds=monotonic() - start))
-
-    return 0
+    return ret
