@@ -129,12 +129,15 @@ def main(locale: str) -> int:
         log.error("No dump found. Run with --download first ... ")
         return 1
 
+    ret = 0
     output = get_output_file(source_dir, lang_src, lang_dst, input_file.stem.split("-")[-1])
     if output.is_file():
         log.info("Already parsed into %s", output)
     else:
         words = process(input_file, locale)
         save(output, words)
+        if not words:
+            ret = 1
 
     log.info("Parse done in %s!", timedelta(seconds=monotonic() - start))
-    return 0
+    return ret
