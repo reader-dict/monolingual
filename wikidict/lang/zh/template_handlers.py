@@ -327,10 +327,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     if data["g"]:
         phrase += f" {gender_number_specs(data['g'])}"
 
-    gloss = data["t"] or data["gloss"]
-    if parts:
-        gloss = parts.pop(0)  # 5, t=, gloss=
-
+    gloss = parts.pop(0) if parts else data["t"] or data["gloss"]
     trans = "" if data["tr"] else transliterate(dst_locale, word)
     phrase += gloss_tr_poss(data, gloss, trans=trans)
     phrase = phrase.lstrip()
@@ -367,18 +364,17 @@ def render_ja_r(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     """
     if len(parts) == 1 or not parts[1]:
         text = parts[0]
+    elif parts[0] == parts[1]:
+        text = parts[0]
     else:
-        if parts[0] == parts[1]:
-            text = parts[0]
-        else:
-            parts[1] = parts[1].removeprefix("^")
+        parts[1] = parts[1].removeprefix("^")
 
-            if sep := "%" if "%" in parts[0] else " " if " " in parts[0] else "":
-                texts = [part.strip() for part in parts[0].split(sep)]
-                tops = [part.strip() for part in parts[1].split(sep)]
-                text = "".join(t if t == p else ruby(t, p) for t, p in zip(texts, tops))
-            else:
-                text = ruby(parts[0], parts[1])
+        if sep := "%" if "%" in parts[0] else " " if " " in parts[0] else "":
+            texts = [part.strip() for part in parts[0].split(sep)]
+            tops = [part.strip() for part in parts[1].split(sep)]
+            text = "".join(t if t == p else ruby(t, p) for t, p in zip(texts, tops))
+        else:
+            text = ruby(parts[0], parts[1])
 
     more: list[str] = []
     if len(parts) > 2:
@@ -397,13 +393,19 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     """
     >>> render_name_translit("name translit", ["zh", "en,en,en", "Cubitt", "more"], defaultdict(str, {"type": "姓氏", "eq": "eq", "t": "t", "tr": "tr", "xlit": "xlit"}))
     '英語、英語和英語姓氏 <i>Cubitt</i> (tr，“t”)，xlit 的轉寫，等同於 eq；或來自<i>more</i> 的轉寫'
+
+    >> render_name_translit("foreign name", ["zh", "en"], defaultdict(str, {"type": "父名"}))
+    '父名於英語'
+    >>> render_name_translit("foreign name", ["zh", "pl", "Wałęsa", "name2", "name3"], defaultdict(str, {"type": "男性名字", "xlit": "xlit", "eq": "eq"}))
+    '男性名字於波蘭語，<i>Wałęsa</i>，xlit，等同於 eq；或來自<i>name2</i>；或來自<i>name3</i>'
     """
+    tpl = tpl.lower().replace("-", " ")
     parts.pop(0)  # Destination language
     src_langs = parts.pop(0)
     src_lang = src_langs.split(",", 1)[0]
 
     origins = concat([langs[src_lang.strip()] for src_lang in src_langs.split(",")], sep="、", last_sep="和")
-    text = f"{origins}{data['type']}"
+    text = f"{origins}{data['type']}" if tpl == "name translit" else f"{data['type']}於{origins}"
     if not parts:
         return text
 
@@ -413,14 +415,16 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     xlit = data["xlit"]
     eq = data["eq"]
 
-    text += f" {italic(what)}"
+    text += f" {italic(what)}" if tpl == "name translit" else f"，{italic(what)}"
     if tr:
         text += f" ({tr}，“{t}”)" if t else f" ({t})"
     elif t:
         text += f" ({t})"
 
     if xlit := data["xlit"]:
-        text += f"，{xlit} 的轉寫"
+        text += f"，{xlit}"
+        if tpl == "name translit":
+            text += " 的轉寫"
 
     if eq := data["eq"]:
         text += f"，等同於 {eq}"
@@ -430,7 +434,10 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
         if transliterated := transliterate(src_lang, parts.pop(0)):
             text += f" ({transliterated})"
 
-    return f"{text} 的轉寫"
+    if tpl == "name translit":
+        text += " 的轉寫"
+
+    return text
 
 
 def render_och_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -446,6 +453,79 @@ def render_och_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     if parts:
         text += f", “{parts[0]}”"
     return f"{text})"
+
+
+def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_surname("surname", ["zh"], defaultdict(str))
+    '姓氏'
+    >>> render_surname("surname", [], defaultdict(str, {"lang": "zh"}))
+    '姓氏'
+    >>> render_surname("surname", ["zh", ""], defaultdict(str))
+    '姓氏'
+    >>> render_surname("surname", ["zh", "rare"], defaultdict(str))
+    'rare姓氏'
+    >>> render_surname("surname", ["zh", "rare"], defaultdict(str, {"from":"丹麥語", "from2": "挪威語", "g": "c", "xlit": "xlit", "m": "m", "f": "f", "eq": "eq"}))
+    '源自丹麥語和挪威語的通性rare姓氏，xlit，陽性等價詞 m，陰性等價詞 f，等價於英語eq'
+    """
+    if parts:
+        parts.pop(0)  # Remove the lang
+
+    text: list[str] = []
+
+    if from_text := data["from"]:
+        text.append(f"源自{from_text}")
+    if from_text := data["from2"]:
+        text.append(f"和{from_text}")
+    if data["from"] or data["from2"]:
+        text.append("的")
+
+    if gender := data["g"]:
+        # Source: https://zh.wiktionary.org/w/index.php?title=Module:Names&oldid=9294843#L-705--L-721
+        text.append(
+            {"unisex": "通性", "common gender": "通性", "c": "通性", "m": "男性", "f": "女性"}.get(gender, "性別不明")
+        )
+
+    if tpl == "foreign name":
+        if parts:
+            # Note: `type` is one of https://zh.wiktionary.org/w/index.php?title=Module:Names&oldid=9294843#L-54--L-57
+            text.extend(
+                (data["type"], "於", concat([langs[part] for part in parts.pop(0).split(",")], "、", last_sep="和"))
+            )
+        if parts:
+            text.append(f"，<i>{parts.pop(0)}</i>")
+    else:
+        if parts:
+            text.append(parts[0])
+        text.append("姓氏")
+
+    if xlit := data["xlit"]:
+        text.append(f"，{xlit}")
+
+    if m := data["m"]:
+        text.append(f"，陽性等價詞 {m}")
+
+    if f := data["f"]:
+        text.append(f"，陰性等價詞 {f}")
+
+    if eq := data["eq"]:
+        text.append(f"，等價於英語{eq}")
+
+    final = "".join(text)
+
+    if tpl == "foreign name" and parts:
+        more: list[str] = []
+
+        for part in parts:
+            lang, trad = part.split(":", 1) if ":" in part else (parts[0], part)
+            trad = f"<i>{trad}</i>"
+            if trans := transliterate(lang, trad):
+                trad += f" ({trans})"
+            more.append(trad)
+
+        final += f"，{concat(more, '，', last_sep='和')}"
+
+    return final
 
 
 def render_zh_altname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -592,9 +672,7 @@ def render_zh_x(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     """
     form = data["1"] or parts.pop(0)
     trans = data["2"] or (parts[0] if parts else "")
-    if not trans:
-        return ""
-    return f"<dl><dt>{form}</dt><dd><i>{trans}</i></dd></dl>"
+    return "" if not trans else f"<dl><dt>{form}</dt><dd><i>{trans}</i></dd></dl>"
 
 
 def render_粵(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -684,7 +762,8 @@ template_mapping = {
         render_foreign_derivation,
     ),
     **dict.fromkeys({"cmn-erhua form of", "Cmn-erhua form of", "zh-erhua form of"}, render_cmn_erhua_form_of),
-    **dict.fromkeys({"name translit", "Name translit"}, render_name_translit),
+    **dict.fromkeys({"foreign name", "name translit", "Name translit"}, render_name_translit),
+    **dict.fromkeys({"surname", "patronymic"}, render_surname),
     **dict.fromkeys({"zh-altname", "Zh-altname", "zh-alt-name", "Zh-alt-name", "中文別名"}, render_zh_altname),
     **dict.fromkeys({"zh-l", "zh-m"}, render_zh_l),
     **dict.fromkeys(
