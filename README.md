@@ -36,7 +36,7 @@ Find **bilingual, and universal** dictionaries with more than 180 langs at the n
 1. <small>`[RO]`</small> [Romanian](https://www.reader-dict.com/ro/download/ro)
 1. <small>`[RU]`</small> [Russian](https://www.reader-dict.com/ru/download/ru)
 1. <small>`[SV]`</small> [Swedish](https://www.reader-dict.com/sv/download/sv)
-1. <small>`[ZH]`</small> [Chinese](https://www.reader-dict.com/zh/download/zh)
+1. <small>`[ZH]`</small> [Chinese](https://www.reader-dict.com/en/download/zh)
 
 ## Installation
 
