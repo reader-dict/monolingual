@@ -35,7 +35,9 @@ ASSET_CHECKSUM_ALGO = "sha256"
 LOCALE_ORIGIN = {"fro": "fr"}
 
 # Dictionaries known to be problematic about the number of chars in MobiPocket
-MOBI_SKIP = {"en", "en:en", "fr", "fr:fr"}
+MOBI_CLEANUP = {"en", "en:en", "fr", "fr:fr"}
+# Dictionaries known to be problematic about the file size in MobiPocket
+MOBI_SKIP: set[str] = set()
 
 # Mobi
 COVER_FILE = Path(__file__).parent / "cover.png"

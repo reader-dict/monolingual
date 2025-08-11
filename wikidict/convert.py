@@ -650,6 +650,10 @@ def run_mobi_formatter(
     To do this, we delete words using the least-used characters until we meet this condition.
     """
 
+    if locale in constants.MOBI_SKIP:
+        log.info("[Mobi %s] Skipping as the final file size would be > 650 MiB", locale.upper())
+        return
+
     def all_chars(word: str, details: Word) -> set[str]:
         chars = set(word)
         if definitions := details.definitions:
@@ -674,7 +678,7 @@ def run_mobi_formatter(
         for char in all_chars(word, details):
             stats[char].append(word)
 
-    if locale in constants.MOBI_SKIP and len(stats) > 256:
+    if locale in constants.MOBI_CLEANUP and len(stats) > 256:
         new_words = words.copy()
         threshold = 1
         while len(stats) > 256:
