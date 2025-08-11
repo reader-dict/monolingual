@@ -674,7 +674,7 @@ def run_mobi_formatter(
         for char in all_chars(word, details):
             stats[char].append(word)
 
-    if utils.guess_lang_origin(locale) in {"en", "fr"} and len(stats) > 256:
+    if locale in constants.MOBI_SKIP and len(stats) > 256:
         new_words = words.copy()
         threshold = 1
         while len(stats) > 256:
