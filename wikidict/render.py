@@ -363,10 +363,9 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     for title, section in all_sections:
         title = title.lower()
 
-        if lang_dst == "de":
-            if section.level == 3:
-                current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
-                continue
+        if lang_dst == "de" and section.level == 3:
+            current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
+            continue
 
         # Filter on interesting sections
         if title.startswith(wanted):
