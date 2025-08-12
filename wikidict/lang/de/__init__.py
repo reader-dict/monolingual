@@ -11,26 +11,22 @@ float_separator = ","
 thousands_separator = "."
 
 # Markers for sections that contain interesting text to analyse.
+section_sublevels = (3, 4)
 head_sections = ("{{sprache|deutsch}}", "{{sprache|international}}")
 etyl_section = ("{{herkunft}}",)
 sections = (
     *etyl_section,
-    "{{alte schreibweise|",
     "{{aussprache}",
     "{{bedeutungen}",
-    "{{grundformverweis ",
-    "{{wortart|symbol|international}",
+    "{{variant}",
 )
 
 # Variants
 variant_titles = (
-    "{{grundformverweis ",
-    "{{alte schreibweise|",
+    "",  # Empty for simple redirection words (ex: https://de.wiktionary.org/wiki/daß)
+    "konjugierte form",
 )
-variant_templates = (
-    "{{Grundformverweis ",
-    "{{Alte Schreibweise|",
-)
+variant_templates = ("{{flexion",)
 
 # Templates to ignore: the text will be deleted.
 templates_ignored = (
@@ -281,13 +277,30 @@ random_word_url = "https://de.wiktionary.org/wiki/Spezial:Zuf%C3%A4llige_Stammse
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
+    >>> adjust_wikicode("{{Grundformverweis Konj|tragen}}", "de")
+    '==== {{Variant}} ====\\n# {{flexion|tragen}}'
+
+    >>> adjust_wikicode("== CIA ({{Sprache|Deutsch}}) ==", "de")
+    '== {{Sprache|Deutsch}} =='
+
     >>> adjust_wikicode("{{Bedeutungen}}\\n:[1] \\n\\n{{Herkunft}}\\n:[[Abkürzung]] von [[Sturmkanone]]", "de")
-    '=== {{Bedeutungen}} ===\\n# \\n\\n=== {{Herkunft}} ===\\n:[[Abkürzung]] von [[Sturmkanone]]'
+    '==== {{Bedeutungen}} ====\\n# \\n\\n==== {{Herkunft}} ====\\n:[[Abkürzung]] von [[Sturmkanone]]'
     >>> adjust_wikicode("{{Bedeutungen}}\\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", "de")
-    '=== {{Bedeutungen}} ===\\n# {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}'
+    '==== {{Bedeutungen}} ====\\n# {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}'
     """
-    # {{Bedeutungen}} → === {{Bedeutungen}} ===
-    code = re.sub(r"^\{\{(.+)\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    # `{{Grundformverweis Konj|tragen}}` → `{{flexion|tragen}}`
+    code = re.sub(
+        r"^\{\{(?:Alte Schreibweise|Grundformverweis)[^|]*\|([^}]+)\}\}",
+        r"==== {{Variant}} ====\n# {{flexion|\1}}",
+        code,
+        flags=re.MULTILINE,
+    )
+
+    # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
+    code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
+
+    # `{{Bedeutungen}}` → `==== {{Bedeutungen}} ====`
+    code = re.sub(r"^\{\{(.+)\}\}", r"==== {{\1}} ====", code, flags=re.MULTILINE)
 
     # Definition lists are not well supported by the parser, replace them by numbered lists.
     # Note: using `[ ]*` rather than `\s*` to bypass issues when a section above another one

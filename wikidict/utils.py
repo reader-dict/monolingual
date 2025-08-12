@@ -204,12 +204,10 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("da", "verbum")
     'Verbum'
 
-    >>> format_pos("de", "{{bedeutungen}}")
-    'Bedeutungen'
-    >>> format_pos("de", "{{Bedeutungen}}{{Anker|Dasort}}")
-    'Bedeutungen'
-    >>> format_pos("de", "bedeutungen")
-    'Bedeutungen'
+    >>> format_pos("de", "substantiv")
+    'Substantiv'
+    >>> format_pos("de", "substantiv/wortverbindung/redewendung")
+    'Substantiv'
 
     >>> format_pos("el", "{{έκφραση|el}}")
     'Έκφραση'

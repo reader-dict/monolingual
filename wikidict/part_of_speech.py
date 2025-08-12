@@ -13,8 +13,8 @@ PATTERNS = {
         re.compile(r"(.+)\s+\d+.*").sub,
     ],
     "de": [
-        # `{{bedeutungen}}` → `bedeutungen`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        # `abkürzung/eigenname` → `abkürzung`
+        re.compile(r"([^/]+)/.+").sub,
     ],
     "el": [
         # `{{έκφραση|el}}` → `έκφραση`
@@ -120,6 +120,32 @@ MERGE = {
         "top": "substantiv",
         "ubest-pronon": "pronomen",
         "verb": "verbum",
+    },
+    "de": {
+        "antwortpartikel": "partikel",
+        "demonstrativpronomen": "pronomen",
+        "erweiterter infinitiv": "verb",
+        "fokuspartikel": "partikel",
+        "gradpartikel": "partikel",
+        "indefinitpronomen": "pronomen",
+        "interrogativadverb": "adverb",
+        "interrogativpronomen": "pronomen",
+        "konjunktionaladverb": "adverb",
+        "lokaladverb": "adverb",
+        "modaladverb": "adverb",
+        "modalpartikel": "partikel",
+        "negationspartikel": "partikel",
+        "partizip i": "partizip 1",
+        "partizip ii": "partizip 2",
+        "personalpronomen": "pronomen",
+        "possessivpronomen": "pronomen",
+        "präfixoid": "präfix",
+        "pronominaladverb": "pronomen",
+        "reflexivpronomen": "pronomen",
+        "relativpronomen": "pronomen",
+        "reziprokpronomen": "pronomen",
+        "temporaladverb": "adverb",
+        "suffixoid": "suffix",
     },
     "el": {
         "μορφή επιθέτου": "επιθέτου",

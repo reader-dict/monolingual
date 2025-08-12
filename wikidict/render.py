@@ -78,7 +78,9 @@ def find_definitions(
     for pos, sections in parsed_sections.items():
         for section in sections:
             if pos_defs := find_section_definitions(word, section, lang_src, lang_dst, all_templates=all_templates):
-                if lang_src == "en" and pos.startswith("etymology"):
+                if lang_src == "de" and not pos:
+                    pos = "substantiv"
+                elif lang_src == "en" and pos.startswith("etymology"):
                     # Most of the time, definitions are symbols outside a subsection, like in the "wa" word
                     pos = "symbol"
                 elif lang_src == "es" and pos.startswith("etimología"):
@@ -307,10 +309,8 @@ def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_ds
     return sorted(unique(results))
 
 
-def section_title(locale: str, section: wtp.Section) -> str:
+def section_title(section: wtp.Section) -> str:
     title = section.title
-    if locale == "de":
-        title = title.split("(")[-1].strip(" )")
     return title.replace(" ", "").lower().strip() if title else ""
 
 
@@ -327,7 +327,7 @@ def find_all_sections(
     if lang_src == "ca":
         etyl_l_sections = lang.etyl_section[lang_dst]
         for leading_part in parsed.get_sections(include_subsections=False, level=level):
-            if section_title(lang_dst, leading_part) not in head_sections:
+            if section_title(leading_part) not in head_sections:
                 continue
 
             all_sections.extend(
@@ -340,9 +340,7 @@ def find_all_sections(
             )
 
     # Get interesting top sections
-    top_sections = [
-        section for section in parsed.get_sections(level=level) if section_title(lang_dst, section) in head_sections
-    ]
+    top_sections = [section for section in parsed.get_sections(level=level) if section_title(section) in head_sections]
 
     # Get all sections without any filtering
     all_sections.extend(
@@ -359,12 +357,20 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     """Find the correct section(s) holding the current locale definition(s)."""
     ret = defaultdict(list)
     wanted = lang.sections[lang_dst]
+    etyl_section = lang.etyl_section[lang_dst]
     top_sections, all_sections = find_all_sections(code, lang_src, lang_dst)
+    current_pos = ""
     for title, section in all_sections:
         title = title.lower()
+
+        if lang_dst == "de":
+            if section.level == 3:
+                current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
+                continue
+
         # Filter on interesting sections
         if title.startswith(wanted):
-            ret[title].append(section)
+            ret[current_pos if lang_dst == "de" and title not in etyl_section else title].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
         elif DEBUG_SECTIONS == title:
