@@ -3,6 +3,7 @@
 import re
 
 from ...user_functions import flatten, unique
+from .transcriptions import transcript
 
 # Float number separator
 float_separator = ","
@@ -250,10 +251,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     []
     >>> # Expected behaviour after #1376: ['[strɐˈnʲit͡sə]']
     >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
-    ['страни']
+    ['[stranʲi]']
     """
     pattern = re.compile(rf"(?:transcriptions-{locale}.)(\w*)")
-    return unique(pattern.findall(code))
+    return unique([transcript(word) for word in pattern.findall(code)])
 
 
 def last_template_handler(
