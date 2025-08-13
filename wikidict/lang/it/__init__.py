@@ -178,29 +178,6 @@ templates_multi: dict[str, str] = {
     "yprb": "small(f'({italic(\"per iperbole\")})')",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/it
-release_description = """\
-### 🌟 Per poter essere aggiornato regolarmente, questo progetto ha bisogno di sostegno; [cliccare qui](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) per fare una donazione. 🌟
-
-<br/>
-
-
-Numero di parole: {words_count}
-Export Wiktionary: {dump_date}
-
-Versione completa:
-{download_links_full}
-
-Versione senza etimologia:
-{download_links_noetym}
-
-<sub>Aggiornato il {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wikizionario (ɔ) {year}"
-
 
 def find_genders(code: str, locale: str) -> list[str]:
     """

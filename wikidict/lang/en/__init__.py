@@ -13,10 +13,12 @@ thousands_separator = ","
 
 # Markers for sections that contain interesting text to analyse.
 head_sections = ("english", "translingual")
+section_patterns = ("#", r"\*")
 section_sublevels = (4, 3)
 etyl_section = ("etymology", *[f"etymology {idx}" for idx in range(1, 20)])
 sections = (
     *etyl_section,
+    # https://en.wiktionary.org/w/index.php?title=Module:headword/data&oldid=85060361#L-41
     "adjective",
     "adverb",
     "article",
@@ -89,9 +91,12 @@ templates_ignored = (
     "anchor",
     "Anchor",
     "ant",
+    "att",
     "attention",
     "attn",
     "audio",
+    "book of the Bible",
+    "box",
     "box-bottom",
     "box-top",
     "c",
@@ -108,6 +113,8 @@ templates_ignored = (
     "cite-thesis",
     "cite-video game",
     "cite-web",
+    "cleanup",
+    "clear",
     "cln",
     "col",
     "col-bottom",
@@ -118,18 +125,29 @@ templates_ignored = (
     "dercat",
     "dhub",
     "elements",
+    "emojipic",
+    "en-preposition",
     "enum",
     "etymid",
     "etymon",
     "etystub",
     "examples",
+    "fullurl",
+    "head-lite",
+    "hide",
     "hot sense",
     "hot word",
     "Image requested",
+    "img",
+    "interwiktionary",
     "lena",
+    "letter_disp2",
     "listen",
     "multiple image",
     "multiple images",
+    "nl",
+    "no entry",
+    "non-lemma",
     "nonlemma",
     "number box",
     "+obj",
@@ -184,6 +202,7 @@ templates_ignored = (
     "root",
     "see",
     "see desc",
+    "seeMoreCites",
     "slim-wikipedia",
     "senseid",
     "senseno",
@@ -202,11 +221,14 @@ templates_ignored = (
     "translation only",
     "unsupported",
     "ux",
+    "uxi",
     "void",
     "was wotd",
     "wikidata",
+    "wikidata lexeme",
     "wikipedia",
     "Wikipedia",
+    "wikiquote",
     "wikispecies",
     "Wikispecies",
     "word",
@@ -223,17 +245,27 @@ templates_italic = {
 templates_multi = {
     # {{1|interactive}}
     "1": "capitalize(parts[-1])",
+    # {{abbr|pmo.|Proto-Mongolic}}
+    "abbr": "parts[1]",
     # {{abbrev|en|goodbye}}
     "abbrev": 'f"Abbreviation of {italic(parts[-1])}"',
+    # {{ar-form|IV}}
+    # {{ar-form|IV|verb form}}
+    "ar-form": "f'{parts[2] if len(parts) > 2 else 'Form'} {parts[1]}'",
     # {{C.|21|st}}
     "C.": "parts[1] + (parts[2] if len(parts) > 2 else 'th') + f' c.'",
     # {{caps|discourse}}
     "caps": "parts[-1]",
     # {{caret notation of|null}}
     "caret notation of": "f'<i>(computing) The ASCII control character</i> <b>{parts[1]}</b> <i>in caret notation</i>.'",
-    "color panel": "color(parts[-1])",
+    # {{code|js|=(65535).toString(16) === 'ffff'}}
+    "code": "code(parts[1], parts[2])",
+    # {{color panel|vermilion|E34234}}
+    "color panel": "((parts[1] + ': ') if len(parts) > 2 else '') + color(parts[-1])",
     # {{defdate|from 15th c.}}
     "defdate": "small('[' + parts[1] + (f'–{parts[2]}' if len(parts) > 2 else '') + ']')",
+    # {{doi|10.1159/000070783}}
+    "doi": "f'→ https://doi.org/{concat(parts[1:], '/')}'",
     # {{en:w|Pepe the Frog}} -> {{en|w|Pepe the Frog}}
     "en": "parts[-1]",
     # {{en-comparative of|term}}
@@ -250,28 +282,48 @@ templates_multi = {
     "gloss": "parenthesis(parts[1])",
     # {{glossary|inflected}}
     "glossary": "parts[-1]",
+    # {{h-less dialect|have}}
+    "h-less dialect": "f'A representation of the pronunciation of {parts[1]} by someone whose dialect lacks the voiceless glottal fricative or transition (/h/).'",
     # {{i|Used only ...}}
     "i": "'(' + concat([italic(p) for p in parts[1:]], ', ') + ')'",
     # {{IPAfont|[[ʌ]]}}
     "IPAfont": "parts[1]",
+    # {{ISBN|1-86429-081-1}}
+    "ISBN": "f'ISBN {parts[1]}'",
     # {{italic|Love Island}}
     "italic": "italic(parts[1])",
+    # {{IUPAC-1|alanine}}
+    "IUPAC-1": 'f"IUPAC 1-letter symbol for {parts[1]}"',
+    # {{IUPAC-3|alanine}}
+    "IUPAC-3": 'f"IUPAC 3-letter symbol for {parts[1]}"',
     # {{ja-def|茨城}}
     "ja-def": 'f"{parts[1]}:"',
+    # {{key press/core|F}}
+    "key press/core": "f'<kdb>{parts[1]}</kdb>'",
     # {{lang|fr|texte}}
     "lang": "parts[-1]",
     # {{less common spelling of|en|African-like}
     "less common spelling of": 'f"<i>rare spelling of</i> <b>{parts[-1]}</b>"',
     # {{lit|eagle killer}}
     "lit": 'f"Literally, “{parts[1]}”"',
+    # {{male equivalent of|en|Imperatrix}}
+    "male equivalent of": "f'male equivalent of {parts[-1]}'",
     # {{mention-gloss|silver-bearing}}
     "mention-gloss": 'f"“{parts[-1]}”"',
     # {{monospace|#!}}
     "mono": "f'<span style=\"font-family:monospace\">{parts[1]}</span>'",
+    # {{mul-attributive|Abbott's}}
+    "mul-attributive": "f'<i>used in taxonomic names for organisms having English names of the form \"{parts[-1]} ...\"</i>'",
     # {{mul-semaphore for|O}}
     "mul-semaphore for": "f'<i>Flag semaphore for</i> <b>{parts[-1]}</b>.'",
+    # {{mul-symbol}}
+    "mul-symbol": "word",
+    # {{neuter equivalent of|en|dead man walking}}
+    "neuter equivalent of": "f'<i>neuter equivalent of</i> <b>{parts[2]}</b>'",
+    # {{nobold|or}}
+    "nobold": "f'</b>{parts[1]}<b>'",
     # {{noitalic|ふうじん}}
-    "noitalic": "parts[1]",
+    "noitalic": "f'</i>{parts[1]}<i>'",
     # {{nobr|1=[ ...=C=C=C=... ]}}
     "nobr": 'f\'<span style="white-space:nowrap">{parts[1].lstrip("1=")}</span>\'',
     "nominalization": 'f"Nominalization of {italic(parts[-1])}"',
@@ -281,8 +333,14 @@ templates_multi = {
     "nowrap": 'f\'<span style="white-space:nowrap">{parts[1].lstrip("1=")}</span>\'',
     # {{orthography|&thinsp;𝼊&thinsp;}}
     "orthography": "f'⟨{parts[1]}⟩'",
+    # {overline|s}}
+    "overline": "f'<span style=\"text-decoration:overline\">{parts[1]}</span>'",
+    # {{PMID|17286801}}
+    "PMID": "f'PMID {parts[1]}'",
     # {{qualifier|Used only ...}}
     "qualifier": "'(' + concat([italic(p) for p in parts[1:]], ', ') + ')'",
+    # {{rfv-term|enm|comered|section=comered}}
+    "rfv-term": "parts[2]",
     # {{Runr-def|ᛗ}}
     "Runr-def": 'f"The Runic character {parts[1]}."',
     # {{sense|foo}}
@@ -295,23 +353,29 @@ templates_multi = {
     "smallcaps": "small_caps(parts[1])",
     # {{speciesabbrev|C|difficile||la}}
     "speciesabbrev": "f'Used, in context, to shorten the name and simplify the pronunciation of a species name with a generic name beginning with {parts[1]} and a specific epithet of {parts[2]}.'",
-    # {{staco|Airport station (MTR)|Airport|Hong Kong}}
-    "staco": 'f"<i>(rail transport) The station code of</i> <b>{parts[2] or parts[1]}</b> <i>in {parts[3]}</i>."',
-    # {{sub|KI}}
-    "sub": "subscript(parts[1])",
-    # {{sup|KI}}
-    "sup": "superscript(parts[1])",
+    # {{specieslite|Io (Asteraceae)|''Io'' (Asteraceae)}}
+    "specieslite": "f'{parts[-1]} on Wikispecies.'",
+    # {{sqbrace|a}}
+    "sqbrace": "f'[{parts[1]}]'",
+    # {{station code|Airport station (MTR)|Airport|Hong Kong}}
+    "station code": 'f"<i>(rail transport) The station code of</i> <b>{parts[2] or parts[1]}</b> <i>in {parts[3]}</i>."',
     # {{syc-root|ܪ ܩ ܥ}}
     "syc-root": "parts[-1]",
+    # {{t|mi|pōhutukawa}}
+    "t": "parts[-1]",
     # {{taxfmt|Gadus macrocephalus|species|ver=170710}}
     "taxfmt": "italic(parts[1])",
-    # {{taxlink|Gadus macrocephalus|species|ver=170710}}
-    "taxlink": "italic(parts[1])",
-    # {{IUPAC-1|alanine}}
-    "IUPAC-1": 'f"IUPAC 1-letter symbol for {parts[1]}"',
+    # {{tooltip|binding -- here, used in the sense of 'putting (a person) under definite (legal) obligations|[[binding]]}}
+    "tooltip": "parts[-1]",
+    # {{trademark erosion|en|Zamboni|Frank J. Zamboni & Co. Inc.}}
+    "trademark erosion": "f'<i>{parts[2]}</i> was originally (and may still be) a trademark of {parts[3]}. Its use in the general sense is an example of trademark erosion.'",
+    # {{wsource|Pro Sexto Roscio Amerino|lang=la}}
+    "wsource": "[part for part in parts[1:] if '=' not in part][-1]",
 }
 templates_multi["angbr"] = templates_multi["IPAfont"]
 templates_multi["angbr IPA"] = templates_multi["IPAfont"]
+templates_multi["brackets"] = templates_multi["sqbrace"]
+templates_multi["colour panel"] = templates_multi["color panel"]
 templates_multi["datedef"] = templates_multi["defdate"]
 templates_multi["def-date"] = templates_multi["defdate"]
 templates_multi["defdt"] = templates_multi["defdate"]
@@ -326,7 +390,6 @@ templates_multi["monospace"] = templates_multi["mono"]
 templates_multi["nom"] = templates_multi["nominalization"]
 templates_multi["n-g"] = templates_multi["non-gloss"]
 templates_multi["n-g-lite"] = templates_multi["non-gloss"]
-templates_multi[""] = templates_multi["non-gloss"]
 templates_multi["ng"] = templates_multi["non-gloss"]
 templates_multi["ng-lite"] = templates_multi["non-gloss"]
 templates_multi["ngd"] = templates_multi["non-gloss"]
@@ -343,50 +406,41 @@ templates_multi["qualifier-lite"] = templates_multi["qualifier"]
 templates_multi["s"] = templates_multi["sense"]
 templates_multi["small caps"] = templates_multi["smallcaps"]
 templates_multi["smc"] = templates_multi["smallcaps"]
-templates_multi["taxlink2"] = templates_multi["taxlink"]
+templates_multi["sqb"] = templates_multi["sqbrace"]
+templates_multi["staco"] = templates_multi["station code"]
+templates_multi["taxlink"] = templates_multi["taxfmt"]
+templates_multi["taxlink2"] = templates_multi["taxfmt"]
+templates_multi["taxlinknew"] = templates_multi["taxfmt"]
 templates_multi["upright"] = templates_multi["noitalic"]
 
 # Templates that will be completed/replaced using custom text.
 templates_other = {
+    "2022 SI prefixes": "Coined by Richard J. C. Brown and adopted by the General Conference on Weights and Measures in 2022 as an expansion to the metric prefixes beyond 10<sup>±24</sup>.<br/><br/>Some popular unofficial terms already in use were <b>hella-</b>, <b>bronto-</b> and <b>xenna-</b>, but terms beginning with the same letters as existing prefixes were considered undesirable, as were as those beginning with common scientific letters such as <b>b</b> or <b>x</b>. Richard J. C. Brown suggested that the new terms begin with <b>r</b> and <b>q</b>, due to their rarity as unit symbols, and that the trends followed by the other prefixes be continued: that they be based on Latin or Greek; that large prefixes end with <b>-a</b> and small prefixes end with <b>-o</b>; that they should be in corresponding large and small pairs; and that the first letters of each prefix should be in reverse alphabetical order (as has been the case for the newer prefixes). He therefore suggested <i>ronna-</i> and <i>ronto-</i> (evoking Ancient Greek ἐννέα (<i>ennéa</i>) and Latin <i>novem</i> (“nine”)), and <i>quecca-</i> and <i>quecto-</i> (evoking Ancient Greek δέκα (<i>déka</i>) and Latin <i>decem</i> (“ten”)), because as 10<sup>27</sup> and 10<sup>30</sup> when written have nine and ten groups of zeroes, respectively. These were adopted, with <i>quecca-</i> changed to <i>quetta-</i>.",
+    "'": "'",
     "--": "&nbsp;—",
     "-a-o-x": "The gender-neutral suffix <i>-x</i> replaces the gendered suffixes <i>-a/i> and <i>-o</i>.",
     "-a-o-@": "The at-sign (@) resembles both the feminine ending/element <i>a</i> and the masculine <i>o</i>.",
+    "-a-us-x": "The gender-neutral suffix <i>-x</i> replaces the gendered Latinate suffixes <i>-us</i> and <i>-a</i>.",
+    "-a-o-e": "The gender-neutral suffix <i>-e</i> replaces the gendered suffixes <i>-a</i> and <i>-o</i>.",
     "=": "=",
     ",": ",",
     "Brai-ety": "Invented by Louis Braille, braille cells were arranged in numerical order and assigned to the letters of the French alphabet. Most braille alphabets follow this assignment for the 26 letters of the basic Latin alphabet or, in non-Latin scripts, for the transliterations of those letters. In such alphabets, the first ten braille letters (the first decade: ⠁⠃⠉⠙⠑⠋⠛⠓⠊⠚) are assigned to the Latin letters A to J and to the digits 1 to 9 and 0. (Apart from '2', the even digits all have three dots: ⠃⠙⠋⠓⠚.)<br/><br/>The letters of the first decade are those cells with at least one dot in the top row and at least one in the left column, but none in the bottom row.  The next decade repeat the pattern with the addition of a dot at the lower left, the third decade with two dots in the bottom row, and the fourth with a dot on the bottom right. The fifth decade is like the first, but shifted downward one row. The first decade is supplemented by the two characters with dots in the right column and none in the bottom row, and that supplement is propagated to the other decades using the generation rules above. Finally, there are four characters with no dots in the top two rows. Many languages that use braille letters beyond the 26 of the basic Latin alphabet follow an approximation of the English or French values for additional letters.",
     "corruption": "corruption",
     "epi-def": "<i>Used as a specific epithet</i>",
+    "genericized trademark": "Genericized trademark",
+    "grc-ark": "Arcadocypriot",
+    "grc-att": "Attic",
+    "grc-ion": "Ionic",
     "internationalism": "Internationalism",
     "LR": "\u200e",
     "nbsp": "&nbsp;",
     "mdash": "&mdash;",
     "ndash": "&ndash;",
+    "pre-Germanic": "pre-Germanic",
     "sic": "<sup>[<i>sic</i>]</sup>",
 }
-
-
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/en
-release_description = """\
-### 🌟 In order to be regularly updated, this project needs support; [click here](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) to donate. 🌟
-
-<br/>
-
-
-Words count: {words_count}
-Wiktionary dump: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-free version:
-{download_links_noetym}
-
-<sub>Updated on {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
+templates_other["en dash"] = templates_other["ndash"]
+templates_other["Genericized trademark"] = templates_other["genericized trademark"]
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -427,42 +481,10 @@ def last_template_handler(
     all_templates: list[tuple[str, str, str]] | None = None,
     variant_only: bool = False,
 ) -> str:
-    """
-    Will be call in utils.py::transform() when all template handlers were not used.
+    """Will be call in utils.py::transform() when all template handlers were not used."""
 
-        >>> last_template_handler(["eye dialect of", "en" , "ye#Etymology 6", "t=t", "from=from", "from2=from2"], "en")
-        '<i>Eye dialect spelling of</i> <b>ye</b> (“t”)<i>, representing from and from2 English</i>'
-        >>> last_template_handler(["alternative spelling of", "en" , "ye", "from=from", "from2=from2"], "en")
-        '<i>From and from2 spelling of</i> <b>ye</b>'
-
-        >>> last_template_handler(["initialism of", "en", "w:Shockwave Flash"], "en")
-        '<i>Initialism of</i> <b>Shockwave Flash</b>'
-        >>> last_template_handler(["initialism of", "en", "optical character reader", "dot=&nbsp;(the scanning device)"], "en")
-        '<i>Initialism of</i> <b>optical character reader</b>&nbsp;(the scanning device)'
-        >>> last_template_handler(["init of", "en", "optical character reader", "tr=tr", "t=t", "ts=ts"], "en")
-        '<i>Initialism of</i> <b>optical character reader</b> (<i>tr</i> /ts/, “t”)'
-        >>> last_template_handler(["init of", "en", "OCR", "optical character reader", "nodot=1", "nocap=1"], "en")
-        '<i>initialism of</i> <b>optical character reader</b>'
-
-        >>> last_template_handler(["standard spelling of", "en", "from=Irish English", "Irish Traveller"], "en")
-        '<i>Irish English standard spelling of</i> <b>Irish Traveller</b>'
-        >>> last_template_handler(["standard spelling of", "en", "enroll"], "en")
-        '<i>Standard spelling of</i> <b>enroll</b>'
-        >>> last_template_handler(["cens sp", "en", "bitch"], "en")
-        '<i>Censored spelling of</i> <b>bitch</b>'
-
-        >>> last_template_handler(["pronunciation spelling of", "en", "everything", "from=AAVE"], "en")
-        '<i>Pronunciation spelling of</i> <b>everything</b><i>, representing African-American Vernacular English</i>'
-
-        >>> last_template_handler(["zh-m", "痟", "tr=siáu", "mad"], "en")
-        '痟 (<i>siáu</i>, “mad”)'
-    """
-
-    from ...user_functions import capitalize, chinese, extract_keywords_from, italic, strong
     from .. import defaults
-    from .form_of import form_of_templates
-    from .langs import langs
-    from .template_handlers import gloss_tr_poss, join_names, lookup_template, render_template
+    from .template_handlers import lookup_template, render_template
 
     tpl, *parts = template
 
@@ -475,51 +497,10 @@ def last_template_handler(
         return ""
 
     if lookup_template(template[0]):
-        return render_template(word, template)
-
-    data = extract_keywords_from(parts)
-
-    if tpl in form_of_templates:
-        starter = form_of_templates[tpl]
-        ender = ""
-        lang = data["1"] or (parts.pop(0) if parts else "")
-        word = (data["2"] or (parts.pop(0) if parts else "")).split("#", 1)[0]
-
-        text = data["alt"] or data["3"] or (parts.pop(0) if parts else "")
-        gloss = data["t"] or data["gloss"] or data["4"] or (parts.pop(0) if parts else "")
-        word = text or word
-        if word.startswith("w:"):
-            word = word[2:]
-
-        if fromtext := join_names(data, "from", " and "):
-            cap = starter[0].isupper()
-            from_suffix = "form of"
-            if tpl == "standard spelling of":
-                from_suffix = "standard spelling of"
-            elif tpl == "alternative spelling of":
-                from_suffix = "spelling of"
-            elif tpl in (
-                "eye dialect of",
-                "pronunciation spelling of",
-                "pronunciation variant of",
-            ):
-                ender = italic(f", representing {templates_italic.get(data['from'], fromtext)} {langs[lang]}")
-            if not ender:
-                starter = f"{fromtext} {from_suffix}"
-                starter = capitalize(starter) if cap else starter
-
-        starter = starter[0].lower() + starter[1:] if data["nocap"] else capitalize(starter)
-        phrase = italic(starter)
-        phrase += f" {strong(word)}"
-        phrase += gloss_tr_poss(data, gloss)
-        if ender:
-            phrase += ender
-        if dot := data["dot"]:
-            phrase += dot
-        return phrase
-
-    if tpl in ("zh-l", "zh-m"):
-        return chinese(parts, data)
+        text = render_template(word, template)
+        if tpl == "xlit" and not text and all_templates is not None:
+            all_templates.append((f"{tpl}:{parts[0]}", word, "missed"))
+        return text
 
     return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
 

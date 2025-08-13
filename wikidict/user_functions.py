@@ -4,6 +4,7 @@ Functions that can be used in *templates_multi* of any locale.
 
 import re
 from collections import defaultdict
+from html import escape
 
 
 def capitalize(text: str) -> str:
@@ -109,6 +110,29 @@ def chinese(parts: list[str], data: defaultdict[str, str], *, laquo: str = "“"
         phrase += f"{laquo}{data['lit']}{raquo}"
     phrase += ")"
     return phrase
+
+
+def code(kind: str, value: str) -> str:
+    """
+    >>> code("html", "")
+    ''
+    >>> code("html", "</span>")
+    '<code>&lt;/span&gt;</code>'
+
+    >>> code("js", "(65535).toString(16) === 'ffff'")
+    "<code>(65535).toString(16) === 'ffff'</code>"
+    >>> code("js", "=(65535).toString(16) === 'ffff'")
+    "<code>(65535).toString(16) === 'ffff'</code>"
+    >>> code("js", "==(65535).toString(16) === 'ffff'")
+    "<code>=(65535).toString(16) === 'ffff'</code>"
+    """
+    if not value:
+        return ""
+    if value[0] == "=":
+        value = value[1:]
+    if kind == "html":
+        value = escape(value)
+    return f"<code>{value}</code>"
 
 
 def color(rgb: str) -> str:
@@ -601,6 +625,7 @@ __all__ = (
     "chimy",
     "chinese",
     "extract_keywords_from",
+    "code",
     "color",
     "concat",
     "coord",

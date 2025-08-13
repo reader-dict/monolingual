@@ -12,8 +12,9 @@ float_separator = ","
 thousands_separator = "."
 
 # Markers for sections that contain interesting text to analyse.
-head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
+section_patterns = ("#", r"\*")
 section_sublevels = (3,)
+head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
 etyl_section = ("{{etimologie}}",)
 sections = (
     *etyl_section,
@@ -69,29 +70,6 @@ templates_multi = {
     # {{trad|el|παρα}}
     "trad": "parts[-1]",
 }
-
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/ro
-release_description = """\
-### 🌟 Pentru a fi actualizat periodic, acest proiect are nevoie de sprijin; [faceți clic aici](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) pentru a dona. 🌟
-
-<br/>
-
-
-Număr de cuvinte: {words_count}
-Extragerea datelor din Wikționar: {dump_date}
-
-Versiunea completă:
-{download_links_full}
-
-Versiune fără etimologie:
-{download_links_noetym}
-
-<sub>Ultima actualizare în {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wikționar (ɔ) {year}"
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -159,6 +137,9 @@ random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
+    >>> adjust_wikicode("{{(|adept al liberalismului}}\\n*{{eng}}: {{trad|en|liberal}}\\n{{-}}\\n{{)}}\\nfoo\\n{{bar}}#foo\\n{{(|baz}}\\n*sdf\\n{{)}}", "ro")
+    'foo\\n{{bar}}#foo'
+
     >>> adjust_wikicode("{{-avv-|ANY|ANY}}", "ro")
     '=== {{avv|ANY|ANY}} ==='
 
@@ -191,6 +172,19 @@ def adjust_wikicode(code: str, locale: str) -> str:
     '# {{flexion|fântânioară}}'
     """
     locale_3_chars, lang_name = langs[locale]
+
+    # Wipe out `{{(|...}}...{{)}}`
+    if "{{(|" in code:
+        cleaned: list[str] = []
+        in_unwanted_section = False
+        for line in code.splitlines():
+            if line.startswith("{{(|"):
+                in_unwanted_section = True
+            elif line.startswith("{{)}}"):
+                in_unwanted_section = False
+            elif not in_unwanted_section:
+                cleaned.append(line)
+        code = "\n".join(cleaned)
 
     # `{{-avv-|ANY|ANY}}` → === `{{avv|ANY|ANY}} ===`
     code = re.sub(r"^\{\{-(.+)-\|(\w+)\|(\w+)\}\}", r"=== {{\1|\2|\3}} ===", code, flags=re.MULTILINE)

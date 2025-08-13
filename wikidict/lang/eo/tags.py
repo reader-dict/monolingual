@@ -32,6 +32,7 @@ tags = {
     "VRH": "kvazauxnepre refleksiva verbo",
     "VTR": "transitiva",
     "ajly": "-ly",
+    "ajsf": "sen fleksio",
     "avaux": "-aux",
     "bas": "baza vortoprovizo",
     "deta": "derivajxo de tabelvorto",
@@ -49,11 +50,12 @@ tags = {
     "plpl": "nurplurala",
     "prov": "proverbo",
     "sapl": "samformplurala",
+    "sbsf": "sen fleksio",
     "senk": "sen komparado",
     "sing": "nursingulara",
     "sla": "slanga",
     "stat": "loka statika",
     "tneu": "neuxtruma(t)",
     "vul": "vulgara",
-}  # 50
+}  # 52
 # END

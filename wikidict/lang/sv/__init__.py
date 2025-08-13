@@ -113,29 +113,6 @@ templates_other = {
     "dödform": "†",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/sv
-release_description = """\
-### 🌟 För att kunna uppdateras regelbundet behöver detta projekt stöd; [klicka här](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) för att donera. 🌟
-
-<br/>
-
-
-Ord räknas: {words_count}
-Dumpa Wiktionary: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-Free Version:
-{download_links_noetym}
-
-<sub>Uppdaterad på {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
-
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """

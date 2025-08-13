@@ -387,7 +387,7 @@ langs = {
     "ksf": "bafia",
     "ksh": "fràncic ripuari",
     "ksx": "kedang",
-    "ku": "kurd",
+    "ku": "kurmanji",
     "kum": "kúmik",
     "kut": "kutenai",
     "kv": "komi",

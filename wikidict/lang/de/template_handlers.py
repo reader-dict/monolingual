@@ -1,6 +1,5 @@
 from collections import defaultdict
 
-from ...transliterator import transliterate
 from ...user_functions import extract_keywords_from, italic, strong
 from .abk import abk
 
@@ -438,25 +437,6 @@ def render_foreign_lang_simple(tpl: str, parts: list[str], data: defaultdict[str
     return phrase
 
 
-def render_grundformverweis(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
-    """
-    >>> render_grundformverweis("Grundformverweis Dekl", ["profilierend"], defaultdict(str), word="profilierende")
-    '<b>profilierende</b> ist eine flektierte Form von <b>profilierend</b>.'
-    >>> render_grundformverweis("Grundformverweis Konj", ["rauspumpen"], defaultdict(str), word="pumpt raus")
-    '<b>pumpt raus</b> ist eine flektierte Form von <b>rauspumpen</b>.'
-    >>> render_grundformverweis("Grundformverweis Partizipform", [], defaultdict(str, {"Verb": "ansprechen", "Partizip": "angesprochen"}), word="angesprochenen")
-    '<b>angesprochenen</b> ist eine flektierte Form von <i>angesprochen</i>, einem Partizip des Verbs <b>ansprechen</b>.'
-    """
-    match kind := tpl.split(" ", 1)[1]:
-        case "Dekl" | "Konj":
-            text = f"{strong(word)} ist eine flektierte Form von {strong(parts[0])}."
-        case "Partizipform":
-            text = f"{strong(word)} ist eine flektierte Form von {italic(data['Partizip'])}, einem Partizip des Verbs {strong(data['Verb'])}."
-        case _:
-            raise ValueError(f"Unhandled Grundformverweis {kind =}")
-    return text
-
-
 no_commas = (
     "allg.",
     "allgemein",
@@ -744,11 +724,16 @@ def render_Ut(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
     '<i>διάλογος (diálogos)</i>'
     >>> render_Ut("Üt", ["grc", "διαλέγομαι", "dialégesthai", "διαλέγεσθαι"], defaultdict(str))
     '<i>διαλέγεσθαι (dialégesthai)</i>'
-    >>> render_Ut("Üt", ["bg", "карам велосипед"], defaultdict(str))
+
+    TODO: enable back with #1746
+    >> render_Ut("Üt", ["bg", "карам велосипед"], defaultdict(str))
     '<i>карам велосипед (karam velosiped)</i>'
     """
     lang = parts.pop(0)
     phrase = parts[0] if len(parts) < 3 else parts[2]
+
+    def transliterate(a: str, b: str) -> str:
+        return ""
 
     phrase += f" ({parts[1] if len(parts) > 1 else transliterate(lang, parts[0])})"
     return italic(phrase)
@@ -853,25 +838,6 @@ def vorsilbe(verb: str) -> str:
     return verb
 
 
-def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
-    """
-    >>> render_variant("Alte Schreibweise", ["dass", "Reform 1996"], defaultdict(str), word="daß")
-    'dass'
-    >>> render_variant("Grundformverweis Dekl", ["profilierend"], defaultdict(str), word="profilierende")
-    'profilierend'
-    >>> render_variant("Grundformverweis Konj", ["rauspumpen"], defaultdict(str), word="pumpt raus")
-    'rauspumpen'
-    >>> render_variant("Grundformverweis Konj", [], defaultdict(str, {"1": "rauspumpen"}), word="pumpt raus")
-    'rauspumpen'
-    >>> render_variant("Grundformverweis Konj", ["rauspumpen#rauspumpen_(Deutsch)"], defaultdict(str), word="pumpt raus")
-    'rauspumpen'
-    >>> render_variant("Grundformverweis Partizipform", [], defaultdict(str, {"Verb": "ansprechen", "Partizip": "angesprochen"}), word="angesprochenen")
-    'ansprechen'
-    """
-    variant = data["1"] or data["Verb"] or parts[0]
-    return variant.split("#", 1)[0]
-
-
 def render_verbherkunft(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_verbherkunft("Verbherkunft", [], defaultdict(str), word="anflunkern")
@@ -961,6 +927,23 @@ def render_verbherkunft(tpl: str, parts: list[str], data: defaultdict[str, str],
     return retp
 
 
+def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_variant("flexion", ["dass", "Reform 1996"], defaultdict(str), word="daß")
+    'dass'
+    >>> render_variant("flexion", ["profilierend"], defaultdict(str), word="profilierende")
+    'profilierend'
+    >>> render_variant("flexion", [], defaultdict(str, {"1": "rauspumpen"}), word="pumpt raus")
+    'rauspumpen'
+    >>> render_variant("flexion", ["rauspumpen#rauspumpen_(Deutsch)"], defaultdict(str), word="pumpt raus")
+    'rauspumpen'
+    >>> render_variant("flexion", [], defaultdict(str, {"Verb": "ansprechen", "Partizip": "angesprochen"}), word="angesprochenen")
+    'ansprechen'
+    """
+    variant = data["1"] or data["Verb"] or parts[0]
+    return variant.split("#", 1)[0]
+
+
 template_mapping = {
     "Arab": render_foreign_lang_simple,
     "Bibel": render_bibel,
@@ -983,10 +966,7 @@ template_mapping = {
     #
     # Variants
     #
-    "__variant__Alte Schreibweise": render_variant,
-    "__variant__Grundformverweis Dekl": render_variant,
-    "__variant__Grundformverweis Konj": render_variant,
-    "__variant__Grundformverweis Partizipform": render_variant,
+    "__variant__flexion": render_variant,
 }
 
 

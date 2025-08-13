@@ -53,7 +53,7 @@ def fetch_snapshots(locale: str) -> list[str]:
     if forced_snapshot := os.environ.get("FORCE_SNAPSHOT"):
         return [forced_snapshot]
 
-    with constants.SESSION.get(constants.BASE_URL.format(locale)) as req:
+    with constants.SESSION.get(constants.BASE_URL.format(locale=locale)) as req:
         req.raise_for_status()
         return sorted(re.findall(r'href="(\d+)/"', req.text))
 
@@ -62,7 +62,7 @@ def fetch_pages(date: str, locale: str, output: Path, *, callback: Callable[[str
     """Download all pages, current versions only.
     Return the path of the XML file BZ2 compressed.
     """
-    url = constants.DUMP_URL.format(locale, date)
+    url = constants.DUMP_URL.format(locale=locale, snapshot=date)
     msg = f"Fetching {url} into {output}"
     log.info(msg)
 

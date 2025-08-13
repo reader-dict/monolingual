@@ -769,7 +769,9 @@ langs = {
     "bar": "Bavarian",
     "bas": "Basaa",
     "bat": "Baltic",
+    "bat-dni": "Dnieper Baltic",
     "bat-eas": "East Baltic",
+    "bat-gol": "Golyad",
     "bat-pro": "Proto-Baltic",
     "bat-wes": "West Baltic",
     "bau": "Badanchi",
@@ -2044,7 +2046,6 @@ langs = {
     "deg": "Degema",
     "deh": "Dehwari",
     "dei": "Demisa",
-    "dek": "Dek",
     "del": "Lenape",
     "dem": "Dem",
     "den": "Slavey",
@@ -3400,7 +3401,7 @@ langs = {
     "inc-pro": "Proto-Indo-Aryan",
     "inc-rom": "Romani",
     "inc-shn": "Shinaic",
-    "inc-snd": "Sindhi",
+    "inc-snd": "Sindhic",
     "inc-sou": "Southern Indo-Aryan",
     "inc-tha": "Tharu",
     "inc-wes": "Western Indo-Aryan",
@@ -7512,6 +7513,7 @@ langs = {
     "shg": "Shua",
     "shh": "Shoshone",
     "shi": "Tashelhit",
+    "shi-med": "Medieval Tashelhit",
     "shj": "Shatt",
     "shk": "Shilluk",
     "shl": "Shendu",
@@ -8655,6 +8657,7 @@ langs = {
     "uiv": "Iyive",
     "uji": "Tanjijili",
     "uk": "Ukrainian",
+    "uk-CA": "Canadian Ukrainian",
     "uka": "Kaburi",
     "ukg": "Ukuriguma",
     "ukh": "Ukhwejo",
@@ -9468,7 +9471,7 @@ langs = {
     "yaf": "Yaka",
     "yag": "Yámana",
     "yah": "Yazghulami",
-    "yai": "Yagnobi",
+    "yai": "Yaghnobi",
     "yaj": "Banda-Yangere",
     "yak": "Yakima",
     "yal": "Yalunka",
@@ -9593,6 +9596,7 @@ langs = {
     "ymx": "Northern Muji",
     "ymz": "Muzi",
     "yna": "Aluo",
+    "ynb": "Yamben",
     "ynd": "Yandruwandha",
     "yne": "Lang'e",
     "yng": "Yango",
@@ -9894,7 +9898,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,889
+}  # 9,893
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)

@@ -188,6 +188,7 @@ templates_italic = {
     "μτβ-αμτβ": "μεταβατικό και αμετάβατο",
     "συνθ βιολ": "συνθετική βιολογία",
     "περιπαιχτ": "περιπαιχτικό",
+    "καλιαρντά": "στα καλιαρντά",
 }
 templates_italic["θρησκ"] = templates_italic["θρησκεία"]
 templates_italic["καθ αρχ"] = templates_italic["καθ"]
@@ -199,8 +200,6 @@ templates_multi: dict[str, str] = {
     "IPAchar": "parts[1]",
     # {{IPAstyle|ˈɑɹ.kən.sɔ}}
     "IPAstyle": "parts[1]",
-    # {{nobr|[[-ηρός]], -ηρά, -ηρόν}}
-    "nobr": "parts[-1]",
     # {{resize|Βικιλεξικό|140}}
     "resize": "f'<span style=\"font-size:{parts[2]}%;\">{parts[1]}</span>'",
     # {{uni-script|ΛVΛV}}
@@ -213,12 +212,6 @@ templates_multi: dict[str, str] = {
     "νε": "italic('νέα ελληνική')",
     # {{αιτ}}
     "αιτ": "italic(strong('αιτιατική'))",
-    # {{λ2||τοπωνύμιο|τοπωνύμια}}
-    "λ2": "parts[-1]",
-    # {{β|lang=fr|Motosacoche}}
-    "β": "parts[-1]",
-    # {{β|Βίβλος Χρονική}}
-    "βθ": "parts[-1]",
     # {{θηλ ισσα|Αβαριτσιώτης|Αβαριτσιώτ(ης)}}
     "θηλ ισσα": 'f"{parts[-1]} + κατάληξη θηλυκού -ισσα"',
     # {{θηλ τρια|διευθυντής|διευθυντ(ής)}}
@@ -226,7 +219,7 @@ templates_multi: dict[str, str] = {
     # {{θηλ τρα|ψεύτης|ψεύ(της)}}
     "θηλ τρα": 'f"{parts[-1]} + κατάληξη θηλυκού -τρα"',
     # {{θηλ α|Κερκυραίος|Κερκυραί(ος)}}
-    "θηλ α": 'f"{parts[-1]} + κατάληξη θηλυκού -α"',
+    "θηλ α": "f\"{parts[-1] if len(parts) > 1 else ''} + κατάληξη θηλυκού -α\"",
     # {{θηλ ιστρια|εγωιστής|εγω(ιστής)}}
     "θηλ ιστρια": 'f"{parts[-1]} + κατάληξη θηλυκού -ίστρια"',
     # {{θηλ ού|μερακλής|μερακλ(ής)}}
@@ -242,8 +235,6 @@ templates_multi: dict[str, str] = {
     "ο-πλ": "italic('ουδέτερο στον πληθυντικό')",
     # {{οπλ}}
     "οπλ": "italic('ουδέτερο, μόνο στον πληθυντικό')",
-    # {{wsp|Eruca}}
-    "wsp": "parts[-1]",
     # {{υπερθ|aa|bb}}
     "υπερθ": "f\"{italic('υπερθετικός βαθμός του')} {strong(parts[1])}\"",
     # {{συγκρ|aa|bb}}
@@ -266,18 +257,12 @@ templates_multi: dict[str, str] = {
     "λατιν": "f'(<i>λατινική γραφή: {parts[0]}</i>)'",
     # {{vertical-lr|ᠮᠣᠩᠭᠤᠯ}}
     "vertical-lr": "f'<span style=\"writing-mode:vertical-lr\">{parts[-1]}</span>'",
-    # {{φόντο|βεβαιόω}}
-    "φόντο": "parts[-1]",
     # {{χρωμ|b80049}}
     "χρωμ": "color(parts[-1])",
     # {{έλλ|πολυπαλλόμενο σύμφωνο}}
     "έλλ": "f'<i>έλλειψη του</i> <b>{parts[1]}</b>'",
 }
 # Alias
-templates_multi["l2"] = templates_multi["λ2"]
-templates_multi["s"] = templates_multi["βθ"]
-templates_multi["Wspecies"] = templates_multi["wsp"]
-templates_multi["Wikispecies"] = templates_multi["wsp"]
 templates_multi["συντμ_του"] = templates_multi["συντμ του"]
 
 # Templates that will be completed/replaced using custom style.
@@ -322,30 +307,6 @@ templates_other["f"] = templates_other["θ"]
 templates_other["ονομαΑ"] = templates_other["παρωχ-ονομαΑ"]
 templates_other["πληθ"] = templates_other["πληθυντικός"]
 templates_other["πολυ"] = templates_other["πολυτ γραφή"]
-
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/el
-release_description = """\
-### 🌟 Προκειμένου να ενημερώνεται τακτικά, αυτό το έργο χρειάζεται υποστήριξη- [κάντε κλικ εδώ](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) για να κάνετε δωρεά. 🌟
-
-<br/>
-
-
-Αριθμός λέξεων: {words_count}
-Εξαγωγή Βικιλεξικού: {dump_date}
-
-Πλήρης έκδοση:
-{download_links_full}
-
-Έκδοση χωρίς ετυμολογία:
-{download_links_noetym}
-
-<sub>Ημερομηνία δημιουργίας: {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Βικιλεξικό (ɔ) {year}"
-
 
 _genders = {
     "θ": "θηλυκό",
@@ -398,9 +359,17 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈni.xta/']
     >>> find_pronunciations("{{ΔΦΑ|el|ˈni.ði.mos}}", "el")
     ['/ˈni.ði.mos/']
+    >>> find_pronunciations("{{ΔΦΑ|0=-|el|ˈni.ði.mos}}", "el")
+    ['/ˈni.ði.mos/']
     """
-    pattern = re.compile(rf"\{{ΔΦΑ(?:\|γλ={locale})?(?:\|{locale})?\|([^}}\|]+)")
-    return [f"/{p}/" for p in unique(pattern.findall(code))]
+    res: list[str] = []
+    for tpl in re.findall(r"\{\{(ΔΦΑ\|[^\}]+)\}\}", code):
+        parts = [part.strip() for part in tpl.split("|")]
+        if f"γλ={locale}" not in parts and locale not in parts:
+            continue
+        if parts := [part for part in parts if "=" not in part and part not in {"ΔΦΑ", locale}]:
+            res.append(f"/{parts[-1]}/")
+    return unique(res)
 
 
 def text_language(lang_iso: str, *, args: dict[str, str] = defaultdict(str)) -> str:
@@ -548,23 +517,6 @@ def last_template_handler(
         >>> last_template_handler(["der", "sa", "el","बलि-द्वीप", "tr=bali-dvīpa", "tnl=νησιά προσφορών"], "el")
         '<i>σανσκριτική</i> बलि-द्वीप (bali-dvīpa, νησιά προσφορών)'
 
-        >>> last_template_handler(["γρ", "πολυπαλλόμενο σύμφωνο", "συνών"], "el")
-        '<i>συνώνυμο του</i> <b>πολυπαλλόμενο σύμφωνο</b>'
-        >>> last_template_handler(["γρ", "τραπεζομάντιλο"], "el")
-        '<i>άλλη γραφή του</i> <b>τραπεζομάντιλο</b>'
-        >>> last_template_handler(["γρ", "ελαιόδενδρο", "μορφή"], "el")
-        '<i>άλλη μορφή του</i> <b>ελαιόδενδρο</b>'
-        >>> last_template_handler(["γρ", "ελαιόδενδρο", "πολυ", "εμφ=ελαιόδενδρο(ν)"], "el")
-        '<i>πολυτονική γραφή του</i> <b>ελαιόδενδρο(ν)</b>'
-        >>> last_template_handler(["γρ", "ποιέω", "ασυν", "grc"], "el")
-        '<i>ασυναίρετη μορφή του</i> <b>ποιέω</b>'
-        >>> last_template_handler(["γρ", "ποιέω", "ασυν", "grc", "εμφ=ποι-έω"], "el")
-        '<i>ασυναίρετη μορφή του</i> <b>ποι-έω</b>'
-        >>> last_template_handler(["γρ", "colour", "", "en"], "el")
-        '<i>άλλη γραφή του</i> <b>colour</b>'
-        >>> last_template_handler(["γρ", "colour", "freestyle text", "en"], "el")
-        '<i>freestyle text</i> <b>colour</b>'
-
         >>> last_template_handler(["πρόσφ", "μαλλί", "-ης"], "el")
         'μαλλί + -ης'
         >>> last_template_handler(["πρόσφ", "μαλλί", ".1=μαλλ(ί)", "-ης"], "el")
@@ -645,6 +597,23 @@ def last_template_handler(
         return render_template(word, template)
 
     data = extract_keywords_from(parts)
+
+    if tpl in {
+        "l2",
+        "nobr",
+        "s",
+        "Wikispecies",
+        "Wspecies",
+        "wsp",
+        "β",
+        "βθ",
+        "λ2",
+        "φόντο",
+    }:
+        return parts[-1]
+
+    if tpl == "ΒΦ":
+        return f"{parts[-1]} στα Βικιφθέγματα"
 
     if tpl == "γραφή του":
         if len(parts) == 1:
@@ -914,25 +883,6 @@ def last_template_handler(
         "μετων": "μετωνυμία",
     }.get(tpl, ""):
         return italic(text) if data["0"] else term(text)
-
-    if tpl == "γρ":
-        desc = parts[1] if len(parts) > 1 else ""
-        desc = {
-            "": "άλλη γραφή του",
-            "απλοπ": "απλοποιημένη γραφή του",
-            "μη απλοπ": "απλοποιημένη γραφή του",
-            "ασυν": "ασυναίρετη μορφή του",
-            "ετυμ": "ετυμολογική γραφή του",
-            "μονο": "μονοτονική γραφή του",
-            "μορφή": "άλλη μορφή του",
-            "πολυ": "πολυτονική γραφή του",
-            "πολ": "πολυτονική γραφή του",
-            "παρωχ": "παρωχημένη γραφή του",
-            "σνρ": "συνηρημένη μορφή του",
-            "συνων": "συνώνυμο του",
-            "συνών": "συνώνυμο του",
-        }.get(desc, desc)
-        return f"{italic(desc)} {strong(data['εμφ'] or parts[0])}"
 
     if tpl in {"πρόσφ", "προσφ"}:
         words = [data[f".{idx}"] or part for idx, part in enumerate(parts, 1)]

@@ -1,3 +1,4 @@
+from logging import getLogger
 from optparse import Values
 
 from scour.scour import scourString
@@ -19,13 +20,15 @@ SCOUR_OPTIONS = Values(
     }
 )
 
+log = getLogger(__name__)
+
 
 def get(formula: str) -> str:
     return CACHE.get(formula, "")
 
 
 def set(formula: str, svg_raw: str) -> None:
-    print(f"{formula!r}: {svg_raw!r},")
+    log.warning("[new SVG] %r: %r,", formula, svg_raw)
     CACHE[formula] = svg_raw
 
 

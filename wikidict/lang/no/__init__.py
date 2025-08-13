@@ -112,8 +112,6 @@ templates_multi = {
     "qualifier": "term(parts[1])",
     # {{suffiks|konsentrere|sjon|språk=no}}
     "suffiks": 'f"{italic(parts[1])} + -{italic(parts[2])}"',
-    # {{Sup|1}}
-    "Sup": "superscript(parts[1])",
     # {{teleskopord|nei|ja|språk=no}}
     "teleskopord": 'f"teleskopord sammensatt av {parts[1]} og {parts[2]}"',
     # {{tidligere bøyningsform|no|sub|jul}}
@@ -136,29 +134,6 @@ templates_other = {
     "nn": "nynorsk",
     "tr": "tyrkisk",
 }
-
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/no
-release_description = """\
-### 🌟 For å kunne oppdateres jevnlig trenger dette prosjektet støtte; [klikk her](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) for å donere. 🌟
-
-<br/>
-
-
-Ord räknas: {words_count}
-Dumpa Wiktionary: {dump_date}
-
-Full version:
-{download_links_full}
-
-Etymology-free version:
-{download_links_noetym}
-
-<sub>Uppdaterad på {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wiktionary (ɔ) {year}"
 
 
 def find_genders(code: str, locale: str) -> list[str]:

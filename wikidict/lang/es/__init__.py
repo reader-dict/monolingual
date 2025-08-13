@@ -198,29 +198,6 @@ templates_other = {
     "suma de partes": "<i>Se utiliza como la suma de las partes: consulte las entradas de cada término por separado</i>",
 }
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/es
-release_description = """\
-### 🌟 Para que este proyecto pueda actualizarse con regularidad, necesita apoyo; [haga clic aquí](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) para donar. 🌟
-
-<br/>
-
-
-Número de palabras: {words_count}
-exportación Wikcionario: {dump_date}
-
-Versión completa:
-{download_links_full}
-
-Versión sin etimología:
-{download_links_noetym}
-
-<sub>Actualizado el {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Wikcionario (ɔ) {year}"
-
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """

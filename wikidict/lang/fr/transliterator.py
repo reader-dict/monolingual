@@ -4,10 +4,12 @@ Links:
   - https://fr.wiktionary.org/wiki/Module:transliterator
   - https://fr.wiktionary.org/wiki/Module:transliterator/data
 
-Current version from 2025-03-06T06:49:32
-  - https://fr.wiktionary.org/w/index.php?title=Module:transliterator/data&oldid=37433155
+Current version from 2023-06-17T20:45:58
+  - https://fr.wiktionary.org/w/index.php?title=Module:transliterator&oldid=32365708
 """
 
+# Source: https://fr.wiktionary.org/w/index.php?title=Module:transliterator/data&oldid=38377112
+# Updated: 2025-07-01T22:40:31
 TRANSLITERATIONS = {
     "common": {
         "-": "-",
@@ -159,7 +161,7 @@ TRANSLITERATIONS = {
         "І": "Ì",
         "і": "ì",
         "Й": "J",
-        "й": "ï",
+        "й": "j",
         "К": "K",
         "к": "k",
         "Л": "L",
@@ -586,8 +588,8 @@ TRANSLITERATIONS = {
         "д": "d",
         "Е": "E",
         "е": "e",
-        "Ё": "JO",
-        "ё": "jo",
+        "Ё": "Ë",
+        "ё": "ë",
         "Ж": "Ž",
         "ж": "ž",
         "З": "Z",
@@ -618,28 +620,38 @@ TRANSLITERATIONS = {
         "у": "u",
         "Ф": "F",
         "ф": "f",
-        "Х": "KH",
-        "х": "kh",
-        "Ц": "TS",
-        "ц": "ts",
+        "Х": "X",
+        "х": "x",
+        "Ц": "C",
+        "ц": "c",
         "Ч": "Č",
         "ч": "č",
         "Ш": "Š",
         "ш": "š",
-        "Щ": "ŠTŠ",
-        "щ": "štš",
+        "Щ": "Ŝ",
+        "щ": "ŝ",
         "Ъ": "<i>″</i>",
         "ъ": "<i>″</i>",
         "Ы": "Y",
         "ы": "y",
         "Ь": "ʹ",
         "ь": "ʹ",
-        "Э": "É",
-        "э": "é",
-        "Ю": "JU",
-        "ю": "ju",
-        "Я": "JA",
-        "я": "ja",
+        "Э": "È",
+        "э": "è",
+        "Ю": "Û",
+        "ю": "û",
+        "Я": "Â",
+        "я": "â",
+        "Ѣ": "Ě",
+        "ѣ": "ě",
+        "Ѵ": "Ỳ",
+        "ѵ": "ỳ",
+        "І": "Ì",
+        "і": "ì",
+        "Ѳ": "F̀",
+        "ѳ": "f̀",
+        "́": "́",  # Accent aigu pour accentuation
+        "̈": "̈",  # Tréma pour Ѣ̈ѣ̈ et Я̈я̈
     },
     "shi": {
         "ⴰ": "a",

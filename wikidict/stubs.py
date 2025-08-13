@@ -1,6 +1,6 @@
 """Type annotations."""
 
-from typing import NamedTuple
+from dataclasses import dataclass
 
 SubDefinition = str | tuple[str, ...]
 Definition = str | tuple[str, ...] | tuple[SubDefinition, ...]
@@ -9,12 +9,14 @@ Parts = tuple[str, ...]
 Variants = dict[str, list[str]]
 
 
-class Word(NamedTuple):
+@dataclass(slots=True)
+class Word:
     pronunciations: list[str]
     genders: list[str]
     etymology: list[Definition]
     definitions: Definitions
     variants: list[str]
+    is_variant: bool = False
 
 
 Words = dict[str, Word]

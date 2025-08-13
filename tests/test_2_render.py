@@ -25,8 +25,7 @@ def test_empty_json_file(tmp_path: Path) -> None:
     file = tmp_path / "test.json"
     file.write_text("{}")
     with patch.object(render, "get_latest_json_file", return_value=file):
-        with pytest.raises(ValueError):
-            render.main("fr")
+        assert render.main("fr") == 1
 
 
 def test_render_word(page: Callable[[str, str], str]) -> None:

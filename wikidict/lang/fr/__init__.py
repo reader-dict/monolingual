@@ -3,8 +3,6 @@
 import re
 
 from ...user_functions import flatten, unique
-from .ar_pronunciation import toIPA
-from .arabiser import appliquer, arabiser
 from .contexts import contexts
 from .domain_templates import domain_templates
 from .regions import regions
@@ -195,6 +193,7 @@ templates_italic = {
     **contexts,
     **domain_templates,
     **regions,
+    "3arabizi": "3arabizi",
     "adj-indéf-avec-de": "Avec de",
     "adverbe de lieu": "adverbe de lieu",
     "adverbe de manière": "adverbe de manière",
@@ -244,6 +243,7 @@ templates_italic = {
     "par troponymie": "Par troponymie",
     "parler bellifontain": "Parler bellifontain",
     "pâtes": "Cuisine",
+    "pseudo-science": "pseudo-science",
     "pyrologie": "pyrologie",
     "réciproque2": "Réciproque",
     "réfléchi": "Réfléchi",
@@ -543,30 +543,6 @@ templates_other = {
 }
 
 
-# Contenu de la release sur GitHub :
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/fr
-release_description = """\
-### 🌟 Afin d'être régulièrement mis à jour, ce projet a besoin de soutien ; [cliquez ici](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) pour faire un don. 🌟
-
-<br/>
-
-
-Nombre de mots : {words_count}
-Export Wiktionnaire : {dump_date}
-
-Version complète :
-{download_links_full}
-
-Version sans étymologies :
-{download_links_noetym}
-
-<sub>Mis à jour le {creation_date}</sub>
-"""
-
-# Le nom du dictionnaire qui sera affiché en-dessous de chaque définition
-wiktionary = "Wiktionnaire (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "fr")
@@ -657,70 +633,6 @@ def last_template_handler(
         'article 230-45'
         >>> last_template_handler(["Légifrance", "base=CPP", "numéro=230-45"], "fr")
         ''
-
-        >>> last_template_handler(["ar-ab", "lubné"], "fr")
-        'لُبْنَى'
-
-        >>> last_template_handler(["ar-cf", "ar-*i*â*ũ", "ar-ktb"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">كِتَابٌ</span></span> <small>(kitâbũ)</small> («&nbsp;livre, écriture ; pièce écrite&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*â*i*ũ", "ar-kfr", "ici=incroyant"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">كَافِرٌ</span></span> <small>(kâfirũ)</small> (ici, «&nbsp;incroyant&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*u**ânũ", "ar-qr'"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">قُرْآنٌ</span></span> <small>(qur\\\'ânũ)</small> («&nbsp;lecture&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a*a*@ũ", "ar-qSb"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">قَصَبَةٌ</span></span> <small>(qaSab@ũ)</small> («&nbsp;forteresse&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*u*ay*ũ", "ar-zlj"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">زُلَيْجٌ</span></span> <small>(zulayjũ)</small> («&nbsp;carreau de faïence&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a*i*iy²ũ", "ar-3lw"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">عَلِيٌّ</span></span> <small>(3aliy²ũ)</small> («&nbsp;supérieur, Ali&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*u*a*ũ", "ar-3mr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">عُمَرٌ</span></span> <small>(3umarũ)</small> («&nbsp;prospérité&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*u**@ũ", "ar-sWr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">سُورَةٌ</span></span> <small>(sûr@ũ)</small> («&nbsp;rang, sourate&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*â*i*ũ", "ar-qDy"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">قَاضٍ</span></span> <small>(qâDĩ)</small> («&nbsp;exécuteur, juge&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a**ânu", "ar-3mr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">عَمْرَانُ</span></span> <small>(3amrânu)</small> («&nbsp;Amran&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a**@ũ", "ar-zhr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">زَهْرَةٌ</span></span> <small>(zahr@ũ)</small> («&nbsp;fleur ; beauté&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a*â*ũ", "ar-'Vn"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">أَذَانٌ</span></span> <small>(\\\'aVânũ)</small> («&nbsp;adhan, appel à la prière&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*i*â*ũ", "ar-rwD"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">رِوَاضٌ</span></span> <small>(riwâDũ)</small> («&nbsp;{{p}} jardins&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-mu**a*ũ", "ar-rwd"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">مُرَادٌ</span></span> <small>(murâdũ)</small> («&nbsp;désiré, sens&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a**â'u", "ar-Xbr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">خَبْرَاءُ</span></span> <small>(Xabrâ\\\'u)</small> («&nbsp;grand sac de voyage&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-ma**i*ũ", "ar-jls"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">مَجْلِسٌ</span></span> <small>(majlisũ)</small> («&nbsp;lieu ou temps où l\\\'on est assis&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*i*â*ũ", "ar-jhd"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">جِهَادٌ</span></span> <small>(jihâdũ)</small> («&nbsp;lutte, effort&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a*î*ũ", "ar-nZr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">نَظِيرٌ</span></span> <small>(naZîrũ)</small> («&nbsp;pareil ; en face&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*i**ũ", "ar-jnn"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">جِنٌّ</span></span> <small>(jinnũ)</small> («&nbsp;djinn&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-**â*ũ", "ar-Hrm"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">إِحْرَامٌ</span></span> <small>(iHrâmũ)</small> («&nbsp;consécration&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*u**@ũ", "ar-sWr"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">سُورَةٌ</span></span> <small>(sûr@ũ)</small> («&nbsp;rang, sourate&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*â*a*a", "ar-ktb"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">كَاتَبَ</span></span> <small>(kâtaba)</small> («&nbsp;entretenir une correspondance&nbsp;»)'
-        >>> last_template_handler(["ar-cf", "ar-*a*aba", "ar-c3b"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">شَعَبَ</span></span> <small>(ca3aba)</small>'
-        >>> last_template_handler(["ar-cf", "ar-*i*a*ũ", "ar-jnn"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">جِنَنٌ</span></span> <small>(jinanũ)</small>'
-
-        >>> last_template_handler(["ar-mot", "elHasan_"], "fr")
-        '<span style="line-height: 0px;"><span style="font-size:larger">الحَسَن</span></span> <small>(elHasan_)</small>'
-
-        >>> last_template_handler(["ar-racine/nom", "ar-ktb"], "fr")
-        "كتب: relatif à l'action d'écrire, relier"
-
-        >>> last_template_handler(["ar-sch", "ar-*â*a*a"], "fr")
-        'زَارَزَ'
-
-        >>> last_template_handler(["ar-terme", "mu'ad²ibũ"], "fr")
-        "مُؤَدِّبٌ (<i>mu'ad²ibũ</i>) /mu.ʔad.di.bun/"
 
         >>> last_template_handler(["nom langue", "gcr"], "fr")
         'créole guyanais'
@@ -839,45 +751,6 @@ def last_template_handler(
             phrase = phrase[0].capitalize() + phrase[1:]
         return phrase
 
-    if tpl in {"ar-ab", "ar-mo"}:
-        return arabiser(parts[0])
-
-    if tpl == "ar-cf":
-        scheme = appliquer(parts[0], parts[1], var=parts[2] if len(parts) > 2 else "")
-        w = arabiser(scheme)
-        from ...utils import clean
-        from .racines_arabes import racines_schemes_arabes
-
-        sens = (
-            f"ici, «&nbsp;{data['ici']}&nbsp;»"
-            if data["ici"]
-            else f"«&nbsp;{clean(racines_schemes_arabes[parts[1]][parts[0]])}&nbsp;»"
-            if parts[1] in racines_schemes_arabes and parts[0] in racines_schemes_arabes[parts[1]]
-            else ""
-        )
-        sens = f" ({sens})" if sens else ""
-
-        return (
-            f'<span style="line-height: 0px;"><span style="font-size:larger">{w}</span></span>'
-            f" <small>({scheme})</small>"
-            f"{sens}"
-        )
-
-    if tpl == "ar-mot":
-        return f'<span style="line-height: 0px;"><span style="font-size:larger">{arabiser(parts[0])}</span></span> <small>({parts[0]})</small>'
-
-    if tpl == "ar-racine/nom":
-        from .racines_arabes import racines_schemes_arabes
-
-        return f"{arabiser(parts[0].split('-')[1])}: {racines_schemes_arabes[parts[0]]['aa_sens']}"
-
-    if tpl == "ar-sch":
-        return arabiser(appliquer(parts[0], parts[1] if len(parts) > 1 else "ar-zrzr"))
-
-    if tpl == "ar-terme":
-        arab = arabiser(parts[0])
-        return f"{arab} ({italic(parts[0])}) /{toIPA(arabic=arab)}/"
-
     if tpl == "nucléide":
         return (
             '<span style="white-space:nowrap;"><span style="display:inline-block;margin-bottom:-0.3em;'
@@ -969,6 +842,9 @@ def adjust_wikicode(code: str, locale: str) -> str:
     '# {{flexion|manger}}'
     >>> adjust_wikicode("#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", "fr")
     "#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'')."
+
+    >>> adjust_wikicode("# ''Pluriel de'' {{lien|anisophylle|fr}}.\\n*''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
+    '# {{flexion|anisophylle}}\\n# {{flexion|anisophylle}}'
     """
     # <li value="2"> → ''
     code = re.sub(r"<li [^>]+>", "", code)
@@ -991,7 +867,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # `# ''Féminin singulier de'' {{lien|terne|fr}}.` → `# {flexion|terne}}`
     # `# ''Féminin (singulier) de'' {{lien|terne|fr}}.` → `# {flexion|terne}}`
     code = re.sub(
-        rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{{\{{lien\|([^\|]+)\|.*",
+        rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{{\{{lien\|([^\|\}}]+).*",
         r"# {{flexion|\1}}",
         code,
         flags=re.IGNORECASE | re.MULTILINE,
@@ -1025,7 +901,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
     )
     # `# ''Pluriel de'' {{lien|anisophylle|fr}}.` → `# {{flexion|anisophylle}}`
     code = re.sub(
-        rf"{start}(?:{forms}).*'\s*\{{\{{lien\|([^\|]+)\|.*",
+        rf"{start}(?:{forms}).*'\s*\{{\{{lien\|([^\|\}}]+).*",
         r"# {{flexion|\1}}",
         code,
         flags=re.IGNORECASE | re.MULTILINE,
@@ -1041,7 +917,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
     )
     # `# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.` → `# {flexion|venir}}`
     code = re.sub(
-        rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{{\{{lien\|([^\|]+)\|.*",
+        rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{{\{{lien\|([^\|\}}]+).*",
         r"# {{flexion|\1}}",
         code,
         flags=re.IGNORECASE | re.MULTILINE,

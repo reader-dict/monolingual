@@ -1,15 +1,17 @@
 import contextlib
+import logging
 import math
 import re
 import unicodedata
 from collections import defaultdict
+from collections.abc import Iterator
 from typing import TypedDict
 
 from num2words import num2words
 
-from ...transliterator import transliterate
 from ...user_functions import (
     capitalize,
+    chinese,
     concat,
     extract_keywords_from,
     italic,
@@ -20,6 +22,7 @@ from ...user_functions import (
     superscript,
     term,
 )
+from . import geochronology, si_unit, wikidata
 from .form_of import form_of_templates
 from .labels import labels, syntaxes
 from .langs import langs
@@ -29,7 +32,47 @@ from .places import (
     recognized_placetypes,
     recognized_qualifiers,
 )
-from .si_unit import prefix_to_exp, prefix_to_symbol, unit_to_symbol, unit_to_type
+from .scripts import scripts
+from .transliterator import transliterate
+
+log = logging.getLogger(__name__)
+
+
+# Source: https://en.wiktionary.org/w/index.php?title=Module:sem-arb-utilities&oldid=85728127#L-31
+AR_RADICALS = {
+    "ء": "ʔ",
+    "ب": "b",
+    "ت": "t",
+    "ث": "ṯ",
+    "ج": "j",
+    "ح": "ḥ",
+    "خ": "ḏ",
+    "د": "d",
+    "ذ": "ḏ",
+    "ر": "r",
+    "ز": "z",
+    "س": "s",
+    "ش": "š",
+    "ص": "ṣ",
+    "ض": "ḍ",
+    "ط": "ṭ",
+    "ظ": "ẓ",
+    "ع": "ʕ",
+    "غ": "ḡ",
+    "ف": "f",
+    "ق": "q",
+    "ك": "k",
+    "ل": "l",
+    "م": "m",
+    "ن": "n",
+    "ه": "h",
+    "و": "w",
+    "ي": "y",
+    "گ": "g",
+    "چ": "č",
+    "پ": "p",
+    "ڭ": "g",
+}
 
 
 def gender_number_specs(parts: str) -> str:
@@ -176,9 +219,10 @@ def gloss_tr_poss(data: defaultdict[str, str], gloss: str, *, trans: str = "") -
 
 
 def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
-    if parts:
-        parts.pop(0)  # Remove the language
+    lang = parts.pop(0) if parts else ""
     p = data["alt"] or data["2"] or (parts.pop(0) if parts else "") or ""
+    if "//" in p:
+        p = p.replace("//", " / ")
     data["t"] = data["t"] or data["3"] or ""
     starter = "" if data["notext"] in ("1", "yes") else start
     if p and starter:
@@ -188,7 +232,8 @@ def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, 
         if phrase:
             phrase += " "
         phrase += italic(p.split("#", 1)[0])
-    phrase += gloss_tr_poss(data, data["t"] or data["gloss"] or "")
+    trans = transliterate(lang, p) if lang else ""
+    phrase += gloss_tr_poss(data, data["t"] or data["gloss"] or "", trans=trans)
     return phrase
 
 
@@ -199,6 +244,19 @@ def misc_variant_no_term(title: str, tpl: str, parts: list[str], data: defaultdi
     if data["cap"]:
         text = capitalize(text)
     return text
+
+
+def render_abbreviated(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_abbreviated("a", ["en", "LGAT"], defaultdict(str))
+    '(<i>abbreviated</i> <b>LGAT</b>)'
+    >>> render_abbreviated("a", ["en", "LGAT", "GATO"], defaultdict(str))
+    '(<i>abbreviated</i> <b>LGAT</b>, <b>GATO</b>)'
+    """
+    text = f"<i>abbreviated</i> <b>{parts[1]}</b>"
+    if len(parts) > 2:
+        text += f", <b>{parts[2]}</b>"
+    return f"({text})"
 
 
 def render_accent(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -233,6 +291,34 @@ def render_aka(tpl: str, parts: list[str], data: defaultdict[str, str], *, word:
     return text
 
 
+def render_alter(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_alter("alt", ["en", "chichling"], defaultdict(str))
+    'chichling'
+    >>> render_alter("alt", ["en", "multilateralize", "", "UK", "Ireland", "Australia", "and", "New Zealand", ""], defaultdict(str), word="multilateralise")
+    'multilateralize (<i>UK, Ireland, Australia and New Zealand</i>)'
+    >>> render_alter("alt", ["en", "multilateralize", "", "UK", "Ireland", "Australia", "New Zealand"], defaultdict(str), word="multilateralise")
+    'multilateralize (<i>UK, Ireland, Australia, New Zealand</i>)'
+    """
+    terms: list[str] = []
+    labels: list[str] = []
+    current_list = terms
+    for part in parts[1:]:
+        if part:
+            current_list.append(part)
+        else:
+            current_list = labels
+
+    if len(labels) > 2 and labels[-2] == "and":
+        labels[-3] = f"{labels[-3]} and {labels[-1]}"
+        labels = labels[:-2]
+
+    text = ", ".join(terms)
+    if labels:
+        text += f" (<i>{', '.join(labels)}</i>)"
+    return text
+
+
 def render_ante2(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_ante2("ante2", ["1702"], defaultdict(str))
@@ -260,6 +346,58 @@ def render_apocopic_form(tpl: str, parts: list[str], data: defaultdict[str, str]
     return misc_variant("apocopic form", tpl, parts, data, word=word)
 
 
+def render_ar_active_participle(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_active_participle("ar-active participle", [], defaultdict(str))
+    'Derived from the active participle'
+    >>> render_ar_active_participle("ar-active participle", [], defaultdict(str, {"lc": "1"}))
+    'derived from the active participle'
+    >>> render_ar_active_participle("ar-active participle", [], defaultdict(str, {"noderived": "1"}))
+    'active participle'
+    """
+    if data["noderived"]:
+        return "active participle"
+    return f"{'d' if data['lc'] else 'D'}erived from the active participle"
+
+
+def render_ar_instance_noun(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_instance_noun("ar-instance noun", [], defaultdict(str))
+    'Instance noun'
+    >>> render_ar_instance_noun("ar-instance noun", [], defaultdict(str, {"lc": "1"}))
+    'instance noun'
+    """
+    return f"{'i' if data['lc'] else 'I'}nstance noun"
+
+
+def render_ar_passive_participle(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_passive_participle("ar-passive participle", [], defaultdict(str))
+    'Derived from the passive participle'
+    >>> render_ar_passive_participle("ar-passive participle", [], defaultdict(str, {"lc": "1"}))
+    'derived from the passive participle'
+    >>> render_ar_passive_participle("ar-passive participle", [], defaultdict(str, {"noderived": "1"}))
+    'passive participle'
+    """
+    if data["noderived"]:
+        return "passive participle"
+    return f"{'d' if data['lc'] else 'D'}erived from the passive participle"
+
+
+def render_ar_root(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ar_root("ar-root", ["ع ل ي"], defaultdict(str))
+    'ع ل ي (ʕ l y)'
+    >>> render_ar_root("ar-root", ["ع ل ي", "ع ل ي"], defaultdict(str))
+    'ع ل ي (ʕ l y), ع ل ي (ʕ l y)'
+    >>> render_ar_root("ar-root", ["ع ل ي"], defaultdict(str, {"notext": "1"}))
+    ''
+    """
+    if data["notext"]:
+        return ""
+    return ", ".join(f"{root} ({' '.join(AR_RADICALS[char] for char in root.split(' '))})" for root in parts)
+
+
 def render_bce(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_bce("B.C.E.", [], defaultdict(str))
@@ -272,6 +410,16 @@ def render_bce(tpl: str, parts: list[str], data: defaultdict[str, str], *, word:
     nodot = data["nodot"] in ("1", "yes") or tpl in {"CE", "BCE"}
     text = "C.E." if tpl in {"C.E.", "CE", "A.D.", "AD"} else "B.C.E."
     return small(text.replace(".", "")) if nodot else small(text)
+
+
+def render_blockquote(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_blockquote("blockquote", ["text"], defaultdict(str))
+    '<blockquote>&nbsp;&nbsp;“&nbsp;text&nbsp;”</blockquote>'
+    >>> render_blockquote("blockquote", [], defaultdict(str, {"1": "text"}))
+    '<blockquote>&nbsp;&nbsp;“&nbsp;text&nbsp;”</blockquote>'
+    """
+    return f"<blockquote>&nbsp;&nbsp;“&nbsp;{data['1'] or parts[0]}&nbsp;”</blockquote>"
 
 
 def render_bond_credit_rating(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -350,6 +498,310 @@ def render_century(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     return small(f"[{phrase}]")
 
 
+def render_chemical_formula(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_chemical_formula("chemf", [r"W(CO)3(PiPr3)2(\\h{2}H2)"], defaultdict(str))
+    'W(CO)<sub>3</sub>(PiPr<sub>3</sub>)<sub>2</sub>(η<sup>2</sup>-H<sub>2</sub>)'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Module:chemical_formula&oldid=78845668
+    from html import unescape
+
+    am = {
+        "H": "Hydrogen",
+        "He": "Helium",
+        "Li": "Lithium",
+        "Be": "Beryllium",
+        "B": "Boron",
+        "C": "Carbon",
+        "N": "Nitrogen",
+        "O": "Oxygen",
+        "F": "Fluorine",
+        "Ne": "Neon",
+        "Na": "Sodium",
+        "Mg": "Magnesium",
+        "Al": "Aluminium",
+        "Si": "Silicon",
+        "P": "Phosphorus",
+        "S": "Sulfur",
+        "Cl": "Chlorine",
+        "Ar": "Argon",
+        "K": "Potassium",
+        "Ca": "Calcium",
+        "Sc": "Scandium",
+        "Ti": "Titanium",
+        "V": "Vanadium",
+        "Cr": "Chromium",
+        "Mn": "Manganese",
+        "Fe": "Iron",
+        "Co": "Cobalt",
+        "Ni": "Nickel",
+        "Cu": "Copper",
+        "Zn": "Zinc",
+        "Ga": "Gallium",
+        "Ge": "Germanium",
+        "As": "Arsenic",
+        "Se": "Selenium",
+        "Br": "Bromine",
+        "Kr": "Krypton",
+        "Rb": "Rubidium",
+        "Sr": "Strontium",
+        "Y": "Yttrium",
+        "Zr": "Zirconium",
+        "Nb": "Niobium",
+        "Mo": "Molybdenum",
+        "Tc": "Technetium",
+        "Ru": "Ruthenium",
+        "Rh": "Rhodium",
+        "Pd": "Palladium",
+        "Ag": "Silver",
+        "Cd": "Cadmium",
+        "In": "Indium",
+        "Sn": "Tin",
+        "Sb": "Antimony",
+        "Te": "Tellurium",
+        "I": "Iodine",
+        "Xe": "Xenon",
+        "Cs": "Caesium",
+        "Ba": "Barium",
+        "La": "Lanthanum",
+        "Ce": "Cerium",
+        "Pr": "Praseodymium",
+        "Nd": "Neodymium",
+        "Pm": "Promethium",
+        "Sm": "Samarium",
+        "Eu": "Europium",
+        "Gd": "Gadolinium",
+        "Tb": "Terbium",
+        "Dy": "Dysprosium",
+        "Ho": "Holmium",
+        "Er": "Erbium",
+        "Tm": "Thulium",
+        "Yb": "Ytterbium",
+        "Lu": "Lutetium",
+        "Hf": "Hafnium",
+        "Ta": "Tantalum",
+        "W": "Tungsten",
+        "Re": "Rhenium",
+        "Os": "Osmium",
+        "Ir": "Iridium",
+        "Pt": "Platinum",
+        "Au": "Gold",
+        "Hg": "Mercury (element)",
+        "Tl": "Thallium",
+        "Pb": "Lead",
+        "Bi": "Bismuth",
+        "Po": "Polonium",
+        "At": "Astatine",
+        "Rn": "Radon",
+        "Fr": "Francium",
+        "Ra": "Radium",
+        "Ac": "Actinium",
+        "Th": "Thorium",
+        "Pa": "Protactinium",
+        "U": "Uranium",
+        "Np": "Neptunium",
+        "Pu": "Plutonium",
+        "Am": "Americium",
+        "Cm": "Curium",
+        "Bk": "Berkelium",
+        "Cf": "Californium",
+        "Es": "Einsteinium",
+        "Fm": "Fermium",
+        "Md": "Mendelevium",
+        "No": "Nobelium",
+        "Lr": "Lawrencium",
+        "Rf": "Rutherfordium",
+        "Db": "Dubnium",
+        "Sg": "Seaborgium",
+        "Bh": "Bohrium",
+        "Hs": "Hassium",
+        "Mt": "Meitnerium",
+        "Ds": "Darmstadtium",
+        "Rg": "Roentgenium",
+        "Cp": "Copernicium",
+        "Nh": "Nihonium",
+        "Fl": "Flerovium",
+        "Mc": "Moscovium",
+        "Lv": "Livermorium",
+        "Ts": "Tennessine",
+        "Og": "Oganesson",
+        "Bn": "Benzyl group",
+        "Bz": "Benzoyl group",
+        "D": "Deuterium",
+        "Et": "Ethyl group",
+        "Ln": "Lanthanide",
+        "Nu": "Nucleophile",
+        "Ph": "Phenyl group",
+        "R": "Substituent",
+        "T": "Tritium",
+        "Tf": "Trifluoromethylsulfonyl group",
+        "X": "Halogen",
+    }
+
+    # Token types
+    T_ELEM = 0
+    T_NUM = 1
+    T_OPEN = 2
+    T_CLOSE = 3
+    T_PM_CHARGE = 4
+    T_WATER = 6
+    T_CRYSTAL = 9
+    T_CHARGE = 8
+    T_SUF_CHARGE = 10
+    T_SUF_CHARGE2 = 12
+    T_SPECIAL = 14
+    T_SPECIAL2 = 16
+    T_ARROW_R = 17
+    T_ARROW_EQ = 18
+    T_UNDERSCORE = 19
+    T_CARET = 20
+    T_LINKOPEN = 21
+    T_NOCHANGE = 30
+
+    def su(up: str, down: str) -> str:
+        if not up:
+            return f"<sub>{down}</sub>"
+        return f"{up}{down}" if down else f"<sup>{up}</sup>"
+
+    def item(f: str) -> Iterator[tuple[int, str]]:
+        i = 0
+        n = len(f)
+
+        while i < n:
+            t: int | None = None
+            x: str | None = None
+
+            if i == 0 and re.match(r"[0-9]", f[i:]):
+                m = re.match(r"[\d.]+", f[i:])
+                if m:
+                    x = m.group()
+                    t = T_NOCHANGE
+                    i += len(x)
+                    yield t, x
+                    continue
+
+            # Try matching various tokens in order of specificity
+            for regex, _t in (
+                (r"^\s+[\d.]+", T_NOCHANGE),
+                (r"^\s[+]", T_NOCHANGE),
+                (r"^&#[\w\d]+;", T_NOCHANGE),
+                (r"^<->", T_ARROW_EQ),
+                (r"^->", T_ARROW_R),
+                (r"^[A-Z][a-z]*", T_ELEM),
+                (r"^\d+[+-]", T_SUF_CHARGE),
+                (r"^\d+\(\d*[+-]\)", T_SUF_CHARGE2),
+                (r"^\(\d*[+-]\)", T_CHARGE),
+                (r"^[\d.]+", T_NUM),
+                (r"^[\(\{\[]", T_OPEN),
+                (r"^[\)\}\]]", T_CLOSE),
+                (r"^[+-]", T_PM_CHARGE),
+                (r"^\*[\d.]*H2O", T_WATER),
+                (r"^\*[\d.]*", T_CRYSTAL),
+                (r"^[\\].\{\d+\}", T_SPECIAL2),
+                (r"^[\\].", T_SPECIAL),
+                (r"^_{[^}]*}", T_UNDERSCORE),
+                (r"^\^{[^}]*}", T_CARET),
+                (r"^.", T_NOCHANGE),
+            ):
+                m = re.match(regex, f[i:])
+                if m:
+                    x = m.group()
+                    t = _t
+                    i += len(x)
+                    yield t, x
+                    break
+        i += 1
+
+    f = unescape(parts[0]).replace("–", "-").replace("−", "-")
+    formula: str = ""
+    seen: dict[str, bool] = {}
+
+    for t, x in item(f):
+        if t == T_ELEM:
+            if x not in am or seen.get(x):
+                formula += x
+            else:
+                formula += x
+                seen[x] = True
+        elif t == T_NUM:
+            formula += su("", x)
+        elif t == T_LINKOPEN:
+            formula += x
+        elif t == T_OPEN:
+            formula += x
+        elif t == T_CLOSE:
+            formula += x
+        elif t == T_PM_CHARGE:
+            formula += su(x.replace("-", "−"), "")
+        elif t == T_SUF_CHARGE:
+            m1 = re.search(r"[+-]", x)
+            m2 = re.search(r"\d+", x)
+            if m1 and m2:
+                formula += su(m1.group().replace("-", "−"), m2.group())
+        elif t == T_SUF_CHARGE2:
+            m1 = re.search(r"\(\d*[+-]", x)
+            m2 = re.search(r"\d+", x)
+            if m1 and m2:
+                formula += su(m1.group().replace("-", "−")[1:], m2.group())
+        elif t == T_CHARGE:
+            m1 = re.search(r"\d+", x)
+            formula += "<sup>"
+            if m1:
+                formula += m1.group()
+            m2 = re.search(r"[+-]", x)
+            if m2:
+                formula += m2.group().replace("-", "−")
+            formula += "</sup>"
+        elif t == T_CRYSTAL:
+            formula += "&middot;" + x.lstrip("*")
+        elif t == T_SPECIAL:
+            parameter = x[1]
+            if parameter == "s":
+                formula += "−"
+            elif parameter == "d":
+                formula += "="
+            elif parameter == "t":
+                formula += "≡"
+            elif parameter == "q":
+                formula += "≣"
+            elif parameter == "h":
+                formula += "η"
+            elif parameter == "*":
+                formula += "*"
+            elif parameter == "-":
+                formula += "-"
+            elif parameter == "\\":
+                formula += "\\"
+            elif parameter == "'":
+                formula += "&#39;"
+        elif t == T_SPECIAL2:
+            parameter = x[1]
+            m = re.search(r"\d+", x)
+            if parameter == "h" and m:
+                formula += f"η<sup>{m.group()}</sup>-"
+            elif parameter == "m" and m:
+                formula += f"μ<sub>{m.group()}</sub>-"
+        elif t == T_WATER:
+            m = re.match(r"^\*[\d.]", x)
+            mnum = re.search(r"[\d.]+", x)
+            if m and mnum:
+                formula += f"&middot;{mnum.group()}H<sub>2</sub>O"
+            else:
+                formula += "&middot;" + "H<sub>2</sub>O"
+        elif t == T_UNDERSCORE:
+            formula += su("", x.replace("-", "−")[2:-1])
+        elif t == T_CARET:
+            formula += su(x.replace("-", "−")[2:-1], "")
+        elif t == T_ARROW_R:
+            formula += " → "
+        elif t == T_ARROW_EQ:
+            formula += " ⇌ "
+        elif t == T_NOCHANGE:
+            formula += x
+
+    return formula
+
+
 def render_chemical_symbol(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_chemical_symbol("chemical symbol", ["calcium"], defaultdict(str))
@@ -373,6 +825,14 @@ def render_chemical_symbol(tpl: str, parts: list[str], data: defaultdict[str, st
     return f"{text}."
 
 
+def render_clipped_compound(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_clipped_compound("clipped compound", ["en", "character set"], defaultdict(str))
+    'Clipped compound of <i>character set</i>'
+    """
+    return misc_variant("clipped compound", tpl, parts, data, word=word)
+
+
 def render_clipping(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_clipping("clipping", ["en", "automobile"], defaultdict(str))
@@ -382,9 +842,38 @@ def render_clipping(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     >>> render_clipping("clipping", ["fr", "métropolitain"], defaultdict(str, {"notext": "1"}))
     '<i>métropolitain</i>'
     >>> render_clipping("clipping", ["ru", "ку́бовый краси́тель"], defaultdict(str, {"t": "vat dye", "nocap": "1"}))
-    'clipping of <i>ку́бовый краси́тель</i> (“vat dye”)'
+    'clipping of <i>ку́бовый краси́тель</i> (<i>kúbovyj krasítelʹ</i>, “vat dye”)'
     """
     return misc_variant("clipping", tpl, parts, data, word=word)
+
+
+def render_codepoint(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_codepoint("codepoint", ["U+2010"], defaultdict(str))
+    '‐ (U+2010 HYPHEN)'
+    >>> render_codepoint("codepoint", ["U+2010"], defaultdict(str, {"display": "0"}))
+    'U+2010 HYPHEN'
+    >>> render_codepoint("codepoint", [":"], defaultdict(str))
+    ': (U+003A COLON)'
+    """
+
+    def get_wide_ordinal(char: str) -> str:
+        if len(char) == 2:
+            res = 0x10000 + (ord(char[0]) - 0xD800) * 0x400 + (ord(char[1]) - 0xDC00)
+        else:
+            res = ord(char)
+        return f"U+{res:>04X}"
+
+    if (char := parts[0]).startswith("U+"):
+        codepoint = char
+        char = chr(int(char[2:], 16))
+    else:
+        codepoint = get_wide_ordinal(char)
+    name = unicodedata.name(char)
+
+    if data["display"] != "0" and not data["plain"]:
+        return f"{char} ({codepoint} {name})"
+    return f"{codepoint} {name}"
 
 
 def render_coinage(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -420,9 +909,7 @@ def render_coinage(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
 
     who = data["alt"] or data["2"] or (parts.pop(0) if parts else "unknown") or "unknown"
     if who.startswith("Q") and who[1:].isdigit():
-        from . import wikidata
-
-        who = wikidata.COINERS[who]
+        who = wikidata.person(who)
 
     phrase += who
 
@@ -436,6 +923,47 @@ def render_coinage(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
 
 def render_contraction(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     return misc_variant("contraction", tpl, parts, data, word=word)
+
+
+def render_descendant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_descendant("desc", ["en", "peace"], defaultdict(str, {"bor": "1"}))
+    'English: peace'
+    >>> render_descendant("desc", ["en", "-"], defaultdict(str, {"bor": "1"}))
+    'English:'
+    >>> render_descendant("desc", ["en", "peace"], defaultdict(str, {"clq": "1"}))
+    'English: peace (<i>calque</i>)'
+    >>> render_descendant("desc", ["gl", "esmiuzar"], defaultdict(str, {"der": "1"}))
+    'Galician: esmiuzar'
+    >>> render_descendant("desc", ["sh", "бу̀ва"], defaultdict(str, {"sclb": "1"}))
+    'Serbo-Croatian script: бу̀ва'
+    >>> render_descendant("desc", ["gl", "esmiuzar"], defaultdict(str, {"nolb": "1"}))
+    'esmiuzar'
+    >>> render_descendant("desc", ["grc", "ἄπιος"], defaultdict(str, {"t": "pear tree"}))
+    'Ancient Greek: ἄπιος (“pear tree”)'
+    """
+    lang = parts.pop(0)
+    text = ""
+    if not data["nolb"]:
+        text += f"{langs[lang]}"
+        if data["sclb"]:
+            text += " script"
+        text += ": "
+    if parts[0] != "-":
+        text += parts[0]
+
+    more: list[str] = []
+    if trans := transliterate(lang, parts[0]):
+        more.append(trans)
+    if t := data["t"]:
+        more.append(f"“{t}”")
+    if more:
+        text += f" ({', '.join(more)})"
+
+    if data["clq"]:
+        text += " (<i>calque</i>)"
+
+    return text.strip()
 
 
 def render_lang_def(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -606,6 +1134,38 @@ def render_deverbal(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     return text
 
 
+def render_el_uk_us(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_el_uk_us("l-UK-US", ["enam", "elled"], defaultdict(str))
+    'enamelled (<i>UK</i>), enameled (<i>US</i>)'
+    >>> render_el_uk_us("l-UK-US", ["word1", "word2"], defaultdict(str))
+    'word1 (<i>UK</i>), word2 (<i>US</i>)'
+    """
+    match end := parts[1]:
+        case "isable":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}izable"
+        case "isation":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}ization"
+        case "ise":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}ize"
+        case "ised":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}ized"
+        case "iser":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}izer"
+        case "ising":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}izing"
+        case "elled":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}eled"
+        case "our":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}or"
+        case "oured":
+            word_uk, word_us = f"{parts[0]}{end}", f"{parts[0]}ored"
+        case _:
+            word_uk, word_us = parts[0], parts[1]
+
+    return f"{word_uk} (<i>UK</i>), {word_us} (<i>US</i>)"
+
+
 def render_etydate(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_etydate("etydate", ["1880"], defaultdict(str))
@@ -682,7 +1242,7 @@ def alter_demonym_parts(parts: list[str]) -> list[str]:
     for idx, part in enumerate(parts.copy()):
         has_changed = False
         if "<<" in part:
-            part = re.sub(r"<<(\w+)(?::also)?:(\w+)(?::also)?/([^>]+)>>", rpl, part)
+            part = re.sub(r"<<(\w+)(?::(?:also|the))?:(\w+)(?::(?:also|the))?/([^>]+)>>", rpl, part)
             has_changed = True
 
         if "<q:" in part:
@@ -730,6 +1290,8 @@ def render_demonym_adj(tpl: str, parts: list[str], data: defaultdict[str, str], 
     'Of, from or relating to the region of Frisia: Either West Frisia (the Dutch province of Friesland); North Frisia (in the German state of Schleswig-Holstein, near the Danish border); or East Frisia (in the German state of Lower Saxony, near the Dutch border).'
     >>> render_demonym_adj("demonym-adj", ["it", "Sanremo<gloss:town in Liguria>"], defaultdict(str))
     'of, from or relating to Sanremo (town in Liguria)'
+    >>> render_demonym_adj("demonym-adj", ["es", "the <<city:the:pref/Gold Coast>>, <<s/Queensland>>, <<c/Australia>>"], defaultdict(str))
+    'of, from or relating to the city of Gold Coast, Queensland, Australia'
     """
     is_english = parts[0] == "en"
     has_parenthesis = bool(data["t"])
@@ -868,14 +1430,34 @@ def render_displaced(tpl: str, parts: list[str], data: defaultdict[str, str], *,
     return f"{text} <i>{parts[-1]}</i>{gloss_tr_poss(data, gloss)}"
 
 
+def render_en_noun(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_en_noun("en-noun", ["?"], defaultdict(str), word="achávalite")
+    '<b>achávalite</b>'
+    """
+    return strong({"?": word}[parts[0]])
+
+
+def render_en_proper_noun(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_en_proper_noun("en-proper noun", [], defaultdict(str, {"head": "Nutbush, TN"}))
+    '<b>Nutbush, TN</b>'
+    """
+    if not (head := data["head"]):
+        raise ValueError("en-proper noun is missing its head!")
+    return f"<b>{head}</b>"
+
+
 def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
+    >>> render_foreign_derivation("bor", ["en", "mni", "ꯑꯔꯥꯝꯕꯥꯢ"], defaultdict(str))
+    'Manipuri <i>ꯑꯔꯥꯝꯕꯥꯢ</i> (<i>ʼarāmbāi</i>)'
     >>> render_foreign_derivation("bor", ["en", "ar", "الْعِرَاق", "", "Iraq"], defaultdict(str))
-    'Arabic <i>الْعِرَاق</i> (<i>ālʿrāq</i>, “Iraq”)'
+    'Arabic الْعِرَاق (<i>al-ʕirāq</i>, “Iraq”)'
     >>> render_foreign_derivation("bor", [], defaultdict(str, {"1": "en", "2": "ja", "3": "マエバリ"}))
-    'Japanese <i>マエバリ</i>'
+    'Japanese マエバリ'
     >>> render_foreign_derivation("bor+", [], defaultdict(str, {"1": "en", "2": "ja", "3": "マエバリ"}))
-    'Borrowed from Japanese <i>マエバリ</i>'
+    'Borrowed from Japanese マエバリ'
     >>> render_foreign_derivation("der", ["en", "fro", "-"], defaultdict(str))
     'Old French'
     >>> render_foreign_derivation("der", ["en", "mul", "Jaborosa parviflora"], defaultdict(str))
@@ -915,7 +1497,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     'Partial calque of Chinese 閩中語'
 
     >>> render_foreign_derivation("sl", ["en", "ru", "пле́нум", "", "plenary session"], defaultdict(str, {"nocap":"1"}))
-    'semantic loan of Russian <i>пле́нум</i> (<i>plenum</i>, “plenary session”)'
+    'semantic loan of Russian <i>пле́нум</i> (<i>plénum</i>, “plenary session”)'
     >>> render_foreign_derivation("learned borrowing", ["en", "la", "consanguineus"], defaultdict(str))
     'Learned borrowing from Latin <i>consanguineus</i>'
     >>> render_foreign_derivation("learned borrowing", ["en", "LL.", "trapezium"], defaultdict(str, {"notext":"1"}))
@@ -925,7 +1507,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("obor", ["en", "ru", "СССР"], defaultdict(str))
     'Orthographic borrowing from Russian <i>СССР</i> (<i>SSSR</i>)'
     >>> render_foreign_derivation("unadapted borrowing", ["en", "ar", "قِيَاس", "", "measurement, analogy"], defaultdict(str))
-    'Unadapted borrowing from Arabic <i>قِيَاس</i> (<i>qīās</i>, “measurement, analogy”)'
+    'Unadapted borrowing from Arabic قِيَاس (<i>qiyās</i>, “measurement, analogy”)'
 
     >>> render_foreign_derivation("adapted borrowing", ["ajp", "ota", "باشلامق"], defaultdict(str, {"t": "to begin", "tr": "başlamak"}))
     'Adapted borrowing of Ottoman Turkish باشلامق (<i>başlamak</i>, “to begin”)'
@@ -935,7 +1517,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("psm", ["en", "yue", "-"], defaultdict(str))
     'Phono-semantic matching of Cantonese'
     >>> render_foreign_derivation("translit", ["en", "ar", "عَالِيَة"], defaultdict(str))
-    'Transliteration of Arabic <i>عَالِيَة</i> (<i>ʿālī</i>)'
+    'Transliteration of Arabic عَالِيَة (<i>ʕāliya</i>)'
     >>> render_foreign_derivation("back-form", ["en", "zero derivation"], defaultdict(str, {"nocap":"1"}))
     'back-formation from <i>zero derivation</i>'
     >>> render_foreign_derivation("bf", ["en"], defaultdict(str))
@@ -954,7 +1536,7 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("l", ["mul", "☧", ""], defaultdict(str))
     '☧'
     >>> render_foreign_derivation("l", ["ru", "ру́сский", "", "Russian"], defaultdict(str, {"g":"m"}))
-    'ру́сский <i>m</i> (<i>russkij</i>, “Russian”)'
+    'ру́сский <i>m</i> (<i>rússkij</i>, “Russian”)'
     >>> render_foreign_derivation("link", ["en", "water vapour"], defaultdict(str))
     'water vapour'
     >>> render_foreign_derivation("ll", ["en", "cod"], defaultdict(str))
@@ -971,18 +1553,20 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("m", ["ine-pro", "*h₁ed-"], defaultdict(str, {"t":"to eat"}))
     '<i>*h₁ed-</i> (“to eat”)'
     >>> render_foreign_derivation("m", ["ar", "عِرْق", "", "root"], defaultdict(str))
-    '<i>عِرْق</i> (<i>ʿrq</i>, “root”)'
+    'عِرْق (<i>ʕirq</i>, “root”)'
     >>> render_foreign_derivation("m", ["pal"], defaultdict(str, {"tr":"ˀl'k'", "ts":"erāg", "t":"lowlands"}))
     "(<i>ˀl'k'</i> /erāg/, “lowlands”)"
     >>> render_foreign_derivation("m", ["ar", "عَرِيق", "", "deep-rooted"], defaultdict(str))
-    '<i>عَرِيق</i> (<i>ʿrīq</i>, “deep-rooted”)'
+    'عَرِيق (<i>ʕarīq</i>, “deep-rooted”)'
+    >>> render_foreign_derivation("m", ["grc", "Τ//τ"], defaultdict(str, {"tr": "-"}))
+    '<i>Τ / τ</i>'
 
     >>> render_foreign_derivation("langname-mention", ["en", "-"], defaultdict(str))
     'English'
     >>> render_foreign_derivation("m+", ["en", "-"], defaultdict(str))
     'English'
     >>> render_foreign_derivation("m+", ["ja", "力車"], defaultdict(str, {"tr":"rikisha"}))
-    'Japanese <i>力車</i> (<i>rikisha</i>)'
+    'Japanese 力車 (<i>rikisha</i>)'
     """
     # Short path for the {{m|en|WORD}} template
     if tpl in {"m", "m-lite"} and len(parts) == 2 and not data:
@@ -1010,6 +1594,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
         "cog-lite",
         "cognate",
         "etyl",
+        "false cognate",
+        "fcog",
         "langname-mention",
         "m+",
         "nc",
@@ -1039,6 +1625,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
             starter = "calque of "
         if tpl in {"der+"}:
             starter = "derived from "
+        if tpl in {"false cognate", "fcog"}:
+            starter = "false cognate of "
         elif tpl in {"inh+"}:
             starter = "inherited from "
         elif tpl in {"partial calque", "pcal", "pclq"}:
@@ -1072,6 +1660,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
             word = word[2:]
         if word == "-":
             return phrase
+        if "//" in word:
+            word = word.replace("//", " / ")
     else:
         word = ""
 
@@ -1084,7 +1674,11 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     if tpl in {"l", "l-lite", "link", "ll"}:
         phrase += f" {word}"
     elif word:
-        if (starter == "partial calque of " and dst_locale in {"mul", "zh"}) or starter == "adapted borrowing of ":
+        if (
+            (starter == "partial calque of " and dst_locale in {"mul", "zh"})
+            or starter == "adapted borrowing of "
+            or dst_locale in {"ar", "ja"}
+        ):
             phrase += f" {word}"
         else:
             phrase += f" {italic(word)}"
@@ -1110,6 +1704,131 @@ def render_fa_sp(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
         text += f" (“{t}”)"
     dot = "" if data["nodot"] == "1" else (data["dot"] or ".")
     return f"{text}{dot}"
+
+
+def render_fa_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_fa_l("fa-l", ["چِینِی"], defaultdict(str))
+    'چِینِی (čīnī&nbsp;/ čini)'
+    >>> render_fa_l("fa-l", ["چِینِی"], defaultdict(str, {"t": "t"}))
+    'چِینِی (čīnī&nbsp;/ čini, “t”)'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Template:fa-l&oldid=85187891
+
+    more: list[str] = [render_fa_xlit(tpl, parts, data, word=word)]
+    if t := data["t"]:
+        more.append(f"“{t}”")
+    return f"{parts[0]} ({(', '.join(more))})"
+
+
+def render_fa_xlit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_fa_xlit("fa-xlit", ["اَرَاکِی"], defaultdict(str))
+    'arākī&nbsp;/ arâki'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Module:fa-translit&oldid=85098029
+
+    from .transliterator.fa import romanize_ira
+
+    def cls_tr(text: str) -> str:
+        # If // is present, ignore // and everything after
+        text = re.sub(r"//.*", "", text)
+        return transliterate("fa", text)
+
+    def ira_tr(text: str) -> str:
+        # If // is present, ignore everything before and including //
+        text = re.sub(r"^.*//", "", text)
+        result = transliterate("fa", text)
+
+        # Apply IRA romanization
+        return romanize_ira(result)
+
+    return f"{cls_tr(parts[0])}&nbsp;/ {ira_tr(parts[0])}"
+
+
+def render_form_of_t(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_form_of_t("eye dialect of", ["en", "ye#Etymology 6"], defaultdict(str, {"t": "t", "from": "from", "from2": "from2"}))
+    '<i>Eye dialect spelling of</i> <b>ye</b> (“t”)<i>, representing from and from2 English</i>'
+
+    >>> render_form_of_t("alternative spelling of", ["en" , "ye"], defaultdict(str, {"from": "from", "from2": "from2"}))
+    '<i>From and from2 spelling of</i> <b>ye</b>'
+
+    >>> render_form_of_t("initialism of", ["en", "w:Shockwave Flash"], defaultdict(str))
+    '<i>Initialism of</i> <b>Shockwave Flash</b>'
+    >>> render_form_of_t("initialism of", ["en", "optical character reader"], defaultdict(str, {"dot": "&nbsp;(the scanning device)"}))
+    '<i>Initialism of</i> <b>optical character reader</b>&nbsp;(the scanning device)'
+    >>> render_form_of_t("initialism of", ["en", "optical character reader"], defaultdict(str, {"tr": "tr", "t": "t", "ts": "ts"}))
+    '<i>Initialism of</i> <b>optical character reader</b> (<i>tr</i> /ts/, “t”)'
+    >>> render_form_of_t("initialism of", ["en", "OCR", "optical character reader"], defaultdict(str, {"nodot": "1", "nocap": "1"}))
+    '<i>initialism of</i> <b>optical character reader</b>'
+
+    >>> render_form_of_t("standard spelling of", ["en", "Irish Traveller"], defaultdict(str, {"from": "Irish English"}))
+    '<i>Irish English standard spelling of</i> <b>Irish Traveller</b>'
+    >>> render_form_of_t("standard spelling of", ["en", "enroll"], defaultdict(str))
+    '<i>Standard spelling of</i> <b>enroll</b>'
+    >>> render_form_of_t("cens sp", ["en", "bitch"], defaultdict(str))
+    '<i>Censored spelling of</i> <b>bitch</b>'
+
+    >>> render_form_of_t("pronunciation spelling of", ["en", "everything"], defaultdict(str, {"from": "AAVE"}))
+    '<i>Pronunciation spelling of</i> <b>everything</b><i>, representing African-American Vernacular English</i>'
+
+    >>> render_form_of_t("spelling of", ["en", "British alternative", "NORAD"], defaultdict(str))
+    '<i>British alternative spelling of</i> <b>NORAD</b>'
+
+    >>> render_form_of_t("ellipsis of", ["en", "w:Boeing B-29 Superfortress"], defaultdict(str, {"addl": "an American bomber plane primarily used in World War II"}))
+    '<i>Ellipsis of</i> <b>Boeing B-29 Superfortress</b>, <i>an American bomber plane primarily used in World War II</i>'
+    """
+    from . import templates_italic
+
+    form = form_of_templates[tpl]
+    starter = form["value"]
+
+    if "{{{2}}}" in starter:
+        starter = starter.replace("{{{2}}}", parts[1])
+
+    lang = data["1"] or (parts.pop(0) if parts else "")
+    initial_cap = (
+        (initial_cap_raw := form["initial-cap"]) == "English only" and lang == "en" or initial_cap_raw == "yes"
+    )
+    ender = ""
+    word = (data["2"] or (parts.pop(0) if parts else "")).split("#", 1)[0]
+
+    text = data["alt"] or data["3"] or (parts.pop(0) if parts else "")
+    gloss = data["t"] or data["gloss"] or data["4"] or (parts.pop(0) if parts else "")
+    word = text or word
+    if word.startswith("w:"):
+        word = word[2:]
+
+    if fromtext := join_names(data, "from", " and "):
+        from_suffix = "form of"
+        if tpl == "standard spelling of":
+            from_suffix = "standard spelling of"
+        elif tpl == "alternative spelling of":
+            from_suffix = "spelling of"
+        elif tpl in {
+            "eye dialect of",
+            "pronunciation spelling of",
+            "pronunciation variant of",
+        }:
+            ender = italic(f", representing {templates_italic.get(data['from'], fromtext)} {langs[lang]}")
+        if not ender:
+            starter = f"{fromtext} {from_suffix}"
+
+    if initial_cap and not data["nocap"]:
+        starter = capitalize(starter)
+    phrase = italic(starter)
+    phrase += f" {strong(word)}"
+
+    if addl := data["addl"]:
+        phrase += f", {italic(addl)}"
+
+    phrase += gloss_tr_poss(data, gloss)
+    if ender:
+        phrase += ender
+    if dot := data["dot"]:
+        phrase += dot
+    return phrase
 
 
 def render_frac(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -1141,6 +1860,32 @@ def render_g(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: s
     return " <i>or</i> ".join([gender_number_specs(part) for part in parts])
 
 
+def render_geochronology(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    Source: https://en.wiktionary.org/w/index.php?title=Template:geochronology&oldid=73432381
+
+    >>> render_geochronology("geochronology", ["en", "Hadean"], defaultdict(str))
+    '<i>(geology)</i> The Hadean eon; part of the Precambrian supereon, spanning from around 4.6 to 4 billion years ago.'
+    """
+    lang = parts.pop(0)
+    unit = parts.pop(0)
+
+    desc = "The " if lang == "en" else "the"
+    desc += f"{unit} {geochronology.unit_to_type[unit]}"
+    desc += "; " if lang == "en" else " ("
+
+    if unit in {"Precambrian", "Phanerozoic"}:
+        pass
+    elif parent := geochronology.unit_to_parent.get(unit):
+        parent_type = geochronology.unit_to_type[parent]
+        desc += f"part of the {parent} {parent_type}, "
+
+    desc += f"spanning from {geochronology.unit_span.get(unit, 'unknown time span')}"
+    desc += "." if lang == "en" else ")"
+
+    return f"<i>(geology)</i> {desc}"
+
+
 def render_given_name(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_given_name("given name", ["en" , "male"], defaultdict(str))
@@ -1158,7 +1903,7 @@ def render_given_name(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_given_name("given name", ["en" , "female"], defaultdict(str, {"from":"Hebrew", "m":"Daniel", "f":"Daniela"}))
     '<i>A female given name from Hebrew, masculine equivalent Daniel, feminine equivalent Daniela</i>'
     >>> render_given_name("given name", ["lv" , "male"], defaultdict(str, {"from":"Slavic languages", "eq":"pl:Władysław,cs:Vladislav,ru:Владисла́в"}))
-    '<i>A male given name from the Slavic languages, equivalent to Polish Władysław, Czech Vladislav or Russian Владисла́в (Vladislav)</i>'
+    '<i>A male given name from the Slavic languages, equivalent to Polish Władysław, Czech Vladislav or Russian Владисла́в (Vladisláv)</i>'
     >>> render_given_name("given name", ["en" , "male"], defaultdict(str, {"from":"Germanic languages", "from2":"surnames"}))
     '<i>A male given name from the Germanic languages or transferred from the surname</i>'
     >>> render_given_name("given name", ["en", "female"], defaultdict(str, {"from":"coinages", "var":"Cheryl", "var2":"Shirley"}))
@@ -1312,6 +2057,19 @@ def render_he_m(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     return render_foreign_derivation("m", parts, data, word=word)
 
 
+def render_he_root(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_he_root("he-root", ["ל", "מ", "ד"], defaultdict(str))
+    'From the root ל־מ־ד'
+    >>> render_he_root("he-root", ["ל", "מ", "ד"], defaultdict(str, {"tr": "l-m-d", "nocap": "1"}))
+    'from the root ל־מ־ד (l-m-d)'
+    """
+    text = f"{'f' if data['nocap'] else 'F'}rom the root {'־'.join(parts)}"
+    if tr := data["tr"]:
+        text += f" ({tr})"
+    return text
+
+
 def render_historical_given_name(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_historical_given_name("historical given name", ["en" , "male", "Saint Abundius, an early Christian bishop"], defaultdict(str))
@@ -1331,6 +2089,56 @@ def render_historical_given_name(tpl: str, parts: list[str], data: defaultdict[s
     if desc:
         phrase += f", notably borne by {desc}"
     return italic(phrase)
+
+
+def render_iata(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_iata("IATA", ["London", "", "United Kingdom"], defaultdict(str, {"met": "1", "a1": "Heathrow Airport", "a2": "Gatwick Airport", "a3": "Stansted Airport", "a4": "Luton Airport", "a5": "London City Airport", "a6": "Southend Airport", "a7": "Biggin Hill Airport"}))
+    '(<i>international standards, aviation</i>) <i>IATA metropolitan area code for</i> <b>London</b>, United Kingdom, <i>collectively referring to the airport system of Heathrow Airport, Gatwick Airport, Stansted Airport, Luton Airport, London City Airport, Southend Airport and Biggin Hill Airport</i>.'
+
+    >>> render_iata("IATA", ["Anaa Airport", "", "Anaa", "", "French Polynesia"], defaultdict(str))
+    '(<i>international standards, aviation</i>) <i>IATA airport code for</i> <b>Anaa Airport</b>, <i>which serves Anaa, French Polynesia</i>.'
+    >>> render_iata("IATA", ["Anaa Airport", "", "Anaa", "", "French Polynesia"], defaultdict(str, {"mil": "1", "until": "2025"}))
+    '(<i>international standards, aviation</i>) <i>IATA airport code for</i> <b>Anaa Airport</b>, <i>in Anaa, French Polynesia until 2025</i>.'
+    """
+
+    def p2_or_p1() -> str:
+        name1 = parts.pop(0)
+        name2 = parts.pop(0) if parts else ""
+        return name2 or name1
+
+    label = "international standards, aviation"
+    if data["obs"]:
+        label += ", obsolete"
+    label = f"(<i>{label}</i>) <i>"
+    if data["obs"]:
+        label += "Former "
+    label += "IATA"
+
+    # Metropolitan area code mode
+    if data["met"]:
+        met_parts = [f"metropolitan area code for</i> <b>{p2_or_p1()}</b>"]
+        while parts:
+            met_parts.append(p2_or_p1())
+        met_desc = ", ".join(met_parts)
+        text = f"{label} {met_desc}, <i>collectively referring to the airport system of {data['a1']}"
+
+        if airports := [airport for idx in range(2, 8) if (airport := data[f"a{idx}"])]:
+            text += f", {concat(airports, ', ', last_sep=' and ')}"
+        return f"{text}</i>."
+
+    # Airport code mode
+    text = f"{label} airport code for</i> <b>{p2_or_p1()}</b>"
+    extras = []
+    if parts:
+        extras.append(f"{'in' if data['mil'] else 'which serves'} {p2_or_p1()}")
+    while parts:
+        extras.append(p2_or_p1())
+    if extras:
+        text += f", <i>{', '.join(extras)}"
+    if until := data["until"]:
+        text += f" until {until}"
+    return f"{text}</i>."
 
 
 def render_ipa_char(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -1548,6 +2356,49 @@ def render_iso_4217(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
     return f"{phrase}."
 
 
+def render_ja_blend(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ja_blend("ja-blend", ["山%無し", "やま% なし", "落ち無し", "おち なし", "意味%無し", "いみ% なし"], defaultdict(str, {"t1": "no climax", "t2": "no point", "t3": "no meaning", "nocap": "1"}))
+    'blend of <ruby>山<rt>やま</rt></ruby><ruby>無し<rt>なし</rt></ruby> (“no climax”) + <ruby>落ち無し<rt>おち なし</rt></ruby> (“no point”) + <ruby>意味<rt>いみ</rt></ruby><ruby>無し<rt>なし</rt></ruby> (“no meaning”)'
+    """
+    return f"{'b' if data['nocap'] else 'B'}lend of {render_ja_compound(tpl, parts, data, word=word)}"
+
+
+def render_ja_compound(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ja_compound("ja-compound", ["小", "しょう", "学生", "がくせい", "の", "", "料%理", "りょう%り"], defaultdict(str, {"t1": "small", "t2": "student", "pos3": "possessive particle", "t4": "cuisine"}))
+    '<ruby>小<rt>しょう</rt></ruby> (“small”) + <ruby>学生<rt>がくせい</rt></ruby> (“student”) + の (possessive particle) + <ruby>料<rt>りょう</rt></ruby><ruby>理<rt>り</rt></ruby> (“cuisine”)'
+    >>> render_ja_compound("ja-compound", ["だ", "だ", "ってば", "ってば", "よ"], defaultdict(str, {"pos1": "auxiliary", "pos2": "informal emphatic particle", "pos3": "emphatic particle"}))
+    'だ (auxiliary) + ってば (informal emphatic particle) + よ (emphatic particle)'
+    """
+    if len(parts) % 2 != 0:
+        parts.append("")
+
+    text: list[str] = []
+    for idx, (part1, part2) in enumerate(zip(parts[::2], parts[1::2]), start=1):
+        data_ = defaultdict(str)
+        data_["t"] = data[f"t{idx}"] or data[f"pos{idx}"]
+        if data[f"pos{idx}"]:
+            data_["noquote"] = "1"
+        text.append(render_ja_r(tpl, [part1, part2], data_, word=word))
+    return concat(text, " + ")
+
+
+def render_ja_etym_renyokei(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ja_etym_renyokei("ja-ryk", ["受ける"], defaultdict(str))
+    "<ruby>連<rp>(</rp><rt>れん</rt><rp>)</rp></ruby><ruby>用<rp>(</rp><rt>よう</rt><rp>)</rp></ruby><ruby>形<rp>(</rp><rt>けい</rt><rp>)</rp></ruby> (<i>ren'yōkei</i>, “stem or continuative form”) of the verb 受ける."
+    >>> render_ja_etym_renyokei("ja-ryk", ["受ける", "うける"], defaultdict(str))
+    "<ruby>連<rp>(</rp><rt>れん</rt><rp>)</rp></ruby><ruby>用<rp>(</rp><rt>よう</rt><rp>)</rp></ruby><ruby>形<rp>(</rp><rt>けい</rt><rp>)</rp></ruby> (<i>ren'yōkei</i>, “stem or continuative form”) of the verb 受ける."
+    >>> render_ja_etym_renyokei("ja-ryk", ["受ける", "うける", "to receive, to get"], defaultdict(str))
+    "<ruby>連<rp>(</rp><rt>れん</rt><rp>)</rp></ruby><ruby>用<rp>(</rp><rt>よう</rt><rp>)</rp></ruby><ruby>形<rp>(</rp><rt>けい</rt><rp>)</rp></ruby> (<i>ren'yōkei</i>, “stem or continuative form”) of the verb 受ける (“to receive, to get”)."
+    """
+    text = f"<ruby>連<rp>(</rp><rt>れん</rt><rp>)</rp></ruby><ruby>用<rp>(</rp><rt>よう</rt><rp>)</rp></ruby><ruby>形<rp>(</rp><rt>けい</rt><rp>)</rp></ruby> (<i>ren'yōkei</i>, “stem or continuative form”) of the verb {parts[0]}"
+    if len(parts) > 2:
+        text += f" (“{parts[2]}”)"
+    return f"{text}."
+
+
 def render_ja_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_ja_l("ja-l", ["縄抜け"], defaultdict(str))
@@ -1568,40 +2419,53 @@ def render_ja_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
 
 def render_ja_r(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
-    >>> render_ja_r("ja-l", ["羨ましい"], defaultdict(str))
+    >>> render_ja_r("ja-r", ["羨ましい"], defaultdict(str))
     '羨ましい'
-    >>> render_ja_r("ja-l", ["羨ましい", "うらやましい"], defaultdict(str))
+    >>> render_ja_r("ja-r", ["羨ましい", "羨ましい"], defaultdict(str))
+    '羨ましい'
+    >>> render_ja_r("ja-r", ["羨ましい", "うらやましい"], defaultdict(str))
     '<ruby>羨ましい<rt>うらやましい</rt></ruby>'
-    >>> render_ja_r("ja-l", ["羨ましい", "うらやましい", "a"], defaultdict(str, {"lit": "lit"}))
+    >>> render_ja_r("ja-r", ["羨ましい", "うらやましい", "a"], defaultdict(str, {"lit": "lit"}))
     '<ruby>羨ましい<rt>うらやましい</rt></ruby> (“a”, literally “lit”)'
-    >>> render_ja_r("ja-l", ["羨ましい", "", "a"], defaultdict(str, {"lit": "lit"}))
+    >>> render_ja_r("ja-r", ["羨ましい", "", "a"], defaultdict(str, {"lit": "lit"}))
     '羨ましい (“a”, literally “lit”)'
 
-    >>> render_ja_r("ja-l", ["任天堂", "^ニンテンドー"], defaultdict(str))
+    >>> render_ja_r("ja-r", ["任天堂", "^ニンテンドー"], defaultdict(str))
     '<ruby>任天堂<rt>ニンテンドー</rt></ruby>'
 
-    >>> render_ja_r("ja-l", ["物%の%哀れ", "もの %の% あわれ"], defaultdict(str))
+    >>> render_ja_r("ja-r", ["物%の%哀れ", "もの %の% あわれ"], defaultdict(str))
     '<ruby>物<rt>もの</rt></ruby>の<ruby>哀れ<rt>あわれ</rt></ruby>'
-    >>> render_ja_r("ja-l", ["物 の 哀れ", "もの の あわれ"], defaultdict(str))
+    >>> render_ja_r("ja-r", ["物 の 哀れ", "もの の あわれ"], defaultdict(str))
     '<ruby>物<rt>もの</rt></ruby>の<ruby>哀れ<rt>あわれ</rt></ruby>'
+
+    >>> render_ja_r("ryu-r", ["唐手", "とーでぃー"], defaultdict(str, {"t": "Chinese hand"}))
+    '<ruby>唐手<rt>とーでぃー</rt></ruby> (“Chinese hand”)'
+
+    >>> render_ja_r("ja-compound", ["唐手", "とーでぃー"], defaultdict(str, {"t": "Chinese hand", "noquote": "1"}))
+    '<ruby>唐手<rt>とーでぃー</rt></ruby> (Chinese hand)'
     """
     if len(parts) == 1 or not parts[1]:
         text = parts[0]
     else:
-        parts[1] = parts[1].removeprefix("^")
-
-        if sep := "%" if "%" in parts[0] else " " if " " in parts[0] else "":
-            texts = [part.strip() for part in parts[0].split(sep)]
-            tops = [part.strip() for part in parts[1].split(sep)]
-            text = "".join(t if t == p else ruby(t, p) for t, p in zip(texts, tops))
+        if parts[0] == parts[1]:
+            text = parts[0]
         else:
-            text = ruby(parts[0], parts[1])
+            parts[1] = parts[1].removeprefix("^")
+
+            if sep := "%" if "%" in parts[0] else " " if " " in parts[0] else "":
+                texts = [part.strip() for part in parts[0].split(sep)]
+                tops = [part.strip() for part in parts[1].split(sep)]
+                text = "".join(t if t == p else ruby(t, p) for t, p in zip(texts, tops))
+            else:
+                text = ruby(parts[0], parts[1])
 
     more: list[str] = []
     if len(parts) > 2:
         more.append(f"“{parts[2]}”")
     if lit := data["lit"]:
         more.append(f"literally “{lit}”")
+    if t := data["t"]:
+        more.append(t if data["noquote"] else f"“{t}”")
     if more:
         text += f" ({', '.join(more)})"
 
@@ -1704,6 +2568,14 @@ def render_label(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     return term(res)
 
 
+def render_langname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_langname("langname", ["en"], defaultdict(str))
+    'English'
+    """
+    return langs[parts[0]]
+
+
 def render_lit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_lit("&lit", ["en", "foo", "bar"], defaultdict(str, {"nodot":"1"}))
@@ -1801,6 +2673,22 @@ def render_metathesis(tpl: str, parts: list[str], data: defaultdict[str, str], *
     return misc_variant_no_term("metathesis", tpl, parts, data, word=word)
 
 
+def render_minced_oath_of(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_minced_oath_of("minced oath of", ["en", "asshole//arsehole"], defaultdict(str))
+    'Minced oath of <i>asshole / arsehole</i>'
+    """
+    return misc_variant("minced oath", tpl, parts, data, word=word)
+
+
+def render_misconstruction(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_misconstruction("misconstruction", ["en", "commodious"], defaultdict(str))
+    'Misconstruction of <i>commodious</i>'
+    """
+    return misc_variant("misconstruction", tpl, parts, data, word=word)
+
+
 def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_morphology("affix", ["en"], defaultdict(str, {"alt1":"tisa-","pos1":"unique name","alt2":"-gen-", "t2": "transfer of genetic material (transduced)", "alt3":"-lec-", "t3":"selection and enrichment manipulation", "alt4":"-leu-", "t4":"leukocytes", "alt5":"-cel", "t5":"cellular therapy"}))
@@ -1808,53 +2696,9 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_morphology("affix", ["mul", "dys-", "schēma"], defaultdict(str, {"lang1":"NL.","t1":"difficult, impaired, abnormal, bad","lang2":"la", "g2": "f,n", "t2":"shape, form"}))
     'New Latin <i>dys-</i> (“difficult, impaired, abnormal, bad”)&nbsp;+&nbsp;Latin <i>schēma</i> <i>f or n</i> (“shape, form”)'
     >>> render_morphology("aff", ["en", "'gram<t:Instagram>", "-er<id:occupation>"], defaultdict(str))
-    "<i>'gram</i> and <i>-er</i>"
-
-    >>> render_morphology("infix", ["en", "Mister", "x"], defaultdict(str))
-    '<i>Mister</i>&nbsp;+&nbsp;<i>-x-</i>'
-    >>> render_morphology("infix", ["en", "Mister", "-x-"], defaultdict(str))
-    '<i>Mister</i>&nbsp;+&nbsp;<i>-x-</i>'
-    >>> render_morphology("infix", ["tl", "bundok", "in"], defaultdict(str, {"t1": "mountain", "t2": "verb infix"}))
-    '<i>bundok</i> (“mountain”)&nbsp;+&nbsp;<i>-in-</i> (“verb infix”)'
-
-    >>> render_morphology("suffix", ["en", "do", "ing"], defaultdict(str))
-    '<i>do</i>&nbsp;+&nbsp;<i>-ing</i>'
-
-    >>> render_morphology("prefix", ["en", "un", "do"], defaultdict(str))
-    '<i>un-</i>&nbsp;+&nbsp;<i>do</i>'
-    >>> render_morphology("prefix", ["en", "e-", "bus"], defaultdict(str))
-    '<i>e-</i>&nbsp;+&nbsp;<i>bus</i>'
-    >>> render_morphology("prefix", ["en", "toto", "lala" ], defaultdict(str, {"t1":"t1", "tr1":"tr1", "alt1":"alt1", "pos1":"pos1"}))
-    '<i>alt1-</i> (<i>tr1-</i>, “t1”, pos1)&nbsp;+&nbsp;<i>lala</i>'
-    >>> render_morphology("prefix", ["en", "toto", "lala"], defaultdict(str, {"t2":"t2", "tr2":"tr2", "alt2":"alt2", "pos2":"pos2"}))
-    '<i>toto-</i>&nbsp;+&nbsp;<i>alt2</i> (<i>tr2</i>, “t2”, pos2)'
-    >>> render_morphology("pre", ["en", "in", "fare#Etymology_1"], defaultdict(str))
-    '<i>in-</i>&nbsp;+&nbsp;<i>fare</i>'
-
-    >>> render_morphology("suffix", ["en", "gabapentin", "-oid"], defaultdict(str))
-    '<i>gabapentin</i>&nbsp;+&nbsp;<i>-oid</i>'
-    >>> render_morphology("suffix", ["en", "toto", "lala"], defaultdict(str, { "t1":"t1", "tr1":"tr1", "alt1":"alt1", "pos1":"pos1"}))
-    '<i>alt1</i> (<i>tr1</i>, “t1”, pos1)&nbsp;+&nbsp;<i>-lala</i>'
-    >>> render_morphology("suffix", ["en", "toto", "lala"], defaultdict(str, {"t2":"t2", "tr2":"tr2", "alt2":"alt2", "pos2":"pos2"}))
-    '<i>toto</i>&nbsp;+&nbsp;<i>-alt2</i> (<i>-tr2</i>, “t2”, pos2)'
-    >>> render_morphology("suffix", ["en", "", "cide"], defaultdict(str))
-    '&nbsp;+&nbsp;<i>-cide</i>'
-
-    >>> render_morphology("confix", ["en", "neuro", "genic"], defaultdict(str))
-    '<i>neuro-</i>&nbsp;+&nbsp;<i>-genic</i>'
-    >>> render_morphology("confix", ["en", "neuro", "gene"], defaultdict(str,{"tr2":"genic"}))
-    '<i>neuro-</i>&nbsp;+&nbsp;<i>-gene</i> (<i>-genic</i>)'
-    >>> render_morphology("confix", ["en", "be", "dew", "ed"], defaultdict(str))
-    '<i>be-</i>&nbsp;+&nbsp;<i>dew</i>&nbsp;+&nbsp;<i>-ed</i>'
-    >>> render_morphology("confix", ["en", "i-", "-tard"], defaultdict(str))
-    '<i>i-</i>&nbsp;+&nbsp;<i>-tard</i>'
-
-    >>> render_morphology("compound", ["fy", "fier", "lj"], defaultdict(str, {"t1":"far", "t2":"leap", "pos1":"adj", "pos2":"v"}))
-    '<i>fier</i> (“far”, adj)&nbsp;+&nbsp;<i>lj</i> (“leap”, v)'
-    >>> render_morphology("compound", ["en", "en:where", "as"], defaultdict(str, {"gloss2":"that"}))
-    'English <i>where</i>&nbsp;+&nbsp;<i>as</i> (“that”)'
-    >>> render_morphology("com+", ["en", "where", "as"], defaultdict(str, {"gloss2":"that"}))
-    'Compound of <i>where</i>&nbsp;+&nbsp;<i>as</i> (“that”)'
+    "<i>'gram</i> (“Instagram”) and <i>-er</i>"
+    >>> render_morphology("aff", ["mul", "Scarabaeus<g:m>", "la:-olus<g:m><pos:diminutive suffix>"], defaultdict(str), word="Scarabaeolus")
+    '<i>Scarabaeus</i> <i>m</i> and Latin <i>-olus</i> <i>m</i> (diminutive suffix)'
 
     >>> render_morphology("blend", ["he", "תַּשְׁבֵּץ", "חֵץ"], defaultdict(str, {"tr1":"tashbéts", "t1":"crossword", "t2":"arrow", "tr2":"chets"}))
     'Blend of <i>תַּשְׁבֵּץ</i> (<i>tashbéts</i>, “crossword”)&nbsp;+&nbsp;<i>חֵץ</i> (<i>chets</i>, “arrow”)'
@@ -1866,6 +2710,22 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     'Blend of <i>extrasolar</i>&nbsp;+&nbsp;<i>solar system</i>'
     >>> render_morphology("blend", [], defaultdict(str, {"notext": "1", "1": "en", "2": "yarb", "3": "balls"}))
     '<i>yarb</i>&nbsp;+&nbsp;<i>balls</i>'
+
+    >>> render_morphology("compound", ["fy", "fier", "lj"], defaultdict(str, {"t1":"far", "t2":"leap", "pos1":"adj", "pos2":"v"}))
+    '<i>fier</i> (“far”, adj)&nbsp;+&nbsp;<i>lj</i> (“leap”, v)'
+    >>> render_morphology("compound", ["en", "en:where", "as"], defaultdict(str, {"gloss2":"that"}))
+    'English <i>where</i>&nbsp;+&nbsp;<i>as</i> (“that”)'
+    >>> render_morphology("com+", ["en", "where", "as"], defaultdict(str, {"gloss2":"that"}))
+    'Compound of <i>where</i>&nbsp;+&nbsp;<i>as</i> (“that”)'
+
+    >>> render_morphology("confix", ["en", "neuro", "genic"], defaultdict(str))
+    '<i>neuro-</i>&nbsp;+&nbsp;<i>-genic</i>'
+    >>> render_morphology("confix", ["en", "neuro", "gene"], defaultdict(str,{"tr2":"genic"}))
+    '<i>neuro-</i>&nbsp;+&nbsp;<i>-gene</i> (<i>-genic</i>)'
+    >>> render_morphology("confix", ["en", "be", "dew", "ed"], defaultdict(str))
+    '<i>be-</i>&nbsp;+&nbsp;<i>dew</i>&nbsp;+&nbsp;<i>-ed</i>'
+    >>> render_morphology("confix", ["en", "i-", "-tard"], defaultdict(str))
+    '<i>i-</i>&nbsp;+&nbsp;<i>-tard</i>'
 
     >>> render_morphology("doublet", ["en" , "fire"], defaultdict(str))
     'Doublet of <i>fire</i>'
@@ -1879,30 +2739,72 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
     'Doublet of <i>ヴィエンヌ</i> (<i>Viennu</i>, “Vienne”) and <i>ウィーン</i> (<i>Wīn</i>)'
     >>> render_morphology("dbt", ["ru" , "ру́сский"], defaultdict(str, {"tr1":"rúkij", "t1":"R", "g1":"m", "pos1":"n", "lit1":"R"}))
     'Doublet of <i>ру́сский</i> <i>m</i> (<i>rúkij</i>, “R”, n, literally “R”)'
+
+    >>> render_morphology("infix", ["en", "Mister", "x"], defaultdict(str))
+    '<i>Mister</i>&nbsp;+&nbsp;<i>-x-</i>'
+    >>> render_morphology("infix", ["en", "Mister", "-x-"], defaultdict(str))
+    '<i>Mister</i>&nbsp;+&nbsp;<i>-x-</i>'
+    >>> render_morphology("infix", ["tl", "bundok", "in"], defaultdict(str, {"t1": "mountain", "t2": "verb infix"}))
+    '<i>bundok</i> (“mountain”)&nbsp;+&nbsp;<i>-in-</i> (“verb infix”)'
+
+    >>> render_morphology("prefix", ["en", "un", "do"], defaultdict(str))
+    '<i>un-</i>&nbsp;+&nbsp;<i>do</i>'
+    >>> render_morphology("prefix", ["en", "e-", "bus"], defaultdict(str))
+    '<i>e-</i>&nbsp;+&nbsp;<i>bus</i>'
+    >>> render_morphology("prefix", ["en", "toto", "lala" ], defaultdict(str, {"t1":"t1", "tr1":"tr1", "alt1":"alt1", "pos1":"pos1"}))
+    '<i>alt1-</i> (<i>tr1-</i>, “t1”, pos1)&nbsp;+&nbsp;<i>lala</i>'
+    >>> render_morphology("prefix", ["en", "toto", "lala"], defaultdict(str, {"t2":"t2", "tr2":"tr2", "alt2":"alt2", "pos2":"pos2"}))
+    '<i>toto-</i>&nbsp;+&nbsp;<i>alt2</i> (<i>tr2</i>, “t2”, pos2)'
+    >>> render_morphology("pre", ["en", "in", "fare#Etymology_1"], defaultdict(str))
+    '<i>in-</i>&nbsp;+&nbsp;<i>fare</i>'
+
+    >>> render_morphology("suffix", ["en", "do", "ing"], defaultdict(str))
+    '<i>do</i>&nbsp;+&nbsp;<i>-ing</i>'
+    >>> render_morphology("suffix", ["en", "gabapentin", "-oid"], defaultdict(str))
+    '<i>gabapentin</i>&nbsp;+&nbsp;<i>-oid</i>'
+    >>> render_morphology("suffix", ["en", "toto", "lala"], defaultdict(str, { "t1":"t1", "tr1":"tr1", "alt1":"alt1", "pos1":"pos1"}))
+    '<i>alt1</i> (<i>tr1</i>, “t1”, pos1)&nbsp;+&nbsp;<i>-lala</i>'
+    >>> render_morphology("suffix", ["en", "toto", "lala"], defaultdict(str, {"t2":"t2", "tr2":"tr2", "alt2":"alt2", "pos2":"pos2"}))
+    '<i>toto</i>&nbsp;+&nbsp;<i>-alt2</i> (<i>-tr2</i>, “t2”, pos2)'
+    >>> render_morphology("suffix", ["en", "", "cide"], defaultdict(str))
+    '&nbsp;+&nbsp;<i>-cide</i>'
+    >>> render_morphology("suffix", ["mul", "<i>Mithrax</i>", "ulus"], defaultdict(str))
+    '<i>Mithrax</i>&nbsp;+&nbsp;<i>-ulus</i>'
+
+    >>> render_morphology("suffixusex", ["ang", "nama", "naman"], defaultdict(str, {"g1": "m", "t1": "name", "t2": "names"}))
+    '<i>nama</i> <i>m</i> (“name”)&nbsp;+&nbsp;<i>-en → naman</i> (“names”)'
+    >>> render_morphology("sufex", ["ang", "nama", "naman"], defaultdict(str, {"g1": "m", "t1": "name", "t2": "names"}))
+    '<i>nama</i> <i>m</i> (“name”)&nbsp;+&nbsp;<i>-en → naman</i> (“names”)'
+    >>> render_morphology("usex-suffix", ["ang", "nama", "naman"], defaultdict(str, {"g1": "m", "t1": "name", "t2": "names"}))
+    '<i>nama</i> <i>m</i> (“name”)&nbsp;+&nbsp;<i>-en → naman</i> (“names”)'
     """
 
     def add_dash(tpl: str, index: int, parts_count: int, chunk: str) -> str:
-        if tpl in {"pre", "prefix", "con", "confix"} and index == 1:
-            # remove trailing dashes
+        if tpl in {"con", "confix"} and index == parts_count:
+            chunk = re.sub(r"^-+([^-]*)$", r"\g<1>", chunk)
+            chunk = f"-{chunk}"
+        elif tpl in {"con", "confix", "pre", "prefix"} and index == 1:
+            # Remove trailing dashes
             chunk = re.sub(r"^([^-]*)-+$", r"\g<1>", chunk)
             chunk += "-"
+        elif tpl in {"in", "infix"} and index > 1:
+            chunk = f"-{chunk.strip('-')}-"
         elif tpl in {"suf", "suffix"} and index == 2:
             chunk = re.sub(r"^-+([^-]*)$", r"\g<1>", chunk)
             chunk = f"-{chunk}"
-        elif tpl in {"con", "confix"} and index == parts_count:
-            chunk = re.sub(r"^-+([^-]*)$", r"\g<1>", chunk)
-            chunk = f"-{chunk}"
-        elif tpl in {"in", "infix"} and index > 1:
-            chunk = f"-{chunk.strip('-')}-"
+        elif tpl in {"sufex", "suffixusex", "usex-suffix"} and index == parts_count:
+            chunk = f"-en → {chunk}"
         return chunk
 
     if not parts:
         return f"{italic(data['2'])}&nbsp;+&nbsp;{italic(data['3'])}"
 
-    for idx in range(len(parts)):
-        part = parts[idx]
-        if "<" in part:
-            parts[idx] = part.split("<", 1)[0]
+    regex = re.compile(r"<(\w+):([^>]+)>")
+    for idx, part in enumerate(parts):
+        if specials := regex.findall(part):
+            for kind, value in specials:
+                data[f"{kind}{idx}"] = value
+            parts[idx] = part[: regex.search(part).start()]  # type: ignore[union-attr]
 
     compound = [
         "af",
@@ -1920,14 +2822,22 @@ def render_morphology(tpl: str, parts: list[str], data: defaultdict[str, str], *
         "pre",
         "prefix",
         "suf",
+        "sufex",
         "suffix",
+        "suffixusex",
+        "usex-suffix",
     ]
 
     # Aliases
-    if tpl == "dbt":
-        tpl = "doublet"
+    tpl = {
+        "dbt": "doublet",
+        "piecewise_doublet": "piecewise doublet",
+        "pw dbt": "piecewise doublet",
+        "pwd": "piecewise doublet",
+        "pwdbt": "piecewise doublet",
+    }.get(tpl, tpl)
 
-    with_start_text = ["doublet", "piecewise doublet", "blend", "blend of"]
+    with_start_text = ["blend", "blend of", "doublet", "piecewise doublet"]
     parts.pop(0)  # language code
     phrase = "Compound of " if tpl == "com+" else ""
     if data["notext"] != "1" and tpl in with_start_text:
@@ -2079,30 +2989,81 @@ def render_mul_domino_def(tpl: str, parts: list[str], data: defaultdict[str, str
     return f"<i>A domino tile, the {int(domino1)}-{int(domino2)}</i>."
 
 
+def render_mul_kanadef(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_mul_kanadef("mul-domino def", ["ク", "small", "Kana"], defaultdict(str))
+    'The katakana syllable ク in small form for the Ainu language (アイヌ イタㇰ).'
+    >>> render_mul_kanadef("mul-domino def", ["ク", "smallhalfwidth", "Kana"], defaultdict(str))
+    'The katakana syllable ク in small form (Kana) and halfwidth form.'
+    >>> render_mul_kanadef("mul-domino def", ["ク", "", "Kana"], defaultdict(str))
+    'The katakana syllable at ク行段 (row , section ) in a gojūon table.'
+    """
+    # Source: https://en.wiktionary.org/w/index.php?title=Template:mul-kanadef&oldid=60135395
+    row = parts[0]
+    match modifier := parts[1]:
+        case "゛":
+            text = f"The katakana syllable {row} with a dakuten."
+        case "゜":
+            text = f"The katakana syllable {row} with a handakuten."
+        case "small":
+            text = f"The katakana syllable {row} in small form for the Ainu language (アイヌ イタㇰ)."
+        case "halfwidth":
+            text = f"The katakana syllable {row} in halfwidth form."
+        case "smallhalfwidth":
+            text = f"The katakana syllable {row} in small form ({parts[2]}) and halfwidth form."
+        case "braille":
+            text = f"The katakana syllable {row} in Braille."
+        case "ン":
+            text = "The katakana syllable without particular 行 (row) or 段 (section) in a gojūon table, positioned at a corner."
+        case _:
+            row_map = {
+                "ア": "A",
+                "カ": "KA",
+                "サ": "SA",
+                "タ": "TA",
+                "ナ": "NA",
+                "ハ": "HA",
+                "マ": "MA",
+                "ヤ": "YA",
+                "ラ": "RA",
+                "ワ": "WA",
+            }
+            section_map = {"ア": "A", "イ": "I", "ウ": "U", "エ": "E", "オ": "O"}
+            row_ = row_map.get(row, "")
+            section = section_map.get(modifier, "")
+            text = f"The katakana syllable at {row}行{modifier}段 (row {row_}, section {section}) in a gojūon table."
+
+    return text
+
+
 def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_name_translit("name translit", ["en", "ka", "შევარდნაძე"], defaultdict(str, {"type":"surname"}))
-    '<i>A transliteration of the Georgian surname</i> <b>შევარდნაძე</b>'
+    '<i>a transliteration of the Georgian surname</i> <b>შევარდნაძე</b>'
     >>> render_name_translit("name translit", ["en", "fa", "فرید<tr:farid>"], defaultdict(str, {"type":"male given name"}))
-    '<i>A transliteration of the Persian male given name</i> <b>فرید</b> (<i>farid</i>)'
+    '<i>a transliteration of the Persian male given name</i> <b>فرید</b> (<i>farid</i>)'
     >>> render_name_translit("name translit", ["en", "ru", "Ива́нович<t:son of Ivan>"], defaultdict(str, {"type":"patronymic"}))
-    '<i>A transliteration of the Russian patronymic</i> <b>Ива́нович</b> (<i>Ivanovič</i>, “<i>son of Ivan</i>”)'
+    '<i>a transliteration of the Russian patronymic</i> <b>Ива́нович</b> (<i>Ivánovič</i>, “<i>son of Ivan</i>”)'
     >>> render_name_translit("name translit", ["pt", "bg", "Ива́нов", "Ивано́в"], defaultdict(str, {"type":"surname"}))
-    '<i>A transliteration of the Bulgarian surname</i> <b>Ива́нов</b> (<i>Ivanov</i>) <i>or</i> <b>Ивано́в</b> (<i>Ivanov</i>)'
+    '<i>a transliteration of the Bulgarian surname</i> <b>Ива́нов</b> <i>or</i> <b>Ивано́в</b>'
     >>> render_name_translit("name translit", ["en", "el", "Γιάννης<eq:John>"], defaultdict(str, {"type":"male given name"}))
-    '<i>A transliteration of the Greek male given name</i> <b>Γιάννης</b>, <i>equivalent to John</i>'
+    '<i>a transliteration of the Greek male given name</i> <b>Γιάννης</b>, <i>equivalent to John</i>'
     >>> render_name_translit("name translit", ["fr", "ja"], defaultdict(str, {"type":"female given name"}))
-    '<i>A transliteration of a Japanese female given name</i>'
+    '<i>a transliteration of a Japanese female given name</i>'
     >>> render_name_translit("name translit", ["en", "bg,mk,sh", "Никола"], defaultdict(str, {"type":"male given name", "eq": "Nicholas"}))
-    '<i>A transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b> (<i>Nikola</i>), <i>equivalent to Nicholas</i>'
+    '<i>a transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b>, <i>equivalent to Nicholas</i>'
     >>> render_name_translit("name translit", ["en", "bg, mk,  sh ", "Никола"], defaultdict(str, {"type":"male given name", "eq": "Nicholas"}))
-    '<i>A transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b> (<i>Nikola</i>), <i>equivalent to Nicholas</i>'
+    '<i>a transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b>, <i>equivalent to Nicholas</i>'
+    >>> render_name_translit("name translit", ["en", "grc", "Ἀέτιος"], defaultdict(str, {"type":"male given name", "xlit": "Aetius"}))
+    '<i>a transliteration of the Ancient Greek male given name</i> <b>Ἀέτιος</b>, <i><b>Aetius</b></i>'
+    >>> render_name_translit("name translit", ["zh", "ru", "Хрущёв<xlit:Khrushchev>"], defaultdict(str, {"type": "surname"}))
+    '<i>a transliteration of the Russian surname</i> <b>Хрущёв</b> (<i>Xruščóv</i>), <i>Khrushchev</i>'
     """
     parts.pop(0)  # Destination language
     src_langs = parts.pop(0)
 
     origins = concat([langs[src_lang.strip()] for src_lang in src_langs.split(",")], sep=", ", last_sep=" or ")
-    text = italic(f"A transliteration of {'the' if parts else 'a'} {origins} {data['type']}")
+    text = italic(f"a transliteration of {'the' if parts else 'a'} {origins} {data['type']}")
     if not parts:
         return text
 
@@ -2114,18 +3075,17 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     text += f" {strong(what)}"
 
     if rest:
-        if transliterated:
-            transliterated = f"{italic(transliterated)}, "
-
         kind, value = rest.split(":", 1)
         value = value.rstrip(">")
         match kind:
             case "eq":
                 text += f", {italic(f'equivalent to {value}')}"
             case "t":
-                text += f" ({transliterated}“{italic(value)}”)"
+                text += f" ({italic(transliterated)}, “{italic(value)}”)"
             case "tr":
-                text += f" ({transliterated}{italic(value)})"
+                text += f" ({italic(value)})"
+            case "xlit":
+                text += f" ({italic(transliterated)}), {italic(value)}"
             case _:
                 assert 0, f"Unhandled {kind=} in render_name_translit()"
     elif transliterated:
@@ -2138,6 +3098,9 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
         text += f" {italic('or')} {strong(parts[0])}"
         if transliterated:
             text += f" ({italic(transliterated)})"
+
+    if xlit := data["xlit"]:
+        text += f", {italic(strong(xlit))}"
 
     return text
 
@@ -2203,6 +3166,14 @@ def render_nb(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
         phrase += "and other forms " if "," in parts[0] else "and the other form "
         phrase += italic(parts[0])
     return f"{phrase}]{sep if tpl == '...' else ''}"
+
+
+def render_non_rhotic(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_non_rhotic("non-rhotic", ["en", "burst"], defaultdict(str))
+    'Non-rhotic pronunciation of <i>burst</i>'
+    """
+    return misc_variant("non-rhotic pronunciation", tpl, parts, data, word=word)
 
 
 def render_nuclide(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -2279,18 +3250,34 @@ def render_pedlink(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
 
 def render_pedia(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
+    >>> render_pedia("pedia", [], defaultdict(str), word="Ismene")
+    'Ismene on Wikipedia.'
     >>> render_pedia("pedia", ["foo#bar", "baz"], defaultdict(str))
     'baz on Wikipedia.'
     >>> render_pedia("pedlink", ["foo#bar"], defaultdict(str, {"nodot": "1", "i": "1"}))
     '<i>foo</i> on Wikipedia'
     """
-    text = parts[-1].split("#", 1)[0]
+    text = parts[-1].split("#", 1)[0] if parts else word
     if data["i"]:
         text = italic(text)
     text += " on Wikipedia"
     if not data["nodot"]:
         text += "."
     return text
+
+
+def render_person(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_person("person", ["en"], defaultdict(str))
+    ''
+    >>> render_person("person", ["Q151874"], defaultdict(str))
+    'Russian ballet dancer Anna Pavlova'
+    >>> render_person("person", ["Q151874"], defaultdict(str, {"brackets": "1"}))
+    'Anna Pavlova (Russian ballet dancer)'
+    """
+    if not (person_id := parts[0]).startswith("Q"):
+        return ""
+    return wikidata.person(person_id, brackets=bool(data["brackets"]))
 
 
 def render_phonetic_alphabet(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -2467,6 +3454,67 @@ def render_pseudo_acronym_of(tpl: str, parts: list[str], data: defaultdict[str, 
     return text
 
 
+def render_pseudo_loan(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_pseudo_loan("pseudo-loan", ["fr", "en"], defaultdict(str))
+    'Pseudo-anglicism'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "fr"], defaultdict(str))
+    'Pseudo-Gallicism'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "da"], defaultdict(str))
+    'Pseudo-loan from Danish'
+
+    >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I"}))
+    'Pseudo-anglicism, derived from Latin <i>ego</i> (“I”) +&nbsp;<i>shooter</i>'
+    >>> render_pseudo_loan("pseudo-loan", ["de", "en", "la:ego", "shooter"], defaultdict(str, {"t1": "I", "notext": "1"}))
+    'Latin <i>ego</i> (“I”) +&nbsp;<i>shooter</i>'
+    >>> render_pseudo_loan("pseudo-loan", ["ja", "en", "office", "lady"], defaultdict(str))
+    'Wasei eigo (和製英語; pseudo-anglicism), derived from <i>office</i> +&nbsp;<i>lady</i>'
+    >>> render_pseudo_loan("pseudo-loan", ["en", "enm", "<i>the</i> +&nbsp;<i>old</i>"], defaultdict(str))
+    'Pseudo-loan from Middle English, derived from <i>the</i> +&nbsp;<i>old</i>'
+    """
+    pseudo_loan_by_source = {
+        "ar": "Arabism",
+        "de": "Germanism",
+        "en": "anglicism",
+        "es": "Hispanism",
+        "fr": "Gallicism",
+        "it": "Italianism",
+        "ja": "Japonism",
+        "la": "Latinism",
+    }
+
+    text = ""
+    lang_code = parts.pop(0)
+    lang_src = parts.pop(0)
+
+    if not data["notext"]:
+        nocap = "nocap" in data
+        if lang_code == "ja" and lang_src == "en":
+            text += f"{'w' if nocap else 'W'}asei eigo (和製英語; pseudo-anglicism)"
+        elif plbs := pseudo_loan_by_source.get(lang_src, ""):
+            text += f"{'p' if nocap else 'P'}seudo-{plbs}"
+        else:
+            text += f"{'p' if nocap else 'P'}seudo-loan from {langs[lang_src]}"
+        if parts:
+            text += f"{'' if nocap else ','} derived from "
+
+    if parts:
+        derivations: list[str] = []
+        for idx, part in enumerate(parts, 1):
+            if ":" in part:
+                lang, value = part.split(":", 1)
+                lang = langs[lang]
+                part = f"{lang} <i>{value}</i>"
+            else:
+                part = italic(part)
+            if t := data[f"t{idx}"]:
+                part += f" (“{t}”)"
+            derivations.append(part)
+        text += concat(derivations, " +&nbsp;")
+
+    return text
+
+
 def render_rebracketing(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_rebracketing("rebracketing", ["en", "marathon"], defaultdict(str))
@@ -2483,24 +3531,89 @@ def render_reduplication(tpl: str, parts: list[str], data: defaultdict[str, str]
     return misc_variant("reduplication", tpl, parts, data, word=word)
 
 
+def render_rq(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_rq("RQ", ["King James Version"], defaultdict(str, {"book": "Mark", "chapter": "7", "verse": "33", "text": "And he took him aside from the multitude, and put his fingers into his ears, and he spit, and touched his tongue;"}))
+    '“And he took him aside from the multitude, and put his fingers into his ears, and he spit, and touched his tongue;”'
+    """
+    return f"“{data['text']}”"
+
+
+def render_script(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_script("script", ["Cpmn"], defaultdict(str))
+    'Cypro-Minoan'
+    """
+    return scripts[parts[0]]
+
+
+def render_section_link(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_section_link("section link", ["w:Colombo#Etymology"], defaultdict(str))
+    'Colombo § Etymology (on Wikipedia)'
+    >>> render_section_link("section link", ["Mississippi#Etymology 2"], defaultdict(str))
+    'Mississippi § Etymology 2'
+    """
+    on_wikipedia = parts[0].startswith("w:")
+    text = parts[0].removeprefix("w:").replace("#", " § ")
+    if on_wikipedia:
+        text += " (on Wikipedia)"
+    return text
+
+
+def render_semantic_shift(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_semantic_shift("ss", ["en"], defaultdict(str))
+    'semantic shift'
+    >>> render_semantic_shift("ss", ["en"], defaultdict(str, {"type": "a"}))
+    'ameliorative semantic shift'
+    >>> render_semantic_shift("ss", ["en"], defaultdict(str, {"type": "b"}))
+    'semantic broadening'
+    >>> render_semantic_shift("ss", ["en"], defaultdict(str, {"type": "n"}))
+    'semantic narrowing'
+    >>> render_semantic_shift("ss", ["en"], defaultdict(str, {"type": "p"}))
+    'pejorative semantic shift'
+    """
+    return {
+        "": "semantic shift",
+        "a": "ameliorative semantic shift",
+        "b": "semantic broadening",
+        "n": "semantic narrowing",
+        "p": "pejorative semantic shift",
+    }[data["type"]]
+
+
+def render_sic(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_sic("SIC", [], defaultdict(str))
+    '<sup>[<i>sic</i>]</sup>'
+    >>> render_sic("SIC", ["misspelled"], defaultdict(str))
+    '<sup>[<i>sic</i> - meaning <i>misspelled</i>]</sup>'
+    """
+    text = "<sup>[<i>sic</i>"
+    if parts:
+        text += f" - meaning <i>{parts[0]}</i>"
+    return f"{text}]</sup>"
+
+
 def render_si_unit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_si_unit("SI-unit", ["en", "peta", "second", "time"], defaultdict(str))
     '(<i>metrology</i>) An SI unit of time equal to 10<sup>15</sup> seconds. Symbol: Ps'
     >>> render_si_unit("SI-unit-np", ["en", "nano", "gauss", "magnetism"], defaultdict(str))
-    '(<i>metrology</i>) An SI unit of magnetism equal to 10<sup>-9</sup> gauss.'
+    '(<i>metrology</i>) An SI unit of magnetism equal to 10<sup>−9</sup> gauss.'
     >>> render_si_unit("SI-unit", ["en", "peta", "second"], defaultdict(str))
     '(<i>metrology</i>) An SI unit of time equal to 10<sup>15</sup> seconds. Symbol: Ps'
     """
     parts.pop(0)  # language
     prefix = data["2"] or (parts.pop(0) if parts else "")
     unit = data["3"] or (parts.pop(0) if parts else "")
-    category = data["4"] or (parts.pop(0) if parts else "") or unit_to_type.get(unit, "")
-    exp = prefix_to_exp.get(prefix, "")
+    category = data["4"] or (parts.pop(0) if parts else "") or si_unit.unit_to_type.get(unit, "")
+    exp = si_unit.prefix_to_exp.get(prefix, "")
     s_end = "" if unit.endswith("z") or unit.endswith("s") else "s"
     phrase = f"({italic('metrology')}) An SI unit of {category} equal to 10{superscript(exp)} {unit}{s_end}."
-    if unit in unit_to_symbol:
-        symbol = prefix_to_symbol.get(prefix, "") + unit_to_symbol.get(unit, "")
+    if unit in si_unit.unit_to_symbol:
+        symbol = f"{si_unit.prefix_to_symbol.get(prefix, '')}{si_unit.unit_to_symbol.get(unit, '')}"
         phrase += f" Symbol: {symbol}"
     return phrase
 
@@ -2514,21 +3627,21 @@ def render_si_unit_2(tpl: str, parts: list[str], data: defaultdict[str, str], *,
     unit = data["2"] or (parts.pop(0) if parts else "")
     category = data["3"] or (parts.pop(0) if parts else "")
     alt = data["3"] or (parts.pop(0) if parts else "")
-    exp = prefix_to_exp.get(prefix, "")
+    exp = si_unit.prefix_to_exp.get(prefix, "")
     return f"({italic('metrology')}) An SI unit of {category} equal to 10{superscript(exp)} {unit}s; alternative spelling of {italic(prefix + alt)}."
 
 
 def render_si_unit_abb(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_si_unit_abb("SI-unit-abb", ["femto", "mole", "amount of substance"], defaultdict(str))
-    '(<i>metrology</i>) <i>Symbol for</i> <b>femtomole</b>, an SI unit of amount of substance equal to 10<sup>-15</sup> moles'
+    '(<i>metrology</i>) <i>Symbol for</i> <b>femtomole</b>, an SI unit of amount of substance equal to 10<sup>−15</sup> moles'
     >>> render_si_unit_abb("SI-unit-abbnp", ["exa", "hertz", "frequency"], defaultdict(str))
     '(<i>metrology</i>) <i>Symbol for</i> <b>exahertz</b>, an SI unit of frequency equal to 10<sup>18</sup> hertz'
     """
     prefix = data["1"] or (parts.pop(0) if parts else "")
     unit = data["2"] or (parts.pop(0) if parts else "")
     category = data["3"] or (parts.pop(0) if parts else "")
-    exp = prefix_to_exp.get(prefix, "")
+    exp = si_unit.prefix_to_exp.get(prefix, "")
     plural = "" if tpl.endswith("np") else "s"
     return f"({italic('metrology')}) {italic('Symbol for')} {strong(prefix + unit)}, an SI unit of {category} equal to 10{superscript(exp)} {unit}{plural}"
 
@@ -2627,19 +3740,32 @@ def render_spoonerism(tpl: str, parts: list[str], data: defaultdict[str, str], *
     return misc_variant("spoonerism", tpl, parts, data, word=word)
 
 
+def render_sumti(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_sumti("sumti", ["3"], defaultdict(str, {"int": "3"}))
+    'x<sub>3</sub>'
+    """
+    return f"x<sub>{parts[0]}</sub>"
+
+
 def render_surface_analysis(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
+    >>> render_surface_analysis("surf", [], defaultdict(str))
+    'By surface analysis'
     >>> render_surface_analysis("surf", ["en", "ignore", "-ance"], defaultdict(str))
     'By surface analysis, <i>ignore</i>&nbsp;+&nbsp;<i>-ance</i>'
     >>> render_surface_analysis("surf", ["+suf", "en", "ignore", "ance"], defaultdict(str))
     'By surface analysis, <i>ignore</i>&nbsp;+&nbsp;<i>-ance</i>'
     """
+    phrase = ("b" if data["nocap"] else "B") + "y surface analysis"
+    if not parts:
+        return phrase
+
     if parts[0] == "+suf":
         parts.remove("+suf")
         parts[-1] = f"-{parts[-1].lstrip('-')}"
 
-    phrase = ("b" if data["nocap"] in ("1", "yes", "y") else "B") + "y surface analysis, "
-    phrase += render_morphology("af", parts, data)
+    phrase += f", {render_morphology('af', parts, data)}"
     return phrase
 
 
@@ -2655,7 +3781,7 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     '<i>A rare surname</i>'
     >>> render_surname("surname", ["en", "English"], defaultdict(str))
     '<i>An English surname</i>'
-    >>> render_surname("surname", ["en", "occupational"], defaultdict(str, {"A":"An"}))
+    >>> render_surname("surname", ["en", "occupational"], defaultdict(str, {"A": "An"}))
     '<i>An occupational surname</i>'
     >>> render_surname("surname", ["en"], defaultdict(str, {"from":"Latin"}))
     '<i>A surname from Latin</i>'
@@ -2679,11 +3805,43 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     '<i>A surname originating as an ethnonym</i>'
     >>> render_surname("surname", ["en"], defaultdict(str, {"from":"occupations"}))
     '<i>A surname originating as an occupation</i>'
+    >>> render_surname("surname", ["en", "male"], defaultdict(str, {"parent": "Пётр"}))
+    '<i>A male surname, meaning “son of Пётр”</i>'
+    >>> render_surname("surname", ["en", "female"], defaultdict(str, {"parent": "Пётр"}))
+    '<i>A female surname, meaning “daughter of Пётр”</i>'
+    >>> render_surname("surname", ["en", "male"], defaultdict(str, {"from":"occupations", "xlit": "Petrovich", "parent": "Пётр<eq:Peter>", "eq": "Peter"}))
+    '<i>A male surname, Petrovich, originating as an occupation, meaning “son of Пётр [=Peter]”, equivalent to English Peter</i>'
+
+    >>> render_surname("patronymic", ["en", "male"], defaultdict(str, {"from":"occupations", "xlit": "Petrovich", "parent": "Пётр<eq:Peter>", "eq": "Peter"}))
+    '<i>a male patronymic, Petrovich, originating as an occupation, meaning “son of Пётр [=Peter]”, equivalent to English Peter</i>'
+
+    >>> render_surname("foreign name", ["it", "en"], defaultdict(str, {"type":"surname"}))
+    '<i>a surname in English</i>'
+    >>> render_surname("foreign name", ["en", "pl", "Wałęsa"], defaultdict(str, {"type":"surname"}))
+    '<i>a surname in Polish</i>, <b>Wałęsa</b>'
+    >>> render_surname("foreign name", ["it", "grc", "Σωκράτης"], defaultdict(str, {"type":"male given name"}))
+    '<i>a male given name in Ancient Greek</i>, <b>Σωκράτης</b>'
+    >>> render_surname("foreign name", ["en", "la", "Aetius"], defaultdict(str, {"type":"male given name"}))
+    '<i>a male given name in Latin</i>, <b>Aetius</b>'
+
+    >>> render_surname("foreign name", ["zh", "hi,pa", "hi:सिंह", "pa:ਸਿੰਘ"], defaultdict(str, {"type": "surname", "tr1": "siṅh", "tr2": "siṅgh"}))
+    '<i>a surname in Hindi or Punjabi</i>, <b>सिंह</b> (<b>sĩh</b>) or <b>ਸਿੰਘ</b>'
     """
     if parts:
         parts.pop(0)  # Remove the lang
 
-    art = data["A"] or ("An" if parts and parts[0].lower().startswith(("a", "e", "i", "o", "u")) else "A")
+    if not (art := data["A"]):
+        art = "A" if tpl == "surname" else "a"
+        if kind := data["type"]:
+            if kind[0].lower() in "aeiou":
+                art += "n"
+        elif (
+            len(parts) > (1 if tpl == "foreign name" else 0)
+            and (kind := parts[1 if tpl == "foreign name" else 0])
+            and kind
+            and kind[0].lower() in "aeiou"
+        ):
+            art += "n"
 
     from_value, from_text = data["from"], ""
     if from_value in {
@@ -2693,17 +3851,74 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         "place names",
         "surnames",
     }:
-        from_text = f" transferred from the {from_value[:-1]}"
+        from_text = f"transferred from the {from_value[:-1]}"
     elif from_value in {"coinages", "matronymics", "patronymics"}:
-        from_text = f" originating as a {from_value[:-1]}"
+        from_text = f"originating as a {from_value[:-1]}"
     elif from_value in {"ethnonyms", "occupations"}:
-        from_text = f" originating as an {from_value[:-1]}"
+        from_text = f"originating as an {from_value[:-1]}"
     elif from_value == "the Bible":
-        from_text = " originating from the Bible"
+        from_text = "originating from the Bible"
     elif from_value:
-        from_text = f" from {from_value}"
+        from_text = f"from {from_value}"
 
-    return italic(f"{art} {parts[0]} {tpl}{from_text}") if parts and parts[0] else italic(f"{art} {tpl}{from_text}")
+    text: list[str] = []
+
+    starter = f"{art} "
+    if parts and parts[0] and tpl != "foreign name":
+        starter += f"{parts[0]} "
+    starter += data["type"] or {"foreign name": "surname"}.get(tpl, tpl)
+    if parts and parts[0] and tpl == "foreign name":
+        starter += f" in {concat([langs[part] for part in parts[0].split(',')], ', ', last_sep=' or ')}"
+
+    if xlit := data["xlit"]:
+        text.extend((starter, xlit))
+        if from_text:
+            text.append(from_text)
+    else:
+        if from_text:
+            starter += f" {from_text}"
+        text.append(starter)
+
+    if parent := data["parent"]:
+        kind = {
+            "male": "son",
+            "female": "daughter",
+        }.get(parts[0] if parts and parts[0] else "", "son/daughter")
+        trad = ""
+        if "<eq" in parent:
+            parent, trad = parent.split("<eq:", 1)
+            trad = f" [={trad.removesuffix('>')}]"
+        text.append(f"meaning “{kind} of {parent}{trad}”")
+    if eq := data["eq"]:
+        text.append(f"equivalent to English {eq}")
+
+    final = italic(", ".join(text))
+
+    if tpl == "foreign name" and len(parts) > 1:
+        more: list[str] = []
+
+        for part in parts[1:]:
+            if ":" in part:
+                lang, trad = part.split(":", 1)
+            else:
+                lang, trad = parts[0], part
+
+            trad = f"<b>{trad}</b>"
+            if trans := transliterate(lang, trad):
+                trad += f" ({trans})"
+            more.append(trad)
+
+        final += f", {concat(more, ', ', last_sep=' or ')}"
+
+    return final
+
+
+def render_syllabic_abbreviation(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_syllabic_abbreviation("syllabic abbreviation", ["en", "Johannesburg"], defaultdict(str))
+    'Syllabic abbreviation of <i>Johannesburg</i>'
+    """
+    return misc_variant("syllabic abbreviation", tpl, parts, data, word=word)
 
 
 def render_syncopic_form(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -2751,8 +3966,7 @@ def at_transformer(value: str) -> str:
     if not value.startswith("@"):
         return value
     form, text = value[1:].split(":", 1)
-    form = form_of_templates[form]
-    return f"<i>{capitalize(form)}</i> <b>{text}</b>"
+    return f"<i>{capitalize(form_of_templates[form]['value'])}</i> <b>{text}</b>"
 
 
 def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -2766,12 +3980,11 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
     No senseid case: https://en.wiktionary.org/wiki/Ionian_Sea
     {{tcl}} arg with @: https://en.wiktionary.org/wiki/'Sconset
     """
-    import subprocess
-
     from ... import render, utils
 
     source_dir = render.get_source_dir("en", "en")
     file = render.get_latest_json_file(source_dir)
+    assert file
 
     source_origin = parts[1]
     source = parts[-1]
@@ -2780,33 +3993,43 @@ def render_transclude(tpl: str, parts: list[str], data: defaultdict[str, str], *
 
     if ":" in source:
         source = source.split(":")[-1]
+    elif source == "+":
+        source_origin = source = word
 
     for sid in sense_id.split(","):
-        command = ["/bin/fgrep", f'"{source}": "', str(file)]
-        output = subprocess.check_output(command, env={"LC_ALL": "C"}).strip().decode("utf-8")
-        pattern = re.compile(
-            rf"#+\s*\{{\{{(?:senseid|sid)\|\w+\|{sid}\}}\}}\s*(.+)"
-            if "{{senseid|" in output or "{{sid|" in output
-            else r"#+\s*(\{\{place\|.+)"
-        )
-        definition = next(line.strip() for line in output.split("\\n") if pattern.search(line))
-        definition = pattern.sub(r"\1", definition)
+        output = utils.grep(file, f'"{source}": "')
 
-        # At this point, the definition is something like `{{place|...}}`, and if the `tcl=` arg is used, we need to alter template arguments
-        if "tcl=" in definition:
-            place_arg = re.search(r"\{\{place\|(\w+)", definition)[1]  # type: ignore[index]
-            tcl_args = re.search(r"tcl=([^}]+)\}\}", definition)[1].split(";;")  # type: ignore[index]
-            definition = f"{{{{place|{place_arg}|{'|'.join(tcl_args)}}}}}"
+        if "{{senseid|" in output or "{{sid|" in output or "{{place|" in output:
+            pattern = re.compile(
+                rf"#+\s*\{{\{{(?:senseid|sid)\|\w+\|{sid or '[^|}]+'}\}}\}}\s*(.+)"
+                if "{{senseid|" in output or "{{sid|" in output
+                else r"#+\s*(\{\{place\|.+)"
+            )
+            definition = next(line.strip() for line in output.split("\\n") if pattern.search(line))
+            definition = pattern.sub(r"\1", definition)
 
-        definition = re.sub(r"<<\w+/([^>]+)>>", r"\1", definition)
-        definition = utils.process_templates(word, definition, "en")
-        definition = definition.split(".", 1)[0]
+            # At this point, the definition is something like `{{place|...}}`, and if the `tcl=` arg is used, we need to alter template arguments
+            if "tcl=" in definition:
+                place_arg = re.search(r"\{\{place\|(\w+)", definition)[1]  # type: ignore[index]
+                tcl_args = re.search(r"tcl=([^}]+)\}\}", definition)[1].split(";;")  # type: ignore[index]
+                definition = f"{{{{place|{place_arg}|{'|'.join(tcl_args)}}}}}"
+
+            definition = re.sub(r"<<\w+/([^>]+)>>", r"\1", definition)
+            definition = utils.process_templates(word, definition, "en")
+            definition = definition.split(".", 1)[0]
+        else:
+            # No `{{place}}` nor `senseid`, lets use the first definition then
+            output = output.removeprefix(f'"{source}": "').removesuffix('",')
+            parsed = render.parse_word(word, output.replace("\\n", "\n"), "en")
+            parsed_definitions = parsed.definitions.get("Proper Noun") or parsed.definitions["Noun"]
+            definition = str(parsed_definitions[0]).removesuffix(".")
+
         definitions.append(definition)
 
     if parts[0] == "en" and source_origin[0] != "@":
-        return "\n".join(definitions)
+        return "</li><li>".join(definitions)
 
-    return f"{at_transformer(source_origin)} ({'\n'.join(definitions)})"
+    return f"{at_transformer(source_origin)} ({'</li><li>'.join(definitions)})"
 
 
 def render_uncertain(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -2862,6 +4085,14 @@ def render_unknown(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         return "Unknown"
 
 
+def render_used_in_phrasal_verbs(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_used_in_phrasal_verbs("used in phrasal verbs", ["abide by"], defaultdict(str, {"lang": "en", "t": "to accept and act in accordance with"}))
+    '<i>Used in a phrasal verb:</i> <b>abide by</b> (“to accept and act in accordance with”).'
+    """
+    return f"<i>Used in a phrasal verb:</i> <b>{parts[0]}</b>{gloss_tr_poss(data, data['t'])}."
+
+
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_variant("__variant__en-archaic third-person singular of", ["verb"], defaultdict(str))
@@ -2914,215 +4145,260 @@ def render_vi_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
     return text
 
 
+def render_wasei_eigo(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_wasei_eigo("wasei eigo", [], defaultdict(str))
+    'Wasei eigo (和製英語; pseudo-anglicism)'
+    >>> render_wasei_eigo("wasei eigo", ["family", "computer"], defaultdict(str))
+    'Wasei eigo (和製英語; pseudo-anglicism) derived from <i>family</i>&nbsp;+&nbsp;<i>computer</i>'
+    >>> render_wasei_eigo("wasei eigo", ["family", "computer"], defaultdict(str, {"nocap": "1"}))
+    'wasei eigo (和製英語; pseudo-anglicism) derived from <i>family</i>&nbsp;+&nbsp;<i>computer</i>'
+    """
+    text = f"{'w' if data['nocap'] else 'W'}asei eigo (和製英語; pseudo-anglicism)"
+    if parts:
+        text += f" derived from {concat([italic(part) for part in parts], '&nbsp;+&nbsp;')}"
+    return text
+
+
+def render_xlit(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_xlit("xlit", ["ar", "عُظْمَى"], defaultdict(str))
+    'ʕuẓmā'
+    >>> render_xlit("xlit", ["zz", "foo"], defaultdict(str))
+    ''
+    """
+    return transliterate(parts[0], parts[1])
+
+
+def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_zh_l("zh-l", ["痟", "mad"], defaultdict(str, {"tr": "siáu"}))
+    '痟 (<i>siáu</i>, “mad”)'
+    """
+    return chinese(parts, data)
+
+
 template_mapping = {
     "&lit": render_lit,
-    "...": render_nb,
-    "a": render_accent,
-    "abor": render_foreign_derivation,
-    "adapted borrowing": render_foreign_derivation,
-    "accent": render_accent,
-    "A.D.": render_bce,
-    "AD": render_bce,
-    "af": render_morphology,
-    "affix": render_morphology,
+    "abbreviated": render_abbreviated,
     "aka": render_aka,
-    "ante": render_dating,
     "ante2": render_ante2,
     "aphetic form": render_aphetic_form,
     "apocopic form": render_apocopic_form,
-    "a.": render_dating,
-    "backform": render_foreign_derivation,
-    "backformation": render_foreign_derivation,
-    "back-form": render_foreign_derivation,
-    "back-formation": render_foreign_derivation,
-    "B.C.E.": render_bce,
-    "BCE": render_bce,
-    "B.C.": render_bce,
-    "BC": render_bce,
-    "bf": render_foreign_derivation,
-    "blend of": render_morphology,
-    "blend": render_morphology,
+    "ar-active participle": render_ar_active_participle,
+    "ar-instance noun": render_ar_instance_noun,
+    "ar-passive participle": render_ar_passive_participle,
+    "ar-root": render_ar_root,
+    "blockquote": render_blockquote,
     "bond credit rating": render_bond_credit_rating,
-    "bor": render_foreign_derivation,
-    "bor-lite": render_foreign_derivation,
-    "bor+": render_foreign_derivation,
-    "borrowed": render_foreign_derivation,
-    "cal": render_foreign_derivation,
-    "cap": render_cap,
-    "calque": render_foreign_derivation,
     "century": render_century,
-    "C.E.": render_bce,
-    "CE": render_bce,
-    "circa": render_dating,
-    "circa2": render_dating_full_and_short,
-    "c.": render_dating,
     "chemical symbol": render_chemical_symbol,
-    "clip": render_clipping,
-    "clipping": render_clipping,
-    "clq": render_foreign_derivation,
-    "cog": render_foreign_derivation,
-    "cog-lite": render_foreign_derivation,
-    "cognate": render_foreign_derivation,
-    "coin": render_coinage,
-    "coined": render_coinage,
-    "coinage": render_coinage,
-    "contr": render_contraction,
-    "contraction": render_contraction,
-    "com": render_morphology,
-    "com+": render_morphology,
-    "compound": render_morphology,
-    "compound+": render_morphology,
-    "con": render_morphology,
-    "confix": render_morphology,
+    "clipped compound": render_clipped_compound,
     "Cyrl-def": render_cyrl_def,
-    "dbt": render_morphology,
     "demonym-adj": render_demonym_adj,
     "demonym-noun": render_demonym_noun,
     "denominal verb": render_denominal_verb,
-    "der": render_foreign_derivation,
-    "der+": render_foreign_derivation,
-    "der-lite": render_foreign_derivation,
-    "derived": render_foreign_derivation,
     "deverbal": render_deverbal,
     "displaced": render_displaced,
-    "doublet": render_morphology,
+    "en-noun": render_en_noun,
+    "en-proper noun": render_en_proper_noun,
     "etydate": render_etydate,
-    "etyl": render_foreign_derivation,
-    "fa sp": render_fa_sp,
-    "filter-avoidance spelling of": render_fa_sp,
+    "fa-l": render_fa_l,
+    "fa-xlit": render_fa_xlit,
     "frac": render_frac,
     "g": render_g,
+    "geochronology": render_geochronology,
     "given name": render_given_name,
     "Han simp": render_han_simp,
     "he-l": render_he_l,
     "he-m": render_he_m,
+    "he-root": render_he_root,
     "historical given name": render_historical_given_name,
-    "ic": render_ipa_char,
-    "in": render_morphology,
-    "infix": render_morphology,
-    "IPAchar": render_ipa_char,
-    "ipachar": render_ipa_char,
-    "ISO 216": render_iso_216,
+    "IATA": render_iata,
     "ISO 217": render_iso_217,
-    "ISO 269": render_iso_216,
     "ISO 639": render_iso_639,
     "ISO 3166": render_iso_3166,
     "ISO 4217": render_iso_4217,
-    "inh": render_foreign_derivation,
-    "inh-lite": render_foreign_derivation,
-    "inh+": render_foreign_derivation,
-    "inherited": render_foreign_derivation,
+    "ja-blend": render_ja_blend,
     "ja-l": render_ja_l,
-    "ja-r": render_ja_r,
-    "ko-inline": render_ko_inline,
-    "ko-l": render_ko_inline,
     "Köppen": render_köppen,
-    "l": render_foreign_derivation,
-    "l-lite": render_foreign_derivation,
-    "label": render_label,
-    "langname-mention": render_foreign_derivation,
-    "Latn-def": render_latn_def,
-    "Latn-def-lite": render_latn_def,
-    "lb": render_label,
-    "lbl": render_label,
-    "lbor": render_foreign_derivation,
-    "learned borrowing": render_foreign_derivation,
-    "link": render_foreign_derivation,
-    "ll": render_foreign_derivation,
+    "langname": render_langname,
     "ltc-l": render_ltc_l,
     "lw": render_lw,
-    "m": render_foreign_derivation,
-    "m+": render_foreign_derivation,
-    "m-lite": render_foreign_derivation,
     "m-self": render_m_self,
-    "mention": render_foreign_derivation,
     "metathesis": render_metathesis,
+    "minced oath of": render_minced_oath_of,
+    "misconstruction": render_misconstruction,
     "morse code abbreviation": render_morse_code_abbreviation,
     "morse code for": render_morse_code_for,
     "morse code prosign": render_morse_code_prosign,
     "mul-cjk stroke-def": render_mul_cjk_stroke_def,
     "mul-domino def": render_mul_domino_def,
+    "mul-kanadef": render_mul_kanadef,
     "name translit": render_name_translit,
     "named-after": render_named_after,
-    "nb...": render_nb,
-    "nc": render_foreign_derivation,
-    "ncog": render_foreign_derivation,
-    "noncog": render_foreign_derivation,
-    "noncognate": render_foreign_derivation,
     "nuclide": render_nuclide,
-    "obor": render_foreign_derivation,
     "och-l": render_och_l,
-    "only in": render_only_used_in,
-    "only used in": render_only_used_in,
-    "onom": render_onomatopoeic,
-    "onomatopeic": render_onomatopoeic,
-    "onomatopoeia": render_onomatopoeic,
-    "onomatopoeic": render_onomatopoeic,
-    "orthographic borrowing": render_foreign_derivation,
-    "partial calque": render_foreign_derivation,
-    "pcal": render_foreign_derivation,
-    "pclq": render_foreign_derivation,
     "pedlink": render_pedlink,
-    "pedia": render_pedia,
-    "pedialite": render_pedia,
     "phonetic alphabet": render_phonetic_alphabet,
-    "phono-semantic matching": render_foreign_derivation,
-    "piecewise doublet": render_morphology,
-    "piecewise_doublet": render_morphology,
+    "person": render_person,
     "place": render_place,
-    "post": render_dating,
-    "post2": render_dating_full_and_short,
-    "p.": render_dating,
-    "pre": render_morphology,
-    "prefix": render_morphology,
-    "pseudo-acronym": render_pseudo_acronym_of,
-    "pseudo-acronym of": render_pseudo_acronym_of,
-    "psm": render_foreign_derivation,
-    "rdp": render_reduplication,
     "rebracketing": render_rebracketing,
-    "reduplication": render_reduplication,
-    "semantic loan": render_foreign_derivation,
-    "semi-learned borrowing": render_foreign_derivation,
-    "SI-unit": render_si_unit,
+    "RQ": render_rq,
     "SI-unit-2": render_si_unit_2,
-    "SI-unit-abb": render_si_unit_abb,
     "SI-unit-abb2": render_si_unit_abb2,
-    "SI-unit-abbnp": render_si_unit_abb,
-    "SI-unit-np": render_si_unit,
-    "sl": render_foreign_derivation,
-    "slbor": render_foreign_derivation,
-    "sound-symbolic": render_sound_symbolic,
+    "SIC": render_sic,
     "spelling pronunciation": render_spelling_pronunciation,
-    "spoonerism": render_spoonerism,
-    "spoonerism of": render_spoonerism,
-    "suf": render_morphology,
-    "suffix": render_morphology,
-    "surf": render_surface_analysis,
-    "surface analysis": render_surface_analysis,
-    "surface etymology": render_surface_analysis,
-    "surname": render_surname,
-    "syncopic form": render_syncopic_form,
+    "sumti": render_sumti,
+    "syllabic abbreviation": render_syllabic_abbreviation,
     "taxon": render_taxon,
-    "tcl": render_transclude,
-    "term-label": render_label,
     "th-l": render_th_l,
-    "tlb": render_label,
-    "transclude": render_transclude,
-    "translit": render_foreign_derivation,
-    "transliteration": render_foreign_derivation,
-    "U": render_cap,
-    "ubor": render_foreign_derivation,
-    "uder": render_foreign_derivation,
-    "unadapted borrowing": render_foreign_derivation,
-    "unc": render_uncertain,
-    "uncertain": render_uncertain,
-    "univ": render_univerbation,
-    "univerbation": render_univerbation,
-    "unk": render_unknown,
-    "unknown": render_unknown,
-    "vern": render_vern,
-    "vernacular": render_vern,
     "vi-l": render_vi_l,
+    "xlit": render_xlit,
+    **dict.fromkeys({"a", "accent"}, render_accent),
+    **dict.fromkeys({"A.D.", "AD", "B.C.E.", "BCE", "B.C.", "BC", "C.E.", "CE"}, render_bce),
+    **dict.fromkeys(
+        {
+            "adapted borrowing",
+            "abor",
+            "back-formation",
+            "backform",
+            "backformation",
+            "back-form",
+            "bf",
+            "borrowed",
+            "bor",
+            "bor-lite",
+            "bor+",
+            "calque",
+            "cal",
+            "clq",
+            "cognate",
+            "cog",
+            "cog-lite",
+            "derived",
+            "der",
+            "der+",
+            "der-lite",
+            "etyl",
+            "false cognate",
+            "fcog",
+            "inherited",
+            "inh-lite",
+            "inh",
+            "inh+",
+            "l",
+            "l-lite",
+            "langname-mention",
+            "learned borrowing",
+            "lbor",
+            "link",
+            "ll",
+            "mention",
+            "m",
+            "m+",
+            "m-lite",
+            "noncognate",
+            "nc",
+            "ncog",
+            "noncog",
+            "obor",
+            "orthographic borrowing",
+            "partial calque",
+            "pcal",
+            "pclq",
+            "phono-semantic matching",
+            "psm",
+            "semantic loan",
+            "semi-learned borrowing",
+            "sl",
+            "slbor",
+            "transliteration",
+            "translit",
+            "unadapted borrowing",
+            "ubor",
+            "uder",
+        },
+        render_foreign_derivation,
+    ),
+    **dict.fromkeys(
+        {
+            "affix",
+            "af",
+            "blend of",
+            "blend",
+            "compound",
+            "com",
+            "compound+",
+            "com+",
+            "confix",
+            "con",
+            "doublet",
+            "dbt",
+            "infix",
+            "in",
+            "prefix",
+            "pre",
+            "piecewise doublet",
+            "piecewise_doublet",
+            "pw dbt",
+            "pwd",
+            "pwdbt",
+            "suffix",
+            "suf",
+            "suffixusex",
+            "sufex",
+            "usex-suffix",
+        },
+        render_morphology,
+    ),
+    **dict.fromkeys({"alter", "alt"}, render_alter),
+    **dict.fromkeys({"ante", "a.", "circa", "c.", "post", "p."}, render_dating),
+    **dict.fromkeys({"cap", "U"}, render_cap),
+    **dict.fromkeys({"chemical formula", "chemf"}, render_chemical_formula),
+    **dict.fromkeys({"circa2", "post2"}, render_dating_full_and_short),
+    **dict.fromkeys({"clipping", "clip"}, render_clipping),
+    **dict.fromkeys({"codepoint", "unichar"}, render_codepoint),
+    **dict.fromkeys({"coinage", "coined", "coin"}, render_coinage),
+    **dict.fromkeys({"contraction", "contr"}, render_contraction),
+    **dict.fromkeys({"descendant", "desc"}, render_descendant),
+    **dict.fromkeys({"el-UK-US", "l-UK-US"}, render_el_uk_us),
+    **dict.fromkeys(form_of_templates.keys(), render_form_of_t),
+    **dict.fromkeys({"filter-avoidance spelling of", "fa sp"}, render_fa_sp),
+    **dict.fromkeys({"IPAchar", "ipachar", "ic"}, render_ipa_char),
+    **dict.fromkeys({"ISO 216", "ISO 269"}, render_iso_216),
+    **dict.fromkeys({"ja-compound", "com-ja", "ja-com"}, render_ja_compound),
+    **dict.fromkeys({"ja-etym-renyokei", "ja-ryk", "ja-vstem"}, render_ja_etym_renyokei),
+    **dict.fromkeys({"ja-r", "ryu-r"}, render_ja_r),
+    **dict.fromkeys({"ko-inline", "ko-l"}, render_ko_inline),
+    **dict.fromkeys({"label", "lb", "lbl", "term-label", "tlb"}, render_label),
+    **dict.fromkeys({"Latn-def", "Latn-def-lite"}, render_latn_def),
+    **dict.fromkeys({"nb...", "..."}, render_nb),
+    **dict.fromkeys({"non-rhotic", "nonrh", "nrp"}, render_non_rhotic),
+    **dict.fromkeys({"only used in", "only in"}, render_only_used_in),
+    **dict.fromkeys({"onomatopoeic", "onomatopoeia", "onomatopeic", "onom"}, render_onomatopoeic),
+    **dict.fromkeys({"pedia", "pedialite"}, render_pedia),
+    **dict.fromkeys({"pseudo-acronym of", "pseudo-acronym"}, render_pseudo_acronym_of),
+    **dict.fromkeys({"pseudo-loan", "pseudoloan", "pl"}, render_pseudo_loan),
+    **dict.fromkeys({"reduplication of", "reduplication", "redup", "rdp"}, render_reduplication),
+    **dict.fromkeys({"script", "sc"}, render_script),
+    **dict.fromkeys({"section link", "format link"}, render_section_link),
+    **dict.fromkeys({"SI-unit-abb", "SI-unit-abbnp"}, render_si_unit_abb),
+    **dict.fromkeys({"SI-unit", "SI-unit-np"}, render_si_unit),
+    **dict.fromkeys({"semantic shift", "ss"}, render_semantic_shift),
+    **dict.fromkeys({"sound symbolic", "sound-symbolic"}, render_sound_symbolic),
+    **dict.fromkeys({"spoonerism of", "spoonerism", "spoon of"}, render_spoonerism),
+    **dict.fromkeys({"surface analysis", "surface etymology", "surf"}, render_surface_analysis),
+    **dict.fromkeys({"surname", "patronymic", "foreign name"}, render_surname),
+    **dict.fromkeys({"syncopic form", "sync"}, render_syncopic_form),
+    **dict.fromkeys({"transclude sense", "transclude", "tcl"}, render_transclude),
+    **dict.fromkeys({"uncertain", "unc"}, render_uncertain),
+    **dict.fromkeys({"univerbation", "univ"}, render_univerbation),
+    **dict.fromkeys({"unknown", "unk"}, render_unknown),
+    **dict.fromkeys({"used in phrasal verbs", "phrasal verb"}, render_used_in_phrasal_verbs),
+    **dict.fromkeys({"vernacular", "vern"}, render_vern),
+    **dict.fromkeys({"wasei eigo", "waei"}, render_wasei_eigo),
+    **dict.fromkeys({"zh-l", "zh-m"}, render_zh_l),
     #
     # Variants
     #

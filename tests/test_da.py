@@ -160,6 +160,8 @@ def test_parse_word(
     [
         ("{{fysik}}", "(<i>fysik</i>)"),
         ("{{label|militær|våben}}", "(<i>militær</i>, <i>våben</i>)"),
+        ("{{l|da|USA}}", "USA"),
+        ("{{l|da|USA|America}}", "USA"),
         ("{{trad|en|limnology}}", "limnology<sup>(en)</sup>"),
         ("{{URchar|الكحل}}", "الكحل"),
         ("{{ZHchar|北京}}", "北京"),

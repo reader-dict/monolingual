@@ -1,4 +1,5 @@
 import os
+from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 from zipfile import ZipFile
@@ -9,30 +10,6 @@ from marisa_trie import Trie
 from wikidict import constants, convert
 from wikidict.constants import ASSET_CHECKSUM_ALGO
 from wikidict.stubs import Variants, Word, Words
-
-EXPECTED_INSTALL_TXT_FR = """### 🌟 Afin d'être régulièrement mis à jour, ce projet a besoin de soutien ; [cliquez ici](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) pour faire un don. 🌟
-
-<br/>
-
-
-Nombre de mots : 46
-Export Wiktionnaire : 2020-12-17
-
-Version complète :
-- [DICT.org](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dictorg-fr-fr.zip)
-- [DictFile](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.df.bz2)
-- [Kindle](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.mobi.zip)
-- [Kobo](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dicthtml-fr-fr.zip)
-- [StarDict](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr.zip)
-
-Version sans étymologies :
-- [DICT.org](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dictorg-fr-fr-noetym.zip)
-- [DictFile](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.df.bz2)
-- [Kindle](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.mobi.zip)
-- [Kobo](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dicthtml-fr-fr-noetym.zip)
-- [StarDict](https://github.com/BoboTiG/ebook-reader-dict/releases/download/fr/dict-fr-fr-noetym.zip)
-
-Mis à jour le"""
 
 WORDS = {
     "empty": Word([], [], [], {}, []),
@@ -121,7 +98,6 @@ def test_simple() -> None:
     # Check the Kobo ZIP content
     expected_files = [
         "11.html",
-        constants.ZIP_INSTALL,
         "aa.html",
         "ac.html",
         "ba.html",
@@ -212,11 +188,6 @@ def test_simple() -> None:
         errors = fh.testzip()
         assert errors is None
 
-        # Check content of INSTALL.txt
-        install_txt = fh.read(constants.ZIP_INSTALL).decode()
-        print(install_txt)
-        assert install_txt.startswith(EXPECTED_INSTALL_TXT_FR)
-
         # Check the trie
         trie = Trie()
         trie.map(fh.read("words"))
@@ -303,16 +274,16 @@ def test_generate_secondary_dict(formatter: type[convert.BaseFormat], filename: 
 
 
 FORMATTED_WORD_KOBO = """\
-<w><p><a name="Multiple Etymologies"/><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></p><var><variant name="multiple etymology"/></var></w>
+<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></p><var><variant name="multiple etymology"/></var></w>
 """
 FORMATTED_WORD_KOBO_NO_ETYMOLOGY = """\
-<w><p><a name="Multiple Etymologies"/><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></p><var><variant name="multiple etymology"/></var></w>
+<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></p><var><variant name="multiple etymology"/></var></w>
 """
 FORMATTED_WORD_DICTFILE = """\
 @ Multiple Etymologies
 : pron <i>gender</i>.
 & Multiple Etymology
-<html><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></html>\
+<html><p><b>Noun</b></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></html>\
 
 
 """
@@ -320,7 +291,7 @@ FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY = """\
 @ Multiple Etymologies
 : pron <i>gender</i>.
 & Multiple Etymology
-<html><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></html>\
+<html><p><b>Noun</b></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></html>\
 
 
 """
@@ -422,7 +393,34 @@ def test_make_variants() -> None:
     }
 
 
-def test_kobo_format_variants_different_prefix(tmp_path: Path) -> None:
+def test_kobo_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
+    words = deepcopy(WORDS_VARIANTS_FR)
+    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+    variants = convert.make_variants(words)
+    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
+
+    assert formatter.make_groups(words) == {
+        "es": {"estre": words["estre"]},
+        "êt": {"être": words["être"]},
+        "su": {"suis": words["suis"], "suivre": words["suivre"]},
+    }
+
+    estre = "".join(formatter.handle_word("estre", words))
+    être = "".join(formatter.handle_word("être", words))
+    suis = "".join(formatter.handle_word("suis", words))
+    suivre = "".join(formatter.handle_word("suivre", words))
+    assert suis.count('<a name="suis" />') == 4
+    assert "<b>estre</b>" in suis
+    assert "<b>suivre</b>" in suis
+    assert "<b>suis</b>" in suis
+    assert "<b>être</b>" in suis
+    assert "variant" not in estre  # Because group prefixes are differents
+    assert "variant" not in suis  # Because variant == word
+    assert "variant" not in être  # Because group prefixes are differents
+    assert '<var><variant name="suis"/></var>' in suivre  # Because group prefixes are the same
+
+
+def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
     words = WORDS_VARIANTS_FR
     variants = convert.make_variants(words)
     formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
@@ -437,7 +435,7 @@ def test_kobo_format_variants_different_prefix(tmp_path: Path) -> None:
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count('<a name="suis"/>') == 3
+    assert suis.count('<a name="suis" />') == 3
     assert "<b>estre</b>" in suis
     assert "<b>suivre</b>" in suis
     assert "<b>être</b>" in suis
@@ -503,34 +501,45 @@ def test_df_format(tmp_path: Path) -> None:
         output.read_text(encoding="utf-8")
         == r"""@ estre
 : \ɛtʁ\
-<html><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></html>
+& suis
+<html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol></html>
 
 @ être
 : \ɛtʁ\ <i>m</i>.
-<html><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></html>
-
-@ suis
-: <b>estre</b> \ɛtʁ\
-<html><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></html>
-
-@ suis
-: <b>suivre</b> \sɥivʁ\
-<html><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></html>
-
-@ suis
-: <b>être</b> \ɛtʁ\ <i>m</i>.
-<html><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></html>
+& suis
+<html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol></html>
 
 @ suivre
 : \sɥivʁ\
 & suis
-<html><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></html>
+<html><p><b>Verbe</b></p><ol><li>Définition de 'suivre'.</li></ol></html>
 
 """
     )
 
 
-def test_df_format_variants_different_prefix(tmp_path: Path) -> None:
+def test_df_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
+    words = deepcopy(WORDS_VARIANTS_FR)
+    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+    variants = convert.make_variants(words)
+    formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
+
+    estre = "".join(formatter.handle_word("estre", words))
+    être = "".join(formatter.handle_word("être", words))
+    suis = "".join(formatter.handle_word("suis", words))
+    suivre = "".join(formatter.handle_word("suivre", words))
+    assert "@ suis" in suis
+    assert ": <b>estre</b>" not in suis
+    assert ": <b>suivre</b>" not in suis
+    assert ": <b>suis</b>" not in suis
+    assert ": <b>être</b>" not in suis
+    assert estre.count("&") == 1 and "& suis" in estre
+    assert "&" not in suis  # Because variant == word
+    assert être.count("&") == 1 and "& suis" in être
+    assert "& suis" in suivre
+
+
+def test_df_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
     words = WORDS_VARIANTS_FR
     variants = convert.make_variants(words)
     formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
@@ -539,14 +548,14 @@ def test_df_format_variants_different_prefix(tmp_path: Path) -> None:
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count("@ suis") == 3
-    assert ": <b>estre</b>" in suis
-    assert ": <b>suivre</b>" in suis
-    assert ": <b>être</b>" in suis
-    assert "&" not in estre  # Because group prefixes are differents
+    assert "@ suis" not in suis
+    assert ": <b>estre</b>" not in suis
+    assert ": <b>suivre</b>" not in suis
+    assert ": <b>être</b>" not in suis
+    assert estre.count("&") == 1 and "& suis" in estre
     assert "&" not in suis  # Because variant == word
-    assert "&" not in être  # Because group prefixes are differents
-    assert "& suis" in suivre  # Because group prefixes are the same
+    assert être.count("&") == 1 and "& suis" in être
+    assert "& suis" in suivre
 
 
 def test_df_format_variants_empty_variant_level_1(tmp_path: Path) -> None:

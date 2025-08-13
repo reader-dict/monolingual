@@ -123,7 +123,7 @@ from wikidict.utils import process_templates
             [
                 "From Middle English <i>Mars</i>, from Latin <i>Mārs</i> (“god of war”), from older Latin (older than 75 <small>B.C.E.</small>) <i>Māvors</i>.",
                 "After Franklin Clarence Mars, who founded the company that produces these chocolate bars. His surname is possibly a variant of <b>Marrs</b>, itself from <b>Marr</b> with post-medieval excrescent <i>-s</i>.",
-                "From Ukrainian <i>Марс</i> (<i>Mars</i>).",
+                "From Ukrainian <i>Марс</i>.",
             ],
             {
                 "Noun": [
@@ -310,7 +310,7 @@ from wikidict.utils import process_templates
             [],
             [
                 "From Middle English <i>water</i>, from Old English <i>wæter</i> (“water”), from Proto-West Germanic <i>*watar</i>, from Proto-Germanic <i>*watōr</i> (“water”), from Proto-Indo-European <i>*wódr̥</i> (“water”).",
-                "Cognate with cf, North Frisian <i>weeter</i> (“water”), Saterland Frisian <i>Woater</i> (“water”), West Frisian <i>wetter</i> (“water”), Dutch <i>water</i> (“water”), Low German <i>Water</i> (“water”), German <i>Wasser</i>, Old Norse <i>vatn</i> (Swedish <i>vatten</i> (“water”), Danish <i>vand</i> (“water”), Norwegian Bokmål <i>vann</i> (“water”), Norwegian Nynorsk and Icelandic <i>vatn</i> (“water”), Old Irish <i>coin fodorne</i> (“otters”, literally “water-dogs”), Latin <i>unda</i> (“wave”), Lithuanian <i>vanduõ</i> (“water”), Russian <i>вода́</i> (<i>voda</i>, “water”), Albanian <i>ujë</i> (“water”), Ancient Greek <i>ὕδωρ</i> (“water”), Armenian <i>գետ</i> (<i>get</i>, “river”), Sanskrit <i>उदन्</i> (<i>udán</i>, “wave, water”), Hittite <i>𒉿𒀀𒋻</i> (<i>wa-a-tar</i>).",
+                "Cognate with cf, North Frisian <i>weeter</i> (“water”), Saterland Frisian <i>Woater</i> (“water”), West Frisian <i>wetter</i> (“water”), Dutch <i>water</i> (“water”), Low German <i>Water</i> (“water”), German <i>Wasser</i>, Old Norse <i>vatn</i> (Swedish <i>vatten</i> (“water”), Danish <i>vand</i> (“water”), Norwegian Bokmål <i>vann</i> (“water”), Norwegian Nynorsk and Icelandic <i>vatn</i> (“water”), Old Irish <i>coin fodorne</i> (“otters”, literally “water-dogs”), Latin <i>unda</i> (“wave”), Lithuanian <i>vanduõ</i> (“water”), Russian <i>вода́</i> (<i>vodá</i>, “water”), Albanian <i>ujë</i> (“water”), Ancient Greek <i>ὕδωρ</i> (“water”), Armenian <i>գետ</i> (“river”), Sanskrit <i>उदन्</i> (<i>udán</i>, “wave, water”), Hittite <i>𒉿𒀀𒋻</i> (<i>wa-a-tar</i>).",
                 "From Middle English <i>wateren</i>, from Old English <i>wæterian</i>, from Proto-Germanic <i>*watrōną</i>, <i>*watrijaną</i>, from Proto-Germanic <i>*watōr</i> (“water”), from Proto-Indo-European <i>*wódr̥</i> (“water”).",
                 "Cognate with Scots <i>watter</i> (“water”), Saterland Frisian <i>woaterje</i> (“to water”), West Frisian <i>wetterje</i> (“to water”), Dutch <i>wateren</i> (“to water”), German Low German <i>watern</i> (“to water”), German <i>wässern</i> (“to water”), Danish <i>vande</i> (“to water”), Swedish <i>vattna</i> (“to water”), Icelandic <i>vatna</i> (“to water”).",
             ],
@@ -362,7 +362,8 @@ from wikidict.utils import process_templates
             ["/wəɹd/", "/wɜːd/", "/wɝd/"],
             [],
             [
-                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <b>vrata</b>."
+                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <b>vrata</b>.",
+                "Variant of <i>worth</i> (“to become, turn into, grow, get”), from Middle English <i>worthen</i>, from Old English <i>weorþan</i> (“to turn into, become, grow”), from Proto-West Germanic <i>*werþan</i>, from Proto-Germanic <i>*werþaną</i> (“to turn, turn into, become”). More at worth § Verb.",
             ],
             {
                 "Interjection": [
@@ -437,6 +438,8 @@ def test_parse_word(
         ("{{abbreviation of|en|abortion}}", "<i>Abbreviation of</i> <b>abortion</b>"),
         ("{{alt case|en|angstrom}}", "<i>Alternative letter-case form of</i> <b>angstrom</b>"),
         ("{{alternative spelling of|en|µs}}", "<i>Alternative spelling of</i> <b>µs</b>"),
+        ("{{ar-form|IV}}", "Form IV"),
+        ("{{ar-form|IV|verb form}}", "verb form IV"),
         ("{{C.|20}}", "20th c."),
         ("{{C.|21|st}}", "21st c."),
         (
@@ -444,6 +447,9 @@ def test_parse_word(
             "<i>(computing) The ASCII control character</i> <b>null</b> <i>in caret notation</i>.",
         ),
         ("{{clipping of|en|yuppie}}", "<i>Clipping of</i> <b>yuppie</b>"),
+        ("{{code|js|=(65535).toString(16) === 'ffff'}}", "<code>(65535).toString(16) === 'ffff'</code>"),
+        ("{{color panel|E34234}}", "[RGB E34234]"),
+        ("{{color panel|vermilion|E34234}}", "vermilion: [RGB E34234]"),
         ("{{defdate|from 15th c.}}", "<small>[from 15th c.]</small>"),
         ("{{eye dialect of|en|is}}", "<i>Eye dialect spelling of</i> <b>is</b>"),
         ("{{gloss|liquid H<sub>2</sub>O}}", "(liquid H<sub>2</sub>O)"),

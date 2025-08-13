@@ -88,6 +88,7 @@ gramatica_short = {
     "gc": "género comum",
     "gen": "genitivo",
     "i": "invariável",
+    "imperf": "imperfectivo",
     "impess": "impessoal",
     "ina": "inanimado",
     "inc": "incontável",
@@ -141,6 +142,7 @@ gramatica_short = {
     "nsg": "neutro singular",
     "ord": "ordinal",
     "p": "plural",
+    "perf": "perfectivo",
     "pess": "pessoal",
     "pl": "plural",
     "poss": "possessivo",
@@ -179,5 +181,5 @@ gramatica_short = {
     "vtd": "transitivo direto",
     "vtdi": "transitivo direto e indireto",
     "vti": "transitivo indireto",
-}  # 174
+}  # 176
 # END

@@ -79,6 +79,44 @@ def render_π(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
     return data[".1"] or parts[2 if len(parts) == 3 else 0]
 
 
+def render_γρ(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_γρ("γρ", ["πολυπαλλόμενο σύμφωνο", "συνών"], defaultdict(str))
+    '<i>συνώνυμο του</i> <b>πολυπαλλόμενο σύμφωνο</b>'
+    >>> render_γρ("γρ", ["τραπεζομάντιλο"], defaultdict(str))
+    '<i>άλλη γραφή του</i> <b>τραπεζομάντιλο</b>'
+    >>> render_γρ("γρ", ["ελαιόδενδρο", "μορφή"], defaultdict(str))
+    '<i>άλλη μορφή του</i> <b>ελαιόδενδρο</b>'
+    >>> render_γρ("γρ", ["ελαιόδενδρο", "πολυ"], defaultdict(str, {"εμφ": "ελαιόδενδρο(ν)"}))
+    '<i>πολυτονική γραφή του</i> <b>ελαιόδενδρο(ν)</b>'
+    >>> render_γρ("γρ", ["ποιέω", "ασυν", "grc"], defaultdict(str))
+    '<i>ασυναίρετη μορφή του</i> <b>ποιέω</b>'
+    >>> render_γρ("γρ", ["ποιέω", "ασυν", "grc"], defaultdict(str, {"εμφ": "ποι-έω"}))
+    '<i>ασυναίρετη μορφή του</i> <b>ποι-έω</b>'
+    >>> render_γρ("γρ", ["colour", "", "en"], defaultdict(str))
+    '<i>άλλη γραφή του</i> <b>colour</b>'
+    >>> render_γρ("γρ", ["colour", "freestyle text", "en"], defaultdict(str))
+    '<i>freestyle text</i> <b>colour</b>'
+    """
+    desc = parts[1] if len(parts) > 1 else ""
+    desc = {
+        "": "άλλη γραφή του",
+        "απλοπ": "απλοποιημένη γραφή του",
+        "μη απλοπ": "απλοποιημένη γραφή του",
+        "ασυν": "ασυναίρετη μορφή του",
+        "ετυμ": "ετυμολογική γραφή του",
+        "μονο": "μονοτονική γραφή του",
+        "μορφή": "άλλη μορφή του",
+        "πολυ": "πολυτονική γραφή του",
+        "πολ": "πολυτονική γραφή του",
+        "παρωχ": "παρωχημένη γραφή του",
+        "σνρ": "συνηρημένη μορφή του",
+        "συνων": "συνώνυμο του",
+        "συνών": "συνώνυμο του",
+    }.get(desc, desc)
+    return f"{italic(desc)} {strong(data['εμφ'] or parts[0])}"
+
+
 def render_βλ(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_βλ("βλ", [], defaultdict(str))
@@ -614,9 +652,7 @@ def render_ΔΦΑ(tpl: str, parts: list[str], data: defaultdict[str, str], *, wo
     >>> render_ΔΦΑ("ΔΦΑ", ["fr", "as.tʁa.kɑ̃"], defaultdict(str))
     'ΔΦΑ : /as.tʁa.kɑ̃/'
     """
-    if len(parts) < 2:
-        return ""
-    return f"ΔΦΑ : /{parts[1]}/"
+    return "" if len(parts) < 2 else f"ΔΦΑ : /{parts[1]}/"
 
 
 def render_ταξ(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -754,6 +790,7 @@ template_mapping = {
     "inh": render_inh,
     "π": render_π,
     "p": render_π,
+    "γρ": render_γρ,
     "βλ": render_βλ,
     "etym": render_etym,
     "σμσδ": render_etym,

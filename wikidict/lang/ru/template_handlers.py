@@ -1,9 +1,12 @@
+import re
 from collections import defaultdict
 
 from ...user_functions import extract_keywords_from, italic, superscript
 from ...utils import process_templates
 from .etymologies import etymologies
 from .langs_short import langs_short
+
+REMOVE_CATEGORY = re.compile(r"\[\[Категория:[^\]]+\]\]").sub
 
 
 def render_этимология(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -21,19 +24,23 @@ def render_этимология(tpl: str, parts: list[str], data: defaultdict[st
     >>> render_этимология("этимология", ["летний", "девяти", "девять"], defaultdict(str), word="девятилетний")
     'девяти- (от девять) + -летний; первая часть — из праслав.\xa0*devęt-, от кот. в числе прочего произошли: ст.-слав. дєвѧть, укр. де́в’ять, болг. де́вет, сербохорв. де̏ве̑т, словенск. devȇt, чешск. devět, словацк. deväť, польск. dziewięć, в.-луж. dźewjeć, н.-луж. źewjeś; восходит к праиндоевр. *(e)newem, *newn; вторая часть — из праслав.\xa0*lěto, от кот. в числе прочего произошли: ст.-слав. лѣто (др.-греч. χρόνος, ἔτος, ἐνιαυτός), русск. лето, укр. лíто, белор. сле́цiць «согреть», сле́тный «тепловатый», смол., болг. ля́то, сербохорв. ље̏то, словенск. lẹ́to, чешск. léto, словацк. lеtо, польск. lаtо, в.-луж., н.-луж. lěto'
 
+    >>> render_этимология("этимология", ["Упсала"], defaultdict(str))
+    'швед. Uppsala ‘верхняя часть селения Сала’, от upp ‘вверху’ + sala ‘гористый’'
+
     >>> render_этимология("этимология", ["-б"], defaultdict(str), word="девятилетний")
-    '{{unhandled etymology|-б}}'
+    ''
     """
     if not (which_one := parts[0] if parts else ""):
         return "??"
 
-    if not (text := etymologies.get(which_one)):
-        return f"{{{{unhandled etymology|{parts[0]}}}}}"
+    text = etymologies.get(which_one, "")
 
-    if len(parts) > 2:
-        text = text.replace("{{{1}}}", parts[1])
-        text = text.replace("{{{2}}}", parts[2])
-        text = process_templates(word, text, "ru")
+    if "{{{" in text:
+        text = REMOVE_CATEGORY("", text)
+        if len(parts) > 2:
+            text = text.replace("{{{1}}}", parts[1])
+            text = text.replace("{{{2}}}", parts[2])
+            text = process_templates(word, text, "ru")
 
     return text
 

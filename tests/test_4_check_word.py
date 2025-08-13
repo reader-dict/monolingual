@@ -184,6 +184,12 @@ def test_no_definition_nor_etymology(craft_urls: Callable[[str, str], str]) -> N
             '<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>',
             "",
         ],
+        # EN - WikiSpecies sup
+        [
+            "en",
+            '<a href="/w/index.php?title=Teredo_navalis&amp;action=edit&amp;redlink=1" class="new" title="Teredo navalis (page does not exist)">Teredo navalis</a><sup><a href="https://en.wikipedia.org/wiki/Teredo_navalis" class="extiw" title="w:Teredo navalis">WP</a>&nbsp;<a href="https://species.wikimedia.org/wiki/Teredo_navalis" class="extiw" title="wikispecies:Teredo navalis">WSp</a>&nbsp;<a href="https://commons.wikimedia.org/wiki/Category:Teredo_navalis" class="extiw" title="commons:Category:Teredo navalis">Commons</a></sup>',
+            "Teredonavalis",
+        ],
         # EL - {{audio}} template
         [
             "el",

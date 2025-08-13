@@ -8,13 +8,12 @@ import gzip
 import hashlib
 import json
 import logging
-import multiprocessing
 import os
 import shutil
+import threading
 from collections import defaultdict
 from copy import deepcopy
-from datetime import date, timedelta
-from functools import partial
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from time import monotonic
 from typing import TYPE_CHECKING
@@ -24,7 +23,7 @@ from jinja2 import Template
 from marisa_trie import Trie
 from pyglossary.glossary_v2 import ConvertArgs, Glossary
 
-from . import constants, lang, render, user_functions, utils
+from . import constants, render, user_functions, utils
 from .stubs import Word
 
 if TYPE_CHECKING:
@@ -34,9 +33,11 @@ if TYPE_CHECKING:
     from .stubs import Groups, Variants, Words
 
 # Kobo-related dictionaries
+# Note: We cannot remove the space before the slash in `<a name="{{ word }}" />` because
+#       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
 WORD_TPL_KOBO = Template(
     """\
-<w><p><a name="{{ word }}"/><b>{{ current_word }}</b>{{ pronunciation }}{{ gender }}<br/><br/>
+<w><p><a name="{{ word }}" /><b>{{ current_word }}</b>{{ pronunciation }}{{ gender }}<br/><br/>
 {%- for pos, pos_definitions in definitions -%}
     <b>{{ pos }}</b><ol>
     {%- for definition in pos_definitions -%}
@@ -95,15 +96,15 @@ WORD_TPL_KOBO = Template(
 WORD_TPL_DICTFILE = Template(
     """\
 @ {{ word }}
-{%- if current_word or pronunciation or gender %}
-: {%- if current_word %} <b>{{ current_word }}</b>{%- endif -%}{{ pronunciation }}{{ gender }}
+{%- if pronunciation or gender %}
+:{{ pronunciation }}{{ gender }}
 {%- endif %}
 {%- for variant in variants %}
 & {{ variant }}
 {%- endfor %}
 <html>
 {%- for pos, pos_definitions in definitions -%}
-    <b>{{ pos }}</b><ol>
+    <p><b>{{ pos }}</b></p><ol>
     {%- for definition in pos_definitions -%}
         {%- if definition is string -%}
             <li>{{ definition }}</li>
@@ -145,9 +146,17 @@ WORD_TPL_DICTFILE = Template(
 )
 
 # Threshold before issuing a warning to catch potentially problematic variants
-MAX_VARIANTS = 128
+MAX_VARIANTS = 255
 
 log = logging.getLogger(__name__)
+
+
+class CustomLogFilter(logging.Filter):
+    """Filter for noisy PyGlossary messages."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        msg = record.getMessage()
+        return not msg.startswith(("duplicate language code", "Module 'lxml' not found"))
 
 
 class BaseFormat:
@@ -165,7 +174,7 @@ class BaseFormat:
         *,
         include_etymology: bool = True,
     ) -> None:
-        self.lang_src, self.lang_dst = utils.guess_locales(locale)
+        self._lang_src, self._lang_dst = utils.guess_locales(locale)
         self.output_dir = output_dir
         self.words = words
         self.variants = variants
@@ -174,42 +183,64 @@ class BaseFormat:
         self.start = monotonic()
         self.words_count = 0
         self.variants_count = 0
-        self.id = f"{type(self).__name__} {self.lang_src.upper()}-{self.lang_dst.upper()} {'' if include_etymology else 'no'}etym"
 
         logging.basicConfig(level=logging.INFO)
         log.info(
             "[%s] Starting the conversion with %s words, and %s variants ...",
-            self.id,
+            self.id(),
             f"{len(words):,}",
             f"{len(variants):,}",
         )
 
     @property
     def description(self) -> str:
-        return lang.wiktionary[self.lang_src].format(year=date.today().year)
+        return f"© {constants.PROJECT} {datetime.now(tz=UTC).year}"
 
-    @property
+    def id(self) -> str:
+        return f"{type(self).__name__} {self.effective_lang_src().upper()}-{self.effective_lang_dst().upper()} {'' if self.include_etymology else 'no'}etym"
+
     def title(self) -> str:
-        return constants.TITLE.format(constants.PROJECT, self.lang_src.upper(), self.lang_dst.upper())
+        return constants.TITLE.format(
+            project=constants.PROJECT,
+            langs=(
+                self._lang_src.upper()
+                if self._lang_src == self._lang_dst
+                else f"{self.effective_lang_src()}-{self.effective_lang_dst()}".upper()
+            ),
+        )
 
     @property
     def website(self) -> str:
-        return constants.GH_REPOS
+        return constants.WEBSITE
+
+    def effective_lang_src(self) -> str:
+        return self._lang_src
+
+    def effective_lang_dst(self) -> str:
+        return self._lang_dst
 
     def dictionary_file(self, output_file: str) -> Path:
         return self.output_dir / output_file.format(
-            lang_src=self.lang_src,
-            lang_dst=self.lang_dst,
+            lang_src=self.effective_lang_src(),
+            lang_dst=self.effective_lang_dst(),
             etym_suffix="" if self.include_etymology else constants.NO_ETYMOLOGY_SUFFIX,
         )
 
     def handle_word(self, word: str, words: Words) -> Generator[str]:
-        details = deepcopy(words[word])
+        # Prevent storing variants definitions in DictFile & co
+        if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not isinstance(self, KoboFormat):
+            return
+
+        details = deepcopy(chosen_word)
         current_words = {word: details}
         guess_prefix = utils.guess_prefix
         word_group_prefix = guess_prefix(word)
 
-        if details.variants and any(guess_prefix(variant) != word_group_prefix for variant in details.variants):
+        if (
+            details.variants
+            and isinstance(self, KoboFormat)
+            and any(guess_prefix(variant) != word_group_prefix for variant in details.variants)
+        ):
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
             # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
@@ -237,21 +268,22 @@ class BaseFormat:
                     ):
                         variants.extend(new_variants)
 
-                # Filter out variants:
-                #   - variants being identical to the word (it happens when altering `current_words`, cf [***])
-                #   - with a different prefix that their word
-                current_word_group_prefix = guess_prefix(current_word)
-                variants = [
-                    variant
-                    for variant in variants
-                    if variant != word
-                    and variant != current_word
-                    and guess_prefix(variant) == current_word_group_prefix
-                ]
+                # Filter out variants being identical to the word (it happens when altering `current_words`, cf [***])
+                variants = [variant for variant in variants if variant not in {word, current_word}]
+
+                # Nullify variant words to prevent polluting the dictionary with duplicates
+                for variant in variants:
+                    words[variant].is_variant = True
 
                 if isinstance(self, KoboFormat):
-                    # Variant must be normalized by trimming whitespace and lowercasing it
-                    variants = [variant.lower().strip() for variant in variants]
+                    # Filter out variants with a different prefix that their word.
+                    # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
+                    current_word_group_prefix = guess_prefix(current_word)
+                    variants = [
+                        variant.lower().strip()
+                        for variant in variants
+                        if guess_prefix(variant) == current_word_group_prefix
+                    ]
 
                 if len(variants := list(set(variants))) > MAX_VARIANTS:
                     log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
@@ -259,14 +291,12 @@ class BaseFormat:
             yield self.render_word(
                 self.template,
                 word=word,
-                current_word=(current_word if isinstance(self, KoboFormat) or current_word != word else ""),
+                current_word=current_word,
                 definitions=current_details.definitions.items(),
-                pronunciation=utils.convert_pronunciation(current_details.pronunciations)
-                if current_details.pronunciations
-                else "",
-                gender=utils.convert_gender(current_details.genders) if current_details.genders else "",
+                pronunciation=utils.convert_pronunciation(current_details.pronunciations),
+                gender=utils.convert_gender(current_details.genders),
                 etymologies=current_details.etymology if self.include_etymology else [],
-                variants=sorted(variants, key=lambda s: (len(s), s)) if variants else [],
+                variants=sorted(variants, key=lambda s: (len(s), s)),
             )
 
     def process(self) -> None:
@@ -281,22 +311,22 @@ class BaseFormat:
         checksum = hashlib.new(constants.ASSET_CHECKSUM_ALGO, file.read_bytes()).hexdigest()
         checksum_file = file.with_suffix(f"{file.suffix}.{constants.ASSET_CHECKSUM_ALGO}")
         checksum_file.write_text(f"{checksum} {file.name}")
-        log.info("[%s] Crafted %s (%s)", self.id, checksum_file.name, checksum)
+        log.info("[%s] Crafted %s (%s)", self.id(), checksum_file.name, checksum)
 
     def summary(self, file: Path) -> None:
         if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__}:
             log.info(
                 "[%s] Effective words + variants: %s + %s => %s",
-                self.id,
+                self.id(),
                 f"{self.words_count:,}",
                 f"{self.variants_count:,}",
                 f"{self.words_count + self.variants_count:,}",
             )
-            log.info("[%s] utils.guess_prefix() %s", self.id, utils.guess_prefix.cache_info())
+            log.info("[%s] utils.guess_prefix() %s", self.id(), utils.guess_prefix.cache_info())
 
         log.info(
             "[%s] Generated %s (%s bytes) in %s",
-            self.id,
+            self.id(),
             file.name,
             f"{file.stat().st_size:,}",
             timedelta(seconds=monotonic() - self.start),
@@ -305,7 +335,7 @@ class BaseFormat:
 
         log.info(
             "[%s] Finished the conversion with %s words, and %s variants, as expected.",
-            self.id,
+            self.id(),
             f"{len(self.words):,}",
             f"{len(self.variants):,}",
         )
@@ -314,29 +344,12 @@ class BaseFormat:
 class KoboFormat(BaseFormat):
     """Save the data into Kobo-specific ZIP file."""
 
-    add_install = True
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"
     template = WORD_TPL_KOBO
 
     def process(self) -> None:
         self.groups = self.make_groups(self.words)
         self.save()
-
-    def sanitize(self, content: str) -> str:
-        """Sanitize the INSTALL.txt file content."""
-        content = content.replace(":arrow_right:", "->")
-        content = content.replace("`", '"')
-        content = content.replace("<sub>", "")
-        content = content.replace("</sub>", "")
-
-        for etym_suffix in {"", constants.NO_ETYMOLOGY_SUFFIX}:
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.mobi.zip)", "")
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-            content = content.replace(f" (dict-{self.lang_src}-{self.lang_dst}{etym_suffix}.df.bz2)", "")
-            content = content.replace(f" (dicthtml-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-            content = content.replace(f" (dictorg-{self.lang_src}-{self.lang_dst}{etym_suffix}.zip)", "")
-
-        return content
 
     @staticmethod
     def craft_index(wordlist: list[str], output_dir: Path) -> Path:
@@ -391,13 +404,6 @@ class KoboFormat(BaseFormat):
             fh.comment = bytes(self.description, "utf-8")
 
             # Unrelated files, just for history
-            if self.add_install:
-                fh.writestr(
-                    constants.ZIP_INSTALL,
-                    self.sanitize(
-                        utils.format_description(self.lang_src, self.lang_dst, len(self.words), self.snapshot)
-                    ),
-                )
             fh.writestr(constants.ZIP_WORDS_COUNT, str(self.words_count + self.variants_count))
             fh.writestr(constants.ZIP_WORDS_SNAPSHOT, self.snapshot)
 
@@ -442,12 +448,6 @@ class DictFileFormat(BaseFormat):
     output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df"
     template = WORD_TPL_DICTFILE
 
-    def get_glossary_lang_dst(self) -> str:
-        return self.lang_dst
-
-    def get_glossary_lang_src(self) -> str:
-        return self.lang_src
-
     def process(self) -> None:
         file = self.dictionary_file(self.output_file)
         words = self.words
@@ -488,6 +488,9 @@ class ConverterFromDictFile(DictFileFormat):
 
     def _convert(self) -> None:
         """Convert the DictFile to the target format."""
+        if pyglossary_logger := logging.getLogger("pyglossary"):
+            pyglossary_logger.addFilter(CustomLogFilter())
+
         # We do not want to use temporary SQLite databases. Without them:
         #   - that's faster;
         #   - it prevents concurrent access issues from secondary formatters;
@@ -516,12 +519,12 @@ class ConverterFromDictFile(DictFileFormat):
             writer_cls.getBookname = get_bookname
 
         glos.setInfo("description", self.description)
-        glos.setInfo("title", self.title)
+        glos.setInfo("title", self.title())
         glos.setInfo("website", self.website)
         glos.setInfo("date", f"{self.snapshot[:4]}-{self.snapshot[4:6]}-{self.snapshot[6:8]}")
 
-        glos.sourceLangName = self.get_glossary_lang_src()
-        glos.targetLangName = self.get_glossary_lang_dst()
+        glos.sourceLangName = self.effective_lang_src()
+        glos.targetLangName = self.effective_lang_dst()
 
         self.output_dir_tmp.mkdir()
         glos.convert(
@@ -606,22 +609,6 @@ class MobiFormat(ConverterFromDictFile):
         "kindlegen_path": str(constants.KINDLEGEN_FILE),
     }
 
-    def get_glossary_lang_dst(self) -> str:
-        """
-        Workaround for Esperanto (EO) not being supported by kindlegen.
-        According to https://higherlanguage.com/languages-similar-to-esperanto/,
-        French seems the most similar lang that is available on kindlegen, so French it is.
-        """
-        return "fr" if self.lang_dst == "eo" else self.lang_dst
-
-    def get_glossary_lang_src(self) -> str:
-        """
-        Workaround for Esperanto (EO) not being supported by kindlegen.
-        According to https://higherlanguage.com/languages-similar-to-esperanto/,
-        French seems the most similar lang that is available on kindlegen, so French it is.
-        """
-        return "fr" if self.lang_src == "eo" else self.lang_src
-
     def _compress(self) -> Path:
         # Move the relevant file at the top-level data folder, and rename it for more accuracy
         src = self.output_dir_tmp / f"dict-data.{self.target_suffix}" / "OEBPS" / f"content.{self.target_suffix}"
@@ -663,6 +650,10 @@ def run_mobi_formatter(
     To do this, we delete words using the least-used characters until we meet this condition.
     """
 
+    if locale in constants.MOBI_SKIP:
+        log.info("[Mobi %s] Skipping as the final file size would be > 650 MiB", locale.upper())
+        return
+
     def all_chars(word: str, details: Word) -> set[str]:
         chars = set(word)
         if definitions := details.definitions:
@@ -687,7 +678,7 @@ def run_mobi_formatter(
         for char in all_chars(word, details):
             stats[char].append(word)
 
-    if utils.guess_lang_origin(locale) in {"en", "fr"} and len(stats) > 256:
+    if locale in constants.MOBI_CLEANUP and len(stats) > 256:
         new_words = words.copy()
         threshold = 1
         while len(stats) > 256:
@@ -756,7 +747,7 @@ def load(file: Path) -> Words:
     """Load the big JSON file containing all words and their details."""
     log.info("Loading %s ...", file)
     with file.open(encoding="utf-8") as fh:
-        words: Words = {key: Word(*values) for key, values in json.load(fh).items()}
+        words: Words = {key: Word(**values) for key, values in json.load(fh).items()}
     log.info("Loaded %s words from %s", f"{len(words):,}", file)
     return words
 
@@ -783,19 +774,19 @@ def distribute_workload(
     include_etymology: bool = True,
 ) -> None:
     """Run formatters in parallel."""
-    with multiprocessing.Pool(len(formatters)) as pool:
-        pool.map(
-            partial(
-                run_formatter,
-                locale=locale,
-                output_dir=output_dir,
-                words=words,
-                variants=variants,
-                snapshot=file.stem.split("-")[-1],
-                include_etymology=include_etymology,
-            ),
-            formatters,
+    threads = []
+
+    for formatter in formatters:
+        th = threading.Thread(
+            target=run_formatter,
+            args=(formatter, locale, output_dir, words, variants, file.stem.split("-")[-1]),
+            kwargs={"include_etymology": include_etymology},
         )
+        th.start()
+        threads.append(th)
+
+    for th in threads:
+        th.join()
 
 
 def get_latest_json_file(source_dir: Path) -> Path | None:
@@ -822,9 +813,6 @@ def main(locale: str) -> int:
     output_dir = source_dir / "output"
     output_dir.mkdir(exist_ok=True, parents=True)
     args = (output_dir, input_file, locale, words, variants)
-
-    # Force not using `fork()` on GNU/Linux to prevent deadlocks on "slow" machines (see issue #2333)
-    multiprocessing.set_start_method("spawn", force=True)
 
     start = monotonic()
     for include_etymology in [False, True]:

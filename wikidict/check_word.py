@@ -179,6 +179,11 @@ def filter_html(html: str, locale: str) -> str:
             if tag.string == "and other forms":
                 tag.string += f" {tag['title']}"
 
+        # WikiSpecies sup
+        for tag in find_all("sup"):
+            for stag in tag.find_all("a", {"class": "extiw"}):
+                stag.decompose()
+
         # Other anchors
         for tag in find_all("a", href=True):
             if str(tag["href"]).lower().startswith(("#cite", "#mw")):

@@ -32,9 +32,10 @@ jobs:
           - "ro"
           - "ru"
           - "sv"
+          - "zh"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -48,7 +49,7 @@ jobs:
       - name: Install kindlegen
         run: |
           mkdir -p ~/.local/bin
-          wget https://raw.githubusercontent.com/BoboTiG/ebook-reader-dict/refs/heads/kindlegen-backup/kindlegen_linux/kindlegen -O ~/.local/bin/kindlegen
+          wget https://raw.githubusercontent.com/reader-dict/monolingual/refs/heads/kindlegen-backup/kindlegen_linux/kindlegen -O ~/.local/bin/kindlegen
           chmod a+x ~/.local/bin/kindlegen
 
       - name: Download the latest Wiktionary dump

@@ -5,9 +5,11 @@ from __future__ import annotations
 import logging
 import os
 import re
+import subprocess
 from collections import defaultdict, namedtuple
 from datetime import UTC, datetime
 from functools import cache, partial
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import regex
@@ -18,12 +20,10 @@ from .hiero_utils import render_hiero
 from .lang import (
     last_template_handler,
     random_word_url,
-    release_description,
     templates_ignored,
     templates_italic,
     templates_multi,
     templates_other,
-    thousands_separator,
 )
 from .user_functions import *  # noqa: F403
 
@@ -191,38 +191,6 @@ def guess_locales(locale: str, *, use_log: bool = True) -> tuple[str, str]:
     return lang_src, lang_dst
 
 
-def format_description(lang_src: str, lang_dst: str, words: int, snapshot: str) -> str:
-    """Generate the release description."""
-
-    # Format the words count
-    words_count = f"{words:,}".replace(",", thousands_separator[lang_src])
-
-    # Format the snapshot's date
-    dump_date = f"{snapshot[:4]}-{snapshot[4:6]}-{snapshot[6:8]}"
-
-    # Format download links
-    _links_full: dict[str, str] = {}
-    _links_etym_free: dict[str, str] = {}
-    for etym_suffix in {"", constants.NO_ETYMOLOGY_SUFFIX}:
-        obj = _links_etym_free if etym_suffix else _links_full
-        obj.update(
-            {
-                "dictfile": f"- [DictFile]({constants.DOWNLOAD_URL_DICTFILE.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.df.bz2)",
-                "dicthtml": f"- [Kobo]({constants.DOWNLOAD_URL_KOBO.format(lang_src, lang_dst, etym_suffix)}) (dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-                "dictorg": f"- [DICT.org]({constants.DOWNLOAD_URL_DICTORGFILE.format(lang_src, lang_dst, etym_suffix)}) (dictorg-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-                "mobi": f"- [Kindle]({constants.DOWNLOAD_URL_MOBI.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.mobi.zip)",
-                "stardict": f"- [StarDict]({constants.DOWNLOAD_URL_STARDICT.format(lang_src, lang_dst, etym_suffix)}) (dict-{lang_src}-{lang_dst}{etym_suffix}.zip)",
-            }
-        )
-    download_links_full = "\n".join(sorted(_links_full.values()))
-    download_links_noetym = "\n".join(sorted(_links_etym_free.values()))
-
-    # Format the creation's date
-    creation_date = NOW.isoformat()
-
-    return release_description[lang_src].format(**locals())
-
-
 @cache
 def format_pos(locale: str, value: str) -> str:
     """Properly format the part of speech (POS).
@@ -236,12 +204,10 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("da", "verbum")
     'Verbum'
 
-    >>> format_pos("de", "{{bedeutungen}}")
-    'Bedeutungen'
-    >>> format_pos("de", "{{Bedeutungen}}{{Anker|Dasort}}")
-    'Bedeutungen'
-    >>> format_pos("de", "bedeutungen")
-    'Bedeutungen'
+    >>> format_pos("de", "substantiv")
+    'Substantiv'
+    >>> format_pos("de", "substantiv/wortverbindung/redewendung")
+    'Substantiv'
 
     >>> format_pos("el", "{{έκφραση|el}}")
     'Έκφραση'
@@ -309,11 +275,25 @@ def format_pos(locale: str, value: str) -> str:
     'Verb'
     >>> format_pos("ro", "verb")
     'Verb'
+
+    >>> format_pos("zh", "發音 1")
+    '發音'
+    >>> format_pos("zh", "發音1")
+    '發音'
+    >>> format_pos("zh", "讀音①")
+    '讀音'
     """
     for pattern in part_of_speech.PATTERNS.get(locale, []):
         value = pattern(r"\1", value)
     value = part_of_speech.MERGE.get(locale, {}).get(value, value)
     return value.strip().title()
+
+
+def grep(file: Path, pattern: str) -> str:
+    """Find the given text `pattern` line in `file`."""
+    command = ["/bin/grep", "--text", "--max-count", "1", pattern, str(file)]
+    with subprocess.Popen(command, env={"LC_ALL": "C"}, stdout=subprocess.PIPE) as process:
+        return process.communicate()[0].strip().decode("utf-8")
 
 
 @cache
@@ -329,12 +309,19 @@ def is_cyrillic(char: str) -> bool:
 
 
 @cache
+def is_japanese_kana(char: str) -> bool:
+    """Check if a character is Hiragana, or Katakana."""
+    return "\u3040" <= char <= "\u30ff"
+
+
+@cache
 def guess_prefix(word: str) -> str:
     """Determine the word prefix for the given *word*.
 
-    Inspiration: https://github.com/pettarin/penelope/blob/master/penelope/prefix_kobo.py#L16
+    Inspiration: me ᕦ(ò_óˇ)ᕤ  <-- aka BoboTiG ^^
     Inspiration: https://pgaskin.net/dictutil/dicthtml/prefixes.html
-    Inspiration: me ᕦ(ò_óˇ)ᕤ
+    Inspiration: https://github.com/pettarin/penelope/blob/v3.1.3/penelope/prefix_kobo.py#L16
+    Inspiration: https://github.com/cessen/kobo_jp_dict/blob/2023-01-23/src/kobo.rs#L190 (for Japanese support)
 
     Converted from https://github.com/pgaskin/dictutil/blob/v0.3.2/kobodict/util.go#L44.
 
@@ -354,6 +341,18 @@ def guess_prefix(word: str) -> str:
 
         (dictionary.debug) got alternative search terms: ".vi", ".VI", "vi" for word ".vi"
         (ui.debug) static QByteArray Unzipper::extractFile("/mnt/onboard/.kobo/dict/dicthtml-fr.zip", "11.html")
+
+        (dictionary.debug) HtmlForJapanese:  "レ"  (originally:  "レ" ) => prefix:  "レ"
+        (dictionary.debug) HtmlForJapanese:  "レ"  => In prefix file:  "レ"
+        (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レ" Regex:  "(<a name="レ" />.*</w>)"
+        (dictionary.debug) got alternative search terms:  ("レ")  for word:  "レ"
+        (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レ" Regex:  "(<a name="レ" />.*</w>)"
+
+        (dictionary.debug) HtmlForJapanese:  "レイモン"  (originally:  "レイモン" ) => prefix:  "レイ"
+        (dictionary.debug) HtmlForJapanese:  "レイモン"  => In prefix file:  "レイ"
+        (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レイモン" Regex:  "(<a name="レイモン" />.*</w>)"
+        (dictionary.debug) got alternative search terms:  ("レイモン")  for word:  "レイモン"
+        (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レイプ" Regex:  "(<a name="レイプ" />.*</w>)
 
         >>> guess_prefix("test")
         'te'
@@ -522,12 +521,27 @@ def guess_prefix(word: str) -> str:
         >>> guess_prefix("б-p")
         'б-'
 
-        Japanese seems unreliable as of now:
-        https://github.com/pgaskin/dictutil/blob/6708cff9a06dbd088ec2267a2314028a9a00b5a7/kobodict/util_test.go#L47-L51
+        # Japanese-style punctuation
+        >>> guess_prefix(" 】")
+        '11'
+
+        # Japanese Hiragana
         >>> guess_prefix("あ")
-        'あa'
-        >>> guess_prefix("アークとう")
-        'アー'
+        'あ'
+        >>> guess_prefix("あかつき")
+        'あか'
+
+        # Japanese Katakana
+        >>> guess_prefix("ア")
+        'ア'
+        >>> guess_prefix("アカツキ")
+        'アカ'
+
+        # Japanese Kanji
+        >>> guess_prefix("日")
+        '日a'
+        >>> guess_prefix("日大本")
+        '日大'
     """
     if "\x00" in (prefix := word):
         prefix = prefix.split("\x00", 1)[0]
@@ -544,6 +558,9 @@ def guess_prefix(word: str) -> str:
 
     if is_cyrillic(prefix[0]):
         return "" if prefix[-1] == "/" else prefix
+
+    if is_japanese_kana(prefix[0]):
+        return prefix
 
     if len(prefix) < 2:
         prefix += "a"
@@ -570,31 +587,11 @@ def clean(text: str) -> str:
         '{{Lien web|url=http://stella.atilf.fr/few/|titre=Französisches Etymologisches Wörterbuch}}'
         >>> clean("d'<nowiki/>''Arvernus'', surnom ethnique, ou composé d'''are''")
         "d'<i>Arvernus</i>, surnom ethnique, ou composé d'<i>are</i>"
-        >>> clean("<ref name=oed/>Modelled<ref>Gerhard</ref> English<ref name=oed>Press.</ref>")
-        'Modelled English'
 
         >>> clean("")
         ''
         >>> clean("<span style='color:black'>[[♣]]</span>")
         "<span style='color:black'>♣</span>"
-        >>> clean("<ref>{{Import:CFC}}</ref>")
-        ''
-        >>> clean("<ref>{{Import:CFC}}</ref>bla bla bla <ref>{{Import:CFC}}</ref>")
-        'bla bla bla'
-        >>> clean("<ref>{{Lit-Pfeifer: Etymologisches Wörterbuch|A=8}}, Seite 1551, Eintrag „Wein“<br />siehe auch: {{Literatur | Online=zitiert nach {{GBS|uEQtBgAAQBAJ|PA76|Hervorhebung=Wein}} | Autor=Corinna Leschber| Titel=„Wein“ und „Öl“ in ihren mediterranen Bezügen, Etymologie und Wortgeschichte | Verlag=Frank & Timme GmbH | Ort= | Jahr=2015 | Seiten=75–81 | Band=Band 24 von Forum: Rumänien, Culinaria balcanica, herausgegeben von Thede Kahl, Peter Mario Kreuter, Christina Vogel | ISBN=9783732901388}}.")
-        ''
-        >>> clean('<ref name="CFC" />')
-        ''
-        >>> clean('<ref name="CFC">{{Import:CFC}}</ref>')
-        ''
-        >>> clean('<ref name="CFC">{{CFC\\n|foo}}</ref>')
-        ''
-        >>> clean("<ref>D'après ''Dictionnaire du tapissier : critique et historique de l’ameublement français, depuis les temps anciens jusqu’à nos jours'', par J. Deville, page 32 ({{Gallica|http://gallica.bnf.fr/ark:/12148/bpt6k55042642/f71.image}})</ref>")
-        ''
-        >>> clean("<ref>")
-        ''
-        >>> clean("</ref>")
-        ''
         >>> clean("''italic''")
         '<i>italic</i>'
         >>> clean("'''strong'''")
@@ -632,8 +629,6 @@ def clean(text: str) -> str:
         >>> clean("[[http://www.tv5monde.com/cms/chaine-francophone/lf/Merci-Professeur/p-17081-Une-peur-bleue.htm?episode=10 Voir aussi l’explication de Bernard Cerquiglini en images]]")
         ''
 
-        >>> clean('<ref name="Marshall 2001"><sup>he</sup></ref>')
-        ''
         >>> clean("<nowiki/>")
         ''
         >>> clean("<nowiki>«</nowiki>")
@@ -652,6 +647,15 @@ def clean(text: str) -> str:
 
         >>> clean("<gallery>\nImage: Hydra (creature).jpg|due idre minacciose\nImage: Hydre.jpg|idra minacciosa\nImage: Chateauneuf-Randon de Joyeuse.svg|d'oro, a tre pali d'azzurro; al capo di rosso caricato di tre idre minacciose del campo<br /></gallery>")
         ''
+
+        >>> clean("<br />")
+        ''
+        >>> clean("<br>")
+        ''
+        >>> clean("{{code|html|<br />}}")
+        '{{code|html|<br />}}'
+        >>> clean("{{code|js|<br />}}")
+        '{{code|js|}}'
 
         >>> clean(" <")
         '<'
@@ -682,25 +686,13 @@ def clean(text: str) -> str:
     # Remove line breaks
     text = text.replace("\n", "")
 
-    # Parser hooks
-    # <ref name="CFC"/> → ''
-    text = sub(r"<ref[^>]*/>", "", text)
-    # <ref>foo → ''
-    # <ref>foo</ref> → ''
-    # <ref name="CFC">{{Import:CFC}}</ref> → ''
-    # <ref name="CFC"><tag>...</tag></ref> → ''
-    text = sub(r"<ref[^>]*/?>[\s\S]*?(?:</ref>|$)", "", text)
-    # <ref> → ''
-    # </ref> → ''
-    text = text.replace("<ref>", "").replace("</ref>", "")
-
     # HTML
     # Source: https://github.com/5j9/wikitextparser/blob/b24033b/wikitextparser/_wikitext.py#L83
-    text = sub2(r"'''(\0*+[^'\n]++.*?)(?:''')", "<b>\\1</b>", text)
+    text = sub2(r"'''(\0*+[^'\n]++.*?)(?:''')", r"<b>\1</b>", text)
     # ''foo'' → <i>foo></i>
-    text = sub2(r"''(\0*+[^'\n]++.*?)(?:'')", "<i>\\1</i>", text)
-    # <br> / <br /> → ''
-    text = sub(r"<br[^>]+/?>", "", text)
+    text = sub2(r"''(\0*+[^'\n]++.*?)(?:'')", r"<i>\1</i>", text)
+    # (outside of {{code|...}}) <br> / <br /> → ''
+    text = sub(r"(?<!code\|html\|)<br[^>]*/?>", "", text)
 
     # <nowiki/> → ''
     text = text.replace("<nowiki/>", "")
@@ -711,13 +703,13 @@ def clean(text: str) -> str:
     text = sub(r"<gallery>[\s\S]*?</gallery>", "", text)
 
     # Local links
-    text = sub(r"\[\[([^||:\]]+)\]\]", "\\1", text)  # [[a]] → a
+    text = sub(r"\[\[([^|:\]]+)\]\]", r"\1", text)  # [[a]] → a
 
     # Links
     # Internal: [[{{a|b}}]] → {{a|b}}
-    text = sub(r"\[\[({{[^}]+}})\]\]", "\\1", text)
+    text = sub(r"\[\[({{[^}]+}})\]\]", r"\1", text)
     # Internal: [[a|b]] → b
-    text = sub(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]", "\\1", text)
+    text = sub(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]", r"\1", text)
     # External: [[http://example.com Some text]] → ''
     text = sub(r"\[\[https?://[^\s]+\s[^\]]+\]\]", "", text)
     # External: [http://example.com] → ''
@@ -758,9 +750,9 @@ def clean(text: str) -> str:
     text = sub(r"\s{1,}\.", ".", text)
 
     # <<bar>> → foo
-    text = sub(r"<<([^/>]+)>>", "\\1", text)
+    text = sub(r"<<([^/>]+)>>", r"\1", text)
     # <<foo/bar>> → bar
-    # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", "\\1", text)
+    # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", text)
 
     # Convert single "< ", and " >" to HTML quotes
     text = text.replace("< ", "&lt; ").replace(" >", " &gt;")

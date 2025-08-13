@@ -232,30 +232,6 @@ templates_other["аним. жарг."] = templates_other["жарг. аним."]
 templates_other["тех. жарг."] = templates_other["техн. жарг."]
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/ru
-release_description = """\
-### 🌟 Для того чтобы этот проект регулярно обновлялся, ему необходима поддержка; [нажмите здесь](https://github.com/BoboTiG/ebook-reader-dict/issues/2339), чтобы сделать пожертвование. 🌟
-
-<br/>
-
-
-Количество слов : {words_count}
-Экспорт Викисловаря : {dump_date}
-
-Полные версии :
-{download_links_full}
-
-Версии без этимологии :
-{download_links_noetym}
-
-<sub>Обновлено по {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Викисловарь (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "ru")
@@ -371,6 +347,18 @@ def last_template_handler(
         text = italic("сокр.")
         if len(parts) > 1:
             text += f" от {italic(parts[1])}"
+        return text
+
+    if tpl in {"многокр."}:
+        text = italic(tpl)
+        if parts:
+            text += f" к {parts[0]}"
+        return text
+
+    if tpl in {"превосх."}:
+        text = italic("превосх. ст.")
+        if parts:
+            text += f" к прил. {parts[0]}"
         return text
 
     if tpl == "выдел":

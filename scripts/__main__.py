@@ -18,6 +18,7 @@ FILES = {
     "de-langs.py": "wikidict/lang/de/langs.py",
     "de-lang-adjs.py": "wikidict/lang/de/lang_adjs.py",
     "en-form-of.py": "wikidict/lang/en/form_of.py",
+    "en-scripts.py": "wikidict/lang/en/scripts.py",
     "el-aliases.py": "wikidict/lang/el/aliases.py",
     "el-labels.py": "wikidict/lang/el/labels.py",
     "el-langs.py": "wikidict/lang/el/langs.py",
@@ -34,7 +35,7 @@ FILES = {
     "fr-contexts.py": "wikidict/lang/fr/contexts.py",
     "fr-domain-templates.py": "wikidict/lang/fr/domain_templates.py",
     "fr-langs.py": "wikidict/lang/fr/langs.py",
-    "fr-racines-arabes.py": "wikidict/lang/fr/racines_arabes.py",
+    "fr-racines-arabes.py": "wikidict/lang/fr/ar/racines_arabes.py",
     "fr-regions.py": "wikidict/lang/fr/regions.py",
     "fr-temps-geologiques.py": "wikidict/lang/fr/temps_geologiques.py",
     "it-codelangs.py": "wikidict/lang/it/codelangs.py",
@@ -50,6 +51,9 @@ FILES = {
     "ru-langs.py": "wikidict/lang/ru/langs.py",
     "ru-langs-short.py": "wikidict/lang/ru/langs_short.py",
     "sv-langs.py": "wikidict/lang/sv/langs.py",
+    "zh-labels.py": "wikidict/lang/zh/labels.py",
+    "zh-langs.py": "wikidict/lang/zh/langs.py",
+    "zh-ts.py": "wikidict/lang/zh/m_ts.py",
 }
 
 # En error will be raised when the percentage of deletions from the new content

@@ -4,7 +4,7 @@ about: Issue to list changes in a Wiktionary dump.
 title: '🥮 Issues found in the `2025-MM-DD` dump'
 labels:
   - dump
-  - 'locale:English'
+  - 'locale:Chinese'
   - 'locale:Russian'
 assignees: ''
 
@@ -34,7 +34,7 @@ assignees: ''
 
 ## EN
 
-- Unhandled templates count: N (📈 +N since `2025-MM-DD` dump | 📉 -N since `2025-MM-DD` dump)
+- [ ]
 
 ## EO
 
@@ -71,3 +71,7 @@ assignees: ''
 ## SV
 
 - [ ] 
+
+## ZH
+
+- Unhandled templates count: N (📈 +N since `2025-MM-DD` dump | 📉 -N since `2025-MM-DD` dump)

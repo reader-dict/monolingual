@@ -9,7 +9,7 @@ text = text.replace('"ava"..string.char(197,173)', f'"ava{chr(197)}{chr(173)}"')
 
 # Uniformize maps
 # contabtt ['ASKI'] = 'askia signo' → contabtt["ASKI"] = "askia signo"
-text = re.sub(r"contabtt \['([^']+)'\] = '([^'|]+)'", r'contabtt["\1"] = "\2"', text)
+text = re.sub(r"(contab\w+)\s*\['([^']+)'\]\s*=\s*'([^'|]+)['|]", r'\1["\2"] = "\3"', text)
 
 tags = re.findall(r'^\s+contab\w+\s*\["([^"]+)"\]\s*=\s*"([^"|]+)', text, flags=re.MULTILINE)
 print("tags = {")

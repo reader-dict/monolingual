@@ -180,6 +180,7 @@ escopos = {
     "Fruta": "fruta",
     "Fruto": "fruta",
     "Funchal": "Funchal",
+    "Futebol americano": "futebol americano",
     "GO": "Goiás",
     "Gales": "País de Gales",
     "Galicismo": "galicismo",
@@ -440,5 +441,5 @@ escopos = {
     "telheiros": "telheiros",
     "África do Sul": "África do Sul",
     "Índia": "Índia",
-}  # 435
+}  # 436
 # END

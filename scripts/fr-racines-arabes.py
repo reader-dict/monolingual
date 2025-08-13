@@ -6,7 +6,8 @@ ROOT = "https://fr.wiktionary.org"
 START_URL = "https://fr.wiktionary.org/wiki/Cat%C3%A9gorie:Mod%C3%A8les_de_racine_en_arabe_du_Wiktionnaire"
 NEXTPAGE_TEXT = "page suivante"
 RACINE_URL = "https://fr.wiktionary.org/wiki/Mod%C3%A8le:{}?action=raw"
-STRIP_COMMENT = re.compile(r"<!-- \(\w+\)[^\-]+-->").sub
+GET_FORM = re.compile(r"<!-- \((\w+)[^>]+>").findall
+STRIP_COMMENT = re.compile(r"<!--[^>]+>").sub
 
 
 def process_category_page(url: str, results: dict[str, dict[str, str]]) -> str:
@@ -28,6 +29,23 @@ def process_category_page(url: str, results: dict[str, dict[str, str]]) -> str:
     return nextpage
 
 
+def romaniser(value: str) -> str:
+    return {
+        "i": "(1)",
+        "ii": "(2)",
+        "iii": "(3)",
+        "iv": "(4)",
+        "v": "(5)",
+        "vi": "(6)",
+        "vii": "(7)",
+        "viii": "(8)",
+        "ix": "(9)",
+        "x": "(10)",
+        "xi": "(11)",
+        "xii": "(12)",
+    }[value.lower()]
+
+
 def process_root(tpl: str, results: dict[str, dict[str, str]]) -> None:
     url = RACINE_URL.format(tpl)
     data = get_content(url)
@@ -40,8 +58,10 @@ def process_root(tpl: str, results: dict[str, dict[str, str]]) -> None:
             continue
 
         racine, text = line[1:].split("=")
-        text = STRIP_COMMENT("", text.strip())
-        tpl_dict[racine.strip()] = text.strip()
+        text = text.strip()
+        forme = romaniser(form[0]) if (form := GET_FORM(text)) else ""
+        text = STRIP_COMMENT("", text).strip()
+        tpl_dict[racine.strip()] = (forme, text)
     if tpl_dict:
         results[tpl] = tpl_dict
 
@@ -52,10 +72,10 @@ results: dict[str, dict[str, str]] = {}
 while next_page_url:
     next_page_url = process_category_page(next_page_url, results)
 
-print("racines_schemes_arabes = {")
+print("racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {")
 for k, v in sorted(results.items()):
     print(f'    "{k}" : {{')
     for k1, v1 in sorted(v.items()):
-        print(f'        "{k1}": "{v1}",')
+        print(f'        "{k1}": {v1!r},')
     print(f"    }},  # {len(v):,}")
 print(f"}}  # {len(results):,}")

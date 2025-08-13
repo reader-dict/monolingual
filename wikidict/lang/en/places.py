@@ -136,7 +136,7 @@ recognized_placetypes = {
     "abbreviations of counties!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of counties",
+        "display": "abbreviation}}s of names of counties",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -144,7 +144,7 @@ recognized_placetypes = {
     "abbreviations of countries!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of countries",
+        "display": "abbreviation}}s of names of countries",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -152,7 +152,7 @@ recognized_placetypes = {
     "abbreviations of departments!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of departments",
+        "display": "abbreviation}}s of names of departments",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -160,7 +160,7 @@ recognized_placetypes = {
     "abbreviations of districts!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of districts",
+        "display": "abbreviation}}s of names of districts",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -168,7 +168,7 @@ recognized_placetypes = {
     "abbreviations of divisions!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of divisions",
+        "display": "abbreviation}}s of names of divisions",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -176,7 +176,7 @@ recognized_placetypes = {
     "abbreviations of former countries!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of countries that no longer exist",
+        "display": "abbreviation}}s of countries that no longer exist",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -184,7 +184,7 @@ recognized_placetypes = {
     "abbreviations of former places!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of places that no longer exist",
+        "display": "abbreviation}}s of places that no longer exist",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -192,7 +192,7 @@ recognized_placetypes = {
     "abbreviations of places!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of places",
+        "display": "abbreviation}}s of names of places",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -200,7 +200,7 @@ recognized_placetypes = {
     "abbreviations of political divisions!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of political divisions",
+        "display": "abbreviation}}s of names of political divisions",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -208,7 +208,7 @@ recognized_placetypes = {
     "abbreviations of prefectures!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of prefectures",
+        "display": "abbreviation}}s of names of prefectures",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -216,7 +216,7 @@ recognized_placetypes = {
     "abbreviations of provinces and territories!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of provinces and territories",
+        "display": "abbreviation}}s of names of provinces and territories",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -224,7 +224,7 @@ recognized_placetypes = {
     "abbreviations of provinces!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of provinces",
+        "display": "abbreviation}}s of names of provinces",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -232,7 +232,7 @@ recognized_placetypes = {
     "abbreviations of regions!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of administrative regions",
+        "display": "abbreviation}}s of names of administrative regions",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -240,7 +240,7 @@ recognized_placetypes = {
     "abbreviations of states and territories!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of states and territories",
+        "display": "abbreviation}}s of names of states and territories",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -248,7 +248,7 @@ recognized_placetypes = {
     "abbreviations of states and union territories!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of states and union territories",
+        "display": "abbreviation}}s of names of states and union territories",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -256,7 +256,7 @@ recognized_placetypes = {
     "abbreviations of states!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of states",
+        "display": "abbreviation}}s of names of states",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -264,7 +264,7 @@ recognized_placetypes = {
     "abbreviations of territories!": {
         "fallback": "",
         "article": "",
-        "display": "abbreviations of names of territories",
+        "display": "abbreviation}}s of names of territories",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -749,6 +749,14 @@ recognized_placetypes = {
         "formertype": "",
         "should_categorize": "",
     },
+    "captaincy": {
+        "fallback": "",
+        "article": "a",
+        "display": "captaincy",
+        "preposition": "of",
+        "formertype": "subpolity",
+        "should_categorize": "",
+    },
     "caravan city": {
         "fallback": "city",
         "article": "a",
@@ -904,7 +912,7 @@ recognized_placetypes = {
     "clippings of places!": {
         "fallback": "",
         "article": "",
-        "display": "clipping|clippings}} of names of places",
+        "display": "clipping}}s of names of places",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1296,7 +1304,7 @@ recognized_placetypes = {
     "derogatory names for cities!": {
         "fallback": "",
         "article": "",
-        "display": "derogatory names for cities",
+        "display": "derogatory}} names for cities",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1304,7 +1312,7 @@ recognized_placetypes = {
     "derogatory names for continents!": {
         "fallback": "",
         "article": "",
-        "display": "derogatory names for continents",
+        "display": "derogatory}} names for continents",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1312,7 +1320,7 @@ recognized_placetypes = {
     "derogatory names for countries!": {
         "fallback": "",
         "article": "",
-        "display": "derogatory names for countries",
+        "display": "derogatory}} names for countries",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1320,7 +1328,7 @@ recognized_placetypes = {
     "derogatory names for places!": {
         "fallback": "",
         "article": "",
-        "display": "derogatory names for places",
+        "display": "derogatory}} names for places",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1328,7 +1336,7 @@ recognized_placetypes = {
     "derogatory names for states!": {
         "fallback": "",
         "article": "",
-        "display": "derogatory names for states",
+        "display": "derogatory}} names for states",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -1920,7 +1928,7 @@ recognized_placetypes = {
     "former nicknames for cities!": {
         "fallback": "",
         "article": "",
-        "display": "no-longer-used nicknames for cities, e.g. the Eternal City for Kyoto during the {{w|Heian period}} (c. 800-1100 {{AD}})",
+        "display": "no-longer-used nicknames for cities, e.g. the Eternal City for Kyoto during the {{w|Heian period}} ({{circa2|800–1100|short=yes}} {{AD}})",
         "preposition": "",
         "formertype": "",
         "should_categorize": "",
@@ -4789,7 +4797,7 @@ recognized_placetypes = {
         "formertype": "subpolity",
         "should_categorize": "",
     },
-}  # 598
+}  # 599
 
 placetypes_aliases = {
     "CDP": "census-designated place",
@@ -4901,9 +4909,10 @@ placetypes_aliases = {
     "utwpmun": "united township municipality",
     "val": "valley",
     "vdc": "village development committee",
+    "vil": "village",
     "voi": "voivodeship",
     "wcomm": "Welsh community",
-}  # 111
+}  # 112
 
 recognized_qualifiers = {
     "abandoned": "abandoned",

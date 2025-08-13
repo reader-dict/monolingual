@@ -6498,7 +6498,7 @@ langs = {
     "sto": "stoney",
     "stp": "tepehuano sureño",
     "stq": "frisón de Saterland",
-    "str": "samish de los estrechos septentrionales",
+    "str": "saanich",
     "sts": "shumashti",
     "stt": "stieng budeh",
     "stu": "samtao",

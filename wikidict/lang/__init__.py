@@ -78,13 +78,6 @@ templates_multi: dict[str, dict[str, str]] = _populate("templates_multi")
 # Templates that will be completed/replaced using custom style.
 templates_other: dict[str, dict[str, str]] = _populate("templates_other")
 
-# The full release description on GitHub:
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/$LOCALE
-release_description: dict[str, str] = _populate("release_description")
-
-# Dictionary name that will be printed below each definition
-wiktionary: dict[str, str] = _populate("wiktionary")
-
 # Function to find gender(s)
 find_genders = _populate("find_genders")
 

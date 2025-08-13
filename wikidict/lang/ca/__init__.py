@@ -95,30 +95,6 @@ templates_multi = {
 }
 
 
-# Release content on GitHub
-# https://github.com/BoboTiG/ebook-reader-dict/releases/tag/ca
-release_description = """\
-### 🌟 Per tal d'actualitzar-se periòdicament, aquest projecte necessita suport; [feu clic aquí](https://github.com/BoboTiG/ebook-reader-dict/issues/2339) per donar. 🌟
-
-<br/>
-
-
-Les paraules compten: {words_count}
-Abocador Viccionari: {dump_date}
-
-Versió completa:
-{download_links_full}
-
-Versió sense etimologia:
-{download_links_noetym}
-
-<sub>Actualitzat el {creation_date}</sub>
-"""
-
-# Dictionary name that will be printed below each definition
-wiktionary = "Viccionari (ɔ) {year}"
-
-
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "ca")
@@ -237,6 +213,10 @@ def last_template_handler(
         '<i>مَلَكَ</i> (<i>malaka</i>, «posseir, adquirir»)'
         >>> last_template_handler(["m", "grc", "αἰτία", "t=aitía", "trad=causa"], "ca")
         'αἰτία (<i>aitía</i>, «aitía»)'
+        >>> last_template_handler(["m", "la", "*fūricāre", "trad=furgar"], "ca")
+        '<i>*fūricāre</i> («furgar»)'
+        >>> last_template_handler(["m", "xib", "*Icosia"], "ca")
+        '<i>*Icosia</i>'
 
         >>> last_template_handler(["lleng", "la", "√ⵎⵣⵖ"], "ca")
         '√ⵎⵣⵖ'
@@ -297,9 +277,6 @@ def last_template_handler(
     phrase = ""
 
     def parse_other_parameters(lang: str = "", word: str = "") -> str:
-        if word.startswith("*"):
-            return ""
-
         toadd = []
         trad_added = False
 

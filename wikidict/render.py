@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import dataclasses
 import json
 import logging
 import multiprocessing
@@ -13,7 +14,7 @@ from datetime import timedelta
 from functools import partial
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import wikitextparser as wtp
 import wikitextparser._spans
@@ -77,7 +78,9 @@ def find_definitions(
     for pos, sections in parsed_sections.items():
         for section in sections:
             if pos_defs := find_section_definitions(word, section, lang_src, lang_dst, all_templates=all_templates):
-                if lang_src == "en" and pos.startswith("etymology"):
+                if lang_src == "de" and not pos:
+                    pos = "substantiv"
+                elif lang_src == "en" and pos.startswith("etymology"):
                     # Most of the time, definitions are symbols outside a subsection, like in the "wa" word
                     pos = "symbol"
                 elif lang_src == "es" and pos.startswith("etimología"):
@@ -248,12 +251,12 @@ def find_etymology(
             return definitions
         case "it":
             items = get_items(("",), skip=("=== {{etim",))
-        case "no":
+        case "no" | "zh":
             items = get_items(("#", ":", r"\*"))
         case "pt":
             items = get_items((r"[:]", r"\*"))
         case "ro":
-            items = get_items(("",), skip=("=== {{etimologie",))
+            items = get_items(("#", r"\*"))
         case "sv":
             # Remove the leading template name, and trailing `}}`
             items = [
@@ -274,11 +277,13 @@ def find_etymology(
             "el": {f"<b>{word}</b> &lt;"},
             "en": {
                 "Abbreviations.",
+                "See",
+                "See.",
                 "See further at etymology 1.",
                 "Variant forms.",
                 "Unknown",
             },
-            "ru": {"??", "От", "От ??", "Происходит от", "Происходит от ??"},
+            "ru": {"??", "Из ??", "От", "От ??", "Происходит от", "Происходит от ??"},
         }.get(lang_src, set())
         etyms = [etym for etym in etyms if etym not in useless]
 
@@ -304,10 +309,8 @@ def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_ds
     return sorted(unique(results))
 
 
-def section_title(locale: str, section: wtp.Section) -> str:
+def section_title(section: wtp.Section) -> str:
     title = section.title
-    if locale == "de":
-        title = title.split("(")[-1].strip(" )")
     return title.replace(" ", "").lower().strip() if title else ""
 
 
@@ -316,40 +319,28 @@ def find_all_sections(
 ) -> tuple[list[wtp.Section], list[tuple[str, wtp.Section]]]:
     """Find all sections holding definitions."""
     parsed = wtp.parse(code)
-    all_sections = []
+    all_sections: list[tuple[str, wtp.Section]] = []
     level = lang.section_level[lang_dst]
+    head_sections = tuple(hs.replace(" ", "") for hs in lang.head_sections[lang_dst])
 
     # Add fake section for etymology if in the leading part
     if lang_src == "ca":
-        etyl_data = etyl_data_section = leading_lines = ""
         etyl_l_sections = lang.etyl_section[lang_dst]
+        for leading_part in parsed.get_sections(include_subsections=False, level=level):
+            if section_title(leading_part) not in head_sections:
+                continue
 
-        leading_part = parsed.get_sections(include_subsections=False, level=level)
-        if leading_part:
-            leading_lines = leading_part[0].contents.split("\n")
-
-        for etyl_l_section in etyl_l_sections:
-            for line in leading_lines:
-                if line.startswith(etyl_l_section):
-                    etyl_data = line
-                    etyl_data_section = etyl_l_section
-                    break
-
-        if etyl_data:
-            all_sections.append(
+            all_sections.extend(
                 (
-                    etyl_data_section,
-                    wtp.Section(f"=== {etyl_data_section} ===\n{etyl_data}"),
+                    etyl_l_sections[0],
+                    wtp.Section(f"=== {etyl_l_sections[0]} ===\n{line}"),
                 )
+                for line in leading_part.contents.split("\n")
+                if line.startswith(etyl_l_sections)
             )
 
     # Get interesting top sections
-    head_sections = tuple(hs.replace(" ", "") for hs in lang.head_sections[lang_dst])
-    top_sections = [
-        section
-        for section in parsed.get_sections(level=level)
-        if section_title(lang_dst, section).startswith(head_sections)
-    ]
+    top_sections = [section for section in parsed.get_sections(level=level) if section_title(section) in head_sections]
 
     # Get all sections without any filtering
     all_sections.extend(
@@ -366,12 +357,19 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     """Find the correct section(s) holding the current locale definition(s)."""
     ret = defaultdict(list)
     wanted = lang.sections[lang_dst]
+    etyl_section = lang.etyl_section[lang_dst]
     top_sections, all_sections = find_all_sections(code, lang_src, lang_dst)
+    current_pos = ""
     for title, section in all_sections:
         title = title.lower()
+
+        if lang_dst == "de" and section.level == 3:
+            current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
+            continue
+
         # Filter on interesting sections
         if title.startswith(wanted):
-            ret[title].append(section)
+            ret[current_pos if lang_dst == "de" and title not in etyl_section else title].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
         elif DEBUG_SECTIONS == title:
@@ -460,6 +458,35 @@ def adjust_wikicode(code: str, locale: str) -> str:
     ''
     >>> adjust_wikicode("<!--\nsco\n-->", "it")
     ''
+
+    >>> adjust_wikicode("<ref name=oed/>Modelled<ref>Gerhard</ref> English<ref name=oed>Press.</ref>", "en")
+    'Modelled English'
+    >>> adjust_wikicode('From {{uder|en|la|Augeas}} {{suffix|en||an}}. {{w|Augeas}} is a figure in Greek mythology whose stables were never cleaned until {{w|Hercules}} was given the task of cleaning them.<ref name="AT">\n''Ariadne’s Thread: A Guide to International Tales Found in Classical Literature'' by William F. Hansen (2002; [http://www.cornellpress.cornell.edu/cup_detail.taf?ti_id=3674 Cornell University Press]; {{ISBN|9780801475726}}, 9780801436703), [http://books.google.co.uk/books?id=ezDlXl7gP9oC&pg=PA160&dq=%22Augean+stables%22&ei=ZAtOSoPJIY6-yQTn9ezvAg page 160]<br>  ''Herakles Cleans the Augean Stables''<br>  One of the best-known stories attached to Herakles tells how in one day he removed the dung from King Augeias’s cattle yard, which had not been cleaned in years.</ref>', "en")
+    'From {{uder|en|la|Augeas}} {{suffix|en||an}}. {{w|Augeas}} is a figure in Greek mythology whose stables were never cleaned until {{w|Hercules}} was given the task of cleaning them.'
+    >>> adjust_wikicode("<ref>{{Import:CFC}}</ref>", "en")
+    ''
+    >>> adjust_wikicode("<ref>{{Import:CFC}}</ref>bla bla bla <ref>{{Import:CFC}}</ref>", "en")
+    'bla bla bla '
+    >>> adjust_wikicode("<ref>{{Lit-Pfeifer: Etymologisches Wörterbuch|A=8}}, Seite 1551, Eintrag „Wein“<br />siehe auch: {{Literatur | Online=zitiert nach {{GBS|uEQtBgAAQBAJ|PA76|Hervorhebung=Wein}} | Autor=Corinna Leschber| Titel=„Wein“ und „Öl“ in ihren mediterranen Bezügen, Etymologie und Wortgeschichte | Verlag=Frank & Timme GmbH | Ort= | Jahr=2015 | Seiten=75–81 | Band=Band 24 von Forum: Rumänien, Culinaria balcanica, herausgegeben von Thede Kahl, Peter Mario Kreuter, Christina Vogel | ISBN=9783732901388}}.", "en")
+    ''
+    >>> adjust_wikicode('<ref name="CFC" />', "en")
+    ''
+    >>> adjust_wikicode('<ref name="CFC">{{Import:CFC}}</ref>', "en")
+    ''
+    >>> adjust_wikicode('<ref name="CFC">{{CFC\\n|foo}}</ref>', "en")
+    ''
+    >>> adjust_wikicode("<ref>D'après ''Dictionnaire du tapissier : critique et historique de l’ameublement français, depuis les temps anciens jusqu’à nos jours'', par J. Deville, page 32 ({{Gallica|http://gallica.bnf.fr/ark:/12148/bpt6k55042642/f71.image}})</ref>", "en")
+    ''
+    >>> adjust_wikicode("<ref>", "en")
+    ''
+    >>> adjust_wikicode("</ref>", "en")
+    ''
+    >>> adjust_wikicode('<ref name="Marshall 2001"><sup>he</sup></ref>', "en")
+    ''
+    >>> adjust_wikicode('a<references></references>b', "fr")
+    'ab'
+    >>> adjust_wikicode('a<references>xcv</references>b', "fr")
+    'ab'
     """
 
     # Namespaces (moved from `utils.clean()` to be able to filter on multiple lines)
@@ -501,6 +528,17 @@ def adjust_wikicode(code: str, locale: str) -> str:
 
     # {{!}} → "|"
     # code = code.replace("{{!}}", "|")
+
+    # <ref name="CFC"/> → ''
+    code = re.sub(r"<ref[^>]*/>", "", code)
+    # <ref>foo → ''
+    # <ref>foo</ref> → ''
+    # <ref name="CFC">{{Import:CFC}}</ref> → ''
+    # <ref name="CFC"><tag>...</tag></ref> → ''
+    code = re.sub(r"<ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)", "", code)
+    # <ref> → ''
+    # </ref> → ''
+    code = code.replace("<ref>", "").replace("</ref>", "")
 
     func: Callable[[str, str], str] = lang.adjust_wikicode[locale]
     return func(code, locale)
@@ -634,8 +672,19 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
 def save(output: Path, words: Words) -> None:
     """Persist data."""
+
+    if not words:
+        log.warning("No words to save.")
+        return
+
+    class EnhancedJSONEncoder(json.JSONEncoder):
+        def default(self, o: object) -> Any:
+            if dataclasses.is_dataclass(o):
+                return dataclasses.asdict(o)  # type: ignore[arg-type]
+            return super().default(o)
+
     with output.open(mode="w", encoding="utf-8") as fh:
-        json.dump(words, fh, ensure_ascii=False, indent=4, sort_keys=True)
+        json.dump(words, fh, cls=EnhancedJSONEncoder, ensure_ascii=False, indent=4, sort_keys=True)
     log.info("Saved %s words into %s", f"{len(words):,}", output)
 
 
@@ -655,8 +704,7 @@ def get_output_file(source_dir: Path, snapshot: str) -> Path:
 
 
 def hook_after(words: Words) -> None:
-    if not words:
-        raise ValueError("Empty dictionary?!")
+    pass
 
 
 def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
@@ -677,9 +725,11 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
     workers = workers or multiprocessing.cpu_count()
     hook_after(words := render(in_words, locale, workers))
 
-    output = get_output_file(source_dir, input_file.stem.split("-")[-1])
-    save(output, words)
+    ret = 1
+    if words:
+        output = get_output_file(source_dir, input_file.stem.split("-")[-1])
+        save(output, words)
+        ret = 0
 
     log.info("Render done in %s!", timedelta(seconds=monotonic() - start))
-
-    return 0
+    return ret
