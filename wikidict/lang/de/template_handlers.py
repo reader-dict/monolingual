@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from ...user_functions import extract_keywords_from, italic, strong
 from .abk import abk
+from .transliterator import transliterate
 
 bibel_names = {
     "Gen": "Genesis",
@@ -724,16 +725,11 @@ def render_Ut(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: 
     '<i>διάλογος (diálogos)</i>'
     >>> render_Ut("Üt", ["grc", "διαλέγομαι", "dialégesthai", "διαλέγεσθαι"], defaultdict(str))
     '<i>διαλέγεσθαι (dialégesthai)</i>'
-
-    TODO: enable back with #1746
-    >> render_Ut("Üt", ["bg", "карам велосипед"], defaultdict(str))
+    >>> render_Ut("Üt", ["bg", "карам велосипед"], defaultdict(str))
     '<i>карам велосипед (karam velosiped)</i>'
     """
     lang = parts.pop(0)
     phrase = parts[0] if len(parts) < 3 else parts[2]
-
-    def transliterate(a: str, b: str) -> str:
-        return ""
 
     phrase += f" ({parts[1] if len(parts) > 1 else transliterate(lang, parts[0])})"
     return italic(phrase)
