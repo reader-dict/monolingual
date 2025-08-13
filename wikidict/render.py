@@ -363,13 +363,13 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     for title, section in all_sections:
         title = title.lower()
 
-        if lang_dst == "de" and section.level == 3:
+        if lang_src == "de" and section.level == 3:
             current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
             continue
 
         # Filter on interesting sections
         if title.startswith(wanted):
-            ret[current_pos if lang_dst == "de" and title not in etyl_section else title].append(section)
+            ret[current_pos if lang_src == "de" and title not in etyl_section else title].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
         elif DEBUG_SECTIONS == title:
