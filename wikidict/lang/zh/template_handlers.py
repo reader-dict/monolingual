@@ -473,11 +473,16 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
 
     text: list[str] = []
 
-    if from_text := data["from"]:
-        text.append(f"源自{from_text}")
-    if from_text := data["from2"]:
-        text.append(f"和{from_text}")
-    if data["from"] or data["from2"]:
+    # Note: the order is important
+    has_from_attr = False
+    for attr, prefix in [
+        ("from", "源自"),
+        ("from2", "和"),
+    ]:
+        if val := data[attr]:
+            text.append(f"{prefix}{val}")
+            has_from_attr = True
+    if has_from_attr:
         text.append("的")
 
     if gender := data["g"]:
@@ -486,46 +491,21 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
             {"unisex": "通性", "common gender": "通性", "c": "通性", "m": "男性", "f": "女性"}.get(gender, "性別不明")
         )
 
-    if tpl == "foreign name":
-        if parts:
-            # Note: `type` is one of https://zh.wiktionary.org/w/index.php?title=Module:Names&oldid=9294843#L-54--L-57
-            text.extend(
-                (data["type"], "於", concat([langs[part] for part in parts.pop(0).split(",")], "、", last_sep="和"))
-            )
-        if parts:
-            text.append(f"，<i>{parts.pop(0)}</i>")
-    else:
-        if parts:
-            text.append(parts[0])
-        text.append("姓氏")
+    if parts:
+        text.append(parts[0])
+    text.append("姓氏")
 
-    if xlit := data["xlit"]:
-        text.append(f"，{xlit}")
+    # Note: the order is important
+    for attr, prefix in [
+        ("xlit", ""),
+        ("m", "陽性等價詞 "),
+        ("f", "陰性等價詞 "),
+        ("eq", "等價於英語"),
+    ]:
+        if val := data[attr]:
+            text.append(f"，{prefix}{val}")
 
-    if m := data["m"]:
-        text.append(f"，陽性等價詞 {m}")
-
-    if f := data["f"]:
-        text.append(f"，陰性等價詞 {f}")
-
-    if eq := data["eq"]:
-        text.append(f"，等價於英語{eq}")
-
-    final = "".join(text)
-
-    if tpl == "foreign name" and parts:
-        more: list[str] = []
-
-        for part in parts:
-            lang, trad = part.split(":", 1) if ":" in part else (parts[0], part)
-            trad = f"<i>{trad}</i>"
-            if trans := transliterate(lang, trad):
-                trad += f" ({trans})"
-            more.append(trad)
-
-        final += f"，{concat(more, '，', last_sep='和')}"
-
-    return final
+    return "".join(text)
 
 
 def render_zh_altname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
