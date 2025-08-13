@@ -867,7 +867,7 @@ langs = {
     "blg": "Balau",
     "blh": "Kuwaa",
     "bli": "Bolia",
-    "blj": "Bolongan",
+    "blj": "布隆岸語",
     "blk": "勃歐語",
     "bll": "Biloxi",
     "blm": "Beli",
