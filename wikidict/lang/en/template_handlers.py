@@ -1543,9 +1543,9 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     'cod'
 
     >>> render_foreign_derivation("m", ["en", "more"], defaultdict(str))
-    '<b>more</b>'
+    '<i>more</i>'
     >>> render_foreign_derivation("m", ["en", "w:Group of Eight"], defaultdict(str))
-    '<b>Group of Eight</b>'
+    '<i>Group of Eight</i>'
     >>> render_foreign_derivation("m", ["enm", "us"], defaultdict(str))
     '<i>us</i>'
     >>> render_foreign_derivation("m", ["enm", "w:Group of Eight"], defaultdict(str))
@@ -1560,6 +1560,8 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     'عَرِيق (<i>ʕarīq</i>, “deep-rooted”)'
     >>> render_foreign_derivation("m", ["grc", "Τ//τ"], defaultdict(str, {"tr": "-"}))
     '<i>Τ / τ</i>'
+    >>> render_foreign_derivation("m", ["ru", "Па́влов"], defaultdict(str))
+    '<i>Па́влов</i> (<i>Pávlov</i>)'
 
     >>> render_foreign_derivation("langname-mention", ["en", "-"], defaultdict(str))
     'English'
@@ -1568,13 +1570,6 @@ def render_foreign_derivation(tpl: str, parts: list[str], data: defaultdict[str,
     >>> render_foreign_derivation("m+", ["ja", "力車"], defaultdict(str, {"tr":"rikisha"}))
     'Japanese 力車 (<i>rikisha</i>)'
     """
-    # Short path for the {{m|en|WORD}} template
-    if tpl in {"m", "m-lite"} and len(parts) == 2 and not data:
-        word = parts[1]
-        if word.startswith("w:"):
-            word = word[2:]
-        return strong(word) if parts[0] in {"en", "mul"} else italic(word)
-
     mentions = (
         "back-formation",
         "backformation",

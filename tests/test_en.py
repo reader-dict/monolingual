@@ -15,7 +15,7 @@ from wikidict.utils import process_templates
             ["/æb/"],
             [],
             [
-                "Abbreviation of <b>abscess</b>.",
+                "Abbreviation of <i>abscess</i>.",
                 "From the spelling books and the fact that it was the first of the letter combinations.",
             ],
             {
@@ -50,7 +50,7 @@ from wikidict.utils import process_templates
             [],
             [
                 "Learned borrowing from Latin <i>cum</i> (“with”).",
-                'Variant of <b>come</b>, attested (in the basic sense "come, move from further to nearer, arrive") since Old English. The sexual sense of <i>come</i> is attested since the 1650s. In this sense and spelling, attested from 1970s.',
+                'Variant of <i>come</i>, attested (in the basic sense "come, move from further to nearer, arrive") since Old English. The sexual sense of <i>come</i> is attested since the 1650s. In this sense and spelling, attested from 1970s.',
             ],
             {
                 "Adjective": ["<i>Clipping of</i> <b>cumulative</b>"],
@@ -76,7 +76,7 @@ from wikidict.utils import process_templates
             ["/əˈfɪʃənt/", "/ɪˈfɪʃənt/"],
             [],
             [
-                "1398, “making,” from Old French, from Latin <i>efficientem</i>, nominative <i>efficiēns</i>, participle of <i>efficere</i> (“work out, accomplish”) (see <b>effect</b>). Meaning “productive, skilled” is from 1787. <i>Efficiency apartment</i> is first recorded 1930, American English."
+                "1398, “making,” from Old French, from Latin <i>efficientem</i>, nominative <i>efficiēns</i>, participle of <i>efficere</i> (“work out, accomplish”) (see <i>effect</i>). Meaning “productive, skilled” is from 1787. <i>Efficiency apartment</i> is first recorded 1930, American English."
             ],
             {
                 "Adjective": [
@@ -122,7 +122,7 @@ from wikidict.utils import process_templates
             [],
             [
                 "From Middle English <i>Mars</i>, from Latin <i>Mārs</i> (“god of war”), from older Latin (older than 75 <small>B.C.E.</small>) <i>Māvors</i>.",
-                "After Franklin Clarence Mars, who founded the company that produces these chocolate bars. His surname is possibly a variant of <b>Marrs</b>, itself from <b>Marr</b> with post-medieval excrescent <i>-s</i>.",
+                "After Franklin Clarence Mars, who founded the company that produces these chocolate bars. His surname is possibly a variant of <i>Marrs</i>, itself from <i>Marr</i> with post-medieval excrescent <i>-s</i>.",
                 "From Ukrainian <i>Марс</i>.",
             ],
             {
@@ -220,8 +220,8 @@ from wikidict.utils import process_templates
             ],
             {
                 "Adverb": [
-                    "<i>With a comparative or with <b>more</b> and a verb phrase, establishes a correlation with one or more other such comparatives.</i>",
-                    "<i>With a comparative, and often with <b>for it</b>, indicates a result more like said comparative. This can be negated with <b>none</b>.</i>",
+                    "<i>With a comparative or with <i>more</i> and a verb phrase, establishes a correlation with one or more other such comparatives.</i>",
+                    "<i>With a comparative, and often with <i>for it</i>, indicates a result more like said comparative. This can be negated with <i>none</i>.</i>",
                     "<i>(with a superlative adjective)</i> Beyond all others.",
                 ],
                 "Article": [
@@ -283,7 +283,7 @@ from wikidict.utils import process_templates
                 "Noun": ["<i>(rare)</i> <i>Alternative form of</i> <b>u's</b>."],
                 "Pronoun": [
                     "<i>(personal)</i> Me and at least one other person; the objective case of <b>we</b>.",
-                    "<i>(Commonwealth, colloquial, chiefly with <b>give</b>)</i> Me.",
+                    "<i>(Commonwealth, colloquial, chiefly with <i>give</i>)</i> Me.",
                     "<i>(Northern England)</i> Our.",
                     "<i>(Northumbria)</i> Me (in all contexts).",
                 ],
@@ -362,13 +362,13 @@ from wikidict.utils import process_templates
             ["/wəɹd/", "/wɜːd/", "/wɝd/"],
             [],
             [
-                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <b>vrata</b>.",
+                "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>*word</i>, from Proto-Germanic <i>*wurdą</i>, from Proto-Indo-European <i>*wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <i>vrata</i>.",
                 "Variant of <i>worth</i> (“to become, turn into, grow, get”), from Middle English <i>worthen</i>, from Old English <i>weorþan</i> (“to turn into, become, grow”), from Proto-West Germanic <i>*werþan</i>, from Proto-Germanic <i>*werþaną</i> (“to turn, turn into, become”). More at worth § Verb.",
             ],
             {
                 "Interjection": [
                     '<i>(slang)</i> Truth, indeed, that is the truth! The shortened form of the statement "My word is my bond."',
-                    "<i>(slang, emphatic, stereotypically, African-American Vernacular)</i> An abbreviated form of <b>word up</b>; a statement of the acknowledgment of fact with a hint of nonchalant approval.",
+                    "<i>(slang, emphatic, stereotypically, African-American Vernacular)</i> An abbreviated form of <i>word up</i>; a statement of the acknowledgment of fact with a hint of nonchalant approval.",
                 ],
                 "Noun": [
                     "<i>(semantics)</i> The smallest unit of language that has a particular meaning and can be expressed by itself; the smallest discrete, meaningful unit of language. (<i>contrast <i>morpheme</i>.</i>)",
