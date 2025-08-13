@@ -3806,6 +3806,12 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     '<i>A female surname, meaning “daughter of Пётр”</i>'
     >>> render_surname("surname", ["en", "male"], defaultdict(str, {"from":"occupations", "xlit": "Petrovich", "parent": "Пётр<eq:Peter>", "eq": "Peter"}))
     '<i>A male surname, Petrovich, originating as an occupation, meaning “son of Пётр [=Peter]”, equivalent to English Peter</i>'
+    >>> render_surname("surname", ["en"], defaultdict(str, {"g": "f", "m": "Pavlov", "from": "Russian"}))
+    '<i>A female surname from Russian, masculine equivalent Pavlov</i>'
+    >>> render_surname("surname", ["en"], defaultdict(str, {"from": "Irish < patronymics"}))
+    '<i>A surname from Irish [in turn originating as a patronymic]</i>'
+    >>> render_surname("surname", ["en"], defaultdict(str, {"from": "Irish &lt; patronymics"}))
+    '<i>A surname from Irish [in turn originating as a patronymic]</i>'
 
     >>> render_surname("patronymic", ["en", "male"], defaultdict(str, {"from":"occupations", "xlit": "Petrovich", "parent": "Пётр<eq:Peter>", "eq": "Peter"}))
     '<i>a male patronymic, Petrovich, originating as an occupation, meaning “son of Пётр [=Peter]”, equivalent to English Peter</i>'
@@ -3854,11 +3860,29 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     elif from_value == "the Bible":
         from_text = "originating from the Bible"
     elif from_value:
+        from_value = from_value.replace("&lt;", "<")
+        if "<" in from_value:
+            a, b = from_value.split("<", 1)
+            b = b.strip().removesuffix("s")
+            from_value = f"{a.strip()} [in turn originating as a {b}]"
         from_text = f"from {from_value}"
 
     text: list[str] = []
 
     starter = f"{art} "
+    if gender := data["g"]:
+        # Source: https://en.wiktionary.org/w/index.php?title=Module:names&oldid=85719049#L-839--L-853
+        gender = {
+            "unisex": "common-gender",
+            "common gender": "common-gender",
+            "common-gender": "common-gender",
+            "c": "common-gender",
+            "m": "male",
+            "male": "male",
+            "f": "female",
+            "female": "female",
+        }.get(gender, "unknown-gender")
+        starter += f"{gender} "
     if parts and parts[0] and tpl != "foreign name":
         starter += f"{parts[0]} "
     starter += data["type"] or {"foreign name": "surname"}.get(tpl, tpl)
@@ -3873,6 +3897,12 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         if from_text:
             starter += f" {from_text}"
         text.append(starter)
+
+    if m := data["m"]:
+        text.append(f"masculine equivalent {m}")
+
+    if f := data["f"]:
+        text.append(f"female equivalent {f}")
 
     if parent := data["parent"]:
         kind = {
@@ -3893,11 +3923,7 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
         more: list[str] = []
 
         for part in parts[1:]:
-            if ":" in part:
-                lang, trad = part.split(":", 1)
-            else:
-                lang, trad = parts[0], part
-
+            lang, trad = part.split(":", 1) if ":" in part else (parts[0], part)
             trad = f"<b>{trad}</b>"
             if trans := transliterate(lang, trad):
                 trad += f" ({trans})"
