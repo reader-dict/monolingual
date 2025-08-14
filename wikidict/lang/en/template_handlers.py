@@ -228,7 +228,7 @@ def misc_variant(start: str, tpl: str, parts: list[str], data: defaultdict[str, 
     if p and starter:
         starter += " of"
     phrase = starter if data["nocap"] else starter.capitalize()
-    if p != "-":
+    if p not in {"", "-"}:
         if phrase:
             phrase += " "
         phrase += italic(p.split("#", 1)[0])
@@ -270,6 +270,16 @@ def render_accent(tpl: str, parts: list[str], data: defaultdict[str, str], *, wo
     """
     text = labels.get(parts[-1], parts[-1])
     return italic(text) if text.startswith("(") else term(text)
+
+
+def render_acronym(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_acronym("acronym", [], defaultdict(str))
+    'Acronym'
+    >>> render_acronym("acronym", ["en", "north of Houston"], defaultdict(str))
+    'Acronym of <i>north of Houston</i>'
+    """
+    return misc_variant("acronym", tpl, parts, data, word=word)
 
 
 def render_aka(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -4202,6 +4212,7 @@ def render_zh_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, word
 template_mapping = {
     "&lit": render_lit,
     "abbreviated": render_abbreviated,
+    "acronym": render_acronym,
     "aka": render_aka,
     "ante2": render_ante2,
     "aphetic form": render_aphetic_form,
