@@ -210,7 +210,6 @@ templates_ignored = (
     "sid",
     "swp",
     "syndiff",
-    "synonyms",
     "t-needed",
     "tea room",
     "tea room sense",
@@ -361,6 +360,8 @@ templates_multi = {
     "station code": 'f"<i>(rail transport) The station code of</i> <b>{parts[2] or parts[1]}</b> <i>in {parts[3]}</i>."',
     # {{syc-root|ܪ ܩ ܥ}}
     "syc-root": "parts[-1]",
+    # {{synonyms|powerful}}
+    "synonyms": "'Synonym' + ('s' if len(parts) > 3 else '') + ': ' + concat(parts[2:], ', ')",
     # {{t|mi|pōhutukawa}}
     "t": "parts[-1]",
     # {{taxfmt|Gadus macrocephalus|species|ver=170710}}
@@ -408,6 +409,7 @@ templates_multi["small caps"] = templates_multi["smallcaps"]
 templates_multi["smc"] = templates_multi["smallcaps"]
 templates_multi["sqb"] = templates_multi["sqbrace"]
 templates_multi["staco"] = templates_multi["station code"]
+templates_multi["syn"] = templates_multi["synonyms"]
 templates_multi["taxlink"] = templates_multi["taxfmt"]
 templates_multi["taxlink2"] = templates_multi["taxfmt"]
 templates_multi["taxlinknew"] = templates_multi["taxfmt"]

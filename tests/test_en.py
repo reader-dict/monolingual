@@ -474,6 +474,8 @@ def test_parse_word(
         ("{{sub|KI}}", "<sub>KI</sub>"),
         ("{{sup|KI}}", "<sup>KI</sup>"),
         ("{{synonym of|en|drip tip}}", "<i>Synonym of</i> <b>drip tip</b>"),
+        ("{{syn|en|a}}", "Synonym: a"),
+        ("{{synonyms|en|a|b}}", "Synonyms: a, b"),
         ("{{taxfmt|Gadus macrocephalus|species|ver=170710}}", "<i>Gadus macrocephalus</i>"),
         ("{{taxlink|Gadus macrocephalus|species|ver=170710}}", "<i>Gadus macrocephalus</i>"),
         ("{{uder|en|fro|jargon}}", "Old French <i>jargon</i>"),
