@@ -5,6 +5,7 @@ Transliterator used across multiple templates.
 from .ar import transliterate as transliterate_ar
 from .bn import transliterate as transliterate_bn
 from .fa import transliterate as transliterate_fa
+from .grc import transliterate as transliterate_grc
 from .gu import transliterate as transliterate_gu
 from .hi import transliterate as transliterate_hi
 from .ml import transliterate as transliterate_ml
@@ -16,6 +17,7 @@ transliterations = {
     "ar": transliterate_ar,
     "bn": transliterate_bn,
     "fa": transliterate_fa,
+    "grc": transliterate_grc,
     "gu": transliterate_gu,
     "hi": transliterate_hi,
     "ml": transliterate_ml,
@@ -74,6 +76,28 @@ for sublang in {
     "xnr",
 }:
     transliterations[sublang] = transliterations["hi"]
+for sublang in {
+    "cel-bry-pro",
+    "cel-gau",
+    "cms",
+    "ecr",
+    "egx-dem",
+    "ine-pae",
+    "itc-psa",
+    "osc",
+    "scx",
+    "txh",
+    "xbc",
+    "xdc",
+    "xga",
+    "xln",
+    "xly",
+    "xme-old",
+    "xmk",
+    "xpg",
+    "xpu",
+}:
+    transliterations[sublang] = transliterations["grc"]
 for sublang in {"bfq", "brw", "dra-bry", "kfa", "kfh", "kok", "mjr", "mjv", "tcy", "udg", "yea"}:
     transliterations[sublang] = transliterations["ml"]
 
@@ -88,6 +112,8 @@ def transliterate(locale: str, text: str) -> str:
     'cãdni cok'
     >>> transliterate("fa", "سَرْاَنْجَام")
     'sar-anjām'
+    >>> transliterate("grc", "Λίμνου")
+    'Límnou'
     >>> transliterate("gu", "અમ્રાઈવાડી")
     'amrāīvāḍī'
     >>> transliterate("hi", "संस्कार")

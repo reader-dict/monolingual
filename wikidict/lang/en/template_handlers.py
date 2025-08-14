@@ -940,7 +940,7 @@ def render_descendant(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_descendant("desc", ["gl", "esmiuzar"], defaultdict(str, {"nolb": "1"}))
     'esmiuzar'
     >>> render_descendant("desc", ["grc", "ἄπιος"], defaultdict(str, {"t": "pear tree"}))
-    'Ancient Greek: ἄπιος (“pear tree”)'
+    'Ancient Greek: ἄπιος (ápios, “pear tree”)'
     """
     lang = parts.pop(0)
     text = ""
@@ -3050,7 +3050,7 @@ def render_name_translit(tpl: str, parts: list[str], data: defaultdict[str, str]
     >>> render_name_translit("name translit", ["en", "bg, mk,  sh ", "Никола"], defaultdict(str, {"type":"male given name", "eq": "Nicholas"}))
     '<i>a transliteration of the Bulgarian, Macedonian or Serbo-Croatian male given name</i> <b>Никола</b>, <i>equivalent to Nicholas</i>'
     >>> render_name_translit("name translit", ["en", "grc", "Ἀέτιος"], defaultdict(str, {"type":"male given name", "xlit": "Aetius"}))
-    '<i>a transliteration of the Ancient Greek male given name</i> <b>Ἀέτιος</b>, <i><b>Aetius</b></i>'
+    '<i>a transliteration of the Ancient Greek male given name</i> <b>Ἀέτιος</b> (<i>Aétios</i>), <i><b>Aetius</b></i>'
     >>> render_name_translit("name translit", ["zh", "ru", "Хрущёв<xlit:Khrushchev>"], defaultdict(str, {"type": "surname"}))
     '<i>a transliteration of the Russian surname</i> <b>Хрущёв</b> (<i>Xruščóv</i>), <i>Khrushchev</i>'
     """
@@ -3821,7 +3821,7 @@ def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     >>> render_surname("foreign name", ["en", "pl", "Wałęsa"], defaultdict(str, {"type":"surname"}))
     '<i>a surname in Polish</i>, <b>Wałęsa</b>'
     >>> render_surname("foreign name", ["it", "grc", "Σωκράτης"], defaultdict(str, {"type":"male given name"}))
-    '<i>a male given name in Ancient Greek</i>, <b>Σωκράτης</b>'
+    '<i>a male given name in Ancient Greek</i>, <b>Σωκράτης</b> (<b>Sōkrátēs</b>)'
     >>> render_surname("foreign name", ["en", "la", "Aetius"], defaultdict(str, {"type":"male given name"}))
     '<i>a male given name in Latin</i>, <b>Aetius</b>'
 
