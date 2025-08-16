@@ -136,7 +136,7 @@ from wikidict.utils import process_templates
                     "<i>(Roman mythology)</i> The Roman god of war.",
                     "<i>(poetic)</i> War; a personification of war.",
                     "<i>Short for</i> <b>Mars bar</b>, a brand of chocolate bar with caramel and nougat filling.",
-                    "A village in Semenivka, Novhorod-Siverskyi, Chernihiv, Ukraine",
+                    # "A village in Semenivka, Novhorod-Siverskyi, Chernihiv, Ukraine",
                 ],
             },
             [],
