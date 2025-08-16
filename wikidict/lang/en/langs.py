@@ -6041,7 +6041,6 @@ langs = {
     "nsy": "Nasal",
     "nsz": "Nisenan",
     "ntd": "Northern Tidung",
-    "nte": "Nathembo",
     "ntg": "Ngantangarra",
     "nti": "Natioro",
     "ntj": "Ngaanyatjarra",
@@ -9898,7 +9897,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,893
+}  # 9,892
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)
