@@ -2,6 +2,7 @@
 
 import re
 
+from ...lang import defaults
 from ...user_functions import unique
 
 # Float number separator
@@ -302,6 +303,17 @@ def last_template_handler(
 random_word_url = "https://it.wiktionary.org/wiki/Speciale:RandomRootpage"
 
 
+START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
+PATTERNS = [
+    # plurale di [[-ectomia]]
+    # terza persona plurale del congiuntivo presente di [[brillantare]]
+    rf"{START}.+(?:femminile|singolare|plurale)[^[]+\[\[([^\]]+)\]\].*",
+    # participio presente di [[amare]]
+    # participio passato di [[amare]]
+    rf"{START}participio (?:passato|presente)[^[]+\[\[([^\]]+)\]\].*",
+]
+
+
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
@@ -361,22 +373,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Variants
     #
 
-    # `# plurale di [[-ectomia]]` → `{{flexion|-ectomia}}`
-    # `# terza persona plurale del congiuntivo presente di [[brillantare]]` → `{{flexion|brillantare}}`
-    code = re.sub(
-        r"^#\s*(.+(?:femminile|singolare|plurale).+\[\[([^\]]+)\]\])",
-        r"# {{flexion|\2}}",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # `# participio presente di [[amare]] → `{{flexion|amare}}`
-    # `# participio passato di [[amare]] → `{{flexion|amare}}`
-    code = re.sub(
-        r"^#\s*(participio (?:passato|presente) di \[\[([^\]]+)\]\])",
-        r"# {{flexion|\2}}",
-        code,
-        flags=re.MULTILINE,
-    )
+    for pattern in PATTERNS:
+        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
 
     return code

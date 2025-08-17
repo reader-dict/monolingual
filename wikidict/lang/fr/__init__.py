@@ -798,7 +798,22 @@ def last_template_handler(
 random_word_url = "http://tools.wmflabs.org/anagrimes/hasard.php?langue=fr"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+ALL_FORMS = [
+    "féminin de",
+    "masculin et féminin pluriel",
+    "masculin ou féminin pluriel",
+    "pluriel d",
+    "pluriel habituel",
+    "pluriel inhabituel",
+]
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    forms: str = "|".join(ALL_FORMS),
+    start: str = rf"^(?:{'|'.join(section_patterns)})\s*'*",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode('<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")
@@ -862,65 +877,23 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Variants
     #
 
-    start = rf"^(?:{'|'.join(section_patterns)})\s*'+"
-
-    # `# ''Féminin singulier de'' {{lien|terne|fr}}.` → `# {flexion|terne}}`
-    # `# ''Féminin (singulier) de'' {{lien|terne|fr}}.` → `# {flexion|terne}}`
-    code = re.sub(
+    for pattern in [
+        # ''Féminin singulier de'' {{lien|terne|fr}}.
+        # ''Féminin (singulier) de'' {{lien|terne|fr}}.
         rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # `# ''Participe passé masculin singulier du verbe'' [[pouvoir]].` → `# {flexion|pouvoir}}`
-    # `# ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].` → `# {flexion|pouvoir}}`
-    code = re.sub(
+        # ''Participe passé masculin singulier du verbe'' [[pouvoir]].
+        # ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].
         rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # `# ''Pluriel de ''[[anisophylle]]''.''` → `# {{flexion|anisophylle}}`
-    forms = "|".join(
-        [
-            "féminin de",
-            "masculin et féminin pluriel",
-            "masculin ou féminin pluriel",
-            "pluriel d",
-            "pluriel habituel",
-            "pluriel inhabituel",
-        ]
-    )
-    code = re.sub(
+        # ''Pluriel de ''[[anisophylle]]''.''
         rf"{start}(?:{forms}).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-    # `# ''Pluriel de'' {{lien|anisophylle|fr}}.` → `# {{flexion|anisophylle}}`
-    code = re.sub(
+        # ''Pluriel de'' {{lien|anisophylle|fr}}.
         rf"{start}(?:{forms}).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # `# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].` → `# {flexion|venir}}`
-    # `''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].` → `# {flexion|manger}}`
-    code = re.sub(
+        # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
+        # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
         rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-    # `# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.` → `# {flexion|venir}}`
-    code = re.sub(
+        # ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.
         rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
+    ]:
+        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
 
     return code

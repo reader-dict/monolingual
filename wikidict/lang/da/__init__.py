@@ -346,6 +346,7 @@ def adjust_wikicode(
     all_langs_iso: str = "|".join(langs),
     all_langs_name: str = "|".join(langs.values()),
     forms: str = "|".join(ALL_FORMS),
+    start: str = rf"^(?:{'|'.join(section_patterns)})\s*",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
@@ -427,30 +428,14 @@ def adjust_wikicode(
     # Variants
     #
 
-    start = rf"^(?:{'|'.join(section_patterns)})\s*"
-
-    # `# Pluralis af [[tale#Substantiv|tale]]` → `# {{flexion|tale}}`
-    code = re.sub(
+    for pattern in [
+        # Pluralis af [[tale#Substantiv|tale]]
         rf"{start}(?:{forms})\s+\[\[([^\]#|]+)(?:[#|].+)?]].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # `# {{flertal af}} '''[[tale]]'''` → `# {{flexion|tale}}`
-    code = re.sub(
+        # {{flertal af}} '''[[tale]]'''
         rf"{start}\{{\{{(?:{forms})\}}\}} '*\[\[([^\]]+).*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # `# {{flertal af}} {{l|da|tale}}` → `# {{flexion|tale}}`
-    code = re.sub(
+        # `# {{flertal af}} {{l|da|tale}}
         rf"{start}.*\{{\{{(?:{forms})\}}\}}\s+(\{{\{{[^}}]+\}}\}}).*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
+    ]:
+        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
 
     return code

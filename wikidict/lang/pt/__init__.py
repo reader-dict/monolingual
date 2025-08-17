@@ -310,6 +310,21 @@ def last_template_handler(
 
 random_word_url = "https://pt.wiktionary.org/wiki/Especial:RandomRootpage"
 
+START = rf"^(?:{'|'.join(section_patterns)})\s*"
+PATTERNS = [
+    # [[plural]] [[de]] '''[[anão]]'''
+    # plural de [[anão]]
+    # feminino plural de [[anão]]
+    rf"{START}\[*(?:feminino)?\s*plural.+'*\[\[([^\]]+)+\].*",
+    # {{f}} de [[objetivo]]
+    rf"{START}\{{\{{f\}}\}} de \[\[([^\]]+)+\].*",
+    # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
+    # [[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''
+    rf"{START}\[?\[?.+ (?:da|do) \[?\[?.+ do \[?\[?.+ do \[*verbo\]* '*\[\[([^\]]+)+\].*",
+    # [[particípio]] do verbo '''[[abotecar]]'''
+    rf"{START}\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^\]]+)+\].*",
+]
+
 
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
@@ -364,36 +379,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Variants
     #
 
-    start = rf"^(?:{'|'.join(section_patterns)})\s*"
-
-    # `# [[plural]] [[de]] '''[[anão]]'''` → `# {{flexion|anão}}`
-    # `# plural de [[anão]]` → `# {{flexion|anão}}`
-    # `# feminino plural de [[anão]]` → `# {{flexion|anão}}`
-    code = re.sub(
-        rf"{start}\[*(?:feminino)?\s*plural.+'*\[\[([^\]]+)+\].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # `# {{f}} de [[objetivo]]` → `# {{flexion|objetivo}}`
-    code = re.sub(rf"{start}\{{\{{f\}}\}} de \[\[([^\]]+)+\].*", r"# {{flexion|\1}}", code, flags=re.MULTILINE)
-
-    # `# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''` → `# {{flexion|ensimesmar}}`
-    # `#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''` → `# {{flexion|ensimesmar}}`
-    code = re.sub(
-        rf"{start}\[?\[?.+ (?:da|do) \[?\[?.+ do \[?\[?.+ do \[*verbo\]* '*\[\[([^\]]+)+\].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # `# [[particípio]] do verbo '''[[abotecar]]'''` → `# {{flexion|abotecar}}`
-    code = re.sub(
-        rf"{start}\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^\]]+)+\].*",
-        r"# {{flexion|\1}}",
-        code,
-        flags=re.MULTILINE,
-    )
+    for pattern in PATTERNS:
+        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
 
     return code
