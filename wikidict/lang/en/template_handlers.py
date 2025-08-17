@@ -4274,7 +4274,7 @@ template_mapping = {
     "pedlink": render_pedlink,
     "phonetic alphabet": render_phonetic_alphabet,
     "person": render_person,
-    "place": render_place,
+    # "place": render_place,  # Enable back with #2428
     "rebracketing": render_rebracketing,
     "RQ": render_rq,
     "SI-unit-2": render_si_unit_2,
@@ -4423,7 +4423,7 @@ template_mapping = {
     **dict.fromkeys({"surface analysis", "surface etymology", "surf"}, render_surface_analysis),
     **dict.fromkeys({"surname", "patronymic", "foreign name"}, render_surname),
     **dict.fromkeys({"syncopic form", "sync"}, render_syncopic_form),
-    **dict.fromkeys({"transclude sense", "transclude", "tcl"}, render_transclude),
+    # **dict.fromkeys({"transclude sense", "transclude", "tcl"}, render_transclude),  # Enable back with #2428
     **dict.fromkeys({"uncertain", "unc"}, render_uncertain),
     **dict.fromkeys({"univerbation", "univ"}, render_univerbation),
     **dict.fromkeys({"unknown", "unk"}, render_unknown),

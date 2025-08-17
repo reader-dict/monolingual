@@ -84,7 +84,6 @@ variant_templates = (
 
 # Some definitions are not good to keep
 definitions_to_ignore = (
-    "place",  # Remove with #2428
     "rfdef",
     "translation hub",
     "translation only",
