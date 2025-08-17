@@ -425,7 +425,7 @@ langs = {
     "asu": "阿蘇里尼語",
     "asv": "Asoa",
     "asw": "澳洲原住民手語",
-    "asx": "穆拉塔雅克",
+    "asx": "穆拉塔雅克語",
     "asy": "Yaosakor Asmat",
     "asz": "亞斯語",
     "ata": "佩勒-阿塔語",
