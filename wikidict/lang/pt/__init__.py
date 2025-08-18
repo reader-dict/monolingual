@@ -315,14 +315,14 @@ PATTERNS = [
     # [[plural]] [[de]] '''[[anão]]'''
     # plural de [[anão]]
     # feminino plural de [[anão]]
-    rf"{START}\[*(?:feminino)?\s*plural.+'*\[\[([^\]]+)+\].*",
+    r"\[*(?:feminino)?\s*plural.+'*\[\[([^\]]+)+\].*",
     # {{f}} de [[objetivo]]
-    rf"{START}\{{\{{f\}}\}} de \[\[([^\]]+)+\].*",
+    r"\{\{f\}\} de \[\[([^\]]+)+\]",
     # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
     # [[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''
-    rf"{START}\[?\[?.+ (?:da|do) \[?\[?.+ do \[?\[?.+ do \[*verbo\]* '*\[\[([^\]]+)+\].*",
+    r"\[?\[?.+ (?:da|do).+do.+do \[*verbo\]* '*\[\[([^\]]+)+\]",
     # [[particípio]] do verbo '''[[abotecar]]'''
-    rf"{START}\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^\]]+)+\].*",
+    r"\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^\]]+)+\]",
 ]
 
 
@@ -379,7 +379,13 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Variants
     #
 
-    for pattern in PATTERNS:
-        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
+    lines: list[str] = []
+    for line in code.splitlines():
+        if re.match(START, line):
+            for pattern in PATTERNS:
+                line, count = re.subn(rf"{START}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                if count:
+                    break
+        lines.append(line)
 
-    return code
+    return "\n".join(lines)

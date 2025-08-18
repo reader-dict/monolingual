@@ -307,10 +307,10 @@ START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
 PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
-    rf"{START}.+(?:femminile|singolare|plurale)[^[]+\[\[([^\]]+)\]\].*",
+    r".+(?:femminile|singolare|plurale)[^[]+\[\[([^\]]+)\]\]",
     # participio presente di [[amare]]
     # participio passato di [[amare]]
-    rf"{START}participio (?:passato|presente)[^[]+\[\[([^\]]+)\]\].*",
+    r"participio (?:passato|presente)[^[]+\[\[([^\]]+)\]\]",
 ]
 
 
@@ -373,7 +373,13 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # Variants
     #
 
-    for pattern in PATTERNS:
-        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
+    lines: list[str] = []
+    for line in code.splitlines():
+        if re.match(START, line):
+            for pattern in PATTERNS:
+                line, count = re.subn(rf"{START}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                if count:
+                    break
+        lines.append(line)
 
-    return code
+    return "\n".join(lines)

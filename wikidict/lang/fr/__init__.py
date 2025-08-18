@@ -806,14 +806,28 @@ ALL_FORMS = [
     "pluriel habituel",
     "pluriel inhabituel",
 ]
+FORMS = "|".join(ALL_FORMS)
+START = rf"^(?:{'|'.join(section_patterns)})\s*'*"
+PATTERNS = [
+    # ''Féminin singulier de'' {{lien|terne|fr}}.
+    # ''Féminin (singulier) de'' {{lien|terne|fr}}.
+    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{\{lien\|([^\|}]+)",
+    # ''Participe passé masculin singulier du verbe'' [[pouvoir]].
+    # ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].
+    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    # ''Pluriel de ''[[anisophylle]]''.''
+    rf"(?:{FORMS}).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    # ''Pluriel de'' {{lien|anisophylle|fr}}.
+    rf"(?:{FORMS}).*'\s*\{{\{{lien\|([^\|\}}]+)",
+    # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
+    # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
+    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    # ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.
+    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{\{lien\|([^\|}]+)",
+]
 
 
-def adjust_wikicode(
-    code: str,
-    locale: str,
-    forms: str = "|".join(ALL_FORMS),
-    start: str = rf"^(?:{'|'.join(section_patterns)})\s*'*",
-) -> str:
+def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode('<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")
@@ -877,23 +891,13 @@ def adjust_wikicode(
     # Variants
     #
 
-    for pattern in [
-        # ''Féminin singulier de'' {{lien|terne|fr}}.
-        # ''Féminin (singulier) de'' {{lien|terne|fr}}.
-        rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-        # ''Participe passé masculin singulier du verbe'' [[pouvoir]].
-        # ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].
-        rf"{start}.+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        # ''Pluriel de ''[[anisophylle]]''.''
-        rf"{start}(?:{forms}).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        # ''Pluriel de'' {{lien|anisophylle|fr}}.
-        rf"{start}(?:{forms}).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-        # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
-        # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
-        rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\[\[([^\]#]+)(?:#.+)?]].*",
-        # ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.
-        rf"{start}(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{{\{{lien\|([^\|\}}]+).*",
-    ]:
-        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
+    lines: list[str] = []
+    for line in code.splitlines():
+        if re.match(START, line):
+            for pattern in PATTERNS:
+                line, count = re.subn(rf"{START}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                if count:
+                    break
+        lines.append(line)
 
-    return code
+    return "\n".join(lines)

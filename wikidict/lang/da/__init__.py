@@ -428,14 +428,22 @@ def adjust_wikicode(
     # Variants
     #
 
-    for pattern in [
+    patterns = [
         # Pluralis af [[tale#Substantiv|tale]]
-        rf"{start}(?:{forms})\s+\[\[([^\]#|]+)(?:[#|].+)?]].*",
+        rf"(?:{forms})\s+\[\[([^\]#|]+)(?:[#|].+)?]]",
         # {{flertal af}} '''[[tale]]'''
-        rf"{start}\{{\{{(?:{forms})\}}\}} '*\[\[([^\]]+).*",
+        rf"\{{\{{(?:{forms})\}}\}} '*\[\[([^\]]+)",
         # `# {{flertal af}} {{l|da|tale}}
-        rf"{start}.*\{{\{{(?:{forms})\}}\}}\s+(\{{\{{[^}}]+\}}\}}).*",
-    ]:
-        code = re.sub(pattern, r"# {{flexion|\1}}", code, flags=re.IGNORECASE | re.MULTILINE)
+        rf".*\{{\{{(?:{forms})\}}\}}\s+(\{{\{{[^}}]+\}}\}})",
+    ]
 
-    return code
+    lines: list[str] = []
+    for line in code.splitlines():
+        if re.match(start, line):
+            for pattern in patterns:
+                line, count = re.subn(rf"{start}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                if count:
+                    break
+        lines.append(line)
+
+    return "\n".join(lines)
