@@ -891,11 +891,9 @@ def render_formula(formula: str, *, cat: str = "tex", output_format: str = "svg"
     if cat == "chem":
         formula = f"\\ce{{{formula}}}"
 
-    headers = constants.WIKIMEDIA_HEADERS
-
     # 1. Get the formula hash (type can be tex, inline-tex, or chem)
     url_hash = constants.WIKIMEDIA_URL_MATH_CHECK.format(type=cat)
-    with constants.SESSION.post(url_hash, headers=headers, json={"q": formula}) as req:
+    with constants.SESSION.post(url_hash, json={"q": formula}) as req:
         req.raise_for_status()
         res = req.json()
         assert res["success"]
@@ -903,7 +901,7 @@ def render_formula(formula: str, *, cat: str = "tex", output_format: str = "svg"
 
     # 2. Get the rendered formula (format can be svg, mml, or png)
     url_render = constants.WIKIMEDIA_URL_MATH_RENDER.format(format=output_format, hash=formula_hash)
-    with constants.SESSION.get(url_render, headers=headers) as req:
+    with constants.SESSION.get(url_render) as req:
         req.raise_for_status()
         return req.text
 
