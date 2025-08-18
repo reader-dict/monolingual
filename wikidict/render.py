@@ -581,7 +581,9 @@ def parse_word(
         # Some words have no head sections but only a list of definitions at the root of the "top" section
         for top in top_sections:
             contents = top.contents
-            top.contents = contents[: contents.find(marker)]
+            end = contents.find(marker)
+            if end > 0:
+                top.contents = contents[:end]
         definitions = find_definitions(word, {"top": top_sections}, lang_src, lang_dst)
     else:
         definitions = {}
