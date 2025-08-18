@@ -26,6 +26,7 @@ def get_word(word: str, locale: str, *, all_templates: list[tuple[str, str, str]
     """Get a *word* wikicode and parse it."""
     url = f"https://{utils.guess_lang_origin(locale)}.wiktionary.org/w/index.php?title={word}&action=raw"
     with constants.SESSION.get(url) as req:
+        req.raise_for_status()
         code = req.text
     return parse_word(word, code, locale, force=True, all_templates=all_templates)
 

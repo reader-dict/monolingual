@@ -1,4 +1,5 @@
 import pytest
+from requests import HTTPError
 
 from wikidict import get_word
 
@@ -31,7 +32,8 @@ def test_word_with_variants() -> None:
 
 @pytest.mark.webtest
 def test_word_not_found() -> None:
-    assert get_word.main("fr", "mutinerssssssss") == 0
+    with pytest.raises(HTTPError):
+        get_word.main("fr", "mutinerssssssss")
 
 
 @pytest.mark.webtest

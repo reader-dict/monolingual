@@ -45,3 +45,4 @@ KINDLEGEN_FILE = Path.home() / ".local" / "bin" / "kindlegen"
 
 # HTTP requests
 SESSION = requests.Session()
+SESSION.headers.update(WIKIMEDIA_HEADERS)
