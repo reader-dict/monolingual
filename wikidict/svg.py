@@ -29,7 +29,7 @@ def get(formula: str) -> str:
 
 
 def set(formula: str, svg_raw: str) -> None:
-    log.warning("[new SVG] %r: %r,", formula, svg_raw)
+    log.warning("[new SVG] python add-to-cache.py svg %r %r", formula, svg_raw)
     CACHE[formula] = svg_raw
 
 

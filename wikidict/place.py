@@ -57,5 +57,5 @@ def get(parts: list[str], data: defaultdict[str, str], locale: str) -> str:
 
 
 def save(wikitext: str, result: str) -> None:
-    log.warning("[new place] %r: %r,", wikitext, result)
+    log.warning("[new place] python add-to-cache.py places %r %r", wikitext, result)
     CACHE[wikitext] = result

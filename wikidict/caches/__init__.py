@@ -11,7 +11,7 @@ def load_cache_file(kind: str) -> dict[str, str]:
     return contents
 
 
-def expand_cache_file(kind: str, **values: str) -> None:
+def expand_cache_file(kind: str, values: dict[str, str]) -> None:
     contents = load_cache_file(kind)
     contents |= values
     save_cache_file(kind, contents)
