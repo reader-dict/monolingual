@@ -73,6 +73,8 @@ def last_template_handler(
         '<sub>42</sub>'
         >>> last_template_handler(["sup", "42"], "no")
         '<sup>42</sup>'
+        >>> last_template_handler(["sup", "1=+2"], "no")
+        '<sup>+2</sup>'
     """
     from ..user_functions import capitalize, extract_keywords_from, lookup_italic, number, term
 
@@ -92,7 +94,7 @@ def last_template_handler(
         return subscript(parts[0])
 
     if tpl in {"sup", "Sup"}:
-        return superscript(parts[0])
+        return superscript(data["1"] or parts[0])
 
     if tpl == "t2i-Egyd":
         return render_demotic(tpl, parts, data, word=word)

@@ -2,11 +2,12 @@ import re
 from collections import defaultdict
 from logging import getLogger
 
-from . import constants
-from .places_cache import CACHE
+from . import caches, constants
 
 log = getLogger(__name__)
+UNWANTED_TAGS = {"a", "div", "p", "span"}
 WANTED_TAGS = {"b", "/b", "i", "/i", "small", "/small"}
+CACHE = caches.load_cache_file("places")
 
 
 def sanitize(html: str) -> str:
@@ -15,7 +16,7 @@ def sanitize(html: str) -> str:
     'Abbreviation of <i>Acre</i>: a state of <b>Brazil</b>'
     """
     # Remove those tags
-    for tag in {"a", "div", "p", "span"}:
+    for tag in UNWANTED_TAGS:
         html = re.sub(rf"<{tag}[^>]+>", "", html)
         html = html.replace(f"<{tag}>", "").replace(f"</{tag}>", "")
 

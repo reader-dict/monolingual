@@ -3,8 +3,9 @@ from optparse import Values
 
 from scour.scour import scourString
 
-from .svg_cache import CACHE
+from . import caches
 
+CACHE = caches.load_cache_file("svg")
 SCOUR_OPTIONS = Values(
     defaults={
         "enable_viewboxing": True,
