@@ -9,6 +9,7 @@ from typing import TypedDict
 
 from num2words import num2words
 
+from ... import place
 from ...user_functions import (
     capitalize,
     chinese,
@@ -26,12 +27,7 @@ from . import geochronology, si_unit, wikidata
 from .form_of import form_of_templates
 from .labels import labels, syntaxes
 from .langs import langs
-from .places import (
-    placetypes_aliases,
-    recognized_placenames,
-    recognized_placetypes,
-    recognized_qualifiers,
-)
+from .places import placetypes_aliases, recognized_placetypes
 from .scripts import scripts
 from .transliterator import transliterate
 
@@ -3312,140 +3308,10 @@ def render_phonetic_alphabet(tpl: str, parts: list[str], data: defaultdict[str, 
 
 def render_place(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
-    >>> render_place("place", ["en", "A country in the Middle East"], defaultdict(str))
-    'A country in the Middle East'
-    >>> render_place("place", ["en", "A country"], defaultdict(str, {"modern":"Iraq"}))
-    'A country; modern Iraq'
-    >>> render_place("place", ["en", "island", "regency/Pandeglang", "province/Banten", "c/Indonesia"], defaultdict(str))
-    'An island of Pandeglang, Banten, Indonesia'
-    >>> render_place("place", ["en", "village", "co/Fulton County", "s/Illinois"], defaultdict(str))
-    'A village in Fulton County, Illinois'
-    >>> render_place("place", ["en", "village", "co/Fulton County", "s/Illinois"], defaultdict(str, {"a": "a"}))
-    'a village in Fulton County, Illinois'
-    >>> render_place("place", ["en", "city/county seat", "co/Lamar County", "s/Texas"], defaultdict(str))
-    'A city, the county seat of Lamar County, Texas'
-    >>> render_place("place", ["en", "small town/and/unincorporated community"], defaultdict(str))
-    'A small town and unincorporated community'
-    >>> render_place("place", ["en", "town", "s/New York", ";", "named after Paris"], defaultdict(str))
-    'A town in New York; named after Paris'
-    >>> render_place("place", ["en", "s"], defaultdict(str))
-    'A state'
-    >>> render_place("place", ["en", "state", "overseas territory/United States Virgin Islands"], defaultdict(str))
-    'A state of the United States Virgin Islands'
-    >>> render_place("place", ["en", "state", "administrative region/Réunion"], defaultdict(str))
-    'A state of the Réunion region'
-    >>> render_place("place", ["en", "state", "c/USA"], defaultdict(str))
-    'A state of the United States'
-    >>> render_place("place", ["en", "city", "c/Republic of Ireland"], defaultdict(str))
-    'A city in Republic of Ireland'
-    >>> render_place("place", ["en", "city", "s/Georgia", "c/United States"], defaultdict(str))
-    'A city in Georgia, United States'
-    >>> render_place("place", ["en", "river", "in", "England", ", forming the boundary between", "co/Derbyshire", "and", "co/Staffordshire"], defaultdict(str))
-    'A river in England, forming the boundary between Derbyshire and Staffordshire'
-    >>> render_place("place", ["en", "barangay", "mun/Hilongos", "p/Leyte", "c/Philippines"], defaultdict(str))
-    'A barangay of Hilongos, Leyte, Philippines'
-    >>> render_place("place", ["en", "hamlet", "par/South Leigh and High Cogges", "dist/West Oxfordshire", "co/Oxfordshire", "cc/England"], defaultdict(str))
-    'A hamlet in South Leigh and High Cogges parish, West Oxfordshire district, Oxfordshire, England'
-    >>> render_place("place", ["en", "village/and/cpar", "in", "uauth/Central Bedfordshire", "co/Bedfordshire", "cc/England"], defaultdict(str))
-    'A village and civil parish in  Central Bedfordshire district, Bedfordshire, England'
-    >>> render_place("place", ["en", "prefecture", "c/Japan"], defaultdict(str, {"capital": "Mito"}))
-    'A prefecture of Japan. Capital: Mito'
-    >>> render_place("place", ["en", "suburban area", "in", "par/New Milton", "dist/New Forest", "co/Hampshire", "cc/England", "formerly a village named", "x/Milton"], defaultdict(str))
-    'A suburban area in  New Milton parish, New Forest district, Hampshire, England, formerly a village named Milton'
     >>> render_place("place", ["en", "The capital city of <<s/South Carolina>>, and the county seat of <<co/Richland County>>"], defaultdict(str))
     'The capital city of South Carolina, and the county seat of Richland County'
     """
-    parts.pop(0)  # Remove the language
-    parts = [re.sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", part) for part in parts]
-    phrase = ""
-    i = 1
-    previous_rawpart = False
-    last = next((part for part in parts[::-1] if "/" not in part), "")
-    while parts:
-        si = str(i)
-        part = parts.pop(0)
-        subparts = part.split("/")
-        if part in ("in", "and"):
-            phrase += f" {part}"
-            phrase += " " if part == "in" else ""
-            previous_rawpart = True
-        elif i == 1:
-            no_article = False
-            for j, subpart in enumerate(subparts):
-                if subpart == "and":
-                    phrase = f"{phrase[:-2]} and"
-                    no_article = True
-                    continue
-                subpart = placetypes_aliases.get(subpart, subpart)
-                s = recognized_placetypes.get(subpart, {})
-                qualifier = ""
-                if not s:
-                    q_array = subpart.split(" ")
-                    qualifier = q_array[0]
-                    if qualifier in recognized_qualifiers:
-                        qualifier = recognized_qualifiers[qualifier]
-                        subpart = " ".join(q_array[1:])
-                    else:
-                        qualifier = ""
-                    subpart = placetypes_aliases.get(subpart, subpart)
-                    s = recognized_placetypes.get(subpart, {})
-                if s:
-                    if not (preposition := s.get("preposition")):
-                        s_fallback = recognized_placetypes.get(s["fallback"], {})
-                        preposition = s_fallback.get("preposition")
-                    if j == 0:
-                        article = data["a"] or s["article"].title()
-                    else:
-                        article = "" if no_article else s["article"]
-                    phrase += article
-                    phrase += f" {qualifier}" if qualifier else ""
-                    phrase += " " + s["display"]
-                    no_article = False
-                    if j == len(subparts) - 1:
-                        phrase += f" {preposition or 'in'} " if parts and parts[0] != "in" else ""
-                    else:
-                        phrase += ", "
-                else:
-                    phrase += part
-        elif len(subparts) > 1:
-            phrase += ", " if i > 2 and not previous_rawpart else ""
-            phrase += " " if previous_rawpart else ""
-            kind, *places = subparts
-            place = "/".join(places)
-            kind = placetypes_aliases.get(kind, kind)
-            placename_key = f"{kind}/{place}"
-            is_administrative = "administrative" in kind
-            if is_administrative:
-                phrase += "the "
-            if recognized_placename := recognized_placenames.get(placename_key):
-                if i < 3 and (article := recognized_placename["article"]):
-                    phrase += f"{article} "
-                phrase += recognized_placename["display"]
-            else:
-                phrase += place
-            if is_administrative:
-                phrase += f" {kind.split(' ')[-1]}"
-            elif kind in {"department", "district", "parish"}:
-                phrase += f" {kind}"
-            elif kind == "unitary authority":
-                phrase += " district"
-        elif part == ";":
-            phrase += "; "
-        else:
-            if part == last and not phrase.endswith(("; ", ", ")):
-                phrase += ", "
-            phrase += part
-
-        modern_key = "modern" + "" if i == 1 else si
-        if data[modern_key]:
-            phrase += f"; modern {data[modern_key]}"
-        previous_rawpart = len(subparts) == 1 and i > 1
-        i += 1
-
-    if capital := data["capital"]:
-        phrase += f". Capital: {capital}"
-
-    return phrase
+    return place.get(parts, data, "en")
 
 
 def render_pseudo_acronym_of(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
@@ -4274,7 +4140,7 @@ template_mapping = {
     "pedlink": render_pedlink,
     "phonetic alphabet": render_phonetic_alphabet,
     "person": render_person,
-    # "place": render_place,  # Enable back with #2428
+    "place": render_place,
     "rebracketing": render_rebracketing,
     "RQ": render_rq,
     "SI-unit-2": render_si_unit_2,
@@ -4423,7 +4289,7 @@ template_mapping = {
     **dict.fromkeys({"surface analysis", "surface etymology", "surf"}, render_surface_analysis),
     **dict.fromkeys({"surname", "patronymic", "foreign name"}, render_surname),
     **dict.fromkeys({"syncopic form", "sync"}, render_syncopic_form),
-    # **dict.fromkeys({"transclude sense", "transclude", "tcl"}, render_transclude),  # Enable back with #2428
+    **dict.fromkeys({"transclude sense", "transclude", "tcl"}, render_transclude),
     **dict.fromkeys({"uncertain", "unc"}, render_uncertain),
     **dict.fromkeys({"univerbation", "univ"}, render_univerbation),
     **dict.fromkeys({"unknown", "unk"}, render_unknown),

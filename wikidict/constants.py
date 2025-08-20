@@ -15,6 +15,7 @@ DUMP_URL = f"{BASE_URL}/{{snapshot}}/{{locale}}wiktionary-{{snapshot}}-pages-art
 
 # Wikimedia REST API
 WIKIMEDIA_HEADERS = {"User-Agent": WEBSITE}
+WIKTIONARY_URL_API = "https://{locale}.wiktionary.org/w/api.php"
 WIKIMEDIA_URL_BASE = "https://en.wikipedia.org/api/rest_v1"
 WIKIMEDIA_URL_MATH_CHECK = f"{WIKIMEDIA_URL_BASE}/media/math/check/{{type}}"
 WIKIMEDIA_URL_MATH_RENDER = f"{WIKIMEDIA_URL_BASE}/media/math/render/{{format}}/{{hash}}"
