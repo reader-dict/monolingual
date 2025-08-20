@@ -1,6 +1,7 @@
 import re
 from collections import defaultdict
 
+from ... import place
 from ...user_functions import concat, extract_keywords_from, italic, ruby
 from .langs import langs
 from .m_ts import ts
@@ -455,6 +456,14 @@ def render_och_l(tpl: str, parts: list[str], data: defaultdict[str, str], *, wor
     return f"{text})"
 
 
+def render_place(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_place("place", ["zh", "軍事基地", "南部", "s/內華達", "c/美國"], defaultdict(str))
+    '軍事基地名，位於美國內華達州南部'
+    """
+    return place.get(parts, data, "zh")
+
+
 def render_surname(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_surname("surname", ["zh"], defaultdict(str))
@@ -671,6 +680,7 @@ def render_粵(tpl: str, parts: list[str], data: defaultdict[str, str], *, word:
 template_mapping = {
     "och-l": render_och_l,
     "ja-r": render_ja_r,
+    "place": render_place,
     "zh-div": render_zh_div,
     "zh-mw": render_zh_mw,
     "zh-x": render_zh_x,
