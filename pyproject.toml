@@ -1,5 +1,23 @@
-[tool.setuptools.package-data]
-"" = ["*.gz"]
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wikidict"
+dynamic = ["version"]
+
+[tool.hatch.version]
+path = "wikidict/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+  "wikidict",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "wikidict",
+]
 
 [tool.coverage.report]
 exclude_also = [
