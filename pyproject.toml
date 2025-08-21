@@ -1,3 +1,6 @@
+[tool.setuptools.package-data]
+"" = ["*.gz"]
+
 [tool.coverage.report]
 exclude_also = [
     "except Exception:",
