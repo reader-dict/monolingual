@@ -111,7 +111,9 @@ def transliterate(text: str, locale: str = "") -> str:
         if letter != "-":
             sign += letter
             if not (text[i + 1 : i + 2].isdigit() or letter in syllabic):
-                if not (file := table.get(sign.removesuffix("01"))):  # Support both `a1`, and `a101`, keys
+                try:
+                    file = table[sign.removesuffix("01")]  # Support both `a1`, and `a101`, keys
+                except KeyError:
                     assert 0, f"Missing xib-trans SVG: {sign!r}"
                 svg = f'{file[:4]} style="width:24px;height:auto;vertical-align:middle" {file[5:]}'
                 tr.append(svg)
