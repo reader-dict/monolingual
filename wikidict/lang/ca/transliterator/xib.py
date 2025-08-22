@@ -100,7 +100,7 @@ def transliterate(text: str, locale: str = "") -> str:
     tr = []
     table = (
         table_epigraphy
-        if re.search(r"\d", text)
+        if re.search(r"[123456789]", text)
         else table_dual
         if re.search(r"[áéíóúgḱdâřŝ]", text)
         else table_no_dual
