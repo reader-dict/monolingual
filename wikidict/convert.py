@@ -623,7 +623,7 @@ class StarDictFormat(ConverterFromDictFile):
     target_format = "stardict"
     target_suffix = "ifo"
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.zip"
-    glossary_options = {"dictzip": True}
+    glossary_options = {"dictzip": True, "sametypesequence": "h"}
 
 
 def get_primary_formatters() -> list[type[BaseFormat]]:
