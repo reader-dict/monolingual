@@ -7,8 +7,8 @@ Auto-generated with `python -m scripts`.
 domain_templates = {
     "4chan": "Internet, 4chan",
     "Astérix": "Univers d’Astérix",
-    "LGBT": "LGBTQIA+",
-    "LGBTIQ": "LGBTQIA+",
+    "LGBT": "LGBTQ",
+    "LGBTIQ": "LGBTQ",
     "MRC": "Géographie",
     "Minecraft": "Jeu vidéo, Minecraft",
     "Oblasts": "Géographie",

@@ -190,6 +190,7 @@ langs = {
     "fr": "francese",
     "frm": "francese medio",
     "fro": "francese antico",
+    "frp": "francoprovenzale",
     "frr": "frisone",
     "fur": "friulano",
     "fut": "futuna-aniwa",
@@ -394,7 +395,7 @@ langs = {
     "non": "norreno",
     "nov": "novial",
     "nr": "ndebele del sud",
-    "nrf": "jèrriais",
+    "nrf": "normanno",
     "nrm": "narum",
     "nso": "sotho del nord",
     "nv": "navajo",
@@ -555,5 +556,5 @@ langs = {
     "zh-yue": "cantonese",
     "zu": "zulu",
     "zza": "zazaki",
-}  # 550
+}  # 551
 # END

@@ -512,7 +512,7 @@ langs = {
     "art-lap": "Lapine",
     "art-man": "Mandalorian",
     "art-mun": "Mundolinco",
-    "art-nav": "Na'vi",
+    "art-nav": "Naʼvi",
     "art-vlh": "High Valyrian",
     "aru": "Arua",
     "arv": "Arbore",
@@ -4144,6 +4144,8 @@ langs = {
     "krj": "Kinaray-a",
     "krk": "Kerek",
     "krl": "Karelian",
+    "krl-nor": "North Karelian",
+    "krl-sou": "South Karelian",
     "krm": "Krim",
     "krn": "Sapo",
     "kro": "Kru",
@@ -9897,7 +9899,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,892
+}  # 9,894
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)
