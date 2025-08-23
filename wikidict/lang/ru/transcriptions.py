@@ -528,7 +528,7 @@ map_to_plain_e_map = {"Е": "E", "е": "e", "Ѣ": "Ě", "ѣ": "ě", "Э": "Ɛ", 
 
 
 def is_monosyllabic(word: str) -> bool:
-    return not re.search(rf"[{vowels}].*[{vowels}]", word)
+    return not re.search(rf"{vowels}.*{vowels}", word)
 
 
 def tr_after_fixes(text: str, include_monosyllabic_jo_accent: bool) -> str:
