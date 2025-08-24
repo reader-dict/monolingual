@@ -592,10 +592,6 @@ class MobiFormat(ConverterFromDictFile):
 
         Error(core):E1008: Failed conversion to unicode. The resulting string may contain wrong characters.
 
-    4) Embedded GIF/SVG codes are extracted to their own files, but it's not clear where they are located, so there are no images for now:
-
-        Warning(prcgen):W14010: media file not found /.../mobi/dict-data.mobi/OEBPS/XXX.gif
-
     """
 
     target_format = "mobi"

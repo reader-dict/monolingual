@@ -55,7 +55,18 @@ WORDS = {
 
 
 def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
-    assert convert.main("fr") == 0
+    with caplog.at_level(logging.DEBUG):
+        assert convert.main("fr") == 0
+
+        # Check Mobi warnings
+        assert not any(
+            "media file not found" in record.getMessage()
+            for record in caplog.records
+            if record.levelno < logging.WARNING
+        )
+
+        # Check PyGlossary logging filters
+        assert not [record.getMessage() for record in caplog.records if record.levelno >= logging.WARNING]
 
     # Check for all dictionaries
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
@@ -223,7 +234,7 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "mobi7",
         "mobi7/Images",
         "mobi7/Images/cover00021.jpeg",
-        "mobi7/Images/image00020.jpeg",
+        "mobi7/Images/image00020.gif",
         "mobi7/Images/image00023.jpeg",
         "mobi7/book.html",
         "mobi7/content.opf",
@@ -233,10 +244,6 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         assert files == expected_files
     finally:
         shutil.rmtree(tempdir)
-
-    # Check PyGlossary logging filters
-    assert not [record for record in caplog.records if record.levelno == logging.ERROR]
-    assert not [record for record in caplog.records if record.levelno == logging.WARNING]
 
 
 def test_no_json_file() -> None:
