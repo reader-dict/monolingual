@@ -152,11 +152,11 @@ log = logging.getLogger(__name__)
 
 
 class CustomLogFilter(logging.Filter):
-    """Filter for noisy PyGlossary messages."""
+    """Filter out noisy PyGlossary messages."""
 
     def filter(self, record: logging.LogRecord) -> bool:
         msg = record.getMessage()
-        return not msg.startswith(("duplicate language code", "Module 'lxml' not found"))
+        return not msg.startswith(("duplicate language", "Module 'lxml' not found"))
 
 
 class BaseFormat:

@@ -1,9 +1,12 @@
+import logging
 import os
+import shutil
 from copy import deepcopy
 from pathlib import Path
 from unittest.mock import patch
 from zipfile import ZipFile
 
+import mobi
 import pytest
 from marisa_trie import Trie
 
@@ -51,7 +54,7 @@ WORDS = {
 }
 
 
-def test_simple() -> None:
+def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
     assert convert.main("fr") == 0
 
     # Check for all dictionaries
@@ -76,14 +79,15 @@ def test_simple() -> None:
     assert (output_dir / f"dictorg-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
 
     # Kobo
-    assert (output_dir / "dicthtml-fr-fr-noetym.zip").is_file()
-    assert (output_dir / f"dicthtml-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
     dicthtml = output_dir / "dicthtml-fr-fr.zip"
     assert dicthtml.is_file()
     assert (output_dir / f"dicthtml-fr-fr.zip.{ASSET_CHECKSUM_ALGO}").is_file()
+    assert (output_dir / "dicthtml-fr-fr-noetym.zip").is_file()
+    assert (output_dir / f"dicthtml-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
 
     # Mobi
-    assert (output_dir / "dict-fr-fr.mobi.zip").is_file()
+    mobi_file = output_dir / "dict-fr-fr.mobi.zip"
+    assert mobi_file.is_file()
     assert (output_dir / f"dict-fr-fr.mobi.zip.{ASSET_CHECKSUM_ALGO}").is_file()
     assert (output_dir / "dict-fr-fr-noetym.mobi.zip").is_file()
     assert (output_dir / f"dict-fr-fr-noetym.mobi.zip.{ASSET_CHECKSUM_ALGO}").is_file()
@@ -207,6 +211,32 @@ def test_simple() -> None:
         # testfile returns the name of the first corrupt file, or None
         errors = fh.testzip()
         assert errors is None
+
+    # Check the Mobi content
+    with ZipFile(mobi_file) as fh:
+        fh.extract(mobi_file.name.removesuffix(".zip"), tmp_path)
+    tempdir, _ = mobi.extract(str(tmp_path / mobi_file.name.removesuffix(".zip")))
+    files = sorted(path.relative_to(tempdir).as_posix() for path in Path(tempdir).glob("**/*"))
+    expected_files = [
+        "HDImages",
+        "kindlegenbuild.log",
+        "mobi7",
+        "mobi7/Images",
+        "mobi7/Images/cover00021.jpeg",
+        "mobi7/Images/image00020.jpeg",
+        "mobi7/Images/image00023.jpeg",
+        "mobi7/book.html",
+        "mobi7/content.opf",
+        "mobi7/toc.ncx",
+    ]
+    try:
+        assert files == expected_files
+    finally:
+        shutil.rmtree(tempdir)
+
+    # Check PyGlossary logging filters
+    assert not [record for record in caplog.records if record.levelno == logging.ERROR]
+    assert not [record for record in caplog.records if record.levelno == logging.WARNING]
 
 
 def test_no_json_file() -> None:
