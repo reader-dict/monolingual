@@ -105,11 +105,11 @@ def process_special_pipe_template(text: str) -> str:
     return text
 
 
-def convert_gender(genders: list[str]) -> str:
+def convert_gender(genders: list[str], *, markup: bool = True) -> str:
     """Return the HTML code to include for gender(s) of a word."""
     if not genders:
         return ""
-    genders = [f"<i>{gender}</i>" for gender in genders]
+    genders = [f"<i>{gender}</i>" if markup else gender for gender in genders]
     return f" {', '.join(genders)}."
 
 

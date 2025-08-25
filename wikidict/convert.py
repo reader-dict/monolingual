@@ -145,6 +145,60 @@ WORD_TPL_DICTFILE = Template(
 """
 )
 
+# XDXF-related dictionaries
+# Source: https://github.com/soshial/xdxf_makedict/blob/master/dict_samples/rev34.xml
+WORD_TPL_XDXF = Template(
+    """\
+<ar>
+    <k>{{ word }}</k>
+    <def>
+        {%- if pronunciation or gender %}
+            <gr>{%- if gender %}{{ gender }}{%- endif %}{%- if pronunciation %}<tr>{{ pronunciation }}</tr>{%- endif %}</gr>
+        {%- endif %}
+        <deftext>
+            {%- for definition in definitions -%}
+                {%- if definition is string -%}
+                    <li>{{ definition }}</li>
+                {%- else -%}
+                    <ol style="list-style-type:lower-alpha">
+                        {%- for sub_def in definition -%}
+                            {%- if sub_def is string -%}
+                                <li>{{ sub_def }}</li>
+                            {%- else -%}
+                                <ol style="list-style-type:lower-roman">
+                                    {%- for sub_sub_def in sub_def -%}
+                                        <li>{{ sub_sub_def }}</li>
+                                    {%- endfor -%}
+                                </ol>
+                            {%- endif -%}
+                        {%- endfor -%}
+                    </ol>
+                {%- endif -%}
+            {%- endfor -%}
+        <deftext>
+        {%- if etymologies -%}
+            <etm>
+                {%- for etymology in etymologies -%}
+                    {%- if etymology is string -%}
+                        <p>{{ etymology }}</p>
+                    {%- else -%}
+                        <ol>
+                            {%- for sub_etymology in etymology -%}
+                                <li>{{ sub_etymology }}</li>
+                            {%- endfor -%}
+                        </ol>
+                    {%- endif -%}
+                {%- endfor -%}
+            </etm>
+        {%- endif -%}
+    </def>
+</ar>
+""".replace("    ", "").replace("\n", ""),
+    trim_blocks=True,
+    lstrip_blocks=True,
+    keep_trailing_newline=True,
+)
+
 # Threshold before issuing a warning to catch potentially problematic variants
 MAX_VARIANTS = 255
 
@@ -163,6 +217,8 @@ class BaseFormat:
     """Base class for all dictionaries."""
 
     template = Template("")  # To be set by subclasses
+    display_stats = True
+    use_genders_markup = True
 
     def __init__(
         self,
@@ -191,6 +247,10 @@ class BaseFormat:
             f"{len(words):,}",
             f"{len(variants):,}",
         )
+
+    @property
+    def created(self) -> str:
+        return f"{self.snapshot[:4]}-{self.snapshot[4:6]}-{self.snapshot[6:8]}"
 
     @property
     def description(self) -> str:
@@ -294,7 +354,7 @@ class BaseFormat:
                 current_word=current_word,
                 definitions=current_details.definitions.items(),
                 pronunciation=utils.convert_pronunciation(current_details.pronunciations),
-                gender=utils.convert_gender(current_details.genders),
+                gender=utils.convert_gender(current_details.genders, markup=self.use_genders_markup),
                 etymologies=current_details.etymology if self.include_etymology else [],
                 variants=sorted(variants, key=lambda s: (len(s), s)),
             )
@@ -314,7 +374,7 @@ class BaseFormat:
         log.info("[%s] Crafted %s (%s)", self.id(), checksum_file.name, checksum)
 
     def summary(self, file: Path) -> None:
-        if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__}:
+        if self.display_stats:
             log.info(
                 "[%s] Effective words + variants: %s + %s => %s",
                 self.id(),
@@ -457,9 +517,33 @@ class DictFileFormat(BaseFormat):
         self.summary(file)
 
 
+class XDXFFormat(BaseFormat):
+    """Save the data into a *.xdxf* XDXF file."""
+
+    output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.xdxf"
+    template = WORD_TPL_XDXF
+    use_genders_markup = False
+
+    def process(self) -> None:
+        file = self.dictionary_file(self.output_file)
+        words = self.words
+
+        data = f"""\
+<?xml version="1.0" encoding="UTF-8" ?>
+<xdxf>
+<full_name>{self.title()}</full_name>
+<lexicon>
+""".replace("    ", "")
+        data += "".join(f"{formatted_word}\n" for word in words for formatted_word in self.handle_word(word, words))
+        data += "</lexicon>\n</xdxf>\n"
+        file.write_text(data, encoding="utf-8")
+        self.summary(file)
+
+
 class DictFileFormatForMobi(DictFileFormat):
     """Save the data into a *.df* DictFile."""
 
+    display_stats = False
     output_file = f"altered-{DictFileFormat.output_file}"
 
 
@@ -470,6 +554,7 @@ class ConverterFromDictFile(DictFileFormat):
     zip_glob_files = "dict-data.*"
     dictfile_format_cls = DictFileFormat
     glossary_options: dict[str, str | bool] = {}
+    display_stats = False
 
     def _patch_gc(self) -> None:
         """Bypass performances issues when calling PyGlossary from Python."""
@@ -521,7 +606,7 @@ class ConverterFromDictFile(DictFileFormat):
         glos.setInfo("description", self.description)
         glos.setInfo("title", self.title())
         glos.setInfo("website", self.website)
-        glos.setInfo("date", f"{self.snapshot[:4]}-{self.snapshot[4:6]}-{self.snapshot[6:8]}")
+        glos.setInfo("date", self.created)
 
         glos.sourceLangName = self.effective_lang_src()
         glos.targetLangName = self.effective_lang_dst()
@@ -559,6 +644,8 @@ class ConverterFromDictFile(DictFileFormat):
 
 
 class BZ2DictFileFormat(BaseFormat):
+    display_stats = False
+
     def process(self) -> None:
         df_file = self.dictionary_file(DictFileFormat.output_file)
         bz2_file = df_file.with_suffix(".df.bz2")
@@ -623,7 +710,7 @@ class StarDictFormat(ConverterFromDictFile):
 
 
 def get_primary_formatters() -> list[type[BaseFormat]]:
-    return [KoboFormat, DictFileFormat]
+    return [KoboFormat, DictFileFormat, XDXFFormat]
 
 
 def get_secondary_formatters() -> list[type[BaseFormat]]:
