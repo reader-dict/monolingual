@@ -3295,6 +3295,7 @@ langs = {
     "kyu": "kayah li de l’Ouest",
     "kyx": "rapoisi",
     "kyz": "kayabi",
+    "kzc": "bondoukou kulango",
     "kzf": "kaili de Da’a",
     "kzg": "kikaï",
     "kzh": "dongolawi-kenzi",
@@ -7153,5 +7154,5 @@ langs = {
     "zza": "zazaki",
     "zzj": "zhuang de Zuojiang",
     "èque": "èque",
-}  # 7,148
+}  # 7,149
 # END
