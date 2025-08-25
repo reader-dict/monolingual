@@ -40,6 +40,29 @@ MOBI_CLEANUP = {"en", "en:en", "fr", "fr:fr"}
 # Dictionaries known to be problematic about the file size in MobiPocket
 MOBI_SKIP: set[str] = set()
 
+# Dictionaries known to be working. Only add dictionaries when the source lang is made available on
+# https://github.com/Markismus/LanguageFilesPocketbookConverter
+POCKET_SUPPORTED: set[str] = {
+    "da:da",
+    "de:de",
+    "el:el",
+    "en:en",
+    "es:es",
+    "fr:fr",
+    "it:it",
+    "no:no",
+    "pt:pt",
+    "ro:ro",
+    "ru:ru",
+    "sv:sv",
+}
+# Locale redirection within LanguageFilesPocketbookConverter folders
+POCKET_LANG_REDIR: dict[str, str] = {
+    "es": "spa",
+    "fr": "fre",
+    "it": "ita",
+}
+
 # Mobi
 COVER_FILE = Path(__file__).parent / "cover.png"
 KINDLEGEN_FILE = Path.home() / ".local" / "bin" / "kindlegen"

@@ -525,6 +525,10 @@ class XDXFFormat(BaseFormat):
     use_genders_markup = False
 
     def process(self) -> None:
+        if f"{self.effective_lang_src()}:{self.effective_lang_dst()}" not in constants.POCKET_SUPPORTED:
+            log.info("[%s] Skipping as required annexe files are not provided.", self.id())
+            return
+
         file = self.dictionary_file(self.output_file)
         words = self.words
 
@@ -534,7 +538,7 @@ class XDXFFormat(BaseFormat):
 <full_name>{self.title()}</full_name>
 <lexicon>
 """.replace("    ", "")
-        data += "".join(f"{formatted_word}\n" for word in words for formatted_word in self.handle_word(word, words))
+        data += "\n".join(formatted_word for word in words for formatted_word in self.handle_word(word, words))
         data += "</lexicon>\n</xdxf>\n"
         file.write_text(data, encoding="utf-8")
         self.summary(file)
