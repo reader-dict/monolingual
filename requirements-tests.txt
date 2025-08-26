@@ -1,6 +1,5 @@
 -r requirements.txt
-imghdr-lts==1.0.0  # required by mobi
-mobi==0.3.3
+git+https://github.com/BoboTiG/mobi.git@master
 mypy==1.17.1
 pytest==8.4.1
 pytest-dependency==0.6.0
