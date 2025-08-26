@@ -293,6 +293,8 @@ templates_multi = {
     "IPAfont": "parts[1]",
     # {{ISBN|1-86429-081-1}}
     "ISBN": "f'ISBN {parts[1]}'",
+    # {{ISO 15924|Adlam script|Adlam}}
+    "ISO 15924": "f'(<i>international standards</i>) <i>ISO 15924 script code for</i> <b>{parts[-1]}</b>.'",
     # {{italic|Love Island}}
     "italic": "italic(parts[1])",
     # {{IUPAC-1|alanine}}

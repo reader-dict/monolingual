@@ -457,6 +457,10 @@ def test_parse_word(
         ("{{glossary|inflected|Inflected}}", "Inflected"),
         ("{{initialism of|en|Inuit Qaujimajatuqangit|nodot=1}}", "<i>Initialism of</i> <b>Inuit Qaujimajatuqangit</b>"),
         ("{{IPAfont|ʌ}}", "ʌ"),
+        (
+            "{{ISO 15924|Adlam script|Adlam}}",
+            "(<i>international standards</i>) <i>ISO 15924 script code for</i> <b>Adlam</b>.",
+        ),
         ("{{lit|eagle killer}}", "Literally, “eagle killer”"),
         ("{{mono|#!}}", '<span style="font-family:monospace">#!</span>'),
         ("{{monospace|#!}}", '<span style="font-family:monospace">#!</span>'),
