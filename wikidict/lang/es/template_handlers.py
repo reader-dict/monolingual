@@ -358,7 +358,7 @@ def render_etimologia(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_etimologia("etimología", ["pronominal", "espinar"], defaultdict(str, {"num": "1"}))
     'De <i>espinar<sub>1</sub></i> con el pronombre reflexivo átono'
     >>> render_etimologia("etimología", ["regresiva", "controvertido"], defaultdict(str))
-    'Por derivación regresiva de <i>controvertido</i>'
+    'Derivación regresiva de <i>controvertido</i>'
     >>> render_etimologia("etimología", ["sánscrito", "गुरू", "maestro"], defaultdict(str, {"transcripción":"gūru"}))
     "Del sánscrito <i>गुरू</i> (<i>gūru</i>, 'maestro')"
     >>> render_etimologia("etimología", ["sufijo", "átomo", "ico"], defaultdict(str))
@@ -530,7 +530,7 @@ def render_etimologia(tpl: str, parts: list[str], data: defaultdict[str, str], *
         phrase1 = render_l("l+", [parts[0]], data)
         phrase = f"De {phrase1} con el pronombre reflexivo átono"
     elif cat in ("derivación regresiva", "regresiva", "REG"):
-        phrase = "Por derivación regresiva de "
+        phrase = "Derivación regresiva de "
         word = data["diacrítico"] or data["alt"] or (parts[0] if parts else "")
         phrase += render_l("l+", [word], data)
     elif cat in ("sufijo", "SUF"):
