@@ -4,9 +4,7 @@ People details from Wikidata.
 
 from logging import getLogger
 
-import requests
-
-SESSION = requests.Session()
+from ...constants import SESSION
 
 # {0}: person ID (in the form "Qnnn...")
 URL = "https://www.wikidata.org/wiki/Special:EntityData/{0}.json?flavor=simple"

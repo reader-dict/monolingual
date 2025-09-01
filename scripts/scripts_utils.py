@@ -9,6 +9,7 @@ from requests.exceptions import HTTPError, RequestException
 warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 
 SESSION = requests.Session()
+SESSION.headers["User-Agent"] = "https://www.reader-dict.com"
 
 
 def get_content(url: str, *, max_retries: int = 5, sleep_time: int = 5, as_json: bool = False) -> str | dict[str, Any]:
