@@ -316,7 +316,7 @@ def render_etimologia(tpl: str, parts: list[str], data: defaultdict[str, str], *
     >>> render_etimologia("etimología", ["femenino", "Jesús", "a"], defaultdict(str))
     'De <i>Jesús</i> y el sufijo flexivo <i>a</i> para el femenino'
     >>> render_etimologia("etimología", ["metátesis", "rigoroso"], defaultdict(str))
-    'Por metátesis de <i>rigoroso</i>'
+    'Metátesis de <i>rigoroso</i>'
     >>> render_etimologia("etimología", ["fone", "-mos"], defaultdict(str))
     'Alteración fonética de <i>-mos</i>'
     >>> render_etimologia("etimología", ["fonética", "empeller"], defaultdict(str))
@@ -490,7 +490,7 @@ def render_etimologia(tpl: str, parts: list[str], data: defaultdict[str, str], *
     elif cat in ("metátesis", "trasposición", "MET"):
         data["alt"] = data["diacrítico"] or data["alt"] or parts[0]
         phrase1 = render_l("l+", [parts[0]], data)
-        phrase = f"Por metátesis de {phrase1}"
+        phrase = f"Metátesis de {phrase1}"
     elif cat in (
         "fonética",
         "alteración fonética",
