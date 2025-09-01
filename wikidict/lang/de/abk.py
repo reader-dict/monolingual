@@ -14,6 +14,7 @@ abk = {
     "Bedva.": "veraltete Bedeutung",
     "Bedvatd.": "veraltende Bedeutung",
     "BrE": "britisch",
+    "CJK": "für chinesische, japanische und koreanische Schriften",
     "DDR": "DDR",
     "Dativ": "mit Dativ",
     "Dim.": "Diminutiv",
@@ -138,5 +139,5 @@ abk = {
     "österr.": "österreichisch",
     "österreichisch": "österreichisch",
     "übertr.": "übertragen",
-}  # 133
+}  # 134
 # END

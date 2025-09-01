@@ -2100,7 +2100,7 @@ langs = {
     "gad": "gaddang",
     "gae": "guarequena",
     "gaf": "gende",
-    "gag": "gagauzo",
+    "gag": "gagaúzo",
     "gah": "alekano",
     "gai": "mbore",
     "gaj": "gadsup",

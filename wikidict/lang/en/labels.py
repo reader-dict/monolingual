@@ -334,6 +334,7 @@ labels = {
     "General American": "General American",
     "General Australian": "Australia",
     "Geordie": "Geordie",
+    "Geordie English": "Geordie",
     "Georgia (US)": "Georgia",
     "German politics": "German politics",
     "Germanic Paganism": "Germanic paganism",
@@ -2789,7 +2790,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,784
+}  # 2,785
 
 syntaxes = {
     "&": {

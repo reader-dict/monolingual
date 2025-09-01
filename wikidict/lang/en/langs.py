@@ -400,6 +400,7 @@ langs = {
     "ang-ken": "Kentish Old English",
     "ang-mer": "Mercian Old English",
     "ang-nor": "Northumbrian Old English",
+    "ang-wsx": "West Saxon Old English",
     "anh": "Nend",
     "ani": "Andi",
     "anj": "Anor",
@@ -2421,7 +2422,7 @@ langs = {
     "en-ZA": "South African English",
     "en-aae": "Australian Aboriginal English",
     "en-ear": "Early Modern English",
-    "en-geo": "Geordie English",
+    "en-geo": "Geordie",
     "en-uls": "Ulster English",
     "ena": "Apali",
     "enb": "Markweeta",
@@ -2431,8 +2432,12 @@ langs = {
     "enh": "Tundra Enets",
     "enl": "Enlhet",
     "enm": "Middle English",
+    "enm-emi": "East Midland Middle English",
     "enm-esc": "Early Scots",
+    "enm-ken": "Kentish Middle English",
     "enm-nor": "Northern Middle English",
+    "enm-sou": "Southern Middle English",
+    "enm-wmi": "West Midland Middle English",
     "enn": "Engenni",
     "eno": "Enggano",
     "enq": "Enga",
@@ -4729,6 +4734,7 @@ langs = {
     "lzh-cmn-TW": "Classical Taiwanese Mandarin",
     "lzh-lit": "Literary Chinese",
     "lzh-pre": "Pre-Classical Chinese",
+    "lzh-shi": "Traditional Chinese poetry",
     "lzh-tai": "Classical Taishanese",
     "lzh-yue": "Classical Cantonese",
     "lzl": "Litzlitz",
@@ -9899,7 +9905,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,894
+}  # 9,900
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)

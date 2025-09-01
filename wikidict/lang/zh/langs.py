@@ -1657,7 +1657,6 @@ langs = {
     "deg": "德格馬語",
     "deh": "德赫瓦里語",
     "dei": "德米薩語",
-    "dek": "Dek",
     "dem": "德姆語",
     "dep": "德拉瓦皮欽語",
     "der": "迪奧里語",
@@ -5079,7 +5078,6 @@ langs = {
     "nsy": "Nasal",
     "nsz": "南邁杜語",
     "ntd": "北帝東語",
-    "nte": "Nathembo",
     "ntg": "Ngantangarra",
     "nti": "Natioro",
     "ntj": "恩加尼亞賈拉語",
@@ -5850,7 +5848,6 @@ langs = {
     "rnp": "Rongpo",
     "rnw": "龍瓦語",
     "ro": "羅馬尼亞語",
-    "roa-afr": "非洲羅曼語",
     "roa-ang": "安茹語",
     "roa-bbn": "波旁-貝里語",
     "roa-brg": "勃艮第語",
@@ -7984,6 +7981,7 @@ langs = {
     "ymx": "北木吉語",
     "ymz": "木支語",
     "yna": "阿羅語",
+    "ynb": "Yamben",
     "ynd": "揚德魯萬塔語",
     "yne": "崀峨語",
     "yng": "Yango",
@@ -8255,5 +8253,5 @@ langs = {
     "zyp": "Zyphe",
     "zza": "扎扎其語",
     "zzj": "左江壯語",
-}  # 8,250
+}  # 8,248
 # END

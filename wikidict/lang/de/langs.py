@@ -669,6 +669,7 @@ langs = {
     "xno": "Anglonormannisch",
     "xpg": "Phrygisch",
     "xpq": "Mohegan-Pequot",
+    "xpr": "Parthisch",
     "xtg": "Gallisch",
     "xto": "Tocharisch A",
     "xum": "Umbrisch",
@@ -693,5 +694,5 @@ langs = {
     "zh-tw": "Chinesisch (traditionell)",
     "zu": "isiZulu",
     "zza": "Zazaki",
-}  # 688
+}  # 689
 # END

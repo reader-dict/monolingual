@@ -223,6 +223,7 @@ scripts = {
     "Yiii": "Yi",
     "Zanb": "Zanabazar Square",
     "Zmth": "mathematical notation",
+    "Zname": "Znamenny musical notation",
     "Zsym": "symbolic",
     "Zyyy": "undetermined",
     "Zzzz": "uncoded",
@@ -246,5 +247,5 @@ scripts = {
     "ug-Arab": "Arabic",
     "ur-Arab": "Arabic",
     "xwo-Mong": "Clear Script",
-}  # 241
+}  # 242
 # END
