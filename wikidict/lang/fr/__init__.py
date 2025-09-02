@@ -125,6 +125,7 @@ templates_ignored = (
     ",",
     "?",
     "???",
+    "#invoke",
     "ACC-animaux",
     "ACC-tiges célestes",
     "ACC-mains",
