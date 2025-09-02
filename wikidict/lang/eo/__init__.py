@@ -101,6 +101,7 @@ templates_ignored = (
     "ref-AdE",
     "ref-Grabowski",
     "ref-Kalman",
+    "ref-Majstro",
     "ref-PrV",
     "ref-ReVo",
     "radiofoniaj liternomoj",
