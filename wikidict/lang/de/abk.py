@@ -38,6 +38,7 @@ abk = {
     "alltagsspr.": "alltagssprachlich",
     "altlat.": "altlateinisch",
     "amtsspr.": "amtssprachlich",
+    "aran.": "aranesisch",
     "attr.": "attributiv",
     "bair.": "bairisch",
     "bar.": "bairisch",
@@ -97,6 +98,8 @@ abk = {
     "ostfränkisch": "ostfränkisch",
     "pej.": "pejorativ",
     "poet.": "poetisch",
+    "prov.": "provenzalisch",
+    "provenz.": "provenzalisch",
     "refl.": "reflexiv",
     "reg.": "regional",
     "sal.": "salopp",
@@ -139,5 +142,5 @@ abk = {
     "österr.": "österreichisch",
     "österreichisch": "österreichisch",
     "übertr.": "übertragen",
-}  # 134
+}  # 137
 # END

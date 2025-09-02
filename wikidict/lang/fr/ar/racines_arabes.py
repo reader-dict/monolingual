@@ -1210,6 +1210,40 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta*a*²a*a": ("(5)", "visiter les lieux saints"),
         "ar-ta*â*a*a": ("(6)", ""),
     },  # 51
+    "ar-3ny": {
+        "aa_sens": "efforcer",
+        "ar-***ũ": ("", ""),
+        "ar-**a*²a": ("(9)", ""),
+        "ar-*a**@ũ": ("", "peine"),
+        "ar-*a*a*@ũ": ("", "soin"),
+        "ar-*a*a*a-i": ("(1)", "vouloir dire"),
+        "ar-*a*i*a-a": ("(1)", "être intéressé"),
+        "ar-*a*i*ũ": ("", "plein de sollicitude"),
+        "ar-*a*²a*a": ("(2)", "attrister"),
+        "ar-*a*â*ũ": ("", "peine"),
+        "ar-*i**â'@ũ": ("", "soin"),
+        "ar-*i*a*ũ": ("", "exigu"),
+        "ar-*i*â*@ũ": ("", "effort"),
+        "ar-*ta*a*a": ("(8)", "prendre soin"),
+        "ar-*ti*â*ũ": ("", "effort"),
+        "ar-*u**ânũ": ("", "titre"),
+        "ar-*u*a*ũ": ("", "soin"),
+        "ar-*â*a*a": ("(3)", "prendre soin"),
+        "ar-*â*i*ũ": ("", "préoccupant"),
+        "ar-a**a*a": ("(4)", "fatiguer"),
+        "ar-ma**a*@ũ": ("", "signification"),
+        "ar-ma**a*ũ": ("", "signification"),
+        "ar-ma**i*@ũ": ("", "signification"),
+        "ar-ma**i*iy²ũ": ("", "signification"),
+        "ar-ma*â*i*u": ("", "{{p}} significations"),
+        "ar-mu**i*ũ": ("", "qui fatigue"),
+        "ar-mu*a*²a*ũ": ("", "enduit"),
+        "ar-n*a*a*a": ("(7)", ""),
+        "ar-sta**a*a": ("(10)", ""),
+        "ar-ta**i*@ũ": ("", "affliction"),
+        "ar-ta*a*²a*a": ("(5)", "prendre peine"),
+        "ar-ta*â*a*a": ("(6)", "s'efforcer"),
+    },  # 32
     "ar-3qd": {
         "aa_sens": "lier",
         "ar-***ũ": ("", ""),
@@ -10702,5 +10736,5 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a**û*iy²ũ": ("", "d'huile"),
         "ar-*a**û*ũ": ("", "{{p}} oliviers"),
     },  # 6
-}  # 366
+}  # 367
 # END

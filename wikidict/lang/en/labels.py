@@ -1497,6 +1497,12 @@ labels = {
     "eye dialect": "eye dialect",
     "eyewear": "eyewear",
     "fair-fur": "<i>fair</i>–<i>fur</i> merger",
+    "fairy tale": "fairy tale",
+    "fairy tales": "fairy tales",
+    "fairy-tale": "fairy tale",
+    "fairy-tales": "fairy tales",
+    "fairytale": "fairy tale",
+    "fairytales": "fairy tales",
     "falconry": "falconry",
     "familiar": "familiar",
     "fandom": "fandom {{glossary|slang}}",
@@ -2790,7 +2796,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,785
+}  # 2,791
 
 syntaxes = {
     "&": {
