@@ -1440,8 +1440,10 @@ def render_en_noun(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     """
     >>> render_en_noun("en-noun", ["?"], defaultdict(str), word="achávalite")
     '<b>achávalite</b>'
+    >>> render_en_noun("en-noun", [], defaultdict(str), word="achávalite")
+    ''
     """
-    return strong({"?": word}[parts[0]])
+    return strong({"?": word}[parts[0]]) if parts else ""
 
 
 def render_en_proper_noun(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
