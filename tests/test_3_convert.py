@@ -59,8 +59,8 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         assert convert.main("fr") == 0
 
         # Check Mobi warnings
-        assert not any(
-            "media file not found" in record.getMessage()
+        assert all(
+            "media file not found" not in record.getMessage()
             for record in caplog.records
             if record.levelno < logging.WARNING
         )
