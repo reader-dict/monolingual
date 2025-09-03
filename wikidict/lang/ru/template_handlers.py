@@ -4,6 +4,7 @@ from collections import defaultdict
 from ...user_functions import extract_keywords_from, italic, superscript
 from ...utils import process_templates
 from .etymologies import etymologies
+from .labels import labels
 from .langs_short import langs_short
 
 REMOVE_CATEGORY = re.compile(r"\[\[Категория:[^\]]+\]\]").sub
@@ -273,6 +274,16 @@ def render_отчество(tpl: str, parts: list[str], data: defaultdict[str, s
     return f"{text} отчество от имени {parts[0]}"
 
 
+def render_ссылки_с_пометой(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_ссылки_с_пометой("ссылки с пометой", ["Саныч"], defaultdict(str, {"помета": "разг."}))
+    '<i>разг.</i>: Саныч'
+    """
+    label = data["помета"]
+    label = labels.get(label, label)
+    return f"<i>{label}</i>: {parts[0]}"
+
+
 def render_через(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_через("через", ["гл", "выезжать"], defaultdict(str))
@@ -364,6 +375,7 @@ template_mapping = {
     "однокр.": render_однокр,
     "прист-СИ": render_прист_СИ,
     "хим-элем": render_хим_элем,
+    "ссылки с пометой": render_ссылки_с_пометой,
     #
     # Variants
     #
