@@ -284,6 +284,19 @@ def render_ссылки_с_пометой(tpl: str, parts: list[str], data: defa
     return f"<i>{label}</i>: {parts[0]}"
 
 
+def render_э(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_э("э", ["ru", "насл", "orv", "снѣгъ"], defaultdict(str))
+    'др.-русск.снѣгъ'
+    >>> render_э("э", ["ru", "насл", "orv", "снѣгъ", "снег"], defaultdict(str))
+    'др.-русск.снѣгъ «снег»'
+    """
+    text = f"{langs_short[parts[2]]}{parts[3]}"
+    if len(parts) > 4:
+        text += f" «{parts[4]}»"
+    return text
+
+
 def render_через(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_через("через", ["гл", "выезжать"], defaultdict(str))
@@ -376,6 +389,7 @@ template_mapping = {
     "прист-СИ": render_прист_СИ,
     "хим-элем": render_хим_элем,
     "ссылки с пометой": render_ссылки_с_пометой,
+    "э": render_э,
     #
     # Variants
     #
