@@ -1016,17 +1016,11 @@ def transform(
         all_templates.append((tpl, word, "check"))
 
     # {{formatnum:-1000000}}
-    if ":" in tpl and tpl not in (
-        "R:TLFi",
-        "R:Larousse2vol1922",
-        "R:Littré",
-        "R:Rivarol",
-        "R:DAF6",
-        "R:Tosti",
-    ):
-        tpl, new_parts_raw = template.split(":", 1)
-        parts = [tpl] + [p.strip() for p in new_parts_raw.split("|")]
-        tpl = parts[0]
+    if ":" in tpl:
+        new_tpl, new_parts_raw = template.split(":", 1)
+        if new_tpl in constants.TEMPLATES_WITH_COLON:
+            parts = [new_tpl, *[p.strip() for p in new_parts_raw.split("|")]]
+            tpl = parts[0]
 
     # Stop early
     if not tpl or tpl in templates_ignored[locale]:

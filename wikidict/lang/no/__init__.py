@@ -55,7 +55,7 @@ variant_templates = (
 # Templates to ignore: the text will be deleted.
 templates_ignored = (
     "?",
-    "#ifeq",
+    "#ifeq:",
     "audio",
     "definisjon mangler",
     "etymologi mangler",
@@ -70,7 +70,7 @@ templates_ignored = (
     "o-hvem/kven",
     "opprydning",
     "ordbank",
-    "R",
+    "R:Norsk Riksmålsordbok bind 3",
     "sitat",
     "suffiks/oversikt",
     "taxlink",

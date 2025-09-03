@@ -141,7 +141,8 @@ templates_ignored = (
     "R:TELETERM",
     "wlogo",
     "ΒΠ",
-    "ΠΘ",
+    "ΠΘ:Ησύχιος",
+    "ΠΘ:Ιλ",
     "παράθεμα",
     "κλείδα-ελλ",
     "επέκταση-ετυ",
@@ -167,7 +168,7 @@ templates_ignored = (
     "επώνυμο",
     "ζητ",
     "ήχος",
-    "Π",
+    "Π:Μπαμπινιώτης 2010",
 )
 
 # Templates that will be completed/replaced using italic style.

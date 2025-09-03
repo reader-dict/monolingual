@@ -34,7 +34,18 @@ variant_templates = ("{{прич.",)
 # Some definitions are not good to keep
 templates_ignored = (
     "??",
-    "DEFAULTSORT",
+    "DEFAULTSORT:чат",
+    "DEFAULTSORT:чонок",
+    "DEFAULTSORT:ом",
+    "DEFAULTSORT:онн",
+    "DEFAULTSORT:инк",
+    "DEFAULTSORT:няк",
+    "DEFAULTSORT:иден",
+    "DEFAULTSORT:ил",
+    "DEFAULTSORT:ень",
+    "DEFAULTSORT:ив",
+    "DEFAULTSORT:е",
+    "DEFAULTSORT:диил",
     "etym-lang",
     "gb",
     "improve",
@@ -97,8 +108,8 @@ templates_multi = {
     "wikiref": "parts[-1]",
     # {{кс|Унбегаун, с. 44}}
     "кс": 'f"[{parts[1]}]"',
-    # {{t:=|поисковая оптимизация}} →  {{_t_|поисковая оптимизация}} (converted in `render.adjust_wikicode()`)
-    "_t_": 'f"то же, что {parts[1]}"',
+    # {{t:=|поисковая оптимизация}}
+    "t:=": 'f"то же, что {parts[1]}"',
     "страд.": "italic('страд.') + ' к' + ((' ' + parts[1]) if len(parts) > 1 else '')",
     # {{марр|значение слова или выражения}}
     "марр": 'f"‘{parts[1]}’"',
@@ -135,6 +146,7 @@ templates_multi["template"] = templates_multi["Шаблон"]
 templates_multi["то же"] = templates_multi["="]
 templates_multi["ссылки"] = templates_multi["aslinks"]
 templates_multi["ш"] = templates_multi["Шаблон"]
+templates_multi["T:="] = templates_multi["t:="]
 
 # Templates that will be completed/replaced using custom text.
 templates_other = {
@@ -397,15 +409,3 @@ def last_template_handler(
 
 
 random_word_url = "https://ru.wiktionary.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RandomRootpage"
-
-
-def adjust_wikicode(code: str, locale: str) -> str:
-    # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("{{t:=|же}}", "ru")
-    '{{_t_|же}}'
-    """
-    # Workaround to prevent "t:=" to be reduced to "t"
-    code = code.replace("{{t:=|", "{{_t_|")
-
-    return code

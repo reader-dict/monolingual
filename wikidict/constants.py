@@ -47,3 +47,16 @@ KINDLEGEN_FILE = Path.home() / ".local" / "bin" / "kindlegen"
 # HTTP requests
 SESSION = requests.Session()
 SESSION.headers.update(WIKIMEDIA_HEADERS)
+
+# Template using a special syntax like `{{formatnum:42}}`.
+# They will be reconstructed into a more convenient syntax like `{{formatnum|42}}`.
+TEMPLATES_WITH_COLON = {
+    # Universal
+    "#expr",
+    "formatnum",
+    # DE
+    "Lit-Bahlow",
+    "Lit-Linnartz",
+    # RU
+    "этимология",
+}
