@@ -1221,7 +1221,6 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a*i*ũ": ("", "plein de sollicitude"),
         "ar-*a*²a*a": ("(2)", "attrister"),
         "ar-*a*â*ũ": ("", "peine"),
-        "ar-*i**â'@ũ": ("", "soin"),
         "ar-*i*a*ũ": ("", "exigu"),
         "ar-*i*â*@ũ": ("", "effort"),
         "ar-*ta*a*a": ("(8)", "prendre soin"),
@@ -1243,7 +1242,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta**i*@ũ": ("", "affliction"),
         "ar-ta*a*²a*a": ("(5)", "prendre peine"),
         "ar-ta*â*a*a": ("(6)", "s'efforcer"),
-    },  # 32
+    },  # 31
     "ar-3qd": {
         "aa_sens": "lier",
         "ar-***ũ": ("", ""),
