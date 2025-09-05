@@ -4076,6 +4076,39 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta*a*²a*a": ("(5)", ""),
         "ar-ta*â*a*a": ("(6)", ""),
     },  # 31
+    "ar-Znn": {
+        "aa_sens": "croire",
+        "ar-***ũ": ("", ""),
+        "ar-**a*²a": ("(9)", ""),
+        "ar-*a**ũ": ("", "opinion"),
+        "ar-*a*a*a-u": ("(1)", "croire"),
+        "ar-*a*²a*a": ("(2)", ""),
+        "ar-*a*²â*@ũ": ("", "présomptueuse"),
+        "ar-*a*²â*ũ": ("", "présomptueux"),
+        "ar-*a*âyi*u": ("", "{{p}} soupçons"),
+        "ar-*a*î*ũ": ("", "suspect"),
+        "ar-*a*û*ũ": ("", "incertain"),
+        "ar-*i**@ũ": ("", "soupçon"),
+        "ar-*i*a*ũ": ("", "{{p}} soupçons"),
+        "ar-*ta*a*a": ("(8)", "soupçonner"),
+        "ar-*u*û*ũ": ("", "{{p}} opinions"),
+        "ar-*â**ũ": ("", "soupçonneux"),
+        "ar-*â*a*a": ("(3)", ""),
+        "ar-a**a*a": ("(4)", "soupçonner"),
+        "ar-a*â*î*u": ("", "{{p}} opinions"),
+        "ar-ma**i*@ũ": ("", "opinion"),
+        "ar-ma**û*ũ": ("", "suspect"),
+        "ar-ma*â**ũ": ("", "{{p}} présumés"),
+        "ar-n*a*a*a": ("(7)", ""),
+        "ar-sta**a*a": ("(10)", ""),
+        "ar-ta*a*²a*a": ("(5)", ""),
+        "ar-ta*â*a*a": ("(6)", ""),
+    },  # 26
+    "ar-Zny": {
+        "aa_sens": "croire",
+        "ar-***ũ": ("", ""),
+        "ar-ta*a*²a*a": ("(5)", "croire"),
+    },  # 3
     "ar-b'r": {
         "aa_sens": "puits, fosse",
         "ar-***ũ": ("", ""),
@@ -4093,6 +4126,34 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta*a*²a*a": ("(5)", ""),
         "ar-ta*â*a*a": ("(6)", ""),
     },  # 15
+    "ar-b's": {
+        "aa_sens": "brave / malheur",
+        "ar-***ũ": ("", ""),
+        "ar-**a*²a": ("(9)", ""),
+        "ar-*a**â'u": ("", "malheur"),
+        "ar-*a**ũ": ("", "bravoure"),
+        "ar-*a*i*a-a": ("(1)", "être malheureux"),
+        "ar-*a*i*ũ": ("", "misérable"),
+        "ar-*a*u*a": ("(1)", "être brave"),
+        "ar-*a*²a*a": ("(2)", ""),
+        "ar-*a*î*ũ": ("", "violent"),
+        "ar-*ay*a*ũ": ("", "violent"),
+        "ar-*i**é": ("", "malheur"),
+        "ar-*i**ũ": ("", "châtiment"),
+        "ar-*ta*a*a": ("(8)", "être affligé"),
+        "ar-*u**ãé": ("", "malheur"),
+        "ar-*u**é": ("", "malheur"),
+        "ar-*u**ũ": ("", "malheur"),
+        "ar-*â*a*a": ("(3)", ""),
+        "ar-*â*i*ũ": ("", "malheureux"),
+        "ar-a**a*a": ("(4)", "accabler"),
+        "ar-a**u*ũ": ("", "{{p}} malheurs"),
+        "ar-mu*ta*i*ũ": ("", "triste"),
+        "ar-n*a*a*a": ("(7)", ""),
+        "ar-sta**a*a": ("(10)", ""),
+        "ar-ta*a*²a*a": ("(5)", ""),
+        "ar-ta*â*a*a": ("(6)", "se montrer pauvre"),
+    },  # 26
     "ar-b3d": {
         "aa_sens": "loin",
         "ar-***ũ": ("", ""),
@@ -10735,5 +10796,5 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a**û*iy²ũ": ("", "d'huile"),
         "ar-*a**û*ũ": ("", "{{p}} oliviers"),
     },  # 6
-}  # 367
+}  # 370
 # END

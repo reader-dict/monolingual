@@ -274,6 +274,8 @@ labels = {
     "ES": "Spain",
     "EU": "European Union",
     "EU politics": "EU politics",
+    "Early Christianity": "early Christianity",
+    "Early Church": "early Christianity",
     "Early Modern": "Early Modern",
     "Early Modern English": "Early Modern",
     "East Africa": "East Africa",
@@ -1435,6 +1437,10 @@ labels = {
     "dressage": "dressage",
     "dysphemism": "dysphemistic",
     "dysphemistic": "dysphemistic",
+    "early Christianity": "early Christianity",
+    "early Church": "early Christianity",
+    "early christianity": "early Christianity",
+    "early church": "early Christianity",
     "earth science": "earth science",
     "eating disorder": "eating disorders",
     "eating disorders": "eating disorders",
@@ -2629,6 +2635,9 @@ labels = {
     "texting": "text messaging",
     "th-fronting": "<i>th</i>-fronting",
     "th-stopping": "<i>th</i>-stopping",
+    "the Early Church": "early Christianity",
+    "the early Church": "early Christianity",
+    "the early church": "early Christianity",
     "theater": "theater",
     "theatre": "theater",
     "then": "then",
@@ -2763,6 +2772,7 @@ labels = {
     "white supremacy": "white supremacy",
     "wiki": "wiki jargon",
     "wiki jargon": "wiki jargon",
+    "wikis": "wiki jargon",
     "wind instrument": "music",
     "wind instruments": "music",
     "wine": "wine",
@@ -2796,7 +2806,7 @@ labels = {
     "æ-tensing": "æ-tensing",
     "–": "–",
     "—": "—",
-}  # 2,791
+}  # 2,801
 
 syntaxes = {
     "&": {
