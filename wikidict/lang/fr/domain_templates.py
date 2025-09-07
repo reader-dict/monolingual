@@ -14,6 +14,7 @@ domain_templates = {
     "Oblasts": "Géographie",
     "RDA": "Histoire, Communisme, RDA",
     "RFA": "Histoire, Allemagne de l’Ouest",
+    "RSS-URSS": "URSS",
     "SU": "Histoire, Communisme, URSS",
     "Star Wars": "Science-fiction, univers de Star Wars",
     "Tintin": "Univers de Tintin",
@@ -349,5 +350,5 @@ domain_templates = {
     "états": "État",
     "étoiles": "Astronomie",
     "îles": "Géographie",
-}  # 344
+}  # 345
 # END
