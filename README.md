@@ -50,7 +50,7 @@ Copy the dictionary inside the `.kobo/custom-dict/` folder on your eBook reader.
 
 ### KOReader
 
-Download a dictionary in StarDict format, unzip it into the `koreader/data/dict/` folder on your eBook reader. If you want multiple dictionaries you have to create directories in `koreader/data/dict/` for all your dictionaries and unzip the dictionaries into this folders.
+See [KoReader wikipage](https://github.com/koreader/koreader/wiki/Dictionary-support#how-to-install-a-dictionary).
 
 ---
 
