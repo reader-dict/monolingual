@@ -3527,6 +3527,25 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta*a*²a*a": ("(5)", "tourner autour"),
         "ar-ta*â*a*a": ("(6)", ""),
     },  # 22
+    "ar-Twl": {
+        "aa_sens": "long",
+        "ar-***ũ": ("", ""),
+        "ar-**a*²a": ("(9)", ""),
+        "ar-*a**ũ": ("", "longueur"),
+        "ar-*a*a*a-u": ("(1)", "s'allonger"),
+        "ar-*a*²a*a": ("(2)", "étendre"),
+        "ar-*i**ũ": ("", "vie"),
+        "ar-*i*a*ũ": ("", "entrave"),
+        "ar-*ta*a*a": ("(8)", ""),
+        "ar-*u**ũ": ("", "délai"),
+        "ar-*u*a*ũ": ("", "vie"),
+        "ar-*â*a*a": ("(3)", "différer"),
+        "ar-a**a*a": ("(4)", "prolonger"),
+        "ar-n*a*a*a": ("(7)", ""),
+        "ar-sta**a*a": ("(10)", "être long"),
+        "ar-ta*a*²a*a": ("(5)", "faire largement"),
+        "ar-ta*â*a*a": ("(6)", "se prolonger"),
+    },  # 17
     "ar-Tyr": {
         "aa_sens": "s'envoler, augure",
         "ar-**a*²a": ("(9)", ""),
@@ -10796,5 +10815,5 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*a**û*iy²ũ": ("", "d'huile"),
         "ar-*a**û*ũ": ("", "{{p}} oliviers"),
     },  # 6
-}  # 370
+}  # 371
 # END
