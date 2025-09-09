@@ -2,55 +2,9 @@
 
 [![Word of the day](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml/badge.svg)](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml)
 
+🚀 Features, **downloads**, and installation details on [reader.dict](https://www.reader-dict.com).
+
 🎇 Want to know what is being cooked, and what was done in past releases? Have a look at our [discussions](https://github.com/reader-dict/monolingual/discussions).
-
-## Features
-
-- **Part of speech** support.
-- When selecting a plural word, **its singular form** will be displayed.
-- When selecting a conjugated verb, **its infinitive version** will be displayed.
-- When a word is the plural form of another, and also a form of a verb, **all versions** are displayed.
-- If a word contains **several pronunciations, or genders**, all are available.
-- **Chemical formulas** are beautifuly rendered.
-- **Mathematic formulas** are beautifuly rendered.
-- **Hieroglyphs** are supported.
-- **Tables** are supported.
-
-## Special
-
-Find **bilingual, and universal** dictionaries with more than 180 langs at the next-level project: [reader.dict Multilingual Dictionaries](https://www.reader-dict.com).
-
-## Downloads
-
-1. <small>`[CA]`</small> [Catalan](https://www.reader-dict.com/ca/download/ca)
-1. <small>`[DA]`</small> [Danish](https://www.reader-dict.com/da/download/da)
-1. <small>`[DE]`</small> [German](https://www.reader-dict.com/de/download/de)
-1. <small>`[EL]`</small> [Greek](https://www.reader-dict.com/el/download/el)
-1. <small>`[EN]`</small> [English](https://www.reader-dict.com/en/download/en)
-1. <small>`[EO]`</small> [Esperanto](https://www.reader-dict.com/eo/download/eo)
-1. <small>`[ES]`</small> [Spanish](https://www.reader-dict.com/es/download/es)
-1. <small>`[FR]`</small> [French](https://www.reader-dict.com/fr/download/fr) ([news](https://www.mobileread.com/forums/showthread.php?t=330223&page=2))
-1. <small>`[IT]`</small> [Italian](https://www.reader-dict.com/it/download/it)
-1. <small>`[NO]`</small> [Norway](https://www.reader-dict.com/no/download/no)
-1. <small>`[PT]`</small> [Portuguese](https://www.reader-dict.com/pt/download/pt)
-1. <small>`[RO]`</small> [Romanian](https://www.reader-dict.com/ro/download/ro)
-1. <small>`[RU]`</small> [Russian](https://www.reader-dict.com/ru/download/ru)
-1. <small>`[SV]`</small> [Swedish](https://www.reader-dict.com/sv/download/sv)
-1. <small>`[ZH]`</small> [Chinese](https://www.reader-dict.com/en/download/zh)
-
-## Installation
-
-### Kindle
-
-Copy the dictionary inside the `documents/dictionaries/` folder on your eBook reader.
-
-### Kobo
-
-Copy the dictionary inside the `.kobo/custom-dict/` folder on your eBook reader.
-
-### KOReader
-
-See [KoReader wikipage](https://github.com/koreader/koreader/wiki/Dictionary-support#how-to-install-a-dictionary).
 
 ---
 
