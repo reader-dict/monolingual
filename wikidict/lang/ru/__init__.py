@@ -30,6 +30,7 @@ sections = (
 # Variants
 variant_titles = ("значение",)
 variant_templates = ("{{прич.",)
+reverse_variant_templates = ("{{rev-flexion",)
 
 # Some definitions are not good to keep
 templates_ignored = (

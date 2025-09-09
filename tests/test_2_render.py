@@ -135,6 +135,7 @@ def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.L
                 ]
             },
             variants=[],
+            reverse_variants=[],
         ),
         "b": Word(
             pronunciations=[],
@@ -144,6 +145,7 @@ def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.L
                 "Lettre": ["Deuxième lettre et première consonne de l’alphabet latin (minuscule). {{unknown-1}}."]
             },
             variants=[],
+            reverse_variants=[],
         ),
         "c": Word(
             pronunciations=[],
@@ -156,6 +158,7 @@ def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.L
                 ]
             },
             variants=[],
+            reverse_variants=[],
         ),
     }
 

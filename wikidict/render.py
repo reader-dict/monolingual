@@ -566,6 +566,7 @@ def parse_word(
     etymology = []
     etymology_sections: list[wtp.Section] = []
     variants: list[str] = []
+    reverse_variants: list[str] = []
 
     # Etymology (pre-select sections)
     if lang_src != "sv" and parsed_sections:
@@ -609,6 +610,7 @@ def parse_word(
     # Variants
     if parsed_sections and (interesting_titles := lang.variant_titles[lang_dst]):
         interesting_templates = lang.variant_templates[lang_dst]
+        interesting_templates_reverse = lang.reverse_variant_templates[lang_dst]
         for title, parsed_section in parsed_sections.items():
             if not title.startswith(interesting_titles):
                 continue
@@ -617,10 +619,14 @@ def parse_word(
                     tpl = str(tpl)
                     if tpl.startswith(interesting_templates):
                         add_potential_variant(word, tpl, lang_dst, variants)
+                    elif tpl.startswith(interesting_templates_reverse):
+                        add_potential_variant(word, tpl, lang_dst, reverse_variants)
         if variants:
             variants = sorted(set(variants))
+        if reverse_variants:
+            reverse_variants = sorted(set(reverse_variants))
 
-    return Word(prons, genders, etymology, definitions, variants)
+    return Word(prons, genders, etymology, definitions, variants, reverse_variants)
 
 
 def load(file: Path) -> dict[str, str]:
@@ -646,7 +652,7 @@ def render_word(
     except Exception:
         log.exception("ERROR with %r", word)
     else:
-        if details.definitions or details.variants:
+        if details.definitions or details.variants or details.reverse_variants:
             words[word] = details
             return details
 
@@ -668,6 +674,15 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         )
 
     utils.check_for_missing_templates(list(all_templates))
+
+    log.info("Handling reverse variants ...")
+    for word, details in results.items():
+        for form in details.reverse_variants:
+            try:
+                results[form].variants = sorted({*results[form].variants, word})
+            except KeyError:
+                results[form] = Word([], [], [], {}, [word], [])
+    log.info("Handling reverse variants ... Done")
 
     return results.copy()
 

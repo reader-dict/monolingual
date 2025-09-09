@@ -8,7 +8,7 @@ from wikidict.utils import process_templates
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "aventurierul",
@@ -16,6 +16,7 @@ from wikidict.utils import process_templates
             [],
             {},
             ["aventurier"],
+            [],
         ),
         (
             "cânta",
@@ -31,6 +32,7 @@ from wikidict.utils import process_templates
                 ],
             },
             [],
+            ["cânt", "cântat", "cânte"],
         ),
         (
             "fi",
@@ -64,9 +66,22 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
+            ["fie", "fost", "sunt"],
         ),
-        ("frumoasă", ["/fru'mo̯a.sə/"], [], {}, ["frumos"]),
-        ("frumoși", ["[fruˈmoʃʲ]"], [], {}, ["frumos"]),
+        ("frumoasă", ["/fru'mo̯a.sə/"], [], {}, ["frumos"], []),
+        ("frumoși", ["[fruˈmoʃʲ]"], [], {}, ["frumos"], []),
+        (
+            "Lama",
+            [],
+            [],
+            {
+                "Nume Taxonomic": [
+                    "(<i>zool.</i>) gen de animale din familia <i>Camelidae</i>; (<i>spec.</i>) lamă, guanaco"
+                ]
+            },
+            [],
+            [],
+        ),
         (
             "paronim",
             ["/pa.ro'nim/"],
@@ -80,17 +95,7 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
-        ),
-        (
-            "Lama",
-            [],
-            [],
-            {
-                "Nume Taxonomic": [
-                    "(<i>zool.</i>) gen de animale din familia <i>Camelidae</i>; (<i>spec.</i>) lamă, guanaco"
-                ]
-            },
-            [],
+            ["paronime", "paronimele", "paronimelor", "paronimul", "paronimului"],
         ),
         (
             "MHz",
@@ -98,8 +103,9 @@ from wikidict.utils import process_templates
             [],
             {"Simbol": ["simbol pentru megahertz"]},
             [],
+            [],
         ),
-        ("portocale", ["/por.toˈka.le/"], [], {}, ["portocală"]),
+        ("portocale", ["/por.toˈka.le/"], [], {}, ["portocală"], []),
         (
             "temperatură",
             ["/tem.pe.raˈtu.rə/"],
@@ -116,6 +122,7 @@ from wikidict.utils import process_templates
                 ],
             },
             [],
+            ["temperatura", "temperaturi", "temperaturii", "temperaturile", "temperaturilor"],
         ),
     ],
 )
@@ -125,6 +132,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -134,6 +142,7 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
 
 
 @pytest.mark.parametrize(

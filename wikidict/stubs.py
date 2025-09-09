@@ -16,6 +16,7 @@ class Word:
     etymology: list[Definition]
     definitions: Definitions
     variants: list[str]
+    reverse_variants: list[str]
     is_variant: bool = False
 
 
