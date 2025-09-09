@@ -46,6 +46,7 @@ templates_ignored = (
     "IPA",
     "Lautschrift",
     "Lit-Pfeifer",
+    "Q",
     "QS Bedeutung",
     "QS Bedeutungen",
     "QS_Bedeutungen",
