@@ -277,6 +277,8 @@ templates_multi = {
     # {{ar-form|IV}}
     # {{ar-form|IV|verb form}}
     "ar-form": "f'{parts[2] if len(parts) > 2 else 'Form'} {parts[1]}'",
+    # {{big|𝌀}}
+    "big": "f'<span style=\"font-size:115%\">{parts[1]}</span>'",
     # {{C.|21|st}}
     "C.": "parts[1] + (parts[2] if len(parts) > 2 else 'th') + f' c.'",
     # {{caps|discourse}}
