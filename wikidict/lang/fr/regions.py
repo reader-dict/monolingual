@@ -394,6 +394,7 @@ regions = {
     "Kyushu": "Kyūshū",
     "Kyūshū": "Kyūshū",
     "La Hague": "La Hague",
+    "La Panne": "La Panne",
     "La Romagne": "La Romagne",
     "Lampedusa": "Lampedusa",
     "Lancashire": "Lancashire",
@@ -865,5 +866,5 @@ regions = {
     "Îles Salomon": "Îles Salomon",
     "Îles d’Aran": "Îles d'Aran",
     "Îles-de-la-Madeleine": "Îles-de-la-Madeleine",
-}  # 860
+}  # 861
 # END

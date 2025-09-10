@@ -5918,11 +5918,10 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-*ta*a*a": ("(8)", "mettre à sec"),
         "ar-*u**@ũ": ("", "grand nombre"),
         "ar-*u**ũ": ("", "nombre immense"),
-        "ar-*u*â*@ũ": ("", "foin"),
+        "ar-*u*â*@ũ": ("", "ce qui sèche"),
         "ar-*u*â*ũ": ("", "partie sèche"),
         "ar-*â**ũ": ("", "sec"),
         "ar-*â*a*a": ("(3)", ""),
-        "ar-*û*â*@ũ": ("", "ce qui sèche"),
         "ar-a**a*a": ("(4)", ""),
         "ar-mu*a*²a*ũ": ("", "desséché"),
         "ar-mu*a*²i*ũ": ("", "qui sèche"),
@@ -5933,7 +5932,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ta*a*²a*a": ("(5)", "se dessécher"),
         "ar-ta*â*a*a": ("(6)", ""),
         "ar-ti**â*ũ": ("", "bard"),
-    },  # 28
+    },  # 27
     "ar-jhD": {
         "aa_sens": "avorter",
         "ar-***ũ": ("", ""),
@@ -6785,7 +6784,7 @@ racines_schemes_arabes: dict[str, dict[str, str | tuple[str, str]]] = {
         "ar-ma**a*@ũ": ("", "latrines"),
         "ar-ma**û*ũ": ("", "maudit"),
         "ar-ma*â*i*u": ("", "{{p}} latrines"),
-        "ar-ma0*â*î*u": ("", "{{p}} maudits"),
+        "ar-ma*â*î*u": ("", "{{p}} maudits"),
         "ar-mu*a*²a*ũ": ("", "maudit"),
         "ar-mu*â*a*@ũ": ("", "malédiction"),
         "ar-n*a*a*a": ("(7)", ""),
