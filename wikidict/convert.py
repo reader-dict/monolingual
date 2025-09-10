@@ -621,6 +621,17 @@ class StarDictFormat(ConverterFromDictFile):
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.zip"
     glossary_options = {"dictzip": True, "sametypesequence": "h"}
 
+    def _convert(self) -> None:
+        super()._convert()
+
+        # Append missing lang details to the .ifo
+        ifo = self.output_dir / self.target_format / "dict-data.ifo"
+        content = ifo.read_text()
+        if "lang=" in content:
+            return
+        content += f"lang={self.effective_lang_src()}-{self.effective_lang_dst()}\n"
+        ifo.write_text(content)
+
 
 def get_primary_formatters() -> list[type[BaseFormat]]:
     return [KoboFormat, DictFileFormat]

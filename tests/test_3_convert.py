@@ -216,12 +216,28 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "dict-data.syn",
         "res/db28a816.gif",
     ]
+    expected_ifo_lines = [
+        "StarDict's dict ifo file",
+        "version=3.0.0",
+        "bookname=reader.dict FR",
+        "wordcount=40",
+        "idxfilesize=635",
+        "sametypesequence=h",
+        "synwordcount=5",
+        "website=https://www.reader-dict.com",
+        "date=2020-12-17",
+        "description=© reader.dict 2025",
+        "lang=fr-fr",
+    ]
     with ZipFile(stardict) as fh:
         assert sorted(fh.namelist()) == expected_files
 
         # testfile returns the name of the first corrupt file, or None
         errors = fh.testzip()
         assert errors is None
+
+        ifo = fh.read("dict-data.ifo").decode()
+        assert ifo.splitlines() == expected_ifo_lines
 
     # Check the Mobi content
     with ZipFile(mobi_file) as fh:
