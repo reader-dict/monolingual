@@ -42,8 +42,10 @@ sections: dict[str, tuple[str, ...]] = _populate("sections")
 # Variants
 # Section titles considered interesting to look variants into
 variant_titles: dict[str, tuple[str, ...]] = _populate("variant_titles")
+reverse_variant_titles: dict[str, tuple[str, ...]] = _populate("reverse_variant_titles")
 # Template names considered interesting to look variants into
 variant_templates: dict[str, tuple[str, ...]] = _populate("variant_templates")
+reverse_variant_templates: dict[str, tuple[str, ...]] = _populate("reverse_variant_templates")
 
 # Some definitions are not good to keep
 definitions_to_ignore: dict[str, tuple[str, ...]] = _populate("definitions_to_ignore")

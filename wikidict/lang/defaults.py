@@ -25,6 +25,10 @@ etyl_section = ("",)
 variant_titles: tuple[str, ...] = ()
 variant_templates: tuple[str, ...] = ()
 
+# Reverse variants
+reverse_variant_titles: tuple[str, ...] = ()
+reverse_variant_templates: tuple[str, ...] = ()
+
 # Some definitions are not good to keep
 definitions_to_ignore: tuple[str, ...] = ()
 

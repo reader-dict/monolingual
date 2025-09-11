@@ -93,6 +93,9 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
     if details.variants:
         print("\n[variants]", ", ".join(iter(details.variants)))
 
+    if details.reverse_variants:
+        print("\n[reverse variants]", ", ".join(iter(details.reverse_variants)))
+
     print()
     utils.check_for_missing_templates(all_templates)
 

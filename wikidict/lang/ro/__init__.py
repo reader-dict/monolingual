@@ -61,6 +61,15 @@ variant_templates = (
     "{{flexion",
 )
 
+# Reverse variantes
+reverse_variant_titles = (
+    "{{adjectiv-",
+    "{{substantiv-",
+    "{{verb-",
+)
+reverse_variant_templates = ("{{rev-flexion",)
+
+
 # Templates more complex to manage.
 templates_multi = {
     # {{n}}
@@ -133,6 +142,8 @@ def last_template_handler(
 
 random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 
+REV_VARIANTS_IGNORED = {"-", "I", "II", "III", "IV", "V", "VI"}
+
 
 def adjust_wikicode(code: str, locale: str) -> str:
     # sourcery skip: inline-immediately-returned-variable
@@ -170,6 +181,13 @@ def adjust_wikicode(code: str, locale: str) -> str:
     '# {{flexion|frumos}}'
     >>> adjust_wikicode("#''formă alternativă pentru'' [[fântânioară]].", "ro")
     '# {{flexion|fântânioară}}'
+
+    >>> adjust_wikicode("{{substantiv-ron\\n|gen={{f}}\\n|nom-sg=piatră\\n|nom-pl=pietre\\n|art-sg=piatra\\n|art-pl=pietrele\\n|dat-sg=pietrei\\n|dat-pl=pietrelor\\n|voc-sg=piatră\\n|voc-pl=pietrelor\\n}}", "ro")
+    '# {{rev-flexion|piatra}}\\n# {{rev-flexion|piatră}}\\n# {{rev-flexion|pietre}}\\n# {{rev-flexion|pietrei}}\\n# {{rev-flexion|pietrele}}\\n# {{rev-flexion|pietrelor}}'
+    >>> adjust_wikicode("{{adjectiv-ron\\n|m-sg=interocular\\n|m-pl=[[interoculari]]\\n|f-sg=[[interoculară]]\\n|f-pl=interoculare/roof (2)\\n|voc-pl=\\n|voc-sg=electronică<br />electronico\\n}}", "ro")
+    '# {{rev-flexion|electronico}}\\n# {{rev-flexion|electronică}}\\n# {{rev-flexion|interocular}}\\n# {{rev-flexion|interoculare}}\\n# {{rev-flexion|interoculari}}\\n# {{rev-flexion|interoculară}}\\n# {{rev-flexion|roof}}'
+    >>> adjust_wikicode("{{adjectiv-ron|m-sg=interocular|m-pl=[[interoculari]]|f-sg=[[interoculară]]|f-pl=[[interoculare]]|voc-pl={{inv}}|voc-sg=}}# părul", "ro")
+    '# {{rev-flexion|interocular}}\\n# {{rev-flexion|interoculare}}\\n# {{rev-flexion|interoculari}}\\n# {{rev-flexion|interoculară}}\\n# părul'
     """
     locale_3_chars, lang_name = langs[locale]
 
@@ -222,5 +240,47 @@ def adjust_wikicode(code: str, locale: str) -> str:
         code,
         flags=re.MULTILINE,
     )
+
+    #
+    # Reverse variants
+    #
+
+    if any(tpl in code for tpl in reverse_variant_titles):
+        cleaned = []
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            line = line.strip()
+            if line.startswith(reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_code, rest = tpl_code.rsplit("}}", 1)
+                    forms: set[str] = set()
+                    for form in re.findall(r"=([^|{}]+)", tpl_code):
+                        if "(" in form:
+                            form = form.split("(", 1)[0]
+                        if "<br" in form:
+                            form = re.sub(r"<br\s?/?>", "/", form)
+                        if "/" in form:
+                            for sform in form.split("/"):
+                                forms.add(sform.strip("[]").strip())
+                        else:
+                            forms.add(form.strip("[]").strip())
+                    for discard in REV_VARIANTS_IGNORED:
+                        forms.discard(discard)
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms))
+                    if rest:
+                        cleaned.append(rest)
+                    tpl_code = ""
+                continue
+
+            cleaned.append(line)
+
+        code = "\n".join(cleaned)
 
     return code

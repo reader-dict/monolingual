@@ -15,17 +15,18 @@ from wikidict.constants import ASSET_CHECKSUM_ALGO
 from wikidict.stubs import Variants, Word, Words
 
 WORDS = {
-    "empty": Word([], [], [], {}, []),
-    "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, []),
-    "foos": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"]),
-    "baz": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"]),
-    "empty1": Word([], [], [], {}, ["foo"]),
-    "empty2": Word([], [], [], {}, ["empty1"]),
+    "empty": Word([], [], [], {}, [], []),
+    "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, [], []),
+    "foos": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"], []),
+    "baz": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"], []),
+    "empty1": Word([], [], [], {}, ["foo"], []),
+    "empty2": Word([], [], [], {}, ["empty1"], []),
     "Multiple Etymologies": Word(
         ["pron"],
         ["gender"],
         ["etyl 1", ("setyl 1",)],
         {"Noun": ["def 1", ("sdef 1",)]},
+        [],
         [],
     ),
     "Multiple Etymology": Word(
@@ -34,6 +35,7 @@ WORDS = {
         ["etyl0"],
         {"Noun": ["def 0"]},
         ["Multiple Etymologies"],
+        [],
     ),
     "GIF": Word(
         ["pron"],
@@ -50,6 +52,7 @@ WORDS = {
             ]
         },
         ["gif"],
+        [],
     ),
 }
 
@@ -385,6 +388,7 @@ WORDS_VARIANTS_FR = words = {
         etymology=[],
         definitions={"Verbe": ["Définition de 'estre'."]},
         variants=[],
+        reverse_variants=[],
     ),
     "être": Word(
         pronunciations=["\\ɛtʁ\\"],
@@ -396,6 +400,7 @@ WORDS_VARIANTS_FR = words = {
             ]
         },
         variants=[],
+        reverse_variants=[],
     ),
     "suis": Word(
         pronunciations=["\\sɥi\\"],
@@ -403,6 +408,7 @@ WORDS_VARIANTS_FR = words = {
         etymology=[],
         definitions={},
         variants=["suivre", "être", "estre"],
+        reverse_variants=[],
     ),
     "suivre": Word(
         pronunciations=["\\sɥivʁ\\"],
@@ -410,29 +416,67 @@ WORDS_VARIANTS_FR = words = {
         etymology=[],
         definitions={"Verbe": ["Définition de 'suivre'."]},
         variants=[],
+        reverse_variants=[],
     ),
 }
 WORDS_VARIANTS_ES = {
-    "gastadan": Word(pronunciations=[], genders=[], etymology=[], definitions={}, variants=["gastada"]),
-    "gastada": Word(pronunciations=[], genders=[], etymology=[], definitions={}, variants=["gastado"]),
-    "gastado": Word(pronunciations=[], genders=[], etymology=[], definitions={}, variants=["gastar"]),
+    "gastadan": Word(
+        pronunciations=[],
+        genders=[],
+        etymology=[],
+        definitions={},
+        variants=["gastada"],
+        reverse_variants=[],
+    ),
+    "gastada": Word(
+        pronunciations=[],
+        genders=[],
+        etymology=[],
+        definitions={},
+        variants=["gastado"],
+        reverse_variants=[],
+    ),
+    "gastado": Word(
+        pronunciations=[],
+        genders=[],
+        etymology=[],
+        definitions={},
+        variants=["gastar"],
+        reverse_variants=[],
+    ),
     "gastar": Word(
         pronunciations=[],
         genders=[],
         etymology=[],
         definitions={"Verb": ["Definition of 'gastar'."]},
         variants=[],
+        reverse_variants=[],
     ),
 }
 WORDS_VARIANTS_ES_2 = {
-    "-foba": Word(pronunciations=[], genders=[], etymology=[], definitions={}, variants=["-fobo"]),
-    "-fobas": Word(pronunciations=[], genders=[], etymology=[], definitions={}, variants=["-foba", "-fobo"]),
+    "-foba": Word(
+        pronunciations=[],
+        genders=[],
+        etymology=[],
+        definitions={},
+        variants=["-fobo"],
+        reverse_variants=[],
+    ),
+    "-fobas": Word(
+        pronunciations=[],
+        genders=[],
+        etymology=[],
+        definitions={},
+        variants=["-foba", "-fobo"],
+        reverse_variants=[],
+    ),
     "-fobo": Word(
         pronunciations=[],
         genders=[],
         etymology=[],
         definitions={"Suffix": ["-phobe", "-phobic"]},
         variants=[],
+        reverse_variants=[],
     ),
 }
 
