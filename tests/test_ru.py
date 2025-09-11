@@ -8,7 +8,7 @@ from wikidict.utils import process_templates
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
     [
         (
             "страница",
@@ -28,6 +28,17 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
+            [
+                "страни́ц",
+                "страни́ца",
+                "страни́цам",
+                "страни́цами",
+                "страни́це",
+                "страни́цей",
+                "страни́цею",
+                "страни́цу",
+                "страни́цы",
+            ],
         ),
         (
             "неволящий",
@@ -36,6 +47,7 @@ from wikidict.utils import process_templates
             [],
             {},
             ["неволить"],
+            [],
         ),
         (
             "какой",
@@ -56,6 +68,21 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
+            [
+                "как",
+                "кака́я",
+                "каки́е",
+                "каки́м",
+                "каки́ми",
+                "каки́х",
+                "како́го",
+                "како́е",
+                "како́й",
+                "како́м",
+                "како́му",
+                "како́ю",
+                "каку́ю",
+            ],
         ),
         (
             "коса",
@@ -80,6 +107,7 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
+            ["ко́са"],
         ),
         (
             "бита",
@@ -95,6 +123,18 @@ from wikidict.utils import process_templates
                 ]
             },
             [],
+            ["бит", "бита́", "бита́м", "бита́ми", "бита́х", "бите́", "бито́й", "бито́ю", "биту́", "биты́"],
+        ),
+        (
+            "гонит",
+            [],
+            [],
+            [
+                "Происходит от др.-греч. γόνυ «колено».",
+            ],
+            {"Значение": ["<i>мед.</i> воспаление коленного сустава"]},
+            [],
+            ["гони́т", "гони́та", "гони́там", "гони́тами", "гони́тах", "гони́те", "гони́тов", "гони́том", "гони́ту", "гони́ты"],
         ),
     ],
 )
@@ -105,6 +145,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -115,6 +156,7 @@ def test_parse_word(
     assert definitions == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
 
 
 @pytest.mark.parametrize(

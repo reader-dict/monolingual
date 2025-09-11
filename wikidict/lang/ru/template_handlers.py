@@ -369,6 +369,81 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     return variant
 
 
+# Details found on # https://ru.wiktionary.org/wiki/Шаблон:TPL
+DECL = {
+    "сущ ru f ina 0": [],
+    "сущ ru f ina 1a": ["а", "ы", "е", "у", "ой", "ою", "ам", "ами", "ах"],
+    "сущ ru f ina 2a": ["я", "и", "е", "ю", "ей", "ею", "ь", "ям", "ями", "ях"],
+    "сущ ru f ina 3a": ["а", "и", "е", "у", "ой", "ою", "ам", "ами", "ах"],
+    "сущ ru f ina 5a": ["а", "ы", "е", "у", "ей", "ею", "ам", "ами", "ам"],
+    "сущ ru f ina 6a": ["я", "и", "е", "ю", "ей", "ею", "ям", "ями", "ях"],
+    "сущ ru f ina 7a": ["я", "и", "ю", "ей", "ею", "й", "ям", "ями", "ях"],
+    "сущ ru f ina 8a": ["ь", "и", "ью", "ей", "ям", "ями", "ях"],
+    "сущ ru f ina 1b": ["а́", "ы́", "е́", "у́", "о́й", "о́ю", "а́м", "а́ми", "а́х"],
+    "сущ ru f ina 3b": ["а́", "и́", "е́", "у́", "о́й", "о́ю", "а́м", "а́ми", "а́х"],
+    "сущ ru f ina 4b": ["а́", "и́", "е́", "у́", "о́й", "о́ю", "е́й", "а́м", "а́ми", "а́х"],
+    "сущ ru f ina 6b": ["я́", "е́", "ю́", "ей", "ею", "я́м", "я́ми", "я́х"],
+    "сущ ru m a 0": [],
+    "сущ ru m a 1a": ["а", "у", "ом", "е", "ы", "ов", "ам", "ами", "ах"],
+    "сущ ru m a 1b": ["а́", "у́", "о́м", "е́", "ы́", "о́в", "а́м", "а́ми", "а́х"],
+    "сущ ru m a 2b": ["ю́", "я́", "ём", "е́", "е́й", "я́м", "я́ми", "я́х"],
+    "сущ ru m a 4b": ["а́", "у́", "о́м", "е́", "и́", "е́й", "а́м", "а́ми", "а́х"],
+    "сущ ru m a 6b": ["я́", "ю́", "ём", "е́", "ёв", "я́м", "я́ми", "я́х"],
+    "сущ ru m ina 0": [],
+    "сущ ru m ina 1a": ["а", "у", "ом", "е", "ы", "ов", "ам", "ами", "ах"],
+    "сущ ru m ina 2a": ["ь", "я", "ю", "ем", "е", "и", "ей", "ям", "ями", "ях"],
+    "сущ ru m ina 3a": ["а", "у", "ом", "е", "и", "ов", "ам", "ами", "ах"],
+    "сущ ru m ina 4a": ["а", "у", "ом", "е", "и", "ей", "ам", "ами", "ах"],
+    "сущ ru m ina 5a": ["а", "у", "ем", "е", "ы", "ев", "ам", "ами", "ах"],
+    "сущ ru m ina 6a": ["й", "я", "ю", "ем", "е", "и", "ев", "ям", "ями", "ях"],
+    "сущ ru m ina 7a": ["й", "я", "ю", "ем", "и", "ев", "ям", "ями", "ях"],
+    "прил ru 3b": ["о́й", "о́го", "о́му", "и́м", "о́м", "о́е", "а́я", "у́ю", "о́ю", "и́е", "и́х", "и́ми"],
+}
+DECL["сущ ru f ina 2b"] = DECL["сущ ru f ina 1b"]
+DECL["сущ ru f ina 5b"] = DECL["сущ ru f ina 1b"]
+DECL["сущ ru f ina 4a"] = DECL["сущ ru f ina 3a"]
+DECL["сущ ru m a 3b"] = DECL["сущ ru m a 1b"]
+DECL["сущ ru m a 5b"] = DECL["сущ ru m a 1b"]
+
+
+def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_reverse_variant("rev-flexion", ["коро́ль"], defaultdict(str))
+    'коро́ль'
+
+    >>> render_reverse_variant("сущ ru m a 2b", [], defaultdict(str, {"основа": "коро́л", "основа1": "корол", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
+    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    >>> render_reverse_variant("сущ ru m a 2b", ["коро́л"], defaultdict(str, {"основа1": "корол", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
+    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    >>> render_reverse_variant("сущ ru m a 2b", ["корол"], defaultdict(str, {"основа": "коро́л", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
+    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    >>> render_reverse_variant("сущ ru m a 2b", ["коро́л", "корол"], defaultdict(str), word="король")
+    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    """
+    tpl = tpl.removeprefix("__variant__")
+
+    if tpl == "rev-flexion":
+        return parts[0]
+
+    основа = data["основа"] or (parts.pop(0) if parts else "")
+    основа1 = data["основа1"] or (parts[0] if parts else "")
+    suffixes = DECL[tpl]
+
+    match tpl:
+        case "сущ ru f ina 3b" | "сущ ru f ina 5b":
+            return "|".join([основа1, *[f"{основа}{suf}" for suf in suffixes]])
+        case "сущ ru f ina 6b" | "сущ ru f ina 7b":
+            return "|".join([f"{основа1}й", *[f"{основа}{suf}" for suf in suffixes]])
+        case "сущ ru m a 1b" | "сущ ru m a 3b" | "сущ ru m a 4b" | "сущ ru m a 5b":
+            return "|".join([основа, *[f"{основа1}{suf}" for suf in suffixes]])
+        case "сущ ru m a 2b":
+            return "|".join([f"{основа}ь", *[f"{основа1}{suf}" for suf in suffixes]])
+        case "сущ ru m a 6b":
+            return "|".join([f"{основа}й", *[f"{основа1}{suf}" for suf in suffixes]])
+        case _:
+            return "|".join([основа, *[f"{основа}{suf}" for suf in suffixes]])
+
+
 template_mapping = {
     "lang": render_lang,
     "lang2": render_lang,
@@ -394,6 +469,13 @@ template_mapping = {
     # Variants
     #
     "__variant__прич.": render_variant,
+    #
+    # Reverse variants
+    #
+    **dict.fromkeys(
+        {f"__variant__{tpl}" for tpl in {"rev-flexion", *DECL}},
+        render_reverse_variant,
+    ),
 }
 
 

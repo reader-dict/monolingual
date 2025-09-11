@@ -28,9 +28,12 @@ sections = (
 )
 
 # Variants
-variant_titles = ("значение",)
+variant_titles = ("значение", "морфологические и синтаксические свойства")
 variant_templates = ("{{прич.",)
+
+# Reverse variantes
 reverse_variant_templates = ("{{rev-flexion",)
+reverse_variant_titles = ("{{сущ ", "{{прил ")
 
 # Some definitions are not good to keep
 templates_ignored = (
@@ -410,3 +413,50 @@ def last_template_handler(
 
 
 random_word_url = "https://ru.wiktionary.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RandomRootpage"
+
+
+def adjust_wikicode(code: str, locale: str) -> str:
+    # sourcery skip: inline-immediately-returned-variable
+    """
+    >>> adjust_wikicode("{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
+    '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коре́}}\\n# {{rev-flexion|коре́й}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|корю́}}\\n# {{rev-flexion|коря́}}\\n# {{rev-flexion|коря́м}}\\n# {{rev-flexion|коря́ми}}\\n# {{rev-flexion|коря́х}}\\n# {{rev-flexion|корём}}'
+    >>> adjust_wikicode("{{сущ ru m a 2b\\n|основа=коро́л\\n|основа1=корол\\n|слоги={{по-слогам|ко|ро́ль}}\\n}}", "ru")
+    '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|короле́}}\\n# {{rev-flexion|короле́й}}\\n# {{rev-flexion|королю́}}\\n# {{rev-flexion|короля́}}\\n# {{rev-flexion|короля́м}}\\n# {{rev-flexion|короля́ми}}\\n# {{rev-flexion|короля́х}}\\n# {{rev-flexion|королём}}'
+    """
+
+    #
+    # Reverse variants
+    #
+
+    from ...utils import transform
+
+    if any(tpl in code for tpl in reverse_variant_titles):
+        cleaned: list[str] = []
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            line = line.strip()
+            if line.startswith(reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_code, rest = tpl_code.rsplit("}}", 1)
+                    if rest == "}}":
+                        tpl_code += rest
+                        rest = ""
+                    forms = transform("", tpl_code[2:-2], locale, variant_only=True)
+                    cleaned.append(f"{tpl_code[: tpl_code.find('|')]}|}}}}")  # This is required for genders finding
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(set(forms.split("|"))))
+                    if rest:
+                        cleaned.append(rest)
+                    tpl_code = ""
+            else:
+                cleaned.append(line)
+
+        code = "\n".join(cleaned)
+
+    return code
