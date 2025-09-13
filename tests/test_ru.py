@@ -69,7 +69,6 @@ from wikidict.utils import process_templates
             },
             [],
             [
-                "как",
                 "кака́я",
                 "каки́е",
                 "каки́м",

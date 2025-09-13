@@ -324,7 +324,13 @@ def last_template_handler(
 random_word_url = "https://es.wiktionary.org/wiki/Especial:Aleatorio_en_categor%C3%ADa/Espa%C3%B1ol"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode("{{ES|xxx|núm=1}}", "es")

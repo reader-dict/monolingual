@@ -358,6 +358,13 @@ def last_template_handler(
         # We are fetching the output of a variant template, we do not want to keep it
         return ""
 
+    # Catch missing reverse variants
+    if not lookup_template(tpl_variant) and tpl_variant.startswith(("__variant__сущ", "__variant__прил")):
+        if re.search(r"\d", tpl_variant) and all_templates is not None:
+            all_templates.append((tpl_variant, word, "missed"))
+        # Incomplete template
+        return ""
+
     if lookup_template(template[0]):
         return render_template(word, template)
 
@@ -424,7 +431,13 @@ def last_template_handler(
 random_word_url = "https://ru.wiktionary.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RandomRootpage"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode("{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
@@ -457,7 +470,7 @@ def adjust_wikicode(code: str, locale: str) -> str:
                     if rest == "}}":
                         tpl_code += rest
                         rest = ""
-                    forms = transform("", tpl_code[2:-2], locale, variant_only=True)
+                    forms = transform(word, tpl_code[2:-2], locale, all_templates=all_templates, variant_only=True)
                     cleaned.append(f"{tpl_code[: tpl_code.find('|')]}|}}}}")  # This is required for genders finding
                     cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(set(forms.split("|"))))
                     if rest:

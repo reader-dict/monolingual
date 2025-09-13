@@ -544,7 +544,13 @@ def last_template_handler(
 random_word_url = "https://en.wiktionary.org/wiki/Special:RandomInCategory/English_lemmas#English"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode('{| class="floatright"\\n|-\\n| {{PIE word|en|h₁eǵʰs}}\\n| {{PIE word|en|ḱóm}}\\n|}', "en")

@@ -426,7 +426,13 @@ def add_potential_variant(
         variants.append(variant_cleaned)
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     r"""Sometimes we need to adapt the Wikicode.
 
     >>> adjust_wikicode("[[Fichier:Blason ville fr Petit-Bersac 24.svg|vignette|120px|'''Base''' d’or ''(sens héraldique)'']][[something|else]]", "fr")
@@ -540,8 +546,8 @@ def adjust_wikicode(code: str, locale: str) -> str:
     # </ref> → ''
     code = code.replace("<ref>", "").replace("</ref>", "")
 
-    func: Callable[[str, str], str] = lang.adjust_wikicode[locale]
-    return func(code, locale)
+    func: Callable[..., str] = lang.adjust_wikicode[locale]
+    return func(code, locale, all_templates=all_templates, word=word)
 
 
 def parse_word(
@@ -559,7 +565,7 @@ def parse_word(
     """
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
-    code = adjust_wikicode(code, lang_dst)
+    code = adjust_wikicode(code, lang_dst, all_templates=all_templates, word=word)
     top_sections, parsed_sections = find_sections(word, code, lang_src, lang_dst)
     prons = []
     genders = []
@@ -585,7 +591,7 @@ def parse_word(
             end = contents.find(marker)
             if end > 0:
                 top.contents = contents[:end]
-        definitions = find_definitions(word, {"top": top_sections}, lang_src, lang_dst)
+        definitions = find_definitions(word, {"top": top_sections}, lang_src, lang_dst, all_templates=all_templates)
     else:
         definitions = {}
 

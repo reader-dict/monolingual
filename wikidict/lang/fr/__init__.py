@@ -837,7 +837,13 @@ PATTERNS = [
 ]
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode('<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")

@@ -254,7 +254,13 @@ def last_template_handler(
 random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode("{{Deklinacio-eo}}", "eo")

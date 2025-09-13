@@ -170,5 +170,11 @@ def render_wikilink(tpl: str, parts: list[str], data: defaultdict[str, str], *, 
         return parts[0] if parts else ""
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     return code

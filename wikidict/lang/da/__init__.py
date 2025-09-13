@@ -343,6 +343,8 @@ def adjust_wikicode(
     code: str,
     locale: str,
     *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
     all_langs_iso: str = "|".join(langs),
     all_langs_name: str = "|".join(langs.values()),
     forms: str = "|".join(ALL_FORMS),

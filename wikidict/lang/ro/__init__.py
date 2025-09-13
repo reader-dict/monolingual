@@ -145,7 +145,13 @@ random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 REV_VARIANTS_IGNORED = {"-", "I", "II", "III", "IV", "V", "VI"}
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode("{{(|adept al liberalismului}}\\n*{{eng}}: {{trad|en|liberal}}\\n{{-}}\\n{{)}}\\nfoo\\n{{bar}}#foo\\n{{(|baz}}\\n*sdf\\n{{)}}", "ro")

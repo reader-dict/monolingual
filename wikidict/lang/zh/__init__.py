@@ -252,7 +252,13 @@ def last_template_handler(
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 
-def adjust_wikicode(code: str, locale: str) -> str:
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    all_templates: list[tuple[str, str, str]] | None = None,
+    word: str = "",
+) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
     >>> adjust_wikicode("{{zh-pron\\n|m=huángmǎguà,er=y\\n|c=wong4 maa5 kwaa3-2\\n|cat=n\\n}}", "zh")

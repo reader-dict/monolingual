@@ -3,6 +3,7 @@ from collections import defaultdict
 
 from ...user_functions import extract_keywords_from, italic, superscript
 from ...utils import process_templates
+from .bases import BASES
 from .etymologies import etymologies
 from .labels import labels
 from .langs_short import langs_short
@@ -369,93 +370,6 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     return variant
 
 
-# Details found on # https://ru.wiktionary.org/wiki/Шаблон:TPL
-DECL = {
-    "сущ ru f a 0": [],
-    "сущ ru f a 1a": ["а", "ы", "е", "у", "ой", "ою", "ам", "ами", "ах"],
-    "сущ ru f a 2a": ["я", "и", "е", "ю", "ей", "ею", "ь", "ям", "ями", "ях"],
-    "сущ ru f a 3a": ["а", "и", "е", "у", "ой", "ою", "ам", "ами", "ах"],
-    "сущ ru f a 5a": ["а", "ы", "е", "у", "ей", "ею", "ам", "ами", "ам"],
-    "сущ ru f a 6a": ["я", "и", "е", "ю", "ей", "ею", "ям", "ями", "ях"],
-    "сущ ru f a 7a": ["я", "и", "ю", "ей", "ею", "й", "ям", "ями", "ях"],
-    "сущ ru f a 8a": ["ь", "и", "ью", "ей", "ям", "ями", "ях"],
-    "сущ ru f a 1b": ["а́", "ы́", "е́", "у́", "о́й", "о́ю", "а́м", "а́ми", "а́х"],
-    "сущ ru f a 3b": ["а́", "и́", "е́", "у́", "о́й", "о́ю", "а́м", "а́ми", "а́х"],
-    "сущ ru f a 4b": ["а́", "и́", "е́", "у́", "о́й", "о́ю", "е́й", "а́м", "а́ми", "а́х"],
-    "сущ ru f a 6b": ["я́", "е́", "ю́", "ей", "ею", "я́м", "я́ми", "я́х"],
-    "сущ ru m a 0": [],
-    "сущ ru m a 1a": ["а", "у", "ом", "е", "ы", "ов", "ам", "ами", "ах"],
-    "сущ ru m a 2a": ["ь", "я", "ю", "ем", "е", "и", "ей", "ям", "ями", "ях"],
-    "сущ ru m a 3a": ["а", "у", "ом", "е", "и", "ов", "ам", "ами", "ах"],
-    "сущ ru m a 4a": ["а", "у", "ом", "е", "и", "ей", "ам", "ами", "ах"],
-    "сущ ru m a 5a": ["а", "у", "ем", "е", "ы", "ев", "ам", "ами", "ах"],
-    "сущ ru m a 6a": ["й", "я", "ю", "ем", "е", "и", "ев", "ям", "ями", "ях"],
-    "сущ ru m a 7a": ["й", "я", "ю", "ем", "и", "ев", "ям", "ями", "ях"],
-    "сущ ru m a 1b": ["а́", "у́", "о́м", "е́", "ы́", "о́в", "а́м", "а́ми", "а́х"],
-    "сущ ru m a 2b": ["ю́", "я́", "ём", "е́", "е́й", "я́м", "я́ми", "я́х"],
-    "сущ ru m a 4b": ["а́", "у́", "о́м", "е́", "и́", "е́й", "а́м", "а́ми", "а́х"],
-    "сущ ru m a 6b": ["я́", "ю́", "ём", "е́", "ёв", "я́м", "я́ми", "я́х"],
-    "прил ru 1a": ["ый", "ого", "ому", "ым", "ом", "ое", "ая", "ой", "ую", "ою", "ые", "ых", "ым", "ыми"],
-    "прил ru 2a": ["ий", "его", "ему", "им", "ем", "ь", "ее", "яя", "ей", "юю", "я", "ие", "их", "ими"],
-    "прил ru 3a": [
-        "ий",
-        "ого",
-        "ому",
-        "им",
-        "ом",
-        "ое",
-        "ого",
-        "ому",
-        "о",
-        "ая",
-        "ой",
-        "ую",
-        "ою",
-        "а",
-        "ие",
-        "их",
-        "ими",
-    ],
-    "прил ru 4a": ["ий", "его", "ему", "ий", "им", "ем", "ее", "ая", "ей", "ую", "ею", "ие", "их", "ими"],
-    "прил ru 5a": [
-        "ый",
-        "его",
-        "ему",
-        "ым",
-        "ем",
-        "ее",
-        "е",
-        "ая",
-        "ей",
-        "ую",
-        "ею",
-        "а",
-        "ые",
-        "ым",
-        "ых",
-        "ыми",
-        "ы",
-    ],
-    "прил ru 6a": ["ий", "его", "ему", "ий", "им", "ем", "ее", "яя", "ей", "юю", "ею", "ие", "их", "ими"],
-    "прил ru 1b": ["о́й", "о́го", "о́му", "ы́м", "о́м", "о́е", "а́я", "у́ю", "о́ю", "ы́е", "ы́х", "ы́м", "ы́ми"],
-    "прил ru 3b": ["о́й", "о́го", "о́му", "и́м", "о́м", "о́е", "а́я", "у́ю", "о́ю", "и́е", "и́х", "и́ми"],
-}
-DECL["сущ ru f a 2b"] = DECL["сущ ru f a 1b"]
-DECL["сущ ru f a 5b"] = DECL["сущ ru f a 1b"]
-DECL["сущ ru f a 4a"] = DECL["сущ ru f a 3a"]
-DECL["сущ ru m a 3b"] = DECL["сущ ru m a 1b"]
-DECL["сущ ru m a 5b"] = DECL["сущ ru m a 1b"]
-DECL["сущ ru f ina 0"] = DECL["сущ ru f a 0"]
-DECL["сущ ru m ina 0"] = DECL["сущ ru m a 0"]
-for n in range(1, 8):
-    DECL[f"сущ ru f ina {n}a"] = DECL[f"сущ ru f a {n}a"]
-    DECL[f"сущ ru m ina {n}a"] = DECL[f"сущ ru m a {n}a"]
-for n in range(1, 7):
-    DECL[f"сущ ru f ina {n}b"] = DECL[f"сущ ru f a {n}b"]
-    DECL[f"сущ ru m ina {n}b"] = DECL[f"сущ ru m a {n}b"]
-DECL["прил ru 4b"] = DECL["прил ru 3b"]
-
-
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["коро́ль"], defaultdict(str))
@@ -469,45 +383,35 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
     >>> render_reverse_variant("сущ ru m a 2b", ["коро́л", "корол"], defaultdict(str), word="король")
     'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+
+    >>> render_reverse_variant("сущ ru m ina 0", [], defaultdict(str, {"основа": "ко́са"}), word="коса")
+    'ко́са'
+
+    Ensure the dict is properly defined (all positions set):
+
+    >>> for tpl, (suffixes, positions) in BASES.items():
+    ...    try:
+    ...        _ = render_reverse_variant(tpl, [], defaultdict(str, {"основа": "base1-", "основа1": "base2-", "основа2": "base3-"}))
+    ...    except ValueError as err:
+    ...        assert 0, f"Error with {tpl=}: {err}"
     """
     tpl = tpl.removeprefix("__variant__")
 
     if tpl == "rev-flexion":
         return parts[0]
 
-    основа = data["основа"] or (parts.pop(0) if parts else "")
-    основа1 = data["основа1"] or (parts[0] if parts else "")
-    suffixes = DECL[tpl]
+    bases = []
+    if base1 := (data["основа"] or (parts.pop(0) if parts else "")):
+        bases.append(base1)
+        if base2 := (data["основа1"] or (parts.pop(0) if parts else "")):
+            bases.append(base2)
+            if base3 := (data["основа2"] or (parts.pop(0) if parts else "")):
+                bases.append(base3)
+    if not any(bases):
+        return ""
 
-    match tpl:
-        case (
-            "сущ ru f a 1b"
-            | "сущ ru f a 3b"
-            | "сущ ru f a 5b"
-            | "сущ ru f ina 1b"
-            | "сущ ru f ina 3b"
-            | "сущ ru f ina 5b"
-        ):
-            return "|".join([основа1, *[f"{основа}{suf}" for suf in suffixes]])
-        case "сущ ru f a 6b" | "сущ ru f a 7b" | "сущ ru f ina 6b" | "сущ ru f ina 7b":
-            return "|".join([f"{основа1}й", *[f"{основа}{suf}" for suf in suffixes]])
-        case (
-            "сущ ru m a 1b"
-            | "сущ ru m a 3b"
-            | "сущ ru m a 4b"
-            | "сущ ru m a 5b"
-            | "сущ ru m ina 1b"
-            | "сущ ru m ina 3b"
-            | "сущ ru m ina 4b"
-            | "сущ ru m ina 5b"
-        ):
-            return "|".join([основа, *[f"{основа1}{suf}" for suf in suffixes]])
-        case "сущ ru m a 2b" | "сущ ru m ina 2b":
-            return "|".join([f"{основа}ь", *[f"{основа1}{suf}" for suf in suffixes]])
-        case "сущ ru m a 6b" | "сущ ru m ina 6b":
-            return "|".join([f"{основа}й", *[f"{основа1}{suf}" for suf in suffixes]])
-        case _:
-            return "|".join([основа, *[f"{основа}{suf}" for suf in suffixes]])
+    suffixes, positions = BASES[tpl]
+    return "|".join(f"{bases[pos - 1]}{suf}" for suf, pos in zip(suffixes, positions, strict=True))
 
 
 template_mapping = {
@@ -539,7 +443,7 @@ template_mapping = {
     # Reverse variants
     #
     **dict.fromkeys(
-        {f"__variant__{tpl}" for tpl in {"rev-flexion", *DECL}},
+        {f"__variant__{tpl}" for tpl in {"rev-flexion", *BASES}},
         render_reverse_variant,
     ),
 }
