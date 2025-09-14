@@ -1,9 +1,9 @@
 -r requirements.txt
-mobi==0.4.0
+mobi==0.4.1
 mypy==1.18.1
 pytest==8.4.2
 pytest-dependency==0.6.0
 responses==0.25.8
 ruff==0.12.12
 ruff-api==0.1.0
-types-requests==2.32.4.20250809
+types-requests==2.32.4.20250913
