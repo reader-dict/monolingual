@@ -459,16 +459,21 @@ def adjust_wikicode(
     # Reverse variants
     #
 
-    from ...utils import process_templates
+    interesting_reverse_variant_titles = (
+        reverse_variant_titles
+        if locale == "ru"
+        else tuple(tpl.replace(" ru ", f" {locale} ") for tpl in reverse_variant_titles)
+    )
+    if any(tpl in code for tpl in interesting_reverse_variant_titles):
+        from ...utils import process_templates
 
-    if any(tpl in code for tpl in reverse_variant_titles):
         cleaned: list[str] = []
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
             line = line.strip()
-            if line.startswith(reverse_variant_titles):
+            if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 
             if in_tpl:
