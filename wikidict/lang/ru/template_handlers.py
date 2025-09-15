@@ -391,7 +391,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     >>> for tpl, (suffixes, positions) in BASES.items():
     ...    try:
-    ...        _ = render_reverse_variant(tpl, [], defaultdict(str, {"основа": "base1-", "основа1": "base2-", "основа2": "base3-"}))
+    ...        _ = render_reverse_variant(tpl, [], defaultdict(str, {"основа": "base1-", "основа1": "base2-", "основа2": "base3-", "основа3": "base4-"}))
     ...    except ValueError as err:
     ...        assert 0, f"Error with {tpl=}: {err}"
     """
