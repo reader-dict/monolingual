@@ -336,14 +336,14 @@ for char in "fmn":
 
 _ina_bases = {}
 
-for base in BASES:
+for base, data in BASES.items():
     to_add = base.replace(" a ", " ina ")
     if to_add in BASES:
         # Prevent override
         continue
 
     with suppress(KeyError):
-        _ina_bases[to_add] = BASES[base]
+        _ina_bases[to_add] = data
 
 BASES |= _ina_bases
 del _ina_bases
