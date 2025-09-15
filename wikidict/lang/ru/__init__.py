@@ -33,7 +33,7 @@ variant_templates = ("{{прич.",)
 
 # Reverse variantes
 reverse_variant_templates = ("{{rev-flexion",)
-reverse_variant_titles = ("{{сущ ", "{{прил ")
+reverse_variant_titles = ("{{сущ ru ", "{{прил ru ")
 
 # Some definitions are not good to keep
 templates_ignored = (
@@ -74,6 +74,7 @@ templates_ignored = (
     "Шанский",
     "Виноградов",
     "русские приставки",
+    "по-слогам",
     "Крылов",
     "перев-блок",
     "Аникин",
@@ -359,9 +360,15 @@ def last_template_handler(
         return ""
 
     # Catch missing reverse variants
-    if not lookup_template(tpl_variant) and tpl_variant.startswith(("__variant__сущ", "__variant__прил")):
+    if not lookup_template(tpl_variant) and tpl_variant.startswith(
+        (
+            f"__variant__сущ {locale} ",
+            f"__variant__прил {locale} ",
+        )
+    ):
         if re.search(r"\d", tpl_variant) and all_templates is not None:
             all_templates.append((tpl_variant, word, "missed"))
+
         # Incomplete template
         return ""
 
@@ -440,17 +447,19 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
-    >>> adjust_wikicode("{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
+    >> adjust_wikicode("{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
     '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коре́}}\\n# {{rev-flexion|коре́й}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|корю́}}\\n# {{rev-flexion|коря́}}\\n# {{rev-flexion|коря́м}}\\n# {{rev-flexion|коря́ми}}\\n# {{rev-flexion|коря́х}}\\n# {{rev-flexion|корём}}'
-    >>> adjust_wikicode("{{сущ ru m a 2b\\n|основа=коро́л\\n|основа1=корол\\n|слоги={{по-слогам|ко|ро́ль}}\\n}}", "ru")
+    >> adjust_wikicode("{{сущ ru m a 2b\\n|основа=коро́л\\n|основа1=корол\\n|слоги={{по-слогам|ко|ро́ль}}\\n}}", "ru")
     '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|короле́}}\\n# {{rev-flexion|короле́й}}\\n# {{rev-flexion|королю́}}\\n# {{rev-flexion|короля́}}\\n# {{rev-flexion|короля́м}}\\n# {{rev-flexion|короля́ми}}\\n# {{rev-flexion|короля́х}}\\n# {{rev-flexion|королём}}'
+    >>> adjust_wikicode("{{прил ru 1*a\\n|основа=бессу́дорожн\\n|основа1=\\n|тип=\\n|слоги={{по-слогам|бес|су́|до|рож|ный}}\\n|степень=\\n|краткая=\\n|коммент=\\n|дореф=\\n}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}", "ru")
+    '{{прил ru 1*a|}}\\n# {{rev-flexion|бессу́дорожна}}\\n# {{rev-flexion|бессу́дорожная}}\\n# {{rev-flexion|бессу́дорожно}}\\n# {{rev-flexion|бессу́дорожного}}\\n# {{rev-flexion|бессу́дорожное}}\\n# {{rev-flexion|бессу́дорожной}}\\n# {{rev-flexion|бессу́дорожном}}\\n# {{rev-flexion|бессу́дорожному}}\\n# {{rev-flexion|бессу́дорожною}}\\n# {{rev-flexion|бессу́дорожную}}\\n# {{rev-flexion|бессу́дорожны}}\\n# {{rev-flexion|бессу́дорожные}}\\n# {{rev-flexion|бессу́дорожный}}\\n# {{rev-flexion|бессу́дорожным}}\\n# {{rev-flexion|бессу́дорожными}}\\n# {{rev-flexion|бессу́дорожных}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}'
     """
 
     #
     # Reverse variants
     #
 
-    from ...utils import transform
+    from ...utils import process_templates
 
     if any(tpl in code for tpl in reverse_variant_titles):
         cleaned: list[str] = []
@@ -467,10 +476,9 @@ def adjust_wikicode(
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
-                    if rest == "}}":
-                        tpl_code += rest
-                        rest = ""
-                    forms = transform(word, tpl_code[2:-2], locale, all_templates=all_templates, variant_only=True)
+                    if not rest:
+                        tpl_code += "}}"
+                    forms = process_templates(word, tpl_code, locale, all_templates=all_templates, variant_only=True)
                     cleaned.append(f"{tpl_code[: tpl_code.find('|')]}|}}}}")  # This is required for genders finding
                     cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(set(forms.split("|"))))
                     if rest:

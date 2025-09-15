@@ -376,13 +376,13 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     'коро́ль'
 
     >>> render_reverse_variant("сущ ru m a 2b", [], defaultdict(str, {"основа": "коро́л", "основа1": "корол", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
-    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    'коро́ль|короле́|короле́й|королю́|короля́|короля́м|короля́ми|короля́х|королём'
     >>> render_reverse_variant("сущ ru m a 2b", ["коро́л"], defaultdict(str, {"основа1": "корол", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
-    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    'коро́ль|короле́|короле́й|королю́|короля́|короля́м|короля́ми|короля́х|королём'
     >>> render_reverse_variant("сущ ru m a 2b", ["корол"], defaultdict(str, {"основа": "коро́л", "слоги": "{{по-слогам|ко|ро́ль"}), word="король")
-    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    'коро́ль|короле́|короле́й|королю́|короля́|короля́м|короля́ми|короля́х|королём'
     >>> render_reverse_variant("сущ ru m a 2b", ["коро́л", "корол"], defaultdict(str), word="король")
-    'коро́ль|королю́|короля́|королём|короле́|короле́й|короля́м|короля́ми|короля́х'
+    'коро́ль|короле́|короле́й|королю́|короля́|короля́м|короля́ми|короля́х|королём'
 
     >>> render_reverse_variant("сущ ru m ina 0", [], defaultdict(str, {"основа": "ко́са"}), word="коса")
     'ко́са'
@@ -401,17 +401,30 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return parts[0]
 
     bases = []
-    if base1 := (data["основа"] or (parts.pop(0) if parts else "")):
-        bases.append(base1)
-        if base2 := (data["основа1"] or (parts.pop(0) if parts else "")):
-            bases.append(base2)
-            if base3 := (data["основа2"] or (parts.pop(0) if parts else "")):
-                bases.append(base3)
-    if not any(bases):
+    if "основа" in data or parts:
+        bases.append(data["основа"] or (parts.pop(0) if parts else ""))
+        if "основа1" in data or "основа-1" in data or parts:
+            bases.append(data["основа1"] or data["основа-1"] or (parts.pop(0) if parts else ""))
+            if "основа2" in data or "основа-2" in data or parts:
+                bases.append(data["основа2"] or data["основа-2"] or (parts.pop(0) if parts else ""))
+    if not bases:
         return ""
 
     suffixes, positions = BASES[tpl]
-    return "|".join(f"{bases[pos - 1]}{suf}" for suf, pos in zip(suffixes, positions, strict=True))
+    forms: set[str] = set()
+    for suf, pos in zip(suffixes, positions, strict=True):
+        if base := bases[pos - 1]:
+            forms.add(f"{base}{suf}")
+    return "|".join(sorted(forms))
+
+
+# def render_reverse_variant_сущ_ru_2(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+#     """
+#     >>> render_reverse_variant("сущ ru 2", [], defaultdict(str, {"inf1": "сущ ru m ina 1a", "основа": "костю́м", "inf2": "сущ ru m ina 0", "основа-2": "на-Му́рмане"}), word="Александровск-на-Мурмане")
+#     ''
+#     """
+#     print(f"__variant__{data['inf1']}", [], data)
+#     return render_reverse_variant(f"__variant__{data['inf1']}", [], data, word=word)
 
 
 template_mapping = {
@@ -442,6 +455,8 @@ template_mapping = {
     #
     # Reverse variants
     #
+    # "__variant__сущ ru 2": render_reverse_variant_сущ_ru_2,
+    # "__variant__сущ ru пол1": render_reverse_variant_сущ_ru_пол1,
     **dict.fromkeys(
         {f"__variant__{tpl}" for tpl in {"rev-flexion", *BASES}},
         render_reverse_variant,
