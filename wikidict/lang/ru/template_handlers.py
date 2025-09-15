@@ -407,6 +407,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             bases.append(data["основа1"] or data["основа-1"] or (parts.pop(0) if parts else ""))
             if "основа2" in data or "основа-2" in data or parts:
                 bases.append(data["основа2"] or data["основа-2"] or (parts.pop(0) if parts else ""))
+                if "основа3" in data or "основа-3" in data or parts:
+                    bases.append(data["основа3"] or data["основа-3"] or (parts.pop(0) if parts else ""))
     if not bases:
         return ""
 
