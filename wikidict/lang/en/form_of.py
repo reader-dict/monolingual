@@ -127,9 +127,10 @@ form_of_templates = {
     "verb form of": {"value": "inflection of:", "initial-cap": "no"},
 }  # 117
 
-# Aliases (82)
+# Aliases (84)
 form_of_templates["abbr of"] = form_of_templates["abbreviation of"]
 form_of_templates["abbrev of"] = form_of_templates["abbreviation of"]
+form_of_templates["acro of"] = form_of_templates["acronym of"]
 form_of_templates["alt case"] = form_of_templates["alternative case form of"]
 form_of_templates["alt case form"] = form_of_templates["alternative case form of"]
 form_of_templates["alt case form of"] = form_of_templates["alternative case form of"]
@@ -157,6 +158,7 @@ form_of_templates["clipcomp of"] = form_of_templates["clipped compound of"]
 form_of_templates["comb form"] = form_of_templates["combining form of"]
 form_of_templates["comd of"] = form_of_templates["comparative of"]
 form_of_templates["comparative degree of"] = form_of_templates["comparative of"]
+form_of_templates["conj of"] = form_of_templates["inflection of"]
 form_of_templates["contr of"] = form_of_templates["contraction of"]
 form_of_templates["dated form"] = form_of_templates["dated form of"]
 form_of_templates["dated sp"] = form_of_templates["dated spelling of"]

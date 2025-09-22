@@ -882,8 +882,6 @@ langs = {
     "bev": "Daloa Bété",
     "bew": "Betawi",
     "bew-kot": "Betawi Kota",
-    "bew-ora": "Betawi Ora",
-    "bew-udi": "Betawi Udik",
     "bex": "Jur Modo",
     "bey": "Akuwagel",
     "bez": "Kibena",
@@ -3055,6 +3053,7 @@ langs = {
     "hai": "Haida",
     "haj": "Hajong",
     "hak": "Hakka",
+    "hak-HK": "Hong Kong Hakka",
     "hak-TW": "Taiwanese Hakka",
     "hak-dab": "Dabu Hakka",
     "hak-eam": "Early Modern Hakka",
@@ -7151,7 +7150,6 @@ langs = {
     "sa-bra": "Brahmanic Sanskrit",
     "sa-cls": "Classical Sanskrit",
     "sa-neo": "New Sanskrit",
-    "sa-ved": "Vedic Sanskrit",
     "saa": "Saba",
     "sab": "Buglere",
     "sac": "Fox",
@@ -8863,6 +8861,7 @@ langs = {
     "vrt": "Burmbar",
     "vsi": "Moldova Sign Language",
     "vsl": "Venezuelan Sign Language",
+    "vsn": "Vedic Sanskrit",
     "vsv": "Valencian Sign Language",
     "vto": "Vitou",
     "vum": "Vumbu",
@@ -9801,6 +9800,14 @@ langs = {
     "zle-ort": "Old Ruthenian",
     "zls": "South Slavic",
     "zls-chs": "Church Slavonic",
+    "zls-chs-bg": "Bulgarian Church Slavonic",
+    "zls-chs-cs": "Czech Church Slavonic",
+    "zls-chs-hr": "Croatian Church Slavonic",
+    "zls-chs-mk": "Macedonian Church Slavonic",
+    "zls-chs-ro": "Romanian Church Slavonic",
+    "zls-chs-ru": "Russian Church Slavonic",
+    "zls-chs-sr": "Serbian Church Slavonic",
+    "zls-chs-uk": "Ukrainian Church Slavonic",
     "zlw": "West Slavic",
     "zlw-lch": "Lechitic",
     "zlw-mpl": "Middle Polish",
@@ -9907,7 +9914,7 @@ langs = {
     "zyp": "Zyphe",
     "zza": "Zazaki",
     "zzj": "Zuojiang Zhuang",
-}  # 9,902
+}  # 9,909
 # END
 
 # Missings since 2024-02-28 (see #1999 and keep synced with https://en.wiktionary.org/wiki/Module:languages/data#L-196)

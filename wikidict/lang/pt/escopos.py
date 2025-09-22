@@ -223,6 +223,9 @@ escopos = {
     "Irlanda do Norte": "Irlanda",
     "Ironia": "ironia",
     "Irónico": "ironia",
+    "Islame": "islamismo",
+    "Islã": "islamismo",
+    "Islão": "islamismo",
     "Italianismo": "italianismo",
     "Jamaica": "Jamaica",
     "Jocoso": "ironia",
@@ -441,5 +444,5 @@ escopos = {
     "telheiros": "telheiros",
     "África do Sul": "África do Sul",
     "Índia": "Índia",
-}  # 436
+}  # 439
 # END

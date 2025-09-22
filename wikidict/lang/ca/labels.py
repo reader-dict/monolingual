@@ -66,6 +66,7 @@ labels = {
     "Garrotxa": "garrotxí",
     "Gaston Waringhien": "Gaston Waringhien",
     "Girona": "gironí",
+    "Islam": "islam",
     "Kálmán Kalocsay": "Kálmán Kalocsay",
     "LGBT": "LGBTI",
     "LGBT+": "LGBTI",
@@ -132,9 +133,12 @@ labels = {
     "infantívol": "infantil",
     "informal": "informal",
     "inusitat": "rar",
+    "islàmic": "islam",
     "literal": "literalment",
     "matemàtica": "matemàtiques",
     "mexicà": "Mèxic",
+    "musulmans": "islam",
+    "musulmà": "islam",
     "neologisme": "neologisme",
     "neologisme semàntic": "neologisme semàntic",
     "nicaragüenc": "Nicaragua",
@@ -164,5 +168,5 @@ labels = {
     "vulgarisme": "vulgarisme",
     "vulgarment": "vulgarisme",
     "xilè": "Xile",
-}  # 104
+}  # 108
 # END
