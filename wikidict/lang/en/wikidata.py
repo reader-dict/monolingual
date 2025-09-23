@@ -618,6 +618,15 @@ PERSON = {
         "George Albert Boulenger",
         "Belgian-British zoologist (1858–1937), member of the Accademia delle Scienze di Torino from 1900",
     ),
+    "Q482189": ("Amédée Louis Michel Le Peletier de Saint-Fargeau", "French entomologist (1770-1845)"),
+    "Q552857": ("Jacques Babinet", "French physicist, mathematician and astronomer"),
+    "Q466": ("World Wide Web", "global system of interlinked hypertext documents accessed via the Internet"),
+    "Q92749": ("Robert Cailliau", "Belgian engineer and computer scientist (1947)"),
+    "Q379590": ("Raymond Dart", "Australian anatomist and anthropologist (1893-1988)"),
+    "Q2504914": ("Johannes Müller Argoviensis", "Swiss botanist (1828–1896)"),
+    "Q455743": ("David X. Cohen", "American television writer (born 1966)"),
+    "Q21177112": ("Roberto Pace", "Italian entomologist (1935–2017)"),
+    "Q3311842": ("Jorn Barger", "American blogger"),
 }
 # Aliases
 PERSON["Q55622178"] = PERSON["Q41768377"]
