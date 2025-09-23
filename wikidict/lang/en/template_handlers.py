@@ -4001,6 +4001,8 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     'human'
     >>> render_variant("__variant__infl of", ["en", "human", "", "s-verb-form"], defaultdict(str, {"1": "en", "2": "human", "3": "", "4": "s-verb-form"}), word="humans")
     'human'
+    >>> render_variant("__variant__infl of", ["en", "foo (“bar)"], defaultdict(str))
+    'foo'
 
     >>> render_variant("__variant__plural of", ["en", "woman"], defaultdict(str), word="women")
     'woman'
@@ -4016,7 +4018,12 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], *, w
     if "_form of" in tpl:
         return parts[-1]
 
-    return data["2"] or parts[1]
+    base = data["2"] or parts[1]
+
+    if "infl" in tpl and ("(") in base:
+        base = base.split("(", 1)[0].strip()
+
+    return base
 
 
 def render_vern(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
