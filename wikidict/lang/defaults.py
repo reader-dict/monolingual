@@ -137,10 +137,12 @@ def render_wikidata_entity_link(tpl: str, parts: list[str], data: defaultdict[st
     """
     >>> render_wikidata_entity_link("Wikidata entity link", ["112383134"], defaultdict(str))
     'Steve Bruce'
+    >>> render_wikidata_entity_link("Wikidata entity link", ["Q112383134"], defaultdict(str))
+    'Steve Bruce'
     """
     from .en import wikidata
 
-    return wikidata.person(f"Q{parts[0]}", name_only=True)
+    return wikidata.person(f"Q{parts[0].lstrip('Q')}", name_only=True)
 
 
 def render_wikilink(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
