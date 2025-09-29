@@ -14,6 +14,7 @@ import threading
 from collections import defaultdict
 from copy import deepcopy
 from datetime import UTC, datetime, timedelta
+from functools import partial
 from pathlib import Path
 from time import monotonic
 from typing import TYPE_CHECKING
@@ -227,19 +228,25 @@ class BaseFormat:
         )
 
     def handle_word(self, word: str, words: Words) -> Generator[str]:
+        """
+        Special handling for Japanese on Kobo: variants are not supported as other locales, so we duplicate entries as normal words.
+        """
+
         # Prevent storing variants definitions in DictFile & co
         if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not isinstance(self, KoboFormat):
             return
 
         details = deepcopy(chosen_word)
         current_words = {word: details}
-        guess_prefix = utils.guess_prefix
+        lang_src = self.effective_lang_src()
+        is_japanese = lang_src == "ja"
+        guess_prefix = partial(utils.guess_prefix, locale=lang_src)
         word_group_prefix = guess_prefix(word)
 
         if (
             details.variants
             and isinstance(self, KoboFormat)
-            and any(guess_prefix(variant) != word_group_prefix for variant in details.variants)
+            and (is_japanese or any(guess_prefix(variant) != word_group_prefix for variant in details.variants))
         ):
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
@@ -276,14 +283,17 @@ class BaseFormat:
                     words[variant].is_variant = True
 
                 if isinstance(self, KoboFormat):
-                    # Filter out variants with a different prefix that their word.
-                    # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
-                    current_word_group_prefix = guess_prefix(current_word)
-                    variants = [
-                        variant.lower().strip()
-                        for variant in variants
-                        if guess_prefix(variant) == current_word_group_prefix
-                    ]
+                    if is_japanese:
+                        variants = []
+                    else:
+                        # Filter out variants with a different prefix that their word.
+                        # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
+                        current_word_group_prefix = guess_prefix(current_word)
+                        variants = [
+                            variant.lower().strip()
+                            for variant in variants
+                            if guess_prefix(variant) == current_word_group_prefix
+                        ]
 
                 if len(variants := list(set(variants))) > MAX_VARIANTS:
                     log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
@@ -359,12 +369,12 @@ class KoboFormat(BaseFormat):
         trie.save(output)
         return output
 
-    @staticmethod
-    def make_groups(words: Words) -> Groups:
+    def make_groups(self, words: Words) -> Groups:
         """Group word by prefix."""
         groups: Groups = defaultdict(dict)
+        guess_prefix = partial(utils.guess_prefix, locale=self.effective_lang_src())
         for word, details in words.items():
-            groups[utils.guess_prefix(word)][word] = details
+            groups[guess_prefix(word)][word] = details
         return groups
 
     def save(self) -> None:  # sourcery skip: extract-method
