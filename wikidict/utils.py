@@ -299,7 +299,6 @@ def grep(file: Path, pattern: str) -> str:
 
 @cache
 def is_cyrillic(char: str) -> bool:
-    """Check if a character is Cyrillic."""
     return (
         "\u0400" <= char <= "\u04ff"  # Cyrillic
         or "\u0500" <= char <= "\u052f"  # Cyrillic Supplement
@@ -310,9 +309,16 @@ def is_cyrillic(char: str) -> bool:
 
 
 @cache
-def is_japanese_kana(char: str) -> bool:
-    """Check if a character is Hiragana, or Katakana."""
+def is_japanese_hiragana(char: str) -> bool:
     return "\u3040" <= char <= "\u30ff"
+
+
+@cache
+def is_japanese_or_chinese(char: str) -> bool:
+    return (
+        "\u30ff" <= char <= "\u4dbf"  # Japanese
+        or "\u4e00" <= char <= "\u9fff"  # Chinese
+    )
 
 
 @cache
@@ -322,7 +328,7 @@ def guess_prefix(word: str) -> str:
     Inspiration: me ᕦ(ò_óˇ)ᕤ  <-- aka BoboTiG ^^
     Inspiration: https://pgaskin.net/dictutil/dicthtml/prefixes.html
     Inspiration: https://github.com/pettarin/penelope/blob/v3.1.3/penelope/prefix_kobo.py#L16
-    Inspiration: https://github.com/cessen/kobo_jp_dict/blob/2023-01-23/src/kobo.rs#L190 (for Japanese support)
+    Inspiration: https://github.com/cessen/kobo_jp_dict/blob/2f14c08dbd6e5dfb7f3bc95bace6ecead3a8ddb5/src/kobo.rs#L183 (for Japanese support)
 
     Converted from https://github.com/pgaskin/dictutil/blob/v0.3.2/kobodict/util.go#L44.
 
@@ -354,6 +360,10 @@ def guess_prefix(word: str) -> str:
         (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レイモン" Regex:  "(<a name="レイモン" />.*</w>)"
         (dictionary.debug) got alternative search terms:  ("レイモン")  for word:  "レイモン"
         (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "レイプ" Regex:  "(<a name="レイプ" />.*</w>)
+
+        (dictionary.debug) HtmlForJapanese:  "ハ"  (originally:  "は" ) => prefix:  "ハ"
+        (dictionary.debug) HtmlForJapanese:  "は"  => In prefix file:  "ハ"
+        (dictionary.debug) SearchForJapaneseWordInHtml: => index:  "ハ" Regex:  "(<a name="ハ" />.*</w>)"
 
         >>> guess_prefix("test")
         'te'
@@ -448,21 +458,21 @@ def guess_prefix(word: str) -> str:
         >>> guess_prefix("дaд")
         'дa'
         >>> guess_prefix("未未")
-        '未未'
+        '未'
         >>> guess_prefix("未")
-        '未a'
+        '未'
         >>> guess_prefix("  未")
         '11'
         >>> guess_prefix(" 未")
-        '未a'
+        '未'
         >>> guess_prefix("x未")
         'x未'
         >>> guess_prefix("未x")
-        '未x'
+        '未'
         >>> guess_prefix("xy未")
         'xy'
         >>> guess_prefix("还没")
-        '还没'
+        '还'
         >>> guess_prefix(".vi")
         '11'
         >>> guess_prefix("/aba")
@@ -515,6 +525,7 @@ def guess_prefix(word: str) -> str:
         '11'
 
         Past problematic cases:
+
         >>> guess_prefix("İslahiye")
         'is'
         >>> guess_prefix("б/а")
@@ -522,27 +533,32 @@ def guess_prefix(word: str) -> str:
         >>> guess_prefix("б-p")
         'б-'
 
-        # Japanese-style punctuation
+        # Japanese:
+
+        >>> guess_prefix("阪")
+        '阪'
+        >>> guess_prefix("大阪")
+        '大'
+        >>> guess_prefix("長すぎる")
+        '長'
+        >>> guess_prefix("の人気が高いことはもちろん若い女性からも「")
+        'の人'
         >>> guess_prefix(" 】")
         '11'
-
-        # Japanese Hiragana
         >>> guess_prefix("あ")
         'あ'
         >>> guess_prefix("あかつき")
         'あか'
-
-        # Japanese Katakana
+        >>> guess_prefix("は")
+        'は'
         >>> guess_prefix("ア")
         'ア'
         >>> guess_prefix("アカツキ")
         'アカ'
-
-        # Japanese Kanji
         >>> guess_prefix("日")
-        '日a'
+        '日'
         >>> guess_prefix("日大本")
-        '日大'
+        '日'
     """
     if "\x00" in (prefix := word):
         prefix = prefix.split("\x00", 1)[0]
@@ -560,8 +576,11 @@ def guess_prefix(word: str) -> str:
     if is_cyrillic(prefix[0]):
         return "" if prefix[-1] == "/" else prefix
 
-    if is_japanese_kana(prefix[0]):
+    if is_japanese_hiragana(prefix[0]):
         return prefix
+
+    if is_japanese_or_chinese(prefix[0]):
+        return prefix[0]
 
     if len(prefix) < 2:
         prefix += "a"
