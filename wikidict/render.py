@@ -89,7 +89,11 @@ def find_definitions(
                 elif lang_src == "pt" and "etimologia" in pos:
                     # Well, lets just put those elsewhere
                     pos = "substantivo"
-                definitions[utils.format_pos(lang_src, pos)].extend(pos_defs)
+
+                target_pos = definitions[utils.format_pos(lang_src, pos)]
+                for pos_def in pos_defs:
+                    if pos_def not in target_pos:
+                        target_pos.append(pos_def)
 
     if not definitions:
         return {}
@@ -152,7 +156,8 @@ def find_section_definitions(
                     continue
 
                 # Keep the definition ...
-                definitions.append(definition)
+                if definition not in definitions:
+                    definitions.append(definition)
 
                 # ... And its eventual sub-definitions
                 subdefinitions: list[SubDefinition] = []
@@ -166,19 +171,25 @@ def find_section_definitions(
                         if not subdefinition:
                             continue
 
-                        subdefinitions.append(subdefinition)
+                        if subdefinition not in subdefinitions:
+                            subdefinitions.append(subdefinition)
+
                         subsubdefinitions: list[str] = []
                         for subsublist in sublist.sublists(i=idx2, pattern=lang.sublist_patterns[lang_dst]):
                             for subsubcode in subsublist.items:
-                                if subsubdefinition := utils.process_templates(
-                                    word,
-                                    subsubcode,
-                                    lang_dst,
-                                    all_templates=all_templates,
-                                ):
+                                if (
+                                    subsubdefinition := utils.process_templates(
+                                        word,
+                                        subsubcode,
+                                        lang_dst,
+                                        all_templates=all_templates,
+                                    )
+                                ) and subsubdefinition not in subsubdefinitions:
                                     subsubdefinitions.append(subsubdefinition)
+
                         if subsubdefinitions:
                             subdefinitions.append(tuple(subsubdefinitions))
+
                 if subdefinitions:
                     definitions.append(tuple(subdefinitions))
 
