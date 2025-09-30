@@ -375,6 +375,16 @@ def render_παθ(tpl: str, parts: list[str], data: defaultdict[str, str], *, wo
     return phrase
 
 
+def render_συγχρονικά(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
+    """
+    >>> render_συγχρονικά("συγχρονικά", [], defaultdict(str))
+    'Συγχρονικά αναλύεται σε'
+    >>> render_συγχρονικά("συγχρονικά", [], defaultdict(str, {"μ": "1"}))
+    'συγχρονικά αναλύεται σε'
+    """
+    return f"{'συγχρονικά' if data['nocap'] or data['μ'] else 'Συγχρονικά'} αναλύεται σε"
+
+
 def render_ουσεπ(tpl: str, parts: list[str], data: defaultdict[str, str], *, word: str = "") -> str:
     """
     >>> render_ουσεπ("ουσεπ α", [], defaultdict(str))
@@ -828,6 +838,7 @@ template_mapping = {
     "γραφή": render_γραφή,
     "ενεργ": render_ενεργ,
     "τόπος": render_τόπος,
+    "συγχρονικά": render_συγχρονικά,
     #
     # Variants
     #
