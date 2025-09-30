@@ -301,6 +301,7 @@ templates_other = {
     "προφορά": "Προφορά",
     "εν": "<i>ενικός</i>",
     "πβ": "<i>πβ.</i>",
+    "ομόρριζα": "Ομόρριζα:",
     # It would require to support full transliterations, but as this template is used only once in Κνωσός, lets cheat!
     # cf. https://el.wiktionary.org/wiki/Module:Linb-translit/data
     "gmy-tr": "𐀒𐀜𐀰 (ko-no-so)",
