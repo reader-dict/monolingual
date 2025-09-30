@@ -79,7 +79,7 @@ def filter_html(html: str, locale: str) -> str:
     bs = BeautifulSoup(markup=html, features="html.parser")
 
     def find_all(name: str, *args: Any, **kwargs: Any) -> Iterator[Tag]:
-        yield from bs.find_all(name, *args, **kwargs)  # type: ignore[misc]
+        yield from bs.find_all(name, *args, **kwargs)
 
     # Filter out warnings about obsolete template models used
     for tag in find_all("span", {"id": "FormattingError"}):
