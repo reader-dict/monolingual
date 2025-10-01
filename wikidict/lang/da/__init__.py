@@ -329,6 +329,7 @@ ALL_FORMS = [
     "da-noun-5",
     "da-noun-6",
     "da-noun-7",
+    "ental bestemt af",
     "flertal af",
     "genitivform af",
     "genitiv ental ubestemt af",
