@@ -1,5 +1,5 @@
 """
-eBook Reader Dictionaries
+reader.dict (https://www.reader-dict.com)
 
 Usage:
     wikidict LOCALE
