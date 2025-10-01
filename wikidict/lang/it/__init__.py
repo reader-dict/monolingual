@@ -5,6 +5,9 @@ import re
 from ...lang import defaults
 from ...user_functions import unique
 
+# Name of the "Module" special page in the current locale
+module_trans = "Modulo"
+
 # Float number separator
 float_separator = ","
 

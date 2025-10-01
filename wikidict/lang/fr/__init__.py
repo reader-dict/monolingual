@@ -6,6 +6,10 @@ from ...user_functions import flatten, unique
 from .contexts import contexts
 from .domain_templates import domain_templates
 from .regions import regions
+from .template_overrides import overrides as template_overrides  # noqa: F401
+
+# Name of the "Template" special page in the current locale
+template_trans = "Modèle"
 
 # Séparateur des nombres à virgule
 float_separator = ","

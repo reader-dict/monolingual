@@ -8,6 +8,9 @@ from .aliases import aliases
 from .labels import labels
 from .langs import langs
 
+# Name of the "Template" special page in the current locale
+template_trans = "Πρότυπο"
+
 # Float number separator
 float_separator = ","
 

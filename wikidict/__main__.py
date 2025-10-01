@@ -17,6 +17,7 @@ Usage:
 Options:
   --download                Retrieve the latest Wiktionary dump into "data/$LOCALE/pages-$DATE.xml".
   --parse                   Parse and store raw Wiktionary data into "data/$LOCALE/data_wikicode-$DATE.json".
+                            Also store Wiktionary modules & templates content into "data/$LOCALE/modules-$DATE.sqlite".
   --render                  Render templates from raw data into "data/$LOCALE/data-$DATE.json".
                             --workers=N         Set the number of multiprocessing workers,
                                                 defaults to the number of CPU in the system.
@@ -51,7 +52,10 @@ from docopt import docopt
 
 def main() -> int:
     """Main entry point."""
-    logging.basicConfig(level=logging.DEBUG if "DEBUG" in os.environ else logging.INFO)
+    logging.basicConfig(
+        level=logging.DEBUG if "DEBUG" in os.environ else logging.INFO,
+        format="%(levelname)s:%(name)s:%(process)d %(message)s",
+    )
 
     args = docopt(__doc__)
 
@@ -59,6 +63,11 @@ def main() -> int:
         from . import download
 
         return download.main(args["LOCALE"])
+
+    from . import context
+
+    if not context.setup_modules_db(args["LOCALE"]):
+        return 1
 
     if args["--parse"]:
         from . import parse

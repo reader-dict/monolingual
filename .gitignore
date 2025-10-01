@@ -25,3 +25,6 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 venv/
+
+# macOS
+.DS_Store

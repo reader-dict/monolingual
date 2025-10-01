@@ -7,14 +7,13 @@ import json
 import logging
 import os
 import re
-from collections import defaultdict
 from datetime import timedelta
 from pathlib import Path
 from time import monotonic
 from typing import TYPE_CHECKING
 from xml.sax.saxutils import unescape
 
-from . import lang, utils
+from . import constants, context, lang, utils
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Iterator
@@ -22,8 +21,9 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
+RE_REDIRECT = re.compile(r'<redirect title="(.+)" />').finditer
 RE_TEXT = re.compile(r"<text[^>]*>(.*)</text>", flags=re.DOTALL).finditer
-RE_TITLE = re.compile(r"<title>([^:]*)</title>").finditer
+RE_TITLE_WORD = re.compile(r"<title>([^:]*)</title>").finditer
 
 # To list all words not taken into account with current head sections:
 #    DEBUG_PARSE=1 python -m wikidict LOCALE --parse >out.log
@@ -51,26 +51,69 @@ def xml_iter_parse(file: Path) -> Generator[str]:
                 in_page = True
 
 
-def xml_parse_element(element: str, head_sections_matcher: Callable[[str], Iterator[str]]) -> tuple[str, str]:
-    """Parse the XML `element` to retrieve the word and its definitions."""
-    if title_match := next(RE_TITLE(element), None):
-        for text_match in RE_TEXT(element, pos=element.find("<text", title_match.endpos)):
-            if next(head_sections_matcher(wikicode := text_match[1]), None):
-                return title_match[1], wikicode
+def xml_parse_element(
+    element: str,
+    head_sections_matcher: Callable[[str], Iterator[str]],
+    module_matcher: Callable[[str], Iterator[re.Match[str]]],
+    template_matcher: Callable[[str], Iterator[re.Match[str]]],
+    appendix_matcher: Callable[[str], Iterator[re.Match[str]]],
+) -> tuple[str, str]:
+    """Parse the XML `element` to retrieve interesting Wiktionary raw data."""
+
+    # Module
+    if title := next(module_matcher(element), None):
+        if not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
+            body, redirect_to = "", None
+            if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+                redirect_to = redirect[1]
+            elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
+                body = unescape(text[1], entities=constants.HTML_REPL_BODY)
+            if body or redirect_to:
+                page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
+                context.CTX.add_page(page, body=body, namespace_id=828, model="Scribunto", redirect_to=redirect_to)
+
+    # Template
+    elif title := next(template_matcher(element), None):
+        if not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
+            body, redirect_to = "", None
+            if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+                redirect_to = redirect[1]
+            elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
+                body = unescape(text[1], entities=constants.HTML_REPL_BODY)
+            if body or redirect_to:
+                page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
+                context.CTX.add_page(page, body=body, namespace_id=10, model="wikitext", redirect_to=redirect_to)
+
+    # Appendix
+    elif title := next(appendix_matcher(element), None):
+        body, redirect_to = "", None
+        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+            redirect_to = redirect[1]
+        elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
+            body = unescape(text[1], entities=constants.HTML_REPL_BODY)
+        if body or redirect_to:
+            page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
+            context.CTX.add_page(page, body=body, namespace_id=100, model="wikitext", redirect_to=redirect_to)
+
+    # Word
+    elif title := next(RE_TITLE_WORD(element), None):
+        text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)))
+        if next(head_sections_matcher(wikicode := text[1]), None):
+            return title[1], wikicode
 
         if DEBUG_PARSE:
             try:
-                print(f"{title_match[1]!r}: {wikicode[:200]!r}", flush=True)
+                print(f"{title[1]!r}: {wikicode[:200]!r}", flush=True)
             except UnboundLocalError:
-                print(f"{title_match[1]!r}: NO TEXT", flush=True)
+                print(f"{title[1]!r}: NO TEXT", flush=True)
 
-    # No Wikicode; unfinished page; no interesting head section; a foreign word, etc. Who knows?
+    # No Wikicode; unfinished page; no interesting head section; a foreign word, or a module/template.
     return "", ""
 
 
 def process(file: Path, locale: str) -> dict[str, str]:
     """Process the big XML file and retain only information we are interested in."""
-    words: dict[str, str] = defaultdict(str)
+    words: dict[str, str] = {}
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
     log.info("Processing %s for destination lang %r ...", file, lang_dst)
@@ -85,12 +128,23 @@ def process(file: Path, locale: str) -> dict[str, str]:
             flags=re.IGNORECASE | re.MULTILINE,
         ).finditer  # type: ignore[assignment]
 
+    module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]+)</title>").finditer
+    template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
+    appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
+
     for element in xml_iter_parse(file):
-        word, code = xml_parse_element(element, head_sections_matcher)
-        if word and code:
-            if lang_dst == "en" and word[:19] == "Unsupported titles/":
-                continue
-            words[unescape(word)] = unescape(code)
+        title, code = xml_parse_element(
+            element,
+            head_sections_matcher,
+            module_matcher,
+            template_matcher,
+            appendix_matcher,
+        )
+        if not title or not code or (lang_dst == "en" and title[:19] == "Unsupported titles/"):
+            continue
+        words[unescape(title)] = unescape(code)
+
+    context.adapt_templates(lang_dst)
 
     return words
 
@@ -120,6 +174,10 @@ def get_source_dir(lang_src: str) -> Path:
 
 def get_output_file(source_dir: Path, lang_src: str, lang_dst: str, snapshot: str) -> Path:
     return source_dir.parent / lang_dst / lang_src / f"data_wikicode-{snapshot}.json"
+
+
+def get_output_file_modules(source_dir: Path, lang_src: str, lang_dst: str, snapshot: str) -> Path:
+    return source_dir.parent / lang_dst / lang_src / f"modules-{snapshot}.sqlite"
 
 
 def main(locale: str) -> int:

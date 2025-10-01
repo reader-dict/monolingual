@@ -5,6 +5,12 @@ import re
 from ...user_functions import unique
 from .escopos import escopos
 
+# Name of the "Module" special page in the current locale
+module_trans = "Módulo"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Predefinição"
+
 # Float number separator
 float_separator = ","
 
@@ -395,3 +401,9 @@ def adjust_wikicode(
         lines.append(line)
 
     return "\n".join(lines)
+
+
+# Wiktionary modules/templates to alter in the database directly
+template_adapters = {
+    "Predefinição:etimo2": lambda body: body[1:],
+}

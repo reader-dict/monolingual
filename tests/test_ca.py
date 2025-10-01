@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("ca")
 
 
 @pytest.mark.parametrize(
@@ -22,10 +30,10 @@ from wikidict.utils import process_templates
             "-itzar",
             [],
             [],
-            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> (<i>-ízein</i>)."],
+            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> (-ízein)."],
             {
                 "Sufix": [
-                    "<i>Aplicat a un substantiu o adjectiu forma un verb que expressa la seva realització o convertir-se'n.</i>",
+                    "Aplicat a un substantiu o adjectiu forma un verb que expressa la seva realització o convertir-se'n.",
                 ]
             },
             [],
@@ -37,8 +45,8 @@ from wikidict.utils import process_templates
             [],
             {
                 "Sigles": [
-                    "<i>(masculí)</i> <i>Sigles de</i> <b>Alfabet Fonètic Internacional</b>",
-                    "<i>(femení)</i> <i>Sigles de</i> <b>Associació Fonètica Internacional</b>",
+                    "(masculí) <i>Sigles de</i> <b>Alfabet Fonètic Internacional</b>.",
+                    "(femení) <i>Sigles de</i> <b>Associació Fonètica Internacional</b>.",
                 ]
             },
             [],
@@ -76,11 +84,11 @@ from wikidict.utils import process_templates
                     "Reclam a manera d'ocell.",
                     "Peix (<i>Mola mola</i>) de la família els mòlids, de color gris i textura aspra, de cos discoïdal aplanat, però que s'unfla com un globus com a sistema de defensa.",
                     "Peix subtropical de la família dels diodòntids. (<i>Chilomycterus reticulatus</i>)",
-                    "<i>(peixos)</i> ballesta",
+                    "(peixos) ballesta",
                     "Salt enlaire amb un impuls ràpid.",
                     "Moviment elàstic d’un cos que en topar és llançat enlaire.",
                     "Embarcació petita sense coberta.",
-                    "<i>(informàtica)</i> Programa informàtic dissenyat per a completar tasques d’assistència, especialment quan opera com un usuari.",
+                    "(informàtica) Programa informàtic dissenyat per a completar tasques d’assistència, especialment quan opera com un usuari.",
                 ]
             },
             ["botar", "botre"],
@@ -94,13 +102,13 @@ from wikidict.utils import process_templates
             ],
             {
                 "Adjectiu": [
-                    "<i>(negatiu)</i> Ni un.",
-                    "<i>(interrogatiu, condicional)</i> Algun.",
-                    "<i>(negatiu)</i> Gens de.",
-                    "<i>(interrogatiu, condicional)</i> Alguna mena de.",
+                    "(negatiu) Ni un.",
+                    "(interrogatiu, condicional) Algun.",
+                    "(negatiu) Gens de.",
+                    "(interrogatiu, condicional) Alguna mena de.",
                 ],
                 "Nom": [
-                    "<i>(anatomia)</i> Part superior i anterior del cos d'un animal.",
+                    "(anatomia) Part superior i anterior del cos d'un animal.",
                     "Part superior del cos de l'ésser humà, considerada com a seu del pensament, l'intel·lecte, judici, talent, seny.",
                     "Lloc de preferència, central.",
                     "Localitat principal d'un territori; capital.",
@@ -109,11 +117,11 @@ from wikidict.utils import process_templates
                     "Extremitat en general.",
                     ("Part anterior, per on comença una cosa.", "Part final, per on acaba una cosa."),
                     "Part de terra que s'endinsa en la mar.",
-                    "<i>(nàutica)</i> corda",
+                    "(nàutica) corda",
                     "En un repartiment, cadascun dels participants.",
-                    "<i>(golf)</i> Part final d'un bastó, que impacta en la bola en executar el colp.",
-                    "<i>(pilota basca)</i> Part més ampla d'una eina.",
-                    "<i>(bàdminton)</i> base",
+                    "(golf) Part final d'un bastó, que impacta en la bola en executar el colp.",
+                    "(pilota basca) Part més ampla d'una eina.",
+                    "(bàdminton) base",
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
                     "Grau militar.",
                 ],
@@ -133,7 +141,7 @@ from wikidict.utils import process_templates
                 "Nom": [
                     "Situació particular que es produeix entre les diverses possibles.",
                     "Objecte d'estudi d'alguna disciplina.",
-                    "<i>(lingüística)</i> Categoria gramatical que marca la funció sintàctica d’un mot.",
+                    "(lingüística) Categoria gramatical que marca la funció sintàctica d’un mot.",
                     "Atenció, cura.",
                 ],
             },
@@ -158,7 +166,7 @@ from wikidict.utils import process_templates
                         "Castell de Vernet, municipi del Conflent.",
                         "El Castell de Vilamalefa, municipi de l’Alt Millars.",
                     ),
-                    "<i>Cognom d’origen d’habitatge</i>",
+                    "Cognom&nbsp;d’origen d’habitatge",
                 ]
             },
             [],
@@ -168,7 +176,7 @@ from wikidict.utils import process_templates
             [],
             ["m"],
             [
-                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> («lacetans»), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels Καστελανοι (<i>Kastelanoi</i>) o Κατελανοι (<i>Katelanoi</i>). Vegeu més informació a <i>Catalunya</i>.",
+                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> («lacetans»), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> (Kastelanoi) o <i>Κατελανοι</i> (Katelanoi). Vegeu més informació a <i>Catalunya</i>.",
             ],
             {
                 "Adjectiu": [
@@ -178,7 +186,7 @@ from wikidict.utils import process_templates
                 "Nom": [
                     "Natural de Catalunya.",
                     "Natural dels Països Catalans.",
-                    "<i>(masculí singular)</i> Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
+                    "(masculí singular) Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
                     "catalanoparlant",
                 ],
             },
@@ -192,7 +200,7 @@ from wikidict.utils import process_templates
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del chamorro."],
                 "Lletra": [
-                    "<i>(arcaisme)</i> Especialment a final de mot, dígraf amb una consonant muda per remarcar la grafia d’una oclusiva velar sorda [k] i no pas una de sonora [ɡ]."
+                    "(arcaisme) Especialment a final de mot, dígraf amb una consonant muda per remarcar la grafia d’una oclusiva velar sorda [k] i no pas una de sonora [ɡ]."
                 ],
             },
             [],
@@ -207,7 +215,7 @@ from wikidict.utils import process_templates
                     "Acte de comptar.",
                     "Cura, atenció.",
                     "Suma de la quantitat a pagar.",
-                    "<i>(beisbol)</i> Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
+                    "(beisbol) Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
                 ],
                 "Interjecció": ["atenció"],
             },
@@ -220,8 +228,8 @@ from wikidict.utils import process_templates
             ["Del llatí <i>decem et septem</i> (literalment «deu i set»)."],
             {
                 "Numeral": [
-                    "<i>(cardinal)</i> Nombre enter situat entre el setze i el divuit.",
-                    "<i>(valor ordinal)</i> Dissetè, dissetena.",
+                    "(cardinal) Nombre enter situat entre el setze i el divuit.",
+                    "(valor ordinal) Dissetè, dissetena.",
                 ],
                 "Nom": ["Xifra i nombre 17.", "Dissetena hora."],
             },
@@ -237,13 +245,13 @@ from wikidict.utils import process_templates
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del grec modern."],
                 "Article": [
-                    "<i>Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya.</i>"
+                    "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya."
                 ],
                 "Pronom": [
                     'Acusatiu del masculí singular del pronom personal "ell".',
                     'Substitueix el complement directe quan aquest porta l\'article "el".',
                 ],
-                "Nom": ["<i>(obsolet)</i> <i>Forma alternativa de</i> <b>ela</b>"],
+                "Nom": ["(obsolet) <i>Forma alternativa de</i> <b>ela</b>."],
             },
             [],
         ),
@@ -265,7 +273,7 @@ from wikidict.utils import process_templates
             [],
         ),
         ("Mn.", [], [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),
-        ("PMF", [], [], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>"]}, []),
+        ("PMF", [], [], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>."]}, []),
         (
             "pen",
             [],
@@ -286,13 +294,13 @@ from wikidict.utils import process_templates
             ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],
-                "Conjunció": ["<i>Nexe condicional que introdueix un supòsit, una premissa.</i>"],
+                "Conjunció": ["Nexe condicional que introdueix un supòsit, una premissa."],
                 "Nom": [
                     "Cavitat interna del cos.",
-                    "<i>(per extensió)</i> Part interna d'una cosa.",
+                    "(per extensió) Part interna d'una cosa.",
                     "Setena nota musical de l'escala.",
                 ],
-                "Pronom": ["<i>Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions.</i>"],
+                "Pronom": ["Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions."],
             },
             [],
         ),
@@ -315,31 +323,3 @@ def test_parse_word(
     assert definitions == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{AFI|/ˈwujt/}}", "/ˈwujt/"),
-        ("{{claudàtors|[[milliarum]]}}", "[milliarum]"),
-        ("{{color|#E01010}}", "[RGB #E01010]"),
-        ("{{comp|ca|-oma}}", "sufix <i>-oma</i>"),
-        ("{{doblet|ca|Castellar}}", "<i>Castellar</i>"),
-        ("{{e|la|longifolius|longifolia}}", "longifolia"),
-        ("{{e-propi|ca|grèvol}}", "<b>grèvol</b>"),
-        ("{{IPAchar|[θ]}}", "[θ]"),
-        ("{{pron|ca|/kənˈta/}}", "/kənˈta/"),
-        ("{{pron|en|/əˈkrɔs/|/əˈkrɑs/}}", "/əˈkrɔs/, /əˈkrɑs/"),
-        ("{{q|tenir bona planta}}", "<i>(tenir bona planta)</i>"),
-        (
-            "{{q|una planta|una cosa del terra}}",
-            "<i>(una planta, una cosa del terra)</i>",
-        ),
-        ("{{romanes|XIX}}", "<span style='font-variant:small-caps'>xix</span>"),
-        ("{{etim-s|ca|XIV}}", "segle XIV"),
-        ("{{etim-s|ca|XVII|1617}}", "1617"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "ca") == expected

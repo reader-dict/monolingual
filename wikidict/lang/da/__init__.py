@@ -4,6 +4,12 @@ import re
 
 from .langs import langs
 
+# Name of the "Module" special page in the current locale
+module_trans = "Modul"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Skabelon"
+
 # Float number separator
 float_separator = ","
 
