@@ -99,10 +99,9 @@ def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.L
 # {{unknown-3}}
 """,
     }
-
     # Render
     if keep_unfinished:
-        with patch.object(render.utils, "KEEP_UNFINISHED", True):
+        with patch.dict("os.environ", {"KEEP_UNFINISHED": "1"}):
             words = render.render(in_words, "fr", workers)
     else:
         words = render.render(in_words, "fr", workers)
