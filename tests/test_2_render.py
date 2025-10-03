@@ -100,15 +100,12 @@ def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.L
 """,
     }
     # Render
-    if keep_unfinished:
-        with patch.dict("os.environ", {"KEEP_UNFINISHED": "1"}):
-            words = render.render(in_words, "fr", workers)
-    else:
+    with patch.object(wikidict.utils, "KEEP_UNFINISHED", keep_unfinished):
         words = render.render(in_words, "fr", workers)
 
     # Check warnings
     warnings = [record.getMessage() for record in caplog.get_records("call") if record.levelno == logging.WARNING]
-    assert len([w for w in warnings if "Skipped" in w]) == 0 if keep_unfinished else 3
+    assert not [w for w in warnings if "Skipped" in w] if keep_unfinished else 3
     assert [w for w in warnings if "Skipped" not in w] == [
         "Missing `unknown-1` template support (3 times), example in: `a`, `b`, `c`",
         "Missing `unknown-3` template support (2 times), example in: `a`, `c`",

@@ -99,7 +99,7 @@ def find_definitions(
         return {}
 
     # Sort by part of speech (POS)
-    return {pos: defs for pos, defs in sorted(definitions.items(), key=lambda kv: kv[0])}
+    return dict(sorted(definitions.items(), key=lambda kv: kv[0]))
 
 
 def es_replace_defs_list_with_numbered_lists(
