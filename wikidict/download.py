@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import bz2
 import logging
 import os
 import re
@@ -25,25 +24,6 @@ def callback_progress(text: str, done: int, last: bool) -> None:
     """Progression callback. Used when fetching the Wiktionary dump and when extracting it."""
     size = f"OK [{done:,} bytes]" if last else f"{done:,} bytes"
     log.debug("%s: %s", text, size)
-
-
-def decompress(file_in: Path, file_out: Path, callback: Callable[[str, int, bool], None]) -> None:
-    """Decompress a BZ2 file."""
-    msg = f"Uncompressing into {file_out}"
-    log.info(msg)
-
-    if file_out.is_file():
-        return
-
-    comp = bz2.BZ2Decompressor()
-    with file_in.open("rb") as fi, file_out.open("wb") as fo:
-        done = 0
-        while data := fi.read(1024**2):
-            uncompressed = comp.decompress(data)
-            done += fo.write(uncompressed)
-            callback(msg, done, False)
-
-    callback(msg, file_out.stat().st_size, True)
 
 
 def fetch_snapshots(locale: str) -> list[str]:
@@ -88,10 +68,6 @@ def get_output_file_compressed(locale: str, snapshot: str) -> Path:
     return Path(os.getenv("CWD", "")) / "data" / locale / f"pages-{snapshot}.xml.bz2"
 
 
-def get_output_file_uncompressed(file: Path) -> Path:
-    return file.with_suffix(file.suffix.replace(".bz2", ""))
-
-
 def main(locale: str) -> int:
     """Entry point."""
 
@@ -104,14 +80,11 @@ def main(locale: str) -> int:
     # Fetch and uncompress the snapshot file
     for snapshot in snapshots[::-1]:
         file_compressed = get_output_file_compressed(locale, snapshot)
-        file_uncompressed = get_output_file_uncompressed(file_compressed)
         try:
             fetch_pages(snapshot, locale, file_compressed, callback=callback_progress)
-            decompress(file_compressed, file_uncompressed, callback_progress)
             break
         except HTTPError as exc:
             file_compressed.unlink(missing_ok=True)
-            file_uncompressed.unlink(missing_ok=True)
             if exc.response.status_code != 404:
                 raise
             log.warning("Wiktionary dump is ongoing ... ")

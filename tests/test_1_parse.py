@@ -9,6 +9,13 @@ import pytest
 from wikidict import parse
 
 
+def save(path: Path, content: str) -> Path:
+    file = path / "page.xml.bz2"
+    with bz2.open(file, "wt", encoding="utf-8") as fh:
+        fh.write(content)
+    return file
+
+
 def test_simple(craft_data: Callable[[str], bytes]) -> None:
     output_dir = Path(os.environ["CWD"]) / "data" / "fr"
 
@@ -18,24 +25,23 @@ def test_simple(craft_data: Callable[[str], bytes]) -> None:
 
     # Ensure there is data to process.
     compressed = craft_data("fr")
-    raw = bz2.decompress(compressed)
-    (output_dir / "pages-20201217.xml").write_bytes(raw)
+    (output_dir / "pages-20201217.xml.bz2").write_bytes(compressed)
 
     assert parse.main("fr") == 0
 
 
 def test_no_xml_file() -> None:
-    with patch.object(parse, "get_latest_xml_file", return_value=None):
+    with patch.object(parse, "get_latest_file", return_value=None):
         assert parse.main("fr") == 1
 
 
 def test_parse_restricted_word(tmp_path: Path) -> None:
     """For instance, "cunnilingus" was filtered out. Ensure no regressions."""
-    file = tmp_path / "page.xml"
-    file.write_text(
+    file = save(
+        tmp_path,
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
-<page>
+  <page>
     <title>cunnilingus</title>
     <ns>0</ns>
     <id>27758</id>
@@ -62,38 +68,38 @@ def test_parse_restricted_word(tmp_path: Path) -> None:
 # {{sexe|fr}} [[excitation|Excitation]] [[buccal]]e des [[organe]]s [[génitaux]] [[féminins]].</text>
         <sha1>aimljsg0qagdsp5yyz38fgv3rh0ksm1</sha1>
     </revision>
-</page>
+  </page>
 </mediawiki>
-"""
+""",
     )
 
     assert "cunnilingus" in parse.process(file, "fr")
 
 
 def test_parse_redirected_word(tmp_path: Path) -> None:
-    file = tmp_path / "page.xml"
-    file.write_text(
+    file = save(
+        tmp_path,
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
-<page>
+  <page>
     <title>MediaWiki:Sitetitle</title>
     <ns>8</ns>
     <id>12</id>
     <redirect></redirect>
-</page>
+  </page>
 </mediawiki>
-"""
+""",
     )
 
     assert not parse.process(file, "fr")
 
 
 def test_parse_word_without_wikicode(tmp_path: Path) -> None:
-    file = tmp_path / "page.xml"
-    file.write_text(
+    file = save(
+        tmp_path,
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
-<page>
+  <page>
     <title>MediaWiki</title>
     <ns>8</ns>
     <id>12</id>
@@ -110,20 +116,20 @@ def test_parse_word_without_wikicode(tmp_path: Path) -> None:
         <format>text/x-wiki</format>
         <sha1>40helna9646ffk0utvwm8bkdlzi1eck</sha1>
     </revision>
-</page>
+  </page>
 </mediawiki>
-"""
+""",
     )
 
     assert not parse.process(file, "fr")
 
 
 def test_parse_word_with_colons(tmp_path: Path) -> None:
-    file = tmp_path / "page.xml"
-    file.write_text(
+    file = save(
+        tmp_path,
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
-<page>
+  <page>
     <title>MediaWiki:Sitetitle</title>
     <ns>8</ns>
     <id>12</id>
@@ -148,20 +154,20 @@ def test_parse_word_with_colons(tmp_path: Path) -> None:
 # {{sexe|fr}} [[excitation|Excitation]] [[buccal]]e des [[organe]]s [[génitaux]] [[féminins]].</text>
         <sha1>40helna9646ffk0utvwm8bkdlzi1eck</sha1>
     </revision>
-</page>
+  </page>
 </mediawiki>
-"""
+""",
     )
 
     assert not parse.process(file, "fr")
 
 
 def test_parse_word_with_templates_lowercased(tmp_path: Path) -> None:
-    file = tmp_path / "page.xml"
-    file.write_text(
+    file = save(
+        tmp_path,
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
-<page>
+  <page>
     <title>restaurang</title>
     <ns>0</ns>
     <id>5156</id>
@@ -191,9 +197,9 @@ def test_parse_word_with_templates_lowercased(tmp_path: Path) -> None:
 </text>
       <sha1>7k86wfuvisuff9jk6ogymzuk5dgtjfq</sha1>
     </revision>
-</page>
+  </page>
 </mediawiki>
-"""
+""",
     )
 
     assert "restaurang" in parse.process(file, "sv")
@@ -211,7 +217,7 @@ def test_parse_word_with_templates_lowercased(tmp_path: Path) -> None:
 )
 def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> None:
     snapshot = "20250401"
-    pages = Path(f"pages-{snapshot}.xml")
+    pages = Path(f"pages-{snapshot}.xml.bz2")
     words: dict[str, str] = {}
 
     with patch.dict("os.environ", {"CWD": str(tmp_path)}):
@@ -223,16 +229,16 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
 
         with (
             patch.object(parse, "get_source_dir") as mocked_gsd,
-            patch.object(parse, "get_latest_xml_file") as mocked_glxf,
+            patch.object(parse, "get_latest_file") as mocked_glf,
             patch.object(parse, "process") as mocked_p,
             patch.object(parse, "save") as mocked_s,
         ):
-            mocked_glxf.return_value = pages
+            mocked_glf.return_value = pages
             mocked_gsd.return_value = source_dir
             mocked_p.return_value = words
 
             parse.main(locale)
             mocked_gsd.assert_called_once_with(lang_src)
-            mocked_glxf.assert_called_once_with(source_dir)
+            mocked_glf.assert_called_once_with(source_dir)
             mocked_p.assert_called_once_with(pages, locale)
             mocked_s.assert_called_once_with(output_file, words)

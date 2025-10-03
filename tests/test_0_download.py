@@ -32,8 +32,6 @@ DUMPS = sorted(re.findall(r'href="(\d+)/"', WIKTIONARY_INDEX))
 
 
 def cleanup(folder: Path) -> None:
-    for file in folder.glob("pages-*.xml"):
-        file.unlink()
     for file in folder.glob("pages-*.xml.bz2"):
         file.unlink()
 
@@ -46,7 +44,6 @@ def test_simple(craft_data: Callable[[str], bytes]) -> None:
 
     dump = DUMPS[-1]
     assert dump == "20200514"
-    pages_xml = output_dir / f"pages-{dump}.xml"
     pages_bz2 = output_dir / f"pages-{dump}.xml.bz2"
 
     # Clean-up before we start
@@ -58,11 +55,7 @@ def test_simple(craft_data: Callable[[str], bytes]) -> None:
     responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
     responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=dump), body=craft_data("fr"))
 
-    # Start the whole process
     assert download.main("fr") == 0
-
-    # Check that files are created
-    assert pages_xml.is_file()
     assert pages_bz2.is_file()
 
 
@@ -74,7 +67,6 @@ def test_download_already_done(craft_data: Callable[[str], bytes]) -> None:
 
     dump = DUMPS[-1]
     assert dump == "20200514"
-    pages_xml = output_dir / f"pages-{dump}.xml"
     pages_bz2 = output_dir / f"pages-{dump}.xml.bz2"
 
     # The BZ2 file was already downloaded
@@ -84,11 +76,7 @@ def test_download_already_done(craft_data: Callable[[str], bytes]) -> None:
     #   - fetch_snapshots()
     responses.add(responses.GET, BASE_URL.format(locale="fr"), body=WIKTIONARY_INDEX)
 
-    # Start the whole process
     assert download.main("fr") == 0
-
-    # Check that files are created
-    assert pages_xml.is_file()
     assert pages_bz2.is_file()
 
 
@@ -116,15 +104,10 @@ def test_ongoing_dump(craft_data: Callable[[str], bytes]) -> None:
 
     # Check files
     for dump in DUMPS:
-        page_xml = output_dir / f"pages-{dump}.xml"
         page_bz2 = output_dir / f"pages-{dump}.xml.bz2"
         if dump == expected_dump:
-            # Check that files are created
-            assert page_xml.is_file()
             assert page_bz2.is_file()
         else:
-            # Check that files are not created
-            assert not page_xml.is_file()
             assert not page_bz2.is_file()
 
 
@@ -142,12 +125,8 @@ def test_no_dump_found(craft_data: Callable[[str], bytes]) -> None:
     for dump in DUMPS:
         responses.add(responses.GET, DUMP_URL.format(locale="fr", snapshot=dump), status=404)
 
-    # Start the whole process
     assert download.main("fr") == 1
-
-    # Check that files are created
     for dump in DUMPS:
-        assert not (output_dir / f"pages-{dump}.xml").is_file()
         assert not (output_dir / f"pages-{dump}.xml.bz2").is_file()
 
 
@@ -173,7 +152,6 @@ def test_progress_callback(caplog: pytest.LogCaptureFixture) -> None:
 def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> None:
     snapshot = "20250401"
     pages_compressed = Path(f"pages-{snapshot}.xml.bz2")
-    pages_uncompressed = Path(f"pages-{snapshot}.xml")
 
     with patch.dict("os.environ", {"CWD": str(tmp_path), "FORCE_SNAPSHOT": snapshot}):
         assert download.fetch_snapshots(lang_src) == [snapshot]
@@ -181,20 +159,12 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         output_compressed = download.get_output_file_compressed(lang_src, snapshot)
         assert output_compressed == tmp_path / "data" / lang_src / pages_compressed
 
-        output_uncompressed = download.get_output_file_uncompressed(output_compressed)
-        assert output_uncompressed == tmp_path / "data" / lang_src / pages_uncompressed
-
         with (
             patch.object(download, "get_output_file_compressed") as mocked_gofc,
-            patch.object(download, "get_output_file_uncompressed") as mocked_gofu,
             patch.object(download, "fetch_pages") as mocked_fp,
-            patch.object(download, "decompress") as mocked_d,
         ):
             mocked_gofc.return_value = pages_compressed
-            mocked_gofu.return_value = pages_uncompressed
 
             download.main(locale)
             mocked_gofc.assert_called_once_with(lang_src, snapshot)
-            mocked_gofu.assert_called_once_with(pages_compressed)
             mocked_fp.assert_called_once_with(snapshot, lang_src, pages_compressed, callback=download.callback_progress)
-            mocked_d.assert_called_once_with(pages_compressed, pages_uncompressed, download.callback_progress)

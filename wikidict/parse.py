@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import bz2
 import json
 import logging
 import os
@@ -31,20 +32,23 @@ DEBUG_PARSE = "DEBUG_PARSE" in os.environ
 
 def xml_iter_parse(file: Path) -> Generator[str]:
     """Efficient XML parsing for big files."""
-    element: list[str] = []
-    is_element = False
+    with bz2.open(file, "rt", encoding="utf-8") as fh:
+        current_page: list[str] = []
+        in_page = False
 
-    with file.open(encoding="utf-8") as fh:
+        start_tag = "  <page>\n"
+        end_tag = "  </page>\n"
+
         for line in fh:
-            if is_element:
-                if "/page>" in line:
-                    yield "".join(element)
-                    element = []
-                    is_element = False
+            if in_page:
+                if line == end_tag:
+                    yield "".join(current_page)
+                    current_page.clear()
+                    in_page = False
                 else:
-                    element.append(line)
-            elif "<page" in line:
-                is_element = True
+                    current_page.append(line)
+            elif line == start_tag:
+                in_page = True
 
 
 def xml_parse_element(element: str, head_sections_matcher: Callable[[str], Iterator[str]]) -> tuple[str, str]:
@@ -104,9 +108,9 @@ def save(output: Path, words: dict[str, str]) -> None:
     log.info("Saved %s words into %s", f"{len(words):,}", output)
 
 
-def get_latest_xml_file(source_dir: Path) -> Path | None:
-    """Get the name of the last pages-*.xml file."""
-    files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml"))
+def get_latest_file(source_dir: Path) -> Path | None:
+    """Get the name of the latest downloaded dump file."""
+    files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml.bz2"))
     return sorted(files)[-1] if files else None
 
 
@@ -125,12 +129,12 @@ def main(locale: str) -> int:
     lang_src, lang_dst = utils.guess_locales(locale)
 
     source_dir = get_source_dir(lang_src)
-    if not (input_file := get_latest_xml_file(source_dir)):
+    if not (input_file := get_latest_file(source_dir)):
         log.error("No dump found. Run with --download first ... ")
         return 1
 
     ret = 0
-    output = get_output_file(source_dir, lang_src, lang_dst, input_file.stem.split("-")[-1])
+    output = get_output_file(source_dir, lang_src, lang_dst, input_file.stem[6:14])
     if output.is_file():
         log.info("Already parsed into %s", output)
     else:

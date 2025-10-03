@@ -12,7 +12,7 @@ os.environ["CWD"] = str(Path(__file__).parent)
 
 XML = '<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="{locale}">'
 PAGE_XML = """
-<page>
+  <page>
     <title>{word}</title>
     <ns>0</ns>
     <id>1</id>
@@ -29,7 +29,7 @@ PAGE_XML = """
         <format>text/x-wiki</format>
         <text xml:space="preserve">{text}</text>
     </revision>
-</page>
+  </page>
 """
 
 
