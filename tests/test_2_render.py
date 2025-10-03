@@ -6,8 +6,9 @@ from unittest.mock import patch
 import pytest
 from wikitextparser import Section
 
+import wikidict.utils
 from wikidict import render
-from wikidict.stubs import Word
+from wikidict.stubs import Word, Words
 
 
 def test_simple() -> None:
@@ -29,18 +30,23 @@ def test_empty_json_file(tmp_path: Path) -> None:
 
 
 def test_render_word(page: Callable[[str, str], str]) -> None:
-    assert render.render_word(["π", page("π", "fr")], {}, "fr")
+    results: Words = {}
+    render.render_words([("π", page("π", "fr"))], results, "fr")
+    assert results
 
 
 def test_render_word_sv_with_almost_empty_definition(page: Callable[[str, str], str]) -> None:
-    assert render.render_word(["Götet", page("Götet", "sv")], {}, "sv")
+    results: Words = {}
+    render.render_words([("Götet", page("Götet", "sv"))], results, "sv")
+    assert results
 
 
 def test_render_word_with_empty_subdefinition(page: Callable[[str, str], str]) -> None:
-    details = render.render_word(["test", page("tests-definitions", "fr")], {}, "fr")
-    assert details
+    results: Words = {}
+    render.render_words([("test", page("tests-definitions", "fr"))], results, "fr")
+    assert results
 
-    defs = details.definitions
+    defs = results["test"].definitions
     assert defs == {
         "Nom": [
             "<i>(Botanique)</i> Espèce de mauves, grandes plantes laineuses aux feuilles entières ou à 3 lobes et à bordure dentée, et aux fleurs assez grandes de couleur blanc rosé, avec les anthères des étamines rougeâtres.",

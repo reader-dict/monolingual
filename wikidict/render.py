@@ -9,9 +9,8 @@ import multiprocessing
 import os
 import re
 from collections import defaultdict
-from contextlib import suppress
 from datetime import timedelta
-from functools import partial
+from itertools import batched
 from pathlib import Path
 from time import monotonic
 from typing import TYPE_CHECKING, Any, cast
@@ -654,41 +653,52 @@ def load(file: Path) -> dict[str, str]:
     return words
 
 
-def render_word(
-    w: list[str],
+def render_words(
+    w: list[tuple[str, str]],
     words: Words,
     locale: str,
     *,
     all_templates: list[tuple[str, str, str]] | None = None,
-) -> Word | None:
-    word, code = w
-    try:
-        details = parse_word(word, code, locale, all_templates=all_templates)
-    except KeyboardInterrupt:
-        pass
-    except Exception:
-        log.exception("ERROR with %r", word)
-    else:
-        if details.definitions or details.variants or details.reverse_variants:
-            words[word] = details
-            return details
+) -> None:
+    for word, code in w:
+        try:
+            details = parse_word(word, code, locale, all_templates=all_templates)
+        except KeyboardInterrupt:
+            pass
+        except Exception:
+            log.exception("ERROR with %r", word)
+        else:
+            if details.definitions or details.variants or details.reverse_variants:
+                words[word] = details
+                continue
 
-    if DEBUG_EMPTY_WORDS:
-        print(f"Empty {word = }", flush=True)
-
-    return None
+        if DEBUG_EMPTY_WORDS:
+            print(f"Empty {word = }", flush=True)
 
 
 def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
+    items = in_words.items()
+    chunk_size, extra = divmod(len(items), workers)
+    if extra:
+        chunk_size += 1
+        workers += 1
+
     manager = multiprocessing.Manager()
     results: Words = cast(dict[str, Word], manager.dict())
     all_templates: list[tuple[str, str, str]] = cast(list[tuple[str, str, str]], manager.list())
+    jobs = []
 
-    with suppress(KeyboardInterrupt), multiprocessing.Pool(processes=workers) as pool:
-        pool.map(
-            partial(render_word, words=results, locale=locale, all_templates=all_templates),
-            in_words.items(),
+    for chunk in batched(items, chunk_size):
+        job = multiprocessing.Process(
+            target=render_words,
+            args=(chunk, results, locale),
+            kwargs={"all_templates": all_templates},
         )
+        jobs.append(job)
+        job.start()
+
+    for job in jobs:
+        job.join()
 
     utils.check_for_missing_templates(list(all_templates))
 
@@ -701,7 +711,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
                 results[form] = Word([], [], [], {}, [word], [])
     log.info("Handling reverse variants ... Done")
 
-    return results.copy()
+    return dict(results)
 
 
 def save(output: Path, words: Words) -> None:
@@ -754,6 +764,9 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
 
     log.info("Loading %s ...", input_file)
     in_words: dict[str, str] = load(input_file)
+    if not in_words:
+        log.error("No word found!")
+        return 1
 
     log.info("Rendering ...")
     workers = workers or multiprocessing.cpu_count()
