@@ -11,9 +11,10 @@ import re
 from collections import defaultdict
 from datetime import timedelta
 from itertools import batched
+from multiprocessing.managers import DictProxy, ListProxy
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 import wikitextparser as wtp
 import wikitextparser._spans
@@ -654,13 +655,13 @@ def load(file: Path) -> dict[str, str]:
 
 
 def render_words(
-    w: list[tuple[str, str]],
-    words: Words,
+    words: list[tuple[str, str]],
+    results: Words,
     locale: str,
     *,
     all_templates: list[tuple[str, str, str]] | None = None,
 ) -> None:
-    for word, code in w:
+    for word, code in words:
         try:
             details = parse_word(word, code, locale, all_templates=all_templates)
         except KeyboardInterrupt:
@@ -669,7 +670,7 @@ def render_words(
             log.exception("ERROR with %r", word)
         else:
             if details.definitions or details.variants or details.reverse_variants:
-                words[word] = details
+                results[word] = details
                 continue
 
         if DEBUG_EMPTY_WORDS:
@@ -681,11 +682,10 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     chunk_size, extra = divmod(len(items), workers)
     if extra:
         chunk_size += 1
-        workers += 1
 
     manager = multiprocessing.Manager()
-    results: Words = cast(dict[str, Word], manager.dict())
-    all_templates: list[tuple[str, str, str]] = cast(list[tuple[str, str, str]], manager.list())
+    results: DictProxy[str, Word] = manager.dict()
+    all_templates: ListProxy[list[tuple[str, str, str]]] = manager.list()
     jobs = []
 
     for chunk in batched(items, chunk_size):
@@ -700,7 +700,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     for job in jobs:
         job.join()
 
-    utils.check_for_missing_templates(list(all_templates))
+    utils.check_for_missing_templates(all_templates._getvalue())
 
     log.info("Handling reverse variants ...")
     for word, details in results.items():
@@ -711,7 +711,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
                 results[form] = Word([], [], [], {}, [word], [])
     log.info("Handling reverse variants ... Done")
 
-    return dict(results)
+    return results._getvalue()  # type: ignore[no-any-return]
 
 
 def save(output: Path, words: Words) -> None:
