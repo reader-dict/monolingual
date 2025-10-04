@@ -77,7 +77,7 @@ MODULES_TO_OVERRIDE_GLOBALLY = {
     "rev-flexion",  # example: [RO] arc
 }
 
-# --parse: HTML entities to replace in modules & templates body
+# --parse: HTML entities to replace in modules & templates contents
 HTML_REPL_BODY = {
     # Found in modules importing another module
     "&quot;": '"',
