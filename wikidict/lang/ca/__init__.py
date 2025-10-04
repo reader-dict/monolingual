@@ -5,6 +5,12 @@ import re
 from ...user_functions import unique
 from .transliterator import transliterate
 
+# Name of the "Module" special page in the current locale
+module_trans = "Mòdul"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Plantilla"
+
 # Float number separator
 float_separator = ","
 
@@ -387,3 +393,15 @@ def last_template_handler(
 
 
 random_word_url = "https://ca.wiktionary.org/wiki/Especial:RandomRootpage"
+
+
+# Wiktionary modules/templates to alter in the database directly
+template_adapters = {
+    "Plantilla:-etimologia-": lambda body: body.replace(':*<span style="font-weight: bold;">Etimologia</span>: ', ""),
+    "Plantilla:etim-comp": lambda body: body.replace(":* '''Etimologia:''' ", ""),
+    **dict.fromkeys(
+        {"Plantilla:etim-fpref", "Plantilla:etim-fsuf", "Plantilla:etim-lang"},
+        lambda body: body.replace(':* <span style="font-weight: bold;">Etimologia</span>: ', ""),
+    ),
+    "Plantilla:etimologia": lambda body: body.replace(":*'''Etimologia:''' ", ""),
+}

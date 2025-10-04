@@ -5,6 +5,13 @@ import re
 
 from ...user_functions import unique
 
+# Name of the "Module" special page in the current locale
+module_trans = "Modulo"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Ŝablono"
+
+# Float separator
 float_separator = ","
 
 # Thousands separator

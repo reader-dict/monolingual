@@ -2,10 +2,26 @@
 
 import logging
 from collections import defaultdict
+from collections.abc import Callable
 
 from ..user_functions import subscript, superscript
 
 log = logging.getLogger(__name__)
+
+# Name of the "Module" special page in the current locale
+module_trans = "Module"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Template"
+
+# Name of the "Appendix" special page in the current locale
+appendix_trans = "Appendix"
+
+# Wiktionary modules/templates to alter in the database directly
+template_adapters: dict[str, Callable[[str], str]] = {}
+
+# Wiktionary modules/templates to override
+template_overrides: dict[str, Callable[[tuple[str, ...]], str]] = {}
 
 # Float number separator
 float_separator = ""

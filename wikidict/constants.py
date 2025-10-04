@@ -60,3 +60,28 @@ TEMPLATES_WITH_COLON = {
     # RU
     "этимология",
 }
+
+# --parse: modules & templates "end patterns" to ignore when saving them in the database
+MODULES_TO_IGNORE = ("/doc", "/documentation", "/sandbox", "/testcases")
+
+# --render: modules & templates to override globally for the Lua interpreter (they can still be overrided by `template_overrides[locale]`)
+MODULES_TO_OVERRIDE_GLOBALLY = {
+    # A physical file is awaited or else an infinite loop happens
+    "audio",  # example: [EL] βέτεξ
+    "aŭdo",  # example: [EO] ĉapo
+    "pron-graf",  # example: [ES] hala
+    "ήχος",  # example: [EL] καμεραμάν
+    # Map, cannot be rendered
+    "mapa",  # example: [ES] Londres
+    # Reverse variants
+    "rev-flexion",  # example: [RO] arc
+}
+
+# --parse: HTML entities to replace in modules & templates contents
+HTML_REPL_BODY = {
+    # Found in modules importing another module
+    "&quot;": '"',
+    # Found in mathematical formulas
+    "&#92;": "\\",
+}
+HTML_REPL_TITLE = {"&amp;": "&"}

@@ -227,6 +227,9 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         output_file = parse.get_output_file(source_dir, lang_src, lang_dst, snapshot)
         assert output_file == source_dir.parent / lang_dst / lang_src / f"data_wikicode-{snapshot}.json"
 
+        output_file_modules = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
+        assert output_file_modules == source_dir.parent / lang_dst / lang_src / f"modules-{snapshot}.sqlite"
+
         with (
             patch.object(parse, "get_source_dir") as mocked_gsd,
             patch.object(parse, "get_latest_file") as mocked_glf,

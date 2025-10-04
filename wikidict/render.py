@@ -19,8 +19,7 @@ from typing import TYPE_CHECKING, Any
 import wikitextparser as wtp
 import wikitextparser._spans
 
-from . import lang, utils
-from .namespaces import namespaces
+from . import context, lang, utils
 from .stubs import Definition, Definitions, Word
 from .user_functions import unique
 
@@ -54,6 +53,13 @@ DEBUG_SECTIONS = os.environ.get("DEBUG_SECTIONS", "0")
 # To list all unhandled words:
 #    DEBUG_EMPTY_WORDS=1 python -m wikidict LOCALE --render >out.log 2>&1
 DEBUG_EMPTY_WORDS = "DEBUG_EMPTY_WORDS" in os.environ
+
+# To log all words for each process in order to be able to catch problematic words in a second time:
+#    DEBUG_LUA=1 python -m wikidict LOCALE --render > LOG_FILE 2>&1
+#    tail -f LOG_FILE
+#    (and when the ouput hangs, hit CTRL+C, multiple times if needed)
+#    python log-analyzer.py LOG_FILE
+DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 0
 
 log = logging.getLogger(__name__)
 
@@ -444,121 +450,8 @@ def adjust_wikicode(
     all_templates: list[tuple[str, str, str]] | None = None,
     word: str = "",
 ) -> str:
-    r"""Sometimes we need to adapt the Wikicode.
-
-    >>> adjust_wikicode("[[Fichier:Blason ville fr Petit-Bersac 24.svg|vignette|120px|'''Base''' d’or ''(sens héraldique)'']][[something|else]]", "fr")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[File:Sarcoscypha_coccinea,_Salles-la-Source_(Matthieu_Gauvain).JPG|vignette|Pézize écarlate]][[something|else]]", "en")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[File:1864 Guernesey 8 Doubles.jpg|thumb|Pièce de 8 doubles (île de [[Guernesey]], 1864).]][[something|else]]", "en")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[fil:ISO 7010 E002 new.svg|thumb|right|160px|piktogram nødudgang]][[something|else]]", "da")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[Catégorie:Localités d’Afrique du Sud en français]][[something|else]]", "fr")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[Archivo:Striped_Woodpecker.jpg|thumb|[1] macho.]][[something|else]]", "es")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[Archivo:Mezquita de Córdoba - Celosía 006.JPG|thumb|[1]]][[something|else]]", "es")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[Archivo:Diagrama bicicleta.svg|400px|miniaturadeimagen|'''Partes de una bicicleta:'''<br>\n[[asiento]] o [[sillín]], [[cuadro]]{{-sub|8}}, [[potencia]], [[puño]]{{-sub|4}}, [[cuerno]], [[manubrio]], [[telescopio]], [[horquilla]], [[amortiguador]], [[frenos]], [[tijera]], [[rueda]], [[rayos]], [[buje]], [[llanta]], [[cubierta]], [[válvula]], [[pedal]], [[viela]], [[cambio]], [[plato]]{{-sub|5}} o [[estrella]], [[piñón]], [[cadena]], [[tija]], [[tubo de asiento]], [[vaina]].]]\n\n[[something|else]]", "es")
-    '\n\n[[something|else]]'
-    >>> adjust_wikicode("[[File:Karwats.jpg|thumb|A scourge ''(noun {{senseno|en|whip}})'' [[exhibit#Verb|exhibited]] in a [[museum#Noun|museum]].]][[something|else]]", "en")
-    '[[something|else]]'
-    >>> adjust_wikicode("[[w:Burattino|Burattino]]", "it")
-    '[[Burattino|Burattino]]'
-    >>> adjust_wikicode("[[en:propedeutici]]", "it")
-    ''
-
-    >>> adjust_wikicode("<!-- {{sco}} -->", "fr")
-    ''
-    >>> adjust_wikicode("<!--<i>sco</i> -->", "fr")
-    ''
-    >>> adjust_wikicode("<!--\nsco\n-->", "it")
-    ''
-
-    >>> adjust_wikicode("<ref name=oed/>Modelled<ref>Gerhard</ref> English<ref name=oed>Press.</ref>", "en")
-    'Modelled English'
-    >>> adjust_wikicode('From {{uder|en|la|Augeas}} {{suffix|en||an}}. {{w|Augeas}} is a figure in Greek mythology whose stables were never cleaned until {{w|Hercules}} was given the task of cleaning them.<ref name="AT">\n''Ariadne’s Thread: A Guide to International Tales Found in Classical Literature'' by William F. Hansen (2002; [http://www.cornellpress.cornell.edu/cup_detail.taf?ti_id=3674 Cornell University Press]; {{ISBN|9780801475726}}, 9780801436703), [http://books.google.co.uk/books?id=ezDlXl7gP9oC&pg=PA160&dq=%22Augean+stables%22&ei=ZAtOSoPJIY6-yQTn9ezvAg page 160]<br>  ''Herakles Cleans the Augean Stables''<br>  One of the best-known stories attached to Herakles tells how in one day he removed the dung from King Augeias’s cattle yard, which had not been cleaned in years.</ref>', "en")
-    'From {{uder|en|la|Augeas}} {{suffix|en||an}}. {{w|Augeas}} is a figure in Greek mythology whose stables were never cleaned until {{w|Hercules}} was given the task of cleaning them.'
-    >>> adjust_wikicode("<ref>{{Import:CFC}}</ref>", "en")
-    ''
-    >>> adjust_wikicode("<ref>{{Import:CFC}}</ref>bla bla bla <ref>{{Import:CFC}}</ref>", "en")
-    'bla bla bla '
-    >>> adjust_wikicode("<ref>{{Lit-Pfeifer: Etymologisches Wörterbuch|A=8}}, Seite 1551, Eintrag „Wein“<br />siehe auch: {{Literatur | Online=zitiert nach {{GBS|uEQtBgAAQBAJ|PA76|Hervorhebung=Wein}} | Autor=Corinna Leschber| Titel=„Wein“ und „Öl“ in ihren mediterranen Bezügen, Etymologie und Wortgeschichte | Verlag=Frank & Timme GmbH | Ort= | Jahr=2015 | Seiten=75–81 | Band=Band 24 von Forum: Rumänien, Culinaria balcanica, herausgegeben von Thede Kahl, Peter Mario Kreuter, Christina Vogel | ISBN=9783732901388}}.", "en")
-    ''
-    >>> adjust_wikicode('<ref name="CFC" />', "en")
-    ''
-    >>> adjust_wikicode('<ref name="CFC">{{Import:CFC}}</ref>', "en")
-    ''
-    >>> adjust_wikicode('<ref name="CFC">{{CFC\\n|foo}}</ref>', "en")
-    ''
-    >>> adjust_wikicode("<ref>D'après ''Dictionnaire du tapissier : critique et historique de l’ameublement français, depuis les temps anciens jusqu’à nos jours'', par J. Deville, page 32 ({{Gallica|http://gallica.bnf.fr/ark:/12148/bpt6k55042642/f71.image}})</ref>", "en")
-    ''
-    >>> adjust_wikicode("<ref>", "en")
-    ''
-    >>> adjust_wikicode("</ref>", "en")
-    ''
-    >>> adjust_wikicode('<ref name="Marshall 2001"><sup>he</sup></ref>', "en")
-    ''
-    >>> adjust_wikicode('a<references></references>b', "fr")
-    'ab'
-    >>> adjust_wikicode('a<references>xcv</references>b', "fr")
-    'ab'
-    """
-
-    # Namespaces (moved from `utils.clean()` to be able to filter on multiple lines)
-    # [[File:...|...]] → ''
-    all_namespaces = set()
-    for namespace in namespaces[locale] + namespaces["en"]:
-        all_namespaces.add(namespace)
-        all_namespaces.add(namespace.lower())
-    pattern = "|".join(iter(all_namespaces))
-    code = re.sub(
-        # Courtesy of Casimir et Hippolyte & Wiktor Stribiżew from https://stackoverflow.com/q/79006887/1117028
-        rf"""
-        # Match [[
-        \[\[
-
-        # Namespace followed by :
-        (?:{pattern}):
-
-        # Match any chars other than [ and ], or any ] that is not immediately followed with another ], or a [
-        # that is not immediately followed with [ or one or more digits + ]
-        [^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*
-
-        # Match zero or more occurrences of either [+digit(s)+], or strings between [[ and ]] and then any chars
-        # other than [ and ], or any ] that is not immediately followed with another ], or a [ that is not immediately
-        # followed with [ or one or more digits + ]
-        (?:(?:\[\d+\]|\[\[[^][]*(?:](?!])[^][]*|\[(?!\[)[^][]*)*\]\])[^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*)*
-
-        # Match ]]
-        ]]
-        """,
-        "",
-        code,
-        flags=re.VERBOSE,
-    )
-
-    # HTML comments (multiline supported)
-    # <!-- foo --> → ''
-    code = re.sub(r"(?=<!--)([\s\S]*?-->)", "", code)
-
-    # {{!}} → "|"
-    # code = code.replace("{{!}}", "|")
-
-    # <ref name="CFC"/> → ''
-    code = re.sub(r"<ref[^>]*/>", "", code)
-    # <ref>foo → ''
-    # <ref>foo</ref> → ''
-    # <ref name="CFC">{{Import:CFC}}</ref> → ''
-    # <ref name="CFC"><tag>...</tag></ref> → ''
-    code = re.sub(r"<ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)", "", code)
-    # <ref> → ''
-    # </ref> → ''
-    code = code.replace("<ref>", "").replace("</ref>", "")
-
     func: Callable[..., str] = lang.adjust_wikicode[locale]
-    return func(code, locale, all_templates=all_templates, word=word)
+    return func(context.clean_html_input(code, locale), locale, all_templates=all_templates, word=word)
 
 
 def parse_word(
@@ -574,6 +467,11 @@ def parse_word(
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
+    # Init the Lua interpreter for this word
+    if DEBUG_LUA:
+        log.info(word)
+    context.new_word(word)
+
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
     code = adjust_wikicode(code, lang_dst, all_templates=all_templates, word=word)
@@ -675,6 +573,9 @@ def render_words(
 
         if DEBUG_EMPTY_WORDS:
             print(f"Empty {word = }", flush=True)
+
+    if DEBUG_LUA:
+        log.info("Job done.")
 
 
 def render(in_words: dict[str, str], locale: str, workers: int) -> Words:

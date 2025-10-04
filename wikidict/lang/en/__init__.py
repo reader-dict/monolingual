@@ -2,7 +2,7 @@
 
 import re
 
-from ...user_functions import flatten, unique
+from ...user_functions import code, flatten, unique
 from .labels import labels
 
 # Float number separator
@@ -564,3 +564,9 @@ def adjust_wikicode(
     code = re.sub(r"^\{\|.*?\|\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     return code
+
+
+# Wiktionary modules/templates to override
+template_overrides = {
+    "code": lambda args: code(args[1], args[2]),
+}

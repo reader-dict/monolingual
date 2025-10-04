@@ -5,6 +5,12 @@ import re
 from ...user_functions import flatten, unique
 from .labels import labels
 
+# Name of the "Module" special page in the current locale
+module_trans = "Modul"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Mal"
+
 # Float number separator
 float_separator = ","
 

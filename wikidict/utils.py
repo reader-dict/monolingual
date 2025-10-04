@@ -15,11 +15,13 @@ from typing import TYPE_CHECKING
 import regex
 import wikitextparser
 
-from . import constants, part_of_speech, svg
+from . import constants, context, part_of_speech, svg
 from .hiero_utils import render_hiero
 from .lang import (
     last_template_handler,
+    module_trans,
     random_word_url,
+    template_trans,
     templates_ignored,
     templates_italic,
     templates_multi,
@@ -875,9 +877,6 @@ def process_templates(
         'terne'
 
     """
-
-    sub = re.sub
-
     # Clean-up the code
     if not (text := callback(wikicode)):
         return ""
@@ -893,36 +892,30 @@ def process_templates(
     current_template_idx = 0
     while templates := re.findall(r"({{[^{}]*}})", text):
         for tpl in templates:
-            if tpl in SPECIAL_TEMPLATES:
-                text = text.replace(tpl, SPECIAL_TEMPLATES[tpl].placeholder)
-            else:
-                # Transform the template
+            # Skip undesired templates
+            if tpl.startswith(templates_ignored[locale]):
+                text = text.replace(tpl, "")
+                continue
+
+            # `variant_only` is True only when:
+            #   1. It is predefined;
+            #   2. And it is the last template in nested templates.
+            # Ex: [FR] `{{flexion|{{lien|foo}}}}` where:
+            #   - `lien` should be handled normaly;
+            #   - while `flexion` should be handled as variant-specific.
+            if variant_only and current_template_idx == last_template_idx - 1:
                 text = text.replace(
                     tpl,
-                    transform(
-                        word,
-                        tpl[2:-2],
-                        locale,
-                        all_templates=all_templates,
-                        # `variant_only` is True only when:
-                        #   1. It is predefined;
-                        #   2. And it is the last template in nested templates.
-                        # Ex: [FR] `{{flexion|{{lien|foo}}}}` where:
-                        #   - `lien` should be handled normaly;
-                        #   - while `flexion` should be handled as variant-specific.
-                        variant_only=variant_only and current_template_idx == last_template_idx - 1,
-                    ),
+                    transform(word, tpl[2:-2], locale, all_templates=all_templates, variant_only=True),
                 )
+                continue
+
+            # Transform the template
+            text = text.replace(tpl, clean(context.expand(tpl, locale)))
+
         current_template_idx += len(templates)
 
-    for tpl in SPECIAL_TEMPLATES.values():
-        text = text.replace(tpl.placeholder, tpl.value)
-
-    for tpl in re.findall(r"({{[^{}]*}})", text):
-        text = text.replace(tpl, transform(word, tpl[2:-2], locale, all_templates=all_templates))
-
-    text = text.replace(OPEN_DOUBLE_CURLY, "{{")
-    text = text.replace(CLOSE_DOUBLE_CURLY, "}}")
+    sub = re.sub
 
     # Handle <chem>, <hiero>, and <math>, HTML tags
     for tag, func in [("chem", convert_chem), ("hiero", convert_hiero), ("math", convert_math)]:
@@ -937,8 +930,18 @@ def process_templates(
     text = sub(r"\s{2,}", " ", text)
     text = sub(r"\s{1,}\.", ".", text)
 
-    if not KEEP_UNFINISHED and ("{{" in text or "}}" in text):
-        if all_templates:
+    # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
+    if not KEEP_UNFINISHED and (
+        "{{" in text
+        or "}}" in text
+        or "<h1>" in text
+        or "<h2>" in text
+        or "<h3>" in text
+        or f":{module_trans[locale]}:" in text
+        or f":{template_trans[locale]}:" in text
+        or context.CTX.to_return()["errors"]
+    ):
+        if all_templates is not None:
             all_templates.append(("", word, "skipped"))
         return ""
 

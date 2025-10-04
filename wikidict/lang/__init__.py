@@ -24,6 +24,21 @@ def _populate(attr: str) -> dict[str, Any]:
     }
 
 
+# Name of the "Module" special page in the current locale
+module_trans = _populate("module_trans")
+
+# Name of the "Template" special page in the current locale
+template_trans = _populate("template_trans")
+
+# Name of the "Appendix" special page in the current locale
+appendix_trans = _populate("appendix_trans")
+
+# Wiktionary modules/templates to alter in the database directly
+template_adapters = _populate("template_adapters")
+
+# Wiktionary modules/templates to override
+template_overrides = _populate("template_overrides")
+
 # Float number separator
 float_separator: dict[str, str] = _populate("float_separator")
 

@@ -4,6 +4,12 @@ import re
 
 from ...user_functions import unique
 
+# Name of the "Module" special page in the current locale
+module_trans = "Modul"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Mall"
+
 # Float number separator
 float_separator = ","
 

@@ -5,6 +5,12 @@ import re
 from ...user_functions import flatten, unique
 from .campos_semanticos import campos_semanticos
 
+# Name of the "Module" special page in the current locale
+module_trans = "Módulo"
+
+# Name of the "Template" special page in the current locale
+template_trans = "Plantilla"
+
 # Float number separator
 float_separator = ","
 

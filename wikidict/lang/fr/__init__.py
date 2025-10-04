@@ -6,6 +6,10 @@ from ...user_functions import flatten, unique
 from .contexts import contexts
 from .domain_templates import domain_templates
 from .regions import regions
+from .template_overrides import overrides as template_overrides  # noqa: F401
+
+# Name of the "Template" special page in the current locale
+template_trans = "Modèle"
 
 # Séparateur des nombres à virgule
 float_separator = ","
@@ -920,3 +924,10 @@ def adjust_wikicode(
         lines.append(line)
 
     return "\n".join(lines)
+
+
+# Wiktionary modules/templates to alter in the database directly
+template_adapters = {
+    "Modèle:radical de Kangxi": lambda _: "Radical de Kangxi {{numéro|{{#expr: {{point de code|{{PAGENAME}}|format=%d}} - 12032 + 1}}}} [[{{str left|{{radical trait|{{PAGENAME}}}}|1}}]]. Unicode : U+{{point de code|{{PAGENAME}}}}.",
+    "Modèle:variante du radical de Kangxi": lambda _: "Variante {{{1|}}} du radical de Kangxi [[{{str left|{{radical trait|{{PAGENAME}}}}|1}}]]. Unicode : U+{{point de code|{{PAGENAME}}}}.",
+}
