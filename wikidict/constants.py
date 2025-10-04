@@ -64,7 +64,7 @@ TEMPLATES_WITH_COLON = {
 # --parse: modules & templates "end patterns" to ignore when saving them in the database
 MODULES_TO_IGNORE = ("/doc", "/documentation", "/sandbox", "/testcases")
 
-# --render: modules & templates to override globally for the Lua interpreter (they can still be overrided by `template_ovverides[locale]`)
+# --render: modules & templates to override globally for the Lua interpreter (they can still be overrided by `template_overrides[locale]`)
 MODULES_TO_OVERRIDE_GLOBALLY = {
     # A physical file is awaited or else an infinite loop happens
     "audio",  # example: [EL] βέτεξ
