@@ -1,5 +1,5 @@
 =={{Lingvo|eo}}==
-{{8}}
+{{oficialeco|8}}
 ==={{Vortospeco|substantivo|eo}}===
 [[Dosiero:Casquette a helice.jpg|thumb|[1] '''''kaskedo''''']]
 {{Deklinacio-eo}}

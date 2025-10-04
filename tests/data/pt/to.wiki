@@ -1,19 +1,15 @@
 ={{-pt-}}=
-==Contração==
+=={{Contração|pt}}==
 {{flex.pt|ms=to|mp=tos|fs=ta|fp=tas}}
-{{oxítona|to}}, {{gramática|m}}
+{{átono|to}}, {{gramática|m}}
 # {{escopo|pt|Antigo}} [[contração]] do [[pronome pessoal]] [[te]] com o pronome pessoal ou [[demonstrativo]] [[o]]
-# {{escopo|pt|Brasil|coloquial}} forma [[aferético|aferética]] (muito comum na linguagem falada) de [[estou]] 
-
-[[Categoria:Contração (Português)]]
-
 
 ={{-da-}}=
 ==Numeral==
 '''to''', {{gramática|card|id=da}}
 # [[dois]]
 
-=={{Etimologia|da}}==
+=={{etimologia|da}}==
 {{etimo2|non|tvá|da}}
 
 [[Categoria:Numeral (Dinamarquês)]]
@@ -35,26 +31,41 @@
 
 
 ={{-ja-}}=
-={{-ja-}}=
 =={{Transliteração|ja}}==
 '''to'''
 # transliteração de '''[[と]]''' e '''[[ト]]'''
+
+----
 
 ={{-nb-}}=
 ==Numeral==
 '''to''', {{gramática|card|id=nb}}
 # [[dois]]
 
-=={{Etimologia|nb}}==
+=={{etimologia|nb}}==
 {{etimo2|non|tvá|nb}}
 
 [[Categoria:Numeral (Norueguês Bokmål)]]
 
 
 ={{-pl-}}=
+==Conjunção==
+'''to'''
+# [[então]]
+#* {{tradex|pl|Jeżeli x{{=}}y i y{{=}}z, '''to''' x{{=}}z.|Se x{{=}}y e y{{=}}z, então x{{=}}z.}}
+
+==Partícula==
+'''to'''
+# expletivo
+#* ''Od kiedy '''to''' mieszkacie tutaj?''
+#* ''Kogo '''to''' ja widzę!''
+# {{escopo2|partícula que conecta uma palavra ou expressão com a definição, explicação ou esclarecimento desta palavra}} [[é#Forma verbal|é]]
+#* {{tradex|pl|Arytmetyka '''to''' dział matematyki, który zajmuje się liczbami i operacjami na nich.|A aritmética é o ramo da matemática que estuda os números e as operações com eles.}}
+
 ==Pronome adjetivo==
 '''to''', {{gramática|dem|n|id=pl}}
 # nominativo neutro singular de {{link idioma|ten|pl}}
+
 {{aviso.flexão|ten}}
 
 ==Pronome substantivo==
@@ -68,20 +79,7 @@
 ===Declinação===
 {{decl.pl.subst.sing|n=to|g=tego|d=temu|a=to|i=tym|l=tym|v=–}}
 
-==Partícula==
-'''to'''
-# expletivo
-#* ''Od kiedy '''to''' mieszkacie tutaj?''
-#* ''Kogo '''to''' ja widzę!''
-# {{escopo2|partícula que conecta uma palavra ou expressão com a definição, explicação ou esclarecimento desta palavra}} [[é#Forma verbal|é]]
-#* {{tradex|pl|Arytmetyka '''to''' dział matematyki, który zajmuje się liczbami i operacjami na nich.|A aritmética é o ramo da matemática que estuda os números e as operações com eles.}}
-
-==Conjunção==
-'''to'''
-# [[então]]
-#* {{tradex|pl|Jeżeli x{{=}}y i y{{=}}z, '''to''' x{{=}}z.|Se x{{=}}y e y{{=}}z, então x{{=}}z.}}
-
-[[Categoria:Pronome (Polonês)]]
-[[Categoria:Partícula (Polonês)]]
 [[Categoria:Conjunção (Polonês)]]
+[[Categoria:Partícula (Polonês)]]
+[[Categoria:Pronome (Polonês)]]
 [[Categoria:Monossílabo (Polonês)]]

@@ -7,10 +7,9 @@
 === Etimología 1 ===
 {{etimología|osp|tres|tres}}, este {{etim|la|tres}}, y este {{etim|ine-pro|*tréyes}}. Cognado del ladino {{l+|lad|tres}}.
 
-==== {{adjetivo cardinal|es}} indeclinable ====
+==== {{adjetivo|es|cardinal|indeclinable}} ====
 {{tabla-cardinal|3|ord=tercero|nprev=2|nsig=4|r=III|prev=dos|sig=cuatro}}
-{{inflect.es.adj.invariante}}
-[[Categoría:ES:Adjetivos indeclinables]]
+{{es.adj|p}}
 ;1: {{plm|dos}} y [[uno]].
 ;2: Que ocupa el [[tercer]] lugar en una serie.
 {{sinónimo|tercero}}
@@ -21,7 +20,7 @@
 {{ejemplo|Vinieron los ''tres''.}}
 
 ==== {{sustantivo masculino|es}} ====
-{{inflect.es.sust.reg-cons}}
+{{es.sust}}
 ;4 {{csem|números}}: Signo o signos usados para representar al número que tiene tres unidades.
 {{ejemplo|En números romanos el ''tres'' se escribe III, y en números árabes es 3.}}
 ;5 {{csem|números}}: Nombre del número '''3'''{{-sub|1}}.
@@ -275,8 +274,8 @@
 === Etimología 1 ===
 {{etimología|leng=fr|es|tres}}.
 
-==== {{sustantivo masculino|fr}} invariable ====
-{{inflect.fr.sust.invariante}}
+==== {{sustantivo|fr|masculino}} ====
+{{fr.sust}}
 ;1 {{csem|instrumentos musicales|leng=fr}}: {{plm}}.
 
 ==== Véase también ====
@@ -298,19 +297,31 @@
 ==== {{adjetivo cardinal|roa-opt}} ====
 ;1 {{csem|números|leng=roa-opt}}: {{plm}}.
 
+==== Descendientes ====
+{{trad-arriba|Descendientes}}
+{{d|gl|niv=1|d1=tres}}
+{{d|pt|niv=1|d1=três}}
+{{trad-abajo}}
+
 == {{lengua|gl}} ==
 {{swadesh|gl|024tres}}
 {{pron-graf|leng=gl|1audio1=Gl-tres.ogg}}
+{{gl.tabla-cardinal|3|ord=|nprev=2|nsig=4|r=III|prev=dous|sig=catro}}
 
 === Etimología 1 ===
 {{etimología|leng=gl|roa-opt|tres|tres}}, y este {{etim|leng=gl|la|tres}}.
 
 ==== {{adjetivo cardinal|gl}} ====
-;1 {{csem|números|leng=gl}}: {{plm}}.
+;1: {{plm}} o [[3]].<ref>{{DRAG}}</ref>
+
+==== {{sustantivo masculino|gl}} ====
+;2 {{csem|números|leng=gl}}: {{plm}}.
 {{relacionado|leng=gl|terceiro}}.
 
 ==== Véase también ====
 {{w|leng=gl}}
+
+[[Categoría:GL:Adjetivos]]
 
 == {{lengua|ia}} ==
 {{pron-graf|leng=ia}}
@@ -344,8 +355,7 @@
 {{inflect.la.adj.3.2|tr|singular=no|voc=no}}
 ;1 {{csem|números|leng=la}}: {{plm|tres}} (3).
 
-==== Información adicional ====
-{{derivad|ter|terni|tertius|tertiarius|tertio|tertio|trecenti|trecentesimus|treceni|trecenties|tredecim|terdecies|triangulus|tribus|tribunus|tribunal|tribunatus|tribunicius|tribuo|tributio|tributum|tributarius|tributim|triceps|tricorpor|tricuspis|tridens|tridentifer|triduum|triennalis|triennia|triennis|triennium|triens|trientabulum|trifidus|triformis|triginta|triceni|tricenarius|tricies|trigesimus|trigeminus|trilibris|trilinguis|trilix|trimestris|trimetros|trini|trinitas|trinodis|tripartio|tripartitio|tripartitus|tripartito|tripectorus|tripedalis|tripes|triplex|tripliciter|tripudium|tripudio|tripus|triremis|trisulcus|triumphus|triumpho|triumphalis|triumvir|triumviratus|triumviralis|trivium|trivialis|trivius}}
+==== Descendientes ====
 {{trad-arriba|descendientes}}
 {{d|rup|d1=trei}}
 {{d|ast|d1=tres}}
@@ -365,128 +375,9 @@
 {{d|sc|d1=tres}}
 {{d|scn|d1=tri}}
 {{trad-abajo}}
-{{trad-arriba|Cognados: Palabras provenientes de la raíz protoindoeuropea *treies}}
-{{t|sq|t1=tre|t2=tri}}
-*Lenguas anatólicas
-{{t|hit|t1=tri-}}
-{{t|xlc|t1=𐊗𐊕𐊁𐊆}}
-{{t|xcl|t1=երեք}}
-{{t|hy|t1=երեք}}
-*Lenguas baltoeslavas
-{{t|bat-pro|t1=*triyes}}
-***Orientales
-{{t|lv|t1=trīs}}
-{{t|lt|t1=trỹs}}
-{{t|sla-pro|t1=*trьje}}
-***Meridionales
-{{t|bg|t1=три}}
-{{t|cu|t1=три}}
-{{t|sl|t1=tri}}
-{{t|mk|t1=три}}
-{{t|sh|t1=trȋ|t2=три̑}}
-***Occidentales
-{{t|hsb|t1=tři}}
-{{t|dsb|t1=tśi|t2=tśo}}
-{{t|cs|t1=tři}}
-{{t|sk|t1=tri}}
-{{t|pl|t1=trzy}}
-***Orientales
-{{t|be|t1=тры}}
-{{t|ru|t1=три}}
-{{t|uk|t1=три}}
-{{t|cel-pro|t1=*trīs}}
-**Continentales
-{{t|cy|t1=tri-|t2=tiđres}}
-{{t|xce|t1=Tiriś}}
-**Insulares
-***Britónicas
-{{t|br|t1=tri}}
-{{t|kw|t1=try|t2=teyr}}
-{{t|cy|t1=tri}}
-***Goidélicas
-{{t|sga|t1=trí}}
-{{t|ga|t1=trí}}
-{{t|gd|t1=trì}}
-{{t|gv|t1=three}}
-*Lenguas germánicas: protogermánico: {{l|gem-pro|*þrīz}}
-{{t|non|t1=þrír}}
-{{t|da|t1=tre}}
-{{t|is|t1=þrír}}
-{{t|fo|t1=tríggir}}
-{{t|no|t1=tre}}
-{{t|gmq-osw|t1=þrēr}}
-{{t|sv|t1=tre}}
-**Occidentales
-{{t|goh|t1=drī}}
-{{t|de|t1=drei}}
-{{t|lb|t1=dräi}}
-{{t|yi|t1=דרײַ}}
-{{t|ofs|t1=thrē|t2=thriā}}
-{{t|fy|t1=trije}}
-{{t|ang|t1=þrī|t2=þrīe}}
-{{t|en|t1=three}}
-****Escocés:
-{{t|odt|t1=thri|t2=*thrie}}
-{{t|nl|t1=drie}}
-**Orientales
-{{t|got|t1=𐌸𐍂𐌴𐌹𐍃}}
-*Lenguas helénicas
-{{t|grc|t1=τρεῖς}}
-{{t|grc|t1=τρεις}}
-{{t|xil|t1=tri-}}
-*Lenguas indoiranias
-**Lenguas indoarias
-{{t|sa|t1=त्रि|t2=त्रयं}}
-****Central
-{{t|gu|t1=ત્રગડો}}
-*****Hindustani
-{{t|hi|t1=तीन}}
-{{t|ur|t1=تین}}
-****Insular
-{{t|si|t1=ٽي}}
-*****Dhivehi:
-****Meridional
-{{t|mr|t1=तीन}}
-****Oriental
-*****Asamés:
-{{t|bn|t1=তিন}}
-{{t|or|t1=ତିନି}}
-{{t|rhg|t1=tin}}
-****Septentrional
-{{t|pa|t1=ਤਿੰਨ}}
-{{t|sd|t1=ٽي}}
-****otras
-{{t|rom|t1=trin}}
-**Lenguas iranias
-***Occidentales
-{{t|bal|t1=sey}}
-{{t|ku|t1=sê}}
-{{t|mzn|t1=se}}
-{{t|xpr|t1=hry}}
-{{t|peo|t1=çi-}}
-{{t|pal|t1=sh}}
-{{t|fa|t1=سه}}
-{{t|tg|t1=се}}
-{{t|zza|t1=hire}}
-***Orientales
-{{t|ae|t1=𐬚𐬭𐬌|t2=𐬚𐬭𐬁𐬌𐬌𐬋}}
-{{t|ps|t1=درې}}
-****Lenguas escitas
-{{t|kho|t1=drai}}
-{{t|os|t1=æртæ}}
-**Lenguas Nuristaníes: protonuristani: *trai-
-{{t|ask|t1=tra}}
-***Kalasha-ala: tre
-{{t|bsh|t1=tre}}
-***Kati occidental: trɛ
-{{t|itc-pro|t1=*trejes}}
-**Latín (†): {{l+|la|tres|trēs}}
-{{t|osc|t1=𐌕𐌓𐌉𐌔}}
-{{t|xum|t1=trif}}
-*Tocario
-{{t|txb|t1=tre}}
-{{t|xto|t1=trai|t2=trey}}
-{{trad-abajo}}
+
+==== Información adicional ====
+{{derivad|ter|terni|tertius|tertiarius|tertio|tertio|trecenti|trecentesimus|treceni|trecenties|tredecim|terdecies|triangulus|tribus|tribunus|tribunal|tribunatus|tribunicius|tribuo|tributio|tributum|tributarius|tributim|triceps|tricorpor|tricuspis|tridens|tridentifer|triduum|triennalis|triennia|triennis|triennium|triens|trientabulum|trifidus|triformis|triginta|triceni|tricenarius|tricies|trigesimus|trigeminus|trilibris|trilinguis|trilix|trimestris|trimetros|trini|trinitas|trinodis|tripartio|tripartitio|tripartitus|tripartito|tripectorus|tripedalis|tripes|triplex|tripliciter|tripudium|tripudio|tripus|triremis|trisulcus|triumphus|triumpho|triumphalis|triumvir|triumviratus|triumviralis|trivium|trivialis|trivius}}
 
 ==== Véase también ====
 {{w|leng=la}}

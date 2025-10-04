@@ -1,4 +1,14 @@
 {{also|Appendix:Variations of "cum"}}
+==Translingual==
+
+===Etymology===
+{{clip|mul|-}} {{der|mul|en|'''Cum'''eral}}.
+
+===Symbol===
+{{mul-symbol}}
+
+# {{ISO 639|3|obs=1|Cumeral}}
+
 ==English==
 
 ===Etymology 1===
@@ -20,11 +30,11 @@
 #* {{quote-journal|en|year=1944|month=May and June|title=Notes and News: The Snailbeach District Railway|journal=Railway Magazine|page=183|text=One driver-'''cum'''-fireman-'''cum'''-fitter looks after the three locomotives, [...].}}
 #* {{quote-journal|en|year=2001|month=Nov/Dec|author=David Sachs|title=LET THEM EAT BITS|journal=American Spectator|volume=34|issue=8|page=78|passage=The banner shows a yellowed silhouette of a boy (possibly Calvin, of Calvin & Hobbes) urinating on an EU flag. Sites such as this show the full power of the Internet as a propaganda medium '''cum''' travel service '''cum''' organizing tool. Oh, and nightlife directory.}}
 #* {{quote-journal|en|date=2023-02-05|author=w:Kathryn Parsons|title=Boom times are back in San Francisco’s tech mecca|journal=w:The Sunday Times|url=https://www.thetimes.co.uk/article/boom-times-are-back-in-san-franciscos-tech-mecca-g2zjknkkl|passage=Coffee shops-'''cum'''-meeting-spots dotted across the city are teeming (Equator, Blue Bottle and Saint Frank). Caffeine-fuelled, lactose-intolerant, macadamia milk latte-drinking young folk are journalling, manifesting, coding, ChatGPT-ing and pitching their ideas.}}
-#* {{seemoreCites|en}}
+#* {{see more citations|en}}
 
 =====Usage notes=====
 Also used in some British place names and [[civil parish]] names, see table below
-{{col-auto|en|Chorlton-cum-Hardy|Suffield-cum-Everley|Aldringham cum Thorpe|Ash-cum-Ridley|Hannah cum Hagnaby|Warmfield cum Heath| Clapham cum Newby|Burton-cum-Walden|Holywell-cum-Needingworth|Sutton cum Duckmanton| Elloughton-cum-Brough|Raithby cum Maltby|Woodford cum Membris|Headon cum Upton}}
+{{col|en|Chorlton-cum-Hardy|Suffield-cum-Everley|Aldringham cum Thorpe|Ash-cum-Ridley|Hannah cum Hagnaby|Warmfield cum Heath| Clapham cum Newby|Burton-cum-Walden|Holywell-cum-Needingworth|Messing-cum-Inworth|Sutton cum Duckmanton| Elloughton-cum-Brough|Raithby cum Maltby|Woodford cum Membris|Headon cum Upton|Kelsale cum Carlton|Stone-cum-Ebony||Ilton-cum-Pott|Langar cum Barnstone|Shaw cum Donnington|odd-cum-short|Pidley cum Fenton}}
 
 =====Translations=====
 {{trans-top}}
@@ -34,7 +44,9 @@ Also used in some British place names and [[civil parish]] names, see table belo
 * Italian: {{t+|it|trattino|m}}
 * Japanese: {{t+|ja|兼|tr=けん, ken}}
 * Korean: {{t+|ko|겸(兼)}}
+* Polish: {{t+|pl|i}}
 * Russian: {{t+|ru|с}}, {{t+|ru|совмещённый}}
+* Vietnamese: {{t+|vi|kiêm}}
 {{trans-bottom}}
 
 ===Etymology 2===
@@ -46,7 +58,7 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 * {{audio|en|en-uk-cum.ogg|a=UK}}
 * {{audio|en|en-us-cum.ogg|a=US}}
 * {{rhymes|en|ʌm|s=1}}
-* {{homophones|en|come}}
+* {{hmp|en|come}}
 
 ====Noun====
 {{en-noun|-}}
@@ -60,10 +72,11 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 # {{lb|en|colloquial|often|_|vulgar}} An [[ejaculation]].
 
 =====Derived terms=====
-{{der3|en|
+{{col3|en|
 |precum
 |cumslut
 |cumwhore|cum corner
+|cumbrella
 |cumdrunk
 |cumdump
 |cumflate
@@ -91,7 +104,7 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 |girlcum}}
 
 =====Translations=====
-{{trans-top|slang: semen}}
+{{trans-top-see|slang: semen|wad}}
 * Armenian: {{t+|hy|թոխում}}
 * Asturian: {{t|ast|llimu|m}}, {{t+|ast|espelma|f}}, {{t+|ast|semen|m}}
 * Belarusian: {{t|be|спэрма|f}}, {{t|be|кнура|f}} {{qualifier|vulgar}}
@@ -122,13 +135,14 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 * Malagasy: {{t+|mg|ranon-tsirilahy}}
 * Neapolitan: {{t|nap|sfaccimma}}
 * Norwegian: {{t|no|sperm|m}}, {{t|no|sæd|m}}
-* Polish: {{t+|pl|sperma|f}}, {{t+|pl|nasienie|n}}, {{t+|pl|spust|m}}
+* Polish: {{t+|pl|spust|m}}
 * Portuguese: {{t+|pt|esperma|f}}, {{t+|pt|gozo|m}}, {{t+|pt|porra|f}}, {{t+|pt|leite|m}}
 * Romanian: {{t+|ro|sloboz|n}}, {{t|ro|smecleu|n}}
 * Russian: {{t+|ru|се́мя}}, {{t+|ru|спе́рма}}, {{t+|ru|молофья́|f}} {{qualifier|vulgar}}, {{t+|ru|конча́|f}} {{qualifier|vulgar}}, {{t+|ru|малафья́|f}} {{qualifier|vulgar}}
 * Serbo-Croatian: {{t|sh|svršotina|f}}, {{t|sh|svrš|m}}
 * Sicilian: {{t|scn|sburru|m}}, {{t|scn|ogghiu di sbrigghiu|m}}, {{t|scn|spacchiu|m}}
-* Spanish: {{t+|es|corrida|f}} {{q|Spain}}, {{t+|es|acabada|f}} {{q|Latin America}},  {{t+|es|semen|m}}, {{t+|es|lefa|f}}, {{t+|es|leche|f}} {{q|Spain}}, {{t+|es|mecos|m-p}} {{q|Mexico}}
+* Slovak: {{t|sk|mrdka|f}}
+* Spanish: {{t+|es|corrida|f}} {{q|Spain}}, {{t+|es|acabada|f}} {{q|Latin America}}, {{t+|es|semen|m}}, {{t+|es|leche|f}}, {{t+|es|lefa|f}} {{q|Spain}}, {{t+|es|mecos|m-p}} {{q|Mexico}}, {{t|es|acabadura|f}}, {{t|es|cabadura|f}}, {{t+|es|guasca|f}}
 * Swedish: {{t+|sv|sagge|c}}, {{t+|sv|säd|c}}
 * Tagalog: {{t|tl|tamod}}
 * Turkish: {{t+|tr|döl}}, {{t+|tr|atmık}}
@@ -142,6 +156,7 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 *: Mandarin: {{t+|cmn|潮吹|tr=cháochuī}}, {{t+|cmn|淫水|tr=yǐnshuǐ}}, {{qualifier|slang}} {{t+|cmn|出水|tr=chūshuǐ}}
 * Finnish: {{t|fi|pilluneste}}, {{t|fi|pillumehu}}
 * Japanese: {{t+|ja|潮吹き|tr=しおふき, shiofuki}}
+* Polish: {{t+|pl|wytrysk|m}}
 * Portuguese: {{t+|pt|gozo|m}}
 * Sicilian: {{t|scn|spacchiu|m}}
 * Spanish: {{t+|es|corrida|f}}
@@ -158,12 +173,13 @@ Variant of {{m|en|come}}, attested (in the basic sense "come, move from further 
 
 # {{lb|en|slang|often|_|vulgar}} To have an [[orgasm]], to feel the sensation of an [[orgasm]].
 #: {{syn|en|climax}}
-#: {{rfex|en}}
+#: {{ux|en|Despite claims to the contrary, a woman can '''cum''' from [[anal sex]] alone.}}
 # {{senseid|en|to ejaculate}}{{lb|en|slang|often|_|vulgar}} To [[ejaculate]].
 #: {{syn|en|Thesaurus:ejaculate}}
+#: {{ux|en|Some men '''cum''' as much as 10 milliliters.}}
 #* {{quote-av|en|date=1997-07-14|episode=Visits, Conjugal, and Otherwise|title=[[w:Oz (TV series)|Oz]]|season=1|number=2|actor=Harold Perrineau|role=Augustus Hill|passage=I got no sensation down there, so I don't know when I'm hard, I don't know when I '''cum'''. My wife's gotta tell me.}}
 #* {{quote-song|en|year=2019|title=All Humans Too Late|artist=w:Kae Tempest|album=The Book of Traps and Lessons|passage=Sucking on pork ribs and summoning pornography / So that we can '''cum''' when we fuck / Our partners don’t know us / Our families are strangers}}
-# {{eye dialect of|en|come|t=move from further to nearer; arrive}}
+# {{eye dialect of|en|come|t=move from further to nearer; arrive}}.
 #* {{quote-text|en|year=1882|author=William Makepeace Thayer|title=From Log-Cabin to White House|page=162
 |passage=“Where'd he '''cum''' from?” the bowman inquired. “That's what we'd like ter know, yer see; where he '''cum''' from, and how he happen'd to '''cum''',” responded the steersman. “But he's a jolly good feller, strong as a lion, {{...}}”}}
 
@@ -195,18 +211,21 @@ The past tense and past participle variant ''cummed'' is used when the verb is f
 * Hebrew: {{t+|he|גָּמַר|tr=gamár}} {{qualifier|slang}}
 * Hungarian: {{t+|hu|elélvez}}, {{t+|hu|elmegy}}, {{t+|hu|elsül}}
 * Icelandic: {{t|is|fá það}}
+* Indonesian: {{t|id|crot}}, {{t+|id|keluar}}
 * Italian: {{t+|it|venire}}, {{t+|it|eiaculare}}, {{t+|it|sborrare}}
 * Japanese: {{t|ja|イく|tr=iku}}, {{t|ja|射精する|tr=shasei suru}}
 * Korean: {{t+|ko|싸다}}
 * Latin: {{t|la|eiaculare}}
 * Macedonian: {{t|mk|свршува}}, {{t|mk|ејакули́ра}}
 * Malagasy: {{t|mg|mitsitsitra}}, {{t+|mg|mitsitra}}
+* Malay: {{t+|ms|pancut}}
 * Norwegian: {{t|no|ejakulere}}, {{t|no|sæde}}
-* Polish: {{t|pl|wytryskiwać}}, {{t+|pl|dochodzić|impf}}, {{t+|pl|dojść|pf}}
+* Polish: {{t+|pl|dochodzić|impf}}, {{t+|pl|dojść|pf}}
 * Portuguese: {{t+|pt|ejacular}}, {{t+|pt|gozar}}, {{t+|pt|esporrar}}, {{t|pt|[[vir|vir-se]]}}
 * Romanian: {{t+|ro|slobozi}}, {{t|ro|își [[da drumul]]}}
 * Russian: {{t+|ru|конча́ть|impf}}, {{t+|ru|ко́нчить|pf}}, {{t+|ru|эякули́ровать|}} {{qualifier|impf or pf}}
 * Serbo-Croatian: {{t+|sh|svršiti}}
+* Slovak: {{t|sk|striekať|impf}}
 * Spanish: {{t+|es|venir}}, {{t+|es|irse}}, {{t+|es|venirse}}, {{t+|es|eyacular}}, {{t+|es|correrse}}, {{t+|es|acabar}}, {{t+|es|terminar}}
 * Swedish: {{t+|sv|komma}}
 * Thai: {{t+|th|แตก}}, {{t+|th|น้ำแตก}}
@@ -219,14 +238,14 @@ The past tense and past participle variant ''cummed'' is used when the verb is f
 ====Adjective====
 {{en-adj|-}}
 
-# {{clipping of|en|cumulative}}
+# {{clipping of|en|cumulative}}.
 
 ===Etymology 4===
 
 ====Noun====
 {{en-noun|-}}
 
-# {{abbreviation of|en|cubic metre}}
+# {{abbreviation of|en|cubic metre}}.
 #: {{ux|en|The density of cement is 1440 kg/'''cum'''.}}
 
 ===References===
@@ -235,7 +254,7 @@ The past tense and past participle variant ''cummed'' is used when the verb is f
 ===Anagrams===
 * {{anagrams|en|a=cmu|CMU|MCU|MUC|UMC}}
 
-{{catlangname|en|coordinating conjunctions|three-letter words}}
+{{catlangname|en|coordinating conjunctions|3-letter words}}
 {{topics|en|Bodily fluids|Sex}}
 
 ==Aromanian==
@@ -321,13 +340,13 @@ From {{inh|ga|sga|cummaid|t=fashions, shapes, composes, determines; makes, creat
 * {{la-IPA}}
 
 ===Etymology 1===
-{{etymon|la|id=with|inh|itc-ola>com>with}}
+{{etymon|la|id=with|:from|itc-ola:com<id:with>}}
 From {{inh|la|itc-ola|com}}, from {{inh|la|itc-pro|*kom}}, from {{inh|la|ine-pro|*ḱóm||next to, at, with, along}}. Cognate with {{cog|gem-pro|*ga-||co-}}, {{cog|sla-pro|*sъ(n)||with}}.
 
 The ablative is from the PIE comitative-instrumental.
 
 ====Preposition====
-{{la-prep|ablative}}
+{{la-prep|cum|ablative}}
 
 # [[with]], [[along with]]
 #: {{ux|la|Titus '''cum''' familiā habitat.|inline=1|t=Titus lives '''with''' his family.}}
@@ -335,14 +354,14 @@ The ablative is from the PIE comitative-instrumental.
 # [[at]] {{gloss|denoting a point in time with which an action coincides}}
 #: {{uxi|la|Mīlitēs '''cum''' prīmā lūce vēnērunt.|The soldiers came '''at''' day-break.}}
 # [[-fold]] {{q|with ordinal number}}
-#: {{uxi|la|'''cum''' centesimo efficere|to yield a hundred'''fold'''}}
+#: {{uxi|la|'''cum''' centēsimō efficere|to yield a hundred'''fold'''}}
 
 =====Derived terms=====
-{{der3|la|co-
+{{col3|la|co-
 |col-
 |com-
 |con-
-|contrā
+|contra
 |cor-
 |cum laude
 |cum primis
@@ -389,7 +408,7 @@ The ablative is from the PIE comitative-instrumental.
 {{bottom}}
 
 ===Etymology 2===
-From {{inh|la|itc-ola|quom}}, from {{der|la|ine-pro|*kʷóm}}, accusative of {{m|ine-pro|*kʷos}}, {{m|ine-pro|*kʷis}}. Compare its feminine form {{m|la|quam}} (as in {{m|la|tum}}-{{m|la|tam}}).
+From {{inh|la|itc-ola|quom}}, from {{der|la|ine-pro|*kʷóm}}, accusative of {{m|ine-pro|*kʷos}}, {{m|ine-pro|*kʷís}}. Compare its feminine form {{m|la|quam}} (as in {{m|la|tum}}-{{m|la|tam}}).
 
 ====Alternative forms====
 * {{alt|la|quom||acl|classical}}
@@ -398,12 +417,12 @@ From {{inh|la|itc-ola|quom}}, from {{der|la|ine-pro|*kʷóm}}, accusative of {{m
 ====Conjunction====
 {{head|la|conjunction}}
 
-# {{+obj|la|sub}} 
-## {{lb|la|causal}} [[when]], [[after]] {{+obj|la|impf&subj/plup&subj}} 
+# {{+obj|la|sub}}
+## {{lb|la|causal}} [[when]], [[after]] {{+obj|la|impf&subj/plup&subj}}
 ## [[because]], [[since]]
 ## [[although]]
-# {{+obj|la|ind}} 
-## {{lb|la|temporal}} when, [[while]] {{+obj|la|pres&ind/perf&ind}} 
+# {{+obj|la|ind}}
+## {{lb|la|temporal}} when, [[while]] {{+obj|la|pres&ind/perf&ind}}
 
 =====Usage notes=====
 * In the sense of [[when]], if there is no causal link between the verb in the dependent clause and the verb in the main clause (sometimes called an inverted {{m|la||cum}}-clause, as the 'main action' of the sentence occurs in the dependent clause), the indicative is used rather than the subjunctive.
@@ -487,7 +506,7 @@ From {{inh|gv|mga|cummaid}}, a denominative verb from {{m|mga|cumma}}, itself fr
 * {{l|sga|·cumai}}
 
 ===Pronunciation===
-* {{IPA|sga|[kuβ̃]}}
+* {{sga-IPA}}
 
 ===Verb===
 {{head|sga|verb form|head=·cum}}
@@ -495,7 +514,7 @@ From {{inh|gv|mga|cummaid}}, a denominative verb from {{m|mga|cumma}}, itself fr
 # {{alternative form of|sga|·cumai}},<ref>{{R:sga:EIV|page=34|passage=This process favoured the type without final unstressed vowel, whence ''-cum'' alongside ''-cumai (con:ic)''}}</ref> {{inflection of|sga|con·icc||3|s|pres|subj|prototonic}}
 
 ===Mutation===
-{{sga-mutation|c|um|p=·}}
+{{sga-mutation|pt}}
 
 ===References===
 <references/>
@@ -522,7 +541,7 @@ From contraction of preposition {{m|pt|com||with}} + masculine article {{m|pt|um
 # {{lb|pt|Brazil|internet slang}} {{eye dialect of|pt|com}}
 
 =====Quotations=====
-{{seeCites|pt}}
+{{see citations|pt}}
 
 ===Further reading===
 * {{R:pt:Priberam}}

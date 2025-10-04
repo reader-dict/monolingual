@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("sv")
 
 
 @pytest.mark.parametrize(
@@ -15,8 +23,8 @@ from wikidict.utils import process_templates
             "en",
             ["/en/", "/eːn/", "/ɛn/"],
             [
-                "Av fornsvenska <i>ēn</i>, av fornnordiska <i>einn</i>, av urgermanska <i>*ainaz</i>, av urindoeuropeiska <i>*ójnos</i>",
-                "Av fornsvenska <i>ēn</i>, av fornnordiska <i>*æiniʀ</i>, av urgermanska <i>*jainjaz</i>",
+                "Av fornsvenska&nbsp;<i>ēn</i>, av fornnordiska&nbsp;<i>einn</i>, av urgermanska&nbsp;<i>*ainaz</i>, av urindoeuropeiska&nbsp;<i>*ójnos</i>",
+                "Av fornsvenska&nbsp;<i>ēn</i>, av fornnordiska&nbsp;<i>*æiniʀ</i>, av urgermanska&nbsp;<i>*jainjaz</i>",
             ],
             {
                 "Adverb": ["ungefär; omkring"],
@@ -73,7 +81,7 @@ from wikidict.utils import process_templates
             "sand",
             ["/sand/"],
             [
-                'Av fornsvenska <i>sander</i>, av fornnordiska <i>sandr</i>, av urgermanska <i>*sanda(z)</i>. Besläktat med isländska <i>sandur</i>, norska <i>sand</i> fornengelska <i>sand</i> (engelska <i>sand</i>), fornhögtyska <i>sant</i> (tyska <i>Sand</i>). Ytterst av urindoeuropeiska <i>*sam(a)dho-</i>, motsvarande grekiska ἄμαθος, <i>amathos</i>, "sand"; troligen en uttalsförenkling av <i>*bhsam(a)dho-</i>, av roten <i>*bhes-</i>, med rotbetydelsen "att krossa", "att gnugga". Härigenom besläktat med latin <i>sabulum</i>, grekiska ψάμμος, <i>psammos</i> (varav <i>psammit</i>), båda "sand", och sanskrit <i>bhas</i>, "sönderkrossa".',
+                'Belagt i språket sedan 1300-talet. Av fornsvenska&nbsp;<i>sander</i>, av fornnordiska&nbsp;<i>sandr</i>, av urgermanska&nbsp;<i>*sanda(z)</i>. Besläktat med isländska <i>sandur</i>, norska <i>sand</i> fornengelska <i>sand</i> (engelska <i>sand</i>), fornhögtyska <i>sant</i> (tyska <i>Sand</i>). Ytterst av urindoeuropeiska <i>*sam(a)dho-</i>, motsvarande grekiska ἄμαθος, <i>amathos</i>, "sand"; troligen en uttalsförenkling av <i>*bhsam(a)dho-</i>, av roten <i>*bhes-</i>, med rotbetydelsen "att krossa", "att gnugga". Härigenom besläktat med latin <i>sabulum</i>, grekiska ψάμμος, <i>psammos</i> (varav <i>psammit</i>), båda "sand", och sanskrit <i>bhas</i>, "sönderkrossa".',
             ],
             {
                 "Substantiv": [
@@ -87,7 +95,7 @@ from wikidict.utils import process_templates
             "svenska",
             [],
             [
-                "Belagt sedan 1300-talet, som fornsvenska <i>svænska</i>.",
+                "Belagt sedan 1300-talet, som fornsvenska&nbsp;<i>svænska</i>.",
                 "Belagt sedan 1773.",
             ],
             {
@@ -116,30 +124,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{led|sv|f|gata}}", "<i>förled tillhörigt ordet</i> gata"),
-        ("{{led|sv|e|hand}}", "<i>efterled tillhörigt ordet</i> hand"),
-        ("{{ö|en|test}}", "test"),
-        ("{{ö+|en|test}}", "test <sup>(en)</sup>"),
-        ("{{ö-inte|en|test}}", "<b>inte</b> <i><s>test</s></i>"),
-        ("{{övrigatecken|punkt|.}}", '"<code>.</code>"'),
-        ('{{övrigatecken|quote|"}}', '"<code>"</code>"'),
-        ("{{övrigatecken|special1|<}}", '"<code>&lt;</code>"'),
-        ("{{övrigatecken|special2|>}}", '"<code>&gt;</code>"'),
-        ("{{övrigatecken|special3|&}}", '"<code>&amp;</code>"'),
-        ("{{tagg|historia}}", "<i>(historia)</i>"),
-        (
-            "{{tagg|kat=nedsättande|text=något nedsättande}}",
-            "<i>(något nedsättande)</i>",
-        ),
-        ("{{uttal|sv|ipa=mɪn}}", "<b>uttal:</b> /mɪn/"),
-        ("{{uttal|sv|ipa=eːn/, /ɛn/, /en}}", "<b>uttal:</b> /eːn/, /ɛn/, /en/"),
-    ],
-)
-def test_process_template(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "sv") == expected

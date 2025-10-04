@@ -1,8 +1,7 @@
-import sys
-
 from wikidict import caches
 
-kind = sys.argv[1]
-key = sys.argv[2]
-value = sys.argv[3]
-caches.expand_cache_file(kind, {key: value})
+new_data: dict[str, str] = dict([
+
+])
+print(len(new_data))
+caches.expand_cache_file("svg", new_data)

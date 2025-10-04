@@ -171,6 +171,7 @@
 # {{marca-nocat|ca|balear|alguerès}} {{ca-forma-conj|casar|1|pres|ind}}
 
 === Miscel·lània ===
+* {{ca-sil}}
 * {{anagrames|ca|asc|sac}}
 
 === Vegeu també ===

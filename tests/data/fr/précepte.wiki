@@ -31,13 +31,15 @@
 ==== {{S|traductions}} ====
 {{trad-début}}
 * {{T|de}} : {{trad+|de|Prinzip|n}}, {{trad+|de|Grundsatz|m}}, {{trad+|de|Gebot|n}}, {{trad+|de|Regel|f}}, {{trad+|de|Weisung}}, {{trad+|de|Vorschrift}}
-* {{T|en}} : {{trad+|en|precept}} (1, 2)
+* {{T|en}} : {{trad+|en|precept}} (1, 2), {{trad+|en|preception}}
 * {{T|ar}} : {{trad-|ar|مبدأ}}, {{trad-|ar|قاعدة}}
 * {{T|br}} : {{trad+|br|reolenn|f}}
+* {{T|co}} : {{trad-|co|precettu}}, {{trad-|co|pricettu}}
 * {{T|es}} : {{trad+|es|precepto|m}}
 * {{T|eo}} : {{trad-|eo|precepto}}
 * {{T|el}} : {{trad+|el|διδαχή|R=dhidhakhí|f}}
 * {{T|it}} : {{trad+|it|precetto|m}}
+* {{T|pt}} : {{trad+|pt|preceito|m}}
 * {{T|ru}} : {{trad+|ru|завет}}
 {{trad-fin}}
 
@@ -56,3 +58,4 @@
 
 
 [[Catégorie:Lexique en français de la philosophie]]
+[[Catégorie:Lexique en français de l’éducation]]

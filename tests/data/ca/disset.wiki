@@ -4,7 +4,7 @@
 {{ca-pron|è
 |f-centr=LL-Q7026 (cat)-Unjoanqualsevol-disset.wav
 }}
-{{-etimologia-}} {{Del-lang|la|ca|[[decem]] [[et]] [[septem]]|lit=deu i set}}.
+{{-etimologia-}} Contracció de l’antic {{m|ca|*deïsset}}, evolució fonètica {{del-lang|roa-oca|ca|deesset}} per la pronúncia {{IPAchar|/ɛe/}}, de {{m|roa-oca|desesset}}, {{del-lang|la|ca|[[decem]] [[et]] [[septem]]|lit=deu i set}}, {{etim-s|ca|XVIII}}. Compareu amb {{m|ca|divuit}} i {{m|ca|dinou}}.
 
 === Numeral ===
 {{numeral|ca|16|17|18|setze|divuit|card=disset|ord=dissetè|pref=heptadeca-|llista=Viccionari:Llista de nombres en català }}
@@ -12,7 +12,7 @@
 
 # {{marca|ca|cardinal}} [[nombre|Nombre]] enter situat entre el [[setze]] i el [[divuit]].
 #: ''Té disset anys''
-# {{marca|ca|valor ordinal}} [[dissetè|Dissetè]], [[dissetena]].
+# {{marca|ca|valor ordinal}} [[dissetè]], [[dissetena]].
 #: ''La pàgina disset''
 #: ''El dia disset de maig''
 
@@ -60,4 +60,5 @@
 
 === Vegeu també ===
 * {{Viquipèdia}}
-* {{ca-dicc|diec|gdlc|optimot}}
+* {{ca-dicc|diec|gdlc|optimot|decat}}
+* [https://web.archive.org/web/20220812153712/https://aldc.espais.iec.cat/files/2022/02/1175-Disset.pdf Atles Lingüístic del Domini Català]

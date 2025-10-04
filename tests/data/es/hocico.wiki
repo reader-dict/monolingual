@@ -5,7 +5,7 @@
 {{etimología|endo|hocicar}}.
 
 ==== {{sustantivo masculino|es}} ====
-{{inflect.es.sust.reg}}
+{{es.sust}}
 ;1 {{csem|zootomía}}: Parte más o menos [[prolongar|prolongada]] de la [[cabeza]] de algunos [[animal]]es en que están la [[boca]] y las [[nariz|narices]].
 ;2 {{csem|anatomía}}: {{plm}} de una persona cuando tiene muy [[abultado]]s los [[labio]]s.
 ;3: {{plm|cara}}.

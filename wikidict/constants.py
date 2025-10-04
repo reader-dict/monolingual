@@ -48,40 +48,23 @@ KINDLEGEN_FILE = Path.home() / ".local" / "bin" / "kindlegen"
 SESSION = requests.Session()
 SESSION.headers.update(WIKIMEDIA_HEADERS)
 
-# Template using a special syntax like `{{formatnum:42}}`.
-# They will be reconstructed into a more convenient syntax like `{{formatnum|42}}`.
-TEMPLATES_WITH_COLON = {
-    # Universal
-    "#expr",
-    "formatnum",
-    # DE
-    "Lit-Bahlow",
-    "Lit-Linnartz",
-    # RU
-    "этимология",
-}
-
 # --parse: modules & templates "end patterns" to ignore when saving them in the database
 MODULES_TO_IGNORE = ("/doc", "/documentation", "/sandbox", "/testcases")
 
-# --render: modules & templates to override globally for the Lua interpreter (they can still be overrided by `template_overrides[locale]`)
-MODULES_TO_OVERRIDE_GLOBALLY = {
-    # A physical file is awaited or else an infinite loop happens
-    "audio",  # example: [EL] βέτεξ
-    "aŭdo",  # example: [EO] ĉapo
-    "pron-graf",  # example: [ES] hala
-    "ήχος",  # example: [EL] καμεραμάν
-    # Map, cannot be rendered
-    "mapa",  # example: [ES] Londres
-    # Reverse variants
-    "rev-flexion",  # example: [RO] arc
+# --render: Lua modules aliases
+PARSER_FUNCTIONS_ALIASES = {
+    "pt": {
+        "#se": "#if",
+        "#seigual": "#ifeq",
+        "#seerro": "#iferror",
+        "#seexiste": "#ifexist",
+        "#seexpr": "#ifexpr",
+    }
 }
 
 # --parse: HTML entities to replace in modules & templates contents
 HTML_REPL_BODY = {
     # Found in modules importing another module
     "&quot;": '"',
-    # Found in mathematical formulas
-    "&#92;": "\\",
 }
 HTML_REPL_TITLE = {"&amp;": "&"}

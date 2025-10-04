@@ -3,7 +3,9 @@
 
 === Etimología 1 ===
 {{etimología}}.
-{{inflect.es.sust.sing.tantum}}
+
+==== {{sustantivo propio|es}} ====
+{{es.sust|s}}
 [[Archivo:Guyana in its region (disputed hatched).svg|miniaturadeimagen|[1] Ubicación resaltada en rojo, territorios en disputa sombreados]]
 ;1 {{csem|países}}: {{plm|país}} {{l|es|ubicado}} al {{l|es|noreste}} de {{l|es|Sudamérica}}. {{l|es|limitar|Limita}} al {{l|es|oeste}} con {{l|es|Venezuela}}, al {{l|es|norte}} con el {{l|es|océano Atlántico}}, al {{l|es|este}} con {{l|es|Surinam}} y al {{l|es|sur}} {{l|es|Brasil}}.
 :*'''Nombre oficial:''' ''{{plm|república}} {{l|es|cooperativo|Cooperativa}} de Guyana'' (en inglés: ''Co-operative Republic of Guyana'').

@@ -27,6 +27,23 @@
 [[Categoria:Sufixo (Português)]]
 
 
+={{-cs-}}=
+==Sufixo==
+'''-ista''' {{gênero|m|anim}}
+# sufixo que forma um substantivo animado a partir de um substantivo; [[-ista#Português|-ista]]
+
+=={{pronúncia|cs}}==
+*[[AFI]]: {{AFI|/ɪsta}}
+
+==Ver também==
+===No Wikcionário===
+*[[-ství]]
+*[[-stvo]]
+*[[-sko]]
+
+[[Categoria:Sufixo (Checo)]]
+
+
 ={{-es-}}=
 ==Sufixo==
 '''-ista''' ''nominal''
@@ -36,7 +53,6 @@
 : Do [[grego antigo]] ''[[-ιστεσ]]'' (''-istes'') através do [[latim]] ''[[-ista#Latim|-ista]]'' através do [[francês antigo]] ''[[-iste]]''.
 
 [[Categoria:Sufixo (Espanhol)]]
-
 
 ={{-en-}}=
 ==Sufixo==

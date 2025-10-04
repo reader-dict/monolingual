@@ -40,7 +40,7 @@
 :[1] „Irgendwann entdeckt der ''CIA'' wahrscheinlich noch, welch furchtbar grausame Dinge man mit einem Wattestäbchen anrichten kann.“<ref>{{Literatur| Autor= Vince Ebert | Titel= Machen Sie sich frei! | TitelErg= Sonst tut es keiner für Sie| Verlag= Rowohlt Taschenbuch Verlag |Ort= Reinbek | Jahr= 2011 | ISBN= 978-3-499-62651-7 | Seiten= 190.}}</ref>
 
 {{Wortbildungen}}
-:[[CIA-Agent]], [[CIA-Analyst]], [[CIA-Außenstelle]], [[CIA-Beamter]], [[CIA-Bericht]], [[CIA-Büro]], [[CIA-Chef]], [[CIA-Direktor]], [[CIA-Flugzeug]], [[CIA-Gefängnis]], [[CIA-Hauptquartier]], [[CIA-Kollege]], [[CIA-Mann]], [[CIA-Mission]], [[CIA-Mitarbeiter]], [[CIA-Niederlassung]], [[CIA-Operation]], [[CIA-Pilot]], [[CIA-Spion]], [[CIA-Standort]], [[CIA-Stützpunkt]], [[CIA-Vertreter]], [[CIA-Veteran]], [[CIA-Zentrale]]
+:[[CIA-Agent]], [[CIA-Analyst]], [[CIA-Außenstelle]], [[CIA-Beamter]], [[CIA-Bericht]], [[CIA-Büro]], [[CIA-Chef]], [[CIA-Deckname]], [[CIA-Direktor]], [[CIA-Flugzeug]], [[CIA-Gefängnis]], [[CIA-Hauptquartier]], [[CIA-Karriere]], [[CIA-Kollege]], [[CIA-Mann]], [[CIA-Mission]], [[CIA-Mitarbeiter]], [[CIA-Niederlassung]], [[CIA-Offizier]], [[CIA-Operation]], [[CIA-Pilot]], [[CIA-Quelle]], [[CIA-Spion]], [[CIA-Standort]], [[CIA-Station]], [[CIA-Stützpunkt]], [[CIA-Vertreter]], [[CIA-Veteran]], [[CIA-Zentrale]]
 
 ==== {{Übersetzungen}} ====
 {{Ü-Tabelle|1|G=US-amerikanischer Auslandsnachrichtendienst|Ü-Liste=
@@ -51,9 +51,9 @@
 }}
 
 {{Referenzen}}
-:[1] {{Wikipedia|CIA}}
-:[1] {{Ref-Abkürzungen|CIA}}
-:[1] {{Ref-Duden|CIA}}
-:[1] {{Ref-UniLeipzig|CIA}}
+:[1] {{Wikipedia}}
+:[1] {{Ref-Abkürzungen}}
+:[1] {{Ref-Duden}}
+:[1] {{Ref-UniLeipzig}}
 
 {{Quellen}}

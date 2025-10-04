@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("el")
 
 
 @pytest.mark.parametrize(
@@ -21,7 +29,7 @@ from wikidict.utils import process_templates
                     "<i>επιτατικό</i>",
                     "με υποκοριστική σημασία",
                     "που δηλώνει επανάληψη (ξανα-, επαν-)",
-                    "(<i>στερητικό</i>) <i>άλλη μορφή του</i> <b>α-</b>",
+                    "(<i>στερητικό</i>) <i>άλλη μορφή του </i><b>α-</b>",
                 ]
             },
             [],
@@ -32,11 +40,11 @@ from wikidict.utils import process_templates
             [],
             [
                 "<b>-ης</b> &lt; <i>αρχαία ελληνική</i> -ης",
-                "<b>-ης</b> &lt; (<i>ελληνιστική κοινή</i>) -ις &lt; <i>αρχαία ελληνική</i> -(ε)ιος (<i>αρχαία ελληνική</i> κύριος, <i><b>αιτιατική</b></i> τόν κύριον &gt; (<i>ελληνιστική κοινή</i>) τόν κῦριν →ὁ κῦρις &gt; <i>μεσαιωνική ελληνική</i> κύρης &gt; <i>νέα ελληνική</i> νοικοκύρης)",
-                "<b>-ης</b> &lt; <i>μεσαιωνική ελληνική</i> <b>-ης</b>",
+                "<b>-ης</b> &lt; (<i>ελληνιστική κοινή</i>) -ις &lt; <i>αρχαία ελληνική</i> -(ε)ιος (<i>αρχαία ελληνική</i> κύριος, <i><b>αιτιατική</b></i> τόν κύριον &gt; (<i>ελληνιστική κοινή</i>) τόν κῦριν →ὁ κῦρις &gt; μεσαιωνική ελληνική κύρης &gt; <i>νέα ελληνική</i> νοικοκύρης)",
+                "<b>-ης</b> &lt; μεσαιωνική ελληνική <b>-ης</b>",
                 "<b>-ης</b> &lt; <i>αρχαία ελληνική</i> <b>-ης, -ης, -ες</b> & <b>-ής, -ής, -ές</b>",
                 "<b>-ης</b> &lt; (<i>ελληνιστική κοινή</i>) <b>-ῆς</b> (γενική ενικού θηλυκών: κατά γ<b>ῆς</b>)",
-                "<b>-ης</b> &lt; <i>τουρκική</i> <b>-i</b> (fıstık &gt; fıstık<b>i</b>)",
+                "<b>-ης</b> &lt; τουρκική <b>-i</b> (fıstık &gt; fıstık<b>i</b>)",
             ],
             {"Επίθημα": ["επίθημα τρικατάληκτων τριγενών επιθέτων (-<b>ής</b>, -<b>ιά</b>, -<b>ί</b>)"]},
             [],
@@ -46,7 +54,7 @@ from wikidict.utils import process_templates
             ["/eˈpi.pe.ðo/"],
             ["ουδέτερο"],
             [
-                "<b>επίπεδο</b>, &lt; (διαχρονικό δάνειο) <i>αρχαία ελληνική</i> ἐπίπεδον",
+                "<b>επίπεδο</b>, <i>ουδέτερο του</i> <b>επίπεδος</b> &lt; (διαχρονικό&nbsp;δάνειο) αρχαία ελληνική ἐπίπεδον",
             ],
             {
                 "Ουσιαστικό": [
@@ -63,7 +71,7 @@ from wikidict.utils import process_templates
             ["/laɱˈva.no/"],
             [],
             [
-                "<b>λαμβάνω</b> &lt; (διαχρονικό δάνειο) <i>αρχαία ελληνική</i> λαμβάνω &lt; <i>πρωτοϊνδοευρωπαϊκή</i> *<i>sleh₂gʷ</i>-",
+                "<b>λαμβάνω</b> &lt; (διαχρονικό&nbsp;δάνειο) αρχαία ελληνική λαμβάνω &lt; πρωτοϊνδοευρωπαϊκή *<i>sleh₂gʷ</i>-",
             ],
             {
                 "Ρήμα": [
@@ -87,7 +95,7 @@ from wikidict.utils import process_templates
             ["/ˈe.i.ko/"],
             ["ουδέτερο"],
             [
-                "<b>-αίικο</b> &lt; <i>ουσιαστικοποιημένο ουδέτερο του επιθέτου</i> -αίικος επίθημα σε επίθετα ή οικογενειακά επώνυμα -αί(οι) + -ικος"
+                "<b>-αίικο</b> &lt; <i>ουσιαστικοποιημένο ουδέτερο</i> <i>του επιθέτου</i>&nbsp;-αίικος επίθημα σε επίθετα ή οικογενειακά επώνυμα -αί(οι) + -ικος"
             ],
             {
                 "Επίθημα": [
@@ -121,19 +129,3 @@ def test_parse_word(
     assert definitions == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{IPAchar|/ˈsɛləteɪp/}}", "/ˈsɛləteɪp/"),
-        ("{{IPAstyle|ˈɑɹ.kən.sɔ}}", "ˈɑɹ.kən.sɔ"),
-        ("{{resize|Βικιλεξικό|140}}", '<span style="font-size:140%;">Βικιλεξικό</span>'),
-        ("{{κνε}}", "<i>κοινή νεοελληνική</i>"),
-        ("{{νε}}", "<i>νέα ελληνική</i>"),
-        ("{{θηλ ισσα|Αβαριτσιώτης|Αβαριτσιώτ(ης)}}", "Αβαριτσιώτ(ης) + κατάληξη θηλυκού -ισσα"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "el") == expected

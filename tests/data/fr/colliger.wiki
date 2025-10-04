@@ -6,6 +6,9 @@
 '''colliger''' {{pron|kɔ.li.ʒe|fr}} {{t|fr}} {{conj|grp=1|fr}}
 # Réunir des [[élément]]s, des [[extrait]]s de [[document]]s dans le but de réaliser une [[anthologie]], une [[synthèse]].
 #* {{exemple|lang=fr|— Qu’est devenu, dit-il, l’âge d’or des bouquinistes en plein vent ? C’est ici pourtant que mon illustre ami Barbier '''avoit colligé''' tant de trésors, qu’il étoit parvenu à en composer une bibliographie spéciale de quelques milliers d’articles.|source={{w|Charles Nodier}}, ''Le Bibliomane'', 1868}}
+#* {{exemple|lang=fr|
+Ce ne fut que trois mois plus tard, lors d’un très court passage à Paris, en octobre, que je fis connaissance avec ''Charlotte Watkins'', pour laquelle j’'''avais colligé''' des notes qui n’avaient hélas servi de rien puisque le jour où je devais les rendre à Maurice Rostand le mot ''rideau'' était déjà au bas du dernier tableau de sa pièce.
+|source={{w|Léon Laleau}}, ''Maurice Rostand intime'', Les Éditions du Monde moderne, 1926, pages 112-113}}
 #* {{exemple | lang=fr
  | Plus immédiatement, un dépouillement systématique des collections linguistiques rassemblées dans les grands centres de recherche arctique […] m’a permis de '''colliger''' une bonne partie des documents utilisés ici.
  | source={{w|Louis-Jacques Dorais}}, ''La Parole Inuit'', 1995, Avant-propos}}

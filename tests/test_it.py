@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("it")
 
 
 @pytest.mark.parametrize(
@@ -38,8 +46,8 @@ from wikidict.utils import process_templates
                     "spartire con altri",
                     "avere qualcosa in comune con qualcun altro",
                     "essere d'accordo con altri su un punto di vista",
-                    "<small><i>(filosofia)</i></small> <small><i>(economia)</i></small> mettere spazi e risorse in comune con altri",
-                    "<small><i>(informatica)</i></small> ricevere o mettere un'informazione in comune con altri utenti",
+                    "<small>(<i>filosofia</i>)</small> <small>(<i>economia</i>)</small> mettere spazi e risorse in comune con altri",
+                    "<small>(<i>informatica</i>)</small> ricevere o mettere un'informazione in comune con altri utenti",
                 ]
             },
             [],
@@ -60,8 +68,8 @@ from wikidict.utils import process_templates
             {
                 "Sostantivo": [
                     "chi legge un libro, un giornale o una rivista",
-                    "<small><i>(religione)</i></small> persona che in alcune chiese cristiane, come la Chiesa cattolica, la Chiesa anglicana e quella ortodossa, è incaricata di proclamare la parola di Dio e altri testi nelle celebrazioni liturgiche e di esercitare altri compiti in campo pastorale",
-                    "<small><i>(elettronica)</i></small> <small><i>(informatica)</i></small> <small><i>(tecnologia)</i></small> <small><i>(ingegneria)</i></small> dispositivo elettronico che decodifica e riceve informazioni da un supporto",
+                    "<small>(<i>religione</i>)</small> persona che in alcune chiese cristiane, come la Chiesa cattolica, la Chiesa anglicana e quella ortodossa, è incaricata di proclamare la parola di Dio e altri testi nelle celebrazioni liturgiche e di esercitare altri compiti in campo pastorale",
+                    "<small>(<i>elettronica</i>)</small> <small>(<i>informatica</i>)</small> <small>(<i>tecnologia</i>)</small> <small>(<i>ingegneria</i>)</small> dispositivo elettronico che decodifica e riceve informazioni da un supporto",
                 ]
             },
             [],
@@ -105,16 +113,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{etim-link|a}}", "vedi a"),
-        ("{{Etim-link|a|b|c}}", "vedi b"),
-        ("{{Vd|mamma}}", "vedi mamma"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "it") == expected

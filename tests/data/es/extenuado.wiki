@@ -5,7 +5,7 @@
 {{etimología}}.
 
 ==== {{adjetivo|es}} ====
-{{inflect.es.adj.reg|extenuad}}
+{{es.adj}}
 ;1: {{plm|cansado}}, [[debilitado]].
 {{ejemplo|La naturaleza parecía suspirar y rendirse ''extenuada''.|título=La Última Niebla|capítulo=La Historia de María Griselda|fecha=1987|editorial=Revista VEA|páginas=81|c=libro|a=María Luisa Bombal}}
 ;2: Se dice de un individuo: sin energía, debido a un gran esfuerzo físico o mental.

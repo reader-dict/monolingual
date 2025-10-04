@@ -1,9 +1,11 @@
 {{Abschnitte fehlen|Deutsch}}
 == @ ({{Sprache|International}}) ==
-{{überarbeiten|Die im Folgenden genannten (angeblich ''[[international]]en'') ''[[Hilfe:Synonyme|Synonyme]]'' (wie bspw. „[[Affenohr]]“, „[[Affenschaukel]]“ und „[[Klammeraffe]]“, siehe ggf. auch unter {{Ref-Duden|__at_Zeichen_E_Mails|@}}) in einem eigenen (Deutsch-)Abschnitt einarbeiten und/oder die (deutschsprachigen) ''Synonyme'' entsprechend (also als ''international'' anerkannt) [[Hilfe:Belege|belegen]].|International}}
 === {{Wortart|Symbol|International}} ===
 
 {{Symbol Übersicht
+|Navi-Titel=ASCII punctuation
+|Navi-1=&#x3F;
+|Navi-2=&#x41;
 |Bezeichnung=commercial at
 |Block=Basis-Lateinisch
 |Nummer=0040
@@ -28,16 +30,12 @@
 :[1] Die E-Mail-Adresse lautet abcde''@''xyz.de.
 :[2] <code>my ''@''teile = split m[/], $unixpfad;</code>
 
-==== {{Übersetzungen}} ====
-{{Ü-Tabelle|*|G=Übersetzungen umgeleitet|Ü-Liste=
-:{{Übersetzungen umleiten|1|At-Zeichen|}}
-}}
-
 {{Referenzen}}
 :[1, 2] {{Wikipedia|At-Zeichen}}, Weiterleitung von [[w:@|@]]
 :[1] {{Lit-Duden: Rechtschreibung|V=|A=24}}, Seite 151
+:[*] SYMBL: „[https://symbl.cc/de/0040/ @]“
 
 {{Quellen}}
-
+{{Absatz}}
 {{Ähnlichkeiten}}
 :[[§]], [[&]], [[a]], [[e]], [[€]]

@@ -1,41 +1,51 @@
 == {{lengua|es}} ==
 {{pron-graf|1audio1=LL-Q1321 (spa)-Rodelar-comer.wav}}
-[[Categoría:ES:Segunda conjugación]]
 
 === Etimología 1 ===
-{{etimología|la|comedere|diacrítico=comedĕre}}, infinitivo {{etim|la|comedo}}, formado a partir {{l+|la|cum|glosa=con}} y {{l+|la|edo|edō|glosa=comer}}.
+{{año de documentación|1140}}.<ref>{{CNDHE}}</ref> {{etimología|la|comedere|diacrítico=comedĕre}}, infinitivo {{etim|la|comedo}}, formado a partir {{l+|la|cum|glosa=con}} y {{l+|la|edo|edō|glosa=comer}}.
 
 ==== {{verbo intransitivo|es}} ====
 [[Archivo:Njam Njam!.jpg|thumb|chica comiendo (1)]]
 ;1: {{plm|ingerir}} o tomar [[alimento]]s.
-{{uso|utct|utcp}}.
+{{uso|utct|utcp}} [[comerse]].
 {{sinónimos|meterse entre pecho y espalda|nota=coloquial}}.
 {{hiperónimo|alimentarse|ingerir}}.
 {{hipónimo|desayunar|almorzar|cenar|merendar}}.
 {{relacionado|beber}}.
 {{ejemplo|Si no comes en varias semanas, morirás de inanición.}}
+
 ;2: {{plm|tomar}} la principal [[comida]] del [[día]].
 {{sinónimo|yantar|nota=anticuado|almorzar}}.
-{{ejemplo|He quedado para comer.}}
+{{ejemplo|«[[quedar|He quedado]] con unos [[amigo]]s para [[ir]] a '''''comer'''''».|c=página|t=Ejemplo brindado por Wikcionario}}
 
 ==== {{verbo transitivo|es}} ====
 ;3: {{plm|malgastar}} [[bien]]es o [[recurso]]s.
 {{ejemplo|La mala gestión se comió las ganancias.}}
+
 ;4: {{plm|corroer}} o [[consumir]].
 {{ejemplo|El orín se comió la baranda del barco.}}
 {{ejemplo|Le comen los celos.}}
+
 ;5: Producir [[comezón]].
+{{sinónimo|carcomer|picar}}.
+{{ejemplo|«Los [[zancudo]]s me '''''comen'''''».|c=página|t=Ejemplo brindado por Wikcionario}}
+
 ;6 {{csem|juegos}}: En los juegos de mesa, [[eliminar]] una [[pieza]] del contrario.
 {{ejemplo|Se comió el caballo con la torre.}}
+
 ;7: {{plm|omitir}} elementos de [[información]] cuando se habla o escribe.
-{{uso|utcp}}: ''[[comerse]]''
+{{uso|utcp}} [[comerse]].
 {{ejemplo|No habla bien, se come las terminaciones.}}
+{{ejemplo|«Los [[estudiante]]s no están [[escribir|escribiendo]] correctamente: '''''se comen''''' algunas [[tilde]]s, colocan la [[coma]] en [[lugar]]es en los que no es [[necesario|necesaria]], pronuncian mal, y un [[largo]] [[etcétera]]».|c=página|t=Ejemplo brindado por Wikcionario}}
+
 ;8: Llevar [[encoger|encogidas]] algunas prendas de ropa, como los [[calcetín|calcetines]].
-{{uso|utcp}}: ''[[comerse]]''
+{{uso|utcp}} [[comerse]].
+
 ;9: Tener relaciones sexuales con alguien.
-{{ámbito|Chile|Colombia|México|Perú|nota2=más común como pronominal}}
-{{uso|coloquial|malsonante|utcp}}: ''[[comerse]]'' (a alguien)
-{{ejemplo|¡No me digas! Así que estos dos gafos [[comerse|se comen]] a escondidas.}}
+{{ámbito|Chile|Colombia|México|Perú|nota2=más común como pronominal}}.
+{{uso|coloquial|malsonante|utcp}} [[comerse]] (a alguien).
+{{ejemplo|«Bien ahí, [[causa]]. Quién [[imaginar|se iba a imaginar]] que andas '''''comiéndote''''' a la de {{plm|matemática}}s, ¡ja, ja!».|c=página|t=Ejemplo brindado por Wikcionario}}
+{{sinónimo|coger|cachar|nota2=Perú|follar|hacer el amor}}.
 
 ==== Locuciones ====
 {{trad-arriba|Locuciones con «comer»}}
@@ -61,7 +71,7 @@
 * [[el que se pica es porque ají come]]: sentirse aludido ante un comentario o una acción específica (Venezuela).
 
 ==== Conjugación ====
-{{es.v.conj.er|com}}
+{{es.v}}
 
 ==== Información adicional ====
 {{derivad|comecome|comedero|comedor|comemierda|comensal|comensalía|comestible|comezón|comible|comida|comidero|comidilla|comido|comilitona|comilón|comilona}}
@@ -85,7 +95,7 @@
 {{t|bg|i1=s|t1=ям}}
 {{t|ca|a1=1-2|t1=menjar}}
 {{t|cs|i1=s|t1=jíst}}
-{{t|chr|a1=1|t1=ᎠᎩᏍᏗ|tl1=agisdi}}
+{{t|chr|a1=1|t1=ꭰꭹꮝꮧ|tl1=agisdi}}
 {{t|cap|a1=1|t1=lul-z}}
 {{t|da|i1=s|t1=spise}}
 {{t|sk|t1=jesť}}
@@ -93,6 +103,7 @@
 {{t|eo|i1=s|t1=manĝi}}
 {{t|et|t1=sööma}}
 {{t|eu|a1=1-4|t1=jan|a2=2|t2=bazkaldu}}
+{{t|ext|a1=1|t1=manducal}}
 {{t|fo|t1=eta}}
 {{t|fi|t1=syödä}}
 {{t|fr|a1=1-2|t1=manger|a2=2|t2=déjeuner}}
@@ -109,6 +120,7 @@
 {{t|ja|a1=1|t1=食事する|t2=食べる}}
 {{t|lad|t1=komer}}
 {{t|la|t1=edō}}
+{{t|roa-leo|a1=1|t1=comere}}
 {{t|lv|t1=ēst}}
 {{t|lt|t1=valgyti}}
 {{t|alc|a1=1|t1=jeféjes}}
@@ -116,7 +128,7 @@
 {{t|ku|a1=1|t1=xwarin}}
 {{t|zh|i1=s|t1=吃|tl1=chī}}
 {{t|arn|a1=1|t1=in}}
-{{t|yua|i1=s|t1=janal}}
+{{t|yua|a1=1|t1=janal|a2=1|t2=jaant}}
 {{t|mn|t1=идэх}}
 {{t|nci|i1=s|t1=cua}}
 {{t|nl|i1=s|t1=eten}}
@@ -155,11 +167,13 @@
 === Etimología 1 ===
 {{etimología|la|comedere|diacrítico=comedĕre|leng=pt}}.
 
-==== {{verbo transitivo|pt}} e intransitivo ====
+==== {{verbo|pt|transitivo|intransitivo}} ====
 ;1: {{plm}}<sub>1-7, 9</sub>.
 {{relacionado|leng=pt|almoçar|boiar|cear|comensal|comestível|ingerir|jantar|morder|nham|papar|trincar}}
 ;2: {{plm|tomar}} (por).
 {{ejemplo|Você me come por tola.|trad=Me tomas por tonta.}}
+;3: {{plm|mantener}} [[relación|relaciones]] [[sexual]]es con alguien.
+{{uso|leng=pt|vulgar|malsonante}}. 
 
 ==== Conjugación ====
 {{pt.v.conj.er|com}}

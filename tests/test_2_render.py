@@ -1,4 +1,3 @@
-import logging
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -6,9 +5,14 @@ from unittest.mock import patch
 import pytest
 from wikitextparser import Section
 
-import wikidict.utils
-from wikidict import render
-from wikidict.stubs import Word, Words
+from wikidict import context, render
+from wikidict.stubs import Words
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("fr")
 
 
 def test_simple() -> None:
@@ -74,95 +78,6 @@ def test_find_section_definitions_and_es_replace_defs_list_with_numbered_lists()
             "artículo de un diccionario, enciclopedia u obra de referencia.",
         ),
     ]
-
-
-@pytest.mark.parametrize("workers", [1, 2, 3])
-@pytest.mark.parametrize("keep_unfinished", [True, False])
-def test_missing_templates(keep_unfinished: bool, workers: int, caplog: pytest.LogCaptureFixture) -> None:
-    """Ensure the "missing templates" feature is working."""
-
-    # Craft wikicode with unsupported templates
-    in_words = {
-        "a": """
-== {{langue|fr}} ==
-=== {{S|lettre|fr}} ===
-'''a'''
-# Première [[lettre]] et première [[voyelle]] de l’[[alphabet latin]] ([[minuscule]]). {{unknown-1|0061}}.
-# [[chiffre|Chiffre]] [[hexadécimal]] [[dix]] (minuscule) {{unknown-2|foo|bar|lang=hex}}.
-# {{unknown-3}}
-""",
-        "b": """
-== {{langue|fr}} ==
-=== {{S|lettre|fr}} ===
-'''b'''
-# Deuxième [[lettre]] et première [[consonne]] de l’[[alphabet latin]] ([[minuscule]]). {{unknown-1|0062}}.
-""",
-        "c": """
-== {{langue|fr}} ==
-=== {{S|lettre|fr}} ===
-'''c'''
-# Troisième [[lettre]] et deuxième [[consonne]] de l’[[alphabet latin]] ([[minuscule]]). {{unknown-1|0063}}.
-# {{unknown-3}}
-""",
-    }
-    # Render
-    with patch.object(wikidict.utils, "KEEP_UNFINISHED", keep_unfinished):
-        words = render.render(in_words, "fr", workers)
-
-    # Check warnings
-    warnings = [record.getMessage() for record in caplog.get_records("call") if record.levelno == logging.WARNING]
-    assert not [w for w in warnings if "Skipped" in w] if keep_unfinished else 3
-    assert [w for w in warnings if "Skipped" not in w] == [
-        "Missing `unknown-1` template support (3 times), example in: `a`, `b`, `c`",
-        "Missing `unknown-3` template support (2 times), example in: `a`, `c`",
-        "Missing `unknown-2` template support (1 times), example in: `a`",
-        "Unhandled templates count: 3",
-    ]
-
-    # Check words
-    if not keep_unfinished:
-        assert not words
-        return
-
-    assert words == {
-        "a": Word(
-            pronunciations=[],
-            genders=[],
-            etymology=[],
-            definitions={
-                "Lettre": [
-                    "Première lettre et première voyelle de l’alphabet latin (minuscule). {{unknown-1}}.",
-                    "Chiffre hexadécimal dix (minuscule) {{unknown-2}}.",
-                    "{{unknown-3}}",
-                ]
-            },
-            variants=[],
-            reverse_variants=[],
-        ),
-        "b": Word(
-            pronunciations=[],
-            genders=[],
-            etymology=[],
-            definitions={
-                "Lettre": ["Deuxième lettre et première consonne de l’alphabet latin (minuscule). {{unknown-1}}."]
-            },
-            variants=[],
-            reverse_variants=[],
-        ),
-        "c": Word(
-            pronunciations=[],
-            genders=[],
-            etymology=[],
-            definitions={
-                "Lettre": [
-                    "Troisième lettre et deuxième consonne de l’alphabet latin (minuscule). {{unknown-1}}.",
-                    "{{unknown-3}}",
-                ]
-            },
-            variants=[],
-            reverse_variants=[],
-        ),
-    }
 
 
 @pytest.mark.parametrize(

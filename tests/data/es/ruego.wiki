@@ -6,7 +6,7 @@
 {{etimología}}.
 
 ==== {{sustantivo masculino|es}} ====
-{{inflect.es.sust.reg}}          
+{{es.sust}}          
 ;1: {{plm|súplica}}, [[petición]] hecha con el fin de alcanzar lo que se pide.<ref name="dlc1914">{{DLC1914|908}} </ref>
 
 ==== Traducciones ====

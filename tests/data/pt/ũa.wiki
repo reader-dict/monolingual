@@ -1,7 +1,7 @@
 ={{-pt-}}=
 ==Artigo==
 {{flex.pt|ms=ũu|mp=ũus|fs=ũa|fp=ũas}}
-'''ũa''' ''indefinido''
+{{paroxítona|ũ|a}} ''indefinido''
 # ortografia antiga de [[uma]]
 
 =={{etimologia|pt}}==
@@ -15,11 +15,10 @@
 [[Categoria:Entrada com etimologia (Português)]]
 [[Categoria:Entrada de étimo latino (Português)]]
 
-
 ={{-roa-gpm-}}=
 ==Artigo==
 {{flex.roa-gpm|ms=ũu|mp=ũus|fs=ũa|fp=ũas}}
-'''ũa''', ''indefinido''
+{{paroxítona|ũ|a|id=roa-gpm}}, ''indefinido''
 # [[uma]]
 
 =={{etimologia|roa-gpm}}==
@@ -27,10 +26,9 @@
 
 [[Categoria:Artigo (Galego-Português Medieval)]]
 
-
 ={{-mwl-}}=
 ==Artigo==
-'''ũa''' ''indefinido''
+{{paroxítona|ũ|a|id=mwl}} ''indefinido''
 # [[uma]]
 # feminino da forma [[un]] ''(um)''
 

@@ -81,6 +81,7 @@
 {{t|rap|a1=2|t1=maururu}}
 {{t|ro|a1=2|t1=mulțumesc}}
 {{t|ru|a1=2|t1=спасибо|tl1=spasibo}}
+{{t|shp|a1=1|t1=irake}}
 {{t|sv|a1=2|t1=tack}}
 {{t|sw|a1=2|t1=asante}}
 {{t|tl|a1=2|t1=salamat}}

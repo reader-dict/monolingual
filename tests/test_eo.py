@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("eo")
 
 
 @pytest.mark.parametrize(
@@ -15,7 +23,7 @@ from wikidict.utils import process_templates
             [],
             [],
             [],
-            {"Signifo": ["<i>(astrologio)</i> zodiaka signo de Virgulino (<i>Virgo</i>)"]},
+            {"Signifo": ["(<i>astrologio</i>) zodiaka signo de Virgulino (<i>Virgo</i>)"]},
             [],
         ),
         (
@@ -33,7 +41,7 @@ from wikidict.utils import process_templates
             ["el la andalus-araba <i>alqaṣába</i>, kaj tiu ĉi el la klasika araba <i>qaṣabah</i>, قصبة"],
             {
                 "Signifo": [
-                    "<i>(historio; arkitekturo; militado)</i> fortikita konstruaĵaro; citadelo aŭ palaco de araba ĉefo en Nord-Afriko kaj Suda-Hispanio"
+                    "(<i>historio</i>; <i>arkitekturo</i>; <i>militado</i>) fortikita konstruaĵaro; citadelo aŭ palaco de araba ĉefo en Nord-Afriko kaj Suda-Hispanio"
                 ]
             },
             [],
@@ -65,7 +73,7 @@ from wikidict.utils import process_templates
             [],
             {
                 "Signifo": [
-                    "<i>(komputado)</i> maŝino aŭ elektronikaĵo kiu kapablas kalkuli, precipe sen intervenoj de homoj, aŭ rapide trakti, stori, kaj preni larĝajn kvantojn de datumo"
+                    "(<i>komputado</i>) maŝino aŭ elektronikaĵo kiu kapablas kalkuli, precipe sen intervenoj de homoj, aŭ rapide trakti, stori, kaj preni larĝajn kvantojn de datumo"
                 ]
             },
             [],
@@ -119,22 +127,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{fina|o}}", "o"),
-        ("{{inte|o}}", "o"),
-        ("{{lite|ŭ}}", "ŭ"),
-        ("{{mems|du}}", "du"),
-        ("{{pref|mis}}", "mis"),
-        ("{{radi|vort}}", "vort"),
-        ("{{sufi|il}}", "il"),
-        ("{{Vortospeco|mona nomo|eo}}", "Mona nomo"),
-        ("{{📷}}", "📷 <i>fotografio kaj kinotekniko</i>"),
-    ],
-)
-def test_process_template(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "eo") == expected

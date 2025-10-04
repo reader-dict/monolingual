@@ -6,7 +6,13 @@ from unittest.mock import patch
 
 import pytest
 
-from wikidict import parse
+from wikidict import context, parse
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("fr")
 
 
 def save(path: Path, content: str) -> Path:

@@ -1,21 +1,15 @@
 {{voir autres scripts|latin|a|cyrillique|а}}
 {{voir/a}}
-__TOC__
-{| width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:0;margin-bottom:0.5em;background:transparent"
-|- valign="top"
-|
-{{alphabet latin|a}}
-|}
 
 == {{caractère}} ==
 {{casse}}
 '''a'''
-# Première [[lettre]] et première [[voyelle]] de l’[[alphabet latin]] ([[minuscule]]). {{caractère Unicode|0061}}.
+# Première [[lettre]] et première [[voyelle]] de l’[[alphabet latin]] ([[minuscule]]). {{caractère Unicode}}.
 # [[chiffre|Chiffre]] [[hexadécimal]] [[dix]] (minuscule).
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
 * {{WP|A (lettre)|a}}
+{{alphabet latin|a}}
 
 === {{S|références}} ===
 * {{R:Bloc Unicode}}
@@ -27,7 +21,7 @@ __TOC__
 : {{lien-ancre-étym|conv|symb|2}} {{abréviation|de=atto-|texte='''a'''tto-|lang=conv}}.
 : {{lien-ancre-étym|conv|symb|3}} {{abréviation|de=are|texte='''a'''re|lang=conv}}.
 : {{lien-ancre-étym|conv|symb|4}} {{abréviation|conv}} du {{étyl|la|fr|mot=annum|sens=année|dif='''a'''nnum}}.
-: {{laé|conv|symb|6}} Abréviation de ''{{lien|accélération|fr|nom}}''.
+: {{laé|conv|symb|6}} {{abréviation|de=accélération|lang=conv|texte='''a'''ccélération}}.
 
 === {{S|symbole|conv|num=1}} ===
 '''a'''
@@ -202,6 +196,7 @@ __TOC__
 * {{écouter|lang=fr|France (Vosges)||audio=LL-Q150 (fra)-Poslovitch-a.wav}}
 * {{écouter|lang=fr|France||audio=LL-Q150 (fra)-Mecanautes-a.wav}}
 * {{écouter|Québec (Canada)||lang=fr|audio=LL-Q150 (fra)-Estrie-a.wav}}
+* {{écouter|||lang=fr|audio=LL-Q150 (fra)-Sayoxime-a.wav}}
 
 === {{S|références}} ===
 * {{R:DAF8}}
@@ -261,7 +256,7 @@ __TOC__
 * [[von A bis Z]]
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
+* {{Vikidia|lang=de}}
 * [[ä]]
 
 [[Catégorie:Mots sans consonne en allemand]]
@@ -388,7 +383,7 @@ __TOC__
 * {{pron|æɪ|en}} {{Australie|nocat=1}}
 
 ''Dans les mots'' :
-* {{pron|æ|en}}, {{pron|ɑ|en}} ou {{pron|eɪ|en}}
+* {{pron|æ|ɑ|eɪ|en}}
 
 ''Article indéfini'' :
 * {{pron|ə|en}} {{term|non accentué}}
@@ -417,13 +412,13 @@ __TOC__
 
 == {{langue|aae}} ==
 === {{S|lettre|aae}} ===
-{{lettre||lang=aae}}
-'''a''' {{pron||aae}} {{genre ?|lang=aae}}
-# Première [[lettre]] et première [[voyelle]] de l’[[alphabet]] arbërisht.
+{{lettre|pron=ˈa|lang=aae}}
+'''a''' {{pron|ˈa|aae}}
+# {{Ururi|aae}} Première [[lettre]] et première [[voyelle]] minuscule de l’[[alphabet]] arbërisht.
 #* {{exemple|lang=aae}}
 
 === {{S|références}} ===
-* Giuseppe Fiorilli, ''[http://www.vatrarberesh.it/biblioteca/ebooks/dizionario.pdf Dizionario arbëresh di lemmi, frasi e motti in uso nella tradizione di Ururi]''
+* {{R:Fiorilli}}
 
 == {{langue|bm}} ==
 === {{S|étymologie}} ===
@@ -467,7 +462,7 @@ __TOC__
 # [[ah|Ah]].
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
+* {{Vikidia|lang=eu}}
 * Le suffixe [[-a#eu|-a]]
 
 == {{langue|brabançon}} ==
@@ -620,11 +615,14 @@ __TOC__
 * [[a-dra-sur]]
 * {{lien|a-dre|br}}
 * {{lien|a-engroaz|br}}
+* {{lien|a-fourch|br}}
 * {{lien|a-greiz-holl|br}}
 * {{lien|a-grenn|br}}
 * {{lien|a-lazh-korf|br}}
 * {{lien|a-sav|br}}
 * {{lien|a-vandenn|br}}
+* {{lien|a-viliadoù|br}}
+* {{lien|a-vilieroù|br}}
 * {{lien|a-walcʼh|br}}
 * {{lien|a-zivout|br}}
 * {{lien|a-ziwar|br}}
@@ -656,7 +654,7 @@ __TOC__
 #* {{exemple | lang=br
  | '''A''' vor ! E teuan dit…
  | Ô mer ! Je viens à toi…
- | source={{w|Roparz Hemon}}, ''Pirc’hirin ar Mor'', in ''Barzhonegoù'', {{w|Al Liamm}}, Brest, 1967, page 10}}
+ | source={{w|Roparz Hemon}}, ''Pircʼhirin ar Mor'', in ''Barzhonegoù'', {{w|Al Liamm}}, Brest, 1967, page 10}}
 
 ==== {{S|variantes}} ====
 * [[o#br|o]]
@@ -727,7 +725,7 @@ __TOC__
 == {{langue|shy}} ==
 === {{S|lettre|shy}} ===
 {{lettre|pron=ɑ|p2=a|lang=fr}}
-'''a''' {{pron|ɑ|shy}}, {{pron|a|shy}}
+'''a''' {{pron|ɑ|a|shy}}
 # [[a#fr|A]].
 
 === {{S|prononciation}} ===
@@ -1064,9 +1062,11 @@ __TOC__
 {{alphabet espéranto}}
 === {{S|lettre|eo}} ===
 {{lettre|pron=a|lang=eo}}
-'''a''' {{pron|a|eo}} {{eo-motrac|fund=7OA|src=Ekz}}
+'''a''' {{pron|a|eo}} {{pluriel ?|eo}}
 # Première lettre et première voyelle de l’alphabet espéranto.
+#* {{exemple||lang=eo}}
 # Nom de cette lettre.
+#* {{exemple||lang=eo}}
 
 === {{S|prononciation}} ===
 * {{écouter||a|lang=eo|audio=Eo-a.ogg}}
@@ -1273,9 +1273,9 @@ __TOC__
 == {{langue|gallo-italique de Basilicate}} ==
 === {{S|étymologie}} ===
 : (''Article défini'') Du {{étyl|la|gallo-italique de Basilicate|illam}}.
-: (''Pronom personnel'') {{aphérèse|gallo-italique de Basilicate|de=la}}.
+: (''Pronom personnel'') {{aphérèse|gallo-italique de Basilicate|de=la|m=oui}}.
 : (''Préposition 1'') Du {{étyl|la|gallo-italique de Basilicate|ad}}.
-: (''Préposition 2'') {{aphérèse|gallo-italique de Basilicate|de=la}}.
+: (''Préposition 2'') {{aphérèse|gallo-italique de Basilicate|de=da|m=oui}}.
 : (''Conjonction de coordination'') Du {{étyl|la|gallo-italique de Basilicate|ac}}.
 
 === {{S|lettre|gallo-italique de Basilicate}} ===
@@ -1287,27 +1287,48 @@ __TOC__
 === {{S|article défini|gallo-italique de Basilicate}} ===
 '''a''' {{pron|ˈa|gallo-italique de Basilicate}} {{f}}
 # {{Pignola|gallo-italique de Basilicate}} [[la#fr|La]].
-#* {{exemple|lang=gallo-italique de Basilicate}}
+#* {{exemple|'''A''' poḍḍëlë.
+|Le papillon.
+|lang=gallo-italique de Basilicate}}
 
 === {{S|pronom personnel|gallo-italique de Basilicate}} ===
 '''a''' {{pron|ˈa|gallo-italique de Basilicate}} {{f}}
 # {{Pignola|gallo-italique de Basilicate}} [[la#fr|La]].
-#* {{exemple|lang=gallo-italique de Basilicate}}
+#* {{exemple|'''A''' sëndiettë.
+|Je l’entendis.
+|lang=gallo-italique de Basilicate}}
 
-=== {{S|préposition|gallo-italique de Basilicate}} ===
+=== {{S|préposition|gallo-italique de Basilicate|num=1}} ===
 '''a''' {{pron|ˈa|gallo-italique de Basilicate}}
 # {{Pignola|gallo-italique de Basilicate}} [[à#fr|À]].
-#* {{exemple|lang=gallo-italique de Basilicate}}
+#* {{exemple|Lavà i pannë '''a''' hjumë.
+|Laver les linges au fleuve.
+|lang=gallo-italique de Basilicate}}
 
-=== {{S|préposition|gallo-italique de Basilicate}} ===
+==== {{S|dérivés}} ====
+{{(}}
+* {{lien|â|gallo-italique de Basilicate}}
+* {{lien|a la|gallo-italique de Basilicate}}
+* {{lien|a li|gallo-italique de Basilicate}}
+* {{lien|a lu|gallo-italique de Basilicate}}
+* {{lien|ai|gallo-italique de Basilicate}}
+* {{lien|au|gallo-italique de Basilicate}}
+* {{lien|ô|gallo-italique de Basilicate}}
+{{)}}
+
+=== {{S|préposition|gallo-italique de Basilicate|num=2}} ===
 '''a''' {{pron|ˈa|gallo-italique de Basilicate}}
 # {{Pignola|gallo-italique de Basilicate}} [[de#fr|De]].
-#* {{exemple|lang=gallo-italique de Basilicate}}
+#* {{exemple|Iescë '''a''' ḍḍuochë.
+|Sors de là.
+|lang=gallo-italique de Basilicate}}
 
 === {{S|conjonction de coordination|gallo-italique de Basilicate}} ===
 '''a''' {{pron|ˈa|gallo-italique de Basilicate}} {{f}}
 # {{Pignola|gallo-italique de Basilicate}} [[et#fr|Et]].
-#* {{exemple|lang=gallo-italique de Basilicate}}
+#* {{exemple|Ett’'''a''' assettë.
+|Viens et assieds-toi.
+|lang=gallo-italique de Basilicate}}
 
 === {{S|références}} ===
 * {{R:Rizza}}
@@ -1392,6 +1413,7 @@ __TOC__
 # [[lettre|Lettre]] utilisée dans l'alphabet latin du gaulois.
 
 === {{S|références}} ===
+* {{R:Lambert2018|p=40 et 41}}
 * Les références et attestations sont présentes :
 ** dans l’[[Annexe:Grammaire gauloise|annexe sur la grammaire gauloise]] ;
 ** dans l’[[Annexe:Ouvrages de référence pour le gaulois|annexe listant les ouvrages de référence en gaulois]].
@@ -1403,7 +1425,6 @@ __TOC__
 # Première lettre de l’alphabet [[guarani#fr|guarani]] ([[minuscule#fr|minuscule]]).
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
 * {{WP|Guarani_(langue)#Écriture|Écriture du guarani}}
 {{alphabet guarani}}
 
@@ -1606,7 +1627,6 @@ __TOC__
 # [[ah]] !
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
 * {{lien|ab|la|prép}}
 * {{lien|abs|la|prép}}
 * {{lien|ab-|la|préf}}
@@ -1650,7 +1670,6 @@ __TOC__
 #* '''''a''' sécher'' : mais bien sûr.
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
 * {{lien|ä|lb}}
 
 == {{langue|ms}} ==
@@ -1658,6 +1677,21 @@ __TOC__
 {{lettre|pron=a|lang=ms}}
 '''a''' {{pron|a|ms}}
 # Première lettre et première voyelle de l’alphabet malais.
+
+=== {{S|prononciation}} ===
+* {{écouter|Malaisie||lang=ms|audio=LL-Q9237 (msa)-GinormousBuildings-a (L).wav}}
+* {{écouter|Malaisie||lang=ms|audio=LL-Q9237 (msa)-GinormousBuildings-a (interj).wav}}
+
+== {{langue|mhl}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|mhl}}
+
+=== {{S|interjection|mhl}} ===
+'''a''' {{pron||mhl}}
+# [[oh|Oh]].
+
+=== {{S|références}} ===
+* {{R:Berghäll2015|p=17}}
 
 == {{langue|frm}} ==
 === {{S|étymologie}} ===
@@ -1753,6 +1787,15 @@ __TOC__
 === {{S|nom|nht}} ===
 '''at''' {{pron|aːt|nht}}
 # [[eau#fr|Eau]].
+
+== {{langue|nap}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|nap}}
+
+=== {{S|préposition|nap}} ===
+'''a''' {{pron||nap}}
+# {{Molfetta|nap}} [[à#fr|À]].
+#* {{exemple|lang=nap}}
 
 == {{langue|nl}} ==
 === {{S|lettre|nl}} ===
@@ -2093,9 +2136,12 @@ __TOC__
  | Eu '''a''' reconheço.
  | Je la reconnais.}}
 # [[vous|Vous]] ([[vouvoiement]]).
-
+#* {{exemple | lang=pt
+ | Eu '''a''' reconheço.
+ | Je vous reconnais.}} ''(en vouvoyant une femme)''
 ==== {{S|notes}} ====
-: On ne dit pas *''eu reconheço '''ela''''', littéralement *''je reconnais elle''.
+: Dans le registre familier du Brésil, les pronoms toniques de la troisièmme personne comme '''ela''' placés après le verbe remplacent fréquemment les pronoms objets clitiques. Cet usage est proscrit à l'écrit.
+: ''Eu reconheço '''ela''''', littéralement *''je reconnais elle''.
 
 ==== {{S|vocabulaire}} ====
 {{pronoms personnels/pt}}
@@ -2162,11 +2208,11 @@ __TOC__
 * {{R:Rankin1982|p=4}}
 
 == {{langue|ro}} ==
-
 === {{S|étymologie}} ===
 : {{lien-ancre-étym|ro|art}} Du {{étyl|la|ro|illa}}.
 : {{lien-ancre-étym|ro|prép}} Du {{étyl|la|ro|ad}}.
 : {{lien-ancre-étym|ro|verbe}} Du {{étyl|la|ro|habet}}.
+
 === {{S|article défini|ro|flexion}} ===
 {{ro-art-décl|type=génitival|nms=al|nfs=a|nmp=ai|nfp=ale|dms=alui|dfs=alei|dmp=alor|dfp=alor}}
 '''a''' {{pron|a|ro}} {{f}} {{s}}
@@ -2179,12 +2225,15 @@ __TOC__
 # Introduit un [[infinitif]].
 #* {{exemple|lang=ro|'''a''' cânta ; '''a''' vedea ; '''a''' dori|chanter ; voir ; désirer}}
 # Introduit l'objet d'une comparaison avec certains verbes de sensation :
-#* {{exemple|lang=ro|Moase '''a''' pământ.|Ça sent la terre.}}
+#* {{exemple|lang=ro|Miroase '''a''' pământ.|Ça sent la terre.}}
 
 === {{S|verbe|ro|flexion}} ===
 '''a''' {{pron|a|ro}}
 # ''Troisième personne du singulier de l’indicatif présent de'' [[avea#ro|avea]] ''en tant qu'auxiliaire du passé composé.
 #* {{exemple|lang=ro|Te-'''a văzut''' pe tine alergând acasă.|Il t''''a vu''' rentrer chez toi en courant.}}
+
+=== {{S|prononciation}} ===
+* {{écouter|||lang=ro|audio=LL-Q7913 (ron)-Papaeta-a.wav}}
 
 == {{langue|sc}} ==
 === {{S|étymologie}} ===
@@ -2206,7 +2255,7 @@ __TOC__
 
 === {{S|lettre|sco}} ===
 {{lettre|pron=|nom=|lang=sco}}
-'''a''' {{pron|ɑ|sco}}, {{pron|ɑː|sco}}, {{pron|e|sco}}, {{pron|è|sco}}
+'''a''' {{pron|ɑ|ɑː|e|è|sco}}
 # Première lettre de l’alphabet scots.
 
 === {{S|article indéfini|sco}} ===
@@ -2317,7 +2366,7 @@ __TOC__
 * {{lien|di l’A fina â Z|scn}}
 
 === {{S|préposition|scn|num=1}} ===
-'''a''' {{pron|ˈa|scn}}
+'''a''' {{pron|ˈa|scn}} {{accusatif|scn}}
 # [[à#fr|À]].
 #* {{exemple|lang=scn}}
 
@@ -2552,6 +2601,7 @@ __TOC__
 
 === {{S|prononciation}} ===
 * {{écouter|Gela (Italie)||lang=scn|audio=LL-Q33973 (scn)-XANA000-a.wav}}
+* {{écouter|||lang=scn|audio=LL-Q33973 (scn)-Crunchy Cloaky Crackdown-a.wav}}
 
 === {{S|références}} ===
 * {{R:Traina}}
@@ -2632,16 +2682,49 @@ __TOC__
 
 == {{langue|tok}} ==
 === {{S|étymologie}} ===
-: {{ébauche-étym|tok}}
+: {{date|lang=tok|8 août 2001}} Par [[symbolisme]] sonore ou onomatopée. Forgé par {{W|Sonja Lang}}.
+: {{term|[[sitelen pona]]}} Fusion de la lettre latine minuscule '''''a''''' et du [[point d’exclamation]] ''[[!]]''.
 
 === {{S|interjection|tok}} ===
-'''a''' {{pron||tok}}
+'''a''' {{pron|a|tok}}
 # [[ah|Ah]], [[euh]], [[ha]], [[hi]], [[hé]],...
+#* {{exemple|'''a'''! ni li pona tawa mi.|Oh. C'est bon pour moi.|lang=tok}}
+# {{term|répété plusieurs fois}} [[haha|Haha]], [[mdr]] ; indique le rire.
+#* {{exemple|'''a a a'''!|lang=tok|sens=Hahaha!}}
+
+=== {{S|particule|tok}} ===
+'''a''' {{pron|a|tok}}
+# Utilisé pour ajouter de l'emphase ou de l’émotion à l’élement précédent.
+#* {{exemple|ona li pali '''a''' e tomo.|Elle <u>construit</u> une maison.|lang=tok}}
+#* {{exemple|ona '''a''' li pali e tomo.|<u>Elle</u> construit une maison.|lang=tok}}
+
+=== {{S|écriture}} ===
+* [[File:A - sitelen pona in Sonja Lang's handwriting.svg|40px|A - sitelen pona in Sonja Lang's handwriting]] {{term|[[sitelen pona]]}}
+* [[File:A - sitelen sitelen word symbol.svg|40px|A - sitelen sitelen word symbol]] {{term|[[sitelen sitelen]]}}
+* {{lien|🅰️|tok}} {{term|[[sitelen jelo]]}}
+* {{lien|❗|tok}} {{term|[[sitelen Emosi]]}}
+
+=== {{S|taux de reconnaissance}} ===
+* 2024 : 100%, ce mot est considéré comme « core »
+* 2023 : 99%, ce mot est considéré comme « core »
+* 2022 : 99%, ce mot est considéré comme « core »
+* 2020 : 99%, ce mot est considéré comme « core »
 
 === {{S|prononciation}} ===
+* {{pron|a|tok}}
 * {{écouter|Toulouse (France)||niveau=bon|lang=tok|audio=LL-Q36846-Lepticed7-a.wav}}
 * {{écouter|||niveau=moyen|lang=tok|audio=LL-Q36846 (tok)-John Gordon Reid-a.wav}}
 * {{écouter|Bandung (Indonésie)||niveau=moyen|lang=tok|audio=LL-Q36846 (tok)-A. D. Prakasa-a.wav}}
+* {{écouter|Midwest (États-Unis)||niveau=bon|lang=tok|audio=LL-Q36846 (tok)-Rdgscratch is back-a.wav}}
+
+=== {{S|références}} ===
+* « [https://nimi.li/a a] » dans ''nimi.li''
+* « [https://sona.pona.la/wiki/a a] » sur ''sona.pona.la''
+[[Catégorie:Mots en toki pona forgés par Sonja Lang]]
+[[Catégorie:Mots en toki pona classés comme core en 2024]]
+[[Catégorie:Mots en toki pona classés comme core en 2023]]
+[[Catégorie:Mots en toki pona classés comme core en 2022]]
+[[Catégorie:Mots en toki pona classés comme core en 2020]]
 
 == {{langue|tpw}} ==
 === {{S|étymologie}} ===

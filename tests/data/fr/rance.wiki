@@ -20,15 +20,23 @@
 #* {{exemple | lang=fr
  | Bien patient et bien équilibré tel que je l’ai connu, il gardait cependant sur le coeur un vieux reliquat de haine bien '''rance''' à l’égard des familles…
  | source=Louis-Ferdinand Céline (Louis-Ferdinand Destouches), ''Voyage au bout de la nuit'', Denoël et Steele, Paris, 1932 (réédition Gallimard, Folio #28, 2019, page 532}}
+# {{figuré|fr}} {{péjoratif|fr}} Méprisable.
+#* {{exemple|[La] conférence [de Mathieu Bock-Côté] porte sur le « wokisme ». Ce concept, issu de la « pensée » d’extrême-droite, est utilisé pour désigner et rejeter toutes les luttes progressistes qui déplaisent aux réactionnaires. Féminismes, anti-racismes, luttes LGBTQIA+, luttes climatiques... bref tout ce qui s’attaque à leur monde '''rance''' et inégalitaire est désigné sous le vocable péjoratif de « wokisme ».
+|source=Réseau ADES, ''L’Institut Libre Marie Haps accueille l’extrême-droite dans ses locaux !''
+|lien=https://stuut.info/l-Institut-Libre-Marie-Haps-accueille-l-extreme-droite-dans-ses-locaux-397
+|lang=fr}}
 
 ==== {{S|dérivés}} ====
+{{(}}
 * [[rancir]]
+** [[rancissable]]
+** [[rancissure]]
+** [[rancissement]]
 * [[rancidité]]
-* [[rancissure]]
-* [[rancissement]]
+{{)}}
 
 ==== {{S|vocabulaire}} ====
-* {{voir thésaurus|fr|beurre}}
+* {{voir thésaurus|fr|beurre|fromage}}
 
 ==== {{S|traductions}} ====
 {{trad-début}}
@@ -40,6 +48,7 @@
 * {{T|hr}} : {{trad-|hr|ustajao}}
 * {{T|da}} : {{trad-|da|harsk}}
 * {{T|es}} : {{trad+|es|rancio}}
+* {{T|eo}} : {{trad-|eo|ranca}}
 * {{T|gallo}} : {{trad|gallo|âre}}
 * {{T|grc}} : {{trad|grc|σαπρός|tr=saprós}}
 * {{T|hu}} : {{trad+|hu|avas}}
@@ -61,6 +70,7 @@
 '''rance''' {{pron|ʁɑ̃s|fr}} {{m}}
 # [[goût|Goût]] et [[odeur]] désagréable, en parlant de corps gras.
 #* {{exemple | lang=fr | Ce lard, cette huile sent le '''rance'''.}}
+#* {{exemple|Le '''rance''' et le pourri sont aux habitations ce que la naphtaline est aux vêtements suspendus dans l’armoire.|source={{w|Thierry Paquot}}, ''Les bidonvilles'', 2022|lang=fr}}
 
 ==== {{S|vocabulaire}} ====
 * [[rancœur]]

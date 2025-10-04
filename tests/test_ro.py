@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("ro")
 
 
 @pytest.mark.parametrize(
@@ -143,16 +151,3 @@ def test_parse_word(
     assert definitions == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{n}}", "<i>n.</i>"),
-        ("{{p}}", "<i>pl.</i>"),
-        ("{{trad|el|παρα}}", "παρα"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "ro") == expected

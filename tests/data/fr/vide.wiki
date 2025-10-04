@@ -97,8 +97,11 @@
 * {{T|it}} : {{trad+|it|spoglio}}, {{trad+|it|vuoto}}
 * {{T|ja}} : {{trad+|ja|虚しい|tr=munashī}}
 * {{T|chn}} : {{trad|chn|wagh}}, {{trad|chn|weght}}
+* {{T|xdq}} : {{trad|xdq|бацӏ}}
+* {{T|lv}} : {{trad+|lv|tukšs}}
 * {{T|fsl}} : {{wikisign}}
 * {{T|la}} : {{trad-|la|inanis}}, {{trad-|la|vacuus}}
+* {{T|lorrain}} : {{trad|lorrain|veuyde}}
 * {{T|ms}} : {{trad+|ms|kosong}}, {{trad+|ms|leher}}
 * {{T|mg}} : {{trad+|mg|foana}}
 * {{T|maj}} : {{trad|maj|tiya}}
@@ -211,6 +214,7 @@
 * [[fluctuation quantique du vide]]
 * [[laisser un vide]]
 * [[pompe à vide]]
+* [[saut dans le vide]]
 * [[se jeter dans le vide]]
 * [[sous vide]]
 * [[technique du vide]]
@@ -220,6 +224,9 @@
 
 ==== {{S|phrases}} ====
 * [[la nature a horreur du vide]]
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|ennui|astronomie|sablier|dessin|rien|dépression|atome|vide|désert|absence}}
 
 ==== {{S|traductions}} ====
 {{trad-début|Espace vide|1}}
@@ -276,6 +283,15 @@
 # ''Première personne du singulier du présent du subjonctif de'' [[vider]].
 # ''Troisième personne du singulier du présent du subjonctif de'' [[vider]].
 # ''Deuxième personne du singulier de l’impératif de'' [[vider]].
+
+==== {{S|dérivés}} ====
+{{(}}
+* [[Vide-Bourse]]
+* [[vide-bouteille]]
+* [[vide-buée]]
+* [[vide-gousset]]
+* [[vide-pot]]
+{{)}}
 
 === {{S|prononciation}} ===
 * {{écouter|lang=fr|France <!-- précisez svp la ville ou la région -->|vid|audio=Fr-vide.ogg}}

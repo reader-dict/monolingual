@@ -2,19 +2,17 @@
 
 import re
 
+from ... import utils
 from ...lang import defaults
-from ...user_functions import unique
+from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-# Name of the "Module" special page in the current locale
+random_word_url = "https://it.wiktionary.org/wiki/Speciale:RandomRootpage"
+
 module_trans = "Modulo"
 
-# Float number separator
 float_separator = ","
-
-# Thousands separator
 thousands_separator = " "
 
-# Markers for sections that contain interesting text to analyse.
 head_sections = ("{{-it-}}",)
 etyl_section = ("{{etim}}",)
 sections = (
@@ -39,7 +37,6 @@ sections = (
     "{{verb form}",
 )
 
-# Variants
 variant_titles = (
     "{{agg form",
     "{{sost",
@@ -51,136 +48,11 @@ variant_templates = (
     "{{Tabs",
 )
 
-# Templates to ignore: the text will be deleted.
 templates_ignored = (
-    "Clear",
-    "clear",
-    "Colori_RAL",
-    "Colori_Ral",
-    "mid",
-    "Nodef",
-    "Noetim",
-    "Noref",
-    "Riflessivo",
-    "Trad1",
-    "Trad2",
+    "{{Nodef",
+    "{{Noetim",
+    "{{Noref",
 )
-
-# Templates more complex to manage.
-templates_multi: dict[str, str] = {
-    # {{Accr}}
-    "Accr": "small(f'({italic(\"accrescitivo\")})')",
-    "accr": "small(f'({italic(\"accrescitivo\")})')",
-    # {{Anal}}
-    "Anal": "small('per analogia')",
-    "anal": "small('per analogia')",
-    # {{Ant}}
-    "Ant": "small(f'({italic(\"per antonomasia\")})')",
-    "ant": "small(f'({italic(\"per antonomasia\")})')",
-    # {{Botanic|statistica|it}}
-    "Botanic": "small(term('botanica'))",
-    "botanic": "small(term('botanica'))",
-    # {{Coll}}
-    "Coll": "small(f'({italic(\"colloquiale\")})')",
-    "coll": "small(f'({italic(\"colloquiale\")})')",
-    # {{Comparativo di|buono|it}}
-    "Comparativo di": 'f"comparativo di {parts[1]}"',
-    "comparativo di": 'f"comparativo di {parts[1]}"',
-    # {{Cum|congiuntivo}}
-    "Cum": "small(f'{italic(\"seguito da\")} {strong(parts[1])}')",
-    "cum": "small(f'{italic(\"seguito da\")} {strong(parts[1])}')",
-    # {{context|ecology|lang=it}}
-    "Context": "small(term(parts[1]))",
-    "context": "small(term(parts[1]))",
-    # {{Dim}}
-    "Dim": "small(f'({italic(\"diminutivo\")})')",
-    "dim": "small(f'({italic(\"diminutivo\")})')",
-    # {{Est}}
-    "Est": "small(f'({italic(\"per estensione\")})')",
-    "est": "small(f'({italic(\"per estensione\")})')",
-    # {{Etim-link|aggrondare}}
-    # {{Etim-link||cervice}}
-    "Etim-link": "'vedi ' + parts[2 if len(parts) >= 3 else 1]",
-    "etim-link": "'vedi ' + parts[2 if len(parts) >= 3 else 1]",
-    # {{Fig}}
-    "Fig": "f'{small(italic(\"(senso figurato)\"))}'",
-    "fig": "f'{small(italic(\"(senso figurato)\"))}'",
-    # {{Glossa|raro|it}}
-    "Glossa": "small(term(parts[1]))",
-    "glossa": "small(term(parts[1]))",
-    # {{Ind pres}}
-    "Ind pres": "small(f'{italic(\"ind pres \")}')",
-    "ind pres": "small(f'{italic(\"ind pres \")}')",
-    # {{inf}}
-    "inf": "small(f'{italic(\"inf\")}')",
-    # {{IPA|/pi dˈdue/}}
-    "IPA": 'f"IPA: {parts[1]}"',
-    # {{Lett}}
-    "Lett": "small(f'({italic(\"letteralmente\")})')",
-    "lett": "small(f'({italic(\"letteralmente\")})')",
-    # {{Narr}}
-    "Narr": "small(f'({italic(\"narrativa\")})')",
-    "narr": "small(f'({italic(\"narrativa\")})')",
-    # {{Obs}}
-    "Obs": "small(f'({italic(\"obsoleto\")})')",
-    "obs": "small(f'({italic(\"obsoleto\")})')",
-    # {{P pass}}
-    "P pass": "small(f'{italic(\"p.pass.\")}')",
-    "p pass": "small(f'{italic(\"p.pass.\")}')",
-    # {{P pres}}
-    "P pres": "small(f'{italic(\"p.pres.\")}')",
-    "p pres": "small(f'{italic(\"p.pres.\")}')",
-    # {{Pegg}}
-    "Pegg": "small(f'({italic(\"peggiorativo\")})')",
-    "pegg": "small(f'({italic(\"peggiorativo\")})')",
-    # {{Polytonic|ἐπιστάζω}}
-    "Polytonic": "parts[1]",
-    # {{Pop}}
-    "Pop": "small(f'({italic(\"popolare\")})')",
-    "pop": "small(f'({italic(\"popolare\")})')",
-    # {{Pers}}
-    "Pers": "small(f'({italic(\"riferito solo a persone\")})')",
-    "pers": "small(f'({italic(\"riferito solo a persone\")})')",
-    # {{Quote|...}}
-    "Quote": "'«' + parts[1] + '» ' + term(parts[2])",
-    "quote": "'«' + parts[1] + '» ' + term(parts[2])",
-    # {{Sndc}}
-    "Sndc": "small(f'({italic(\"per sineddoche\")})')",
-    "sndc": "small(f'({italic(\"per sineddoche\")})')",
-    # {{Soltanto plurali}}
-    "Soltanto plurali": "small(f'({italic(\"soltanto plurali\")})')",
-    "soltanto plurali": "small(f'({italic(\"soltanto plurali\")})')",
-    # {{Spec pl}}
-    "Spec pl": "small(f'({italic(\"specialmente al plurale\")})')",
-    "spec pl": "small(f'({italic(\"specialmente al plurale\")})')",
-    # {{Spreg}}
-    "Spreg": "small(f'({italic(\"spregiativo\")})')",
-    "spreg": "small(f'({italic(\"spregiativo\")})')",
-    # {{Taxon|Chromis chromis|Chromis chromis}}
-    "Taxon": "'la sua classificazione scientifica è ' + strong(italic(parts[1]))",
-    "taxon": "'la sua classificazione scientifica è ' + strong(italic(parts[1]))",
-    # {{Teen}}
-    "Teen": "small(f'({italic(\"linguaggio giovanile\")})')",
-    "teen": "small(f'({italic(\"linguaggio giovanile\")})')",
-    # {{Term|statistica|it}}
-    "Term": "small(term(parts[1]))",
-    "term": "small(term(parts[1]))",
-    # {{Vd|acre#Italiano|acre}}
-    "Vd": "'vedi ' + parts[-1]",
-    "vd": "'vedi ' + parts[-1]",
-    # {{Vezz}}
-    "Vezz": "small(f'({italic(\"vezzeggiativo\")})')",
-    "vezz": "small(f'({italic(\"vezzeggiativo\")})')",
-    # {{Volg}}
-    "Volg": "small(f'({italic(\"volgare\")})')",
-    "volg": "small(f'({italic(\"volgare\")})')",
-    # {{Vulg}}
-    "Vulg": "small(f'({italic(\"volgare\")})')",
-    "vulg": "small(f'({italic(\"volgare\")})')",
-    # {{Yprb}}
-    "Yprb": "small(f'({italic(\"per iperbole\")})')",
-    "yprb": "small(f'({italic(\"per iperbole\")})')",
-}
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -191,7 +63,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['m']
     """
     pattern = re.compile(r"{{Pn\|?w?}} ''([fm])[singvol ]*''")
-    return unique(pattern.findall(code))
+    return utils.unique(pattern.findall(code))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -205,105 +77,6 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     pattern = re.compile(r"{IPA\|(/(.+)/)}")
     return [prons[0][0]] if (prons := pattern.findall(code)) else []
-
-
-def last_template_handler(
-    template: tuple[str, ...],
-    locale: str,
-    *,
-    word: str = "",
-    all_templates: list[tuple[str, str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    """
-    Will be call in utils.py::transform() when all template handlers were not used.
-
-        >>> last_template_handler(["grc"], "it")
-        'greco antico'
-        >>> last_template_handler(["la"], "it")
-        'latino'
-        >>> last_template_handler(["pie"], "it")
-        'proto-indoeuropeo'
-
-        >>> last_template_handler(["Linkf", "gatta"], "it")
-        '(<i>f.:</i> <b>gatta</b>)'
-        >>> last_template_handler(["Linkf", "inv"], "it")
-        '(<i>invariabile</i>)'
-        >>> last_template_handler(["linkf", "invariabile"], "it")
-        '(<i>invariabile</i>)'
-
-        >>> last_template_handler(["Linkp", "gatti"], "it")
-        '(<i>pl.:</i> <b>gatti</b>)'
-        >>> last_template_handler(["Linkp", "inv"], "it")
-        '(<i>invariabile</i>)'
-        >>> last_template_handler(["linkp", "invariabile"], "it")
-        '(<i>invariabile</i>)'
-
-        >>> last_template_handler(["Pn"], "it", word="Santissimo")
-        '<b>Santissimo</b>'
-
-        >>> last_template_handler(["Sup2", "assoluto", "f sing", "it"], "it", word="massima")
-        'superlativo assoluto, femminile singolare di'
-    """
-    from ...user_functions import italic, parenthesis, strong
-    from .. import defaults
-    from .codelangs import codelangs
-    from .langs import langs
-    from .template_handlers import lookup_template, render_template
-
-    tpl, *parts = template
-    tpl = tpl.lower()
-
-    tpl_variant = f"__variant__{tpl}"
-    if variant_only:
-        tpl = tpl_variant
-        template = tuple([tpl_variant, *parts])
-    elif lookup_template(tpl_variant):
-        # We are fetching the output of a variant template, we do not want to keep it
-        return ""
-
-    if lookup_template(template[0]):
-        return render_template(word, template)
-
-    if tpl == "fonte":
-        match parts[0]:
-            case "trec":
-                return "AA.VV., <i>Vocabolario Treccani</i> edizione online su <i>treccani.it</i>, Istituto dell'Enciclopedia Italiana"
-            case _:
-                raise ValueError(f"Unhandled fonte: {parts[0]!r}")
-
-    if tpl == "linkf":
-        return parenthesis(
-            italic("invariabile") if parts[0] in ("inv", "invariabile") else f"{italic('f.:')} {strong(parts[0])}"
-        )
-
-    if tpl == "linkp":
-        return parenthesis(
-            italic("invariabile") if parts[0] in ("inv", "invariabile") else f"{italic('pl.:')} {strong(parts[0])}"
-        )
-
-    if tpl == "pn":
-        return strong(word)
-
-    if tpl == "sup2":
-        gender = {
-            "f sing": "femminile singolare",
-            "f pl": "femminile plurale",
-            "m sing": "maschile singolare",
-            "m pl": "maschile plurale",
-        }[parts[1]]
-        return f"superlativo {parts[0]}, {gender} di"
-
-    # This is a country in the current locale
-    if codelang := codelangs.get(tpl):
-        return codelang
-    if lang := langs.get(tpl):
-        return lang
-
-    return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
-
-
-random_word_url = "https://it.wiktionary.org/wiki/Speciale:RandomRootpage"
 
 
 START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
@@ -321,7 +94,7 @@ def adjust_wikicode(
     code: str,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable

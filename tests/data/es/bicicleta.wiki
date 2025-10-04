@@ -7,7 +7,7 @@
 asiento o sillín, cuadro{{-sub|8}}, potencia, puño{{-sub|4}}, cuerno, manubrio, telescopio, horquilla, amortiguador, frenos, tijera, rueda, rayos, buje, llanta, cubierta, válvula, pedal, viela, cambio, plato{{-sub|5}} o estrella, piñón, cadena, tija, tubo de asiento, vaina.]]
 
 ==== {{sustantivo femenino|es}} ====
-{{inflect.es.sust.reg}}
+{{es.sust}}
 ;1 {{csem|vehículos|ciclismo}}: {{plm|vehículo}}, comúnmente de dos [[rueda]]s iguales, propulsado mediante la aplicación de la fuerza de las piernas sobre los [[pedal]]es que la transmiten hacia los [[piñón|piñones]] y una [[cadena]] moviendo la rueda trasera.
 {{sinónimo|bici|velocípedo}}
 {{hipónimo|tándem|triciclo}}
@@ -66,8 +66,8 @@ asiento o sillín, cuadro{{-sub|8}}, potencia, puño{{-sub|4}}, cuerno, manubrio
 === Etimología 1 ===
 {{etimología|leng=ca}}.
 
-==== {{sustantivo femenino|ca}} ====
-{{inflect.ca.sust.reg|biciclet|a}}
+==== {{sustantivo|ca|femenino}} ====
+{{ca.sust|f}}
 ;1 {{csem|vehículos|leng=ca}}: {{plm}}.
 
 ==== Véase también ====
@@ -80,7 +80,7 @@ asiento o sillín, cuadro{{-sub|8}}, potencia, puño{{-sub|4}}, cuerno, manubrio
 {{etimología|leng=gl}}.
 
 ==== {{sustantivo femenino|gl}} ====
-{{inflect.gl.sust.reg}}
+{{gl.sust}}
 ;1 {{csem|vehículos|leng=gl}}: {{plm}}.
 
 ==== Véase también ====
@@ -93,7 +93,7 @@ asiento o sillín, cuadro{{-sub|8}}, potencia, puño{{-sub|4}}, cuerno, manubrio
 {{etimología|leng=pt}}.
 
 ==== {{sustantivo femenino|pt}} ====
-{{inflect.pt.sust.reg}}
+{{pt.sust}}
 ;1 {{csem|vehículos|leng=pt}}: {{plm}}.
 
 ==== Véase también ====

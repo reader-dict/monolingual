@@ -10,6 +10,9 @@
 {{-var-}}
 * [[peno]], [[pene]], [[peni]]
 
+=== Miscel·lània ===
+* {{ca-sil}}
+
 == {{-en-}} ==
 [[Fitxer:Ballpoint-pen-parts.jpg|miniatura|right|Pen (bolígraf)]]
 {{pronafi|en|/pɛn/}} {{àudio simple|En-us-pen.ogg|àudio (EUA)}}

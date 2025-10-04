@@ -24,6 +24,7 @@
 * {{T|af}} : {{trad-|af|Sloween}}
 * {{T|de}} : {{trad+|de|Slowene}}, {{trad-|de|Windischer|m}}, {{trad+|de|Slowenin}}, {{trad-|de|Windische|f}}
 * {{T|en}} : {{trad+|en|Slovene}}, {{trad+|en|Slovenian}} {{US|nocat=1}} ''(homme ou femme)''
+* {{T|ast}} : {{trad+|ast|eslovenu|m}}, {{trad+|ast|eslovena|f}}
 * {{T|bg}} : {{trad-|bg|словенец|m|tr=slovenec}}, {{trad-|bg|словенка|f|tr=slovenka}}
 * {{T|hr}} : {{trad+|hr|Slovenac}}
 * {{T|da}} : {{trad-|da|slovener|c}}
@@ -59,6 +60,7 @@
 
 === {{S|prononciation}} ===
 * {{écouter|lang=fr|France (Muntzenheim)|audio=LL-Q150 (fra)-0x010C-Slovène.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-Slovène.wav}}
 
 === {{S|anagrammes}} ===
 {{voir anagrammes|fr}}

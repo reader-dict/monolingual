@@ -112,6 +112,6 @@
 
 === Vegeu també ===
 * {{ca-dicc|diec|gdlc|optimot}}
-* [https://aldc.espais.iec.cat/files/2013/10/326-Avui.pdf Atles Lingüístic del Domini Català]
+* [https://web.archive.org/web/20240303193006/http://aldc.espais.iec.cat/files/2013/10/326-Avui.pdf Atles Lingüístic del Domini Català]
 
 {{catllengua|ca|temps}}

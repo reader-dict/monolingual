@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("pt")
 
 
 @pytest.mark.parametrize(
@@ -16,7 +24,7 @@ from wikidict.utils import process_templates
             [],
             [],
             {
-                "Pronome": ["<i>(internetês)</i> cês"],
+                "Pronome": ["(<i>internetês</i>) cês"],
                 "Símbolo": ["algarismo indo-arábico que representa o numeral seis"],
             },
             [],
@@ -41,7 +49,7 @@ from wikidict.utils import process_templates
             },
             [],
         ),
-        ("ababalhar", [], [], ["De baba."], {"Verbo": ["<i>(popular)</i> babar; conspurcar"]}, []),
+        ("ababalhar", [], [], ["De baba."], {"Verbo": ["(<i>popular</i>) babar; conspurcar"]}, []),
         (
             "alguém",
             ["/aɫ.ˈɡɐ̃j̃/"],
@@ -68,7 +76,7 @@ from wikidict.utils import process_templates
                 "Adjetivo": ["do Estado da Bahia, Brasil"],
                 "Substantivo": [
                     "natural ou habitante do Estado da Bahia, Brasil",
-                    "<i>(São Paulo, Brasil, popular, pejorativo e racismo)</i> pessoa que se veste de maneira incomum ou brega; fora da moda",
+                    "(<i>São Paulo,&nbsp;Brasil,&nbsp;popular,&nbsp;pejorativo e&nbsp;racismo</i>) pessoa que se veste de maneira incomum ou brega; fora da moda",
                 ],
             },
             [],
@@ -77,9 +85,9 @@ from wikidict.utils import process_templates
             "cabrum",
             [],
             ["mf"],
-            ["Do latim <i>caprunu</i> “cabra”."],
+            ["Do latim <i>caprunu</i>&nbsp;“cabra”."],
             {
-                "Adjetivo": ["<i>(Pecuária)</i> de cabras:", "<i>(Brasil)</i> marido de mulher adúltera"],
+                "Adjetivo": ["(<i>Pecuária</i>) de cabras:", "(<i>Brasil</i>) marido de mulher adúltera"],
                 "Interjeição": ["indica estrondo"],
             },
             [],
@@ -92,7 +100,7 @@ from wikidict.utils import process_templates
             {
                 "Acrónimo": [
                     "<b>C</b>entro de <b>O</b>perações da <b>Po</b>lícia <b>M</b>ilitar",
-                    "<i>(Brasil)</i> <b>Co</b>mitê de <b>Po</b>lítica <b>M</b>onetária",
+                    "(Brasil, governo) <b>Co</b>mitê de <b>Po</b>lítica <b>M</b>onetária",
                 ]
             },
             [],
@@ -139,7 +147,7 @@ from wikidict.utils import process_templates
             "giro-",
             [],
             [],
-            ["Do grego antigo <i>γῦρος</i> (<i>gyros</i>), pelo latim <i>gyrus</i>."],
+            ["Do grego antigo <i>γῦρος</i>&nbsp;<i>(gyros)</i>, pelo latim <i>gyrus</i>."],
             {"Afixo": ["círculo", "redondo"]},
             [],
         ),
@@ -274,8 +282,7 @@ from wikidict.utils import process_templates
             [],
             {
                 "Contração": [
-                    "<i>(antigo)</i> contração do pronome pessoal te com o pronome pessoal ou demonstrativo o",
-                    "<i>(Brasil e coloquial)</i> forma aferética (muito comum na linguagem falada) de estou",
+                    "(<i>antigo</i>) contração do pronome pessoal te com o pronome pessoal ou demonstrativo o",
                 ]
             },
             [],
@@ -288,7 +295,7 @@ from wikidict.utils import process_templates
             {"Artigo": ["ortografia antiga de uma"]},
             [],
         ),
-        ("UTC", [], [], [], {"Sigla": ["<i>(estrangeirismo)</i> ver TUC"]}, []),
+        ("UTC", [], [], [], {"Sigla": ["(<i>estrangeirismo</i>) ver TUC"]}, []),
     ],
 )
 def test_parse_word(
@@ -308,51 +315,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{AFI|/k/|pt}}", "/k/"),
-        ("{{barra de cor|yellow|#FFFF00}}", "[RGB #FFFF00]"),
-        ("{{confundir|anacruse}}", "<i>Não confundir com <b>anacruse</b></i>"),
-        ("{{datação|5/4/1810}}", "[<i>Datação</i>: 5/4/1810]"),
-        ("{{escopo2|Informática}}", "<i>(Informática)</i>"),
-        ("{{escopo2|Brasil|governo}}", "<i>(Brasil)</i>"),
-        ("{{escopoCat|Árvore|pt}}", "<i>(Árvore)</i>"),
-        ("{{escopoCat|Náutica|pt}}", "<i>(Náutica)</i>"),
-        ("{{escopoCatLang|Alimentação|pt}}", "<i>(alimentação)</i>"),
-        ("{{escopoCatLang|Verbo auxiliar|pt}}", "<i>(Verbo auxiliar)</i>"),
-        (
-            "{{escopoObs.|Lê-se <u>formato dois A</u>.}}",
-            "<b>Observação</b>: Lê-se <u>formato dois A</u>.",
-        ),
-        ("{{escopoUso|Portugal|pt}}", "<i>(Portugal)</i>"),
-        ("{{escopoUso|Coloquialismo|pt}}", "<i>(Coloquialismo)</i>"),
-        ("{{fem|heliostático}}", "feminino de <b>heliostático</b>"),
-        ("{{fl|la|occŭlo}}", "occŭlo"),
-        ("{{l|pt|usar|usar}}", "usar"),
-        ("{{l.o.|jurídico|jurídica}}", "jurídica"),
-        ("{{l.s.|uso}}", "uso"),
-        ("{{l.s.|uso|Verbo}}", "uso"),
-        ("{{lig|is|a}}", "a"),
-        ("{{lig|is|a|b}}", "b"),
-        ("{{lig|is|a|b|c}}", "b"),
-        ("{{link idioma|carro}}", "carro"),
-        ("{{link idioma|carro|pt}}", "carro"),
-        ("{{link idioma|carro|es|vehículo}}", "vehículo"),
-        ("{{link preto|ciconiforme}}", "ciconiforme"),
-        ("{{ll|publicar|pt}}", "publicar"),
-        ("{{m|ar|شيشة|tr=šīša}}", "<i>masculino</i>"),
-        ("{{mq|palavra}}", "o mesmo que <b>palavra</b>"),
-        ("{{mq|word|en}}", "o mesmo que <i>word</i>"),
-        ("{{PE|cu}}", "cu <sup>(português de Portugal)</sup>"),
-        ("{{politônico|κρατία}}", "κρατία"),
-        ("{{r|la|basium|basĭum}}", "basĭum"),
-        ("{{r.l|la|utor|ūtor}}", "ūtor"),
-        ("{{varort|tenu-|pt}}", "variante ortográfica de <b>tenu-</b>"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "pt") == expected

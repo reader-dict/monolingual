@@ -1,5 +1,5 @@
 =={{Lingvo|eo}}==
-{{8}}
+{{oficialeco|8}}
 ==={{Vortospeco|substantivo|eo}}===
 
 {{Deklinacio-eo}}

@@ -1,7 +1,16 @@
+from pathlib import Path
+from unittest.mock import patch
+
 import pytest
 from requests import HTTPError
 
-from wikidict import get_word
+from wikidict import context, get_word
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("fr")
 
 
 @pytest.mark.webtest

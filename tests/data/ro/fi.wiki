@@ -121,9 +121,9 @@ Din latină ''filius''
 =={{limba|cym}}==
 {{cuv|cy}}
 {{-etimologie-}}
-* {{SAMPA}}: /vi/
+{{-etim-lipsă-|cym}}
 {{-pronunție-}}
-{{-pron-lipsă-|cym}}
+* {{SAMPA}}: {{SAMPA|/vi/}}
 {{-pronume-|cym}}
 '''fi'''
 # [[eu]]

@@ -7,6 +7,7 @@
 === {{S|nom|fr}} ===
 {{fr-rég|bɑz}}
 [[Fichier:Alexandrie 112004 09.jpg|vignette|120px|Une '''base''' de colonne]]
+[[File:BJT-transistor01.png|thumb|Schéma d’un transistor bipolaire NPN avec la '''base''' (16) au centre est constitué d'un semiconducteur dopé p]]
 '''base''' {{pron|bɑz|fr}} {{f}}
 # [[partie|Partie]] [[inférieur]]e d’un [[corps]] [[quelconque]] qui lui [[servir|sert]] de [[soutien]].
 #* {{exemple | lang=fr
@@ -23,27 +24,34 @@
 #* {{exemple | lang=fr | '''Base''' ionique.}}
 #* {{exemple | lang=fr | '''Base''' corinthienne.}}
 #* {{exemple | lang=fr | Poser une colonne sur sa '''base'''.}}
-#* ''La '''base''' d’un piédestal,'' La partie qui soutient le dé d’un piédestal.
-# [[Fichier:Blason ville fr Petit-Bersac 24.svg|vignette|120px|'''Base''' d’or ''(sens héraldique)'']] {{lexique|héraldique|fr}} Désigne le [[piédestal]] d’une [[colonne]] surtout quand il est d’un [[émail]] différent de la colonne.
-#* ''De gueules flanqué en pal à dextre d’argent, à la rivière d’azur mouvant de la pointe brochant sur laquelle est posé un pont de trois arches mouvant du flanc dextre, ne laissant ainsi apparaître que les deux arches senestres, prolongé jusqu’au flanc senestre d’un empierrement, le tout d’or maçonné de sable, sommé d’une colonne aussi d’argent, la '''base''' et le chapiteau aussi d’or, le pont surmonté, sur le champ de gueules, de trois lionceaux d’or armés, lampassés et couronnés d’azur, qui est de Petit-Bersac'' {{cf|lang=fr}} illustration « base d'or »
-# {{lexique|mathématiques|fr}}
-##{{lexique|géométrie|fr}} [[surface|Surface]] sur laquelle on [[concevoir|conçoit]] que [[certain]]s [[corps]] [[solide]]s sont [[appuyer|appuyés]].
-##* {{exemple | lang=fr | La '''base''' d’une pyramide, d’un cylindre, d’un cône.}}
-### {{par extension}} [[côté|Côté]] du [[triangle]] [[opposé]] à l’[[angle]] qui est [[regarder|regardé]] comme le [[sommet]].
-###* {{exemple | lang=fr | La '''base''' du triangle.}}
-### [[côté|Côté]] d’une [[figure]] géométrique naturellement choisi comme côté principal.
-###* {{exemple | lang=fr
- | Pour trouver l’aire d’un parallélogramme, on multiplie sa '''base''' par sa hauteur.
- | source=1=[http://www.mathgoodies.com/francais/volume1/area_parallelogram_fr.html aire d’un parallélogramme]}}
-## {{lexique|algèbre linéaire|fr}} [[famille|Famille]] [[libre]] de [[vecteurs]], [[génératrice]] d’un [[espace vectoriel]].
-##* ''On appelle '''base''' d’un espace vectoriel E, toute famille de vecteurs libre et génératrice de E'' : [http://uel.unisciel.fr/physique/outils_nancy/outils_nancy_ch11/co/apprendre_ch11_03.html définition]
-##* {{exemple | lang=fr | La démonstration de l’existence d’une '''base''' pour un espace vectoriel de dimension infinie nécessite l’utilisation de l’axiome de choix.}}
-## {{term|analyse réelle}} [[nombre|Nombre]] réel élevé à une [[puissance]] variable.
+#* {{exemple|lang=fr|
+ | La '''base''' d’un piédestal
+ |sens=La partie qui soutient le dé d’un piédestal.}}
+# {{lexique|héraldique|fr}} Désigne le [[piédestal]] d’une [[colonne]] surtout quand il est d’un [[émail]] différent de la colonne. [[Fichier:Blason ville fr Petit-Bersac 24.svg|vignette|120px|'''Base''' d’or ''(sens héraldique)'']]
+#* {{exemple|lang=fr
+ | De gueules flanqué en pal à dextre d’argent, à la rivière d’azur mouvant de la pointe brochant sur laquelle est posé un pont de trois arches mouvant du flanc dextre, ne laissant ainsi apparaître que les deux arches senestres, prolongé jusqu’au flanc senestre d’un empierrement, le tout d’or maçonné de sable, sommé d’une colonne aussi d’argent, la '''base''' et le chapiteau aussi d’or, le pont surmonté, sur le champ de gueules, de trois lionceaux d’or armés, lampassés et couronnés d’azur, qui est de Petit-Bersac}}
+# {{lexique|géométrie|fr}} [[surface|Surface]] sur laquelle on [[concevoir|conçoit]] que [[certain]]s [[corps]] [[solide]]s sont [[appuyer|appuyés]].
+#* {{exemple | lang=fr | La '''base''' d’une pyramide, d’un cylindre, d’un cône.}}
+## {{par extension}} [[côté|Côté]] du [[triangle]] [[opposé]] à l’[[angle]] qui est [[regarder|regardé]] comme le [[sommet]].
+##* {{exemple | lang=fr | La '''base''' du triangle.}}
+## [[côté|Côté]] d’une [[figure]] géométrique naturellement choisi comme côté principal.
 ##* {{exemple | lang=fr
+ | Pour trouver l’aire d’un parallélogramme, on multiplie sa '''base''' par sa hauteur.
+ | source=[http://www.mathgoodies.com/francais/volume1/area_parallelogram_fr.html aire d’un parallélogramme]}}
+# {{lexique|arithmétique|fr}} [[nombre|Nombre]] de [[chiffre]]s utilisé pour [[dénombrer]].
+#* {{exemple|lang=fr
+ |Donnez la méthode pour passer de la '''base''' décimale à la '''base''' hexadécimale.
+ |source=[http://www.apprendre-en-ligne.net/crypto/images/bases.html changement de base]}}
+# {{lexique|algèbre linéaire|fr}} [[famille|Famille]] [[libre]] de [[vecteurs]], [[génératrice]] d’un [[espace vectoriel]].
+#* {{exemple|lang=fr
+ | On appelle '''base''' d’un espace vectoriel E, toute famille de vecteurs libre et génératrice de E
+ |source=[http://uel.unisciel.fr/physique/outils_nancy/outils_nancy_ch11/co/apprendre_ch11_03.html définition]}}
+#* {{exemple|lang=fr
+ | La démonstration de l’existence d’une '''base''' pour un espace vectoriel de dimension infinie nécessite l’utilisation de l’axiome de choix.}}
+# {{lexique|mathématiques|fr}} [[nombre|Nombre]] réel élevé à une [[puissance]].
+#* {{exemple | lang=fr
  | Fonction exponentielle de x, dans la '''base''' a
- | source=1=[http://uel.unisciel.fr/physique/outils_nancy/outils_nancy_ch05/co/apprendre_02_04.html unisciel]}}
-## {{lexique|arithmétique|fr}} [[nombre|Nombre]] de [[chiffre]]s utilisé pour [[dénombrer]].
-##* ''Donnez la méthode pour passer de la '''base''' décimale à la '''base''' hexadécimale. {{source|1=[http://www.apprendre-en-ligne.net/crypto/images/bases.html changement de base]}}
+ | source=André Warin, « [http://uel.unisciel.fr/physique/outils_nancy/outils_nancy_ch05/co/apprendre_02_04.html Fonction exponentielle de x, dans la base a] » sur unisciel.fr}}
 # {{par analogie|fr}} {{lexique|anatomie|botanique|fr}} Côté opposé à la [[partie]] la plus [[pointu]]e d’un [[organe]].
 #* {{exemple | lang=fr | La '''base''' du cœur, des poumons, etc.,}}
 #* {{exemple | lang=fr | La '''base''' d’une feuille, d’un pétale, etc.}}
@@ -65,8 +73,8 @@
 #* {{exemple|lang=fr}}
 # {{lexique|télécommunications|fr}} Appareil relié à une [[ligne fixe]] permettant le fonctionnement de [[téléphone]]s sans fil à usage domestique.
 #* {{exemple | lang=fr | Les '''bases''' des téléphones sans fil offrent une couverture radio assez restreinte.}}
-# {{lexique|électronique|fr}} Nom d’une des [[électrode]]s d’un [[transistor]] [[bipolaire]].
-#* {{exemple|lang=fr}}
+# {{lexique|électronique|chimie des matériaux|fr}} Nom d’une des [[électrode]]s d’un [[transistor]] [[bipolaire]].
+#*{{exemple|lang=fr|Le transistor bipolaire est composé de trois zones appelées: émetteur, '''base''' et collecteur.La '''base''' est une fine zone dopée prise en sandwich entre deux zones dopées inversement.(…)L’émetteur (plus fortement dopé) envoie des charges électriques qui sont récupérées par le collecteur après avoir traversé la '''base'''.|source=Paolo Zanella, Yves Ligier, Emmanuel Lazard, ''Architecture et technologie des ordinateurs'', 2018, page 139}}
 # {{lexique|baseball|fr}} Une des trois zones où le coureur peut rester sans être mis hors jeu.
 #* {{exemple|lang=fr}}
 # {{lexique|sports hippiques|fr}} Cheval ou groupe de chevaux que l’on retient dans toutes ses combinaisons de paris hippiques pour une course donnée, car on estime qu’ils ont de très bonnes chances de figurer parmi les premiers.
@@ -144,6 +152,7 @@
 * [[base dure]]
 * [[base fondamentale de cycles]] {{info lex|théorie des graphes}}
 * [[base forte]]
+* [[base imposable]]
 * [[base jump]]
 * [[base juridique]]
 * [[base lubrifiante de haute viscosité]]
@@ -203,10 +212,14 @@
 ==== {{S|apparentés}} ====
 * [[basique]]
 
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|colonne|vélo|morphologie (linguistique)|héraldique|pizza|triangle|vecteur|nombre|algèbre linéaire|transistor}}
+
 ==== {{S|traductions}} ====
-{{trad-début|socle}}
+{{trad-début|Partie inférieure d’un corps qui lui sert de soutien|1}}
 * {{T|de}} : {{trad+|de|Grundlage}}, {{trad+|de|Basis|f}}, {{trad+|de|Ansatz|m}}, {{trad+|de|Grundstein|m}}, {{trad+|de|Unterlage|f}}
 * {{T|en}} : {{trad+|en|base}}, {{trad+|en|basis}}, {{trad+|en|footing}}
+* {{T|ar}} : {{trad+|ar|أَسَاس|m|tr=ʿasas}}, {{trad+|ar|قَاعِدَة|m|tr=qāʿida}}
 * {{T|ca}} : {{trad+|ca|base}}, {{trad+|ca|fonament}}
 * {{T|hr}} : {{trad+|hr|osnova}}, {{trad+|hr|temelj}}, {{trad+|hr|baza}}, {{trad-|hr|osnovica}}
 * {{T|es}} : {{trad+|es|base}}, {{trad+|es|fundamento}}
@@ -231,7 +244,43 @@
 * {{T|cs}} : {{trad+|cs|základ}}
 {{trad-fin}}
 
-{{trad-début|solution ayant un pH supérieur à 7}}
+{{trad-début|{{term|Architecture}} Ce qui soutient le fût de la colonne|2}}
+{{trad-fin}}
+
+{{trad-début|{{term|Héraldique}} Piédestal d’une colonne|3}}
+{{trad-fin}}
+
+{{trad-début|{{term|Géométrie}} Surface sur laquelle on conçoit que certains corps solides sont appuyés|4}}
+* {{T|en}} : {{trad+|en|base}}
+{{trad-fin}}
+
+{{trad-début|Nombre de chiffres utilisé pour dénombrer|5}}
+* {{T|en}} : {{trad+|en|base}}
+{{trad-fin}}
+
+{{trad-début|{{term|Algèbre linéaire}} Famille libre et génératrice de vecteurs|6}}
+* {{T|en}} : {{trad+|en|basis}}
+{{trad-fin}}
+
+{{trad-début|Nombre réel élevé à une puissance|7}}
+* {{T|en}} : {{trad+|en|base}}
+{{trad-fin}}
+
+{{trad-début|Côté opposé à la partie la plus pointue d’un organe|8}}
+{{trad-fin}}
+
+{{trad-début|{{term|Géodésie}} Côté initial mesuré directement sur le terrain|9}}
+{{trad-fin}}
+
+{{trad-début|Ensemble des points de ravitaillement avec lesquels une armée en campagne se tient en relations constantes|10}}
+* {{T|de}} : {{trad+|de|Stützpunkt|m}}
+* {{T|en}} : {{trad+|en|base}}
+{{trad-fin}}
+
+{{trad-début|Port de ravitaillement ou de refuge des navires en temps de guerre|11}}
+{{trad-fin}}
+
+{{trad-début|Solution ayant un pH supérieur à 7|12}}
 * {{T|de}} : {{trad+|de|Base}}, {{trad+|de|Lauge|f}}, {{trad+|de|Hydroxid|n}}
 * {{T|en}} : {{trad+|en|base}}
 * {{T|ca}} : {{trad+|ca|base}}
@@ -243,6 +292,9 @@
 * {{T|pl}} : {{trad+|pl|zasada|f}}
 * {{T|ru}} : {{trad+|ru|основание|tr=osnovaniye}}, {{trad+|ru|щёлочь|tr=schyoloch}}
 * {{T|vi}} : {{trad+|vi|bazơ}}
+{{trad-fin}}
+
+{{trad-début|Ce qui entre comme ingrédient principal dans un mélange|13}}
 {{trad-fin}}
 
 ==== {{S|hyponymes}} ====
@@ -258,22 +310,24 @@
 # ''Deuxième personne du singulier de l’impératif de'' [[baser]].
 
 === {{S|prononciation}} ===
-* {{pron|baz|fr}}, {{term|Accents avec distinction /a/~/ɑ/}} {{pron|bɑz|fr}}<ref>{{Lien web|site=Français de nos régions|auteur=André Thibault|titre=Une histoire d’A|url=https://francaisdenosregions.com/2018/07/05/une-histoire-da/|date=5 juillet 2018|consulté le=30 septembre 2019}}</ref>
-* Français méridionale : {{pron|ˈba.zə|fr}}
-* Canada : {{pron|bɑz|fr}}, {{phon|bɑɔ̯z|fr}}
-* {{écouter|France (Paris)|baz|audio=Fr-base.ogg|lang=fr}}
-* {{écouter|France (Paris)|la baz|audio=Fr-la base.ogg|titre=la base|lang=fr}}
-* {{écouter||baz|lang=fr|audio=LL-Q150 (fra)-0x010C-base.wav}}
-* {{écouter|lang=fr|France (Paris)|baz|audio=LL-Q150 (fra)-GrandCelinien-base.wav}}
-* {{écouter|lang=fr|France (Vosges)|baz|audio=LL-Q150 (fra)-Poslovitch-base.wav}}
-* {{écouter|lang=fr|France (Toulouse)|baz|audio=LL-Q150 (fra)-Lepticed7-base.wav}}
-* {{écouter|lang=fr|France (Vosges)|bɑːz|audio=LL-Q150 (fra)-LoquaxFR-base.wav}}
-* {{écouter|lang=fr|France (Saint-Étienne)||audio=LL-Q150 (fra)-Touam-base.wav}}
-* {{écouter|lang=fr|France (Hérault)||audio=LL-Q150 (fra)-T. Le Berre-base.wav}}
-* {{écouter|lang=fr|Canada (Sainte-Marie)||audio=LL-Q150 (fra)-Webfil-base.wav}}
-* {{écouter|lang=fr|France (Bretagne)||audio=LL-Q150 (fra)-PtiBzh-base.wav}}
-* {{écouter|Mulhouse (France)||lang=fr|audio=LL-Q150 (fra)-Mathieu Kappler-base.wav}}
-* {{écouter|Céret (France)||lang=fr|audio=LL-Q150 (fra)-Fabricio Cardenas (Culex)-base.wav}}
+* {{pron|baz|fr}}
+** {{écouter|France (Paris)|baz|audio=Fr-base.ogg|lang=fr}}
+** {{écouter|France (Paris)|la baz|audio=Fr-la base.ogg|titre=la base|lang=fr}}
+** {{écouter|France (Muntzenheim)|bazə̆|lang=fr|audio=LL-Q150 (fra)-0x010C-base.wav}}
+** {{écouter|lang=fr|France (Paris)|baz|audio=LL-Q150 (fra)-GrandCelinien-base.wav}}
+** {{écouter|lang=fr|France (Vosges)|bazə̆|audio=LL-Q150 (fra)-Poslovitch-base.wav}}
+** {{écouter|lang=fr|France (Saint-Étienne)|bazə̆|audio=LL-Q150 (fra)-Touam-base.wav}}
+** {{écouter|lang=fr|France (Hérault)|bazə̆|audio=LL-Q150 (fra)-T. Le Berre-base.wav}}
+** {{écouter|lang=fr|France (Bretagne)|baz|audio=LL-Q150 (fra)-PtiBzh-base.wav}}
+** {{écouter|Mulhouse (France)|bazə̆|lang=fr|audio=LL-Q150 (fra)-Mathieu Kappler-base.wav}}
+** {{écouter|Céret (France)|baz|lang=fr|audio=LL-Q150 (fra)-Fabricio Cardenas (Culex)-base.wav}}
+** {{écouter|Vendée (France)|baz|lang=fr|audio=LL-Q150 (fra)-Sartus85-base.wav}}
+* {{term|Accents avec distinction /a/~/ɑ/}} {{pron|bɑz|fr}}<ref>{{Lien web|site=Français de nos régions|auteur=André Thibault|titre=Une histoire d’A|url=https://francaisdenosregions.com/2018/07/05/une-histoire-da/|date=5 juillet 2018|consulté le=30 septembre 2019}}</ref>
+** {{écouter|lang=fr|France (Vosges)|bɑːz|audio=LL-Q150 (fra)-LoquaxFR-base.wav}}
+* Français méridionale : {{phono|ˈba.zə|fr}}
+** {{écouter|lang=fr|France (Toulouse)|ˈba.zə|audio=LL-Q150 (fra)-Lepticed7-base.wav}}
+* Canada : {{phono|bɑz|fr}}, {{phon|bɑɔ̯z|fr}}
+** {{écouter|lang=fr|Canada (Sainte-Marie)|bɑɔ̯z|audio=LL-Q150 (fra)-Webfil-base.wav}}
 
 ==== {{S|homophones|fr}} ====
 * [[basent]], [[bases]]
@@ -331,14 +385,26 @@
 # {{lexique|politique|en}} {{term|political base|en}} [[support|Support]] (aide, appui).
 #* {{exemple | lang=en | She can rely on a respectable vote in the election if her '''base''' turns out on election day.}}
 # {{lexique|baseball|en}} [[#fr|Base]].
+#* {{exemple|lang=en}}
 # {{lexique|chimie|en}} [[basique|Basique]].
+#* {{exemple|lang=en}}
+# {{lexique|géométrie|en}} [[#fr|Base]], [[côté]] d’une [[figure]] naturellement choisi comme côté principal.
+#* {{exemple|lang=en}}
+# {{lexique|mathématiques|en}} [[#fr|Base]], [[nombre réel]] élevé à une puissance.
+#* {{exemple|The logarithm to '''base''' 2 of 8 is 3.|lang=en}}
 # {{lexique|héraldique|en}} [[champagne|Champagne]].
+#* {{exemple|lang=en}}
 # {{lexique|propulsion spatiale|en}} [[culot d’ergol#fr|Culot d’ergol]].
+#* {{exemple|lang=en}}
 # {{instruments à cordes|en}} {{variante de|bass|en}} ''([[basse#nom-1|basse]] en général, [[guitare basse]])''.
+#* {{exemple|lang=en}}
 
 ==== {{S|dérivés}} ====
 * {{lien|basic|en}}
 * {{lien|basal|en}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|en|héraldique}}
 
 === {{S|verbe|en}} ===
 {{en-conj-rég-e|bas|inf.pron=beɪs|p3s.pron=ˈbeɪ.sɪz|pp.psuf=t|ppr.pron=ˈbeɪ.sɪŋ}}
@@ -357,7 +423,7 @@
 * {{écouter|Connecticut (États-Unis)||lang=en|audio=LL-Q1860 (eng)-Grendelkhan-base.wav}}
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
+* {{Vikidia|lang=en}}
 * {{WP|3=en}}
 
 == {{langue|br}} ==
@@ -372,7 +438,7 @@
 : Du {{étyl|la|es|basis|sens=base}}.
 
 === {{S|nom|es}} ===
-{{es-rég-voy|ˈba.se}}
+{{es-rég|ˈba.se}}
 '''base''' {{pron|ˈba.se|es}} {{f}}
 # {{lexique|architecture|es}} [[#fr|Base]].
 #* {{exemple | lang=es | No notó que no ganaba camino alguno con sus esfuerzos; pues no tenía, por decirlo así, ningún apoyo, ninguna '''base''' sobre que hacer fuerzas y en que poder emplearlas para poner el entendimiento en movimiento.}}
@@ -408,7 +474,7 @@
 * {{lien|sabe|es}}
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
+* {{Vikidia|lang=es}}
 * {{WP|3=es}}
 
 === {{S|références}} ===
@@ -493,7 +559,7 @@
 {{voir anagrammes|it}}
 
 === {{S|voir aussi}} ===
-* {{Vikidia}}
+* {{Vikidia|lang=it}}
 *{{WP|lang=it}}
 
 == {{langue|la}} ==
@@ -509,6 +575,7 @@
 === {{S|nom|nl}} ===
 '''base''' {{pron|ˈbɑ.sə|nl}}
 # [[#fr|Base]].
+#* {{exemple|lang=nl}}
 
 === {{S|taux de reconnaissance}} ===
 {{nl-taux|86,6|85,5|pourB=86|pourNL=87}}

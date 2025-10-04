@@ -1,12 +1,14 @@
 import sys
 from pathlib import Path
 
-import requests
+HERE = Path(__file__).parent
+sys.path.insert(0, str(HERE.parent))
+from wikidict.constants import SESSION  # noqa: E402
 
 
 def fetch_and_store_if_updated(file: Path, url: str) -> None:
     current_content = file.read_text().strip()
-    with requests.get(url) as req:
+    with SESSION.get(url) as req:
         if not req.ok:
             return
         new_content = req.text.strip()
@@ -17,7 +19,7 @@ def fetch_and_store_if_updated(file: Path, url: str) -> None:
 
 def main() -> int:
     url_fmt = "https://{}.wiktionary.org/w/index.php?title={}&action=raw"
-    folder = Path(__file__).parent / "data"
+    folder = HERE / "data"
     for locale in sorted(folder.iterdir()):
         for file in sorted(locale.glob("*.wiki")):
             url = url_fmt.format(locale.name, file.stem)

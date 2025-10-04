@@ -27,7 +27,9 @@
 #* {{exemple |D’azur, à trois '''éperons''' d’or, qui est de la commune de Lécluse du Nord |source={{cf|lang=fr}} illustration « armoiries avec 3 éperons » |lang=fr}}
 
 ==== {{S|dérivés}} ====
+* [[donner des éperons]] {{vieilli|nocat=1}}
 * [[éperon barré]] (éperon rocheux fortifié)
+* [[éperonnelle]]
 * [[éperonner]]
 * [[éperonneur]]
 * [[éperonnier]]
@@ -36,9 +38,10 @@
 * [[molette d’éperon]]
 * [[n’avoir ni bouche ni éperon]] (au sens propre, se dit d’un cheval qui ne réagit ni à la bride ni aux coups d’éperons et au sens figuré se dit d’une personne inerte qu’aucun moyen ne saurait animer)
 * [[porte-éperon]]
-* [[sous l'éperon de]]
+* [[sous l’éperon de]]
 
 ==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|chauve-souris|figure de proue|fleur|héraldique|insecte|équitation}}
 * [[piquer des deux]] ''(faire sentir les deux '''éperons''' à un cheval afin d’accélérer sa marche)''
 
 ==== {{S|phrases}} ====

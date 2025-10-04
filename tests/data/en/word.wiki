@@ -5,12 +5,18 @@
 * {{alter|en|worde||obsolete}}
 
 ===Pronunciation===
+* {{IPA|en|/wɜɹd/|a=GA}}, {{enPR|wûrd}}
 * {{IPA|en|/wɜːd/|a=RP}}
-* {{enPR|wûrd|a=GA}}, {{IPA|en|/wɝd/}}
+* {{audio|en|en-us-word.ogg|a=GA}}
+{{col-top|1|other pronunciations}}
 * {{IPA|en|/wəɹd/|[wɚ(ɹ)d]|a=CA}}
-* {{audio|en|en-us-word.ogg|a=US}}
+* {{IPA|en|/wɛːd/|a=Humberside,Teesside,square-nurse}}
+* {{IPA|en|/weːd/|a=Scouse,square-nurse}}
+* {{IPA|en|/wøːd/|a=NZ}}
+* {{IPA|en|/wʌrd/|a=Scotland}}
+{{col-bottom}}
+* {{homophones|en|whirred<aa:wine-whine>|;|wared<aa:fair-fur>}}
 * {{rhymes|en|ɜː(ɹ)d|s=1}}
-* {{homophones|en|whirred}} {{qualifier|accents with the wine-whine merger}}
 
 ===Etymology 1===
 [[File:About- General sign.ogv|thumb| The word ''about'' signed in [[American Sign Language]].]]
@@ -48,7 +54,8 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 ## {{lb|en|telegraphy}} A unit of [[text]] equivalent to five [[character]]s and one [[space]]. {{defdate|from 19th c.}}
 ## {{senseid|en|Q625642}} {{lb|en|computing}} A fixed-size group of [[bit]]s handled as a unit by a machine and which can be stored in or retrieved from a typical [[register]] (so that it has the same size as such a register). {{defdate|from 20th c.}}
 ##* {{quote-book|en|year=1997|author=John L. Hennessy|coauthors=David A. Patterson|title=Computer Organization and Design|section=&sect;3.3|url=|page=109|text=The size of a register in the MIPS architecture is 32 bits; groups of 32 bits occur so frequently that they are given the name <b>''word''</b> in the MIPS architecture.|publisher=Morgan Kaufmann Publishers, Inc.|location=San Francisco, California|edition=2nd}}
-## {{lb|en|computer science}} A [[finite]] [[string]] that is [[not]] a [[command]] or [[operator]]. {{defdate|from 20th or 21st c.}}
+## {{senseid|en|16bits}} {{lb|en|computing}} With regards to Intel or Intel-compatible hardware and/or in the context of Windows programming, a group of exactly 16 [[bit]]s regardless of the actual processor capabilities; a fossilized unit referring to the small word size of historical CPUs. {{defdate|from 20th c.}}
+## {{lb|en|computer science}} A [[finite]] [[string]] that is [[not]] a [[command]] or [[operator]]. {{defdate|from 20th c.}}
 ## {{lb|en|group theory}} A [[group]] [[element]], expressed as a [[product]] of group elements.
 # The fact or act of [[speaking]], as opposed to taking [[action]]. {{defdate|from 9th c}}.
 #* {{quote-book|en|year=1811|author=w:Jane Austen|title=w:Sense and Sensibility|passage={{...}} she believed them still so very much attached to each other, that they could not be too sedulously divided in '''word''' and deed on every occasion.}}
@@ -61,24 +68,24 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 #* {{quote-book|en|year=2011|author=w:David Bellos|title=Is That a Fish in Your Ear?|publisher=Penguin|year_published=2012|page=126|passage=Despite appearances to the contrary [...] dragomans stuck rigidly to their brief, which was not to translate the Sultan's words, but his '''word'''.}}
 #* {{quote-book|en|year=2011|author=John Lehew (senior)|title=The Encouragement of Peter|isbn=1615074708|page=108|passage=In what sense is God's Word living? No other '''word''', whether written or spoken, has the power that the Bible has to change lives.}}
 # {{lb|en|obsolete|_|outside certain phrases}} A [[watchword]] or rallying cry, a verbal signal (even when consisting of multiple words).
+#: {{ux|en|[[mum's the word|mum's the '''word''']]}}
 #* {{quote-book|en|year=1592|author=William Shakespeare|title={{w|Richard III (play)|Richard III}}|passage=Our ancient '''word''' of courage, fair Saint George, inspire us with the spleen of fiery dragons!}}
 #* {{quote-book|en|year=c. 1623|year_published=1647|author=John Fletcher; William Rowley|title=w:The Maid in the Mill|edition_plain=published in the first Beaumont and Fletcher folio)|section=scene 3|passage=I have the '''word''' : sentinel, do thou stand; {{...}}}}
-#: {{ux|en|[[mum's the word|mum's the '''word''']]}}
 # {{lb|en|obsolete}} A [[proverb]] or [[motto]].
 #* {{quote-book|en|year=1499|author=w:John Skelton|title=The Bowge of Court|passage=Among all other was wrytten in her trone / In golde letters, this '''worde''', whiche I dyde rede: / ''Garder le fortune que est {{l|fr|mal|mauelz}} et {{l|fr|bon|bone}}''.<!--[Prepare for good and ill fortune alike.]-->}}
 #* {{quote-book|en|year=1599|author=Ben Jonson|title=w:Every Man out of His Humour|passage=Let the '''word''' be 'Not without mustard'. Your crest is very rare, sir.}}
 #* {{quote-book|en|year=1646|author={{w|Joseph Hall (bishop)|Joseph Hall}}|title=The Balm of Gilead|passage=The old '''word''' is, 'What the eye views not, the heart rues not.'}}
 # {{senseid|en|news, tidings}} {{lb|en|uncountable}} [[news|News]]; [[tidings]]. {{defdate|from 10th c.}}
-#* {{RQ:Orwell Animal Farm|1|passage='''Word''' had gone round during the day that old Major, the prize Middle White boar, had had a strange dream on the previous night and wished to communicate it to the other animals.}}
 #: {{ux|en|Have you had any '''word''' from John yet?}}
 #: {{ux|en|I've tried for weeks to get '''word''', but I still don't know where she is or if she's all right.}}
+#* {{RQ:Orwell Animal Farm|1|passage='''Word''' had gone round during the day that old Major, the prize Middle White boar, had had a strange dream on the previous night and wished to communicate it to the other animals.}}
 # An [[order]]; a [[request]] or [[instruction]]; an expression of will. {{defdate|from 10th c.}}
 #: {{ux|en|He sent '''word''' that we should strike camp before winter.}}
 #: {{ux|en|Don't fire till I give the '''word'''}}
 #: {{ux|en|Their mother's '''word''' was law.}}
-# A [[promise]]; an [[oath]] or [[guarantee]]. {{defdate|from 10th c.}}
-#: {{ux|en|I give you my '''word''' that I will be there on time.}}
+# {{senseid|en|oath promise}}A [[promise]]; an [[oath]] or [[guarantee]]. {{defdate|from 10th c.}}
 #: {{syn|en|promise}}
+#: {{ux|en|I give you my '''word''' that I will be there on time.}}
 # A brief [[discussion]] or [[conversation]]. {{defdate|from 15th c.}}
 #: {{ux|en|Can I have a '''word''' with you?}}
 # {{lb|en|meiosis}} A minor [[reprimand]].
@@ -86,8 +93,8 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 # {{lb|en|in the plural}} ''See'' '''[[words]]'''.
 #: {{ux|en|There had been '''words''' between him and the secretary about the outcome of the meeting.}}
 # {{lb|en|theology|sometimes '''[[Word]]'''}} Communication from [[God]]; the [[message]] of the Christian [[gospel]]; the [[Bible]], [[Scripture]]. {{defdate|from 10th c.}}
-#: {{ux|en|Her parents had lived in Botswana, spreading the '''word''' among the tribespeople.}}
 #: {{syn|en|word of God|Bible}}
+#: {{ux|en|Her parents had lived in Botswana, spreading the '''word''' among the tribespeople.}}
 # {{lb|en|theology|sometimes '''[[Word]]'''}} [[Logos]], [[Christ]]. {{defdate|from 8th c.}}
 #: {{syn|en|God|Logos}}
 #* {{RQ:Tyndale NT|John|I|text=And that '''worde''' was made flesshe, and dwelt amonge vs, and we sawe the glory off yt, as the glory off the only begotten sonne off the father, which '''worde''' was full of grace, and verite.}}
@@ -100,227 +107,416 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * [[vocable]]; ''see also'' '''[[Thesaurus:word]]'''
 
 =====Derived terms=====
-{{col4|en|Champernowne word|connecting word|cranberry word|get a word in|in every sense of the word|n-word pass|N-word pass|naughty word|not to put too fine a word on it|pattern word|phantom word|put in a word|re-word|telescope word|thunder word|word balloon|word box|word painter|word vomit|word-mincer|word-picture|word-spelling alphabet| drunk words are sober thoughts|facts speak louder than words|final words|mince one's words|write as separate words
-|action word|arrowword|backword|fuzzword|ghostword|honeyword|hotword|kiloword|McWord|megaword|midword|overword|patchword|pseudoword|reduced word|songword|spellword|startword|stopword|syncword|tableword|underword|urword|wanderword|wordaholic|wordcel|wordfact|wordfest|wordfilter|wordfinal|wordinitial|wordlet|wordline|wordmaker|wordmaking|wordmaster|WordNet|wordnik|wordoid|wordology|wordprocess|wordsize|wordster|wordstring
+{{col4|en
+|actions speak louder than words
+|action word
 |afterword
+|all one word
+|an image is worth a thousand words
+|a picture is worth a thousand words
+|a picture paints a thousand words
+|arrowword
+|at a loss for words
 |a-word
-|babble word
+|babble-word,babble word
+|backword|hundred-dollar word
 |bad word
-|bareword|z-word|none of these words are in the Bible|play of words
-|baseword|beyond words
+|bag of words
+|bandy words
+|bareword
+|baseword
+|beyond words
+|big word
+|book of words
+|book word,book-word
+|break one's word
 |breathe a word
+|brunch word|word lover
 |bug-word
-|buzzword|filler word|one-word|word hole|book of words
-|b-word|y-word
+|buzz-word,buzz word,buzzword
+|b-word
 |byword
 |catchword
+|Champernowne word
+|choice word
+|code word
 |codeword
 |compound predicate word
 |compound word
+|connecting word
 |content word
+|continuous bag of words
 |counterword
+|cranberry word
 |crossword
+|crutch word
 |curse word
 |cuss word
-|c-word
+|C-word,c-word
 |description word
 |directed acyclic word graph
 |dirty word
 |doubleword
-|dword
-|d-word
+|drunken words are sober thoughts
+|drunk words are sober thoughts
+|d-word,dword,D-word
 |Dyck word
-|empty word
-|[[fighting word]], [[fighting words]]
+|eat one's words
+|empty word,empty words
+|e-word
+|eye-word
+|facts speak louder than words
+|famous last word,famous last words
+|fighting word,fighting words
+|filler word
+|final words
+|fine words butter no parsnips
 |five-dollar word
 |foreword
 |fossil word
 |four-letter word
 |frankenword
 |from the word go
-|function word
-|f-word
 |full word
+|function word
+|fuzzword
+|f-word,F word,f word,F-word
 |gainword
-|[[get a word in edgeways]], [[get a word in edgewise]]
+|gallipot word
+|gamer word
+|get a word in
+|get a word in edgeways,get a word in edgewise
 |get the word out
-|ghost word
+|ghost word,ghostword
+|give one's word
+|give the word
 |good as one's word
 |good word
-|guideword
-|g-word
+|grammatical word
+|guideword,guide word
+|G-word,g-word
 |halfword
+|hang on every word
 |hard word
 |have a quiet word
 |have a word
 |have a word in someone's ear
 |have a word with oneself
+|have words
 |headword
-|household word| bandy words|give the word|two-dollar word|word bubble|word line|word music
-|h-word
+|honeyword
+|hotword
+|household word
+|how do you pronounce this word
+|how do you spell this word
+|Humpty Dumpty word
+|h-word,H-word
 |in a word
+|in every sense of the word
+|inkhorn word
+|in other words
+|in so many words
 |interword
+|in words of one syllable
 |i-word
+|Janus word
 |joey word
+|j-word
 |kangaroo word
-|keyword
+|keep one's word
+|key-word,keyword,key word
+|kiloword
 |k-word
-|[[last word]], [[last words]]
 |last-wordism
+|last word,last words
+|lexical word
 |loaded word
-|loanword
+|loanword,loan word
 |longword
+|lost for words
 |l-word
 |Lyndon word
 |machine word
 |magic word
+|man of few words
+|mark my word
+|mark my words
+|McWord
 |measure word
+|megaword
 |metaword
+|midword
+|mince one's words
 |mince words
-|multi-word
+|money and fair words
+|mouth the words
+|multi-word,multiword
+|multi-word expression
 |mum's the word
-|m-word
-|[[my word]], [[oh my word]]
+|m-word,M-word
+|my word,oh my word
 |nameword
+|naughty word
+|noise word
 |nonce word
+|none of these words are in the Bible
 |nonsense word
 |non-word
-|n-word
+|not a word
+|not a word of a lie
+|not to put too fine a word on it
+|no word of a lie,no word of lie
+|N-word,n-word
+|N-word pass,n-word pass
 |octoword
 |of one's word
 |one's word is law
+|one-word
+|one word leads to another
 |operative word
+|or words to that effect
+|overword
 |oword
+|o-word
 |partword
 |pass one's word
-|password
+|pass-word,password
+|patchword
+|pattern word
+|phantom word
 |phoneword
+|phonological word
 |pillow word
 |place word
+|play of words
+|play on words
+|play upon words
 |polyword
 |portmanteau word
 |power word
-|[[procedure word]], [[proword]]
+|procedure word,proword
 |protoword
+|pseudoword
 |purr word
 |put in a good word
-|p-word
+|put in a word
+|put into words
+|put to words
+|put words in someone's mouth
+|P-word,p-word
+|Pygmalion word
 |quadword
 |question word
+|q-word,Q-word
 |qword
+|reduced word
 |reserved word
+|re-word
 |root word
-|r-word
+|r-word,R-word
+|safe word
 |safeword
+|SAT word
 |say the word
 |say word one
 |semiword
 |send word
+|seven dirty words
 |sight word
 |single-word
+|small words
 |snarl word
+|songword
 |spelling word
+|spellword
 |spoken word
-|stop word
+|spread the word
+|startword
+|star word
+|stopword,stop word
 |subword
+|suit the action to the word
+|swallow one's words
 |swear word
 |s-word
+|syncword
+|tableword
+|take someone at their word
 |take someone's word for it
+|take the words out of someone's mouth
+|telescope word
+|ten-cent word
 |ten-dollar word
 |the word is go
+|thunder word
+|trigger word
+|true to one's word
+|turn of words
 |twenty-five cent word
-|t-word
-|ur-word
+|twist someone's words
+|two-dollar word
+|t-word,T-word
+|type-word
+|underword
+|upon my word
+|ur-word,urword
+|use your words
+|u-word
 |vocabulary word
 |vogue word
-|v-word
+|v-word,V-word
 |wake word
+|wanderword
+|war of words
 |watchword
 |weasel word
+|weigh one's words
 |wh-word
 |winged word
+|without a word of a lie
+|woman of few words
 |Wonderword
 |wordage
+|wordaholic
+|word art
 |word association
+|word balloon
 |word-blind
+|word-blindness
 |word blindness
 |wordbook
-|word break
+|word-bound
+|word box
+|word break,word-break
+|word bubble
 |wordbuilding
+|wordcel
+|word chain
 |word class
 |word cloud
 |word count
 |wordcraft
+|word-deafness
 |word divider
+|wordfact
+|word family
 |wordfast
-|word-final
+|wordfest
+|wordfilter
+|wordfinal,word-final
 |wordfinding
 |wordflow
 |wordform
-|word formation
+|word-formation,word formation
+|word-formational
+|word-for-word,word for word
 |wordful
-|word for word
 |word game
+|word gets around
 |word golf
 |word has it
 |word-hoard
+|word hole
 |wordhood
 |wordie
 |wording
-|word-initial
+|wordinitial,word-initial
+|word is
 |word is bond
 |wordish
 |word ladder
 |wordlength
 |wordless
+|wordlet
 |wordlike
-|wordlist
+|wordline,word line
+|wordlist,word list
 |wordlore
 |word-lover
 |wordly
-|wordmark
+|wordmaker
+|wordmaking
+|word mark,wordmark
+|wordmaster
 |wordmeal
 |word method
+|word-mincer
 |wordmonger
+|word music
+|word name
+|word nerd
 |wordness
 |wordnet
+|WordNet
+|wordnik
 |Word of Allah
 |word of faith
 |word of finger
-|[[Word of God]], [[word of God]], [[God's word]]
-|word of honour
-|word of mouth
+|Word of God,word of God,God's word
+|word of honor,word of honour
+|word of life
+|word of mouth,word-of-mouth| time word
 |Word of Wisdom
+|wordoid
+|wordology
 |word on the street
+|word on the wire
 |word order
+|word painter
+|word painting
 |word-perfect
-|wordplay
+|word-picture
+|wordplay,word play
 |wordpool
 |word problem
+|wordprocess
 |word processing
 |word processor
+|word-salad
 |word salad
+|words-as-words distinction
 |wordscape
+|words cut deep
+|word-search
 |word search
+|word separator
+|words fail someone
 |wordshaping
 |wordship
+|wordsize
+|word sketch
 |wordsmith
-|wordsome
+|word snake
 |words of institution
+|words of one syllable
+|wordsome
+|word sound
 |word space
+|word-spelling alphabet
 |word square
+|wordster
 |word-stock
+|wordstring
 |word time
+|word to conjure with
 |word to the wise
+|word vector
+|word vomit
 |word-wheeling
 |wordwise
 |word wrap
 |wordy
 |workword
+|wow word
+|write as separate words
 |wug word
+|W-word
 |w-word
-|word sound
-|all one word|babble-word|big word|book word|book-word|break one's word|brunch word|buzz word|buzz-word|C-word|choice word|code word|crutch word|D-word|e-word|eye-word|f word|F word|F-word|G-word|gallipot word|gamer word|give one's word|guide word|H-word|hang on every word|how do you pronounce this word|how do you spell this word|Humpty Dumpty word|inkhorn word|j-word|Janus word|keep one's word|key word|key-word|loan word|M-word|mark my word|multi-word expression|N-word|no word of a lie|no word of lie|noise word|not a word of a lie|o-word|one word leads to another|P-word|pass-word|Q-word|q-word|R-word|safe word|SAT word|spread the word|suit the action to the word|T-word|take someone at their word|ten-cent word|true to one's word|u-word|upon my word|V-word|W-word|without a word of a lie|word art|word chain|word family|word gets around|word is|word list|word mark|word name|word nerd|word of honor|word of life|word on the wire|word painting|word play|word sketch|word snake|word to conjure with|word vector|word-blindness|word-bound|word-break|word-deafness|word-for-word|word-formation|word-formational|word-of-mouth|word-salad|word-search|wow word|x-word|you get more with a kind word and a gun than you do with a kind word alone|a picture is worth a thousand words|a picture paints a thousand words|actions speak louder than words|at a loss for words|bag of words|continuous bag of words|eat one's words|empty words|famous last words|fighting words|fine words butter no parsnips|have words|in other words|in so many words|in words of one syllable|last words|lost for words|man of few words|mark my words|mince words|mouth the words|or words to that effect|play on words|play upon words|put into words|put to words|put words in someone's mouth|seven dirty words|small words|swallow one's words|take the words out of someone's mouth|turn of words|twist someone's words|war of words|weigh one's words|woman of few words|words cut deep|words fail someone|words of one syllable}}
+|x-word
+|you get more with a kind word and a gun than you do with a kind word alone
+|y-word
+|z-word
+}}
 
 =====Descendants=====
 * {{desc|cpi|word|alts=1}}
@@ -337,6 +533,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Ambonese Malay: {{tt|abs|kata}}
 * Amharic: {{tt+|am|ቃል}}
 * Arabic: {{tt+|ar|كَلِمَة|f}}
+*: Chadian Arabic: {{t|shu|كلمة|f|tr=kilme}}
 *: Egyptian Arabic: {{tt|arz|كلمة|f|tr=kilma}}
 *: Hijazi Arabic: {{tt|acw|كلمة|f|tr=kilma}}
 * Aragonese: {{tt+|an|parola|f}}
@@ -349,7 +546,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Assamese: {{tt|as|শব্দ}}
 * Asturian: {{tt+|ast|pallabra|f}}
 * Avar: {{tt|av|рагӏул}}, {{tt|av|рагӏи}}
-* Azerbaijani: {{tt+|az|söz}}
+* Azerbaijani: {{tt+|az|söz}}, {{q|South Azerbaijani}} {{tt|az|واژه|tr=vajə}}
 * Balinese: {{tt|ban|kruna}}
 * Bashkir: {{tt|ba|һүҙ}}
 * Basque: {{tt|eu|hitz}}, {{tt|eu|berba}}
@@ -396,6 +593,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * French: {{tt+|fr|mot|m}}
 * Friulian: {{tt|fur|peraule|f}}
 * Ga: {{tt|gaa|wiemɔ}}
+* Gagauz: {{t|gag|söz}}, {{t|gag|laf}}
 * Galician: {{tt+|gl|palabra|f}}, {{tt|gl|verba|f}}, {{tt|gl|pravoa|f}}, {{tt+|gl|parola|f}}
 * Georgian: {{tt+|ka|სიტყვა}}
 * German: {{tt+|de|Wort|n}}
@@ -408,7 +606,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Haitian Creole: {{tt|ht|mo}}
 * Hausa: {{tt|ha|kalma}}
 * Hawaiian: {{tt|haw|huaʻōlelo}}
-* Hebrew: {{tt+|he|מילה|alt=מילה \ מִלָּה|f|tr=milá}}, {{t+|he|דבר|m|tr=davár}} {{q|Biblical}}
+* Hebrew: {{tt+|he|מילה|alt=מִלָּה|f|tr=milá}}, {{t+|he|דבר|m|tr=davár}} {{q|Biblical}}
 * Higaonon: {{t|mba|polong}}
 * Hindi: {{tt+|hi|शब्द|m}}, {{tt+|hi|बात|f}}, {{tt|hi|लुग़त|m}}, {{t|hi|लफ़्ज़|m}}
 * Hittite: {{t|hit|𒌓𒋻|tr=uttar|n}}, {{t|hit|𒈨𒈪𒅀𒀸|tr=memiyaš|c}}, {{t|hit|𒅗|tr=INIM|ts=uttar|n}}
@@ -427,6 +625,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Javanese:
 *: Carakan: {{tt+|jv|ꦠꦼꦩ꧀ꦧꦸꦁ}}
 *: Rumi: {{tt|jv|tembung}}
+* Jeju: {{t|jje|말}}
 * K'iche': {{tt|quc|tzij}}
 * Kabardian: {{tt+|kbd|псалъэ}}
 * Kabyle: {{t|kab|awal}}
@@ -458,7 +657,10 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Lithuanian: {{tt+|lt|žodis|m}}
 * Lombard: {{tt|lmo|paròlla|f}}
 * Lü: {{tt|khb|ᦅᧄ}}
+* Low German:
+*: German Low German: {{t|nds-de|Woord|n}}
 * Luganda: {{tt|lg|ekigambo}}
+* Lutuv: {{t|clt|bie}}
 * Luxembourgish: {{tt+|lb|Wuert|n}}
 * Macedonian: {{tt+|mk|збор|m}}, {{tt+|mk|слово|n}} {{qualifier|archaic}}
 * Malagasy: {{t+|mg|teny}}
@@ -475,7 +677,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Mongolian:
 *: Cyrillic: {{tt+|mn|үг}}
 *: Mongolian: {{tt|mn|ᠦᠭᠡ}}
-* Moroccan Amazigh: {{tt|zgh|ⴰⵡⴰⵍ}}
+* Mwani: {{t|wmw|semo}}
 * Nahuatl: {{tt+|nah|tlahtolli}}
 * Nanai: {{t|gld|хэсэ}}
 * Nauruan: {{tt+|na|dorer}}
@@ -495,6 +697,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Odia: {{tt+|or|ଶବ୍ଦ}}
 * Ojibwe: {{tt|oj|ikidowin}}
 * Okinawan: {{tt|ryu|くとぅば|tr=kutuba}}
+* Old Anatolian Turkish: {{t|trk-oat|سوز|tr=söz}}
 * Old Church Slavonic:
 *: Cyrillic: {{tt|cu|слово|n}}
 *: Glagolitic: {{tt|cu|ⱄⰾⱁⰲⱁ|n}}
@@ -503,7 +706,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Old Norse: {{tt|non|orð|n}}
 * Oromo: {{t|om|jecha}}
 * Ossetian: {{tt|os|дзырд}}, {{tt|os|ныхас}}
-* Ottoman Turkish: {{t|ota|لغت|tr=lügat}}
+* Ottoman Turkish: {{t|ota|لغت|tr=lügat}}, {{t|ota|سوز|tr=söz}}
 * Pali: {{t|pi|pada|n}}
 * Pannonian Rusyn: {{t|rsk|слово|n}}
 * Papiamentu: {{tt|pap|palabra|f}}
@@ -578,6 +781,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Udmurt: {{tt|udm|кыл}}
 * Ugaritic: {{tt|uga|𐎅𐎆𐎚}}
 * Ukrainian: {{tt+|uk|сло́во|n}}
+* Unami: {{t|unm|laptunakàn}}
 * Urdu: {{tt|ur|شَبْد|m|m}}, {{tt|ur|بات|f}}, {{tt+|ur|کَلِمَہ|m}}, {{tt+|ur|لُغَت|m}}, {{t+|ur|لَفْظ|m}}
 * Uyghur: {{tt|ug|سۆز}}
 * Uzbek: {{tt+|uz|soʻz}}
@@ -593,7 +797,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 * Woiwurrung: {{t|wyi|ngol}}
 * Wolof: {{tt+|wo|baat}}
 * Xhosa: {{tt|xh|igama}}
-* Yagnobi: {{t|yai|гап}}
+* Yaghnobi: {{t|yai|гап}}
 * Yakut: {{tt|sah|тыл}}
 * Yiddish: {{tt+|yi|וואָרט|n}}
 * Yoruba: {{tt|yo|ọ̀rọ̀}}
@@ -814,7 +1018,7 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 #* {{RQ:Keats Lamia|poem=Hyperion|page=181|passage=Thus '''wording''' timidly among the fierce: / "O Father, I am here the simplest voice, {{...}}"}}
 
 =====Derived terms=====
-{{der3|en
+{{col3|en
 |misword
 |reword
 |wordable
@@ -864,15 +1068,15 @@ From {{inh|en|enm|word}}, from {{inh|en|ang|word}}, from {{inh|en|gmw-pro|*word}
 ====Interjection====
 {{en-interj}}
 
-# {{lb|en|slang}} [[truth|Truth]], [[indeed]], that is the truth! The shortened form of the statement "My word is my bond."
+# {{lb|en|slang}} [[truth|Truth]], [[indeed]], that is the truth! {{n-g|The shortened form of the statement "My word is my bond."}}
 #: {{ux|en|"Yo, that movie was epic!" / "'''Word'''?" ("You speak the truth?") / "'''Word'''." ("I speak the truth.")}}
-# {{lb|en|slang|emphatic|stereotypically|AAVE}} An abbreviated form of {{m|en|word up}}; a statement of the acknowledgment of fact with a hint of nonchalant approval.
+# {{lb|en|slang|emphatic|stereotypically|_|AAVE}} {{n-g|An abbreviated form of {{m|en|word up}}; a statement of the acknowledgment of fact with a hint of nonchalant approval.}}
 #* {{quote-book|en|year=2004|author=Shannon Holmes|title=Never Go Home Again: A Novel|page=218|passage="{{...}} Know what I'm sayin'?" / "'''Word'''!" the other man strongly agreed. "Let's do this — "}}
 #* {{quote-book|en|year=2007|author=Gabe Rotter|title=Duck Duck Wally: A Novel|page=105|passage="{{...}} Not bad at all, man. Worth da wait, dawg. '''Word'''." / "You liked it?" I asked dumbly, stoned still, and feeling victorious. / "Yeah, man," said Oral B. "'''Word''' up. {{...}}"}}
 #* {{quote-book|en|year=2007|author=Relentless Aaron|title=The Last Kingpin|page=34|passage="{{...}} I mean, I don't blame you... '''Word'''! {{...}}"}}
 
 ====Quotations====
-* {{seeCites|en}}
+* {{see citations|en}}
 
 ====See also====
 * [[allomorph]]
@@ -999,11 +1203,12 @@ From {{inh|enm|ang|word}}, from {{inh|enm|gmw-pro|*word}}, from {{inh|enm|gem-pr
 # {{lb|enm|rare}} The human faculty of [[language]] as a whole.
 
 =====Related terms=====
-{{rel3|enm|bodeword|byword|hereword|mysword|wacche word|worden|wordy|wytword}}
+{{col3|enm|bodeword|byword|hereword|mysword|wacche word|worden|wordy|wytword}}
 
 =====Descendants=====
 * {{desc|en|word}}
-* {{desc|sco|wird|wourd}}
+* {{desc|gmw-msc|word|wourd}}
+** {{desc|sco|wird|alts=1}}
 
 =====References=====
 * {{R:MED Online|entry= wō̆rd|part of speech=n |id=MED53418 |accessdate=27 February 2020}}
@@ -1015,7 +1220,7 @@ From {{inh|enm|ang|word}}, from {{inh|enm|gmw-pro|*word}}, from {{inh|enm|gem-pr
 
 # {{alt form|enm|werde}}
 
-{{C|enm|Directives|Language|Religion|Talking}}
+{{C|enm|Language|Religion|Talking}}
 
 ==Old English==
 
@@ -1042,24 +1247,23 @@ From {{inh|ang|gmw-pro|*word}}, from {{inh|ang|gem-pro|*wurdą}}.
 #* '''c. 992''', [[w:Ælfric of Eynsham|Ælfric]], [https://en.wikisource.org/wiki/The_Homilies_of_the_Anglo-Saxon_Church/II "Sermon on the Nativiity of Our Lord"]
 #*: {{quote|ang|Ðyllīce '''word''' María hēold ārǣfniġende on hire heortan.|Such '''words''' Mary held, pondering them in her heart.}}
 # [[command]], [[request]]
+# [[Logos]], the Word of [[God]], the second person of the [[Trinity]], [[Jesus]]
 
 =====Declension=====
 {{ang-decl-noun-a-n|word}}
 
 =====Derived terms=====
-{{der3|ang
+{{col3|ang
 |bīword
 |ġylpword
-|*wordbōc
+|witword
 |wordfæst
 |wordiġ
-|witword
+|wordriht
 }}
 
 =====Descendants=====
-* {{desc|enm|word|wurd|weord}}
-** {{desc|sco|word|wourd}}
-** {{desc|en|word}}
+* {{desctree|enm|word}}
 
 ===Etymology 2===
 {{root|ang|ine-pro|*Hwerdʰ-}}
@@ -1080,7 +1284,7 @@ From {{inh|ang|gmw-pro|*word}}, from {{inh|ang|gem-pro|*wurdą}}.
 From {{inh|osx|gmw-pro|*word}}, from {{inh|osx|gem-pro|*wurdą}}.
 
 ===Pronunciation===
-* {{IPA|osx|/wɔrd/}}
+* {{IPA|osx|/wɔrd/|/wɔrt/}}
 
 ===Noun===
 {{osx-noun|n}}

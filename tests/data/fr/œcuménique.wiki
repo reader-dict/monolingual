@@ -5,7 +5,7 @@
 === {{S|adjectif|fr}} ===
 {{fr-rég|mf=oui|e.ky.me.nik}}
 '''œcuménique''' ({{pron|e.ky.me.nik|fr}} ou {{pron|œ.ky.me.nik|fr}} ou {{pron|ø.ky.me.nik|fr}} en fonction des régions) {{mf}}
-# Collectif, commun, courant, dominant, public, universel, général 
+# Collectif, commun, courant, dominant, public, universel, général
 # {{lexique|religion|fr}} Relatif à l’[[œcuménisme]] ; qui concerne ou rassemble l’ensemble des [[confession]]s [[chrétien]]nes.
 #* {{exemple | lang=fr
  | Je ne sais pas pourquoi les bordels sont si souvent situés dans des rues aux noms aussi '''œcuméniques'''… L’hommage du vice à la vertu, sans doute.
@@ -24,6 +24,7 @@
 ==== {{S|traductions}} ====
 {{trad-début}}
 * {{T|en}} : {{trad+|en|ecumenic}}, {{trad+|en|oecumenic}}, {{trad+|en|ecumenical}}, {{trad+|en|oecumenical}}
+* {{T|ca}} : {{trad-|ca|ecumènic}}
 * {{T|hr}} : {{trad-|hr|svjetski}} (1), {{trad-|hr|ekumenski}} (2)
 * {{T|da}} : {{trad-|da|økumeni}}
 * {{T|es}} : {{trad+|es|ecuménico}}
@@ -33,15 +34,16 @@
 * {{T|hu}} : {{trad-|hu|ökumenizmus}}
 * {{T|it}} : {{trad+|it|ecumenico}}
 * {{T|nl}} : {{trad+|nl|oecumene}}
+* {{T|oc}} : {{trad-|oc|ecumenic}}
 * {{T|pl}} : {{trad+|pl|ekumeniczny}}, {{trad+|pl|powszechny}}
 * {{T|pt}} : {{trad+|pt|ecumênico}}
-* {{T|ru}} : {{trad+|ru|экуменический|tr=ekumeničeskij}}
+* {{T|ru}} : {{trad+|ru|экуменический|tr=ekumeničeskij}}, {{trad+|ru|вселенский|tr=vselenskiï}}
 * {{T|sr}} : {{trad-|sr|eкуменизам}}
 {{trad-fin}}
 
 === {{S|prononciation}} ===
 * {{pron-rimes|e.ky.me.nik|fr}}
-* {{pron|e.ky.me.nik|fr}} ou {{pron|ø.ky.me.nik|fr}}
+* {{pron|e.ky.me.nik|ø.ky.me.nik|fr}}
 * {{écouter|Lyon (France)|e.ky.me.nik|lang=fr|audio=LL-Q150 (fra)-WikiLucas00-œcuménique.wav}}
 
 

@@ -5,8 +5,8 @@
 === Etimología ===
 {{etimología}}. <!-- Para una palabra de otro idioma, utilice {{etimología|(CÓDIGO DE IDIOMA)|(PALABRA)|(SIGNIFICADO)}}. Para elegir otra opción u otro tipo de etimología, consulte la página Plantilla:etimología --> 
 
-==== {{locución|es|sustantivo masculino}} ==== <!-- algunas otras opciones: {{sustantivo femenino|es}}, {{sustantivo masculino y femenino|es}}, {{sustantivo propio|es}} -->
-{{inflect.es.sust.ad-lib|buque mercante|buques mercantes}}
+==== {{locución|es|sustantivo|masculino}} ==== <!-- algunas otras opciones: {{sustantivo femenino|es}}, {{sustantivo masculino y femenino|es}}, {{sustantivo propio|es}} -->
+{{es.sust|cop=s}}
 
 <!-- definiciones: borrar todo lo que no sea necesario -->
 ;1 {{csem|náutica|comercio}}: {{plm|buque}} que pertenece a persona o empresa [[particular]], y que se emplea en la conducción de pasajeros y mercancías.<ref name="drae1925">{{DLE1925||buque}}</ref>

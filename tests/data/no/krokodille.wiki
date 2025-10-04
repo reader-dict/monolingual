@@ -8,7 +8,7 @@
 [[kategori:no:Krypdyr]]
 
 ====Etymologi====
-:Fra {{etyl|middelalderlatin|no}} {{term|cocodrillus||krokodille|språk=la}}, fra {{etyl|grc|no}} {{term|κροκόδειλος||sc=polytonic|tr=krokodeilos|språk=grc}}
+:Fra {{etyl|la-med|no}} {{term|cocodrillus||krokodille|språk=la}}, fra {{etyl|grc|no}} {{term|κροκόδειλος||sc=polytonic|tr=krokodeilos|språk=grc}}
 
 ====Se også====
 * [[alligator]]

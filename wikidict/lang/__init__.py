@@ -1,5 +1,7 @@
 """Internationalization stuff."""
 
+from collections import defaultdict
+from collections.abc import Callable
 from importlib import import_module
 from pathlib import Path
 from typing import Any
@@ -25,19 +27,19 @@ def _populate(attr: str) -> dict[str, Any]:
 
 
 # Name of the "Module" special page in the current locale
-module_trans = _populate("module_trans")
+module_trans: dict[str, str] = _populate("module_trans")
 
 # Name of the "Template" special page in the current locale
-template_trans = _populate("template_trans")
+template_trans: dict[str, str] = _populate("template_trans")
 
 # Name of the "Appendix" special page in the current locale
-appendix_trans = _populate("appendix_trans")
+appendix_trans: dict[str, str] = _populate("appendix_trans")
 
 # Wiktionary modules/templates to alter in the database directly
-template_adapters = _populate("template_adapters")
+template_adapters: dict[str, dict[str, Callable[[str], str]]] = _populate("template_adapters")
 
 # Wiktionary modules/templates to override
-template_overrides = _populate("template_overrides")
+template_overrides: dict[str, dict[str, Callable[[tuple[str, ...]], str]]] = _populate("template_overrides")
 
 # Float number separator
 float_separator: dict[str, str] = _populate("float_separator")
@@ -58,55 +60,31 @@ sections: dict[str, tuple[str, ...]] = _populate("sections")
 # Section titles considered interesting to look variants into
 variant_titles: dict[str, tuple[str, ...]] = _populate("variant_titles")
 reverse_variant_titles: dict[str, tuple[str, ...]] = _populate("reverse_variant_titles")
+
 # Template names considered interesting to look variants into
 variant_templates: dict[str, tuple[str, ...]] = _populate("variant_templates")
 reverse_variant_templates: dict[str, tuple[str, ...]] = _populate("reverse_variant_templates")
 
+# Functions to extract variants from templates
+variant_handlers: dict[str, dict[str, Callable[[str, list[str], defaultdict[str, str], str], str]]] = _populate(
+    "variant_handlers"
+)
+
 # Some definitions are not good to keep
 definitions_to_ignore: dict[str, tuple[str, ...]] = _populate("definitions_to_ignore")
 
-# Templates replacements: wikicode -> text conversion
-
-# Templates to ignore: the text will be deleted.
+# Templates to ignore: the text will be deleted
 templates_ignored: dict[str, tuple[str, ...]] = _populate("templates_ignored")
 
-# Templates that will be completed/replaced using italic style.
-# Ex: {{absol}} -> <i>(Absolument)</i>
-# Ex: {{absol|fr}} -> <i>(Absolument)</i>
-# Ex: {{absol|fr|123}} -> <i>(Absolument)</i>
-# Ex: {{absol|fr|123|...}} -> <i>(Absolument)</i>
-templates_italic: dict[str, dict[str, str]] = _populate("templates_italic")
-
-# Templates more complex to manage. More work is needed.
-# The code on the right will be passed to a function that will execute it.
-# It is possible to use any Python function and ones defined in user_functions.py.
-#
-# Available arguments:
-#   - *tpl* (string) containing the template name.
-#   - *parts* (list of strings) containing the all parts of the template.
-#
-# Example with the complete template "{{comparatif de|bien|fr|adv}}":
-#   - *tpl* will contain the string "comparatif de".
-#   - *parts* will contain the list ["comparatif de", "bien", "fr", "adv"].
-#
-# You can access to *tpl* and *parts* to apply changes and get the result wanted.
-templates_multi: dict[str, dict[str, str]] = _populate("templates_multi")
-
-# Templates that will be completed/replaced using custom style.
-templates_other: dict[str, dict[str, str]] = _populate("templates_other")
-
 # Function to find gender(s)
-find_genders = _populate("find_genders")
+find_genders: dict[str, Callable[[str, str], list[str]]] = _populate("find_genders")
 
 # Function to find pronunciation(s)
-find_pronunciations = _populate("find_pronunciations")
+find_pronunciations: dict[str, Callable[[str, str], list[str]]] = _populate("find_pronunciations")
 
-# When a template is not handled by any previous template handlers,
-# this function will be called with *parts* as argument.
-last_template_handler = _populate("last_template_handler")
-
-# URL to fetch a random word
-random_word_url = _populate("random_word_url")
+# URL to fetch a random word (in the current locale preferrably)
+random_word_url: dict[str, str] = _populate("random_word_url")
 
 # Function to adapt the word wikicode before rendering
+# TODO: typing, but I do not know yet how to set keyword-arguments
 adjust_wikicode = _populate("adjust_wikicode")

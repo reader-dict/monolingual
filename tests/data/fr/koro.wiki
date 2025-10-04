@@ -96,18 +96,8 @@
 ==== {{S|synonymes}} ====
 * {{lien|kerno|eo}} (4)
 
-==== {{S|dérivés}} ====
-{{(}}
-* {{lien|bonkora|eo}}
-* {{lien|kora|eo}}
-* {{lien|koramikino|eo}}
-* {{lien|koramiko|eo}}
-* {{lien|kore|eo}}
-* {{lien|korfavori|eo}} : {{lien|avoir pitié|fr}} de, {{lien|prendre en pitié|fr}}
-* {{lien|kortuŝi|eo}}
-* {{lien|senkora|eo}}
-* {{lien|tutkore|eo}}
-{{)}}
+==== {{S|apparentés}} ====
+{{liste dérivés racine|eo|kor}}
 
 === {{S|prononciation}} ===
 * {{écouter|lang=eo|Pays-Bas (partie continentale) (Wijchen)|audio=LL-Q143 (epo)-Robin van der Vliet-koro.wav}}
@@ -191,3 +181,14 @@
 [[Catégorie:Aliments en sranan]]
 [[Catégorie:Racines en espéranto]]
 [[Catégorie:Légumes en sranan]]
+
+== {{langue|nmn}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|nmn}}
+
+=== {{S|nom|nmn}} ===
+'''koro''' {{pron||nmn}}
+# [[cinq|Cinq]].
+
+=== {{S|références}} ===
+* {{R:Naumann et al. 2015}}

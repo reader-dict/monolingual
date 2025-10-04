@@ -268,7 +268,7 @@
 * {{T|nl}} : {{trad+|nl|ervan}}
 {{trad-fin}}
 
-=== {{S|nom|fr}} ===
+=== {{S|nom|fr|num=1}} ===
 {{fr-rég|ɛn}}
 '''en''' {{pron|ɛn|fr}} {{m}}
 # Quinzième [[lettre]] de l’alphabet cyrillique, {{lien|н|ru}}.
@@ -277,6 +277,16 @@
 ==== {{S|traductions}} ====
 {{trad-début}}
 * {{T|it}} : {{trad+|it|en|f}}
+{{trad-fin}}
+
+=== {{S|nom|fr|num=2}} ===
+{{fr-rég}}
+'''en''' {{pron||fr}} {{m}}
+# Cinquième lettre de l’[[alphabet géorgien]], {{lang|ე|ka}}.
+#* {{exemple|lang=fr}}
+
+==== {{S|traduction}} ====
+{{trad-début}}
 {{trad-fin}}
 
 === {{S|prononciation}} ===
@@ -292,6 +302,7 @@
 * Canada : {{pron|ã|fr}}
 {{note}} En français canadien, dépendamment de sa place dans la phrase, la voyelle peut être longue ou courte : dans « Je m’en vais/vas », la voyelle est longue car le verbe est monosyllabique : {{phon|ʒ(ə).mãː.vɛ|fr}} ou {{phon|ʒ(ə).mãː.vɑ|fr}}.{{référence nécessaire|lang=fr}}
 * {{écouter|Lyon (France)||lang=fr|audio=LL-Q150 (fra)-WikiLucas00-en.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-en.wav}}
 
 ==== {{S|homophones|fr}} ====
 * [[an]]
@@ -306,6 +317,19 @@
 * {{R:DAF8}}
 * {{RÉF|1}} Philip H. Miller, Geoffrey K. Pullum, Arnold M. Zwicky, [//www.stanford.edu/~zwicky/4PPFS.pdf “The Principle of Phonology-Free Syntax: four apparent counterexamples in French”], ''Journal of linguistics'', volume 33, {{n°|1}}, 1997, pages 67-90.
 {{Références}}
+
+== {{langue|ain}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|ain}}
+
+=== {{S|pronom personnel|ain}} ===
+'''en''' {{pron|en|ain}}
+# [[moi#fr|Moi]].
+#* {{exemple|lang=ain}}
+
+=== {{S|références}} ===
+==== {{S|bibliographie}} ====
+* {{R:Batchelor}}
 
 == {{langue|fro}} ==
 === {{S|étymologie}} ===
@@ -366,7 +390,7 @@
 * {{R:Raynouard}}
 
 === {{S|anagrammes}} ===
-* {{lien|ne|pro}}
+{{voir anagrammes|pro}}
 
 == {{langue|angevin}} ==
 === {{S|étymologie}} ===
@@ -481,7 +505,7 @@
 * {{écouter|Bretagne (France)||niveau=bon|lang=br|audio=LL-Q12107 (bre)-Ltranvz-en.wav}}
 
 === {{S|anagrammes}} ===
-* {{lien|ne|br}}
+{{voir anagrammes|br}}
 
 == {{langue|ca}} ==
 {{ébauche|ca}}
@@ -527,6 +551,7 @@
 # {{archaïsme|ca}} {{baléare|ca}} {{région|Alghero|ca|d’Alghero}} [[monsieur|Monsieur]], appellation [[courtoise]] ou [[honorifique]] de quelqu’un.
 #* {{exemple | lang=ca
  | Jo penso que els valencians han de seguir l’exemple d''''en''' Sanchis i companyia, que és marxar de la seva terra i deixar-la pels espanyols així segur milloren.
+ | Je pense que les valenciens doivent suivre l'exemple de Monsieur Sanchis et compagnie, qui est de partir de leur terre et la laisser aux espagnols pour qu'ils s'améliorent assurément.
  | source=[http://www.racocatala.cat/forums/fil/169740/vicent-sanchis-si-valencians-tornen-votar-pp-s-accepten-sucidi Racó català - Forums - Vicent Sanchis: "Si els valencians tornen a votar el PP és que accepten el suïcidi"]}}
 
 ==== {{S|variantes}} ====
@@ -691,7 +716,7 @@ Académiques:
 * {{écouter|Białystok (Pologne)||niveau=bon|lang=eo|audio=LL-Q143 (epo)-Wierzbowski-en.wav}}
 
 === {{S|anagrammes}} ===
-* {{lien|ne|eo}}
+{{voir anagrammes|eo}}
 
 === {{S|références}} ===
 ==== {{S|bibliographie}} ====
@@ -734,7 +759,7 @@ Académiques:
 *: Minä lienen nähnyt : ''j’ai probablement vu'' → Minä en liene nähnyt : ''je n’ai probablement pas vu''.
 
 === {{S|anagrammes}} ===
-* {{lien|ne|fi}}
+{{voir anagrammes|fi}}
 
 == {{langue|vls}} ==
 === {{S|étymologie}} ===
@@ -794,12 +819,17 @@ Académiques:
 : {{avk-arbitraire}}<ref>{{avk-ref-arbitraire}}</ref>.
 
 === {{S|particule|avk}} ===
-'''en''' {{pron|ɛn|avk}} <small>ou</small> {{pron|en|avk}}
-# [[oui|Oui]], [[en effet]] (affirmation), [[en vérité]].
+'''en''' {{pron|ɛn|en|avk}}
+# [[oui#fr|Oui]], [[en effet]] (affirmation), [[en vérité]].
 #* {{exemple | lang=avk
  | '''En''' zolonafa da beripkirafa troyta dizvenyet.
  | Il est vraiment important de bien observer le parterre embroussaillé.
- | source=1=[https://youtu.be/icwH8vz3k-w?list=PLwgDqDH7vmpTqraYZXZ3xtpwFl61-L0Vg&t=354 vidéo]}}
+ | source=[https://youtu.be/icwH8vz3k-w?list=PLwgDqDH7vmpTqraYZXZ3xtpwFl61-L0Vg&t=354 vidéo]}}
+#* {{exemple|Pizauxa ke xala ke eyelt dimlicawer nume dratcer da '''en''' fu nyuwer.
+|Le rivet de la bretelle du sac se desserre donc menace de vraiment lâcher.
+|source=Kotavusa Virda, ''17<sup>-e</sup> Otuk'', 2024, page 4 
+|lien=https://www.calameo.com/read/007223618d0ebcdf1faa2
+|lang=avk}}
 
 ==== {{S|dérivés}} ====
 * {{lien|edeen|avk}}
@@ -813,7 +843,8 @@ Académiques:
 * {{écouter|lang=avk|France|ɛn|audio=en (avk).wav}}
 
 === {{S|anagrammes}} ===
-* {{lien|ne|avk}}, {{lien|né|avk}}
+{{voir anagrammes|avk}}
+
 === {{S|références}} ===
 * {{Kotapedia|en}} (particule)
 *{{Kotapedia|h_e}} (forme de verbe)
@@ -900,6 +931,33 @@ Académiques:
 # [[le|Le]].
 # [[leur|Leur]], [[eux]], [[elles]].
 
+== {{langue|mrs}} ==
+=== {{S|étymologie}} ===
+: {{ébauche-étym|mrs}}
+
+=== {{S|pronom personnel|mrs}} ===
+'''en''' {{pron||mrs}} {{s}}
+# [[il#fr|Il]], [[elle]], [[le]], [[la]].
+#* {{exemple|lang=mrs}}
+
+==== {{S|vocabulaire}} ====
+{{pronoms personnels/mrs}}
+
+=== {{S|préposition|mrs}} ===
+'''en''' {{pron||mrs}}
+# [[à|À]] (personne).
+#* {{exemple|lang=mrs}}
+# [[en#fr|En]], [[dans]] (langue).
+#* {{exemple|lang=mrs}}
+
+=== {{S|adverbe|mrs}} ===
+'''en''' {{pron||mrs}}
+# [[et|Et]] [[puis]].
+#* {{exemple|lang=mrs}}
+
+=== {{S|références}} ===
+* {{R:Crowley 2006}}
+
 == {{langue|nl}} ==
 === {{S|étymologie}} ===
 : Du {{étyl|proto-germanique|nl}} {{recons|lang-mot-vedette=nl|andi|proto-germanique}}.
@@ -916,7 +974,7 @@ Académiques:
 * {{écouter|lang=nl|Pays-Bas (partie continentale) (Wijchen)|audio=LL-Q7411 (nld)-Robin van der Vliet-en.wav}}
 
 === {{S|anagrammes}} ===
-* {{lien|ne|nl}}
+{{voir anagrammes|nl}}
 
 === {{S|références}} ===
 {{références}}
@@ -1058,7 +1116,6 @@ Académiques:
 [[Catégorie:Nombres en slovène]]
 
 == {{langue|sv}} ==
-
 === {{S|étymologie}} ===
 : {{lien-ancre-étym|sv|nom}} Du {{étyl|non|sv|einir}}.
 
@@ -1073,8 +1130,8 @@ Académiques:
 #* {{exemple|lang=sv}}
 
 === {{S|prononciation}} ===
-* {{ébauche-pron|sv}}
-** {{écouter|lang=sv|Suède (Gotland)||audio=Sv-en.ogg}}
+* {{écouter|lang=sv|Suède (Gotland)||audio=Sv-en.ogg}}
+* {{écouter|Suède||lang=sv|audio=LL-Q9027 (swe)-Ainali-en.wav}}
 
 === {{S|références}} ===
 * {{Ouvrage|prénom1=Ante|nom1=Aikio|titre=Uralic Etymological Dictionary|année=2020|lire en ligne=https://www.academia.edu/41659514/URALIC_ETYMOLOGICAL_DICTIONARY_draft_version_of_entries_A_%C4%86_|page=8-9}}
@@ -1090,20 +1147,37 @@ Académiques:
 # [[largeur|Largeur]].
 
 === {{S|anagrammes}} ===
-* {{lien|ne|crh}}
+{{voir anagrammes|crh}}
 
 == {{langue|tok}} ==
 === {{S|étymologie}} ===
-: {{ébauche-étym|tok}}
+: Du {{étyl|nl|tok|en}}.
 
-=== {{S|nom|tok}} ===
-'''en''' {{pron||tok}}
+=== {{S|particule|tok}} ===
+'''en''' {{pron|en|tok}}
 # [[et|Et]].
+#* {{exemple|lang=tok}}
 
 ==== {{S|vocabulaire}} ====
 * {{lien|anu|tok}}
 
+=== {{S|écriture}} ===
+* [[File:En - sitelen pona in Sonja Lang's handwriting.svg|40px]] {{term|[[sitelen pona]]}}
+* [[File:En - sitelen sitelen word symbol.svg|40px]] {{term|[[sitelen sitelen]]}}
+
+=== {{S|taux de reconnaissance}} ===
+* {{tok-reconnaissance|2024|99|core}}
+* {{tok-reconnaissance|2023|99|core}}
+* {{tok-reconnaissance|2022|98|core}}
+
 === {{S|prononciation}} ===
 * {{écouter|Toulouse (France)||niveau=bon|lang=tok|audio=LL-Q36846-Lepticed7-en.wav}}
+* {{écouter|Canada||tok|audio=Toki Pona - jan Lakuse - en.ogg}}
+* {{écouter|||tok|audio=Toki Pona - kala Asi - en.ogg}}
+* {{écouter|||tok|audio=LL-Q36846 (tok)-Jan Ossen-en.wav}}
 * {{écouter|||niveau=moyen|lang=tok|audio=LL-Q36846 (tok)-John Gordon Reid-en.wav}}
 * {{écouter|Bandung (Indonésie)||niveau=moyen|lang=tok|audio=LL-Q36846 (tok)-A. D. Prakasa-en.wav}}
+* {{écouter|Midwest (États-Unis)||niveau=bon|lang=tok|audio=LL-Q36846 (tok)-Rdgscratch is back-en.wav}}
+
+=== {{S|références}} ===
+* {{R:SonaPona|22932}}

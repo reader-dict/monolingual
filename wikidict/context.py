@@ -8,9 +8,6 @@ import wikitextprocessor
 from wikitextprocessor.dumpparser import add_default_templates
 from wikitextprocessor.interwiki import init_interwiki_map
 
-from . import constants, lang, parse, utils
-from .namespaces import namespaces
-
 CTX: wikitextprocessor.Wtp
 INITIALIZED = False
 
@@ -20,6 +17,8 @@ DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 1
 
 
 def setup_modules_db(locale: str) -> bool:
+    from . import parse, utils
+
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_file(source_dir)):
@@ -42,14 +41,20 @@ def patch() -> None:
     assert hasattr(wikitextprocessor.Wtp, "_fmt_errmsg")  # To catch future API changes
     setattr(wikitextprocessor.Wtp, "_fmt_errmsg", lambda *_: None)
 
-    # Remove a noisy `print()` statement on warning emitted from Lua code
+    # Remove noisy `print()` statements emitted from Lua code
     # https://github.com/tatuylonen/wikitextprocessor/blob/1ab82dac511a36ad3aa089ff908637d2ddabf5e2/src/wikitextprocessor/lua/mw.lua#L68
     lua_src = Path(wikitextprocessor.__file__).parent / "lua"
     lua_mv = lua_src / "mw.lua"
     lua_mv.write_text(
-        lua_mv.read_text().replace(
-            'print("mw.addWarning", text)',
-            '-- print("mw.addWarning", text)',
+        lua_mv.read_text()
+        .replace(
+            '    print("mw.addWarning", text)',
+            '    -- print("mw.addWarning", text)',
+            count=1,
+        )
+        .replace(
+            '    print("mw.incrementExpensiveFunctionCount")',
+            '    -- print("mw.incrementExpensiveFunctionCount")',
             count=1,
         )
     )
@@ -61,6 +66,8 @@ def init(db: Path, locale: str) -> None:
     if INITIALIZED:
         return
 
+    from . import constants, lang
+
     patch()
 
     CTX = wikitextprocessor.Wtp(
@@ -68,9 +75,11 @@ def init(db: Path, locale: str) -> None:
         lang_code=locale,
         project="wiktionary",
         quiet=True,
+        parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
         template_override_funcs={
-            **dict.fromkeys(constants.MODULES_TO_OVERRIDE_GLOBALLY, lambda _: ""),
-            **lang.template_overrides[locale],
+            "flexion": lambda _: "",
+            "rev-flexion": lambda _: "",
+            **lang.template_overrides[locale],  # type: ignore[dict-item]
         },
     )
     init_interwiki_map(CTX)
@@ -99,12 +108,17 @@ def expand(wikitext: str, locale: str) -> str:
 
 
 def adapt_templates(locale: str) -> None:
+    from . import lang
+
     for template, adapter in lang.template_adapters[locale].items():
         if not (page := CTX.get_page(template)):
             raise RuntimeError(f"Module/Template not found in the database: {template!r}")
 
+        assert page.body  # For Mypy
+
         if (new_body := adapter(page.body)) == page.body:
-            raise ValueError(f"Module/Template body unchanged: {template!r}")
+            print(f"Module/Template body unchanged: {template!r}")
+            continue
 
         CTX.add_page(
             template,
@@ -118,6 +132,8 @@ def adapt_templates(locale: str) -> None:
 
 @lru_cache(maxsize=256)
 def all_namespaces(locale: str) -> str:
+    from .namespaces import namespaces
+
     all_namespaces_ = set()
     for namespace in namespaces[locale] + namespaces["en"]:
         all_namespaces_.add(namespace)
@@ -239,15 +255,21 @@ def clean_html_output(html: str, locale: str) -> str:
     """
     >>> clean_html_output('<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p><span class="form-of-definition use-with-mention"><a href="/wiki/Appendix:Glossary#abbreviation" title="Appendix:Glossary">Abbreviation</a> of <span class="form-of-definition-link"><i class="Latn mention" lang="en"><a href="/wiki/Acre#English" title="Acre">Acre</a></i></span></span>: a <a href="/wiki/state" title="state">state</a> of <span class="Latn" lang="en"><a href="/wiki/Brazil#English" title="Brazil"><b some="attr">Brazil</a></b></span>\\n</p></div>', "en")
     'Abbreviation of <i>Acre</i>: a state of <b>Brazil</b>'
+    >>> clean_html_output('<span class="interProject">[[w:Acanthis (mythology)|Wikipedia ]]</span>', "en")  # Acanthis
+    ''
+    >>> clean_html_output('<em title=Grabowski></em>', "eo")  # kaskedo
+    ''
+    >>> clean_html_output('<templatestyles src="definición impropia/styles.css" />', "eo")  # -acho
+    ''
     """
+    # Wipe out inter project links
+    html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
+
     # Remove those tags
-    html = re.sub(r"</?(?:a|bdi|div|li|ol|p|span|strong|ul)[^>]*>", "", html)
+    html = re.sub(r"</?(?:a|bdi|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
 
     # Clean-up attributes from those tags
     html = re.sub(r"<(b|i|small|sub|sup)\s+[^>]+>", r"<\1>", html)
-
-    # Purge those special HTML entities
-    html = html.replace("&lrm;", "").replace("&#32;", " ")
 
     # Remove unwanted categories
     return clean_html_input(html, locale).strip()

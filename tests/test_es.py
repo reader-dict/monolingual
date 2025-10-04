@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("es")
 
 
 @pytest.mark.parametrize(
@@ -14,18 +22,18 @@ from wikidict.utils import process_templates
             "-acho",
             [],
             ["Del latín <i>-acĕus</i>. De allí también <i>-áceo</i>."],
-            {"Sufijo": ["<i>Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos</i>."]},
+            {"Sufijo": ["Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos."]},
             [],
         ),
         (
             "bicicleta",
             [],
             [
-                "Del francés <i>bicyclette</i> y este diminutivo del francés <i>bicycle</i>, formado sobre el modelo del francés <i>tricycle</i>, del latín <i>bis</i>) y <i>-cycle</i> ( del latín <i>cyclus</i>, del griego <i>κύκλος</i> (<i>kýklos</i>, 'círculo; rueda'))."
+                "Del francés <i>bicyclette</i> y este diminutivo del francés <i>bicycle</i>, formado sobre el modelo del francés <i>tricycle</i>, del latín <i>bis</i>) y -cycle ( del latín <i>cyclus</i>, del griego κύκλος&nbsp;(kýklos,&nbsp;'círculo; rueda'))."
             ],
             {
                 "Sustantivo": [
-                    "<i>(Vehículos, ciclismo)</i>: Vehículo, comúnmente de dos ruedas iguales, propulsado mediante la aplicación de la fuerza de las piernas sobre los pedales que la transmiten hacia los piñones y una cadena moviendo la rueda trasera."
+                    "Vehículos, ciclismo: Vehículo, comúnmente de dos ruedas iguales, propulsado mediante la aplicación de la fuerza de las piernas sobre los pedales que la transmiten hacia los piñones y una cadena moviendo la rueda trasera."
                 ]
             },
             [],
@@ -36,7 +44,7 @@ from wikidict.utils import process_templates
             [],
             {
                 "Locución": [
-                    "<i>(Náutica, comercio)</i>: Buque que pertenece a persona o empresa particular, y que se emplea en la conducción de pasajeros y mercancías."
+                    "Náutica, comercio: Buque que pertenece a persona o empresa particular, y que se emplea en la conducción de pasajeros y mercancías."
                 ]
             },
             [],
@@ -48,12 +56,12 @@ from wikidict.utils import process_templates
             {
                 "Sustantivo": [
                     "Lámina en donde se imprime algún mensaje, ya sea con palabras, símbolos o imágenes, y se deja a la vista para difundir información.",
-                    "<i>(Política)</i>: Escrito anónimo que se fija sobre un cartel y se deja en un lugar público con mensajes satíricos hacia algún político.",
+                    "Política: Escrito anónimo que se fija sobre un cartel y se deja en un lugar público con mensajes satíricos hacia algún político.",
                     "Escrito que se fija sobre un cartel en un lugar público, en donde se invita a otra persona a una contienda.",
                     "Escrito que se fija sobre un cartel en un lugar público, en donde se extorsiona al enemigo en una negociación, por ejemplo, en lo que respecta a la liberación de prisioneros.",
                     "Prestigio.",
-                    "<i>(Pesca)</i>: Red que se usa para la pesca de la sardina.",
-                    "<i>Variante de</i> cártel.",
+                    "Pesca: Red que se usa para la pesca de la sardina.",
+                    "Variante de&nbsp;cártel.",
                 ]
             },
             [],
@@ -62,7 +70,7 @@ from wikidict.utils import process_templates
             "comer",
             [],
             [
-                "Del latín <i>comedĕre</i>, infinitivo del latín <i>comedo</i>, formado a partir <i>cum</i> ('con') y <i>edō</i> ('comer')."
+                "Se documenta por primera vez en 1140. Del latín <i>comedĕre</i>, infinitivo del latín <i>comedo</i>, formado a partir cum&nbsp;('con') y edō&nbsp;('comer')."
             ],
             {
                 "Verbo": [
@@ -71,7 +79,7 @@ from wikidict.utils import process_templates
                     "Malgastar bienes o recursos.",
                     "Corroer o consumir.",
                     "Producir comezón.",
-                    "<i>(Juegos)</i>: En los juegos de mesa, eliminar una pieza del contrario.",
+                    "Juegos: En los juegos de mesa, eliminar una pieza del contrario.",
                     "Omitir elementos de información cuando se habla o escribe.",
                     "Llevar encogidas algunas prendas de ropa, como los calcetines.",
                     "Tener relaciones sexuales con alguien.",
@@ -82,12 +90,12 @@ from wikidict.utils import process_templates
         (
             "entrada",
             [],
-            ["De <i>entrado</i> (<i>participio de <i>entrar</i></i>) y el sufijo flexivo <i>-a</i> para el femenino."],
+            ["De <i>entrado</i> (<i>participio de <i>entrar</i></i>) y el sufijo flexivo -a para el femenino."],
             {
                 "Sustantivo": [
                     "Ticket o boleto; credencial, billete o documento que autoriza a entrar en un evento, espectáculo o lugar.",
-                    "<i>(Gastronomía)</i>: Plato que se sirve al comienzo de la comida.",
-                    "<i>(Lingüística)</i>:",
+                    "Gastronomía: Plato que se sirve al comienzo de la comida.",
+                    "Lingüística:",
                     (
                         "Vocablo que titula un artículo de diccionario.",
                         "Artículo de un diccionario, enciclopedia u obra de referencia.",
@@ -102,17 +110,17 @@ from wikidict.utils import process_templates
                     "Amistad o acogida que recibe alguien en una familia.",
                     "En ciertos juegos de naipes, acción de indicar qué cartas se guardan y por qué.",
                     "Autorización para ingresar en ciertos recintos reservados, tales como oficinas, recámaras, etc., en especial de palacios o sitios de gobierno.",
-                    "<i>(Anatomía)</i>: Zona sin cabello en la parte superior de la frente.",
-                    "<i>(Comercio)</i>: Cantidad de dinero que ingresa en una caja o cuenta.",
-                    "<i>(Comercio)</i>: Anotación o partida en el haber que indica dinero entrante (el aumento de un activo o la disminución de un pasivo).",
-                    "<i>(Comercio)</i>: Cuota inicial; primer pago que se hace en la compra de algo a crédito o a plazos.",
-                    "<i>(Milicia)</i>: Ingreso inicial de una tropa, un enemigo, etc., en el proceso de invadir un territorio.",
+                    "Anatomía: Zona sin cabello en la parte superior de la frente.",
+                    "Comercio: Cantidad de dinero que ingresa en una caja o cuenta.",
+                    "Comercio: Anotación o partida en el haber que indica dinero entrante (el aumento de un activo o la disminución de un pasivo).",
+                    "Comercio: Cuota inicial; primer pago que se hace en la compra de algo a crédito o a plazos.",
+                    "Milicia: Ingreso inicial de una tropa, un enemigo, etc., en el proceso de invadir un territorio.",
                     "Días iniciales de un periodo (un año, un mes, una temporada, una estación, etc.).",
-                    "<i>(Deporte)</i>: Enfrentamiento o pase inicial entre contrarios.",
-                    "<i>(Béisbol)</i>: Cada división de un partido, en que uno de los equipos tiene el turno para batear.",
-                    "<i>(Arquitectura)</i>: Extremo o punta de un travesaño o madero que está metido en una pared o asentado sobre una solera.",
-                    "<i>(Ingeniería)</i>: Turno o periodo en que trabaja un grupo de operarios.",
-                    "<i>(Música)</i>: Momento en que una voz o instrumento comienza a intervenir en una pieza musical.",
+                    "Deporte: Enfrentamiento o pase inicial entre contrarios.",
+                    "Béisbol: Cada división de un partido, en que uno de los equipos tiene el turno para batear.",
+                    "Arquitectura: Extremo o punta de un travesaño o madero que está metido en una pared o asentado sobre una solera.",
+                    "Ingeniería: Turno o periodo en que trabaja un grupo de operarios.",
+                    "Música: Momento en que una voz o instrumento comienza a intervenir en una pieza musical.",
                     "Castigo con golpes; tunda, zurra, pela.",
                     "Información que se recibe en un mensaje o proceso de recibirla.",
                 ]
@@ -135,13 +143,13 @@ from wikidict.utils import process_templates
             "futuro",
             ["[fuˈtu.ɾo]"],
             [
-                'Del latín <i>futūrus</i>, participio activo futuro irregular de <i>esse</i> (\'ser\'), y este el protoindoeuropeo <i>*bhū-</i>, <i>*bʰew-</i> ("existir", "llegar a ser").'
+                'Del latín <i>futūrus</i>, participio activo futuro irregular de esse&nbsp;(\'ser\'), y este el protoindoeuropeo bhū-, bʰew- ("existir", "llegar a ser").'
             ],
             {
                 "Adjetivo": ["Que está aún por ocurrir o hacerse efectivo."],
                 "Sustantivo": [
                     "Tiempo que aún no ha llegado.",
-                    "<i>(Lingüística)</i>: Tiempo verbal que expresa una acción que aún no ha sido realizada.",
+                    "Lingüística: Tiempo verbal que expresa una acción que aún no ha sido realizada.",
                     "Novio o prometido de una mujer a la que va a desposar.",
                 ],
             },
@@ -153,8 +161,8 @@ from wikidict.utils import process_templates
             [],
             {
                 "Interjección": [
-                    "<i>Úsase para expresar agradecimiento</i>.",
-                    "<i>Irónicamente expresa desagrado, desprecio o enfado</i>.",
+                    "Úsase para expresar agradecimiento.",
+                    "Irónicamente expresa desagrado, desprecio o enfado.",
                 ]
             },
             [],
@@ -163,14 +171,18 @@ from wikidict.utils import process_templates
             "Guyana",
             [],
             [],
-            {},
+            {
+                "Sustantivo": [
+                    "Países: País ubicado al noreste de Sudamérica. Limita al oeste con Venezuela, al norte con el océano Atlántico, al este con Surinam y al sur Brasil.",
+                ],
+            },
             [],
         ),
         (
             "hasta",
             [],
             [
-                "Del castellano antiguo <i>fasta</i>, del castellano antiguo <i>hata</i>, <i>fata</i>, del árabe حتى (<i>ḥattā</i>), influido por el latín <i>ad</i> ('a') <i>ista</i> ('esta').",
+                "Del castellano antiguo <i>fasta</i>, del castellano antiguo <i>hata</i>, fata, del árabe حتى (<i>ḥattā</i>), influido por el latín ad&nbsp;('a') ista&nbsp;('esta').",
             ],
             {
                 "Adverbio": [
@@ -183,18 +195,18 @@ from wikidict.utils import process_templates
                     "Seguida de <i>cuando</i> o de un gerundio, preposición que indica valor inclusivo.",
                     "Seguida de <i>que</i>, preposición que indica valor exclusivo.",
                 ],
-                "Sustantivo": ["<i>Grafía obsoleta de</i> asta."],
+                "Sustantivo": ["Grafía obsoleta de&nbsp;asta."],
             },
             [],
         ),
         (
             "hocico",
             [],
-            ["De <i>hocicar</i>."],
+            ["De hocicar."],
             {
                 "Sustantivo": [
-                    "<i>(Zootomía)</i>: Parte más o menos prolongada de la cabeza de algunos animales en que están la boca y las narices.",
-                    "<i>(Anatomía)</i>: Hocico de una persona cuando tiene muy abultados los labios.",
+                    "Zootomía: Parte más o menos prolongada de la cabeza de algunos animales en que están la boca y las narices.",
+                    "Anatomía: Hocico de una persona cuando tiene muy abultados los labios.",
                     "Cara.",
                     "Gesto que denota enojo o enfado.",
                     "Forma despectiva para referirse a la boca de alguien.",
@@ -208,7 +220,7 @@ from wikidict.utils import process_templates
             [],
             ["Del latín <i>illōs</i>, acusativo masculino plural del latín <i>ille</i>."],
             {
-                "Artículo": ["<i>Artículo determinado masculino plural.</i>."],
+                "Artículo": ["Artículo determinado masculino plural. El singular es lo."],
                 "Pronombre": [
                     "<i>Pronombre personal masculino de objeto directo (acusativo), tercera persona del plural.</i>."
                 ],
@@ -231,12 +243,12 @@ from wikidict.utils import process_templates
         ),
         (
             "también",
-            ["[tamˈbjen]"],
+            [],
             ["Compuesto de <i>tan</i> y <i>bien</i>"],
             {
                 "Adverbio": [
-                    "<i>Utilizado para especificar que una o varias cosas son similares, o que comparten atributos con otra previamente nombrada</i>.",
-                    "<i>Usado para añadir algo a lo anteriormente mencionado</i>.",
+                    "Utilizado para especificar que una o varias cosas son similares, o que comparten atributos con otra previamente nombrada.",
+                    "Usado para añadir algo a lo anteriormente mencionado.",
                 ]
             },
             [],
@@ -245,7 +257,7 @@ from wikidict.utils import process_templates
             "uni-",
             [],
             ["Del latín <i>uni-</i>, del latín <i>unus</i>."],
-            {"Prefijo": ["<i>Elemento compositivo que significa</i> uno. un único, relativo a uno solo."]},
+            {"Prefijo": ["Elemento compositivo que significa uno. un único, relativo a uno solo."]},
             [],
         ),
         (
@@ -276,56 +288,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        (
-            "{{adjetivo de sustantivo|el mundo árabe}}",
-            "Que pertenece o concierne a el mundo árabe",
-        ),
-        (
-            "{{adjetivo de sustantivo|chamán o al chamanismo|al}}",
-            "Que pertenece o concierne al chamán o al chamanismo",
-        ),
-        ("{{año de documentación|1250}}", "Uso atestiguado desde 1250"),
-        ("{{color|#DDB88E|espacio=6}}", "[RGB #DDB88E]"),
-        ("{{color|leng=es}}", "[RGB #FFFFFF]"),
-        ("{{contexto|Educación}}", "<i>(Educación)</i>"),
-        ("{{coord|04|39|N|74|03|O|type:country}}", "04°39′N 74°03′O"),
-        ("{{diminutivo|historia}}", "<i>Diminutivo de</i> historia"),
-        ("{{etimología2}}", ""),
-        ("{{etimología2|...}}", ""),
-        ("{{etimología2|leng=es|alteración del más antiguo}}", "alteración del más antiguo"),
-        ("{{etimología2|alteración del más antiguo}}", "alteración del más antiguo"),
-        (
-            "{{impropia|Utilizado para especificar...}}",
-            "<i>Utilizado para especificar...</i>",
-        ),
-        ("{{l|es|tamo}}", "tamo"),
-        ("{{l+|pt|freguesia}}", "<i>freguesia</i>"),
-        ("{{neologismo|feminismo}}", "<b>Neologismo, Feminismo</b>"),
-        ("{{nombre científico}}", "<sup>nombre científico</sup>"),
-        ("{{plm|cansado}}", "Cansado"),
-        ("{{redirección suave|protocelta}}", "<i>Véase</i> protocelta"),
-        ("{{-sub|4}}", "<sub>4</sub>"),
-        ("{{subíndice|5}}", "<sub>5</sub>"),
-        ("{{-sup|2}}", "<sup>2</sup>"),
-        ("{{superíndice|5}}", "<sup>5</sup>"),
-        ("{{ucf}}", "Foo"),
-        ("{{ucf|mujer}}", "Mujer"),
-        ("{{variante|atiesar}}", "<i>Variante de</i> atiesar"),
-        (
-            "{{variante|diezmo|texto=Variante anticuada de}}",
-            "<i>Variante anticuada de</i> diezmo",
-        ),
-        ("{{variante obsoleta|hambre}}", "<i>Variante obsoleta de</i> hambre"),
-        ("{{variante rara|pecuniario}}", "<i>Variante poco usada de</i> pecuniario"),
-        ("{{variante subestándar|-mos}}", "<i>Variante subestándar de</i> -mos"),
-        ("{{verde|*exfollare}}", "<i>*exfollare</i>"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "es") == expected

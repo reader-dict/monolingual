@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("da")
 
 
 @pytest.mark.parametrize(
@@ -135,7 +143,7 @@ from wikidict.utils import process_templates
             },
             [],
         ),
-        ("PMV", [], [], {"Substantiv": ["<i>(militær)</i> <i>Forkortelse af</i> <b>pansret mandskabsvogn</b>"]}, []),
+        ("PMV", [], [], {"Substantiv": ["(<i>militær</i>) <i>Forkortelse af</i> <b>pansret mandskabsvogn</b>"]}, []),
     ],
 )
 def test_parse_word(
@@ -153,20 +161,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{fysik}}", "(<i>fysik</i>)"),
-        ("{{label|militær|våben}}", "(<i>militær</i>, <i>våben</i>)"),
-        ("{{l|da|USA}}", "USA"),
-        ("{{l|da|USA|America}}", "USA"),
-        ("{{trad|en|limnology}}", "limnology<sup>(en)</sup>"),
-        ("{{URchar|الكحل}}", "الكحل"),
-        ("{{ZHchar|北京}}", "北京"),
-    ],
-)
-def test_process_template(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "da") == expected

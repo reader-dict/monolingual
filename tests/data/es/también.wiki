@@ -1,12 +1,12 @@
 == {{lengua|es}} ==
-{{pron-graf|fone=tamˈbjen}}
+{{pron-graf}}
 
 === Etimología ===
 {{etimología|compuesto|tan|bien}}
 
 === {{adverbio de afirmación|es}} ===
 ;1: {{impropia|Utilizado para especificar que una o varias cosas son similares, o que comparten atributos con otra previamente nombrada}}.
-{{sinónimos|igualmente|asimismo|de igual modo|incluso|al igual|paralelamente|encima|igualmente}}.
+{{sinónimos|igualmente|asimismo|de igual modo|incluso|al igual|paralelamente|encima}}.
 
 ;2: {{impropia|Usado para [[añadir]] algo a lo anteriormente mencionado}}.
 {{sinónimos|además|en añadidura}}.
@@ -19,25 +19,26 @@
 {{t|da|t1=også}}
 {{t|sl|a1=1|t1=tudi}}
 {{t|eo|t1=ankaŭ}}
-{{t|eu|t1=ere}}
 {{t|fi|t1=myös|t2=-kin}}
 {{t|fr|a1=1-2|t1=aussi}}
 {{t|fy|t1=ek}}
 {{t|hu|t1=is}}
 {{t|el|t1=και}}
-{{t|yua|t1=la’tene}}
+{{t|gn|t1=avei}}
 {{t|id|t1=juga|t2=pula}}
 {{t|en|a1=1|t1=too|a2=1-2|t2=also}}
 {{t|it|a1=1|t1=anche}}
+{{t|yua|t1=la’tene}}
 {{t|nl|t1=ook}}
 {{t|no|t1=også}}
 {{t|pap|t1=tambe}}
 {{t|pl|t1=też}}
 {{t|pt|t1=também}}
 {{t|sa|t1=अपि}}
-{{t|su|t1=ogé}}
 {{t|sv|t1=också}}
+{{t|su|t1=ogé}}
 {{t|wa|t1=eto}}
+{{t|eu|t1=ere}}
 {{trad-abajo}}
 
 == Referencias y notas ==

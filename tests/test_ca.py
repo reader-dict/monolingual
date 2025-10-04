@@ -30,7 +30,7 @@ def setup_lua_ctx() -> None:
             "-itzar",
             [],
             [],
-            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> (-ízein)."],
+            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> &lrm;(-ízein)."],
             {
                 "Sufix": [
                     "Aplicat a un substantiu o adjectiu forma un verb que expressa la seva realització o convertir-se'n.",
@@ -72,9 +72,9 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             [
-                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> («bóta»), segle XIII.",
+                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> &lrm;(«bóta»), segle XIII.",
                 "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
-                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> («barca petita»), actualment <i>boat</i>.",
+                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> &lrm;(«barca petita»), actualment <i>boat</i>.",
                 "[4] Informàtica: afèresi de <i>robot</i>, calc de l’anglès <i>bot</i>, segle XX.",
             ],
             {
@@ -103,9 +103,9 @@ def setup_lua_ctx() -> None:
             {
                 "Adjectiu": [
                     "(negatiu) Ni un.",
-                    "(interrogatiu, condicional) Algun.",
+                    "(interrogatiu,&#32;condicional) Algun.",
                     "(negatiu) Gens de.",
-                    "(interrogatiu, condicional) Alguna mena de.",
+                    "(interrogatiu,&#32;condicional) Alguna mena de.",
                 ],
                 "Nom": [
                     "(anatomia) Part superior i anterior del cos d'un animal.",
@@ -133,7 +133,7 @@ def setup_lua_ctx() -> None:
             "cas",
             [],
             ["m"],
-            ["Del llatí <i>casus</i> («caiguda, cas fortuït»), de <i>cadere</i> («caure»), segle XIV."],
+            ["Del llatí <i>casus</i> &lrm;(«caiguda, cas fortuït»), de <i>cadere</i> &lrm;(«caure»), segle XIV."],
             {
                 "Contracció": [
                     "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
@@ -176,7 +176,7 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             [
-                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> («lacetans»), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> (Kastelanoi) o <i>Κατελανοι</i> (Katelanoi). Vegeu més informació a <i>Catalunya</i>.",
+                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(«lacetans»), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
             {
                 "Adjectiu": [
@@ -225,11 +225,13 @@ def setup_lua_ctx() -> None:
             "disset",
             [],
             ["m", "f"],
-            ["Del llatí <i>decem et septem</i> (literalment «deu i set»)."],
+            [
+                "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> &lrm;(literalment «deu i set»), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
+            ],
             {
                 "Numeral": [
                     "(cardinal) Nombre enter situat entre el setze i el divuit.",
-                    "(valor ordinal) Dissetè, dissetena.",
+                    "(valor ordinal) dissetè, dissetena.",
                 ],
                 "Nom": ["Xifra i nombre 17.", "Dissetena hora."],
             },
@@ -268,7 +270,7 @@ def setup_lua_ctx() -> None:
             "hivernacle",
             [],
             ["m"],
-            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> («hivernar»)."],
+            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(«hivernar»)."],
             {"Nom": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
@@ -290,7 +292,7 @@ def setup_lua_ctx() -> None:
                 "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
                 "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
                 "[3] Nota musical: de les inicials llatines <i>Sancte</i> <i>Ioannes</i> de l'himne <i>Ut queant laxis</i> de Pau el Diaca d'on es va extraure l'escala musical, segle XIII.",
-                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> («ell»).",
+                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> &lrm;(«ell»).",
             ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],

@@ -23,7 +23,7 @@
 #* {{exemple | lang=fr
  | Un entretien régulier (plaques de cuisson, four, filtre de hotte, robinetterie, baignoire et douche avec leurs joints '''silicone''', cuvette wc, tapis, carrelage, spots, portes, châssis...) conserve l'immeuble en meilleur état et vous.
  | source=Pierre Jammar , ''Tout savoir sur les dégâts locatifs'', Éd. Édipro, 2014}}
-## {{par extension|fr}} Nom donné abusivement par le grand [[public#fr-nom-2|public]] à toutes sortes de mastics vendu en cartouche et ce indépendamment de sa [[composition]].
+## {{par extension|fr}} Toutes sortes de mastics vendu en cartouche et ce indépendamment de sa [[composition]].
 ##* {{exemple | lang=fr
  | La cellule est souvent constituée de panneaux modulaires en acier inoxydable dont l'étanchéité est assurée par joints au '''silicone'''.
  | source= Camille Knockaert, ''Le fumage du poisson'', Éd. Ifremer, 2002}}
@@ -41,12 +41,17 @@
 {{trad-début|Composé inorganique|1}}
 * {{T|de}} : {{trad+|de|Silikon|n}}
 * {{T|en}} : {{trad+|en|silicone}}
+* {{T|ca}} : {{trad-|ca|silicona|f}}
 * {{T|hr}} : {{trad+|hr|silikon}}
 * {{T|it}} : {{trad+|it|silicone|m}}
 * {{T|ja}} : {{trad-|ja|シリコーン|tr=shirikōn}}, {{trad+|ja|シリコン|tr=shirikon}}
+* {{T|oc}} : {{trad-|oc|silicòna|f}}
 * {{T|se}} : {{trad|se|silikona}}
 * {{T|cs}} : {{trad-|cs|silikon|m}}
 {{trad-fin}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|carrelage|colle}}
 
 === {{S|verbe|fr|flexion}} ===
 {{fr-verbe-flexion|siliconer|ind.p.1s=oui|ind.p.3s=oui|sub.p.1s=oui|sub.p.3s=oui|imp.p.2s=oui}}
@@ -81,6 +86,9 @@
 
 ==== {{S|notes}} ====
 : Ne pas confondre '''''silicone''''' avec ''{{lien|silicon|en}}'' (« {{lien|silicium}} »).
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|en|BDSM}}
 
 === {{S|prononciation}} ===
 * {{écouter|lang=en|Royaume-Uni (Sud de l'Angleterre)||audio=LL-Q1860 (eng)-Vealhurl-silicone.wav}}

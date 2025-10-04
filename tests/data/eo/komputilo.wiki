@@ -19,13 +19,14 @@
 * finna: {{t|fi|tietokone}}
 * franca: '''1., 2.''' {{t|fr|calculatrice}} {{g|f}}, {{t|fr|ordinateur}} {{g|m}}
 * germana: '''1., 2.''' {{t|de|Computer}} {{g|m}}, {{t|de|Rechner}} {{g|m}}
-* hispana: '''1., 2.''' {{t|es|ordenador}} {{g|m}}, {{t|es|computadora}} {{g|f}}, {{t|es|computador}} {{g|m}}
+* hispana: '''1., 2.''' {{t|es|ordenador}} {{g|m}}, {{t|es|computadora}} {{g|f}}, {{t|es|computador|m}}
 * indonezia: {{t|id|komputer}}
-* kroata: '''1., 2.''' {{t|hr|računalo}}, {{t|hr|kompjuter}}
+* itala: {{t|it|computer}}, {{t|it|computatore|not=rara}}, {{t|it|computiere|not=rara}}, {{t|it|calcolatore|not=rara}}, {{t|it|elaboratore|not=rara}}, {{t|it|ordinatore|not=Svislando, rara}}
+* kroata: {{t|hr|računalo}}, {{t|hr|kompjuter}}
 {{trad-mezo}}
-* nederlanda: '''1., 2.''' {{t|nl|computer|m}}
-* pola: '''1., 2.''' {{t|pl|komputer}} {{g|m}}
-* portugala: '''1., 2.''' {{t|pt|computador}} {{g|m}}
+* nederlanda: {{t|nl|computer|m}}
+* pola: '''1., 2.''' {{t|pl|komputer|m}}
+* portugala: '''1., 2.''' {{t|pt|computador|m}}
 * rusa: {{t|ru|компьютер|m}}, {{t|ru|ЭВМ|f}}
 * sveda: {{t|sv|dator|u}}
 {{trad-fino}}

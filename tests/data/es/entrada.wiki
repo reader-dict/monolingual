@@ -7,7 +7,7 @@
 {{etimología|femenino|entrado|tr=[[participio]] de ''[[entrar]]''}}.
 
 ==== {{sustantivo femenino|es}} ====
-{{inflect.es.sust.reg}}
+{{es.sust}}
 ;1: {{plm|ticket}} o [[boleto]]; [[credencial]], [[billete]] o [[documento]] que autoriza a [[entrar]] en un [[evento]], [[espectáculo]] o [[lugar]].
 {{ejemplo|Compré dos ''entradas'' para el recital en el teatro municipal.}}
 ;2 {{csem|Gastronomía}}: {{plm|plato}} que se sirve al comienzo de la comida.
@@ -68,7 +68,7 @@
 
 === Forma flexiva ===
 ==== Forma adjetiva y de participio ====
-{{inflect.es.adj.reg|entrad}}
+{{es.adj}}
 ;1: {{forma participio|entrado|fem|v=entrar|pronominal=s}}.
 
 == {{lengua|gl}} ==

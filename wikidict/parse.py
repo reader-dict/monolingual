@@ -97,8 +97,8 @@ def xml_parse_element(
 
     # Word
     elif title := next(RE_TITLE_WORD(element), None):
-        text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)))
-        if next(head_sections_matcher(wikicode := text[1]), None):
+        text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)), "")
+        if text and next(head_sections_matcher(wikicode := text[1]), None):
             return title[1], wikicode
 
         if DEBUG_PARSE:
