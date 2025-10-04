@@ -584,9 +584,6 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     if extra:
         chunk_size += 1
 
-    if DEBUG_LUA:
-        log.info("Job chunk size is %d", chunk_size)
-
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
     all_templates: ListProxy[list[tuple[str, str, str]]] = manager.list()
