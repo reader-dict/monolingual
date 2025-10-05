@@ -12,6 +12,8 @@ with file.open("rt", encoding="utf-8") as fh:
         if "Job done." in word:
             jobs.pop(job, None)
         else:
-            jobs[job] = word
+            jobs[job] = word.strip()
 
+main_proc = list(jobs.keys())[0]
+jobs.pop(main_proc, None)
 print(jobs)
