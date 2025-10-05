@@ -2,7 +2,6 @@
 
 import re
 
-from ... import utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://es.wiktionary.org/wiki/Especial:Aleatorio_en_categor%C3%ADa/Espa%C3%B1ol"
@@ -72,7 +71,6 @@ templates_ignored = (
     "{{mapa",
     "{{marcar sin referencias",
     "{{picdic",
-    "{{pron-graf",  # TODO: remove with #2542
     "{{referencia",
     "{{relacionado",
     "{{revisar línea",
@@ -82,36 +80,35 @@ templates_ignored = (
 )
 
 
-def find_pronunciations(code: str, locale: str) -> list[str]:
-    r"""
-    Expected docstring + function content is as follow after #2542 will be fixed (replace ">>" with ">>>"):
+def find_pronunciations(
+    code: str,
+    locale: str,
+    *,
+    pattern: re.Pattern[str] = re.compile(r"(\{\{pron-graf[^\}]*\}\})"),
+    find_prons: re.Pattern[str] = re.compile(r"^\|(\[[^\[\]]+])", flags=re.MULTILINE),
+) -> list[str]:
+    """
+    >>> from ... import context
+    >>> _ = context.reset("es")
 
     >>> find_pronunciations("", "es")
     []
 
-    >> from ... import context
-    >> _ = context.reset("es")
-    >> context.new_word("también")
-
-    >> find_pronunciations("{{pron-graf}}", "es")
+    >>> context.new_word("también")
+    >>> find_pronunciations("{{pron-graf}}", "es")
     ['[t̪amˈbjen]']
-    \"""
+
+    >>> context.new_word("hala")
+    >>> find_pronunciations("{{pron-graf|acentuación=grave|audio=LL-Q1321_(spa)-Rodelar-ala.wav|división=ha - la|fone=ˈa.la|homófono=ala|longitud_silábica=2|número_letras=4}}", "es")
+    ['[ˈa.la]']
+    """
     from ... import context
 
-    pattern = re.compile(r"(\{\{pron-graf[^\}]*\}\})")
     res: set[str] = set()
     for tpl in pattern.findall(code):
-        res.add(context.expand(tpl, locale))
-    return sorted(f"[{pron}]" for pron in res)
-    """
-    """
-    >>> find_pronunciations("{{pron-graf|fone=ˈa.t͡ʃo}}", "es")
-    ['[ˈa.t͡ʃo]']
-    >>> find_pronunciations("{{pron-graf|pron=seseo|altpron=No seseante|fone=ˈgɾa.θjas|2pron=seseo|alt2pron=Seseante|2fone=ˈgɾa.sjas|audio=Gracias (español).ogg}}", "es")
-    ['[ˈgɾa.θjas]', '[ˈgɾa.sjas]']
-    """
-    pattern = re.compile(r"fone=([^}\|\s]+)")
-    return [f"[{p}]" for p in utils.unique(utils.flatten(pattern.findall(code)))]
+        table = context.expand(tpl, locale)
+        res.update(find_prons.findall(table))
+    return sorted(res)
 
 
 def adjust_wikicode(

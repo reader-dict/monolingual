@@ -20,14 +20,14 @@ def setup_lua_ctx() -> None:
     [
         (
             "-acho",
-            [],
+            ["[ˈa.t͡ʃo]"],
             ["Del latín <i>-acĕus</i>. De allí también <i>-áceo</i>."],
             {"Sufijo": ["Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos."]},
             [],
         ),
         (
             "bicicleta",
-            [],
+            ["[bi.siˈkle.t̪a]", "[bi.θiˈkle.t̪a]"],
             [
                 "Del francés <i>bicyclette</i> y este diminutivo del francés <i>bicycle</i>, formado sobre el modelo del francés <i>tricycle</i>, del latín <i>bis</i>) y -cycle ( del latín <i>cyclus</i>, del griego κύκλος&nbsp;(kýklos,&nbsp;'círculo; rueda'))."
             ],
@@ -40,7 +40,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "buque_mercante",
-            [],
+            ["[bu.ke_.meɾˈkan̪.t̪e]"],
             [],
             {
                 "Locución": [
@@ -51,7 +51,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "cartel",
-            [],
+            ["[kaɾˈt̪el]"],
             ["Del occitano <i>cartel</i>."],
             {
                 "Sustantivo": [
@@ -68,7 +68,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "comer",
-            [],
+            ["[koˈmeɾ]"],
             [
                 "Se documenta por primera vez en 1140. Del latín <i>comedĕre</i>, infinitivo del latín <i>comedo</i>, formado a partir cum&nbsp;('con') y edō&nbsp;('comer')."
             ],
@@ -89,7 +89,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "entrada",
-            [],
+            ["[en̪ˈt̪ɾa.ð̞a]"],
             ["De <i>entrado</i> (<i>participio de <i>entrar</i></i>) y el sufijo flexivo -a para el femenino."],
             {
                 "Sustantivo": [
@@ -129,7 +129,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "extenuado",
-            [],
+            ["[eks.t̪eˈnwa.ð̞o]"],
             [],
             {
                 "Adjetivo": [
@@ -157,7 +157,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "gracias",
-            [],
+            ["[ˈɡɾa.sjas]", "[ˈɡɾa.θjas]"],
             [],
             {
                 "Interjección": [
@@ -169,7 +169,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Guyana",
-            [],
+            ["[ɡuˈʃa.na]", "[ɡuˈʒa.na]", "[ɡuˈʝa.na]"],
             [],
             {
                 "Sustantivo": [
@@ -180,7 +180,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hasta",
-            [],
+            ["[ˈas.t̪a]"],
             [
                 "Del castellano antiguo <i>fasta</i>, del castellano antiguo <i>hata</i>, fata, del árabe حتى (<i>ḥattā</i>), influido por el latín ad&nbsp;('a') ista&nbsp;('esta').",
             ],
@@ -201,7 +201,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hocico",
-            [],
+            ["[oˈsi.ko]", "[oˈθi.ko]"],
             ["De hocicar."],
             {
                 "Sustantivo": [
@@ -216,8 +216,15 @@ def setup_lua_ctx() -> None:
             [],
         ),
         (
+            "hala",  # Important, it is mostly used to check for infinite loop in the Lua interpreter
+            ["[ˈa.la]"],
+            ["Incierta. Voz expresiva."],
+            {"Interjección": ["Expresión para demandar prisa o sorpresa."]},
+            ["halar"],
+        ),
+        (
             "los",
-            [],
+            ["[los]"],
             ["Del latín <i>illōs</i>, acusativo masculino plural del latín <i>ille</i>."],
             {
                 "Artículo": ["Artículo determinado masculino plural. El singular es lo."],
@@ -229,21 +236,21 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Mús.",
-            [],
+            ["[ˈmus]"],
             [],
             {"Abreviatura": ["<i>Abreviatura lexicográfica convencional de la palabra</i> música."]},
             [],
         ),
         (
             "ruego",
-            [],
+            ["[ˈrwe.ɣ̞o]"],
             [],
             {"Sustantivo": ["Súplica, petición hecha con el fin de alcanzar lo que se pide."]},
             ["rogar"],
         ),
         (
             "también",
-            [],
+            ["[t̪amˈbjen]"],
             ["Compuesto de <i>tan</i> y <i>bien</i>"],
             {
                 "Adverbio": [
@@ -255,7 +262,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "uni-",
-            [],
+            ["[ˈu.ni]"],
             ["Del latín <i>uni-</i>, del latín <i>unus</i>."],
             {"Prefijo": ["Elemento compositivo que significa uno. un único, relativo a uno solo."]},
             [],

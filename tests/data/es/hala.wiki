@@ -1,0 +1,12 @@
+== {{lengua|es}} ==
+=== Etimología ===
+{{etimología|incierta}}. {{etimología|expresiva}}.
+{{pron-graf|acentuación=grave|audio=LL-Q1321_(spa)-Rodelar-ala.wav|división=ha - la|fone=ˈa.la|homófono=ala|longitud_silábica=2|número_letras=4}}
+
+=== Forma verbal ===
+;1: {{forma verbo|halar|m=indicativo|p=3s|t=presente}}.
+;2: {{forma verbo|halar|afirmativo=sí|p=2s|t=imperativo}}.
+
+=== {{interjección|es}} ===
+;1: Expresión para demandar prisa o sorpresa.
+{{sinónimo|ala|alá}}

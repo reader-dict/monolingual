@@ -72,6 +72,9 @@ def init(db: Path, locale: str) -> None:
 
     CTX = wikitextprocessor.Wtp(
         db,
+        extension_tags={
+            "phonos": {"content": ["phrasing"]},  # Example: [ES] hala
+        },
         lang_code=locale,
         project="wiktionary",
         quiet=True,
