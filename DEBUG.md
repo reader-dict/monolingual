@@ -17,35 +17,33 @@ Setting `NO_COLORS=1` will remove all markup styling (italic, bold, etc.).
 ### KEEP_UNFINISHED
 
 When an error happens in transforming/expanding a definition, the definition will be skipped (not the entire word, just the definition).
-Re-run the command prepending `KEEP_UNFINISHED=1` to display the raw HTML, and be able to see where is the issue.
+Re-run the command prepending `KEEP_UNFINISHED=1` to display the raw HTML, and be able to see where the issue comes from.
 
 ## `--parse`
 
-To list all words not taken into account with current head sections:
+Lst all words not taken into account with current head sections:
 
 ```shell
 DEBUG_PARSE=1 python -m wikidict LOCALE --parse >out.log
 ```
 
-### FORCE_SNAPSHOT
-
 ## `--render`
 
 ### DEBUG_SECTIONS
 
-To list all unhandled sections:
+Lst all unhandled sections:
 
 ```shell
 DEBUG_SECTIONS=1 python -m wikidict LOCALE --render | sort -u >out.log
 ```
 
-To make words using a given section to fail:
+Make words under a given section to fail:
 
 ```shell
 DEBUG_SECTIONS="<section>" python -m wikidict LOCALE --render
 ```
 
-Example with the RO dict, and the "{{unități}}" section:
+Example with the RO dictionary, and the "{{unități}}" section:
 
 ```shell
 DEBUG_SECTIONS='{{unități}}' python -m wikidict ro --render
@@ -53,7 +51,7 @@ DEBUG_SECTIONS='{{unități}}' python -m wikidict ro --render
 
 ### DEBUG_EMPTY_WORDS
 
-To list all unhandled words:
+List all unhandled words:
 
 ```shell
 DEBUG_EMPTY_WORDS=1 python -m wikidict LOCALE --render >out.log 2>&1
@@ -78,4 +76,4 @@ If more details are needed, use `DEBUG_LUA=2` to print Lua errors in real time.
 
 ### DEBUG_POS
 
-This is useful to list all found part of speeches (POS). To be used after `--render` to have the full dictionary ready to be analyzed.
+This is useful to list all found part of speech (POS). To be used after `--render` to have the full dictionary ready to be analyzed.
