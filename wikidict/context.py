@@ -268,6 +268,10 @@ def clean_html_output(html: str, locale: str) -> str:
     # Wipe out inter project links
     html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
 
+    # Apply italic on labels
+    html = re.sub(r'<span class="ib-content[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
+    html = re.sub(r'<span class="label[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
+
     # Remove those tags
     html = re.sub(r"</?(?:a|bdi|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
 

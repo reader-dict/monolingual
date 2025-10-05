@@ -45,8 +45,8 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Sigles": [
-                    "(masculí) <i>Sigles de</i> <b>Alfabet Fonètic Internacional</b>.",
-                    "(femení) <i>Sigles de</i> <b>Associació Fonètica Internacional</b>.",
+                    "(<i>masculí</i>) <i>Sigles de</i> <b>Alfabet Fonètic Internacional</b>.",
+                    "(<i>femení</i>) <i>Sigles de</i> <b>Associació Fonètica Internacional</b>.",
                 ]
             },
             [],
@@ -84,11 +84,11 @@ def setup_lua_ctx() -> None:
                     "Reclam a manera d'ocell.",
                     "Peix (<i>Mola mola</i>) de la família els mòlids, de color gris i textura aspra, de cos discoïdal aplanat, però que s'unfla com un globus com a sistema de defensa.",
                     "Peix subtropical de la família dels diodòntids. (<i>Chilomycterus reticulatus</i>)",
-                    "(peixos) ballesta",
+                    "(<i>peixos</i>) ballesta",
                     "Salt enlaire amb un impuls ràpid.",
                     "Moviment elàstic d’un cos que en topar és llançat enlaire.",
                     "Embarcació petita sense coberta.",
-                    "(informàtica) Programa informàtic dissenyat per a completar tasques d’assistència, especialment quan opera com un usuari.",
+                    "(<i>informàtica</i>) Programa informàtic dissenyat per a completar tasques d’assistència, especialment quan opera com un usuari.",
                 ]
             },
             ["botar", "botre"],
@@ -102,26 +102,29 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Adjectiu": [
-                    "(negatiu) Ni un.",
+                    "(<i>negatiu</i>) Ni un.",
                     "(interrogatiu,&#32;condicional) Algun.",
-                    "(negatiu) Gens de.",
+                    "(<i>negatiu</i>) Gens de.",
                     "(interrogatiu,&#32;condicional) Alguna mena de.",
                 ],
                 "Nom": [
-                    "(anatomia) Part superior i anterior del cos d'un animal.",
+                    "(<i>anatomia</i>) Part superior i anterior del cos d'un animal.",
                     "Part superior del cos de l'ésser humà, considerada com a seu del pensament, l'intel·lecte, judici, talent, seny.",
                     "Lloc de preferència, central.",
                     "Localitat principal d'un territori; capital.",
                     "La part més alta d'una cosa.",
                     "Individu considerat com a membre d’una col·lectivitat.",
                     "Extremitat en general.",
-                    ("Part anterior, per on comença una cosa.", "Part final, per on acaba una cosa."),
+                    (
+                        "Part anterior, per on comença una cosa.",
+                        "Part final, per on acaba una cosa.",
+                    ),
                     "Part de terra que s'endinsa en la mar.",
-                    "(nàutica) corda",
+                    "(<i>nàutica</i>) corda",
                     "En un repartiment, cadascun dels participants.",
-                    "(golf) Part final d'un bastó, que impacta en la bola en executar el colp.",
-                    "(pilota basca) Part més ampla d'una eina.",
-                    "(bàdminton) base",
+                    "(<i>golf</i>) Part final d'un bastó, que impacta en la bola en executar el colp.",
+                    "(<i>pilota basca</i>) Part més ampla d'una eina.",
+                    "(<i>bàdminton</i>) base",
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
                     "Grau militar.",
                 ],
@@ -141,7 +144,7 @@ def setup_lua_ctx() -> None:
                 "Nom": [
                     "Situació particular que es produeix entre les diverses possibles.",
                     "Objecte d'estudi d'alguna disciplina.",
-                    "(lingüística) Categoria gramatical que marca la funció sintàctica d’un mot.",
+                    "(<i>lingüística</i>) Categoria gramatical que marca la funció sintàctica d’un mot.",
                     "Atenció, cura.",
                 ],
             },
@@ -186,7 +189,7 @@ def setup_lua_ctx() -> None:
                 "Nom": [
                     "Natural de Catalunya.",
                     "Natural dels Països Catalans.",
-                    "(masculí singular) Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
+                    "(<i>masculí singular</i>) Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
                     "catalanoparlant",
                 ],
             },
@@ -200,7 +203,7 @@ def setup_lua_ctx() -> None:
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del chamorro."],
                 "Lletra": [
-                    "(arcaisme) Especialment a final de mot, dígraf amb una consonant muda per remarcar la grafia d’una oclusiva velar sorda [k] i no pas una de sonora [ɡ]."
+                    "(<i>arcaisme</i>) Especialment a final de mot, dígraf amb una consonant muda per remarcar la grafia d’una oclusiva velar sorda [k] i no pas una de sonora [ɡ]."
                 ],
             },
             [],
@@ -215,7 +218,7 @@ def setup_lua_ctx() -> None:
                     "Acte de comptar.",
                     "Cura, atenció.",
                     "Suma de la quantitat a pagar.",
-                    "(beisbol) Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
+                    "(<i>beisbol</i>) Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
                 ],
                 "Interjecció": ["atenció"],
             },
@@ -230,8 +233,8 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Numeral": [
-                    "(cardinal) Nombre enter situat entre el setze i el divuit.",
-                    "(valor ordinal) dissetè, dissetena.",
+                    "(<i>cardinal</i>) Nombre enter situat entre el setze i el divuit.",
+                    "(<i>valor ordinal</i>) dissetè, dissetena.",
                 ],
                 "Nom": ["Xifra i nombre 17.", "Dissetena hora."],
             },
@@ -253,7 +256,7 @@ def setup_lua_ctx() -> None:
                     'Acusatiu del masculí singular del pronom personal "ell".',
                     'Substitueix el complement directe quan aquest porta l\'article "el".',
                 ],
-                "Nom": ["(obsolet) <i>Forma alternativa de</i> <b>ela</b>."],
+                "Nom": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
             },
             [],
         ),
@@ -299,7 +302,7 @@ def setup_lua_ctx() -> None:
                 "Conjunció": ["Nexe condicional que introdueix un supòsit, una premissa."],
                 "Nom": [
                     "Cavitat interna del cos.",
-                    "(per extensió) Part interna d'una cosa.",
+                    "(<i>per extensió</i>) Part interna d'una cosa.",
                     "Setena nota musical de l'escala.",
                 ],
                 "Pronom": ["Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions."],
