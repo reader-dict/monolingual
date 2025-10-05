@@ -7,6 +7,7 @@ import json
 import logging
 import multiprocessing
 import os
+import platform
 import re
 from collections import defaultdict
 from datetime import timedelta
@@ -583,6 +584,10 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     chunk_size, extra = divmod(len(items), workers)
     if extra:
         chunk_size += 1
+
+    # spawn method is default on Mac, doesn't work with global CTX
+    if platform.system() == "Darwin":
+        multiprocessing.set_start_method("fork", force=True)
 
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
