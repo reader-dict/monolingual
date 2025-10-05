@@ -30,11 +30,12 @@ python -m pip install -r requirements-tests.txt
 Run tests:
 
 ```bash
-# All tests
-python -m pytest --doctest-modules wikidict tests
+# All tests, must be run in two steps to prevent database issues
+python -m pytest --doctest-modules wikidict
+python -m pytest tests
 
 # Skip those requiring a working internet connection
-python -m pytest --doctest-modules wikidict tests -m "not webtest"
+python -m pytest tests -m "not webtest"
 ```
 
 Run linters, and quality checkers, before submitting a pull-request:
