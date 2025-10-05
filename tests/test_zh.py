@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("zh")
 
 
 @pytest.mark.parametrize(
@@ -15,7 +23,7 @@ from wikidict.utils import process_templates
             [],
             [],
             [],
-            {"動詞": ["(漳泉話，吳語) 亂講、胡說", "(柳州官話) 用各種方式解釋"]},
+            {"動詞": ["<small>(漳泉話，吳語)</small> 亂講、胡說", "<small>(柳州官話)</small> 用各種方式解釋"]},
             [],
         ),
         (
@@ -25,7 +33,7 @@ from wikidict.utils import process_templates
             [],
             {
                 "副詞": ["在短暫的時間之後"],
-                "動詞": ["稍候的拼寫錯誤。"],
+                "動詞": ["<i>稍候</i>的拼寫錯誤。"],
             },
             [],
         ),
@@ -60,30 +68,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{abbreviation of|zh|留名}}", "留名之縮寫。"),
-        ("{{cmn-pinyin of|塔吉克}}", '<span style="font-size:larger">塔吉克</span>的漢語拼音讀法'),
-        ("{{defdate|from 15th c.}}", "<small>（from 15th c.）</small>"),
-        ("{{gloss|對患者}}", "（對患者）"),
-        ("{{gl|對患者}}", "（對患者）"),
-        ("{{IPA|zh|/tʷãɔ̃⁵⁴⁵⁴/}}", "/tʷãɔ̃⁵⁴⁵⁴/"),
-        ("{{IPAchar|[kiŋ²¹ naŋ⁵⁵ nˡiʔ⁵]}}", "[kiŋ²¹ naŋ⁵⁵ nˡiʔ⁵]"),
-        ("{{IPAfont|/kʰɑlpin/}}", "/kʰɑlpin/"),
-        ("{{lang|zh|中華}}", "中華"),
-        ("{{misspelling of|zh|稍候}}", "稍候的拼寫錯誤。"),
-        ("{{n-g|用來表示全範圍}}", "用來表示全範圍"),
-        ("{{non-gloss definition|用來表示全範圍}}", "用來表示全範圍"),
-        ("{{qual|前句常有“一方面”……}}", "(前句常有“一方面”……)"),
-        ("{{qualifier|前句常有“一方面”……}}", "(前句常有“一方面”……)"),
-        ("{{taxlink|Okapia johnstoni|species}}", "<i>Okapia johnstoni</i>"),
-        ("{{zh-character component|彡}}", "漢字部件「彡」的名稱。"),
-        ("{{zh-ref|Schuessler, 2007}}", "Schuessler, 2007"),
-    ],
-)
-def test_process_template(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "zh") == expected

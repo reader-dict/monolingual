@@ -1,23 +1,18 @@
 """Esperanto language."""
 
-# Float number separator
 import re
 
-from ...user_functions import unique
+from ... import utils
+from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-# Name of the "Module" special page in the current locale
+random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage"
+
 module_trans = "Modulo"
-
-# Name of the "Template" special page in the current locale
 template_trans = "Ŝablono"
 
-# Float separator
 float_separator = ","
-
-# Thousands separator
 thousands_separator = " "
 
-# Markers for sections that contain interesting text to analyse.
 section_patterns = ("#", r":\[\d+\]", r"\*")
 section_sublevels = (3, 4)
 head_sections = ("{{lingvo|eo}}", "{{lingvo|mul}}", "esperanto", "multldingva", "translingva")
@@ -90,104 +85,19 @@ sections = (
     "{{vortospeco|vortgrupo|eo}",
 )
 
-# Variants
 variant_titles = sections
 variant_templates = ("{{form-eo}}",)
 
-# Templates to ignore: the text will be deleted.
 templates_ignored = (
-    "?",
-    "aŭdo",
-    "barileto",
-    "fundamenta",
-    "IFA",
-    "N",
-    "PRON",
-    "quote-book",
-    "quote-magazine",
-    "ref-AdE",
-    "ref-Grabowski",
-    "ref-Kalman",
-    "ref-Majstro",
-    "ref-PrV",
-    "ref-ReVo",
-    "radiofoniaj liternomoj",
-    "rima",
-    "vian",
-    "Vd",
-    "Vidu ankaŭ",
-    "W",
-    "X",
+    "{{?",
+    "{{aŭdo",  # audio
+    "{{quote-",
+    "{{ref-",
+    "{{Vd",  # see also
+    "{{Vidu ankaŭ",  # see also
+    "{{W",
+    "{{X",
 )
-
-# Templates more complex to manage.
-templates_multi = {
-    # {{fina|o}}
-    "fina": "parts[1]",
-    # {{lite|ŭ}}
-    "lite": "parts[1]",
-    # {{inte|o}}
-    "inte": "parts[1]",
-    # {{mems|du}}
-    "mems": "parts[1]",
-    # {{pref|mis}}
-    "pref": "parts[1]",
-    # {{radi|vort}}
-    "radi": "parts[1]",
-    # {{sufi|il}}
-    "sufi": "parts[1]",
-    # {{Vortospeco|mona nomo|eo}}
-    "Vortospeco": "capitalize(parts[1])",
-}
-
-# Templates that will be completed/replaced using custom text.
-templates_other = {
-    "🏠": "🏠 <i>arkitekturo</i>",
-    "🌄": "<i>geografio</i>",
-    "🍴": "gastronomia",
-    "📖": "📖 <i>(presarto kaj libroj)</i>",
-    "📷": "📷 <i>fotografio kaj kinotekniko</i>",
-    "⏚": "⏚ <i>elektro kaj elektroteĥniko</i>",
-    "✞": "✞ <i>kristanismo</i>",
-    "❤": "❤ <i>korpostrukturo kaj histologio:</i>",
-    "☆": "☆ <i>belartoj<i>",
-    "♉": "♉ <i>bestologio</i>",
-    "👥": "👥 <i>komunuza senso</i>",
-    "🍁": "🍁 <i>herbiko</i>",
-    "✈": "✈ <i>aviado</i>",
-    "♠": "♠ <i>ludoj</i>",
-    "☼": "☼ <i>terscieco (inkl. mineral- kaj rokoscienco)</i>",
-    "⚓": "⚓ <i>marnavigado kaj ŝipoj</i>",
-    "⚕": "(⚕ <i>kuracscienco kaj kirurgio</i>)",
-    "♜": "♜ <i>historio</i>",
-    "Λ": "Λ <i>lingv.</i>",
-    "⊕": "⊕ <i>terologio (inkl. mineralogio kaj petrologio):</i>",
-    "♧": "♧ <i>beletro</i>",
-    "Ⓣ": "Ⓣ <i>(teknikoj [inkl. mekanikon kaj metalurgion])</i>",
-    "☇": "☇ <i>forkomunikoj (inkl. radioforsonadon, videaĵojn kaj elektrosonsciencon</i>)",
-    "Π": "Π <i>prahistorio</i>",
-    "Θ": "(<i>Θ religioj</i>)",
-    "𝅘𝅥𝅰": "𝅘𝅥𝅰 <i>muziko</i>",
-    "⚔": "<i>militaferoj</i>",
-    "AGRHOR": "<i>terkulturo</i>",
-    "EKON": "<i>ekon.</i>",
-    "HOR": "<i>hortikulturo, arbokulturo, arbarkultivo</i>",
-    "KRI": "<i>krist.</i>",
-    "TRA": "<i>trafiko</i>",
-    "figurs.": "<i>figursenca</i>",
-    "hist.": "♜ <i>hist.</i>",
-    "ĵar.": "<i>ĵar.</i>",
-    "lat. tardío": "malfrua latina",
-    "lat. vulg.": "vulgara latina",
-    "ling.": "Λ <i>lingv.</i>",
-    "mar.": "⚓ <i>maraferoj</i>",
-    "poe.": "<i>poetiko, poezio</i>",
-}
-templates_other["Ĵar."] = templates_other["ĵar."]
-templates_other["Ling."] = templates_other["ling."]
-templates_other["Mar."] = templates_other["mar."]
-templates_other["MUZ"] = templates_other["𝅘𝅥𝅰"]
-templates_other["Poe."] = templates_other["poe."]
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -198,11 +108,15 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['m']
     """
     pattern = re.compile(r"{g\|(\w+)")
-    return unique(pattern.findall(code))
+    return utils.unique(pattern.findall(code))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
+    >>> from ... import context
+    >>> _ = context.reset("eo")
+    >>> context.new_word("word")
+
     >>> find_pronunciations("", "eo")
     []
     >>> find_pronunciations("{{PRON|`luk/o.`}}", "eo")
@@ -218,54 +132,22 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IFA|nenk=1|ˈbɛʁɡŋ̩}}", "eo")
     ['ˈbɛʁɡŋ̩']
     """
-    from ...utils import process_templates
-
     if prons := [
-        process_templates("", match.rstrip("."), locale) for match in re.findall(r"\{\{PRON\|`([^`]+)`", code)
+        utils.process_templates("", match.rstrip("."), locale) for match in re.findall(r"\{\{PRON\|`([^`]+)`", code)
     ]:
         return prons
 
     return [
-        process_templates("", match.rstrip(".").split("|")[-1], locale)
+        utils.process_templates("", match.rstrip(".").split("|")[-1], locale)
         for match in re.findall(r"\{\{IFA\|([^}]+)}}", code)
     ]
-
-
-def last_template_handler(
-    template: tuple[str, ...],
-    locale: str,
-    *,
-    word: str = "",
-    all_templates: list[tuple[str, str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    from .. import defaults
-    from .template_handlers import lookup_template, render_template
-
-    tpl, *parts = template
-
-    tpl_variant = f"__variant__{tpl}"
-    if variant_only:
-        tpl = tpl_variant
-        template = tuple([tpl_variant, *parts])
-    elif lookup_template(tpl_variant):
-        # We are fetching the output of a variant template, we do not want to keep it
-        return ""
-
-    if lookup_template(template[0]):
-        return render_template(word, template)
-
-    return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
-
-
-random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage"
 
 
 def adjust_wikicode(
     code: str,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable

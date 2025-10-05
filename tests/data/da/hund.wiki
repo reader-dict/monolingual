@@ -180,7 +180,7 @@ Menes at stamme fra [[indoeuropæisk]] sprog ''[[ḱʷn̥tós]]'', fra ''[[ḱw�
 * {{fy}}: {{t|fy|hûn}}
 * {{vi}}: {{t|vi|chó}} ({{IPA|/ʧɔ́/}}; {{t|vi|VIQR}}: cho')
 *{{vo}}: {{trad|vo|dog}}
-* {{cy}}: {{t|cy|ci}}
+* {{cy}}: {{t|cy|ci|m}}
 *{{hsb}}: [[pos]], [[psyk]]
 {{)}}
 ;100 DKK-seddel

@@ -1,6 +1,6 @@
 ={{-pt-}}=
 ==Advérbio==
-{{paroxítona|al|go}}, {{datação|897}}
+{{paroxítona|al|go}}, {{datação|897|pt}}
 # um [[pouco]], de [[certo]] [[modo]]
 #* ''Isto me parece '''algo''' estranho.''
 

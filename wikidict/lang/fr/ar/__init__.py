@@ -1,1 +1,0 @@
-"""Arab-specific templates."""

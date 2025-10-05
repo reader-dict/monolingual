@@ -22,7 +22,6 @@ import wikitextparser._spans
 
 from . import context, lang, utils
 from .stubs import Definition, Definitions, Word
-from .user_functions import unique
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -77,14 +76,16 @@ def find_definitions(
     lang_src: str,
     lang_dst: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
 ) -> Definitions:
     """Find all definitions, without eventual subtext."""
     definitions: Definitions = defaultdict(list)
 
     for pos, sections in parsed_sections.items():
         for section in sections:
-            if pos_defs := find_section_definitions(word, section, lang_src, lang_dst, all_templates=all_templates):
+            if pos_defs := find_section_definitions(
+                word, section, lang_src, lang_dst, templates_status=templates_status
+            ):
                 if lang_src == "de" and not pos:
                     pos = "substantiv"
                 elif lang_src == "en" and pos.startswith("etymology"):
@@ -135,7 +136,7 @@ def find_section_definitions(
     lang_src: str,
     lang_dst: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
 ) -> list[Definition]:
     """Find definitions from the given *section*, with eventual sub-definitions."""
     definitions: list[Definition] = []
@@ -156,7 +157,7 @@ def find_section_definitions(
                     continue
 
                 # Transform and clean the Wikicode
-                definition = utils.process_templates(word, code, lang_dst, all_templates=all_templates)
+                definition = utils.process_templates(word, code, lang_dst, templates_status=templates_status)
 
                 # Skip empty definitions
                 if not definition:
@@ -174,7 +175,9 @@ def find_section_definitions(
                         continue
 
                     for idx2, subcode in enumerate(sublist.items):
-                        subdefinition = utils.process_templates(word, subcode, lang_dst, all_templates=all_templates)
+                        subdefinition = utils.process_templates(
+                            word, subcode, lang_dst, templates_status=templates_status
+                        )
                         if not subdefinition:
                             continue
 
@@ -189,7 +192,7 @@ def find_section_definitions(
                                         word,
                                         subsubcode,
                                         lang_dst,
-                                        all_templates=all_templates,
+                                        templates_status=templates_status,
                                     )
                                 ) and subsubdefinition not in subsubdefinitions:
                                     subsubdefinitions.append(subsubdefinition)
@@ -209,12 +212,15 @@ def find_etymology(
     lang_dst: str,
     parsed_section: wtp.Section,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
 ) -> list[Definition]:
     """Find the etymology.
 
+    >>> _ = context.reset("sv")
+    >>> context.new_word("word")
+
     >>> find_etymology("Artur", "sv", "sv", wtp.Section("==Svenska==\\n===Substantiv===\\n#:{{etymologi|Denna namnform kom till Sverige som namn via {{härledning|sv|la|Arthurus, Arturus}}, möjligen av kymriska ''[[arth]]'' (\\"björn\\"), av {{härledning|sv|cel-uce|*artos|björn}}.\\nParallellt med det keltiska ursprunget har två andra teorier framförts: antingen av ett romerskt släktnamn (Artorius), och/eller ett nordiskt mansnamn, ''[[Arnþor]]'' (\\"Arntor\\"), sammansatt av ''Ar(i)n-'' (\\"örn\\") och ''‑tor'' (\\"dunder, åska\\").}}"))
-    ['Denna namnform kom till Sverige som namn via latinska <i>Arthurus, Arturus</i>, möjligen av kymriska <i>arth</i> ("björn"), av urkeltiska <i>*artos</i> (”björn”).Parallellt med det keltiska ursprunget har två andra teorier framförts: antingen av ett romerskt släktnamn (Artorius), och/eller ett nordiskt mansnamn, <i>Arnþor</i> ("Arntor"), sammansatt av <i>Ar(i)n-</i> ("örn") och <i>‑tor</i> ("dunder, åska").']
+    ['Denna namnform kom till Sverige som namn via latinska&nbsp;<i>Arthurus, Arturus</i>, möjligen av kymriska <i>arth</i> ("björn"), av urkeltiska&nbsp;<i>*artos</i>&nbsp;(”björn”).Parallellt med det keltiska ursprunget har två andra teorier framförts: antingen av ett romerskt släktnamn (Artorius), och/eller ett nordiskt mansnamn, <i>Arnþor</i> ("Arntor"), sammansatt av <i>Ar(i)n-</i> ("örn") och <i>‑tor</i> ("dunder, åska").']
     """
 
     def get_items(patterns: tuple[str, ...], *, skip: tuple[str, ...] | None = None) -> list[str]:
@@ -256,12 +262,12 @@ def find_etymology(
                         tableindex += 1
                     else:
                         definitions.append(
-                            utils.process_templates(word, section_item, lang_dst, all_templates=all_templates)
+                            utils.process_templates(word, section_item, lang_dst, templates_status=templates_status)
                         )
                         subdefinitions: list[SubDefinition] = []
                         for sublist in section.sublists(i=idx):
                             subdefinitions.extend(
-                                utils.process_templates(word, subcode, lang_dst, all_templates=all_templates)
+                                utils.process_templates(word, subcode, lang_dst, templates_status=templates_status)
                                 for subcode in sublist.items
                             )
                         if subdefinitions:
@@ -286,11 +292,11 @@ def find_etymology(
     etyms = [
         etyl
         for item in items
-        if (etyl := utils.process_templates(word, item, lang_dst, all_templates=all_templates)) and len(etyl) > 1
+        if (etyl := utils.process_templates(word, item, lang_dst, templates_status=templates_status)) and len(etyl) > 1
     ]
 
     # Do not keep incomplete etymologies
-    if lang_src in {"el", "en", "ru"}:
+    if lang_src in {"el", "en", "es", "ru"}:
         useless = {
             "el": {f"<b>{word}</b> &lt;"},
             "en": {
@@ -301,6 +307,9 @@ def find_etymology(
                 "Variant forms.",
                 "Unknown",
             },
+            "es": {
+                "<i>Si puedes, incorpórala: ver cómo</i>.",
+            },
             "ru": {"??", "Из ??", "От", "От ??", "Происходит от", "Происходит от ??"},
         }.get(lang_src, set())
         etyms = [etym for etym in etyms if etym not in useless]
@@ -310,7 +319,7 @@ def find_etymology(
 
 def _find_genders(top_sections: list[wtp.Section], lang_src: str, lang_dst: str) -> list[str]:
     """Find the genders."""
-    func: Callable[[str, str], list[str]] = lang.find_genders[lang_src]
+    func = lang.find_genders[lang_src]
     for top_section in top_sections:
         if result := func(top_section.contents, lang_dst):
             return result
@@ -324,7 +333,7 @@ def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_ds
     for top_section in top_sections:
         if result := func(top_section.contents, lang_dst):
             results.extend(result)
-    return sorted(unique(results))
+    return sorted(utils.unique(results))
 
 
 def section_title(section: wtp.Section) -> str:
@@ -404,6 +413,9 @@ def add_potential_variant(
     repl: Callable[[str, str], str] = re.compile(r"(</?[^>]+>)").sub,
 ) -> None:
     """
+    >>> _ = context.reset("fr")
+    >>> context.new_word("word")
+
     Ensure a variant identical to the word is not taken into account:
     >>> variants_lst = []
     >>> add_potential_variant("19e", "{{fr-rég|diz.nœ.vjɛm|s=19{{e}}|p=19{{e|es}}}}", "fr", variants_lst)
@@ -422,11 +434,11 @@ def add_potential_variant(
     >>> variants_lst
     ['401(k)']
 
-    Ensure wrongly parsed variants are not taken into account:
+    Ensure variants with special templates are properly taken into account:
     >>> variants_lst = []
     >>> add_potential_variant("Ires", "{{fr-accord-mixte|ms=Ier{{!}}I{{er}}}}", "fr", variants_lst)
     >>> variants_lst
-    []
+    ['Ier']
     """
     if (variant := utils.process_templates(word, tpl, locale, variant_only=True)) and (
         variant_cleaned := repl("", variant)
@@ -448,11 +460,11 @@ def adjust_wikicode(
     code: str,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
     func: Callable[..., str] = lang.adjust_wikicode[locale]
-    return func(context.clean_html_input(code, locale), locale, all_templates=all_templates, word=word)
+    return func(context.clean_html_input(code, locale), locale, templates_status=templates_status, word=word)
 
 
 def parse_word(
@@ -461,7 +473,7 @@ def parse_word(
     locale: str,
     *,
     force: bool = False,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
 ) -> Word:
     """Parse *code* Wikicode to find word details.
     *force* can be set to True to force the pronunciation and gender guessing.
@@ -475,7 +487,7 @@ def parse_word(
 
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
-    code = adjust_wikicode(code, lang_dst, all_templates=all_templates, word=word)
+    code = adjust_wikicode(code, lang_dst, templates_status=templates_status, word=word)
     top_sections, parsed_sections = find_sections(word, code, lang_src, lang_dst)
     prons = []
     genders = []
@@ -493,7 +505,7 @@ def parse_word(
 
     # Definitions
     if parsed_sections:
-        definitions = find_definitions(word, parsed_sections, lang_src, lang_dst, all_templates=all_templates)
+        definitions = find_definitions(word, parsed_sections, lang_src, lang_dst, templates_status=templates_status)
     elif marker := {"no": "===", "pt": "=="}.get(lang_src):
         # Some words have no head sections but only a list of definitions at the root of the "top" section
         for top in top_sections:
@@ -501,7 +513,9 @@ def parse_word(
             end = contents.find(marker)
             if end > 0:
                 top.contents = contents[:end]
-        definitions = find_definitions(word, {"top": top_sections}, lang_src, lang_dst, all_templates=all_templates)
+        definitions = find_definitions(
+            word, {"top": top_sections}, lang_src, lang_dst, templates_status=templates_status
+        )
     else:
         definitions = {}
 
@@ -513,10 +527,10 @@ def parse_word(
     if definitions:
         if lang_src == "sv":
             for top in top_sections:
-                etymology.extend(find_etymology(word, lang_src, lang_dst, top, all_templates=all_templates))
+                etymology.extend(find_etymology(word, lang_src, lang_dst, top, templates_status=templates_status))
         elif etymology_sections:
             for etyl_data in etymology_sections:
-                etymology.extend(find_etymology(word, lang_src, lang_dst, etyl_data, all_templates=all_templates))
+                etymology.extend(find_etymology(word, lang_src, lang_dst, etyl_data, templates_status=templates_status))
 
         if etymology:
             # Remove duplicates
@@ -558,11 +572,11 @@ def render_words(
     results: Words,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
 ) -> None:
     for word, code in words:
         try:
-            details = parse_word(word, code, locale, all_templates=all_templates)
+            details = parse_word(word, code, locale, templates_status=templates_status)
         except KeyboardInterrupt:
             pass
         except Exception:
@@ -591,14 +605,14 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
-    all_templates: ListProxy[list[tuple[str, str, str]]] = manager.list()
+    templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
     jobs = []
 
     for chunk in batched(items, chunk_size):
         job = multiprocessing.Process(
             target=render_words,
             args=(chunk, results, locale),
-            kwargs={"all_templates": all_templates},
+            kwargs={"templates_status": templates_status},
         )
         jobs.append(job)
         job.start()
@@ -606,7 +620,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     for job in jobs:
         job.join()
 
-    utils.check_for_missing_templates(all_templates._getvalue())
+    utils.check_for_templates_status(templates_status._getvalue())
 
     log.info("Handling reverse variants ...")
     for word, details in results.items():

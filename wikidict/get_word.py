@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING
 
 from . import constants, utils
 from .render import parse_word
-from .user_functions import int_to_roman
 
 if TYPE_CHECKING:
     from .stubs import Word
@@ -22,13 +21,36 @@ def italic(value: str) -> str:
     return value if "NO_COLORS" in os.environ else f"\033[3m{value}\033[23m"
 
 
-def get_word(word: str, locale: str, *, all_templates: list[tuple[str, str, str]] | None = None) -> Word:
+def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] | None = None) -> Word:
     """Get a *word* wikicode and parse it."""
     url = f"https://{utils.guess_lang_origin(locale)}.wiktionary.org/w/index.php?title={word}&action=raw"
     with constants.SESSION.get(url) as req:
         req.raise_for_status()
         code = req.text
-    return parse_word(word, code, locale, force=True, all_templates=all_templates)
+    return parse_word(word, code, locale, force=True, templates_status=templates_status)
+
+
+def int_to_roman(number: int) -> str:
+    """
+    Convert an integer to a Roman numeral.
+
+        >>> int_to_roman(12)
+        'XII'
+        >>> int_to_roman(2020)
+        'MMXX'
+
+    Source: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch03s24.html
+    """
+    # if not 0 < number < 4000:
+    #     raise ValueError("Argument must be between 1 and 3999")
+    ints = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    nums = ("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    result = []
+    for i in range(len(ints)):
+        count = int(number / ints[i])
+        result.append(nums[i] * count)
+        number -= ints[i] * count
+    return "".join(result)
 
 
 def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
@@ -45,6 +67,8 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
         text = re.sub(r"<[^>]+/?>", "", text)
         text = text.replace("&gt;", ">")
         text = text.replace("&lt;", "<")
+        text = text.replace("&lsqb;", "[")
+        text = text.replace("&rsqb;", "]")
         text = text.replace("&mdash;", "—")
         text = text.replace("&minus;", "−")
         text = text.replace("&nbsp;", " ")
@@ -55,8 +79,8 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
         text = text.replace(" .", ".")
         return text
 
-    all_templates: list[tuple[str, str, str]] = []
-    details = get_word(word, locale, all_templates=all_templates)
+    templates_status: list[tuple[str, str]] = []
+    details = get_word(word, locale, templates_status=templates_status)
     print(
         word,
         utils.convert_pronunciation(details.pronunciations).lstrip(),
@@ -97,7 +121,7 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
         print("\n[reverse variants]", ", ".join(iter(details.reverse_variants)))
 
     print()
-    utils.check_for_missing_templates(all_templates)
+    utils.check_for_templates_status(templates_status)
 
 
 def set_output(locale: str, word: str) -> None:

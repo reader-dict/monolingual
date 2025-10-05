@@ -14,16 +14,16 @@
 ===Adjective===
 {{en-adj}}
 
-# making good, [[thorough]], or careful use of [[resources]]; not [[consuming]] extra. Especially, making good use of [[time]] or [[energy]]
+# Making good, [[thorough]], or careful use of [[resources]]; not [[consuming]] extra. Especially, making good use of [[time]] or [[energy]].
 #: {{ux|en|An '''efficient''' process would automate all the routine work.}}
 #: {{ux|en|Our cleaners are almost too '''efficient''': they throw away anything left out on a desk.}}
 #* {{quote-journal|en|title=A better waterworks|date=2013-06-01|volume=407|issue=8838
 |page=5 (Technology Quarterly)|magazine=w:The Economist
 |url=http://www.economist.com/news/technology-quarterly/21578526-medical-technology-artificial-kidneys-are-getting-closer-becoming-clinical
 |passage=An artificial kidney these days still means a refrigerator-sized dialysis machine. Such devices mimic{{...}}real kidneys{{...}}. But they are nothing like as '''efficient''', and can cause bleeding, clotting and infection—not to mention inconvenience for patients, who typically need to be hooked up to one three times a week for hours at a time.}}
-# expressing the [[proportion]] of [[consumed]] [[energy]] that was successfully used in a process; the ratio of useful output to total input
+# Expressing the [[proportion]] of [[consumed]] [[energy]] that was successfully used in a process; the ratio of useful output to total input.
 #: {{ux|en|The motor is only 20% '''efficient''' at that temperature.}}
-# causing effects, producing results; bringing into being; initiating [[change]] (rare except in philosophical and legal expression ''[[efficient cause]]'' = [[causative]] [[factor]] or [[agent]])
+# Causing effects, producing results; bringing into being; initiating [[change]] (rare except in philosophical and legal expression ''[[efficient cause]]'' = [[causative]] [[factor]] or [[agent]]).
 #: {{ux|en|Ownership, maintenance, or use of the automobile need not be the direct and '''efficient''' cause of the injury sustained}}
 #* {{RQ:Raleigh Historie of the World
 |passage=It was well said of Plotinus, that the stars were significant, but not '''efficient'''.}}
@@ -41,13 +41,26 @@ Webster's Revised Unabridged Dictionary from 1913 still lists {{m|en|efficient}}
 * {{l|en|inefficient}}
 
 ====Derived terms====
-{{col-auto|en|ecoefficient|efficiently|efficientness|equiefficient|hyperefficient|nonefficient|superefficient|ultraefficient
+{{col|en|cost-efficient
+|ecoefficient|tax-efficient
+|efficient cause
+|efficient frontier
+|efficiently
+|efficient market hypothesis
+|efficientness
+|energy efficient
+|energy-efficient
+|equiefficient
+|hyperefficient
 |Kaldor-Hicks efficient
-|efficient cause|energy-efficient|energy efficient
-|subefficient|cost-efficient|efficient market hypothesis}}
+|nonefficient
+|subefficient
+|superefficient
+|ultraefficient
+}}
 
 ====Related terms====
-{{rel4|en
+{{col4|en
 |effect
 |effective
 |effectiveness
@@ -63,6 +76,7 @@ Webster's Revised Unabridged Dictionary from 1913 still lists {{m|en|efficient}}
 
 ====Translations====
 {{trans-top|making good use of resources}}
+* Arabic: {{t|ar|فَعَّال|m}}
 * Belarusian: {{t|be|эфекты́ўны}}
 * Bulgarian: {{t+|bg|ефекти́вен}}, {{t+|bg|резултатен}}
 * Catalan: {{t+|ca|eficient}}
@@ -93,6 +107,7 @@ Webster's Revised Unabridged Dictionary from 1913 still lists {{m|en|efficient}}
 * Tagalog: {{t|tl|episyente}}
 * Turkish: {{t+|tr|verimli}}
 * Ukrainian: {{t|uk|ефекти́вний}}
+* Uzbek: {{t+|uz|samarador}}
 {{trans-bottom}}
 
 {{trans-top|using a particular proportion of available energy}}
@@ -127,7 +142,7 @@ Webster's Revised Unabridged Dictionary from 1913 still lists {{m|en|efficient}}
 ===Noun===
 {{en-noun}}
 
-# {{lb|en|obsolete}} a [[cause]]; something that causes an effect
+# {{lb|en|obsolete}} A [[cause]]; something that causes an effect.
 #* {{quote-text|en|year=1643|author=w:Thomas Browne|title=Religio Medici|section=I.14
 |passage=Some are without '''efficient''', as God; others without matter, as Angels […].}}
 #* {{quote-text|en|year=a. 1758|author={{w|Jonathan Edwards (theologian)|Jonathan Edwards}}|title=Dissertation on Liberty and Necessity

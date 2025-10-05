@@ -3,8 +3,8 @@
 : Déformation de ''[[sacristi]]'', afin de ne pas blasphémer ouvertement.
 
 === {{S|interjection|fr}} ===
-'''sapristi'''
-# {{populaire|fr}} {{familier|fr}} {{par euphémisme|fr}} {{vieilli|fr}} Pour [[marquer]] l’[[étonnement]] ou l'[[énervement]].
+'''sapristi''' {{pron|sa.pʁis.ti|fr}} {{invar}}
+# {{familier|fr}} {{par euphémisme|fr}} {{vieilli|fr}} Pour [[marquer]] l’[[étonnement]] ou l'[[énervement]].
 #* {{exemple | lang=fr
  | '''Sapristi''' ! nous nous abrutissons à la fin !
  | source={{w|Victor Hugo}}, ''{{w|Quatrevingt-treize}}'', 1874, {{w|Michel Lévy frères}}, tome 3, page 266}}
@@ -27,6 +27,11 @@
 
 ==== {{S|synonymes}} ====
 {{cf|sacrebleu#Synonymes}}
+
+==== {{S|traductions}} ====
+{{trad-début|}}
+* {{T|oc}} : {{trad-|oc|coquin de sòrt}}, {{trad-|oc|coquin de Dieu}}, {{trad-|oc|macassiu}}, {{trad-|oc|sacredieu}}
+{{trad-fin}}
 
 === {{S|prononciation}} ===
 * {{pron|sa.pʁis.ti|fr}}

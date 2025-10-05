@@ -5,7 +5,13 @@ from uuid import uuid4
 
 import pytest
 
-from wikidict import gen_dict
+from wikidict import context, gen_dict
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("fr")
 
 
 @pytest.mark.webtest
@@ -15,9 +21,7 @@ from wikidict import gen_dict
         ("fr", "logiciel"),  # Single word
         ("fr", "base,logiciel"),  # Multiple words
         ("fr", "cercle unité"),  # Accentued word + space
-        ("fro", "pui"),  # Sublang alone
         ("fr:fr", "logiciel"),  # Sublang falsy
-        ("fr:fro", "pui"),  # Sublang
         ("fr:it", "glielo"),  # Another lang
         ("it:fr", "dodo"),  # Another lang
     ],

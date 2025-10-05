@@ -6,12 +6,12 @@
 {{etimología|la|futurus|diacrítico=futūrus}}, participio activo futuro irregular de {{l+|la|esse|glosa=ser}}, y este el protoindoeuropeo {{l+|ine-pro|*bhū-}}, {{l+|ine-pro|*bʰew-}} ("[[existir]]", "llegar a ser").
 
 === {{adjetivo|es}} ===
-{{inflect.es.adj.reg|futur}}
+{{es.adj}}
 ;1: Que está aún por ocurrir o hacerse efectivo.
 {{ejemplo|Las provincias [[gobernadas]] por el co-césar y '''futuro''' corregente Constancio|c=pagina|t=Constancio II|u=http://www.tesorillo.com/bajo_imperio/constancio2/constancio2.htm}}
 
 === {{sustantivo masculino|es}} ===
-{{inflect.es.sust.reg}}
+{{es.sust}}
 ;2: Tiempo que aún no ha llegado.
 ;3 {{csem|lingüística}}: Tiempo verbal que expresa una acción que aún no ha sido realizada.
 ;4: Novio o prometido de una mujer a la que va a desposar.
@@ -54,7 +54,7 @@
 {{etimología|leng=it|la|futurus}}.<ref>{{Treccani}}</ref><ref>{{Pianigiani}}</ref>
 
 === {{adjetivo|it}} ===
-{{inflect.it.adj.reg|futur}}
+{{it.adj}}
 
 ;1: {{plm|futuro}}.
 {{antónimo|leng=it|passato|scorso}}

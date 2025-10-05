@@ -2,22 +2,19 @@
 
 import re
 
-from ...user_functions import flatten, unique
+from ... import utils
 from .langs import langs
+from .template_overrides import overrides as template_overrides  # noqa: F401
+from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-# Name of the "Module" special page in the current locale
+random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
+
 module_trans = "Modul"
-
-# Name of the "Template" special page in the current locale
 template_trans = "Format"
 
-# Float number separator
 float_separator = ","
-
-# Thousands separator
 thousands_separator = "."
 
-# Markers for sections that contain interesting text to analyse.
 section_patterns = ("#", r"\*")
 section_sublevels = (3,)
 head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
@@ -60,31 +57,18 @@ sections = (
     "{{verb}",
 )
 
-# Variantes
 variant_titles = tuple(section for section in sections if section not in etyl_section)
 variant_templates = (
     "{{adj form of",
     "{{flexion",
 )
 
-# Reverse variantes
 reverse_variant_titles = (
     "{{adjectiv-",
     "{{substantiv-",
     "{{verb-",
 )
 reverse_variant_templates = ("{{rev-flexion",)
-
-
-# Templates more complex to manage.
-templates_multi = {
-    # {{n}}
-    "n": "italic('n.')",
-    # {{p}}
-    "p": "italic('pl.')",
-    # {{trad|el|παρα}}
-    "trad": "parts[-1]",
-}
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -97,7 +81,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['n']
     """
     pattern = re.compile(r"gen={{([fmsingp]+)(?: \?\|)*}")
-    return unique(flatten(pattern.findall(code)))
+    return utils.unique(utils.flatten(pattern.findall(code)))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -116,37 +100,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ):
         res.extend(pattern.findall(code))
 
-    return unique(flatten(res))
+    return utils.unique(utils.flatten(res))
 
-
-def last_template_handler(
-    template: tuple[str, ...],
-    locale: str,
-    *,
-    word: str = "",
-    all_templates: list[tuple[str, str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    from .. import defaults
-    from .template_handlers import lookup_template, render_template
-
-    tpl, *parts = template
-
-    tpl_variant = f"__variant__{tpl}"
-    if variant_only:
-        tpl = tpl_variant
-        template = tuple([tpl_variant, *parts])
-    elif lookup_template(tpl_variant):
-        # We are fetching the output of a variant template, we do not want to keep it
-        return ""
-
-    if lookup_template(template[0]):
-        return render_template(word, template)
-
-    return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
-
-
-random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 
 REV_VARIANTS_IGNORED = {"-", "I", "II", "III", "IV", "V", "VI"}
 
@@ -155,7 +110,7 @@ def adjust_wikicode(
     code: str,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable

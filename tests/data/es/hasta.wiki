@@ -29,7 +29,7 @@
 {{ejemplo|Nos vemos hasta el lunes.}}
 
 ==== {{sustantivo femenino|es}} ====
-{{inflect.es.sust.reg}}
+{{es.sust}}
 ;7: {{grafía obsoleta|asta}}.
 {{ejemplo|Arrojábanles un dardo, que es una hasta larga, á cuya extremidad hay asegurado un hueso grande y afilado que penetra como una espada.}}
 
@@ -101,7 +101,7 @@
 {{etimología|leng=gl|la|hasta|alt=hastam|asta}}.
 
 ==== {{sustantivo femenino|gl}} ====
-{{inflect.gl.sust.reg}}
+{{gl.sust}}
 ;1 {{csem|armas|leng=gl}}: {{plm|asta}}.
 {{sinónimo|leng=gl|mastro}}.<ref name="DRAG">{{DRAG}}</ref>
 ;2 {{csem|zoología|leng=gl}}: {{plm|cuerno}}.
@@ -113,8 +113,8 @@
 {{pron-graf|leng=it}}
 
 === Etimología 1 ===
-==== {{sustantivo femenino|it}} ====
-{{inflect.it.sust.reg|hast|a}}
+==== {{sustantivo|it|femenino}} ====
+{{it.sust|f}}
 ;1: {{grafía obsoleta|leng=it|asta}}.
 
 == {{lengua|la}} ==
@@ -159,7 +159,7 @@
 {{etimología|leng=pt|la|hasta|alt=hastam|asta}}.
 
 ==== {{sustantivo femenino|pt}} ====
-{{inflect.pt.sust.reg}}
+{{pt.sust}}
 ;1 {{csem|armas|leng=pt}}: {{plm|asta}}.
 {{hipónimo|leng=pt|chuço|dardo||javalina|pilo}}.
 ;2: {{plm|almoneda}}, {{l|es|aucción}}, {{l|es|remate}}, {{l|es|subasta}}.

@@ -6,15 +6,15 @@
 ===Etymology===
 From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to {{compound|en|some|one}}.
 
-<!--{{etymon|en|id=a person|af|en>some>indefinite|en>one>singular|tree=1}}-->
-{{etymon|en|id=a person|inh|enm>sum oon>a person}}
+<!--{{etymon|en|id=a person|af|en:some<id:indefinite>|en:one<id:singular>|tree=1}}-->
+{{etymon|en|id=a person|:inh|enm:sum oon<id:a person>}}
 
 ===Pronunciation===
 * {{IPA|en|/ˈsʌmwʌn/|a=RP,GA}}
 * {{audio|en|en-us-someone.ogg|a=GA}}
+* {{audio|en|LL-Q1860 (eng)-Vealhurl-someone.wav|a=Southern England}}
 * {{rhymes|en|ʌmwʌn|s=2}}
 * {{hyphenation|en|some|one}}
-* {{rhymes|en|ʌn|s=2}}
 
 ===Pronoun===
 {{en-pron}}
@@ -35,6 +35,7 @@ From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to 
 ====Translations====
 {{trans-top|some person}}
 * Afrikaans: {{t+|af|iemand}}
+* Albanian: {{t+|sq|dikush}}
 * American Sign Language: {{t|ase|1@InsideNeckhigh-FingerUpPalmBack CirclesHoriz}}
 * Arabic: {{t+|ar|أَحَد}}
 * Armenian: {{t+|hy|մեկ|alt=մեկը}}, {{t|hy|ինչ-որ մեկը}}
@@ -70,8 +71,8 @@ From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to 
 * Indonesian: {{t+|id|seseorang}}
 * Interlingua: {{t|ia|alicuno}}, {{t|ia|alcuno}}
 * Italian: {{t+|it|qualcuno}}
-* Japanese: {{t|ja|誰か|tr=だれか, dareka}}, {{t|ja|[[或る]][[人]]|tr=あるひと, aru hito}}
-* Kapampangan: {{t|pam|ninuman}}, {{t|pam|[[ninu]] [[ka]]}}, {{t|pam|[[ating]] [[tau]]}}
+* Japanese: {{t+|ja|誰か|tr=だれか, dareka}}, {{t|ja|[[或る]][[人]]|tr=あるひと, aru hito}}
+* Kapampangan: {{t|pam|ninuman}}, {{t|pam|ninuka}}, {{t|pam|ninuya}}, {{t|pam|ninula}}, {{t|pam|[[ating]] [[tau]]}}
 * Kazakh: {{t|kk|біреу|sc=Cyrl}}
 * Korean: {{t|ko|누군가}}, {{t|ko|[[어떤]] [[사람]]}}
 * Kurdish:
@@ -92,6 +93,7 @@ From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to 
 * Norwegian:
 *: Bokmål: {{t+|nb|noen}}
 *: Nynorsk: {{t|nn|nokon}}, {{t|nn|einkvan|m}}, {{t|nn|eikor|f}}
+* Nǀuu: {{t|ngh|ǂi}}, {{t|ngh|ǂa}}
 * Occitan: {{t+|oc|qualqu'un}}
 * Old English: {{t+|ang|man}}, {{t|ang|sum}} {{t|ang|mann}}, {{t|ang|hwā}}
 * Old Prussian: {{t|prg|aīnunts}}
@@ -117,10 +119,11 @@ From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to 
 * Thai: {{t|th|บางคน}}
 * Turkish: {{t+|tr|biri}}
 * Ukrainian: {{t+|uk|хтось}}, {{t+|uk|хто-не́будь}}
-* Uzbek: {{t+|uz|kimsa}}
+* Uzbek: {{t+|uz|kimsa}}, {{t+|uz|birov}}
 * Vietnamese: {{t|vi|ai đó}}
 * Volapük: {{t+|vo|ek}}
 * Welsh: {{t+|cy|rhywun|m}}
+* West Frisian: {{t|fy|immen}}
 * Yiddish: {{t|yi|עמעצער}}
 {{trans-bottom}}
 
@@ -128,7 +131,7 @@ From {{inh|en|enm|sum on}}, {{m|enm|sum one}}, {{m|enm|sum oon}}, equivalent to 
 {{en-noun}}
 
 # A partially specified but unnamed person.
-#: ''Do you need a gift for that special '''someone'''?''
+#: {{ux|en|Do you need a gift for that special '''someone'''?}}
 #* {{quote-book|en|year=2013|author=James Crosswhite|title=Deep Rhetoric: Philosophy, Reason, Violence, Justice, Wisdom|publisher=University of Chicago Press|isbn=9780226016344|page=213
 |passage=His ultimate concern is with being and beings, with saying something about something and not with the '''someones''' who say it and hear it—and not even with the '''someones''' whose beings are in conflict about beings in their being.}}
 #* year unknown, T A Smallwood, ''Reflections Of A Murder'', Lulu.com {{ISBN|9781445209425}}, page 2

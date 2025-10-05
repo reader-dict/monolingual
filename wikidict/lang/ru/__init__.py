@@ -2,22 +2,18 @@
 
 import re
 
-from ...user_functions import flatten, unique
-from .transcriptions import transcript
+from ... import utils
+from . import variant_handlers as variant_handlers_mod
+from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-# Name of the "Module" special page in the current locale
+random_word_url = "https://ru.wiktionary.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RandomRootpage"
+
 module_trans = "Модуль"
-
-# Name of the "Template" special page in the current locale
 template_trans = "Шаблон"
 
-# Float number separator
 float_separator = ","
-
-# Thousands separator
 thousands_separator = " "
 
-# Markers for sections that contain interesting text to analyse.
 section_level = 1
 section_sublevels = (3, 4)
 head_sections = ("{{-ru-}}",)
@@ -33,228 +29,25 @@ sections = (
     "в значении вспомогательного глагола или связки",  # for verbs with aux
 )
 
-# Variants
 variant_titles = ("значение", "морфологические и синтаксические свойства")
 variant_templates = ("{{прич.",)
 
-# Reverse variantes
 reverse_variant_templates = ("{{rev-flexion",)
-reverse_variant_titles = ("{{сущ ru ", "{{прил ru ")
+reverse_variant_titles = ("{{сущ ru", "{{прил ru")
 
-# Some definitions are not good to keep
 templates_ignored = (
-    "??",
-    "DEFAULTSORT:чат",
-    "DEFAULTSORT:чонок",
-    "DEFAULTSORT:ом",
-    "DEFAULTSORT:онн",
-    "DEFAULTSORT:инк",
-    "DEFAULTSORT:няк",
-    "DEFAULTSORT:иден",
-    "DEFAULTSORT:ил",
-    "DEFAULTSORT:ень",
-    "DEFAULTSORT:ив",
-    "DEFAULTSORT:е",
-    "DEFAULTSORT:диил",
-    "etym-lang",
-    "gb",
-    "improve",
-    "КЭС-2",
-    "L",
-    "l",
-    "Lacuna",
-    "lacuna",
-    "ngram ru",
-    "OED",
-    "offensive",
-    "offensive-inline",
-    "unfinished",
-    "wikipedia",
-    "Цитата",
-    "семантика",
-    "пример",
-    "помета.",
-    "Категория",
-    "длина слова",
-    "из",
-    "Шанский",
-    "Виноградов",
-    "русские приставки",
-    "по-слогам",
-    "по слогам",
-    "Крылов",
-    "перев-блок",
-    "Аникин",
-    "Ушаков1940",
-    "Крысин",
+    "{{?",
+    "{{anim",
+    "{{DEFAULTSORT",
+    "{{improve",
+    "{{Lacuna",
+    "{{lacuna",
+    "{{offensive",
+    "{{unfinished",
+    "{{wikipedia",
+    "{{пример",  # example
+    "{{Цитата",  # citation
 )
-
-# Templates more complex to manage.
-templates_multi = {
-    # {{"|Сработать по Шеремету}}
-    '"': 'f"„{parts[1]}“"',
-    # {{=|Атлант}}
-    "=": 'f"то же, что {parts[1]}"',
-    # {{^|183}}
-    "^": "f'<sup>{parts[1]}</sup>'",
-    # {{aslinks|время, времечко; временами, временно (во избежание); время от времени|,;|1}}
-    # {{aslinks|выезжать#I}}
-    "aslinks": "parts[1].split('#', 1)[0]",
-    # {{comment|РФ|Российская Федерация|Россия}}
-    "comment": "f'{parts[1]}&nbsp;({parts[-1]})'",
-    # {{Cyrs|аблъко}}
-    "Cyrs": "parts[1]",
-    # {{razr|Кудряш}}
-    "razr": "f'<span style=\"letter-spacing:0.2em;margin-right:-0.2em;\">{parts[1]}<span>'",
-    # {{fonts|Πίστιος}}
-    "fonts": "parts[1]",
-    # {{red|♦}}
-    "red": "f'<span style=\"color:red;\">{parts[1]}</span>'",
-    # {{sla-pro|*desnъ}}
-    "sla-pro": "f'праслав. {parts[1]}'",
-    # {{verb-dir|verb}}
-    "verb-dir": "f'(о движении, совершаемом однократно или в определённом направлении, в отличие от сходного по смыслу гл. {parts[1]})'",
-    # {{verb-dir-n|verb}}
-    "verb-dir-n": "f'(о движении, совершаемом неоднократно или не в определённом направлении, в отличие от сходного по смыслу гл. {parts[1]})'",
-    # {{wikiref|совершенный вид}}
-    "wikiref": "parts[-1]",
-    # {{кс|Унбегаун, с. 44}}
-    "кс": 'f"[{parts[1]}]"',
-    # {{t:=|поисковая оптимизация}}
-    "t:=": 'f"то же, что {parts[1]}"',
-    "страд.": "italic('страд.') + ' к' + ((' ' + parts[1]) if len(parts) > 1 else '')",
-    # {{марр|значение слова или выражения}}
-    "марр": 'f"‘{parts[1]}’"',
-    # {{этим-2|{{lang|en|AI|ИИ}}|{{lang|en|artificial intelligence|искусственный интеллект}}|[[тренер]]|{{lang|en|trainer|тренер}}}}
-    "этим-2": "f\"{parts[1]} + {parts[3] if len(parts) > 3 else ''}\"",
-    # {{дееприч.|сфотать}}
-    "дееприч.": "f\"<i>дееприч.</i> от {parts[1] if len(parts) > 1 else ''}\"",
-    # {{-ся|аббревиировать}}
-    "-ся": "f'Образовано добавлением -ся к гл. {parts[-1]}, далее'",
-    # {{совершить|аббревиировать}}
-    "совершить": "f'совершить действие, выраженное гл. {parts[-1]}; провести некоторое время, совершая такое действие'",
-    # {{отн.|аббревиировать}}
-    "отн.": "f'относящийся к {parts[-1]}, связанный с ним'",
-    # {{нкря|Неограниченные возможности|b4kB6}}
-    "нкря": "parts[1]",
-    # {{прежде|Камбоджа}}
-    "прежде": "f'прежнее название {parts[0]}'",
-    # {{аффиксы|жить|в-|-ся}}
-    "аффиксы": "f'{parts[1]} с добавлением {\", \".join(parts[2:])}, далее '",
-    # {{результат|lang=ru|блевать}}
-    "результат": "f'результат действия по знач. гл. {next(p for p in parts[1:] if \"=\" not in p)}'",
-    # {{праиндоеврокорень|foo}}
-    "праиндоеврокорень": "f'происходит от праиндоевропейского корня {parts[1]}'",
-    # {{шаблон|wikify}}
-    "Шаблон": "parts[1]",
-    # {{числ.|42}}
-    "числ.": "f'ппорядковое числительное к {parts[1]}'",
-}
-templates_multi["&quot;"] = templates_multi['"']
-templates_multi["==="] = templates_multi["="]
-templates_multi["Script/Slavonic"] = templates_multi["Cyrs"]
-templates_multi["script/Slavonic"] = templates_multi["Cyrs"]
-templates_multi["template"] = templates_multi["Шаблон"]
-templates_multi["то же"] = templates_multi["="]
-templates_multi["ссылки"] = templates_multi["aslinks"]
-templates_multi["ш"] = templates_multi["Шаблон"]
-templates_multi["T:="] = templates_multi["t:="]
-
-# Templates that will be completed/replaced using custom text.
-templates_other = {
-    "?": "<small>?</small>",
-    "-": "—",
-    "--": "—",
-    "--+": "→",
-    "f": "<i>ж.</i>",
-    "m": "<i>м.</i>",
-    "n": "<i>cp.</i>",
-    "nobr": "&nbsp;",
-    "Ф": "<small>Использованы данные словаря М. Фасмера</small>",
-    "Нужен перевод": "<b>Значение этого слова или выражения пока не указано.</b> Вы можете предложить свой вариант.",
-    "советск.": "<i>советск.</i>",
-    "итп": "и т. п.",
-    "втч": "в т. ч.",
-    "мн. ч.": "<i>мн. ч.</i>",
-    "телеком.": "<i>телеком.</i>",
-    "итд": "и т. д.",
-    "фотогр. жарг.": "<i>фотогр. жарг.</i>",
-    "букв.": "<i>букв.</i>",
-    "воен. жарг.": "<i>воен. жарг.</i>",
-    "скорн.": "<i>скорн.</i>",
-    "жарг. комп. игр.": "<i>жарг. комп. игр.</i>",
-    "жарг. нарк.": "<i>жарг. нарк.</i>",
-    "метоним.": "<i>метоним.</i>",
-    "животн.": "<i>животн.</i>",
-    "гидротехн.": "<i>гидротехн.</i>",
-    "жарг. аним.": "<i>жарг. аним.</i>",
-    "ислам.": "<i>ислам.</i>",
-    "стомат.": "<i>стомат.</i>",
-    "ж.-д.": "<i>ж.-д.</i>",
-    "конев.": "<i>конев.</i>",
-    "пчел.": "<i>пчел.</i>",
-    "винод.": "<i>винод.</i>",
-    "эл.-техн.": "<i>эл.-техн.</i>",
-    "несов.": "<i>несов.</i>",
-    "сов.": "<i>сов.</i>",
-    "арест.": "<i>арест.</i>",
-    "гистол.": "<i>гистол.</i>",
-    "частич.": "<i>частич.</i>",
-    "радиоэл.": "<i>радиоэл.</i>",
-    "с.-х.": "<i>с.-х.</i>",
-    "жарг. ЛГБТК+": "<i>жарг. ЛГБТК+</i>",
-    "спорт. жарг.": "<i>спорт. жарг.</i>",
-    "филос.": "<i>филос.</i>",
-    "патет.": "<i>патет.</i>",
-    "радио.": "<i>радио.</i>",
-    "бизн.": "<i>бизн.</i>",
-    "экспр.": "<i>экспр.</i>",
-    "экзот.": "<i>экзот.</i>",
-    "неуп.": "<i>энеуп.</i>",
-    "палеонт.": "<i>палеонт.</i>",
-    "журн.": "<i>журн.</i>",
-    "лимн.": "<i>лимн.</i>",
-    "транс.": "<i>транс.</i>",
-    "кожев.": "<i>кожев.</i>",
-    "возвр.": "<i>возвр.</i>",
-    "педагог.": "<i>педагог.</i>",
-    "шашечн.": "<i>шашечн.</i>",
-    "тур.": "<i>тур.</i>",
-    "смягчит.": "<i>смягчит.</i>",
-    "кинемат. жарг.": "<i>кинемат. жарг.</i>",
-    "вексил.": "<i>вексил.</i>",
-    "техн. жарг.": "<i>техн. жарг.</i>",
-    "растен.": "<i>растен.</i>",
-    "Даль": "<small>[Даль]</small>",
-    "СРНГ": "<small>[СРНГ]</small>",
-    "ССРЛЯ-2": "<small>[ССРЛЯ]</small>",
-    "НКРЯ": "<small>[НКРЯ]</small>",
-    "Академия": "<small>[Академия]</small>",
-    "по": "Норвежский<sub>no</sub>",
-    "звукоподр": "звукоподражательное",
-    "прагерм": "прагерм., от которой в числе прочего произошли:",
-    "общеслав": "общеслав. формы",
-}
-templates_other["ср."] = templates_other["n"]
-templates_other["м."] = templates_other["m"]
-templates_other["мн"] = templates_other["мн. ч."]
-templates_other["мн."] = templates_other["мн. ч."]
-templates_other["мн.ч."] = templates_other["мн. ч."]
-templates_other["ЖД"] = templates_other["ж.-д."]
-templates_other["комп. игр. жарг."] = templates_other["жарг. комп. игр."]
-templates_other["нарк."] = templates_other["жарг. нарк."]
-templates_other["ж."] = templates_other["f"]
-templates_other["электр."] = templates_other["эл.-техн."]
-templates_other["жарг. ЛГБТ"] = templates_other["жарг. ЛГБТК+"]
-templates_other["жарг. гом."] = templates_other["жарг. ЛГБТК+"]
-templates_other["жсравни"] = templates_other["n"]
-templates_other["сельхоз."] = templates_other["с.-х."]
-templates_other["философ."] = templates_other["филос."]
-templates_other["экспресс."] = templates_other["экспр."]
-templates_other["палеонтол."] = templates_other["палеонт."]
-templates_other["част."] = templates_other["частич."]
-templates_other["аним. жарг."] = templates_other["жарг. аним."]
-templates_other["тех. жарг."] = templates_other["техн. жарг."]
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -266,200 +59,57 @@ def find_genders(code: str, locale: str) -> list[str]:
     """
     # https://ru.wiktionary.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D1%81%D1%83%D1%89-ru
     pattern: re.Pattern[str] = re.compile(rf"(?:\{{сущ.{locale}.)([fmnмжс])|(?:\{{сущ.{locale}.*\|)([fmnмжс])")
-    return unique(
+    return utils.unique(
         [
             {
                 "f": "ж",
                 "m": "м",
                 "n": "cp",
             }.get(gender, gender)
-            for gender in flatten(pattern.findall(code))
+            for gender in utils.flatten(pattern.findall(code))
         ]
     )
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
+    >>> from ... import context
+    >>> _ = context.reset("ru")
+    >>> context.new_word("word")
+
     >>> find_pronunciations("", "ru")
     []
-    >>> # Expected behaviour after #1376: ['[strɐˈnʲit͡sə]']
     >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
-    ['[stranʲi]']
+    ['[strɐˈnʲit͡sə]', '[strɐˈnʲit͡sɨ]']
     """
-    pattern = re.compile(rf"(?:transcriptions-{locale}.)(\w*)")
-    return unique([transcript(word) for word in pattern.findall(code)])
+    from ... import context
 
-
-def last_template_handler(
-    template: tuple[str, ...],
-    locale: str,
-    *,
-    word: str = "",
-    all_templates: list[tuple[str, str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    """
-    Will be called in utils.py::transform() when all template handlers were not used.
-
-        >>> last_template_handler(["en"], "ru")
-        'Английский'
-
-        >>> last_template_handler(["выдел", "foo"], "ru")
-        'foo'
-
-        >>> last_template_handler(["аббр.", "ru"], "ru")
-        '<i>сокр.</i>'
-        >>> last_template_handler(["аббр.", "ru", "Свободная демократическая партия", "без ссылки=1"], "ru")
-        '<i>сокр.</i> от <i>Свободная демократическая партия</i>'
-        >>> last_template_handler(["аббр.", "ru", "Свободная демократическая партия", "без ссылки=1", ""], "ru")
-        '<i>сокр.</i> от <i>Свободная демократическая партия</i>'
-
-        >>> last_template_handler(["рег."], "ru")
-        '<i>рег.</i>'
-        >>> last_template_handler(["рег.", "", "ru"], "ru")
-        '<i>рег.</i>'
-        >>> last_template_handler(["рег.", "Латвия"], "ru")
-        '<i>рег. (Латвия)</i>'
-
-        >>> last_template_handler(["свойство", "абелев"], "ru")
-        'свойство по значению прилагательного <i>абелев</i>'
-        >>> last_template_handler(["свойство", "погнутый", "состояние=1"], "ru")
-        'свойство или состояние по значению прилагательного <i>погнутый</i>'
-
-        >>> last_template_handler(["нареч.", "адекватный"], "ru")
-        'наречие к <i>адекватный</i>'
-        >>> last_template_handler(["наречие", "адекватный", "в соответствии с чем-либо"], "ru")
-        'наречие к <i>адекватный</i>; в соответствии с чем-либо'
-
-        # Labels
-        >>> last_template_handler(["зоол.", "ru"], "ru")
-        '<i>зоол.</i>'
-        >>> last_template_handler(["сленг", "ru"], "ru")
-        '<i>сленг</i>'
-        >>> last_template_handler(["сленг.", "ru"], "ru")
-        '<i>сленг</i>'
-        >>> last_template_handler(["гипокор.", "ru", "Александр"], "ru")
-        '<i>гипокор.</i> к Александр'
-        >>> last_template_handler(["эррат.", "ru", "Александр"], "ru")
-        '<i>эррат.</i> от Александр'
-        >>> last_template_handler(["умласк."], "ru")
-        '<i>уменьш.-ласк.</i>'
-
-        >>> last_template_handler(["Унбегаун"], "ru")
-        '<i>Унбегаун Б.-О.</i> Русские фамилии. — М. : Прогресс, 1989. — 443 с. — ISBN 5-01-001045-3.'
-        >>> last_template_handler(["Унбегаун", "сокр=1"], "ru")
-        'Унбегаун'
-    """
-    from ...user_functions import extract_keywords_from, italic
-    from .. import defaults
-    from .labels import labels
-    from .langs import langs
-    from .template_handlers import lookup_template, render_template
-
-    tpl, *parts = template
-
-    tpl_variant = f"__variant__{tpl}"
-    if variant_only:
-        tpl = tpl_variant
-        template = tuple([tpl_variant, *parts])
-    elif lookup_template(tpl_variant):
-        # We are fetching the output of a variant template, we do not want to keep it
-        return ""
-
-    # Catch missing reverse variants
-    if not lookup_template(tpl_variant) and tpl_variant.startswith(
-        (
-            f"__variant__сущ {locale} ",
-            f"__variant__прил {locale} ",
-        )
-    ):
-        if re.search(r"\d", tpl_variant) and all_templates is not None:
-            all_templates.append((tpl_variant, word, "missed"))
-
-        # Incomplete template
-        return ""
-
-    if lookup_template(template[0]):
-        return render_template(word, template)
-
-    data = extract_keywords_from(parts)
-
-    if tpl in {"рег.", "обл.", "местн."}:
-        text = "рег."
-        if part := next((p for p in parts if p and p != "ru"), ""):
-            text += f" ({part})"
-        return italic(text)
-
-    if tpl in {"аббр.", "сокр."}:
-        text = italic("сокр.")
-        if len(parts) > 1:
-            text += f" от {italic(parts[1])}"
-        return text
-
-    if tpl in {"многокр."}:
-        text = italic(tpl)
-        if parts:
-            text += f" к {parts[0]}"
-        return text
-
-    if tpl in {"превосх."}:
-        text = italic("превосх. ст.")
-        if parts:
-            text += f" к прил. {parts[0]}"
-        return text
-
-    if tpl == "выдел":
-        return parts[0]
-
-    if tpl in {"наречие", "нареч."}:
-        text = f"наречие к {italic(parts[0])}"
-        if len(parts) > 1:
-            text += f"; {parts[1]}"
-        return text
-
-    if tpl == "свойство":
-        text = tpl
-        if data["состояние"] == "1":
-            text += " или состояние"
-        return f"{text} по значению прилагательного {italic(parts[0])}"
-
-    if tpl == "Унбегаун":
-        if data["сокр"] == "1":
-            return tpl
-        return f"{italic(f'{tpl} Б.-О.')} Русские фамилии. — М. : Прогресс, 1989. — 443 с. — ISBN 5-01-001045-3."
-
-    if label := (labels.get(tpl) or labels.get(tpl.rstrip("."))):
-        if tpl == "умласк.":
-            label = "уменьш.-ласк."
-        text = italic(label)
-        if len(parts) > 1:
-            text += f" {'от' if tpl == 'эррат.' else 'к'} {parts[-1]}"
-        return text
-
-    if lang := langs.get(tpl):
-        return lang
-
-    return defaults.last_template_handler(template, locale, word=word, all_templates=all_templates)
-
-
-random_word_url = "https://ru.wiktionary.org/wiki/%D0%A1%D0%BB%D1%83%D0%B6%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F:RandomRootpage"
+    pattern = re.compile(rf"(\{{\{{transcriptions-{locale}[^}}]+}}}})")
+    res: set[str] = set()
+    for tpl in pattern.findall(code):
+        res.update(re.findall(r"&#91;([^&]+)&#93;", context.expand(tpl, locale)))
+    return sorted(f"[{pron}]" for pron in res)
 
 
 def adjust_wikicode(
     code: str,
     locale: str,
     *,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     """
-    >> adjust_wikicode("{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
-    '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коре́}}\\n# {{rev-flexion|коре́й}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|корю́}}\\n# {{rev-flexion|коря́}}\\n# {{rev-flexion|коря́м}}\\n# {{rev-flexion|коря́ми}}\\n# {{rev-flexion|коря́х}}\\n# {{rev-flexion|корём}}'
-    >> adjust_wikicode("{{сущ ru m a 2b\\n|основа=коро́л\\n|основа1=корол\\n|слоги={{по-слогам|ко|ро́ль}}\\n}}", "ru")
-    '{{сущ ru m a 2b|}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|короле́}}\\n# {{rev-flexion|короле́й}}\\n# {{rev-flexion|королю́}}\\n# {{rev-flexion|короля́}}\\n# {{rev-flexion|короля́м}}\\n# {{rev-flexion|короля́ми}}\\n# {{rev-flexion|короля́х}}\\n# {{rev-flexion|королём}}'
-    >>> adjust_wikicode("{{прил ru 1*a\\n|основа=бессу́дорожн\\n|основа1=\\n|тип=\\n|слоги={{по-слогам|бес|су́|до|рож|ный}}\\n|степень=\\n|краткая=\\n|коммент=\\n|дореф=\\n}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}", "ru")
-    '{{прил ru 1*a|}}\\n# {{rev-flexion|бессу́дорожна}}\\n# {{rev-flexion|бессу́дорожная}}\\n# {{rev-flexion|бессу́дорожно}}\\n# {{rev-flexion|бессу́дорожного}}\\n# {{rev-flexion|бессу́дорожное}}\\n# {{rev-flexion|бессу́дорожной}}\\n# {{rev-flexion|бессу́дорожном}}\\n# {{rev-flexion|бессу́дорожному}}\\n# {{rev-flexion|бессу́дорожною}}\\n# {{rev-flexion|бессу́дорожную}}\\n# {{rev-flexion|бессу́дорожны}}\\n# {{rev-flexion|бессу́дорожные}}\\n# {{rev-flexion|бессу́дорожный}}\\n# {{rev-flexion|бессу́дорожным}}\\n# {{rev-flexion|бессу́дорожными}}\\n# {{rev-flexion|бессу́дорожных}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}'
+    >>> from ... import context
+    >>> _ = context.reset("ru")
+    >>> context.new_word("word")
+
+    >>> adjust_wikicode("= {{-ru-}} =\\n{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru")
+    '= {{-ru-}} =\\n{{сущ ru m a 2b|}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|короле́}}\\n# {{rev-flexion|короле́й}}\\n# {{rev-flexion|короли́}}\\n# {{rev-flexion|королю́}}\\n# {{rev-flexion|короля́}}\\n# {{rev-flexion|короля́м}}\\n# {{rev-flexion|короля́ми}}\\n# {{rev-flexion|короля́х}}\\n# {{rev-flexion|королём}}'
+    >>> adjust_wikicode("= {{-ru-}} =\\n{{сущ ru m a 2b\\n|основа=коро́л\\n|основа1=корол\\n|слоги={{по-слогам|ко|ро́ль}}\\n}}", "ru")
+    '= {{-ru-}} =\\n{{сущ ru m a 2b|}}\\n# {{rev-flexion|коро́ль}}\\n# {{rev-flexion|короле́}}\\n# {{rev-flexion|короле́й}}\\n# {{rev-flexion|короли́}}\\n# {{rev-flexion|королю́}}\\n# {{rev-flexion|короля́}}\\n# {{rev-flexion|короля́м}}\\n# {{rev-flexion|короля́ми}}\\n# {{rev-flexion|короля́х}}\\n# {{rev-flexion|королём}}'
+    >>> adjust_wikicode("= {{-ru-}} =\\n{{прил ru 1*a\\n|основа=бессу́дорожн\\n|основа1=\\n|тип=\\n|слоги={{по-слогам|бес|су́|до|рож|ный}}\\n|степень=\\n|краткая=\\n|коммент=\\n|дореф=\\n}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}", "ru")
+    '= {{-ru-}} =\\n{{прил ru 1*a|}}\\n# {{rev-flexion|бессу́дорожна}}\\n# {{rev-flexion|бессу́дорожная}}\\n# {{rev-flexion|бессу́дорожно}}\\n# {{rev-flexion|бессу́дорожного}}\\n# {{rev-flexion|бессу́дорожное}}\\n# {{rev-flexion|бессу́дорожной}}\\n# {{rev-flexion|бессу́дорожном}}\\n# {{rev-flexion|бессу́дорожному}}\\n# {{rev-flexion|бессу́дорожною}}\\n# {{rev-flexion|бессу́дорожную}}\\n# {{rev-flexion|бессу́дорожны}}\\n# {{rev-flexion|бессу́дорожные}}\\n# {{rev-flexion|бессу́дорожный}}\\n# {{rev-flexion|бессу́дорожным}}\\n# {{rev-flexion|бессу́дорожными}}\\n# {{rev-flexion|бессу́дорожных}}\\n\\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\\n{{морфо-ru|бес-|судорож|-н|+ый}}'
     """
 
     #
@@ -469,17 +119,26 @@ def adjust_wikicode(
     interesting_reverse_variant_titles = (
         reverse_variant_titles
         if locale == "ru"
-        else tuple(tpl.replace(" ru ", f" {locale} ") for tpl in reverse_variant_titles)
+        else tuple(tpl.replace(" ru", f" {locale}") for tpl in reverse_variant_titles)
     )
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        from ...utils import process_templates
-
         cleaned: list[str] = []
+        in_expected_section = False
+        expected_section = (f"= {{{{-{locale}-}}", f"={{{{-{locale}-}}")
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
             line = line.strip()
+            if not in_expected_section:
+                if line.startswith(expected_section):
+                    in_expected_section = True
+            elif line.startswith(("= {", "={")):
+                in_expected_section = False
+
+            if not in_expected_section:
+                continue
+
             if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 
@@ -490,9 +149,17 @@ def adjust_wikicode(
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
                     if not rest:
                         tpl_code += "}}"
-                    forms = process_templates(word, tpl_code, locale, all_templates=all_templates, variant_only=True)
-                    cleaned.append(f"{tpl_code[: tpl_code.find('|')]}|}}}}")  # This is required for genders finding
-                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(set(forms.split("|"))))
+                    tpl_name = tpl_code[2 : tpl_code.find("|")].strip()
+                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                    forms = utils.process_templates(
+                        word,
+                        tpl_code,
+                        locale,
+                        templates_status=templates_status,
+                        variant_only=True,
+                    )
+                    cleaned.append(f"{{{{{tpl_name}|}}}}")  # This is required for genders finding
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
                     if rest:
                         cleaned.append(rest)
                     tpl_code = ""

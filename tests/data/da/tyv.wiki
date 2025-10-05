@@ -18,7 +18,7 @@
 *{{el}}: {{trad|el|κλέφτης}}
 *{{is}}: {{trad|is|þjófur}}
 *{{it}}: {{trad|it|ladro}}
-*{{ku}}: {{trad|ku|diz}}
+*{{O|ku|diz}} {{mf}}
 *{{nl}}: {{trad|nl|dief}}
 {{-}}
 *{{no}}:

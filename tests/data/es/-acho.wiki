@@ -6,8 +6,8 @@
 === Etimología 1 ===
 {{etimología|la|-aceus|alt=-acĕus}}.<ref name="drae">{{DRAE2001}}</ref> De allí también ''[[-áceo]]''.
 
-==== {{sufijo|es|alf=acho}} ====
-{{inflect.es.adj.reg|-ach}}
+==== {{sufijo|es}} ====
+{{es.adj}}
 ;1: {{impropia|Forma [[aumentativo]]s, a veces [[despectivo]]s, a partir de [[adjetivo]]s y [[sustantivo]]s}}.
 {{uso|a veces se combina con -ar formando ''-aracho'': "vivaracho"|"dicharacho"}}
 :::También se combina con ''[[-uelo]]'', formando ''[[-achuelo]]'': [[riachuelo]].

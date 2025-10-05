@@ -40,7 +40,7 @@
 
 === {{S|nom|fr|num=2}} ===
 {{fr-rég|ɡʁɛ.fje|pron2=ɡʁe.fje}}
-'''greffier''' {{pron|ɡʁɛ.fje|fr}} <small>ou</small> {{pron|ɡʁe.fje|fr}}
+'''greffier''' {{pron|ɡʁɛ.fje|ɡʁe.fje|fr}}
 # {{populaire|fr}} [[chat|Chat]].
 #* {{exemple|Dans le quartier même le mois le plus doux<br>Tu ne risques pas d’entendre miaou<br>Des '''greffiers''' mignons y en a plus bezef<br>Ils sont tous devenus terrine du chef. |source={{w|Pierre Perret}}, ''Le Tord-Boyaux'', 1963 |lang=fr}}
 #* ''Et là, c’est juste la grimace<br
@@ -53,6 +53,9 @@
 #* {{exemple|Elle avait pas tellement le choix, faut dire, question homme pour se faire encore régaler à son âge  avec sa patte folle. Depuis qu'Albert faisait la fête à son '''greffier''', elle s'efforçait de réparer l'outrage des ans sur sa frime...[...] toute la panoplie séductrice.|source={{w|Alphonse Boudard}}, ''[[Les combattants du petit bonheur]]'', La Table Ronde, 1977, réédition Le Livre de Poche, 1990, page 83.|lang=fr}}
 # [[poisson-chat commun|Poisson-chat commun]] (poisson).
 #* {{exemple|lang=fr}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|chat}}
 
 === {{S|prononciation}} ===
 * {{écouter|lang=fr|France (Vosges)|ɡʁɛ.fje|audio=LL-Q150 (fra)-Poslovitch-greffier.wav}}

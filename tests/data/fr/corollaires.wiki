@@ -6,6 +6,9 @@
 {{fr-rég|kɔ.ʁɔ.lɛʁ|s=corollaire|mf=oui}}
 '''corollaires''' {{pron|kɔ.ʁɔ.lɛʁ|fr}}
 # ''Pluriel de'' [[corollaire#fr-nom|corollaire]].
+#* {{exemple | lang=fr
+ | L’illustre docteur regrettait de ne pouvoir emporter les seize volumes in-quarto, mais il en possédait tous les développements dans sa tête, ainsi que les notes, les '''corollaires''', les renvois et une foule d’observations inédites et curieuses, résultant de ses nouvelles études.
+ | source={{w|Erckmann-Chatrian}}, ''{{ws|Livre:Erckmann-Chatrian - Contes et romans populaires, 1867.djvu|L’illustre docteur Mathéus}}'', page 6, J. Hetzel, 1867}}
 {{Clr}}
 
 === {{S|adjectif|fr|flexion}} ===

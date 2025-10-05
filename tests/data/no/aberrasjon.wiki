@@ -28,6 +28,7 @@
 * {{overs|fr|aberration|f}}
 * {{overs|it|aberrazione|f}}
 {{overs-midt}}
+* {{overs|pt|aberração|f}}
 * {{overs-mangler|ru}}
 * {{overs-mangler|es}}
 * {{overs|sv|aberration|c}}

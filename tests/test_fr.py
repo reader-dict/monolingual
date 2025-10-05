@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("fr")
 
 
 @pytest.mark.parametrize(
@@ -17,7 +25,7 @@ from wikidict.utils import process_templates
             [],
             {
                 "Symbole": [
-                    "Code AITA de la compagnie d’aviation SGA Airlines <i>(<i>Siam General Aviation Company Limited</i></i>, <i>บริษัท สยาม เจนเนอรัล เอวิเอชั่น จำกัด</i>)."
+                    "Code AITA de la compagnie d’aviation SGA Airlines <i>(Siam General Aviation Company Limited</i>, บริษัท สยาม เจนเนอรัล เอวิเอชั่น จำกัด)."
                 ]
             },
             [],
@@ -34,7 +42,7 @@ from wikidict.utils import process_templates
             ],
             {
                 "Suffixe": [
-                    "Suffixe servant à former des mots féminins.<b>Note&nbsp;:</b> Voir aussi au suffixe <i>-esse</i>."
+                    "Suffixe servant à former des mots féminins.<b>Note : </b> Voir aussi au suffixe <i>-esse</i>."
                 ]
             },
             [],
@@ -47,16 +55,16 @@ from wikidict.utils import process_templates
                 "<i>(Symbole 2)</i> Abréviation de <i><b>a</b>tto-</i>.",
                 "<i>(Symbole 3)</i> Abréviation de <i><b>a</b>re</i>.",
                 "<i>(Symbole 4)</i> <i>(Abréviation)</i> du latin <i><b>a</b>nnum</i> («&nbsp;année&nbsp;»).",
-                "<i>(Symbole 6)</i> Abréviation de <i>accélération</i>.",
+                "<i>(Symbole 6)</i> Abréviation de <i><b>a</b>ccélération</i>.",
             ],
             {
                 "Caractère": [
-                    "Première lettre et première voyelle de l’alphabet latin (minuscule). Unicode : U+0061.",
+                    "Première lettre et première voyelle de l’alphabet latin (minuscule). Unicode&nbsp;:&#32;U+0061.",
                     "Chiffre hexadécimal dix (minuscule).",
                 ],
                 "Lettre": [
                     "Première lettre et première voyelle de l’alphabet français.",
-                    "Le son \\a\\ ou \\ɑ\\ de cette lettre. <b>Note&nbsp;:</b> Le français parisien a perdu la distinction entre les deux.",
+                    "Le son \\a\\ ou \\ɑ\\ de cette lettre. <b>Note : </b> Le français parisien a perdu la distinction entre les deux.",
                 ],
                 "Pronom": [
                     "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
@@ -112,7 +120,7 @@ from wikidict.utils import process_templates
             "accueil",
             ["\\a.kœj\\"],
             ["m"],
-            ["<i>(XII<sup>e</sup> siècle)</i> Déverbal de <i>accueillir</i>."],
+            ["<i>(<small>XII</small><sup>e</sup> siècle)</i> Déverbal de <i>accueillir</i>."],
             {
                 "Nom": [
                     "Cérémonie ou prestation réservée à un nouvel arrivant, consistant généralement à lui souhaiter la bienvenue et à l’aider dans son intégration ou ses démarches.",
@@ -163,17 +171,14 @@ from wikidict.utils import process_templates
                     "Partie inférieure d’un corps quelconque qui lui sert de soutien.",
                     "<i>(En particulier)</i> <i>(Architecture)</i> Ce qui soutient le fût de la colonne.",
                     "<i>(Héraldique)</i> Désigne le piédestal d’une colonne surtout quand il est d’un émail différent de la colonne.",
-                    "<i>(Mathématiques)</i>",
+                    "<i>(Géométrie)</i> Surface sur laquelle on conçoit que certains corps solides sont appuyés.",
                     (
-                        "<i>(Géométrie)</i> Surface sur laquelle on conçoit que certains corps solides sont appuyés.",
-                        (
-                            "<i>(Par extension)</i> Côté du triangle opposé à l’angle qui est regardé comme le sommet.",
-                            "Côté d’une figure géométrique naturellement choisi comme côté principal.",
-                        ),
-                        "<i>(Algèbre linéaire)</i> Famille libre de vecteurs, génératrice d’un espace vectoriel.",
-                        "<i>(Analyse réelle)</i> Nombre réel élevé à une puissance variable.",
-                        "<i>(Arithmétique)</i> Nombre de chiffres utilisé pour dénombrer.",
+                        "<i>(Par extension)</i> Côté du triangle opposé à l’angle qui est regardé comme le sommet.",
+                        "Côté d’une figure géométrique naturellement choisi comme côté principal.",
                     ),
+                    "<i>(Arithmétique)</i> Nombre de chiffres utilisé pour dénombrer.",
+                    "<i>(Algèbre linéaire)</i> Famille libre de vecteurs, génératrice d’un espace vectoriel.",
+                    "<i>(Mathématiques)</i> Nombre réel élevé à une puissance.",
                     "<i>(Par analogie)</i> <i>(Anatomie, Botanique)</i> Côté opposé à la partie la plus pointue d’un organe.",
                     "<i>(Géodésie)</i> Côté initial mesuré directement sur le terrain.",
                     "<i>(Militaire)</i> Ensemble des points de ravitaillement avec lesquels une armée en campagne se tient en relations constantes.",
@@ -182,7 +187,7 @@ from wikidict.utils import process_templates
                     "<i>(Médecine)</i> Ce qui entre comme ingrédient principal dans un mélange.",
                     "<i>(Génétique)</i> Base nucléique.",
                     "<i>(Télécommunications)</i> Appareil relié à une ligne fixe permettant le fonctionnement de téléphones sans fil à usage domestique.",
-                    "<i>(Électronique)</i> Nom d’une des électrodes d’un transistor bipolaire.",
+                    "<i>(Électronique, Chimie des matériaux)</i> Nom d’une des électrodes d’un transistor bipolaire.",
                     "<i>(Baseball)</i> Une des trois zones où le coureur peut rester sans être mis hors jeu.",
                     "<i>(Sports hippiques)</i> Cheval ou groupe de chevaux que l’on retient dans toutes ses combinaisons de paris hippiques pour une course donnée, car on estime qu’ils ont de très bonnes chances de figurer parmi les premiers.",
                     "<i>(Politique)</i> Ensemble des électeurs, des soutiens d’un politique ou d’un parti.",
@@ -200,7 +205,7 @@ from wikidict.utils import process_templates
                 "(<i>Adjectif, nom 1</i>) <i>(1846)</i> Origine discutée :",
                 (
                     "soit de <i>Bath</i>, station thermale anglaise très prisée par la haute société au XVIII<sup>e</sup> siècle ; pour rendre compte de la forme <i>bath</i> ;",
-                    "soit forme apocopée de l’argot <i>batif</i> (« joli ») , lui-même composé de <i>bat</i>, <i>battant</i> et <i>-if</i> dans le syntagme <i>battant neuf</i>, « fraîchement battu, tout neuf » ;",
+                    "soit forme apocopée de l’argot <i>batif</i> (« joli ») , lui-même composé de <i>bat</i>, <i>battant</i>&#32;et <i>-if</i> dans le syntagme <i>battant neuf</i>, « fraîchement battu, tout neuf » ;",
                     "soit emploi adjectival de l’interjection onomatopéique <i>bath, bah</i> exprimant l’étonnement.",
                 ),
                 "Le nom du papier semble dérivé du sens « beau » plus que du nom de <i>Bath</i>, ville où l’on aurait fabriqué cette sorte de papier.",
@@ -243,7 +248,7 @@ from wikidict.utils import process_templates
             "corps portant",
             ["\\kɔʁ pɔʁ.tɑ̃\\"],
             ["m"],
-            ["Locution composée de <i>corps</i> et de <i>portant</i>."],
+            ["Locution composée de <i>corps</i>&#32;et de <i>portant</i>."],
             {
                 "Nom": [
                     "<i>(Astronautique)</i> Aéronef à fuselage porteur, sur lequel la portance est produite par le fuselage, destiné aux usages spatiaux ou hypersoniques, afin de limiter l'effet de traînée ou la surface de friction.",
@@ -296,6 +301,7 @@ from wikidict.utils import process_templates
                 "Nom": [
                     "<i>(Médecine)</i> <i>(Vieilli)</i> Substances organiques altérées, tenues en suspension dans l’air, principalement aux endroits marécageux, et donnant particulièrement lieu à des fièvres intermittentes, rémittentes et continues.",
                     "Émanation qui se dégage d’un corps quelconque.",
+                    "<i>(Physique)</i> Décharge électrique à faible dégagement de chaleur ayant lieu entre deux conducteurs dont la différence de potentiel n’est pas assez élevée pour engendrer un arc électrique. → voir <i>effluveur</i>",
                 ]
             },
             ["effluver"],
@@ -319,7 +325,7 @@ from wikidict.utils import process_templates
             ["\\ɑ̃.si.klɔ.pe.di\\"],
             ["f"],
             ["→ voir <i>encyclopédie</i>"],
-            {"Nom": ["<i>(Archaïsme)</i> <i>Variante orthographique de</i> encyclopédie."]},
+            {"Nom": ["<i>(Archaïsme)</i> <i>Variante orthographique&#32;de</i>&nbsp;encyclopédie."]},
             [],
         ),
         (
@@ -327,7 +333,7 @@ from wikidict.utils import process_templates
             ["\\e.pʁɔ̃\\"],
             ["m"],
             [
-                "De l’ancien français <i>esperon</i>, du vieux-francique *<i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
+                "De l’ancien français <i>esperon</i>, du vieux-francique <i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
             ],
             {
                 "Nom": [
@@ -406,13 +412,13 @@ from wikidict.utils import process_templates
             ["\\na.ɡɛʁ\\"],
             [],
             [
-                "De <i>il n’y a guère</i> (de temps). À comparer avec le wallon «\xa0nawaire\xa0» (même sens).Voir aussi <i>na</i>."
+                "De <i>il n’y a guère</i> (de temps). À comparer avec le wallon «\xa0nawaire\xa0» (même sens). Voir aussi <i>na</i>."
             ],
             {
                 "Adverbe": [
                     "<i>(Désuet)</i> Récemment ; il y a peu.",
                     "<i>(Désuet)</i> Peu de temps auparavant ; auparavant.",
-                    "Il y a longtemps. <b>Note&nbsp;:</b> contrairement à l’étymologie qui implique un temps passé récent, l’usage moderne consacre le sens d’un temps antérieur, lointain, révolu.",
+                    "Il y a longtemps. <b>Note : </b> contrairement à l’étymologie qui implique un temps passé récent, l’usage moderne consacre le sens d’un temps antérieur, lointain, révolu – possiblement par litote.",
                 ]
             },
             [],
@@ -422,12 +428,12 @@ from wikidict.utils import process_templates
             ["\\pin.jin\\"],
             ["m"],
             [
-                "<i>(Nom 1)</i> (Vers 1950) Du chinois 拼音, <i>pīnyīn</i>, composé de 拼, <i>pīn</i> («&nbsp;épeler&nbsp;») et de 音, <i>yīn</i> («&nbsp;son&nbsp;»).",
+                "<i>(Nom 1)</i> (Vers 1950) Du chinois 拼音, <i>pīnyīn</i>, composé de 拼, <i>pīn</i> («&nbsp;épeler&nbsp;»)&#32;et de 音, <i>yīn</i> («&nbsp;son&nbsp;»).",
                 "<i>(Nom 2)</i> De l’anglais <i>Pinyin</i>.",
             ],
             {
                 "Nom": [
-                    "Système de transcription de la langue chinoise, permettant de romaniser les sons des sinogrammes, et d’indiquer le ton utilisé lors de la prononciation.",
+                    "Systèmes de transcription de différentes langues, permettant de romaniser les sons des sinogrammes, et d’indiquer le ton utilisé lors de la prononciation. Le hanyu pinyin sert à la transcription du mandarin standard.",
                     "<i>(Linguistique)</i> Langue bantoïde parlée dans la Région du Nord-Ouest au Cameroun.",
                 ]
             },
@@ -444,7 +450,7 @@ from wikidict.utils import process_templates
                 "Nom": [
                     "Règle ; leçon ; enseignement.",
                     "Règle morale ou religieuse.",
-                    "<i>(Philosophie)</i> Ce qui ne peut pas ne pas être autrement.",
+                    "<i>(Philosophie)</i> Ce qui ne peut pas ne pas être autrement.&nbsp;référence nécessaire (pourquoi ? résoudre le problème)",
                     "<i>(Religion)</i> Commandement et, surtout, commandement de Dieu, ou commandement de l’Église, etc.",
                 ]
             },
@@ -459,8 +465,9 @@ from wikidict.utils import process_templates
                 "Adjectif": [
                     "Se dit des corps gras qui, laissés au contact de l’air, ont pris une odeur forte et un goût désagréable.",
                     "<i>(Sens figuré)</i> Qui s’est encore envenimé.",
+                    "<i>(Sens figuré)</i> <i>(Péjoratif)</i> Méprisable.",
                 ],
-                "Nom": ["Goût et odeur désagréable, en parlant de corps gras.", "<i>Variante de</i> ranche."],
+                "Nom": ["Goût et odeur désagréable, en parlant de corps gras.", "<i>Variante&#32;de</i>&nbsp;ranche."],
             },
             ["rancer"],
         ),
@@ -471,7 +478,7 @@ from wikidict.utils import process_templates
             ["Déformation de <i>sacristi</i>, afin de ne pas blasphémer ouvertement."],
             {
                 "Interjection": [
-                    "<i>(Populaire)</i> <i>(Familier)</i> <i>(Par euphémisme)</i> <i>(Vieilli)</i> Pour marquer l’étonnement ou l'énervement."
+                    "<i>(Familier)</i> <i>(Par euphémisme)</i> <i>(Vieilli)</i> Pour marquer l’étonnement ou l'énervement."
                 ]
             },
             [],
@@ -488,7 +495,7 @@ from wikidict.utils import process_templates
                     "<i>(Chimie)</i> Composé inorganique formés d’une chaine silicium-oxygène (ou siloxane) […-Si-O-Si-O-Si-O-…] dans laquelle des groupes [R] se fixent, sur les atomes de silicium.",
                     "<i>(Par extension)</i> Mastic à base de ce composé et vendu généralement en cartouche.",
                     (
-                        "<i>(Par extension)</i> Nom donné abusivement par le grand public à toutes sortes de mastics vendu en cartouche et ce indépendamment de sa composition.",
+                        "<i>(Par extension)</i> Toutes sortes de mastics vendu en cartouche et ce indépendamment de sa composition.",
                     ),
                 ]
             },
@@ -506,9 +513,7 @@ from wikidict.utils import process_templates
             "Turgeon",
             ["\\tyʁ.ʒɔ̃\\"],
             [],
-            [
-                "Nom en rapport avec l’esturgeon «&nbsp;Turgeon&nbsp;» dans Jean <span style='font-variant:small-caps'>Tosti</span>, <i>Les noms de famille</i>."
-            ],
+            ["Nom en rapport avec l’esturgeon."],
             {"Nom": ["Nom de famille."]},
             [],
         ),
@@ -543,126 +548,3 @@ def test_parse_word(
     assert definitions == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{1|Descendant}}", "Descendant"),
-        ("{{1er}}", "1<sup>er</sup>"),
-        ("{{1er|mai}}", "1<sup>er</sup>&nbsp;mai"),
-        ("{{1re}}", "1<sup>re</sup>"),
-        ("{{2e}}", "2<sup>e</sup>"),
-        ("{{2e|édition}}", "2<sup>e</sup>&nbsp;édition"),
-        ("{{12e}}", "12<sup>e</sup>"),
-        ("{{abréviation discrète|C{{e|ie}}|Compagnie}}", "C<sup>ie</sup>"),
-        ("{{adj-indéf-avec-de}}", "<i>(Avec de)</i>"),
-        ("{{ancre|sens_sexe}}", ""),
-        ("{{attestation pays de Retz}}", "<i>(Pays de Retz)</i>"),
-        ("{{chiffre romain|15}}", "XV"),
-        ("{{circa|1150}}", "<i>(c. 1150)</i>"),
-        ("{{couleur|#B0F2B6}}", "#B0F2B6"),
-        ("{{cours d'eau|fr|de France}}", "<i>(Cours d’eau)</i>"),
-        ("{{dénominal de|affection|fr}}", "Dénominal de <i>affection</i>"),
-        ("{{détroit|fr}}", "<i>(Géographie)</i>"),
-        ("{{déverbal de|haler|fr}}", "Déverbal de <i>haler</i>"),
-        ("{{diaéthique|fr}}", "<i>(Variations diaéthiques)</i>"),
-        ("du XX{{e}} siècle", "du XX<sup>e</sup> siècle"),
-        ("M{{e|me}}", "M<sup>me</sup>"),
-        ("du XX{{ème}} siècle", "du XX<sup>e</sup> siècle"),
-        ("{{invisible|{{étyl|la|fr|mot=Dalmatica}}}}", ""),
-        ("le 1{{er}}", "le 1<sup>er</sup>"),
-        (
-            "{{étyl|grc|fr|mot=ἄκρος|tr=akros|sens=extrémité}}",
-            "grec ancien ἄκρος, <i>akros</i> («&nbsp;extrémité&nbsp;»)",
-        ),
-        ("{{Deva|[[देव]]|deva|divin}}", "देव"),
-        ("{{divinités|fr|grecques}}", "<i>(Divinité)</i>"),
-        ("{{info lex|boulangerie}}", "<i>(Boulangerie)</i>"),
-        ("{{info lex|équitation|sport}}", "<i>(Équitation, Sport)</i>"),
-        ("{{info lex|géographie|lang=fr}}", "<i>(Géographie)</i>"),
-        ("J·K{{e|-1}}", "J·K<sup>-1</sup>"),
-        ("{{FR|fr}}", "<i>(France)</i>"),
-        ("{{familier|fr|nocat=1}}", "<i>(Familier)</i>"),
-        ("{{fr-accord-oux|d|d}}", "doux"),
-        ("{{fr-accord-t-avant1835|abondan|a.bɔ̃.dɑ̃}}", "abondan"),
-        ("{{graphie|u}}", "‹&nbsp;u&nbsp;›"),
-        ("{{lang|en|other rank}}", "<i>other rank</i>"),
-        ("{{Lang|la|Martis dies}}", "<i>Martis dies</i>"),
-        ("{{langues|fr|de Chine}}", "<i>(Linguistique)</i>"),
-        ("{{lexique|philosophie|fr}}", "<i>(Philosophie)</i>"),
-        ("{{lexique|philosophie|sport|fr}}", "<i>(Philosophie, Sport)</i>"),
-        ("{{lien|étrange|fr}}", "étrange"),
-        ("{{lien|D{{e}}}}", "D<sup>e</sup>"),
-        ("{{in|5}}", "<sub>5</sub>"),
-        ("{{incise|texte placé en incise}}", "— texte placé en incise —"),
-        ("{{incise|texte placé en incise|stop}}", "— texte placé en incise"),
-        ("{{instruments à cordes|fr}}", "<i>(Musique)</i>"),
-        ("{{ISBN|1-23-456789-0}}", "ISBN 1-23-456789-0"),
-        (
-            "{{ISBN|978-1-23-456789-7|2-876-54301-X}}",
-            "ISBN 978-1-23-456789-7 et 2-876-54301-X",
-        ),
-        (
-            "{{ISBN|1-23-456789-0|978-1-23-456789-7|2-876-54301-X}}",
-            "ISBN 1-23-456789-0, 978-1-23-456789-7 et 2-876-54301-X",
-        ),
-        ("{{Lang-ar||[[نهر ابراهيم]]|100}}", "نهر ابراهيم"),
-        ("{{musiciens|fr}}", "<i>(Musique)</i>"),
-        ("{{Mme}}", "M<sup>me</sup>"),
-        ("{{Mme|de Maintenon}}", "M<sup>me</sup> de Maintenon"),
-        ("{{nobr|1 000 000 000 000}}", "1&nbsp;000&nbsp;000&nbsp;000&nbsp;000"),
-        ("{{nobr|ℶ₀ {{=}} ℵ₀}}", "ℶ₀&nbsp;=&nbsp;ℵ₀"),
-        ("{{nobr|1=ℶ₀ = ℵ₀}}", "ℶ₀&nbsp;=&nbsp;ℵ₀"),
-        ("{{nobr|a {{!}} b}}", "a&nbsp;|&nbsp;b"),
-        ("{{nombre romain|12}}", "XII"),
-        ("{{Pas clair}}", "<small>&nbsp;</small><sup><i><b>Pas clair</b></i></sup>"),
-        (
-            "{{Pas clair|Les seigneurs du Moyen Âge pouvaient « [[battre monnaie]] »}}",
-            "<u>Les seigneurs du Moyen Âge pouvaient « battre monnaie »</u><small>&nbsp;</small><sup><i><b>Pas clair</b></i></sup>",
-        ),
-        ("{{phon|tɛs.tjɔ̃}}", "<b>[tɛs.tjɔ̃]</b>"),
-        ("{{phon|na.t͡ʃe|fr}}", "<b>[na.t͡ʃe]</b>"),
-        ("{{plans d’eau|fr|d’Afrique|cat=Lacs}}", "<i>(Géographie)</i>"),
-        (
-            "{{R:Tosti|Turgeon}}",
-            "«&nbsp;Turgeon&nbsp;» dans Jean <span style='font-variant:small-caps'>Tosti</span>, <i>Les noms de famille</i>",
-        ),
-        ("{{région}}", "<i>(Régionalisme)</i>"),
-        ("{{région|Lorraine et Dauphiné}}", "<i>(Lorraine et Dauphiné)</i>"),
-        ("{{régionalisme|lang=fr}}", "<i>(Régionalisme)</i>"),
-        ("{{régionalisme}}", "<i>(Régionalisme)</i>"),
-        ("{{régionalisme|Bretagne|fr}}", "<i>(Bretagne)</i>"),
-        ("{{numéro}}", "n<sup>o</sup>"),
-        ("{{o}}", "<sup>o</sup>"),
-        ("{{phono|bɔg|fr}}", "/bɔg/"),
-        ("{{phono|bɔg|lang=fr}}", "/bɔg/"),
-        ("{{p}}", "<i>pluriel</i>"),
-        ("{{pluriel}}", "<i>pluriel</i>"),
-        ("{{pron|zjø|fr}}", "\\zjø\\"),
-        ("{{pron-API|/j/}}", "/j/"),
-        (
-            "{{refnec|lang=fr|Du préfixe privatif [[a-]] de [[cyan]] et de {{polytonique|{{lien|βλέψις|grc}}|blepsis|vue}}.}}",
-            "<u>Du préfixe privatif a- de cyan et de βλέψις, <i>blepsis</i> («&nbsp;vue&nbsp;»).</u>",
-        ),
-        ("{{réf}}", ""),
-        ("{{registre|traditionnellement}}", "<i>(Traditionnellement)</i>"),
-        ("{{ruby|泡盛|あわもり}}", "<ruby>泡盛<rt>あわもり</rt></ruby>"),
-        ("{{SIC}}", "<sup>[sic]</sup>"),
-        ("{{sic !|Bevatron}}", "<sup>[sic : Bevatron]</sup>"),
-        ("{{smo}}", "samoan"),
-        ("{{souligner|r}}espiratory", "<u>r</u>espiratory"),
-        ("{{sport}}", "<i>(Sport)</i>"),
-        ("{{sport|fr|collectif}}", "<i>(Sport collectif)</i>"),
-        ("{{wd|Q30092597|Frederick H. Pough}}", "Frederick H. Pough"),
-        ("{{wsp|Panthera pardus|Panthera pardus}}", "Panthera pardus"),
-        ("{{wsp|Brassicaceae}}", "Brassicaceae"),
-        ("{{WSP}}", ""),
-        ("{{WSP|Panthera leo}}", "<i>Panthera leo</i>"),
-        ("{{x10|9}}", "×10<sup>9</sup>"),
-        ("{{x10}}", "×10"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "fr") == expected

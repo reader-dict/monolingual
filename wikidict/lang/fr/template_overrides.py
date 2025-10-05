@@ -1,4 +1,4 @@
-from ...user_functions import extract_keywords_from
+from ... import utils
 
 
 def template_etymologie_graphique_chinoise(args: tuple[str, ...]) -> str:
@@ -6,7 +6,7 @@ def template_etymologie_graphique_chinoise(args: tuple[str, ...]) -> str:
     >>> template_etymologie_graphique_chinoise(("Étymologie graphique chinoise", "racine=羊", "sens=Attaquer en force, porter un coup (敦) / Vase rituel pour offrir les viandes (錞)"))
     'Attaquer en force, porter un coup (敦) / Vase rituel pour offrir les viandes (錞)'
     """
-    data = extract_keywords_from(list(args[1:]))
+    data = utils.extract_keywords_from(list(args[1:]))
     return data["sens"] or data["composition"] or data["explication"]
 
 
@@ -15,7 +15,7 @@ def template_sinogram_noimg(args: tuple[str, ...]) -> str:
     >>> template_sinogram_noimg(("sinogram-noimg", "它", "clefhz1=宀", "clefhz2=2", "nbthz1=1-5", "nbthz2=5", "m4chz1=3", "m4chz2=3071<sub>1</sub>", "unihz=5B83", "gbhz1= ", "gbhz2=-", "b5hz1=A1", "b5hz2=A5A6", "cjhz1=J", "cjhz2=十心", "cjhz3=JP"))
     'Codage informatique : <b>Unicode</b> : U+5B83 - <b>Big5</b> : A5A6 - <b>Cangjie</b> : 十心 (JP) - <b>Quatre coins</b> : 3071<sub>1</sub>'
     """
-    data = extract_keywords_from(list(args[1:]))
+    data = utils.extract_keywords_from(list(args[1:]))
     text = "Codage informatique :"
     codages = []
 

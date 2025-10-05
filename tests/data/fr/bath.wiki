@@ -140,3 +140,27 @@
 
 === {{S|voir aussi}} ===
 * {{WP|Bathing|bath|lang=en}}
+
+== {{langue|ldn}} ==
+{{cardinaux/ldn}}
+
+=== {{S|étymologie}} ===
+: {{ébauche-étym|ldn}}
+
+=== {{S|adjectif numéral|ldn}} ===
+'''bath''' {{pron|bɑθ|ldn}} {{cardinal|ldn}}
+# [[six|Six]] (6).
+#* {{exemple|lang=ldn}}
+
+=== {{S|nom|ldn}} ===
+'''bath''' {{pron|bɑθ|ldn}}
+# {{lexique|anatomie|ldn}} [[ongle|Ongle]], [[griffe]].
+#* {{exemple|lang=ldn}}
+
+==== {{S|vocabulaire}} ====
+* [[ishid]]
+
+=== {{S|références}} ===
+* {{R:láadan|27 février 2025}}
+
+[[Catégorie:Salle de bains en anglais]]

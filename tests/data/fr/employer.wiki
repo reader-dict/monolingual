@@ -45,6 +45,9 @@
 * [[suremployer]]
 {{)}}
 
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|travail}}
+
 ==== {{S|traductions}} ====
 {{trad-début|Utiliser}}
 * {{T|af}} : {{trad+|af|gebruik}}, {{trad-|af|benut}}, {{trad-|af|benuttig}}
@@ -69,7 +72,7 @@
 * {{T|la}} : {{trad-|la|uti}}
 * {{T|ms}} : {{trad-|ms|gunakan}}, {{trad-|ms|menggunakan}}
 * {{T|nl}} : {{trad+|nl|aanwenden}}, {{trad+|nl|benutten}}, {{trad+|nl|gebruiken}}
-* {{T|oc}} : {{trad+|oc|emplegar}}
+* {{T|oc}} : {{trad+|oc|emplegar}}, {{trad-|oc|emmerçar}}
 * {{T|pap}} : {{trad|pap|usa}}, {{trad|pap|uza}}
 * {{T|pl}} : {{trad+|pl|używać}}, {{trad+|pl|stosować}}
 * {{T|pt}} : {{trad+|pt|empregar}}, {{trad-|pt|servir-se de}}, {{trad+|pt|usar}}, {{trad+|pt|despender}}
@@ -115,6 +118,9 @@
 
 ==== {{S|antonymes}} ====
 * {{lien|employee|en}}
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|en|travail}}
 
 === {{S|prononciation}} ===
 * {{écouter|Sud de l'Angleterre (Royaume-Uni)||lang=en|audio=LL-Q1860 (eng)-Vealhurl-employer.wav}}

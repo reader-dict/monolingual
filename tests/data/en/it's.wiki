@@ -1,11 +1,6 @@
 {{also|its|ITS|its'|'its}}
 ==English==
 
-===Alternative forms===
-* {{l|en|i's}} {{qualifier|eye dialect}}
-* {{l|en|'t's}} {{qualifier|eye dialect}}
-* {{l|en|it'sa}} {{q|pseudo-Italian}}
-
 ===Pronunciation===
 * {{IPA|en|/ɪts/}}
 * {{audio|en|en-us-it's.ogg|a=US}}
@@ -15,19 +10,25 @@
 ===Etymology 1===
 [[contraction|Contraction]] of ‘[[it]] [[is]]’, ‘it [[has]]’ or 'it [[was]]'.
 
+====Alternative forms====
+* {{l|en|i's}} {{qualifier|eye dialect}}
+* {{l|en|its}} {{qualifier|obsolete}}
+* {{l|en|it'sa}} {{q|pseudo-Italian}}
+* {{l|en|'t's}} {{qualifier|eye dialect}}
+
 ====Contraction====
 {{en-cont|head=it’s}}
 
-# {{contraction of|en|[[it]] [[is]]}}
+# {{contraction of|en|[[it]] [[is]]}}.
 #: {{ux|en|'''it’s''' too expensive;&nbsp; '''it’s''' coming right for us!; [[it's a free country|'''it's''' a free country]]}}
 #* {{quote-book|en|year=1743|author=Martin Marley|title=The Good Confessor|page=307|passage=[...], guided not by his own Will, but by the Medick Science, which dictates, that '''it's''' recessary, beneficial, and convenient to alter, mix, and temper this medicine, and fit it to the Disposition, and Constitution of the Patient[.]}}
 #* {{quote-journal|en|date=2013-06-21|author=w:Oliver Burkeman
 |volume=189|issue=2|page=48|magazine=w:The Guardian Weekly
 |title=[http://www.theguardian.com/technology/2013/may/10/conscious-computing-twitter-facebook-google The tao of tech]
 |passage=The dirty secret of the internet is that all this distraction and interruption is immensely profitable. Web companies like to boast about{{...}}and so on. But the real way to build a successful online business is to be better than your rivals at undermining people's control of their own attention. Partly, this is a result of how online advertising has traditionally worked: advertisers pay for clicks, and a click is a click, however '''it's''' obtained.}}
-# {{contraction of|en|[[it]] [[has]]}}
+# {{contraction of|en|[[it]] [[has]]}}.
 #: {{ux|en|'''It’s''' been a long time since I’ve had cheesecake.}}
-# {{contraction of|en|[[it]] [[was]]}}
+# {{lb|en|proscribed}} {{contraction of|en|[[it]] [[was]]}}
 #: {{ux|en|'''It’s''' the same stoneground flour from this week that we used to make last week's strudel.}}
 #* {{quote-book|en|year=2016|author=Dominique Roques
 |title=Pico Bogue - Volume 4 - Striking the Balance|chapter=|url=https://www.google.ca/books/edition/Pico_Bogue_Volume_4_Striking_the_Balance/ZjN_DQAAQBAJ?hl=en&gbpv=0|page=31|passage=I guess for you '''it's''' the past that had a surprise in store.}}
@@ -47,7 +48,7 @@
 * Bengali: {{t|bn|ইহা হয়|sc=Beng}}
 * Catalan: {{t|ca|[[ell]] [[és]]}}
 * Dutch: {{t|nl|[[’t]] [[is]]}}
-* Esperanto: {{t+|eo|estas}}. {{t+|eo|ĝi estas}}
+* Esperanto: {{t+|eo|estas}}. {{t|eo|ĝi estas}}
 * Finnish: {{t|fi|[[se]] [[on]]}}, {{t+|fi|on}}
 * French: {{t+|fr|c'est}}
 * German: {{t|de|[[es]] [[ist]]}}
@@ -58,6 +59,7 @@
 * Latin: {{t+|la|est}}
 * Latvian: {{t|lv|[[tas]] [[ir]]}}, {{t|lv|[[tā]] [[ir]]}}
 * Lithuanian: {{t|lt|[[tai]] [[yra]]}}
+* Nǀuu: {{t|ngh|ke}}, {{t|ngh|ki ke}}
 * Portuguese: {{t+|pt|é}}
 * Russian: {{t+|ru|э́то}}, {{t+|ru|есть}}
 * Spanish: {{t+|es|es}}
@@ -83,10 +85,10 @@ From {{compound|en|it|-'s|alt2=-’s|pos2=possessive marker}}.
 ====Determiner====
 {{head|en|determiner|cat2=possessive determiners}}
 
-# {{obsolete form of|en|its}}
+# {{obsolete form of|en|its}}.
 #* {{RQ:Montaigne Florio Essayes|chapter=43|book=I|passage=The manner wherewith our Lawes assay to moderate the foolish and vaine expences of table-cheare and apparell, seemeth contrarie to '''it’s''' end.}}
 #* {{quote-book|en|year=1767|author=George Canning|chapter=Anti-Lucretius|title=Poems|location=London|publisher=for the author|page=281|url=https://catalog.hathitrust.org/Record/007697226
-|passage=Behold the balanc’d Scales suspended stand,<br>Neither a jot inclin’d to either hand:<br>But place the smallest grain of weight in one,<br>Straight the fraternal equipoise is gone;<br>The loaded scale, preponderant, downward flies,<br>Drags down the chain, and makes '''it’s''' [''sic''] partner rise.}}
+|passage=Behold the balanc’d Scales suspended stand,<br>Neither a jot inclin’d to either hand:<br>But place the smallest grain of weight in one,<br>Straight the fraternal equipoise is gone;<br>The loaded scale, preponderant, downward flies,<br>Drags down the chain, and makes '''it’s''' partner rise.}}
 #* {{quote-text|en|year=1787|title=w:United States Constitution|chapter={{w|Article One of the United States Constitution|Article I}}
 |passage=No State shall, without the Consent of the Congress, lay any Imposts or Duties on Imports or Exports, except what may be absolutely necessary for executing '''it's''' inspection Laws[.]}}
 #* {{quote-text|en|year=1803|author=President Thomas Jefferson|title=Instructions to Captain Meriwether Lewis
@@ -99,12 +101,16 @@ From {{compound|en|it|-'s|alt2=-’s|pos2=possessive marker}}.
 |url=https://en.wikisource.org/wiki/Treaty_of_Guadalupe_Hidalgo_(original)
 |text=Article V.<br>The Boundary line between the two Republics shall commence in the Gulf of Mexico, three leagues from land, opposite the mouth of the Rio Grande, otherwise called Rio Bravo del Norte, or opposite the mouth of '''it’s''' deepest branch, if it should have more than one branch emptying directly into the sea; from thence up the middle of that river, following the deepest channel, where it has more than one, to the point where it strikes the southern boundary of New Mexico; thence, westwardly, along the whole southern boundary of New Mexico (which runs north of the town called Paso) to '''it’s''' western termination; thence, northward, along the western line of New Mexico, until it intersects the first branch of the river Gila; (or if it should not intersect any branch of that river, then, to the point on the said line nearest to such branch, and thence in a direct line to the same;) thence down the middle of the said branch and of the said river, until it empties into the Rio Colorado; thence, across the Rio Colorado, following the division line between Upper and Lower California, to the Pacific Ocean.}}
 #* {{RQ:Twain Tom Sawyer|page=219|passage=The mouth of the cave was up the hillside—an opening shaped like a letter A. '''It’s''' massive oaken door stood unbarred.}}
-# {{misspelling of|en|its}}
+# {{misspelling of|en|its}}.
+#* {{quote-video game|1=en|year=2014|title=Five Nights at Freddy's 2|author=Scott Cawthon|scene=night 6 ending|text=After being open only a few short weeks, Freddy Fazbear's Pizza is closing '''it{{'}}s''' doors.}}
 
 ===Anagrams===
 * {{anagrams|en|a=ist|SIT|'tis|Sit|IST|TIs|t'is|tis|STI|TIS|is't|ist|sit|-ist|Ist|TSI|S.T.I.}}
 
 ==Yola==
+
+===Etymology===
+Contraction of {{m|yol|[[it]] [[is]]}}.
 
 ===Pronunciation===
 * {{IPA|yol|/ɪts/}}
@@ -112,7 +118,7 @@ From {{compound|en|it|-'s|alt2=-’s|pos2=possessive marker}}.
 ===Contraction===
 {{head|yol|contraction}}
 
-# {{contraction of|yol|[[it]] [[is]]}}
+# [[it]] [[is]]
 #: {{syn|yol|tis}}
 #* {{quote-book|yol|year=1867|chapter=THE BRIDE'S PORTION|page=102|title=SONGS, ETC. IN THE DIALECT OF FORTH AND BARGY|passage=A portion ich gae her, was ('''it's''' now ich have ee-tolth)|translation=The portion I gave her was ('''it's''' now I have told)}}
 #* {{quote-book|yol|year=1867|chapter=ABOUT AN OLD SOW GOING TO BE KILLED|number=2|page=106|title=SONGS, ETC. IN THE DIALECT OF FORTH AND BARGY|passage=Ich aam a vat hog '''it's''' drue. Aar is ken apan aam.|translation=I am a fat hog, ''''tis''' true. There is ken upon them.}}

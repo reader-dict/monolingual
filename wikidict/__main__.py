@@ -8,8 +8,6 @@ Usage:
     wikidict LOCALE --parse
     wikidict LOCALE --render [--workers=N]
     wikidict LOCALE --convert
-    wikidict LOCALE --check-words [--random] [--count=N] [--offset=M] [--input=FILENAME]
-    wikidict LOCALE --check-word=WORD
     wikidict LOCALE --get-word=WORD [--raw]
     wikidict LOCALE --gen-dict=WORDS --output=FILENAME [--format=FORMAT]
     wikidict LOCALE --show-pos
@@ -27,12 +25,6 @@ Options:
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.zip": StarDict format.
                                 - "data/$LOCALE/dicthtml-$LOCALE-$LOCALE.zip": Kobo format.
                                 - "data/$LOCALE/dictorg-$LOCALE-$LOCALE.zip": DICT.org format.
-  --check-words             Render words, then compare with the rendering done on the Wiktionary to catch errors.
-                            --random            Randomly if --random
-                            --count=N           If -1 check all words [default: 100]
-                            --offset=M          Offset will remove words before starting.
-                            --input=FILENAME    A list of words, one by line
-                            --check-word=WORD   Get and render WORD.
   --get-word=WORD [--raw]   Get and render WORD. Pass --raw to ouput the raw HTML code.
   --gen-dict=WORDS          DEBUG: Generate dictionary for specific words. Pass multiple words
                             separated with a comma: WORD1,WORD2,WORD3,...
@@ -83,22 +75,6 @@ def main() -> int:
         from . import convert
 
         return convert.main(args["LOCALE"])
-
-    if args["--check-word"] is not None:
-        from . import check_word
-
-        return check_word.main(args["LOCALE"], args["--check-word"])
-
-    if args["--check-words"]:
-        from . import check_words
-
-        return check_words.main(
-            args["LOCALE"],
-            int(args["--count"]),
-            args["--random"],
-            args["--offset"],
-            args["--input"],
-        )
 
     if args["--get-word"] is not None:
         from . import get_word

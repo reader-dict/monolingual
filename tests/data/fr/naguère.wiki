@@ -1,6 +1,6 @@
 == {{langue|fr}} ==
 === {{S|étymologie}} ===
-: De ''il [[ne#fr|n’]][[il y a|y a]] [[guère]]'' (de temps). À comparer avec le wallon « nawaire » (même sens).Voir aussi ''[[na#fr|na]]''.
+: De ''il [[ne#fr|n’]][[il y a|y a]] [[guère]]'' (de temps). À comparer avec le wallon « nawaire » (même sens). Voir aussi ''[[na#fr|na]]''.
 
 === {{S|adverbe|fr}} ===
 '''naguère''' {{pron|na.ɡɛʁ|fr}} {{adverbe de temps|fr}}
@@ -16,7 +16,7 @@
  | Pons réchauffé reprit forme humaine : la couleur vitale revint aux yeux, la chaleur extérieure rappela le mouvement dans les organes, Schmucke fit boire à Pons de l’eau de mélisse mêlée à du vin, l’esprit de la vie s’infusa dans ce corps, l’intelligence rayonna de nouveau sur ce front '''naguère''' insensible comme une pierre.
  | source=Honoré de Balzac, ''Le Cousin Pons'', 1847}}
 #* {{exemple|lang=fr|Cette gamine vicieuse et prétentieuse est la fille d’une grosse commère qui tenait, '''naguère''', une fruiterie dans les environs de Barbès.|source={{Citation/Victor Méric/Les Compagnons de l’Escopette/1930|198}}}}
-# [[il y a|Il y a]] [[longtemps]]. {{note}} contrairement à l’étymologie qui implique un temps passé récent, l’usage moderne consacre le sens d’un temps antérieur, lointain, révolu.
+# [[il y a|Il y a]] [[longtemps]]. {{note}} contrairement à l’étymologie qui implique un temps passé récent, l’usage moderne consacre le sens d’un temps antérieur, lointain, révolu – possiblement par [[litote]].
 #* {{exemple | lang=fr
  | Cette gamine vicieuse et prétentieuse est la fille d'une grosse commère qui tenait, '''naguère''', une fruiterie dans les environs du Barbès.
  | source={{Citation/Victor Méric/Les Compagnons de l’Escopette/1930|198}}}}
@@ -38,6 +38,9 @@
 * [[autrefois]]
 * [[jadis]]
 * [[orains]] ''(archaïque, régionalisme normand)''
+
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|avant}}
 
 ==== {{S|traductions}} ====
 {{cf|lang=fr|récemment|autrefois}}

@@ -46,6 +46,7 @@ From {{bor|en|frm|portemanteau||coat stand}}, from {{compound|frm|nocat=1|porter
 * Norwegian:
 *: Bokmål: {{t|nb|koffert|m}}
 *: Nynorsk: {{t|nn|koffert|m}}
+* Ottoman Turkish: {{t|ota|خرج|tr=hurc}}
 * Persian: {{t+|fa|چمدان|tr=čamedân}}
 * Polish: {{t+|pl|waliza|f}}
 * Portuguese: {{t+|pt|maleta|f}}, {{t+|pt|valise|f}}
@@ -95,7 +96,7 @@ First used by {{w|Lewis Carroll}} in ''{{w|Through the Looking-Glass}}'' to desc
 {{trans-see|portmanteau word}}
 
 ====Verb====
-{{en-verb}}
+{{en-verb|past2=portmanteau'd}}
 
 # {{lb|en|transitive}} To [[create]] a [[portmanteau word]].
 

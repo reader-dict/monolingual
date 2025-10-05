@@ -24,8 +24,14 @@
 #* {{exemple | lang=fr
  | De chaque côté de la place, il y avait des tilleuls, qui pleuraient au printemps en nous arrosant de leurs '''effluves''' apaisants.
  | source=José Herbert, ''L’instituteur impertinent: Récit de vie'', 2016}}
+# {{lexique|physique|fr}} Décharge électrique à faible dégagement de chaleur ayant lieu entre deux conducteurs dont la [[différence de potentiel|différence de potentiel]] n’est pas assez élevée pour engendrer un [[arc électrique]]. {{cf|effluveur}}
+#* {{exemple|Dans la plupart des cas, on observe une similitude d'effets entre les actions chimique dues à l’'''effluve''' et celles dues à l’étincelle. 
+|source=Sous la direction de Ch. Friedel, ''Dictionnaire de chimie pure et appliquée'', éd. Hachette, 1897.
+|lang=fr}}
+
+
 ==== {{S|notes}} ====
-:L'emploi du féminin{{R|Google Ngram Viewer}} est académiquement considéré comme un barbarisme par les grammairiens orthodoxes, sans que cette orthodoxie perturbe les écrivains parmi les plus grands, qui féminisent parfois le genre du mot<ref>[https://www.dictionnaire-academie.fr/article/DNP0158 « Dire, Ne pas dire : Les effluves automnales »], ''Dictionnaire de l’Académie française''</ref>.
+:L'emploi du féminin{{R|Google Ngram Viewer}} est critiqué par l’Académie française. Cependant les écrivain·es parmi les plus grand·es, féminisent parfois le genre du mot<ref>[https://www.dictionnaire-academie.fr/article/DNP0158 « Dire, Ne pas dire : Les effluves automnales »], ''Dictionnaire de l’Académie française''</ref>.
 :* ''Ce bon air de Paris qui semble contenir des '''effluves''' amoureus'''es'''.'' {{source|{{w|Gustave Flaubert}}, ''L’Éducation sentimentale''}}
 :* ''Les '''effluves''' du sombre et du profond, mêlé'''e'''s à vos effusions.'' {{source|{{w|Victor Hugo}}, ''Les Contemplations''}}
 

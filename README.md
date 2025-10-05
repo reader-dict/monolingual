@@ -1,7 +1,5 @@
 # reader.dict Monolingual Dictionaries
 
-[![Word of the day](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml/badge.svg)](https://github.com/reader-dict/monolingual/actions/workflows/daily.yml)
-
 🚀 Features, **downloads**, and installation details on [reader.dict](https://www.reader-dict.com).
 
 🎇 Want to know what is being cooked, and what was done in past releases? Have a look at our [discussions](https://github.com/reader-dict/monolingual/discussions).

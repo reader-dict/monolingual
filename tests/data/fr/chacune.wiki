@@ -1,7 +1,7 @@
 == {{langue|fr}} ==
 === {{S|pronom indéfini|fr|flexion}} ===
 {{fr-accord-ind|m=chacun|pm=ʃa.kœ̃|pf=ʃa.kyn}}
-{{fr-accord-un|ms=chacun|pron=ʃa.k|pf=ʃa.kyn}}
+{{fr-accord-un|ms=chacun|pron=ʃa.k}}
 '''chacune''' {{pron|ʃa.kyn|fr}} {{s}}
 # ''Féminin (singulier) de'' [[chacun]].
 #* {{exemple | lang=fr

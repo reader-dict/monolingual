@@ -1,13 +1,14 @@
 ={{-pt-}}=
-==Adjetivo==
+=={{Adjetivo|pt}}==
 {{flex.pt|ms=baiano|mp=baianos|fs=baiana|fp=baianas}}
 {{paroxítona|bai|a|no}}
 # do Estado da [[Bahia]], [[Brasil]]
+#: bala baiana
 
 ===Expressões===
 * '''[[alqueire baiano]]''': 
 
-==Substantivo==
+=={{Substantivo|pt}}==
 {{paroxítona|bai|a|no}}
 # [[natural]] ou [[habitante]] do Estado da [[Bahia]], [[Brasil]]
 # {{escopo|pt|São Paulo|Brasil|popular|pejorativo|racismo}} [[pessoa]] que se [[vestir|veste]] de maneira incomum ou [[brega]]; fora da moda
@@ -29,8 +30,9 @@
 {{verTambém.Ini}}
 * [[abaianado]]
 * [[abaianar]]
-{{verTambém.NovaColuna}}
 * [[baianada]]
+{{verTambém.NovaColuna}}
+* [[bahiano]] {{escopoGrafiaUsadaAte1911}}
 * [[gelo-baiano]]
 {{verTambém.Fim}}
 
@@ -48,6 +50,4 @@
 * {{VOLPABL}}
 * {{Forvo|baiano|pt}}
 
-[[Categoria:Adjetivo (Português)]]
-[[Categoria:Substantivo (Português)]]
 [[Categoria:Gentílico (Português)]]

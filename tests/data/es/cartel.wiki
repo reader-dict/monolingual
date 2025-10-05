@@ -7,7 +7,7 @@
 {{etimología|oc|cartel}}.
 
 ==== {{sustantivo masculino|es}} ====
-{{inflect.es.sust.reg-cons}}
+{{es.sust}}
 
 ;1: Lámina en donde se imprime algún mensaje, ya sea con palabras, símbolos o imágenes, y se deja a la vista para difundir información.
 {{sinónimo|póster|lámina|afiche|pasquín}}
@@ -25,35 +25,33 @@
 {{trad-arriba}}
 {{t|eo|a1=1|t1=afiŝo}}
 {{t|fr|a1=1|t1=affiche}}
-{{t|sv|a1=1|t1=affisch|g1=c|a2=1|t2=skylt|g2=c}}
+{{t|sv|a1=1|a2=1|g1=c|g2=c|t1=affisch|t2=skylt}}
 {{trad-abajo}}
 
 === Etimología 2 ===
 {{etimología|endo|cártel}}.
 
 ==== {{sustantivo masculino|es}} ====
-{{inflect.es.sust.reg-cons}}
+{{es.sust}}
 
 ;1: {{variante|cártel}}.
 
 == {{lengua|en}} ==
 {{pron-graf|leng=en
-|pron=Received Pronunciation|fono=kɑːˈtɛl|audio=LL-Q1860 (eng)-Vealhurl-cartel.wav|aunota=sur de Inglaterra
-|2pron=EE. UU., Canadá|2fono=kɑɹˈtɛl
-|ls=2|nl=6}}
+|2fono=kɑɹˈtɛl
+|2pron=EE. UU., Canadá|audio=LL-Q1860 (eng)-Vealhurl-cartel.wav|aunota=sur de Inglaterra
+|fono=kɑːˈtɛl|ls=2|nl=6|pron=Received Pronunciation}}
 
 === Etimología ===
 En el sentido empresarial, prestado {{etim|leng=en|de|Kartell}}, utilizado por primera vez por [[Eugen Richter]] en 1871 en el [[Reichstag]]. En el sentido político, que fue el vehículo de esta metáfora, el sentido inglés, como el sentido alemán, fue tomado prestado {{etim|leng=en|fr|cartel}} en el siglo dieciseis, {{etim|leng=en|it|cartello}}, diminutivo de {{l+|it|carta|tarjeta}}, {{etim|leng=en|la|charta}}.
 
 === {{sustantivo|en}} ===
-{{inflect.en.sust}}
+{{en.sust|c}}
 
 ;1 {{csem|leng=en|economía}}: Un grupo de empresas o naciones que se confabulan para limitar la competencia dentro de una industria o mercado: [[cartel]], [[cártel]].
 {{ejemplo|drug cartel}}
 {{ejemplo|car cartel}}
-
 ;2 {{csem|leng=en|historia|política}}: Una combinación de grupos políticos (en particular partidos) para una acción común.
-
 {{w|leng=en}}
 
 == Referencias y notas ==

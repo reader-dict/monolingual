@@ -6,8 +6,8 @@
 === {{S|nom|fr|num=1}} ===
 [[Image:Pinyin accents.svg|thumb|Le '''pinyin''' utilise l’alphabet romain ainsi que le [[macron]], l’accent aigu, le [[caron]] et l’accent grave pour indiquer lequel des 4 tons doit être prononcé.]]
 '''pinyin''' {{pron|pin.jin|fr}} {{m}} {{invar}}
-# Système de [[transcription]] de la langue chinoise, permettant de [[romanisation|romaniser]] les sons des [[sinogramme]]s, et d’indiquer le ton utilisé lors de la prononciation.
-#* {{exemple | lang=fr | Shanghaï s’écrit ''上海'' en sinogrammes, et ''Shànghǎi'' en '''pinyin'''.}}
+# Systèmes de [[transcription]] de différentes langues, permettant de [[romanisation|romaniser]] les sons des [[sinogramme]]s, et d’indiquer le ton utilisé lors de la prononciation. Le [[hanyu pinyin]] sert à la transcription du [[mandarin standard]].
+#* {{exemple | lang=fr | Shanghaï s’écrit ''上海'' en sinogrammes, et ''shànghǎi'' en '''hanyu pinyin'''.}}
 #* {{exemple | lang=fr | Le '''pinyin''' fut développé en République populaire de Chine.}}
 #* {{exemple|La perception qu’on a du '''''pinyin''''' en Chine a changé ces dernières années depuis que celui-ci est utilisé pour la saisie informatique des textes.|source=Viviane Alleton, ''L’écriture chinoise: Le défi de la modernité'', 2008|lang=fr}}
 
@@ -18,11 +18,11 @@
 * [[pin yin]]
 
 ==== {{S|vocabulaire}} ====
-* [[bopomofo]]
+* [[bopomofo]] ou [[zhuyin]], système de la République de Chine (Taïwan) avec la romanisation Wade-Giles, tend à être progressivement remplacé par le [[hanyu pinyin]].
 * [[caron]]
 * [[macron]]
 * [[tonème]]
-* [[zhuyin]]
+* {{zh-l|藏文拼音|zàngwén pīnyīn|[[pinyin tibétain]]}}
 
 ==== {{S|traductions}} ====
 {{trad-début}}

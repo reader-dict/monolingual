@@ -5,8 +5,9 @@
 
 ===Tradução===
 {{tradini}}
-* {{trad|de|für}}
+* {{trad|de|nach}}
 * {{trad|ast|pa}}
+* {{trad|cs|pro}}
 * {{trad|es|para}}
 * {{trad|fr|pour}}
 * {{trad|en|to|for|toward|towards|at}}

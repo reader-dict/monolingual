@@ -2,13 +2,16 @@
 {{minitoc}}
 ==Translingual==
 
+===Etymology===
+{{clip|mul|-}} {{der|mul|en|'''Ab'''khaz}} or {{der|mul|ru|абха́з|tr='''ab'''xáz}}.
+
 ===Symbol===
 {{mul-symbol}}
 
 # {{ISO 639|1}}
 
 ===See also===
-* {{langcat|ab}}
+* {{langcat}}
 
 ==English==
 {{wikipedia}}
@@ -17,6 +20,7 @@
 * {{IPA|en|/æb/}}
 * {{audio|en|LL-Q1860 (eng)-Vealhurl-ab.wav|a=Southern England}}
 * {{rhymes|en|æb|s=1}}
+* {{hmp|en|abb|Ab}}
 
 ===Etymology 1===
 [[File:Rectus abdominis.png|thumb|upright|Abs]]
@@ -24,7 +28,7 @@
 ====Noun====
 {{en-noun}}
 
-# {{lb|en|informal}} {{clip of|en|abdominal muscle}} {{defdate|Mid 20<sup>th</sup> century.}}<ref name=SOED>{{R:SOED5|page=2}}</ref>
+# {{lb|en|informal}} {{clip of|en|abdominal muscle}} {{defdate|mid 20<sup>th</sup> century}}.<ref name=SOED>{{R:SOED5|page=2}}</ref>
 #* {{quote-book|en|year=2006|author=H. Peter Steeves|title=The Things Themselves|page=75|passage=The bikinied models in most of the ESPN2 shows have '''abs'''. Many of the malnourished bikinied models in the commercials have visible rib cages. How did the two get conflated into a shared vision of beauty?}}
 #* '''2010''', Bill Geiger, "6-pack Abs in 9 Weeks", Reps! 17:106
 #*: When possible, do your '''ab''' workout on a day when you're not training a major muscle group{{...}}.
@@ -33,7 +37,7 @@
 * Most often used attributively. Substantive use is more common in the plural form {{m|en|abs}}.
 
 =====Derived terms=====
-{{col-auto|en|ab roller|ab roller wheel|ab wheel}}
+{{col|en|ab roller|ab roller wheel|ab wheel}}
 
 =====Translations=====
 {{multitrans|data=
@@ -45,6 +49,7 @@
 * French: {{tt+|fr|abdo|m}}
 * German: {{tt+|de|Bauchmuskeln|m-p}}
 * Japanese: {{tt+|ja|腹筋|tr=ふっきん, fukkin}}
+* Korean: {{t|ko|아브|tr=abeu}}
 * Polish: {{tt|pl|mięsień prosty brzucha|m}}
 * Russian: {{tt+|ru|пресс|m}}
 * Vietnamese: {{tt+|vi|múi}}, {{tt|vi|múi cơ}}, {{tt|vi|cơ bụng}}
@@ -72,22 +77,22 @@ Abbreviations.
 # {{lb|en|climbing|informal}} To [[abseil]].
 #* {{quote-journal|en|year=1998|journal=Climbing|issue=178-180|page=22
 |passage=I had a climbing rope in my pack, set up an abseil with it, and '''abbed''' down to him.}}
-# {{abbreviation of|en|abort}}
+# {{abbreviation of|en|abort}}.
 
 ====Noun====
 {{en-noun|?}}
 
-# {{abbreviation of|en|abortion}}
+# {{abbreviation of|en|abortion}}.
 
 ====Preposition====
 {{en-preposition}}
 
-# {{abbreviation of|en|about}}
+# {{abbreviation of|en|about}}.
 
 ====Adverb====
 {{en-adv|?}}
 
-# {{abbreviation of|en|about}}
+# {{abbreviation of|en|about}}.
 
 ===Etymology 4===
 From the spelling books and the fact that it was the first of the letter combinations.<ref name=DOA>Mathews, Mitford M, ed. A Dictionary of Americanisms on Historical Principles. 1st. Chicago: University of Chicago Press, 1956.</ref>
@@ -171,7 +176,7 @@ Borrowed from {{bor|aib|fa|آب|tr=âb}}.
 ==Crimean Tatar==
 
 ===Etymology===
-{{bor|crh|fa|}}
+Borrowed from {{bor|crh|fa|آب|tr={{fa-xlit|آب}}}}.
 
 ===Noun===
 {{head|crh|noun}}
@@ -238,11 +243,13 @@ From {{inh|yuy|xgn-pro|*ab-}}, compare {{cog|mn|авах}}.
 
 ===Pronunciation===
 * {{IPA|de|/ap/|/ɑp/|a=Germany}}
-* {{IPA|de|/ɑb̥/|a=Switzerland, Austro-Bavarian}}
+* {{audio|de|De-ab.ogg|a=<<Germany>> (<<Berlin>>)}}
+* {{IPA|de|/ɑb̥/|a=<<Switzerland>>, <<Austria>>, <<Bavarian>>}}
 * {{rhymes|de|ap|s=1}}
 
 ===Etymology 1===
-From {{inh|de|gmh|[[abe]], [[ab]]}}, from {{der|de|goh|ab}}, from {{der|de|gmw-pro|*ab}}, from {{der|de|gem-pro|*ab}}.
+{{etymon|de|id=from|:inh|gmh:ab<id:of><ety:inh<goh:ab<id:of>>>}}
+From {{inh|de|gmh|[[abe]], [[ab]]}}, from {{inh|de|goh|ab}}, from {{inh|de|gmw-pro|*ab}}, from {{inh|de|gem-pro|*ab}}.
 
 ====Preposition====
 {{head|de|preposition}} {{+obj|de|dat}}
@@ -257,6 +264,7 @@ From {{inh|de|gmh|[[abe]], [[ab]]}}, from {{der|de|goh|ab}}, from {{der|de|gmw-p
 * {{desc|nb|ab}}
 
 ===Etymology 2===
+{{etymon|de|id=off}}
 From adverbial use of the prefix {{l|de|ab-}} in verbs such as [[abschlagen]], [[abgehen]] etc. Compare {{cog|en|off}}.
 
 ====Adjective====
@@ -337,7 +345,7 @@ Contraction of the relative particle {{m|ga|a}} and the prevocalic variant of th
 ====Particle====
 {{head|ga|particle}}
 
-# {{alternative form of|ga|ba|nodot=yes}} {{qualifier|used in relative clauses before a vowel sound}}.
+# {{alternative form of|ga|ba}} {{qualifier|used in relative clauses before a vowel sound}}
 #: {{ux|ga|Fear maith '''ab''' ea é.|He was a good man.}}
 #: {{ux|ga|buachaill '''ab''' áirde ná mo dheartháir|a boy (who was) taller than my brother|inline=1}}
 
@@ -383,36 +391,39 @@ Contraction of the relative particle {{m|ga|a}} and the prevocalic variant of th
 ==Latin==
 
 ===Alternative forms===
-* {{alt|la|ā||not used before a vowel or ''h''}}
-* {{alt|la|abs||archaic|exclusively used before the pronoun {{m|la|te}}}}
-* {{alt|la|af||archaic}}
+* {{alt|la|ā||not used before a vowel or {{m|la||h}}}}
+* {{alt|la|abs||Old Latin|exclusively before the pronoun {{m|la|tē}}}}
+* {{alt|la|af||Old Latin}}
+* {{alt|la|dē ab||LL.}}
 
 ===Etymology===
-From {{inh|la|itc-pro|*ap}}, from {{inh|la|ine-pro|*h₂epó||off, away}} (whence {{cog|en|off}}, {{m|en|of}} and {{m|en|after}}). See also {{m|la|po-}}. Cognate with {{l|grc|ᾰ̓πό}}. The reconstruction of the Proto-Italic form is somewhat uncertain, as it's not clear when or how the final vowel of the PIE form was lost. The voicing of the final consonant to ''-b'' can be interpreted as an example of regular voicing of plosives in word-final position, as in {{m|itc-ola|fēced}} < *fēcet, a sound change that some reconstruct at the common Italic stage. Others explain ''-b'' here as the result of analogical extension from clusters ending in a voiced consonant.<ref>Vaan, M. A. C. de. (2009). Latin au- 'away', an allomorph of ab-. Anuari De Filologia 25-26 [2003-2004]. Secció D: Studia Graeca Et Latina. Número 12, 25-26, 141-147. Retrieved from https://hdl.handle.net/1887/18683</ref> The form ''ap-'' is attested in composition in Latin {{m|la|aperiō}} and {{cog|xum|𐌀𐌐𐌄𐌇𐌕𐌓𐌄}}.
+{{etymon|la|:inh|itc-pro:*ap<ety:inh<ine-pro:*h₂epó<id:away>>>|id=away}}
+From {{inh|la|itc-pro|*ap}}, from {{inh|la|ine-pro|*h₂epó||off, away}} (whence {{cog|en|off}}, {{m|en|of}} and {{m|en|after}}).<ref>{{R:itc:EDL|pages=19-20|head=ab, abs, as-, ā-, af-, au-}}</ref> See also {{m|la|po-}}. Cognate with {{l|grc|ᾰ̓πό}}. The reconstruction of the Proto-Italic form is somewhat uncertain, as it's not clear when or how the final vowel of the PIE form was lost. The voicing of the final consonant to ''-b'' can be interpreted as an example of regular voicing of plosives in word-final position, as in {{m|itc-ola|fēced}} < *fēcet, a sound change that some reconstruct at the common Italic stage. Others explain ''-b'' here as the result of analogical extension from clusters ending in a voiced consonant.<ref>Vaan, M. A. C. de. (2009). Latin au- 'away', an allomorph of ab-. Anuari De Filologia 25-26 [2003-2004]. Secció D: Studia Graeca Et Latina. Número 12, 25-26, 141-147. Retrieved from https://hdl.handle.net/1887/18683</ref> The form ''ap-'' is attested in composition in Latin {{m|la|aperiō}} and {{cog|xum|𐌀𐌐𐌄𐌇𐌕𐌓𐌄}}.
 
 ===Pronunciation===
 * {{la-IPA}}
 
 ===Preposition===
-{{la-prep|ablative}}
+{{la-prep|ab|ablative}}
 
-# {{sense|indicating ablation}} [[from]], [[away]] from, [[out]] [[of]]
-#* {{Q|la|Julius Caesar|Bello Gallico|1|1|quote=''Gallos '''ab''' Aquitanis Garumna flumen, a Belgis Matrona et Sequana dividit.''|trans=The river Garonne separates the Gauls '''from''' the Aquitani; the Marne and the Seine separate them from the Belgae.}}
-# {{sense|indicating ablation}} [[down]] from
-# {{sense|indicating [[agency]]}} {{q|source of action or event}} [[by]], [[by means of]]
+# {{s|indicating ablation}} [[from]], [[away]] from, [[out]] [[of]]
+#* {{Q|la|Julius Caesar|Bello Gallico|1|1|quote=Gallos '''ab''' Aquitanis Garumna flumen, a Belgis Matrona et Sequana dividit.|trans=The river Garonne separates the Gauls '''from''' the Aquitani; the Marne and the Seine separate them from the Belgae.}}
+#: {{ux|la|[[W:Ab urbe condita|'''Ab''' urbe conditā]].|t='''From''' the founding of the City.}}
+# {{s|indicating ablation}} [[down]] from
+# {{s|indicating [[agency]]}} {{q|source of action or event}} [[by]], [[by means of]]
 #* {{Q|la|Julius Caesar|Bello Gallico|7|4|quote=''Rex '''ab''' suis appellatur.''|trans=The king is saluted '''by''' his men.}}
-# {{sense|indicating [[instrumentality]]}} {{q|source of action or event}} [[by]], [[by means of]], [[with]]
+# {{s|indicating [[instrumentality]]}} {{q|source of action or event}} [[by]], [[by means of]], [[with]]
 #* {{Q|la|Cicero|Oration in favor of P. Sestius|Pro P. Sestio Oratio|Ch. 42, sect. 92|quote=Horum utro uti nolumus, altero est utendum. vim volumus exstingui, ius valeat necesse est, id est iudicia, quibus omne ius continetur; iudicia displicent aut nulla sunt, vis dominetur necesse est. hoc vident omnes: Milo et vidit et fecit, ut ius experiretur, vim depelleret. altero uti voluit, ut virtus audaciam vinceret; altero usus necessario est, ''ne virtus '''ab''' audacia vinceretur''.|transauthor=|trans=...''so that virtue might not be overwhelmed '''by''' insolence''.}}
-# {{sense|indicating [[association]]}} [[to]], [[with]]
+# {{s|indicating [[association]]}} [[to]], [[with]]
 #* ''[[w:Heauton Timorumenos|Heauton Timorumenos]]'' (“The Self-Tormentor”) by [[w:Terence|Publius Terentius Afer]]
 #*: ''Homo sum, humani nihil '''ā''' me alienum puto.''
 #*:: I am a man, I consider nothing that is human alien '''to''' me.
-# {{sense|indicating [[location]]}} [[at]], [[on]], [[in]]
+# {{s|indicating [[location]]}} [[at]], [[on]], [[in]]
 # {{q|time}} [[after]], [[since]]
 
 ====Usage notes====
 Used in conjunction with passive verbs to mark the agent.
-* {{usex|la|Liber '''ā''' discipulō aperītur.|The book is opened '''by''' the student.}}
+* {{ux|la|Liber '''ā''' discipulō aperītur.|The book is opened '''by''' the student.}}
 
 ====Related terms====
 * {{l|la|abhinc}}
@@ -432,7 +443,6 @@ Used in conjunction with passive verbs to mark the agent.
 * {{R:Gaffiot}}
 * {{R:Logeion}}
 * {{R:M&A}}
-* Lingua Latina, Hans H. Ørberg, 2005.
 
 ==Latvian==
 
@@ -455,22 +465,40 @@ Used in conjunction with passive verbs to mark the agent.
 ==Livonian==
 
 ===Pronunciation===
-* {{liv-IPA|ɑb|1}}
+{{liv-p|a'b}}
 
-===Noun===
+===Etymology 1===
+{{etymid|liv|shoulder}}
+{{rfe|liv}}
+
+====Noun====
 {{head|liv|noun|head=a'b}}
 
-# {{lb|liv|anatomy}} [[shoulder]]
+# [[shoulder]]
 #* {{R:liv:LEL}}
 #*: pǟ um '''abūd''' vaisõ sizzõl viedtõd
 #*:: [[recoiled]], [[flinched]] (lit. "head is drawn in '''shoulders'''")
-# [[help]]
 
-====Usage notes====
+=====Usage notes=====
 {{R:liv:LEL|sl=1}} also features a partitive plural form with ''-īdi'' as in the example {{m|liv|abīdi nustõ}} "to shrug."
 
-====Declension====
-{{liv-noun|a|2c=b|2cs=bb|part-cs=1|dat-cs=1|ins=kõks|ill-cs=1|in=sõ|el=stõ|pl-nom=ūd|pl-part=ḑi|pl-ill=ži|pl-in=ši|pl-el=šti|type=72}}
+=====Declension=====
+{{liv-decl|72|a’b}}
+
+===Etymology 2===
+{{etymid|liv|help}}
+From {{inh|liv|urj-fin-pro|*api}}.
+
+====Noun====
+{{head|liv|noun|head=a'b}}
+
+# [[help]]
+
+=====Declension=====
+{{liv-decl|72|a’b}}
+
+===References===
+* {{R:liv:LEL|a’b}}
 
 ==Middle Irish==
 
@@ -545,7 +573,7 @@ Abbreviation of {{m|nb|avbetaling||installment}}, verbal noun form of {{m|nb|avb
 #* {{quote-book|nb|year=1974|author=Kari Bakke|title=Gråspurven|page=22|passage=møbler og vaskemaskin på AB|t=furniture and washing machine on installments}}
 
 =====Derived terms=====
-{{der2|nb|ab-kjøp|ab-kontrakt}}
+{{col2|nb|ab-kjøp|ab-kontrakt}}
 
 =====Related terms=====
 * {{l|nb|avbetale||pay in installments}}
@@ -592,6 +620,7 @@ Reduced form of {{der|fro|la|apud}}.
 ==Old High German==
 
 ===Etymology===
+{{etymon|goh|id=of|:inh|gem-pro:*ab<id:away>}}
 From {{inh|goh|gem-pro|*ab}}.
 
 ===Preposition===
@@ -642,20 +671,27 @@ Compare {{cog|de|ab}}, {{cog|nl|af}}, {{cog|en|off}}.
 
 ==Pumpokol==
 
+===Etymology===
+{{inh+|xpm|qfa-yen-pro|*ab<t:father>}}.
+
 ===Noun===
-{{head|xpm|noun}}
+{{head|xpm|n|M., W., VW., Kl.}}
 
-# [[father]]
+# {{lb|xpm|sociology}} [[father]]
 
-{{C|xpm|Male family members}}
+===Further reading===
+* {{R:yen:Werner:2005|page=179|entry=ab}}
 
 ==Scots==
+
+===Alternative forms===
+* {{alter|sco|ob}}
 
 ===Etymology===
 {{unc|sco}}. Compare {{cog|en|hobble}}, {{cog|nl|hobbelen||to lurch}}, {{cog|da|happe||to stutter}}, {{cog|no|jabba||to stammer}} and colloquial {{cog|sv|happla||to stutter}}.
 
 ===Pronunciation===
-* {{IPA|sco|/ab/}}
+* {{IPA|sco|/ab/|/ɔb/}}
 
 ===Noun===
 {{sco-noun}}
@@ -692,7 +728,7 @@ Compare {{cog|de|ab}}, {{cog|nl|af}}, {{cog|en|off}}.
 
 ===Etymology===
 {{root|tr|ine-pro|*h₂ep-|id=water}}{{dercat|tr|pal|peo|ira-pro|iir-pro}}
-From {{inh|tr|ota|آب|tr=āb|t=water}}, from {{der|tr|fa|آب|tr=âb}}.
+From {{inh|tr|ota|آب|tr=āb|t=water}}, from {{der|tr|fa-cls|آب|tr=âb}}.
 
 ===Pronunciation===
 * {{audio|tr|LL-Q256 (tur)-ToprakM-ab.wav}}
@@ -705,8 +741,17 @@ From {{inh|tr|ota|آب|tr=āb|t=water}}, from {{der|tr|fa|آب|tr=âb}}.
 ====Declension====
 {{tr-infl-noun-c|a|poss=1|pred=1}}
 
+====Derived terms====
+{{col|tr
+|abıhayat
+|abıkevser
+|abırevan
+|abuhava
+|abdest
+}}
+
 ===References===
-* {{R:tr:Nishanyan|ab}}
+* {{R:tr:TDK|ab}}
 
 ==Volapük==
 
@@ -714,7 +759,7 @@ From {{inh|tr|ota|آب|tr=āb|t=water}}, from {{der|tr|fa|آب|tr=âb}}.
 Borrowed from {{bor|vo|de|aber|gloss=but}}.
 
 ===Pronunciation===
-{{IPA|vo|/ab/}}
+* {{IPA|vo|/ab/}}
 
 ===Conjunction===
 {{head|vo|conjunction}}

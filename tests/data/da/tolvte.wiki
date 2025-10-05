@@ -15,6 +15,7 @@ Fra {{etyl|non|da}} {{term|tolfti|lang=non}}.
 * {{fr}}: {{t|fr|douzième}}
 * {{el}}: {{t|el|δωδέκατος}}
 * {{it}}: {{t|it|dodicesimo}}
+* {{O|ku|duwanzdehemîn}}
 * {{nl}}: {{t|nl|twaalfde}}
 {{-}}
 * {{pt}}: {{t|pt|duodécimo}}

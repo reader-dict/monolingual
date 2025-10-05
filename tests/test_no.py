@@ -1,10 +1,18 @@
 from collections.abc import Callable
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
+from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
-from wikidict.utils import process_templates
+
+
+@pytest.fixture(scope="module", autouse=True)
+def setup_lua_ctx() -> None:
+    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+        assert context.reset("no")
 
 
 @pytest.mark.parametrize(
@@ -15,15 +23,15 @@ from wikidict.utils import process_templates
             [],
             ["m"],
             [
-                "Fra latin <i>aberrātiō</i> («lindring, avvikelse») , fra <i>aberrō</i> («gå unna/bort, gå vill»), fra <i>ab</i> («bort») + <i>errō</i> («vandre/gå»).",
+                "Fra latin <i>aberrātiō</i>&nbsp;(«lindring, avvikelse») , fra <i>aberrō</i>&nbsp;(«gå unna/bort, gå vill»), fra <i>ab</i>&nbsp;(«bort») + <i>errō</i>&nbsp;(«vandre/gå»).",
                 "Se aberrate.",
             ],
             {
                 "Substantiv": [
                     "avvik, avvikelse",
-                    "<i>(astronomi)</i> avvik i en stjernes avbildede posisjon relativ til dens sanne posisjon.",
-                    "<i>(optikk)</i> avbildningsfeil i linser og speil.",
-                    "<i>(biologi)</i> endring i et kromosom mens celledeling pågår.",
+                    "(<i>astronomi</i>) avvik i en stjernes avbildede posisjon relativ til dens sanne posisjon.",
+                    "(<i>optikk</i>) avbildningsfeil i linser og speil.",
+                    "(<i>biologi</i>) endring i et kromosom mens celledeling pågår.",
                 ]
             },
             [],
@@ -102,9 +110,9 @@ from wikidict.utils import process_templates
             [],
             {
                 "Substantiv": [
-                    "<i>(anatomi)</i> kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
+                    "(<i>anatomi</i>) kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
                     "side",
-                    "<i>(kortspill)</i> kortene en spiller sitter med",
+                    "(<i>kortspill</i>) kortene en spiller sitter med",
                 ]
             },
             [],
@@ -121,11 +129,11 @@ from wikidict.utils import process_templates
             "konsentrasjon",
             [],
             ["m"],
-            ["Fra <i>konsentrere</i> + -<i>sjon</i>"],
+            ["Fra <i>konsentrere</i> + <i>-sjon</i>"],
             {
                 "Substantiv": [
                     "Det å konsentrere seg; ha stort fokus på noe.",
-                    "<i>(kjemi)</i> Andelen stoff i noe; mengde stoff løst pr. enhet.",
+                    "(<i>kjemi</i>) Andelen stoff i noe; mengde stoff løst pr. enhet.",
                 ]
             },
             [],
@@ -135,7 +143,7 @@ from wikidict.utils import process_templates
             [],
             ["m"],
             [
-                "Fra middelalderlatin <i>cocodrillus</i> («krokodille»), fra gammelgresk κροκόδειλος (<i>krokodeilos</i>)"
+                "Fra middelalderlatin <i>cocodrillus</i>&nbsp;(«krokodille»), fra gammelgresk κροκόδειλος&nbsp;(<i>krokodeilos</i>)"
             ],
             {"Substantiv": ["stort reptil, lever i og nær vann. <i>(lat. Crocodylia)</i>"]},
             [],
@@ -193,7 +201,7 @@ from wikidict.utils import process_templates
             [],
             [],
             [],
-            {"Idiom": ["<i>(idiomatisk)</i> få gjort to ting med én handling"]},
+            {"Idiom": ["(<i>idiomatisk</i>) få gjort to ting med én handling"]},
             [],
         ),
         (
@@ -208,7 +216,7 @@ from wikidict.utils import process_templates
             "tolvte",
             [],
             [],
-            ["Fra norrønt <i>tolfti</i>; <i>tolv</i> + -<i>te</i>"],
+            ["Fra norrønt <i>tolfti</i>; <i>tolv</i> + <i>-te</i>"],
             {"Tallord": ["ordenstallet til tolv"]},
             [],
         ),
@@ -271,39 +279,3 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
-
-
-@pytest.mark.parametrize(
-    "wikicode, expected",
-    [
-        ("{{alternativ skrivemåte|be}}", "<i>alternativ skrivemåte av</i> <b>be</b>"),
-        (
-            "{{feilstaving av|førstvoterende|språk=no}}",
-            "Feilstaving av førstvoterende.",
-        ),
-        ("{{l|no|god, snill}}", "god, snill"),
-        ("{{opphav|norrønt|språk=no}}", "norrønt"),
-        ("{{prefiks|a|biotisk|språk=no}}", "<i>a</i>- + <i>biotisk</i>"),
-        ("{{qualifier|idiomatisk}}", "<i>(idiomatisk)</i>"),
-        ("{{suffiks|konsentrere|sjon|språk=no}}", "<i>konsentrere</i> + -<i>sjon</i>"),
-        ("{{Sup|1}}", "<sup>1</sup>"),
-        ("{{teleskopord|nei|ja|språk=no}}", "teleskopord sammensatt av nei og ja"),
-        (
-            "{{tidligere bøyningsform|no|sub|jul}}",
-            "<i>tidligere bøyningsform av</i> <b>jul</b>",
-        ),
-        (
-            "{{tidligere skriveform|no|kunstnarleg}}",
-            "<i>tidligere skriveform av</i> <b>kunstnarleg</b>",
-        ),
-        (
-            "{{tidligere skrivemåte|no|naturlig tall}}",
-            "<i>tidligere skriveform av</i> <b>naturlig tall</b>",
-        ),
-        ("{{urspråk|germansk|daigjōn}}", "urgermansk *daigjōn"),
-        ("{{vokabular|overført}}", "<i>(overført)</i>"),
-    ],
-)
-def test_process_templates(wikicode: str, expected: str) -> None:
-    """Test templates handling."""
-    assert process_templates("foo", wikicode, "no") == expected

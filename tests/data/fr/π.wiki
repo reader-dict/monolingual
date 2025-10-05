@@ -1,12 +1,5 @@
 {{voir autres scripts/π}}
 {{voir/π}}
-{|width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:0;margin-bottom:0.5em;background:transparent"
-|-valign="top"
-|style="padding-right:0.5em"|
-__TOC__
-|
-{{alphabet grec|π|}}
-|}
 
 == {{caractère}} ==
 {{casse}}
@@ -16,6 +9,7 @@ __TOC__
 === {{S|voir aussi}} ===
 * {{WP}}
 * {{WV|Grammaire/Grec}}
+{{alphabet grec|π|}}
 
 === {{S|références}} ===
 * {{R:Bloc Unicode}}

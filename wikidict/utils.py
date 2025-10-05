@@ -5,106 +5,33 @@ from __future__ import annotations
 import logging
 import os
 import re
-import subprocess
-from collections import defaultdict, namedtuple
-from datetime import UTC, datetime
+from collections import defaultdict
 from functools import cache, partial
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 import regex
 import wikitextparser
 
-from . import constants, context, part_of_speech, svg
+from . import constants, context, lang, part_of_speech, svg
 from .hiero_utils import render_hiero
-from .lang import (
-    last_template_handler,
-    module_trans,
-    random_word_url,
-    template_trans,
-    templates_ignored,
-    templates_italic,
-    templates_multi,
-    templates_other,
-)
-from .user_functions import *  # noqa: F403
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-
-
-# Magic words (small part, only data/time related)
-# https://www.mediawiki.org/wiki/Help:Magic_words
-NOW = datetime.now(tz=UTC)
-MAGIC_WORDS = {
-    "CURRENTYEAR": str(NOW.year),
-    "CURRENTMONTH": NOW.strftime("%m"),
-    "CURRENTMONTH1": str(NOW.month),
-    "CURRENTDAY": str(NOW.day),
-    "CURRENTDAY2": NOW.strftime("%d"),
-    "CURRENTDOW": NOW.strftime("%w"),
-    "CURRENTTIME": NOW.strftime("%H:%M"),
-    "CURRENTHOUR": NOW.strftime("%H"),
-    "CURRENTWEEK": NOW.strftime("%V"),
-    "CURRENTTIMESTAMP": NOW.strftime("%Y%m%d%H%M%S"),
-}
-
-# Templates needed to be kept after transform()
-Template = namedtuple("Template", "placeholder value")
-SPECIAL_TEMPLATES = {
-    "{{!}}": Template("##pipe##!##pipe##", "|"),
-    "{{!(}}": Template("##pipe##!(##pipe##", "&#91;"),
-    "{{)!}}": Template("##pipe##)!##pipe##", "&#93;"),
-    "{{(}}": Template("##pipe##!{##pipe##", "&#123;"),
-    "{{)}}": Template("##pipe##}!##pipe##", "&#125;"),
-    "{{=}}": Template("##equal##!##equal##", "="),
-}
-
-# Subtitution for double curly parenthesis
-OPEN_DOUBLE_CURLY = "##opendoublecurly##"
-CLOSE_DOUBLE_CURLY = "##closedoublecurly##"
 
 KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 
 log = logging.getLogger(__name__)
 
 
-def check_for_missing_templates(all_templates: list[tuple[str, str, str]]) -> bool:
-    missings_counts: dict[str, int] = defaultdict(int)
-    missings: dict[str, set[str]] = defaultdict(set)
+def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
     skipped: set[str] = set()
-    unique_templates: set[str] = set()
-    for tpl, word, status in all_templates:
-        unique_templates.add(tpl)
-        if status == "missed":
-            missings_counts[tpl] += 1
-            missings[tpl].add(word)
-        elif status == "skipped" and word not in skipped:
+
+    for word, status in templates_status:
+        if status == "skipped" and word not in skipped:
             log.warning("Skipped: %r", word)
             skipped.add(word)
 
-    log.info("Total templates count: %s", f"{len(unique_templates):,}")
-
-    if not missings:
-        return False
-
-    for tpl, _ in sorted(missings_counts.items(), key=lambda x: x[1], reverse=True):
-        words = sorted(missings[tpl])
-        log.warning(
-            "Missing `%s` template support (%s times), example in: %s",
-            tpl,
-            f"{len(words):,}",
-            ", ".join(f"`{word}`" for word in words[:3]),
-        )
-    log.warning("Unhandled templates count: %s", f"{len(missings_counts):,}")
-    return True
-
-
-def process_special_pipe_template(text: str) -> str:
-    splitter = SPECIAL_TEMPLATES["{{!}}"].placeholder
-    if splitter in text:
-        text = text.split(splitter)[1]
-    return text
+    return bool(skipped)
 
 
 def convert_gender(genders: list[str]) -> str:
@@ -120,9 +47,39 @@ def convert_pronunciation(pronunciations: list[str]) -> str:
     return f" {', '.join(pronunciations)}" if pronunciations else ""
 
 
+def flatten(seq: list[str]) -> list[str]:
+    """
+    Flatten non-empty items from *seq*.
+
+    >>> flatten(["a", ("b", "", "c"), ["d"]])
+    ['a', 'b', 'c', 'd']
+    """
+    res: list[str] = []
+    for item in seq:
+        if isinstance(item, list | tuple):
+            res.extend(sitem for sitem in item if sitem)
+        elif item:
+            res.append(item)
+    return res
+
+
+def unique(seq: list[str]) -> list[str]:
+    """
+    Return *seq* without duplicates.
+
+    >>> unique(["foo", "foo"])
+    ['foo']
+    """
+    res: list[str] = []
+    for item in seq:
+        if item not in res:
+            res.append(item)
+    return res
+
+
 def get_random_word(locale: str) -> str:
     """Retrieve a random word."""
-    url = random_word_url[locale]
+    url = lang.random_word_url[locale]
 
     while True:
         with constants.SESSION.get(url) as req:
@@ -290,13 +247,6 @@ def format_pos(locale: str, value: str) -> str:
         value = pattern(r"\1", value)
     value = part_of_speech.MERGE.get(locale, {}).get(value, value)
     return value.strip().title()
-
-
-def grep(file: Path, pattern: str) -> str:
-    """Find the given text `pattern` line in `file`."""
-    command = ["/bin/grep", "--text", "--max-count", "1", pattern, str(file)]
-    with subprocess.Popen(command, env={"LC_ALL": "C"}, stdout=subprocess.PIPE) as process:
-        return process.communicate()[0].strip().decode("utf-8")
 
 
 @cache
@@ -841,41 +791,43 @@ def process_templates(
     locale: str,
     *,
     callback: Callable[[str], str] = clean,
-    all_templates: list[tuple[str, str, str]] | None = None,
+    templates_status: list[tuple[str, str]] | None = None,
     variant_only: bool = False,
 ) -> str:
     r"""Process all templates.
 
     It will also handle the <math> HTML tag as it is not part of the *clean()* function on purpose.
 
-        >>> process_templates("foo", "{{}}", "fr")
-        ''
-        >>> process_templates("foo", "{{unknown}}", "fr")
-        ''
-        >>> process_templates("foo", "{{foo|{{bar}}|123}}", "fr")
-        ''
-        >>> process_templates("foo", "{{fchim|OH|2|{{!}}OH|2}}", "fr")
-        'OH<sub>2</sub>|OH<sub>2</sub>'
-        >>> process_templates("EPR=ER", "{{fchim|ER{{=}}EPR}}", "fr")
-        'ER=EPR'
+    >>> _ = context.reset("fr")
+    >>> context.new_word("word")
 
-        >>> process_templates("octonion", " <math>V^n</math>", "fr")  # doctest: +ELLIPSIS
-        '<svg ...'
-        >>> process_templates("", r"<chem>C10H14N2O4</chem>", "fr") # doctest: +ELLIPSIS
-        '<svg ...'
-        >>> process_templates("test", r"<hiero>R11</hiero>", "fr")
-        '<table class="mw-hiero-table mw-hiero-outer" dir="ltr" style=" border: 0; border-spacing: 0; font-size:1em;"><tr><td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;">\n<table class="mw-hiero-table" style="border: 0; border-spacing: 0; font-size:1em;"><tr>\n<td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;"><img src="data:image/gif;base64...'
+    >>> process_templates("foo", "{{}}", "fr")
+    '&lbrace;&lbrace;&rbrace;&rbrace;'
+    >>> process_templates("foo", "{{unknown}}", "fr")
+    ''
+    >>> process_templates("foo", "{{!}}", "fr")
+    '|'
+    >>> process_templates("foo", "{{fchim|OH|2|{{!}}OH|2}}", "fr")  # TODO: this is wrong, `{{!}}` should be converted to `|`
+    'OH<sub>2</sub><sub>OH</sub>2'
+    >>> process_templates("EPR=ER", "{{fchim|ER{{=}}EPR}}", "fr")  # TODO: this is wrong, expecting `ER=EPR`
+    ''
 
-        >>> process_templates("hasta", "<i>حتى</i>", "es")
-        'حتى'
-        >>> process_templates("tasse", "<i>س tas'</i>", "fr")
-        "س tas'"
+    >>> process_templates("octonion", " <math>V^n</math>", "fr")  # doctest: +ELLIPSIS
+    '<svg ...'
+    >>> process_templates("", r"<chem>C10H14N2O4</chem>", "fr") # doctest: +ELLIPSIS
+    '<svg ...'
+    >>> process_templates("test", r"<hiero>R11</hiero>", "fr")
+    '<table class="mw-hiero-table mw-hiero-outer" dir="ltr" style=" border: 0; border-spacing: 0; font-size:1em;"><tr><td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;">\n<table class="mw-hiero-table" style="border: 0; border-spacing: 0; font-size:1em;"><tr>\n<td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;"><img src="data:image/gif;base64...'
 
-        >>> process_templates("foo", "{{flexion|{{lien|terne|fr}}}}", "fr", variant_only=True)
-        'terne'
-        >>> process_templates("foo", "{{flexion|terne}}", "fr", variant_only=True)
-        'terne'
+    >>> process_templates("hasta", "<i>حتى</i>", "fr")
+    'حتى'
+    >>> process_templates("tasse", "<i>س tas'</i>", "fr")
+    "س tas'"
 
+    >>> process_templates("foo", "{{flexion|{{lien|terne|fr}}}}", "fr", variant_only=True)
+    'terne'
+    >>> process_templates("foo", "{{flexion|terne}}", "fr", variant_only=True)
+    'terne'
     """
     # Clean-up the code
     if not (text := callback(wikicode)):
@@ -893,25 +845,23 @@ def process_templates(
     while templates := re.findall(r"({{[^{}]*}})", text):
         for tpl in templates:
             # Skip undesired templates
-            if tpl.startswith(templates_ignored[locale]):
-                text = text.replace(tpl, "")
-                continue
+            if tpl.startswith(lang.templates_ignored[locale]):
+                new_text = ""
 
             # `variant_only` is True only when:
             #   1. It is predefined;
             #   2. And it is the last template in nested templates.
-            # Ex: [FR] `{{flexion|{{lien|foo}}}}` where:
-            #   - `lien` should be handled normaly;
-            #   - while `flexion` should be handled as variant-specific.
-            if variant_only and current_template_idx == last_template_idx - 1:
-                text = text.replace(
-                    tpl,
-                    transform(word, tpl[2:-2], locale, all_templates=all_templates, variant_only=True),
-                )
-                continue
+            #      Example: [FR] `{{flexion|{{lien|foo}}}}` where:
+            #          - `lien` should be handled normaly;
+            #          - while `flexion` should be handled as variant-specific.
+            elif variant_only and current_template_idx == last_template_idx - 1:
+                new_text = transform_variant(word, tpl[2:-2], locale)
 
-            # Transform the template
-            text = text.replace(tpl, clean(context.expand(tpl, locale)))
+            # Expand the template
+            else:
+                new_text = clean(context.expand(tpl, locale))
+
+            text = text.replace(tpl, new_text)
 
         current_template_idx += len(templates)
 
@@ -919,6 +869,7 @@ def process_templates(
 
     # Handle <chem>, <hiero>, and <math>, HTML tags
     for tag, func in [("chem", convert_chem), ("hiero", convert_hiero), ("math", convert_math)]:
+        text = text.replace("&#92;", "\\")
         text = sub(rf"<{tag}>(.+?)</{tag}>", partial(func, word=word), text)
         if f"<{tag}>" in text or f"</{tag}>" in text:
             raise ValueError(f"Missed <{tag}> HTML tag in {word!r}") from None
@@ -932,20 +883,74 @@ def process_templates(
 
     # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
     if not KEEP_UNFINISHED and (
-        "{{" in text
+        bool(context.CTX.to_return()["errors"])
+        or f":{lang.module_trans[locale]}:" in text
+        or f":{lang.template_trans[locale]}:" in text
+        or "{{" in text
         or "}}" in text
         or "<h1>" in text
         or "<h2>" in text
         or "<h3>" in text
-        or f":{module_trans[locale]}:" in text
-        or f":{template_trans[locale]}:" in text
-        or context.CTX.to_return()["errors"]
     ):
-        if all_templates is not None:
-            all_templates.append(("", word, "skipped"))
+        if templates_status is not None:
+            templates_status.append((word, "skipped"))
         return ""
 
     return text.strip()
+
+
+def extract_keywords_from(parts: list[str]) -> defaultdict[str, str]:
+    """
+    Given a list of strings, extract strings containing an equal sign ("=").
+
+    Return a *defaultdict(str)* with key=value extracted from the original list.
+
+    The left part of the sign is used as the dict key and the right part as the value.
+    When a string contains the sign, it is removed from the original list.
+
+        >>> extract_keywords_from([])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo"])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "bar=baz"])
+        defaultdict(<class 'str'>, {'bar': 'baz'})
+        >>> extract_keywords_from(["foo", "bar=baz=ouf"])
+        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
+        >>> extract_keywords_from(["foo", "bar = baz=ouf"])
+        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
+        >>> extract_keywords_from(["foo", "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s."])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle"])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "bar='baz'"])
+        defaultdict(<class 'str'>, {'bar': "'baz'"})
+    """
+    data = defaultdict(str)
+    for part in parts.copy():
+        if "=" in part:
+            key, value = part.split("=", 1)
+
+            # Prevent splitting such parts:
+            #   "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s.".
+            #   "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle".
+            if key.endswith("<span style"):
+                continue
+
+            data[key.strip()] = value.strip()
+            parts.pop(parts.index(part))
+    return data
+
+
+def transform_variant(word: str, template: str, locale: str) -> str:
+    parts_raw = template.split("|")
+    parts = [p.strip().strip("\u200e") for p in parts_raw]
+    tpl, *parts = parts
+
+    if funcs := lang.variant_handlers[locale]:
+        data = extract_keywords_from(parts)
+        return funcs[tpl](tpl, parts, data, word)
+
+    return ""
 
 
 def render_formula(formula: str, *, cat: str = "tex", output_format: str = "svg") -> str:
@@ -1037,90 +1042,3 @@ def table2html(word: str, locale: str, table: wikitextparser.Table) -> str:
         phrase += "</tr>"
     phrase += "</table>"
     return phrase
-
-
-def transform(
-    word: str,
-    template: str,
-    locale: str,
-    *,
-    all_templates: list[tuple[str, str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    """Convert the data from the *template" template.
-    This function also checks for template style.
-
-        >>> transform("séga", "w", "fr")
-        'séga'
-
-        >>> transform("foo", "formatnum:12345", "fr")
-        '12 345'
-        >>> transform("foo", "Lit-Linnartz: Unsere Familiennamen|A=1|B=1", "de")
-        'Kaspar Linnartz: <i>Unsere Familiennamen</i>. Zehntausend Berufsnamen im Abc erklärt. 1. Auflage. Band 1, Ferdinand Dümmler Verlag, Bonn und Berlin 1936'
-
-        >>> transform("foo", "conj|grp=1|fr", "fr")
-        '##opendoublecurly##conj##closedoublecurly##'
-
-        >>> # Magic words
-        >>> transform("De_Witte", "PAGENAME", "fr")
-        'De Witte'
-
-        >>> # Magic word (date/time formats)
-        >>> assert len(transform("foo", "CURRENTYEAR", "fr")) == 4
-        >>> assert len(transform("foo", "CURRENTMONTH", "fr")) == 2
-        >>> assert len(transform("foo", "CURRENTMONTH1", "fr")) in (1, 2)
-        >>> assert len(transform("foo", "CURRENTDAY", "fr")) in (1, 2)
-        >>> assert len(transform("foo", "CURRENTDAY2", "fr")) == 2
-        >>> assert len(transform("foo", "CURRENTDOW", "fr")) == 1
-        >>> assert len(transform("foo", "CURRENTTIME", "fr")) == 5
-        >>> assert len(transform("foo", "CURRENTHOUR", "fr")) == 2
-        >>> assert len(transform("foo", "CURRENTWEEK", "fr")) in (1, 2)
-        >>> assert len(transform("foo", "CURRENTTIMESTAMP", "fr")) == 14
-    """
-
-    parts_raw = template.split("|")
-    parts = [p.strip() for p in parts_raw]
-    parts = [p.strip("\u200e") for p in parts]  # Left-to-right mark
-    tpl = parts[0]
-
-    if all_templates is not None:
-        all_templates.append((tpl, word, "check"))
-
-    # {{formatnum:-1000000}}
-    if ":" in tpl:
-        new_tpl, new_parts_raw = template.split(":", 1)
-        if new_tpl in constants.TEMPLATES_WITH_COLON:
-            parts = [new_tpl, *[p.strip() for p in new_parts_raw.split("|")]]
-            tpl = parts[0]
-
-    # Stop early
-    if not tpl or tpl in templates_ignored[locale]:
-        return ""
-
-    # Magic words
-    if tpl in MAGIC_WORDS:
-        return MAGIC_WORDS[tpl]
-    elif tpl == "PAGENAME" or (tpl == "w" and len(parts) == 1):
-        return word.replace("_", " ")
-
-    # Apply transformations
-    # Note: using `is not None` below to allow templates returning an empty string.
-
-    if (transformer := templates_multi[locale].get(tpl)) is not None:
-        return str(eval(transformer))
-
-    if (transformer := templates_other[locale].get(tpl)) is not None:
-        return transformer
-
-    if len(parts) == 1 and (transformer := templates_italic[locale].get(tpl)) is not None:
-        return term(transformer)  # noqa: F405
-
-    return str(
-        last_template_handler[locale](
-            parts,
-            locale,
-            word=word,
-            all_templates=all_templates,
-            variant_only=variant_only,
-        )
-    )

@@ -19,6 +19,10 @@
 * [[dubitativiser]]
 {{)}}
 
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|consentement|doute|hésitation}}
+* [[🤔]] (U+1F914)
+
 ==== {{S|traductions}} ====
 {{trad-début}}
 * {{T|de}} : {{trad+|de|zweifelnd}}, {{trad+|de|skeptisch}}

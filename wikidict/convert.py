@@ -24,7 +24,7 @@ from jinja2 import Template
 from marisa_trie import Trie
 from pyglossary.glossary_v2 import ConvertArgs, Glossary
 
-from . import constants, render, user_functions, utils
+from . import constants, render, utils
 from .stubs import Word
 
 if TYPE_CHECKING:
@@ -677,12 +677,12 @@ def run_mobi_formatter(
             if isinstance(definitions, str):
                 chars.update(definitions)
             elif isinstance(definitions, tuple):
-                chars.update(user_functions.flatten(definitions))
+                chars.update(utils.flatten(definitions))
         if etymology := details.etymology:
             if isinstance(etymology, str):
                 chars.update(etymology)
             elif isinstance(etymology, tuple):
-                chars.update(user_functions.flatten(etymology))
+                chars.update(utils.flatten(etymology))
         return chars
 
     stats = defaultdict(list)

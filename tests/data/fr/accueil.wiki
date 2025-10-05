@@ -45,6 +45,9 @@
 * [[main page]] ''(site web)'' {{anglicisme|nocat=1}}
 * [[page d’accueil]] ''(site web)''
 
+==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|don du sang|exil|livre|salon (évènement)|urgence}}
+
 ==== {{S|traductions}} ====
 {{trad-début|Cérémonie|1}}
 * {{T|de}} : {{trad+|de|Aufnahme|f}}, {{trad+|de|Empfang|m}}
@@ -58,7 +61,7 @@
 * {{T|mg}} : {{trad+|mg|fandraisana}}
 * {{T|cmn}} : {{trad+|zh|迎接|tr=yíngjiē|tradi=迎接}}, {{trad+|zh|接待|tr=jiēdài}}
 * {{T|nl}} : {{trad+|nl|onthaal|n}}, {{trad+|nl|ontvangst|f}}
-* {{T|oc}} : {{trad+|oc|acuèlh}}, {{trad+|oc|tractament}}
+* {{T|oc}} : {{trad+|oc|acuèlh}}, {{trad+|oc|tractament}}, {{trad-|oc|aculhença}}, {{trad-|oc|aculhiment}}
 * {{T|pcd}} : {{trad|pcd|acoil}}
 * {{T|pt}} : {{trad+|pt|recepção|f}}, {{trad+|pt|acolhida|f}}
 * {{T|ro}} : {{trad+|ro|primire|f}}, {{trad-|ro|întampinare}}
@@ -81,6 +84,7 @@
 * {{T|pt}} : {{trad+|pt|recepção}}
 * {{T|ru}} : {{trad+|ru|приём}}
 * {{T|sv}} : {{trad+|sv|mottagande}}
+* {{T|sw}} : {{trad+|sw|mapokezi}}
 {{trad-fin}}
 
 {{trad-début|Fait d’accueillir|3}}
@@ -140,3 +144,5 @@
 * {{R:TLFi}}
 * {{R:DAF8}}
 * Petit Robert 1, dictionnaire de la langue française,1990.
+
+[[Catégorie:Lexique en français du foyer]]

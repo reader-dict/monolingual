@@ -41,8 +41,10 @@
 # {{désuet|fr}} [[écriture|Écriture]] en [[caractère]]s [[menu]]s.
 #* {{exemple | lang=fr | Écrire en '''minute'''.}}
 # {{par extension}} {{lexique|droit|fr}} [[original|Original]] d’un [[acte]] [[authentique]] conservé par l’[[autorité]] qui le détient et qui ne peut s’en séparer (acte notarié dans le cas d’un [[notaire]], [[décision]] de [[justice]] dans le cas d’une [[juridiction]]…)
-#* {{exemple | lang=fr | La '''minute''' de ce contrat est chez mon notaire. — La '''minute''' d’une sentence, d’un arrêt, d’un rapport d’experts.}}
+#* {{exemple|lang=fr|On lit, à la date du 29 juin 1683, dans les '''minutes''' de Pellerin, notaire à Clavy : […]. |source=Numa Albot, « ''Les imprimeurs de Charleville au XVII{{e}} et au XVIII{{e}}siècle'' », dans la ''Revue historique ardennaise'', publiée par Paul Laurent, tome 6, Paris : chez Alphonse Picard & fils, 1899, p. 263}}
+#* {{exemple | lang=fr | La '''minute''' d’une sentence, d’un arrêt, d’un rapport d’experts.}}
 #* {{exemple | lang=fr | On prétendait qu’il y avait une omission dans la grosse, il fallut avoir recours à la '''minute'''.}}
+#* {{exemple|J’ai préparé la '''minute''' d’un acte dont les conditions pourront être discutées par vous et par monsieur Chabert, séance tenante.|lang=fr|source={{w|Honoré de Balzac}}, [https://fr.m.wikisource.org/wiki/Le_Colonel_Chabert ''Le colonel Chabert''], 1844}}
 # {{spécialement}} [[procès-verbal|Procès-verbal]] [[original]] d'une [[expérimentation]] ou d'un [[essai]].
 #* {{exemple | lang=fr
  | Les résultats de ce grand travail, qui l'occupa pendant plusieurs mois, ont été publiés dans le rapport fait à l'Institut par Van-Swieden, et ensuite par Delambre, dans le III{{e}} vol. de la ''Base du Système métrique décimal'', mais non pas la '''minute''' des observations, qu'on n'a jamais pu retrouver.
@@ -99,6 +101,7 @@
 {{)}}
 
 ==== {{S|vocabulaire}} ====
+* {{voir thésaurus|fr|temps|horlogerie|unités de mesure|water-polo}}
 * [[grosse]] (6)
 
 ==== {{S|holonymes}} ====
@@ -270,6 +273,7 @@
 * {{écouter|||lang=fr|audio=LL-Q150 (fra)-Marie-Sarah (Opsylac)-minute.wav}}
 * {{écouter|Aude (France)||lang=fr|audio=LL-Q150 (fra)-Lepticed7-minute.wav}}
 * {{écouter|Liège (Belgique)||lang=fr|audio=LL-Q150 (fra)-Shareculture-minute.wav}}
+* {{écouter|Vendée (France)||lang=fr|audio=LL-Q150 (fra)-Sartus85-minute.wav}}
 
 === {{S|anagrammes}} ===
 {{voir anagrammes|fr}}
@@ -285,7 +289,7 @@
 
 == {{langue|en}} ==
 === {{S|étymologie}} ===
-: Du {{étyl|la|en|mot=minuta}}.
+: {{siècle|?|lang=en}} Du {{étyl|la|en|mot=minuta}}.
 
 === {{S|nom|en}} ===
 {{en-nom-rég|ˈmɪn.ɪt|s=s}}
@@ -293,12 +297,14 @@
 # {{lexique|métrologie|en}} [[minute#fr|Minute]].
 #* {{exemple | lang=en | There are sixty seconds in a '''minute'''.}}
 #* {{exemple | lang=en | There are sixty '''minutes''' in one degree of arc.}}
+#* {{exemple|lang=en|In a few days Mr. Bingley returned Mr. Bennet’s visit, and sat about ten '''minutes''' with him in his library.|source={{w|Jane Austen}}, {{WS|lang=en|''Pride and Prejudice''}}, Vol. 1, {{ws|Pride and Prejudice (1817)/Chapter 3|chapitre 3|lang=en}}, 3<sup>e</sup> éd., T. Egerton, Whitehall, Londres, 1817, page 11|sens=}}
 # Minute, [[moment]], [[instant]].
 #* {{exemple | lang=en | I’ll be there in a '''minute'''.}}
 # {{au pluriel}} [[procès-verbal|Procès-verbal]].
 #* {{exemple | lang=en | Will the secretary please take the '''minutes''' of the meeting?}}
 
 ==== {{S|vocabulaire}} ====
+* {{voir thésaurus|en|unités de mesure|temps}}
 * [[degree#en|degree]]
 * [[hour#en|hour]]
 * [[second#en|second]]

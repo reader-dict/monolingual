@@ -5,8 +5,8 @@
 {{etimología|la|illos|diacrítico=illōs|sig=no}}, acusativo masculino plural  {{etim|la|ille}}.
 
 ==== {{artículo determinado|es}} ====
-{{inflect.es.adj.ad-lib|el|los|la|las|link=sí}}
-;1: ''{{plm|artículo determinado}} masculino plural.''.
+{{es.adj|p}}
+;1: {{plm|artículo determinado}} masculino plural. El singular es [[lo]].
 {{uso|generalmente cuando el sustantivo se toma por conocido entre el emisor y receptor}}
 {{ejemplo|En la oración "recibí ''los'' mensajes", ''los'' denota "mensajes" ya definidos de cuya existencia sabía el hablante con anterioridad.}}
 {{ejemplo|En la oración "''los'' seres humanos son así", ''los'' denota que "seres humanos" se entiende en su sentido genérico.}}
@@ -29,6 +29,23 @@
 {{t|en|a1=1|t1=the|a2=2|t2=them}}
 {{t|pt|a1=1,2|t1=os}}
 {{trad-abajo}}
+
+== {{lengua|lfn}} ==
+{{swadesh|lfn}}
+{{pron-graf|leng=lfn}}
+
+=== Etimología ===
+{{etimología|leng=lfn}}.
+
+=== {{pronombre personal|lfn}} ===
+;1: {{plm|ellos}}.
+;2: {{plm|ellas}}.
+;3: {{plm|les}}.
+;4: {{plm|las}}.
+;5: {{plm|los}}.
+
+=== {{adjetivo posesivo|lfn}} ===
+;6: {{plm|sus}}.
 
 == Referencias y notas ==
 <references />

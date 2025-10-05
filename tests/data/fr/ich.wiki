@@ -45,6 +45,7 @@
 : Du {{étyl|gmh|de|ich}}, du {{étyl|goh|de|ih}}, du {{étyl|proto-germanique occidental|de}} {{recons|lang-mot-vedette=de|ik|proto-germanique occidental}}, du {{étyl|proto-germanique|de}} {{recons|lang-mot-vedette=de|[[Reconstruction:proto-germanique/*ek|ek]]}}, de l’{{étyl|indo-européen commun|de}} {{recons|lang-mot-vedette=de|éǵh₂|indo-européen commun}}.
 
 === {{S|pronom personnel|de}} ===
+{{de-pronom|ich|ich||wir|meiner|meiner||unser|mir|mir||uns|mich|mich||uns}}
 '''ich''' {{pron|ɪç|de}} {{nominatif|de}}
 # [[je|Je]] : première personne du singulier au nominatif.
 #* {{exemple | lang=de

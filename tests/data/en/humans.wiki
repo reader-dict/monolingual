@@ -1,6 +1,10 @@
 {{also|Humans|humāns}}
 ==English==
 
+===Pronunciation===
+{{rfp|en}}
+* {{audio|en|LL-Q1860 (eng)-Vealhurl-humans.wav|a=Southern England}}
+
 ===Noun===
 {{head|en|noun form}}
 

@@ -8,11 +8,8 @@
 * {{rhymes|en|ɜː(ɹ)dʒ|s=1}}
 
 ===Etymology 1===
-{| class="floatright"
-|-
-| {{PIE word|en|h₁eǵʰs}}
-| {{PIE word|en|ḱóm}}
-|}{{root|en|ine-pro|*(s)ker-|id=cut|*h₃reǵ-}}
+{{word|en|ine|h₁éǵʰs}}{{word|en|ine|ḱóm}}
+{{root|en|ine-pro|*(s)ker-|id1=cut|*h₃reǵ-}}
 [[File:Karwats.jpg|thumb|A scourge ''(noun {{senseno|en|whip}})'' [[exhibit#Verb|exhibited]] in a [[museum#Noun|museum]].]]
 
 From {{inh|en|enm|scourge|t=a lash, whip, scourge; affliction, calamity; person who causes affliction or calamity; shoot of a vine}},<ref>{{R:MED Online|entry=scǒurǧe|pos=n|id=MED39002}}</ref> and then either:
@@ -22,9 +19,9 @@ From {{inh|en|enm|scourge|t=a lash, whip, scourge; affliction, calamity; person 
 ** from {{der|en|la|ex-|pos={{glossary|intensifying}} prefix}} + {{m|la|corrigia|t=a whip}} (from {{m|la|corrigō|t=to make right, correct; to reform}}, ultimately from {{der|en|ine-pro|*h₃reǵ-|t=to righten; to straighten}});<ref>{{R:Lexico|pos=n}}</ref> or
 * from {{der|en|enm|scourgen|pos=verb}} (see [[#Etymology 2|etymology 2]]).
 
-{{rel-top|cognates}}
-* {{cog|it|scuriada}}, {{m|it|scuriata}}
-{{rel-bottom}}
+{{col|en|title=Cognates
+|{{cog|it|scuriada}}, {{m|it|scuriata}}
+}}
 
 ====Noun====
 {{en-noun}}
@@ -83,8 +80,9 @@ From {{inh|en|enm|scourge|t=a lash, whip, scourge; affliction, calamity; person 
 * Macedonian: {{t|mk|бич|m}}, {{t|mk|ка́мшик|m}}
 * Norwegian:
 *: Bokmål: {{t+|no|svøpe|m}}
-* Portuguese: {{t+|pt|açoite|m}}, {{t+|pt|flagelo|m}}
+* Portuguese: {{t+|pt|açoite|m}}, {{t+|pt|flagelo|m}}, {{t+|pt|azorrague}}
 * Russian: {{t+|ru|бич|m}}, {{t+|ru|плеть|f}}
+* Sicilian: {{t|scn|zotta|f}}
 * Spanish: {{t+|es|flagelo|m}}
 * Swedish: {{t+|sv|gissel|n}}
 {{trans-bottom}}
@@ -93,6 +91,7 @@ From {{inh|en|enm|scourge|t=a lash, whip, scourge; affliction, calamity; person 
 * Finnish: {{t+|fi|vitsaus}}
 * Galician: {{t|gl|azoute}}
 * Macedonian: {{t-needed|mk}}
+* Portuguese: {{t+|pt|flagelo|m}}, {{t+|pt|azorrague}}
 {{trans-bottom}}
 
 {{trans-top|source of persistent (and often widespread) pain and suffering or trouble}}
@@ -120,6 +119,7 @@ From {{inh|en|enm|scourge|t=a lash, whip, scourge; affliction, calamity; person 
 * Portuguese: {{t+|pt|flagelo|m}}, {{t+|pt|tormento|m}}
 * Romanian: {{t+|ro|flagel}}
 * Russian: {{t+|ru|беда́|f}}, {{t+|ru|бе́дствие|n}}, {{t+|ru|бич|m}}, {{t+|ru|ка́ра|f}}
+* Sicilian: {{t+|scn|camurrìa|f}}, {{t|scn|rugna|f}}, {{t|scn|siḍḍiju|m}}
 * Spanish: {{t+|es|azote|m}}, {{t+|es|flagelo|m}}
 * Swedish: {{t+|sv|gissel|n}}, {{t+|sv|plåga|c}}
 {{trans-bottom}}

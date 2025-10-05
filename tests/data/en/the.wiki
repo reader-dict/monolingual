@@ -1,54 +1,67 @@
 {{also|Appendix:Variations of "the"}}
 {{minitoc}}
+==Translingual==
+
+===Symbol===
+{{mul-symbol}}
+
+# {{ISO 639|3}}
+
+===See also===
+* {{langcat}}
+
 ==English==
-{{wikipedia|The}}
+{{wp|The}}
 
 ===Pronunciation===
-* {{qualifier|when stressed}}
-** {{enPR|''th''ē}}, {{IPA|en|/ˈðiː/}}
+* {{a|en|weak form, before consonants}}
+** {{enPR|''th''ə}}, {{IPA|en|/ðə/}}
+** {{audio|en|LL-Q1860 (eng)-Back ache-The.wav|a=UK}}
+** {{audio|en|en-us-the-unstressed.ogg|a=US}}
+** {{audio|en|en-ca-the.ogg|a=CA}}
+* {{a|en|weak form, before vowels, see notes below}}
+** {{enPR|''th''ē|''th''ə}}, {{IPA|en|/ði/ [ðɪj]|/ðə/}}
+* {{a|en|strong form}}
+** {{enPR|''th''ē}}, {{IPA|en|/ðiː/}}
 ** {{audio|en|en-uk-the-stressed.ogg|a=UK}}
 ** {{audio|en|en-us-the-stressed.ogg|a=US}}
-** {{rhymes|en|iː|s=1}}
-*** {{qualifier|variant|preconsonantal}} {{enPR|''th''ŭ}}, {{IPA|en|/ˈðʌ/}}
-* {{qualifier|when unstressed and prevocalic}}
-** {{enPR|''th''ē}}, {{IPA|en|/ði/|/ðɪ/}}
-* {{qualifier|when unstressed and preconsonantal}}
-** {{enPR|''th''ə}}, {{IPA|en|/ðə/}} {{qualifier|but see notes below}}
-** {{audio|en|en-ca-the.ogg|a=CA}}
-** {{audio|en|en-us-the-unstressed.ogg|a=US}}
-** {{audio|en|LL-Q1860 (eng)-Back ache-The.wav|a=UK}}
+** {{rhymes|en|iː|s=1}}<!--No /ðə/ rhyme: can't rhyme an unstressed word.-->
+** {{homophone|en|thee}}
 
-{{rel-top|pronunciation notes}}
-The word ''the'' is commonly pronounced {{IPAchar|/ðiː/}} whenever it is pronounced as a distinct word, e.g.:
-* When it is used for emphasis ({{l|en||This is where ''the'' hospital for open-heart surgery is}}).
+{{col-top|2|pronunciation notes}}
+When the word ''the'' appears before a consonant, it is pronounced as {{IPAchar|/ðə/}}.
+
+Before a vowel, it is pronounced as {{IPAchar|/ði/}} or {{IPAchar|/ðə/}} depending on the dialect.
+
+The word is commonly pronounced {{IPAchar|/ðiː/}} whenever it is pronounced as a distinct word, e.g.:
+* When it is used for emphasis (This is where ''the'' hospital for open-heart surgery is.).
 * When the speaker pauses between ''the'' and the next word ({{m|en||the … sovereignty}}).
-* In many but not all dialects, when the next word begins with a vowel sound ({{m|en||the onion}}) (compare with {{l|en|a}} vs. {{l|en|an}}).
-The word is generally pronounced indistinctly as {{IPAchar|/ðə/}} or merely {{IPAchar|/ð/}} in other situations, such as when attached to a word beginning with a consonant sound.
-{{rel-bottom}}
-{{rel-top|"the" vs. "ye"}}
+{{col-bottom}}
+{{col-top|2|"the" vs. "ye"}}
 The [[eye dialect|typographical pronunciation]] {{IPAchar|/jiː/}} (''"'''[[ye#Etymology_2|Ye]]''' Old..."'') is a deliberately archaic [[retronym]] from {{m|en|ye}}, which is a variant spelling of [[þe]], from Old English [[þe#Old English|þē]] pronounced '''''thē''''', {{IPAchar|/θeː/|/ðeː/}}  (using [[y]] in place of the [[thorn]] ([[þ]]). It is not actually a separate pronunciation in Middle English. The actual [[morpheme]] {{IPAchar|/jiː/}} in Middle English represents [[ȝe-]], a variant spelling of the prefix [[y-]] attached to [[verb]]s and used to denote a verbal [[past participle]].
-{{rel-bottom}}
+{{col-bottom}}
 
 ===Etymology 1===
-{{root|en|ine-pro|*só}}From {{inh|en|enm|þe}}, from {{inh|en|ang|þē||the, that|pos=[[demonstrative pronoun]]|g=m}}, a late variant of {{m|ang|sē}}, the ''s-'' (which occurred in the masculine and feminine nominative singular only) having been replaced by the ''þ-'' from the oblique stem.
-{{rel-top|replaced words, cognates}}
+{{word|en|ine|só}}
+From {{inh|en|enm|þe}}, from {{inh|en|ang|þē||the, that|pos=[[demonstrative pronoun]]|g=m}}, a late variant of {{m|ang|sē}}, the ''s-'' (which occurred in the masculine and feminine nominative singular only) having been replaced by the ''þ-'' from the oblique stem.
+{{col-top|2|replaced words, cognates}}
 Originally neutral nominative, in Middle English it superseded all previous Old English nominative forms ({{m|ang|sē|g=m}}, {{m|ang|sēo|g=f}}, {{m|ang|þæt|g=n}}, {{m|ang|þā|g=p}}); {{m|ang|sē}} is from {{inh|en|gmw-pro|*siz}}, from {{inh|en|gem-pro|*sa}}, ultimately from {{inh|en|ine-pro|*só}}.
 
-Cognate with {{cog|stq|die|t=the}}, {{cog|fy|de|t=the}}, {{cog|nl|de|t=the}}, {{cog|nds-de|de|t=the}}, {{cog|de|der|t=the}}, {{cog|da|de|t=the}}, {{cog|sv|de|t=the}}, {{cog|is|sá|t=that}} within Germanic and with {{cog|sa|स|tr=sá|t=the, that}}, {{cog|grc|ὁ|t=the}}, {{cog|txb|se|t=this}} among other Indo-European languages.<ref>{{R:ine:LIPP|volume=2|pages=732-733}}</ref>
-{{rel-bottom}}
+Cognate with {{cog|stq|die|t=the}}, {{cog|fy|de|t=the}}, {{cog|nl|de|t=the}}, {{cog|nds-de|de|t=the}}, {{cog|de|der|t=the}}, {{cog|da|de|t=the}}, {{cog|sv|de|t=the}}, {{cog|is|sá|t=that}} within Germanic and with {{cog|sa|स|tr=sá|t=the, that}}, {{cog|grc|ὁ|t=the}}, {{cog|txb|se|t=this}} among other Indo-European languages.<ref>{{R:ine:LIPP|vol=2|pages=732-733}}</ref>
+{{col-bottom}}
 
 ====Article====
 {{head|en|article}}
 
 # {{n-g|Used before a noun phrase, including a simple noun}}
-## {{non-gloss|The [[definite]] grammatical [[article]] that implies necessarily that the noun phrase it immediately precedes is definitely identifiable}}
-### {{n-g|because it has already been [[mention]]ed, is to be completely [[specify|specified]] in the same sentence, or very shortly thereafter.}} {{defdate|from 10th c.}}
+## {{non-gloss|The [[definite]] grammatical [[article]] that shows that the noun phrase that immediately follows it is definitely identifiable...}}
+### {{n-g|...because it has already been [[mention]]ed, is to be completely [[specify|specified]] in the same sentence, or very shortly thereafter.}} {{defdate|from 10th c.}}
 ###: ''I’m reading '''the''' book Mary reviewed.'' (Compare ''I’m reading '''a''' book Mary reviewed.'')
 ###: ''You live on Main Street, don't you? You know, you should tell the mayor '''the''' street needs cleaning.''
 ###: '''''The''' men and women watched '''the''' man give '''the''' birdseed to '''the''' bird.''
-###: '''''The''' street that runs all the way through my hometown.''
+###: '''''the''' street that runs all the way through my hometown''
 ###* {{quote-web|1=en|year=2016|url=https://learningenglish.voanews.com/a/lets-learn-english-lesson-5-where-are-you/3168971.html|site=VOA Learning English|passage=I sleep in '''the''' bedroom!|accessdate=12 December 2018|archiveurl=https://web.archive.org/web/20170930001420/https://learningenglish.voanews.com/a/lets-learn-english-lesson-5-where-are-you/3168971.html|archivedate=30 September 2017}}
-### {{n-g|because it is presumed to be definitely known in context or from shared knowledge}}
+### {{n-g|...because it is presumed to be definitely known in context or from shared knowledge.}}
 #### {{non-gloss|Used before a noun designating something considered to be [[unique]], or of which there is only one at a time.}} {{defdate|from 10th c.}}
 ####: ''No one knows how many galaxies there are in '''the''' universe.''
 ####: ''God save '''the''' Queen!''
@@ -56,35 +69,35 @@ Cognate with {{cog|stq|die|t=the}}, {{cog|fy|de|t=the}}, {{cog|nl|de|t=the}}, {{
 #### {{non-gloss|Used to indicate a certain example of (a noun) which is usually of most concern or most common or familiar.}} {{defdate|from 12th c.}}
 ####: ''No one in '''the''' whole country had seen it before.''
 ####: ''I don't think I'll get to it until '''the''' morning.''
-####: ''Take me to '''the''' airport/station/hospital/office/park/match/meeting.''
+####: ''Take me to '''the''' [[airport]]/[[station]]/[[hospital]]/[[office]]/[[park]]/[[match]]/[[meeting]]/[[etcetera]].''
 #### {{non-gloss|Used before a body part, a family member, a pet (especially of someone previously mentioned), as an alternative to a [[possessive pronoun]].}} {{defdate|from 12th c.}}
 ####: ''A stone hit him on '''the''' head.'' (= “A stone hit him on his head.”)
-####: ''How's '''the''' wife?'' (= "How is your wife?")
+####: {{q|informal}} ''How's '''the''' wife?'' (= "How is your wife?")
 #### {{lb|en|colloquial}} {{n-g|Precedes a familiar nickname or other term of address.}}
-####:{{usex|en|How's '''the''' Sal today?|footer="How are you, Sal?"}}
-#### {{n-g|Used in many idiomatic expressions and proverbs to refer to common objects, roles, or situations connected with something definite, as by analogy}}
-####: ''square '''the''' circle; feel '''the''' pinch; beat around '''the''' bush; throw '''the''' baby out with '''the''' bathwater''
+####: {{usex|en|How's '''the''' Sal today?|footer="How are you, Sal?"}}
+#### {{n-g|Used in many idiomatic expressions and proverbs to refer to common objects, roles, or situations connected with something definite, in the manner of an analogy}}
+####: ''[[square the circle|square '''the''' circle]]; [[feel the pinch|feel '''the''' pinch]]; [[beat around the bush|beat around '''the''' bush]]; [[throw the baby out with the bathwater|throw '''the''' baby out with '''the''' bathwater]]''
 ## {{non-gloss|When stressed, indicates that it describes something which is considered to be best or exclusively worthy of attention.}} {{defdate|from 18th c.}}
 ##: ''That is'' <u>'''the'''</u> ''hospital to go to for heart surgery.''
 ##* {{RQ:Doyle Land of Mist|passage="Good Heavens, man! Why, he is '''''the''''' authority. If you want pure laboratory experiments those are the books."}}
 ##* {{quote-journal|en|date=May 27, 2012| author=Nathan Rabin| title=TV: Review: THE SIMPSONS (CLASSIC): “New Kid On The Block” (season 4, episode 8; originally aired 11/12/1992)| work=The Onion AV Club| url=http://www.avclub.com/articles/new-kid-on-the-block,75341/| passage=“New Kid On The Block” doubles as a terrific showcase for the Sea Captain who, in the grand tradition of Simpsons supporting characters, quickly goes from being a stereotype to an archetype, from being a crusty sea-captain character to '''''the''''' crusty sea-captain character.}}
 ## {{non-gloss|Used before a noun phrase beginning with [[superlative]] or comparative adjective or an [[ordinal number]],  indicating that the noun refers to a single item.}}
-##: ''That was '''the''' juiciest apple pie ever.''
-##: ''May '''the''' better man win.''
+##: {{ux|en|That was '''the''' juiciest apple pie ever.}}
+##: {{ux|en|May '''the''' better man win.}}
+##* {{quote-journal|en|author=Liz Parker Kuhn|title=California Pizza Kitchen, Mike's Hot Honey drop 'swicy' new pizza|magazine=Snack Food & Wholesale Bakery|url=https://www.snackandbakery.com/articles/111917-california-pizza-kitchen-mikes-hot-honey-drop-swicy-new-pizza|date=2024-08-21|passage=Starting today through September 30, guests can wow their taste buds with '''the''' "swiciest" sensation of the season, the Nashville-Style Hot Honey Pizza.}}
 ## {{non-gloss|Introducing a singular term to be taken [[generically]]: preceding a name of something standing for a whole class.}} {{defdate|from 9th c.}}
 ##* {{RQ:Mandela Long Walk to Freedom|year=2010|page=536|passage=Stern and God-fearing, '''the''' Afrikaner takes his religion seriously.}}
 ##: '''''The''' downy woodpecker can be found in the same environments as '''the''' hairy woodpecker.''
 ## {{n-g|Used with the plural of a surname to indicate the entire family.}}
 ##: '''''The''' Bushes have held political office for several decades and '''the''' Kennedys longer.''
 # {{n-g|Used with an adjective}}
-## {{non-gloss|Added to a superlative or an ordinal number to make it into a substantive.}} {{defdate|from 9th c.}}
+## {{non-gloss|Added to a superlative or an ordinal number to make it into a {{glossary|substantive}}.}} {{defdate|from 9th c.}}
 ##: ''That apple pie was '''the''' best.''
 ## {{non-gloss|Used before an adjective, indicating all things (especially persons) described by that adjective.}} {{defdate|from 9th c.}}
 ##: ''Feed '''the''' hungry, clothe '''the''' naked, comfort '''the''' afflicted, and afflict '''the''' comfortable.''
-##: ''One doesn't choose the color of one's chess pieces, '''the''' white are assigned to the player who moves first.''
-## {{non-gloss|Used before a [[demonym]] to refer to people of a given [[country]] collectively.}}
-##: '''the''' [[Chinese]]
-##: '''the''' [[Irish]]
+##: ''One doesn't choose the color of one's chess pieces; '''the''' white are assigned to the player who moves first.''
+## {{non-gloss|Used before a [[demonym]] ending in {{m|en|-ish|id=nationality}} or {{m|en|-ese}} to refer to people of a given [[country]] collectively.}}
+##: '''''the''' [[Irish]] are...; '''the''' [[Chinese]] are...; '''the''' [[French]] are...''
 
 =====Usage notes=====
 {{box-top|Usage notes (with proper nouns)}}
@@ -118,23 +131,25 @@ Some place names use a definite article:
 * All [[sea]]s (the Red Sea, the Bering Sea, the Caribbean Sea), and [[strait]]s (the Strait of Magellan, the Bering Strait, the Bosphorus) <!--and some bays with e.g. (the Bay of Biscay)-->
 * All [[river]]s (the Amazon, the Nile, the Mississippi, the Seine, the Yangtze), [[canal]]s (the Panama Canal, the Suez Canal) and [[delta]]s (the Nile Delta, the Orinoco Delta, the Colorado River Delta)
 * All [[art gallery|art galleries]] (the Tate, the Louvre, The Smithsonian American Art Museum), all [[museum]]s with the word ''museum'' in the name (the Museum of Natural History, the British Museum)
-* Most English-language [[newspaper]]s (The New York Times, The Guardian, The Chronicle, The Wall Street Journal)
 * All North American [[railroad]]s, even when not referred to by their full names or only by nicknames (the Pennsylvania Railroad, the Reading (Reading Railroad), the Frisco (St. Louis–San Francisco Railway))
 * Some towns (the Bronx, The Hague, The Valley, The Farrington, The Quarter, The Plains, The Dalles, The Villages, The Woodlands, The Pas, the Vatican, The Hyde, the West End, the East End, or the City of ...)
 ; Bands
 Musical bands with a plural name are generally used with '''the''':
 * {{w|The Beatles}}
 * {{w|The Rolling Stones}}
-; Universities
-University names beginning with the word "University", and some other university names, are used with '''the''':
-* the University of North Carolina
-* the Ohio State University
+; Newspapers
+Most English-language [[newspaper]]s take "the" before the name. Style guides differ on whether "the" is capitalised.
+* ''The New York Times'', ''The Guardian'', ''The Chronicle'', ''The Wall Street Journal''
+; Organisations
+Usage of "the" before names of organisations varies from organisation to organisation. Names containing a noun that denotes the type of organisation generally take the definite article.
+* the {{w|World Health Organisation}}, the {{w|Department of Labor}}, the {{w|Country Women's Association}}, the {{w|British Broadcasting Corporation}}, the {{w|Roman Catholic Church}}, the {{w|Salvation Army}}
+* the {{w|United Nations}} (exceptionally)
+If the full organisation name uses "the", the abbreviation often does as well:
+* the WHO, the DOL, the CWA, the BBC, the UN
+For universities, "the" is used in names starting with the word "university", and some others:
+* the University of North Carolina, the Ohio State University  – ''but'' Harvard University
+* ''compare'' the University of Oxford ''with'' Oxford University
 {{box-bottom}}
-{{rel-top|Usage notes (with adjectives)}}
-When used before an adjective which is not followed by a noun, it may refer to a group of people for which the adjective is appropriate:
-* the Scottish = Scots
-* the rich = rich people {{qualifier|considered as a group}}
-{{rel-bottom}}
 
 =====Alternative forms=====
 * {{l|en|da}} ({{l|en|d'}}), {{l|en|teh}} {{qualifier|informal or dialectal}}
@@ -148,7 +163,7 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * {{l|en|le}}
 
 =====Derived terms=====
-{{rel-top|terms derived from ''the (article)''}}
+{{col-top|2|terms derived from ''the (article)''}}
 * [[all the time]]
 * [[Jack the Ripper]]
 * {{l|en|the heck}}
@@ -158,7 +173,7 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * {{l|en|th'other}}
 * [https://en.wiktionary.org/w/index.php?go=Go&search=incategory%3A%22English+proverbs%22+incategory%3A%22English+lemmas%22+intitle%3A%2F+the+%2F&title=Special%3ASearch&ns0=1 Proverbs using ''the'' (article)]
 * [https://en.wiktionary.org/w/index.php?search=incategory%3A%22English+idioms%22+incategory%3A%22English+lemmas%22+intitle%3A%2F+the+%2F&title=Special:Search&profile=advanced&fulltext=1&ns0=1 Idioms using ''the'' (article)]
-{{rel-bottom}}
+{{col-bottom}}
 
 =====Translations=====
 {{trans-top|article}}
@@ -184,7 +199,7 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Breton: {{t+|br|al}} {{qualifier|before L}}, {{t+|br|an}} {{qualifier|before D, N, T, silent H, and vowels}}, {{t+|br|ar}} {{qualifier|before other consonants}}
 * Bulgarian: {{qualifier|attached suffixes are used, -ът, -та, -то, etc.}}
 * Burmese: {{not used|my}}
-* Catalan: {{t+|ca|el|m}}, {{t+|ca|la|f}} {{t+|ca|els|m-p}} {{t+|ca|les|f-p}}, {{qualifier|salat dialects}} {{t+|ca|es|m}}, {{t+|ca|sa|f}}, {{t+|ca|es|m-p}}, {{t+|ca|ets|m-p}} {{qualifier|before a word beginning with a vowel sound}}, {{t+|ca|sos|m-p}} {{qualifier|after {{t+|ca|amb}} (with)}}, {{t+|ca|ses|f-p}},
+* Catalan: {{t+|ca|el|m}}, {{t+|ca|la|f}}, {{t+|ca|l'}} ''(before a vowel except i, hi, hu)'' {{t+|ca|els|m-p}} {{t+|ca|les|f-p}}, {{qualifier|salat dialects}} {{t+|ca|es|m}}, {{t+|ca|sa|f}}, {{t+|ca|es|m-p}}, {{t+|ca|ets|m-p}} {{qualifier|before a word beginning with a vowel sound}}, {{t+|ca|sos|m-p}} {{qualifier|after {{t+|ca|amb}} (with)}}, {{t+|ca|ses|f-p}},
 * Chinese:
 *: Mandarin: {{not used|cmn}}
 * Chuukese: {{t|chk|ewe}}, {{t|chk|we}}
@@ -201,11 +216,12 @@ When used before an adjective which is not followed by a noun, it may refer to a
 *: Late Egyptian: {{t-egy|pꜣ|h=pA}}
 * Esperanto: {{t+|eo|la}}
 * Estonian: {{not used|et}}
+* Ewe: {{t|ee|lá}}, {{t|ee|-á}}
 * Faroese: {{qualifier|after noun}} {{t|fo|-in}}; {{qualifier|before adjectives}} {{t|fo|tann}}, {{t+|fo|hin}}
 * Finnish: {{not used|fi}}
 *: Colloquial Finnish : {{t+|fi|se}}
 * French: {{t+|fr|le|m}}, {{t+|fr|la|f}}, {{t+|fr|les|p}}, {{t+|fr|l'}} ''(before a vowel or a mute h)''
-* Friulian: {{t|fur|il}}
+* Friulian: {{t|fur|il}}, {{t+|fur|la|f}}, {{t+|fur|l'}} ''(before a vowel)'', {{t+|fur|i|m-p}}, {{t+|fur|lis|f-p}} 
 * Galician: {{t+|gl|o}}, {{t+|gl|a|f}}, {{t+|gl|os|m}}, {{t+|gl|as|f-p}}
 * Georgian: {{not used|ka}}
 *: Old Georgian: {{t|oge|იგი}}
@@ -240,10 +256,21 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Interlingua: {{t+|ia|le}}
 * Irish: {{t+|ga|an|s}}, {{t|ga|na|p}}
 *: Old Irish: {{t|sga|in|m|f}}, {{t|sga|a|n}}
+* Isoko: {{t|iso|na}}
 * Istriot: {{t|ist|el}}
-* Italian: {{t+|it|il|m}}, {{t+|it|lo|m}}, {{t+|it|la|f}}, {{t+|it|i|m-p}}, {{t+|it|gli|m-p}}, {{t+|it|le|f-p}}
+* Italian: {{t+|it|il|m}}, {{t+|it|lo|m}}, {{t+|it|la|f}}, {{t+|it|l'}} ''(before a vowel)'', {{t+|it|i|m-p}}, {{t+|it|gli|m-p}}, {{t+|it|le|f-p}}
 * Japanese: {{not used|ja}}, {{t+|ja|その|tr=sono}}, {{t+|ja|正に|tr=まさに, masani}}, {{t+|ja|正しく|tr=まさしく, masashiku}}
 * Jarawa: {{t|anq|ɖi}}
+* Kankanaey:
+*: {{qualifier|focus marker, past referential common noun}} {{t|kne|din|}},
+*: {{qualifier|focus marker, personal}} {{t|kne|si|}},
+*: {{qualifier|focus marker, recent referential common noun}} {{t|kne|san|}},
+*: {{qualifier|focus marker, specific common noun}} {{t|kne|nan|}},
+*: {{qualifier|non-focus marker, past referential common noun}} {{t|kne|isdin|}},
+*: {{qualifier|non-focus marker, personal}} {{t|kne|ken|}}
+*: {{qualifier|non-focus marker, recent referential common noun}} {{t|kne|issan|}},
+*: {{qualifier|non-focus marker, specific common noun}} {{t|kne|isnan|}},
+*: {{qualifier|non-focus marker, unspecific common noun}} {{t|kne|is|}},
 * Kazakh: {{not used|kk}} {{q|use demonstrative adjectives with subjects or the accusative with objects instead}}
 * Khmer: {{not used|km}}
 * Korean: {{not used|ko}}
@@ -270,23 +297,15 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Mòcheno: {{t|mhn|der|m}}, {{t|mhn|de|f}}, {{t|mhn|s|n}}, {{t|mhn|de|p}}
 * Mongolian: {{not used|mn}}
 * Norman: {{t|nrf|l'}}
-* Northern Kankanay:
-*: {{qualifier|focus marker, past referential common noun}} {{t|xnn|din|}},
-*: {{qualifier|focus marker, personal}} {{t|xnn|si|}},
-*: {{qualifier|focus marker, recent referential common noun}} {{t|xnn|san|}},
-*: {{qualifier|focus marker, specific common noun}} {{t|xnn|nan|}},
-*: {{qualifier|non-focus marker, past referential common noun}} {{t|xnn|isdin|}},
-*: {{qualifier|non-focus marker, personal}} {{t|xnn|ken|}}
-*: {{qualifier|non-focus marker, recent referential common noun}} {{t|xnn|issan|}},
-*: {{qualifier|non-focus marker, specific common noun}} {{t|xnn|isnan|}},
-*: {{qualifier|non-focus marker, unspecific common noun}} {{t|xnn|is|}},
 * Norwegian:
 *: Bokmål: {{t+|nb|det|n}}, {{t+|nb|den|f|m}}, {{t+|nb|-et|n}}, {{t+|nb|-en|m}}, {{t+|nb|-a|f}}
 *: Nynorsk: {{t+|nn|det|n}}, {{t|nn|den|f|m}}, {{t|nn|-et|n}}, {{t|nn|-en|m}}, {{t|nn|-a|f}}
+* O'odham: {{t|ood|g}}
 * Occitan: {{t+|oc|lo|m}}, {{t+|oc|eth|m}} {{qualifier|Pyrenean Gascon}} {{t+|oc|la|f}}, {{t+|oc|era|f}} {{qualifier|Pyrenean Gascon}}, {{t+|oc|los|m-p}}, {{t+|oc|eths|m-p}} {{qualifier|Pyrenean Gascon}}, {{t+|oc|las|f-p}}, {{t+|oc|eras}} {{qualifier|Pyrenean Gascon}}, {{t+|oc|es|p}} {{qualifier|Aranese}}
 * Old Dutch: {{t|odt|thie}}
 * Old English: {{t+|ang|sē}}
 * Old Saxon: {{t|osx|thē}}
+* Ossetian: {{t|os|и|c}}
 * Persian: {{not used|fa}}; {{t+|fa|را|tr=râ}} ''for definite direct object''
 * Pipil: {{t|ppl|ne}}
 * Pitcairn-Norfolk: {{t|pih|t'}}
@@ -295,9 +314,10 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Rapa Nui: {{t|rap|te}}
 * Romani: {{t|rom|o|m}}, {{t|rom|i|f}}, {{t|rom|e|p}}
 * Romanian: {{t|ro|-ul}}, {{t|ro|-a}}, {{t+|ro|cel}}, {{t+|ro|cea}}
-* Romansch: {{t|rm|il}}
+* Romansch: {{t|rm|il|m}}, {{t|rm|la|f}}, {{t|rm|l'}} ''(before a vowel or a mute h)'', {{t|rm|ils|m-p}}, {{t|rm|las|f-p}}
 * Russian: {{not used|ru}}
 * Samoan: {{t|sm|le}}
+* Sanskrit: {{t|sa|स|m}}, {{t|sa|सा|f}}, {{t|sa|तद्||n}}
 * Sardinian: {{t|sc|su|m}}, {{t|sc|sa|f}}
 * Scots: {{t|sco|the}}
 * Scottish Gaelic: {{t|gd|an}}
@@ -312,7 +332,6 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Tagalog: {{t+|tl|ang}}
 * Tamil: {{not used|ta}} {{q|demonstratives serve a similar purpose}}
 * Tatar: {{not used|tt}} {{q|use demonstrative adjectives with subjects or the accusative with objects instead}}
-* Thai: {{t|th|เดอะ}}
 * Tok Pisin: {{t|tpi|dispela}}
 * Tongan: {{t|to|te}}
 * Turkish: {{not used|tr}} {{q|use demonstrative adjectives with subjects or the accusative with objects instead}}
@@ -330,6 +349,15 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * West Frisian: {{t+|fy|de}}
 * Yiddish: {{t|yi|דער|m}}, {{t|yi|די|f}}, {{t|yi|דאָס|n}}, {{t|yi|די|p}}
 * Zazaki: {{t+|zza|be}}, {{t+|zza|ebe}}, {{t+|zza|eve}}
+{{trans-bottom}}
+
+{{trans-top|introducing dates in a letter, such as "the 1st of May 2025"}}
+* French: {{t+|fr|le}} {{qualifier|also if followed by a vowel sound; followed by a cardinal number}}
+* German: {{t+|de|den}} {{qualifier|followed by an ordinal number}}
+* Italian: {{t+|it|li}}, {{t+|it|lì}} {{qualifier|followed by a cardinal number, unless it's the first of the month}}
+* Portuguese: {{not used|pt}}
+* Spanish: {{not used|es}}
+* Russian: {{not used|ru}}
 {{trans-bottom}}
 
 {{trans-top|used as an alternative to a possessive pronoun before body parts}}
@@ -365,6 +393,7 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Greek: {{t+|el|ο}}
 * Japanese: {{t+|ja|ザ|tr=za}} {{qualifier|colloquial}}
 * Portuguese: {{t+|pt|o}} {{qualifier|[+ superl.]}}
+* Sanskrit: {{t|sa|स|m}}, {{t|sa|सा|f}}, {{t|sa|तद्||n}}
 * Swedish: {{t+|sv|den}}
 {{trans-bottom}}
 
@@ -381,6 +410,7 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Japanese: {{not used|ja}}
 * Macedonian: {{t|mk|-те}}
 * Portuguese: {{t+|pt|o}}
+* Sanskrit: {{t|sa|स|m}}, {{t|sa|सा|f}}, {{t|sa|तद्||n}}
 * Spanish: {{t+|es|los}}, {{t+|es|las}}
 * Swedish: {{t+|sv|den}}
 {{trans-bottom}}
@@ -421,6 +451,10 @@ When used before an adjective which is not followed by a noun, it may refer to a
 * Tagalog: {{t+|tl|ang}}
 {{trans-bottom}}
 
+{{checktrans-top}}
+* Woiwurrung: {{t-check|wyi|gee}}
+{{trans-bottom}}
+
 =====References=====
 <references/>
 
@@ -432,9 +466,9 @@ From {{inh|en|enm|the}}, {{m|enm|thy}}, {{m|enm|thi}}, from {{inh|en|ang|þe|þ�
 
 # {{non-gloss|1=With a [[comparative]] or with {{m|en|more}} and a verb phrase, establishes a correlation with one or more other such comparatives.}}
 #: '''''The''' hotter(,) '''the''' better.'' {{gloss|comma usually omitted in such very short expressions}}
-#: '''''The''' more I think about it, '''the''' weaker it looks.''
-#: '''''The''' more money donated, '''the''' more books purchased, and '''the''' more happy children.''
-#: ''It looks weaker and weaker, '''the''' more I think about it.''
+#: {{ux|en|'''The''' more I think about it, '''the''' weaker it looks.}}
+#: {{ux|en|'''The''' more money donated, '''the''' more books purchased, and '''the''' more happy children.}}
+#: {{ux|en|It looks weaker and weaker, '''the''' more I think about it.}}
 # {{non-gloss|1=With a [[comparative]], and often with {{m|en|for it}}, indicates a result more like said comparative. This can be negated with {{m|en|none}}.}}
 #: {{ux|en|It was a difficult time, but I’m '''the''' wiser for it.}}
 #: {{ux|en|It was a difficult time, and I’m {none - not any} '''the''' wiser for it.}}
@@ -506,7 +540,7 @@ This is called the "comparative correlative", but it is also known as the "corre
 # For each; [[per]].
 #: {{ux|en|valued at half a pound '''the''' bushel; paying seven dollars '''the''' year interest}}
 #* {{quote-book|en|year=1837|author=w:James Edward Alexander|title=Narrative of a Voyage of Observation Among the Colonies of Western Africa, in the Flag-ship Thalia; and of a Campaign in Kaffir-land, on the Staff of the Commander-in-Chief, in 1835|location=London|publisher=Henry Colburn|volume=1|pages=251–2|pageurl=https://books.google.com/books?id=GRZOAAAAcAAJ&pg=PA251|passage=Next morning I was up at an early hour, to see the market held near the water gate. The beef was excellent: but at the high prices of ten-pence and one shilling '''the''' pound; mutton at the same price; fowls a dollar '''the''' couple, and showing “more feathers than flesh.”}}
-#* {{seemoreCites|en}}
+#* {{see more citations|en}}
 
 ===Etymology 4===
 {{etymid|en|pronoun}}
@@ -514,20 +548,11 @@ This is called the "comparative correlative", but it is also known as the "corre
 ====Pronoun====
 {{en-pron}}
 
-# {{obsolete form of|en|thee}}
+# {{obsolete form of|en|thee}}.
 #* {{RQ:Tyndale NT|format=full|Acts|26|24|folio=cxcv|passage=Feſtus ſayde with a lowde voyce: Paul / thou arte beſides thy ſilfe. Moche learnynge hath made '''the''' mad.}}
 
-===Etymology 5===
-{{rfe|en}}
-{{rfv|en}}
-
-====Noun====
-{{en-noun|-}}
-
-# A topology name.
-
 ===See also===
-{{rel-top3|See also}}
+{{col-top|3|see}}
 * {{l|en|a}}
 * {{l|en|an}}
 * {{qualifier|slang}} [[da]]
@@ -536,7 +561,7 @@ This is called the "comparative correlative", but it is also known as the "corre
 * {{l|en|that}}
 * {{l|en|this}}
 * {{pedia|Grammatical article}}
-{{rel-bottom}}
+{{col-bottom}}
 
 ===References===
 * {{R:OneLook}}
@@ -544,7 +569,7 @@ This is called the "comparative correlative", but it is also known as the "corre
 ===Anagrams===
 * {{anagrams|en|a=eht|eth-|Eth.|TEH|teh|ETH|Eth|het|EHT|HET|eth|Teh|-eth}}
 
-{{cln|en|three-letter words}}
+{{cln|en|3-letter words}}
 
 ==Crimean Gothic==
 
@@ -687,7 +712,7 @@ While it is likely that Crimean Gothic retained grammatical gender, de Busbecq's
 # [[that]], [[who]], [[which]]
 
 ====References====
-# Braune, Wilhelm. Althochdeutsches Lesebuch, zusammengestellt und mit Glossar versehen
+* Braune, Wilhelm. Althochdeutsches Lesebuch, zusammengestellt und mit Glossar versehen
 
 ==Old Saxon==
 
@@ -714,6 +739,8 @@ From {{inh|osx|gem-pro|*þa}}, from {{inh|osx|ine-pro|*tó}}, {{m|ine-pro|*te-}}
 {{head|osx|particle|indeclinable, relative}}
 
 # [[that]], [[who]], [[which]]
+#* '''9th c.''' ''{{w|Heliand}}'', verse 30
+#*: {{quote|osx|''... thie, '''the''' mēster was, ...''|... he, '''who''' was master, ...}}
 
 ==Phalura==
 

@@ -34,7 +34,7 @@
 * {{el}}: {{t|el|ποντικός}}
 * {{is}}: {{t|is|mús}}
 * {{it}}: {{t|it|topo|m}}
-* {{ku}}: {{t|ku|mişk}}
+* {{O|ku|mişk|m}}
 {{-}}
 * {{lb}}: {{t|lb|Maus}}
 * {{nl}}: {{t|nl|muis|f}}
@@ -45,6 +45,7 @@
 * {{sv}}: {{t|sv|mus|c}}
 * {{tr}}: {{t|tr|fare}}
 * {{de}}: {{t|de|Maus|f}}
+* {{cy}}: {{t|cy|llygoden|f}}, {{t|cy|llygodyn|m}} 
 {{)}}
 [[Kategori:Pattedyr på dansk]]
 

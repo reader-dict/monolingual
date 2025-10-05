@@ -78,6 +78,9 @@
 # {{lexique|médecine|en}} [[dysequilibrium|DysEquilibrium]] Syndrome (« Syndrome du [[déséquilibre]] »), une [[maladie]] [[congénital]]e du [[système]] [[nerveux]].
 # {{lexique|psychologie|en}} [[dissociative|Dissociative]] [[experience|Experiences]] [[scale|Scale]] (« [[échelle|Échelle]] d’[[expériences]] dissociatives »), un [[questionnaire]] d’[[auto-évaluation]] de la [[dissociation]].
 
+=== {{S|prononciation}} ===
+* {{écouter|||lang=en|audio=LL-Q1860 (eng)-Naomi Persephone Amethyst (NaomiAmethyst)-DES.wav}}
+
 == {{langue|it}} ==
 === {{S|étymologie}} ===
 : {{sigle|it}} Sigle.

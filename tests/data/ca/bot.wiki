@@ -144,6 +144,9 @@ Fitxer:EVD-baloncesto-053.jpg|Bot de pilota de bàsquet
 # {{ca-forma-conj|botre|3|pres|ind}}
 # {{ca-forma-conj|botre|2|imp}}
 
+=== Miscel·lània ===
+* {{ca-sil}}
+
 === Vegeu també ===
 * {{Viquipèdia}}
 * {{ca-dicc|diec|gdlc|termcat}}
