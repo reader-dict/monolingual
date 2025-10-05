@@ -833,6 +833,11 @@ def process_templates(
     if not (text := callback(wikicode)):
         return ""
 
+    # Save <math> formulas to prevent altering them
+    if formulas := re.findall(r"(<math>.+?</math>)", text):
+        for idx, formula in enumerate(formulas):
+            text = text.replace(formula, f"##math{idx}##")
+
     # {{foo}}
     # {{foo|bar}}
     # {{foo|{{bar}}|123}}
@@ -866,6 +871,10 @@ def process_templates(
         current_template_idx += len(templates)
 
     sub = re.sub
+
+    # Restore math formulas
+    for idx, formula in enumerate(formulas):
+        text = text.replace(f"##math{idx}##", formula)
 
     # Handle <chem>, <hiero>, and <math>, HTML tags
     for tag, func in [("chem", convert_chem), ("hiero", convert_hiero), ("math", convert_math)]:
