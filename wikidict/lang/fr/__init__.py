@@ -189,6 +189,8 @@ PATTERNS = [
     rf"(?:{FORMS}).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
     # ''Pluriel de'' {{lien|anisophylle|fr}}.
     rf"(?:{FORMS}).*'\s*\{{\{{lien\|([^\|\}}]+)",
+    # ''Pluriel'' ''de ''[[nécrophage]].
+    r"(?:féminin|masculin|pluriel)'+\s+'+de.*'\s*\[\[([^\]#]+)(?:#.+)?]]",
     # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
     # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
     r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
@@ -232,6 +234,8 @@ def adjust_wikicode(
     '# {{flexion|antiproton}}'
     >>> adjust_wikicode("# ''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
     '# {{flexion|anisophylle}}'
+    >>> adjust_wikicode("# ''Pluriel'' ''de ''[[nécrophage]].", "fr")
+    '# {{flexion|nécrophage}}'
 
     >>> adjust_wikicode("# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir#fr|venir]].", "fr")
     '# {{flexion|venir}}'
