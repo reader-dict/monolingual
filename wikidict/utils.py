@@ -892,7 +892,7 @@ def process_templates(
 
     # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
     if not KEEP_UNFINISHED and (
-        bool(context.CTX.to_return()["errors"])
+        bool(context.get_ctx().to_return()["errors"])
         or f":{lang.module_trans[locale]}:" in text
         or f":{lang.template_trans[locale]}:" in text
         or "{{" in text

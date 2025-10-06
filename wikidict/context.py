@@ -3,13 +3,18 @@ import os
 import re
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 
 import wikitextprocessor
 from wikitextprocessor.dumpparser import add_default_templates
 from wikitextprocessor.interwiki import init_interwiki_map
 
-CTX: wikitextprocessor.Wtp
-INITIALIZED = False
+from . import constants, lang, parse, utils
+from .namespaces import namespaces
+
+# Thread-local storage for per-process contexts
+_process_contexts: dict[int, wikitextprocessor.Wtp] = {}
+_context_lock = Lock()
 
 # To print all Lua warnings & errors:
 #    DEBUG_LUA=2 python -m wikidict LOCALE --render
@@ -17,8 +22,6 @@ DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 1
 
 
 def setup_modules_db(locale: str) -> bool:
-    from . import parse, utils
-
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_file(source_dir)):
@@ -60,61 +63,79 @@ def patch() -> None:
     )
 
 
+def get_ctx() -> wikitextprocessor.Wtp:
+    pid = os.getpid()
+    with _context_lock:
+        if pid not in _process_contexts:
+            raise RuntimeError(f"Context not initialized for process {pid}. Call init() before using the context.")
+        return _process_contexts[pid]
+
+
 def init(db: Path, locale: str) -> None:
-    global CTX, INITIALIZED
+    pid = os.getpid()
+    with _context_lock:
+        # Check if already initialized for this process
+        if pid in _process_contexts:
+            return
 
-    if INITIALIZED:
-        return
+        patch()
 
-    from . import constants, lang
+        ctx = wikitextprocessor.Wtp(
+            db,
+            lang_code=locale,
+            project="wiktionary",
+            quiet=True,
+            parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
+            template_override_funcs={
+                "flexion": lambda _: "",
+                "rev-flexion": lambda _: "",
+                **lang.template_overrides[locale],  # type: ignore[dict-item]
+            },
+        )
+        init_interwiki_map(ctx)
+        add_default_templates(ctx)
 
-    patch()
+        # Store the context for this process
+        _process_contexts[pid] = ctx
 
-    CTX = wikitextprocessor.Wtp(
-        db,
-        extension_tags={
-            "phonos": {"content": ["phrasing"]},  # Example: [ES] hala
-        },
-        lang_code=locale,
-        project="wiktionary",
-        quiet=True,
-        parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
-        template_override_funcs={
-            "flexion": lambda _: "",
-            "rev-flexion": lambda _: "",
-            **lang.template_overrides[locale],  # type: ignore[dict-item]
-        },
-    )
-    init_interwiki_map(CTX)
-    add_default_templates(CTX)
+        # Ensure to close the DB connection at exit
+        atexit.register(lambda: close_ctx(pid))
 
-    # Ensure to close the DB connection at exit
-    atexit.register(CTX.close_db_conn)
 
-    INITIALIZED = True
+def close_ctx(pid: int | None = None) -> None:
+    if pid is None:
+        pid = os.getpid()
+
+    with _context_lock:
+        if pid in _process_contexts:
+            _process_contexts[pid].close_db_conn()
+            del _process_contexts[pid]
 
 
 def reset(locale: str) -> bool:
     """Used in tests."""
-    global INITIALIZED
+    pid = os.getpid()
+    with _context_lock:
+        if pid in _process_contexts:
+            del _process_contexts[pid]
 
-    INITIALIZED = False
     return setup_modules_db(locale)
 
 
 def new_word(word: str) -> None:
-    CTX.start_page(word)
+    ctx = get_ctx()
+    ctx.start_page(word)
 
 
 def expand(wikitext: str, locale: str) -> str:
-    return clean_html_output(CTX.expand(wikitext, quiet=True), locale)
+    ctx = get_ctx()
+    return clean_html_output(ctx.expand(wikitext, quiet=True), locale)
 
 
 def adapt_templates(locale: str) -> None:
-    from . import lang
-
+    ctx = get_ctx()
     for template, adapter in lang.template_adapters[locale].items():
-        if not (page := CTX.get_page(template)):
+        if not (page := ctx.get_page(template)):
             raise RuntimeError(f"Module/Template not found in the database: {template!r}")
 
         assert page.body  # For Mypy
@@ -123,7 +144,7 @@ def adapt_templates(locale: str) -> None:
             print(f"Module/Template body unchanged: {template!r}")
             continue
 
-        CTX.add_page(
+        ctx.add_page(
             template,
             page.namespace_id,
             new_body,
@@ -135,8 +156,6 @@ def adapt_templates(locale: str) -> None:
 
 @lru_cache(maxsize=256)
 def all_namespaces(locale: str) -> str:
-    from .namespaces import namespaces
-
     all_namespaces_ = set()
     for namespace in namespaces[locale] + namespaces["en"]:
         all_namespaces_.add(namespace)

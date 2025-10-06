@@ -70,7 +70,9 @@ def xml_parse_element(
                 body = unescape(text[1], entities=constants.HTML_REPL_BODY)
             if body or redirect_to:
                 page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                context.CTX.add_page(page, body=body, namespace_id=828, model="Scribunto", redirect_to=redirect_to)
+                context.get_ctx().add_page(
+                    page, body=body, namespace_id=828, model="Scribunto", redirect_to=redirect_to
+                )
 
     # Template
     elif title := next(template_matcher(element), None):
@@ -82,7 +84,7 @@ def xml_parse_element(
                 body = unescape(text[1], entities=constants.HTML_REPL_BODY)
             if body or redirect_to:
                 page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                context.CTX.add_page(page, body=body, namespace_id=10, model="wikitext", redirect_to=redirect_to)
+                context.get_ctx().add_page(page, body=body, namespace_id=10, model="wikitext", redirect_to=redirect_to)
 
     # Appendix
     elif title := next(appendix_matcher(element), None):
@@ -93,7 +95,7 @@ def xml_parse_element(
             body = unescape(text[1], entities=constants.HTML_REPL_BODY)
         if body or redirect_to:
             page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-            context.CTX.add_page(page, body=body, namespace_id=100, model="wikitext", redirect_to=redirect_to)
+            context.get_ctx().add_page(page, body=body, namespace_id=100, model="wikitext", redirect_to=redirect_to)
 
     # Word
     elif title := next(RE_TITLE_WORD(element), None):
