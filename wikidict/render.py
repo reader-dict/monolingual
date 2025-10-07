@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING, Any
 import wikitextparser as wtp
 import wikitextparser._spans
 
-from . import context, lang, utils
+from . import constants, context, lang, utils
 from .stubs import Definition, Definitions, Word
 
 if TYPE_CHECKING:
@@ -480,6 +480,10 @@ def parse_word(
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
+    redirect = ""
+    if code.startswith(constants.REDIRECT_KEY):
+        redirect = code.split(constants.REDIRECT_KEY)[-1].strip()
+        return Word([], [], [], {}, [], [redirect])
     # Init the Lua interpreter for this word
     if DEBUG_LUA:
         log.info(word)
@@ -623,15 +627,16 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     utils.check_for_templates_status(templates_status._getvalue())
 
     log.info("Handling reverse variants ...")
-    for word, details in results.items():
+    results_return: dict[str, Word] = dict(results)  # important, convert to a real dict so we can modify it
+    for word, details in list(results_return.items()):
         for form in details.reverse_variants:
             try:
-                results[form].variants = sorted({*results[form].variants, word})
+                results_return[form].variants = sorted({*results_return[form].variants, word})
             except KeyError:
-                results[form] = Word([], [], [], {}, [word], [])
+                results_return[form] = Word([], [], [], {}, [word], [])
     log.info("Handling reverse variants ... Done")
 
-    return results._getvalue()  # type: ignore[no-any-return]
+    return results_return
 
 
 def save(output: Path, words: Words) -> None:

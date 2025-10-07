@@ -97,9 +97,13 @@ def xml_parse_element(
 
     # Word
     elif title := next(RE_TITLE_WORD(element), None):
-        text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)), "")
-        if text and next(head_sections_matcher(wikicode := text[1]), None):
-            return title[1], wikicode
+        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+            redirect_to = redirect[1]
+            return title[1], f"{constants.REDIRECT_KEY}{redirect_to}"
+        else:
+            text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)), "")
+            if text and next(head_sections_matcher(wikicode := text[1]), None):
+                return title[1], wikicode
 
         if DEBUG_PARSE:
             try:
