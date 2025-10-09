@@ -68,3 +68,7 @@ HTML_REPL_BODY = {
     "&quot;": '"',
 }
 HTML_REPL_TITLE = {"&amp;": "&"}
+
+# Redirect key. This constant is used to mark a word as a redirect in --parse,
+# and to detect it and handle it --render
+REDIRECT_KEY = "##REDIRECT##"

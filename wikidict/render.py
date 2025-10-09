@@ -20,7 +20,7 @@ from typing import TYPE_CHECKING, Any
 import wikitextparser as wtp
 import wikitextparser._spans
 
-from . import context, lang, utils
+from . import constants, context, lang, utils
 from .stubs import Definition, Definitions, Word
 
 if TYPE_CHECKING:
@@ -480,6 +480,10 @@ def parse_word(
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
+    if code.startswith(constants.REDIRECT_KEY):
+        redirect = code.removeprefix(constants.REDIRECT_KEY)
+        return Word([], [], [], {}, [], [redirect])
+
     # Init the Lua interpreter for this word
     if DEBUG_LUA:
         log.info(word)
