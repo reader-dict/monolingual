@@ -247,7 +247,7 @@ def find_etymology(
             items = get_items((":",))
         case "es":
             items = get_items((r";\d",), skip=("=== etimología",))
-        case "fr" | "fro":
+        case "fr":
             definitions: list[Definition] = []
             tables = parsed_section.tables
             tableindex = 0

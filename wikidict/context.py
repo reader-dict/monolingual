@@ -76,9 +76,9 @@ def init(db: Path, locale: str) -> None:
             "phonos": {"content": ["phrasing"]},  # Example: [ES] hala
         },
         lang_code=locale,
+        parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
         project="wiktionary",
         quiet=True,
-        parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
         template_override_funcs={
             "flexion": lambda _: "",
             "rev-flexion": lambda _: "",
@@ -95,7 +95,6 @@ def init(db: Path, locale: str) -> None:
 
 
 def reset(locale: str) -> bool:
-    """Used in tests."""
     global INITIALIZED
 
     INITIALIZED = False
