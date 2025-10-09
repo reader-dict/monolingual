@@ -1,4 +1,4 @@
-name: Quality & Tests
+name: Tests
 
 on:
   - pull_request
@@ -34,9 +34,6 @@ jobs:
 
       - name: Install requirements
         run: python -m pip install -r requirements-tests.txt
-
-      - name: Quality checks, and linters
-        run: ./check.sh
 
       - name: Install kindlegen (GNU/Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
