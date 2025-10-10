@@ -2,6 +2,7 @@
 
 import re
 
+from ... import utils
 from .langs import langs
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -31,6 +32,7 @@ sections = (
     "adjektiv",
     "adverbium",
     "bogstav",
+    "bøjning",
     "fast udtryk",
     "formelt subjekt",
     "interfiks",
@@ -64,6 +66,7 @@ sections = (
     "{{conj}",
     "{{contr}",
     "{{dem-pronom}",
+    "{{decl}",
     "{{end}",
     "{{expr}",
     "{{frase}",
@@ -92,6 +95,13 @@ sections = (
 
 variant_titles = sections
 variant_templates = ("{{alternativ stavemåde af", "{{form of", "{{flexion", "{{imperativ af", "{{imperativ form af")
+
+reverse_variant_titles = (
+    "{{da-noun",
+    "{{da-verb",
+    "{{da-noun-infl",
+)
+reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
     "{{definition mangler",
@@ -191,6 +201,18 @@ def adjust_wikicode(
     '# {{flexion|{{l|da|tale}}}}'
     >>> adjust_wikicode("# {{flertal af}} {{l|da|tale|taler}}", "da")
     '# {{flexion|{{l|da|tale|taler}}}}'
+
+    >>> adjust_wikicode("{{da-noun|en|baskyle|baskylen|baskyler|baskylerne}}", "da")
+    '# {{rev-flexion|baskyle}}\n# {{rev-flexion|baskylen}}\n# {{rev-flexion|baskyler}}\n# {{rev-flexion|baskylerne}}'
+    >>> adjust_wikicode("{{da-verb|hav|have|har|havde|har|haft}}", "da")
+    '# {{rev-flexion|haft}}\n# {{rev-flexion|har}}\n# {{rev-flexion|hav}}\n# {{rev-flexion|havde}}\n# {{rev-flexion|have}}'
+
+    >>> from ... import context
+    >>> _ = context.reset("da")
+    >>> context.new_word("genom")
+    >>> adjust_wikicode("{{da-noun-infl|et|er}}", "da")
+    '# {{rev-flexion|genom}}\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
+
     """
     code = code.replace("----", "")
 
@@ -244,4 +266,50 @@ def adjust_wikicode(
                     break
         lines.append(line)
 
-    return "\n".join(lines)
+    code = "\n".join(lines)
+    #
+    # Reverse variants
+    #
+    if any(tpl in code for tpl in reverse_variant_titles):
+        cleaned: list[str] = []
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            line = line.strip()
+            if line.startswith(reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_code, rest = tpl_code.rsplit("}}", 1)
+
+                    variants: set[str] = set()
+                    if tpl_code.startswith("{{da-noun|"):
+                        variants.update(tpl_code.split("|")[2:])
+                    elif tpl_code.startswith("{{da-verb"):
+                        variants.update(tpl_code.split("|")[1:])
+                    elif tpl_code.startswith("{{da-noun-infl"):
+                        if not rest:
+                            tpl_code += "}}"
+                        flexions = utils.process_templates(
+                            word,
+                            tpl_code,
+                            locale,
+                            templates_status=templates_status,
+                            variant_only=True,
+                        )
+                        variants = set(sorted(flexions.split("|")))
+                    cleaned.extend(f"# {{{{rev-flexion|{v}}}}}" for v in sorted(variants))
+                    if rest:
+                        cleaned.append(rest)
+                    tpl_code = ""
+                continue
+
+            cleaned.append(line)
+
+        code = "\n".join(cleaned)
+
+    return code
