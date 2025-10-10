@@ -628,7 +628,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
     log.info("Handling reverse variants ...")
     results_final: Words = results._getvalue()
-    for word, details in results_final.items():
+    for word, details in results.items():
         for form in details.reverse_variants:
             try:
                 results_final[form].variants = sorted({*results_final[form].variants, word})
