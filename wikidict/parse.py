@@ -70,7 +70,7 @@ def xml_parse_element(
                 body = unescape(text[1], entities=constants.HTML_REPL_BODY)
             if body or redirect_to:
                 page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                context.CTX.add_page(page, body=body, namespace_id=828, model="Scribunto", redirect_to=redirect_to)
+                context.new_page(page, 828, body, redirect_to=redirect_to)
 
     # Template
     elif title := next(template_matcher(element), None):
@@ -82,7 +82,7 @@ def xml_parse_element(
                 body = unescape(text[1], entities=constants.HTML_REPL_BODY)
             if body or redirect_to:
                 page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                context.CTX.add_page(page, body=body, namespace_id=10, model="wikitext", redirect_to=redirect_to)
+                context.new_page(page, 10, body, redirect_to=redirect_to)
 
     # Appendix
     elif title := next(appendix_matcher(element), None):
@@ -93,10 +93,14 @@ def xml_parse_element(
             body = unescape(text[1], entities=constants.HTML_REPL_BODY)
         if body or redirect_to:
             page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-            context.CTX.add_page(page, body=body, namespace_id=100, model="wikitext", redirect_to=redirect_to)
+            context.new_page(page, 100, body, redirect_to=redirect_to)
 
     # Word
     elif title := next(RE_TITLE_WORD(element), None):
+        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+            redirect_to = redirect[1]
+            return title[1], f"{constants.REDIRECT_KEY}{redirect_to}"
+
         text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)), "")
         if text and next(head_sections_matcher(wikicode := text[1]), None):
             return title[1], wikicode
@@ -113,6 +117,8 @@ def xml_parse_element(
 
 def process(file: Path, locale: str) -> dict[str, str]:
     """Process the big XML file and retain only information we are interested in."""
+    context.setup_modules_db(locale, read_only=False)
+
     words: dict[str, str] = {}
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 

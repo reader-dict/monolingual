@@ -7,7 +7,6 @@ import json
 import logging
 import multiprocessing
 import os
-import platform
 import re
 from collections import defaultdict
 from datetime import timedelta
@@ -20,7 +19,7 @@ from typing import TYPE_CHECKING, Any
 import wikitextparser as wtp
 import wikitextparser._spans
 
-from . import context, lang, utils
+from . import constants, context, lang, utils
 from .stubs import Definition, Definitions, Word
 
 if TYPE_CHECKING:
@@ -247,7 +246,7 @@ def find_etymology(
             items = get_items((":",))
         case "es":
             items = get_items((r";\d",), skip=("=== etimología",))
-        case "fr" | "fro":
+        case "fr":
             definitions: list[Definition] = []
             tables = parsed_section.tables
             tableindex = 0
@@ -480,6 +479,10 @@ def parse_word(
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
+    if code.startswith(constants.REDIRECT_KEY):
+        redirect = code.removeprefix(constants.REDIRECT_KEY)
+        return Word([], [], [], {}, [], [redirect])
+
     # Init the Lua interpreter for this word
     if DEBUG_LUA:
         log.info(word)
@@ -574,6 +577,8 @@ def render_words(
     *,
     templates_status: list[tuple[str, str]] | None = None,
 ) -> None:
+    context.setup_modules_db(locale)
+
     for word, code in words:
         try:
             details = parse_word(word, code, locale, templates_status=templates_status)
@@ -599,9 +604,8 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     if extra:
         chunk_size += 1
 
-    # spawn method is default on Mac, doesn't work with global CTX
-    if platform.system() == "Darwin":
-        multiprocessing.set_start_method("fork", force=True)
+    if multiprocessing.get_start_method() != "spawn":
+        multiprocessing.set_start_method("spawn", force=True)
 
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
@@ -623,15 +627,16 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     utils.check_for_templates_status(templates_status._getvalue())
 
     log.info("Handling reverse variants ...")
+    results_final: Words = results._getvalue()
     for word, details in results.items():
         for form in details.reverse_variants:
             try:
-                results[form].variants = sorted({*results[form].variants, word})
+                results_final[form].variants = sorted({*results_final[form].variants, word})
             except KeyError:
-                results[form] = Word([], [], [], {}, [word], [])
+                results_final[form] = Word([], [], [], {}, [word], [])
     log.info("Handling reverse variants ... Done")
 
-    return results._getvalue()  # type: ignore[no-any-return]
+    return results_final
 
 
 def save(output: Path, words: Words) -> None:
