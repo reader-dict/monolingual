@@ -97,6 +97,13 @@ def init(db: Path, locale: str, *, read_only: bool = True) -> None:
         )
 
         initialize_lua(ctx)
+
+        # Tweak SQLite behavior
+        ctx.db_conn.execute("PRAGMA busy_timeout = 5000;")
+        ctx.db_conn.execute("PRAGMA synchronous = NORMAL;")
+        ctx.db_conn.execute("PRAGMA cache_size = 1000000000;")
+        ctx.db_conn.execute("PRAGMA temp_store = memory;")
+
         if read_only:
             ctx.db_conn.execute("PRAGMA query_only = ON;")
         else:
