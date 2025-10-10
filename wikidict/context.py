@@ -9,6 +9,7 @@ import wikitextprocessor
 from wikitextprocessor.core import ErrorMessageData
 from wikitextprocessor.dumpparser import add_default_templates
 from wikitextprocessor.interwiki import init_interwiki_map
+from wikitextprocessor.luaexec import initialize_lua
 
 from . import constants, lang, parse, utils
 from .namespaces import namespaces
@@ -35,7 +36,7 @@ def get_ctx() -> wikitextprocessor.Wtp:
         raise RuntimeError(msg) from exc
 
 
-def setup_modules_db(locale: str) -> bool:
+def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_file(source_dir)):
@@ -46,7 +47,7 @@ def setup_modules_db(locale: str) -> bool:
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
     db_path = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
     db_path.parent.mkdir(exist_ok=True)
-    init(db_path, lang_dst)
+    init(db_path, lang_dst, read_only=read_only)
     return True
 
 
@@ -73,7 +74,7 @@ def patch() -> None:
     )
 
 
-def init(db: Path, locale: str) -> None:
+def init(db: Path, locale: str, *, read_only: bool = True) -> None:
     # Check if already initialized for this process
     if (pid := os.getpid()) in _contexts:
         return
@@ -94,8 +95,13 @@ def init(db: Path, locale: str) -> None:
                 **lang.template_overrides[locale],  # type: ignore[dict-item]
             },
         )
-        init_interwiki_map(ctx)
-        add_default_templates(ctx)
+
+        initialize_lua(ctx)
+        if read_only:
+            ctx.db_conn.execute("PRAGMA query_only = ON;")
+        else:
+            init_interwiki_map(ctx)
+            add_default_templates(ctx)
 
         # Store the context for this process
         _contexts[pid] = ctx

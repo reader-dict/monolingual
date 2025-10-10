@@ -577,7 +577,7 @@ def render_words(
     *,
     templates_status: list[tuple[str, str]] | None = None,
 ) -> None:
-    context.setup_modules_db(locale)  # TODO: RO
+    context.setup_modules_db(locale)
 
     for word, code in words:
         try:
