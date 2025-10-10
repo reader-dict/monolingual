@@ -627,15 +627,16 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     utils.check_for_templates_status(templates_status._getvalue())
 
     log.info("Handling reverse variants ...")
-    for word, details in results.items():
+    results_final: Words = results._getvalue()
+    for word, details in results_final.items():
         for form in details.reverse_variants:
             try:
-                results[form].variants = sorted({*results[form].variants, word})
+                results_final[form].variants = sorted({*results_final[form].variants, word})
             except KeyError:
-                results[form] = Word([], [], [], {}, [word], [])
+                results_final[form] = Word([], [], [], {}, [word], [])
     log.info("Handling reverse variants ... Done")
 
-    return results._getvalue()  # type: ignore[no-any-return]
+    return results_final
 
 
 def save(output: Path, words: Words) -> None:
