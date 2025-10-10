@@ -172,6 +172,7 @@ ALL_FORMS = [
     "féminin de",
     "masculin et féminin pluriel",
     "masculin ou féminin pluriel",
+    "participe présent",
     "pluriel d",
     "pluriel habituel",
     "pluriel inhabituel",
