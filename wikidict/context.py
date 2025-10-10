@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import atexit
 import os
 import re
@@ -6,7 +8,6 @@ from pathlib import Path
 from threading import Lock
 
 import wikitextprocessor
-from wikitextprocessor.core import ErrorMessageData
 from wikitextprocessor.dumpparser import add_default_templates
 from wikitextprocessor.interwiki import init_interwiki_map
 from wikitextprocessor.luaexec import initialize_lua
@@ -15,7 +16,7 @@ from . import constants, lang, parse, utils
 from .namespaces import namespaces
 
 # Thread-local storage for per-process contexts
-_contexts: dict[int, wikitextprocessor.Wtp] = {}
+_contexts: dict[int, Context] = {}
 _lock = Lock()
 
 # To print all Lua warnings & errors:
@@ -26,8 +27,73 @@ if not DEBUG_LUA:
     # Remove a noisy `print()` statement on error
     setattr(wikitextprocessor.Wtp, "_fmt_errmsg", lambda *_: None)
 
+SQL_TPL_USING_CURRENT_WORD = """
+SELECT title
+    FROM pages
+    WHERE
+        (namespace_id = 10 AND body LIKE '%PAGENAME%')
+     OR (namespace_id = 828 AND body LIKE '%.title%')
+"""
 
-def get_ctx() -> wikitextprocessor.Wtp:
+
+class Context:
+    def __init__(self, db: Path, locale: str, *, read_only: bool = True) -> None:
+        self.ctx = wikitextprocessor.Wtp(
+            db,
+            extension_tags={"phonos": {"content": ["phrasing"]}},
+            lang_code=locale,
+            parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
+            project="wiktionary",
+            quiet=True,
+            template_override_funcs={
+                "flexion": lambda _: "",
+                "rev-flexion": lambda _: "",
+                **lang.template_overrides[locale],  # type: ignore[dict-item]
+            },
+        )
+
+        initialize_lua(self.ctx)
+
+        # Tweak SQLite behavior
+        execute = self.ctx.db_conn.execute
+        execute("PRAGMA journal_mode = WAL;")
+        execute("PRAGMA busy_timeout = 5000;")
+        execute("PRAGMA synchronous = NORMAL;")
+        execute("PRAGMA cache_size = 1000000000;")
+        execute("PRAGMA temp_store = memory;")
+
+        if read_only:
+            execute("PRAGMA query_only = ON;")
+        else:
+            init_interwiki_map(self.ctx)
+            add_default_templates(self.ctx)
+
+        self._cache: dict[str, str] = {}
+        self._skip_list = self._get_skip_list()
+
+    def expand(self, wikitext: str, locale: str) -> str:
+        if wikitext in self._skip_list:
+            expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
+        elif not (expanded := self._cache.get(wikitext, "")):
+            expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
+            self._cache[wikitext] = expanded
+        return expanded
+
+    def _get_skip_list(self) -> set[str]:
+        return {page[0].split(":", 1)[1] for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()}
+
+    def get_errors(self) -> list[str]:
+        return [error["msg"] for error in self.ctx.to_return()["errors"]]
+
+    def new_page(self, title: str, namespace_id: int, body: str, redirect_to: str | None) -> None:
+        model = "Scribunto" if namespace_id == 828 else "wikitext"
+        self.ctx.add_page(title, namespace_id, body=body, model=model, redirect_to=redirect_to)
+
+    def new_word(self, word: str) -> None:
+        self.ctx.start_page(word)
+
+
+def get_ctx() -> Context:
     pid = os.getpid()
     try:
         return _contexts[pid]
@@ -75,53 +141,18 @@ def patch() -> None:
 
 
 def init(db: Path, locale: str, *, read_only: bool = True) -> None:
-    # Check if already initialized for this process
     if (pid := os.getpid()) in _contexts:
         return
 
     with _lock:
-        ctx = wikitextprocessor.Wtp(
-            db,
-            extension_tags={
-                "phonos": {"content": ["phrasing"]},  # Example: [ES] hala
-            },
-            lang_code=locale,
-            parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
-            project="wiktionary",
-            quiet=True,
-            template_override_funcs={
-                "flexion": lambda _: "",
-                "rev-flexion": lambda _: "",
-                **lang.template_overrides[locale],  # type: ignore[dict-item]
-            },
-        )
-
-        initialize_lua(ctx)
-
-        # Tweak SQLite behavior
-        ctx.db_conn.execute("PRAGMA journal_mode = WAL;")
-        ctx.db_conn.execute("PRAGMA busy_timeout = 5000;")
-        ctx.db_conn.execute("PRAGMA synchronous = NORMAL;")
-        ctx.db_conn.execute("PRAGMA cache_size = 1000000000;")
-        ctx.db_conn.execute("PRAGMA temp_store = memory;")
-
-        if read_only:
-            ctx.db_conn.execute("PRAGMA query_only = ON;")
-        else:
-            init_interwiki_map(ctx)
-            add_default_templates(ctx)
-
-        # Store the context for this process
-        _contexts[pid] = ctx
-
-        # Ensure to close the DB connection at exit
+        _contexts[pid] = Context(db, locale, read_only=read_only)
         atexit.register(close_ctx)
 
 
 def close_ctx() -> None:
     with _lock:
         if ctx := _contexts.pop(os.getpid(), None):
-            ctx.close_db_conn()
+            ctx.ctx.close_db_conn()
 
 
 def reset(locale: str) -> bool:
@@ -129,25 +160,24 @@ def reset(locale: str) -> bool:
     return setup_modules_db(locale)
 
 
-def get_errors() -> list[ErrorMessageData]:
-    return get_ctx().to_return()["errors"]
+def get_errors() -> list[str]:
+    return get_ctx().get_errors()
 
 
-def new_page(title: str, namespace_id: int, body: str, redirect_to: str | None = None) -> None:
-    model = "Scribunto" if namespace_id == 828 else "wikitext"
-    get_ctx().add_page(title, namespace_id, body=body, model=model, redirect_to=redirect_to)
+def new_page(title: str, namespace_id: int, body: str, redirect_to: str | None) -> None:
+    get_ctx().new_page(title, namespace_id, body, redirect_to)
 
 
 def new_word(word: str) -> None:
-    get_ctx().start_page(word)
+    get_ctx().new_word(word)
 
 
 def expand(wikitext: str, locale: str) -> str:
-    return clean_html_output(get_ctx().expand(wikitext, quiet=True), locale)
+    return get_ctx().expand(wikitext, locale)
 
 
 def adapt_templates(locale: str) -> None:
-    ctx = get_ctx()
+    ctx = get_ctx().ctx
 
     for template, adapter in lang.template_adapters[locale].items():
         if not (page := ctx.get_page(template)):
