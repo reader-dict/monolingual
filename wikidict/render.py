@@ -7,7 +7,6 @@ import json
 import logging
 import multiprocessing
 import os
-import platform
 import re
 from collections import defaultdict
 from datetime import timedelta
@@ -578,6 +577,8 @@ def render_words(
     *,
     templates_status: list[tuple[str, str]] | None = None,
 ) -> None:
+    context.setup_modules_db(locale)  # TODO: RO
+
     for word, code in words:
         try:
             details = parse_word(word, code, locale, templates_status=templates_status)
@@ -603,9 +604,8 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     if extra:
         chunk_size += 1
 
-    # spawn method is default on Mac, doesn't work with global CTX
-    if platform.system() == "Darwin":
-        multiprocessing.set_start_method("fork", force=True)
+    if multiprocessing.get_start_method() != "spawn":
+        multiprocessing.set_start_method("spawn", force=True)
 
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()

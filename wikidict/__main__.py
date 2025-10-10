@@ -56,11 +56,6 @@ def main() -> int:
 
         return download.main(args["LOCALE"])
 
-    from . import context
-
-    if not context.setup_modules_db(args["LOCALE"]):
-        return 1
-
     if args["--parse"]:
         from . import parse
 

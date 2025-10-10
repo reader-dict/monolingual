@@ -6,7 +6,7 @@ import os
 import re
 from typing import TYPE_CHECKING
 
-from . import constants, utils
+from . import constants, context, utils
 from .render import parse_word
 
 if TYPE_CHECKING:
@@ -27,6 +27,9 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
     with constants.SESSION.get(url) as req:
         req.raise_for_status()
         code = req.text
+
+    context.setup_modules_db(locale)
+
     return parse_word(word, code, locale, force=True, templates_status=templates_status)
 
 
