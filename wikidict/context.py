@@ -32,7 +32,7 @@ SELECT title
     FROM pages
     WHERE
         (namespace_id = 10 AND body LIKE '%PAGENAME%')
-     OR (namespace_id = 828 AND body LIKE '%.title%')
+     OR (namespace_id = 828 AND body LIKE '%getCurrentTitle()%')
 """
 
 
@@ -69,18 +69,30 @@ class Context:
             add_default_templates(self.ctx)
 
         self._cache: dict[str, str] = {}
-        self._skip_list = self._get_skip_list()
+        self._cache_exclusions = self._get_cache_exclusions()
+        self.stats = {"cached": 0, "missed": 0, "skipped": 0}
+
+    def close(self) -> None:
+        self.ctx.close_db_conn()
 
     def expand(self, wikitext: str, locale: str) -> str:
-        if wikitext in self._skip_list:
+        if wikitext.startswith(self._cache_exclusions):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
+            self.stats["skipped"] += 1
         elif not (expanded := self._cache.get(wikitext, "")):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
             self._cache[wikitext] = expanded
+            self.stats["missed"] += 1
+        else:
+            self.stats["cached"] += 1
         return expanded
 
-    def _get_skip_list(self) -> set[str]:
-        return {page[0].split(":", 1)[1] for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()}
+    def _get_cache_exclusions(self) -> tuple[str, ...]:
+        """Templates/Modules using the current word should not be cached."""
+        return tuple(
+            f"{{{{{page[0].split(':', 1)[1]}|"  # `Template:foo` → `{{foo|`
+            for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()
+        )
 
     def get_errors(self) -> list[str]:
         return [error["msg"] for error in self.ctx.to_return()["errors"]]
@@ -145,14 +157,15 @@ def init(db: Path, locale: str, *, read_only: bool = True) -> None:
         return
 
     with _lock:
-        _contexts[pid] = Context(db, locale, read_only=read_only)
+        _contexts[pid] = Context(db, locale, read_only=not read_only)
         atexit.register(close_ctx)
+        adapt_templates("fr")
 
 
 def close_ctx() -> None:
     with _lock:
         if ctx := _contexts.pop(os.getpid(), None):
-            ctx.ctx.close_db_conn()
+            ctx.close()
 
 
 def reset(locale: str) -> bool:
