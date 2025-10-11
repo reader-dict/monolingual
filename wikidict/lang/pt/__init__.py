@@ -91,6 +91,9 @@ sections = tuple(_sections)
 variant_titles = sections
 variant_templates = ("{{flexion",)
 
+reverse_variant_titles = ("{{flex.pt",)
+reverse_variant_templates = ("{{rev-flexion",)
+
 definitions_to_ignore = ("peçodef",)
 
 templates_ignored = (
@@ -186,6 +189,12 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
     '# {{flexion|abotecar}}'
+
+    >>> from ... import context
+    >>> _ = context.reset("pt")
+    >>> context.new_word("formolado")
+    >>> adjust_wikicode("{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", "pt")
+    ''
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
@@ -208,5 +217,54 @@ def adjust_wikicode(
                 if count:
                     break
         lines.append(line)
+    code = "\n".join(lines)
 
-    return "\n".join(lines)
+    #
+    # Reverse variants
+    #
+
+    if any(tpl in code for tpl in reverse_variant_titles):
+        cleaned: list[str] = []
+        in_expected_section = False
+        expected_section = (f"= {{{{-{locale}-}}", f"={{{{-{locale}-}}")
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            line = line.strip()
+            if not in_expected_section:
+                if line.startswith(expected_section):
+                    in_expected_section = True
+            elif line.startswith(("= {", "={")):
+                in_expected_section = False
+
+            if not in_expected_section:
+                continue
+
+            if line.startswith(reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_code, rest = tpl_code.rsplit("}}", 1)
+                    if not rest:
+                        tpl_code += "}}"
+                    forms = utils.process_templates(
+                        word,
+                        tpl_code,
+                        locale,
+                        templates_status=templates_status,
+                        variant_only=True,
+                    )
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
+                    if rest:
+                        cleaned.append(rest)
+                    tpl_code = ""
+            else:
+                cleaned.append(line)
+
+        code = "\n".join(cleaned)
+
+    return code
