@@ -88,16 +88,29 @@ def test_parse_redirected_word(tmp_path: Path) -> None:
         """\
 <mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
   <page>
-    <title>MediaWiki:Sitetitle</title>
-    <ns>8</ns>
-    <id>12</id>
-    <redirect></redirect>
+    <title>abkhaserene</title>
+    <ns>0</ns>
+    <id>24608</id>
+    <redirect title="abkhaserne" />
+    <revision>
+        <id>123263</id>
+        <parentid>123256</parentid>
+        <timestamp>2013-12-10T16:41:03Z</timestamp>
+        <contributor>
+          <username>Alice</username>
+          <id>42</id>
+        </contributor>
+        <model>wikitext</model>
+        <format>text/x-wiki</format>
+        <text bytes="23" sha1="5azntpng4wtt8cmcqz845vsdh69gk8u" xml:space="preserve">#REDIRECT[[abkhaserne]]</text>
+        <sha1>5azntpng4wtt8cmcqz845vsdh69gk8u</sha1>
+    </revision>
   </page>
 </mediawiki>
 """,
     )
 
-    assert not parse.process(file, "fr")
+    assert parse.process(file, "fr") == {"abkhaserene": "##REDIRECT##abkhaserne"}
 
 
 def test_parse_word_without_wikicode(tmp_path: Path) -> None:
