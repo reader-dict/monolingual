@@ -16,13 +16,14 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "▶",
             [],
             [],
             {"Symbol": ["knap som bruges til at afspille en video, lyd el. musik"]},
+            [],
             [],
         ),
         (
@@ -33,6 +34,7 @@ def setup_lua_ctx() -> None:
             ],
             {"Substantiv": ["(mikrobiologi) en encellet mikroskopisk organisme uden cellekerne"]},
             [],
+            ["bakterien", "bakterier", "bakterierne"],
         ),
         (
             "disse",
@@ -40,12 +42,14 @@ def setup_lua_ctx() -> None:
             [],
             {"Substantiv": ["ikke noget"]},
             ["denne"],
+            [],
         ),
         (
             "et",
             [],
             [],
             {"Artikel": ["intetkøn af en"]},
+            [],
             [],
         ),
         (
@@ -62,6 +66,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            [],
         ),
         (
             "hund",
@@ -70,12 +75,14 @@ def setup_lua_ctx() -> None:
                 "Menes at stamme fra indoeuropæisk sprog <i>ḱʷn̥tós</i>, fra <i>ḱwṓ</i> og derfra videre til germansk sprog <i>*hundaz</i> og fra oldnordisk hundr."
             ],
             {
+                "Decl": ["I sammensætninger er formen <i>hunde-</i> f.eks. <i>hundehus</i>, <i>hundeliv</i>."],
                 "Substantiv": [
                     "(<i>zoologi</i>): et pattedyr af underarten <i>Canis lupus familiaris</i>.",
                     "(<i>slang</i>): 100 DKK-seddel (bruges ikke i flertal)",
-                ]
+                ],
             },
             [],
+            ["hunde", "hunden", "hundene", "hundenes", "hundens", "hundes", "hunds"],
         ),
         (
             "godt nytår",
@@ -83,8 +90,9 @@ def setup_lua_ctx() -> None:
             [],
             {"Sætning": ["En hilsen der siges omkring den 1. januar."]},
             [],
+            [],
         ),
-        ("jørme", [], [], {"Verbum": ["vrimle, myldre; sværme"]}, []),
+        ("jørme", [], [], {"Verbum": ["vrimle, myldre; sværme"]}, [], []),
         (
             "mus",
             [],
@@ -94,6 +102,7 @@ def setup_lua_ctx() -> None:
             ],
             {"Substantiv": ["(<i>zoologi</i>) pattedyr", "(<i>data</i>) en enhed som tilsluttes computere"]},
             [],
+            ["mus'", "musen", "musene", "musenes", "musens"],
         ),
         (
             "-ør",
@@ -101,8 +110,9 @@ def setup_lua_ctx() -> None:
             ["Fra fransk: -eur, af latin -ator."],
             {"Endelse": ["Betegner den, der udfører et arbejde."]},
             [],
+            [],
         ),
-        ("skulle", [], [], {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre."]}, []),
+        ("skulle", [], [], {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre."]}, [], ["skal", "skullet"]),
         (
             "søm",
             [],
@@ -114,6 +124,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["sømme", "sømmen", "sømmene", "sømmenes", "sømmens", "sømmes", "sømmet", "sømmets", "søms"],
         ),
         (
             "til",
@@ -123,12 +134,14 @@ def setup_lua_ctx() -> None:
             ],
             {"Præposition": ["Ordet betegner en retning hen imod eller et tilhørsforhold"]},
             [],
+            [],
         ),
         (
             "tolvte",
             ["/ˈtɔldə/"],
             ["Fra oldnordisk tolfti."],
             {"Ordenstal": ["nummer tolv i rækken"]},
+            [],
             [],
         ),
         (
@@ -142,8 +155,16 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            ["tyve", "tyven", "tyvene"],
         ),
-        ("PMV", [], [], {"Substantiv": ["(<i>militær</i>) <i>Forkortelse af</i> <b>pansret mandskabsvogn</b>"]}, []),
+        (
+            "PMV",
+            [],
+            [],
+            {"Substantiv": ["(<i>militær</i>) <i>Forkortelse af</i> <b>pansret mandskabsvogn</b>"]},
+            [],
+            [],
+        ),
     ],
 )
 def test_parse_word(
@@ -152,6 +173,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -161,3 +183,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants

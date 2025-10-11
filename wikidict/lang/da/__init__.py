@@ -99,7 +99,6 @@ variant_templates = ("{{alternativ stavemåde af", "{{form of", "{{flexion", "{{
 reverse_variant_titles = (
     "{{da-noun",
     "{{da-verb",
-    "{{da-noun-infl",
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
@@ -202,16 +201,20 @@ def adjust_wikicode(
     >>> adjust_wikicode("# {{flertal af}} {{l|da|tale|taler}}", "da")
     '# {{flexion|{{l|da|tale|taler}}}}'
 
-    >>> adjust_wikicode("{{da-noun|en|baskyle|baskylen|baskyler|baskylerne}}", "da")
-    '# {{rev-flexion|baskyle}}\n# {{rev-flexion|baskylen}}\n# {{rev-flexion|baskyler}}\n# {{rev-flexion|baskylerne}}'
-    >>> adjust_wikicode("{{da-verb|hav|have|har|havde|har|haft}}", "da")
-    '# {{rev-flexion|haft}}\n# {{rev-flexion|har}}\n# {{rev-flexion|hav}}\n# {{rev-flexion|havde}}\n# {{rev-flexion|have}}'
-
     >>> from ... import context
     >>> _ = context.reset("da")
+
+    >>> context.new_word("baskyle")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|baskyle|baskylen|baskyler|baskylerne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|baskylen}}\n# {{rev-flexion|baskyler}}\n# {{rev-flexion|baskylerne}}'
+
+    >>> context.new_word("hav")
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|hav|have|har|havde|har|haft}}", "da")
+    '=={{da}}==\n# {{rev-flexion|haft}}\n# {{rev-flexion|har}}\n# {{rev-flexion|hav}}\n# {{rev-flexion|havde}}\n# {{rev-flexion|have}}'
+
     >>> context.new_word("genom")
-    >>> adjust_wikicode("{{da-noun-infl|et|er}}", "da")
-    '# {{rev-flexion|genom}}\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun-infl|et|er}}", "da")
+    '=={{da}}==\n# {{rev-flexion|genom}}\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
 
     """
     code = code.replace("----", "")
@@ -265,18 +268,29 @@ def adjust_wikicode(
                 if count:
                     break
         lines.append(line)
-
     code = "\n".join(lines)
+
     #
     # Reverse variants
     #
+
     if any(tpl in code for tpl in reverse_variant_titles):
         cleaned: list[str] = []
+        in_expected_section = False
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
             line = line.strip()
+            if not in_expected_section:
+                if line.startswith(f"=={{{{{locale}}}"):
+                    in_expected_section = True
+            elif line.startswith("=={{"):
+                in_expected_section = False
+
+            if not in_expected_section:
+                continue
+
             if line.startswith(reverse_variant_titles):
                 in_tpl = True
 
@@ -285,30 +299,21 @@ def adjust_wikicode(
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
-
-                    variants: set[str] = set()
-                    if tpl_code.startswith("{{da-noun|"):
-                        variants.update(tpl_code.split("|")[2:])
-                    elif tpl_code.startswith("{{da-verb"):
-                        variants.update(tpl_code.split("|")[1:])
-                    elif tpl_code.startswith("{{da-noun-infl"):
-                        if not rest:
-                            tpl_code += "}}"
-                        flexions = utils.process_templates(
-                            word,
-                            tpl_code,
-                            locale,
-                            templates_status=templates_status,
-                            variant_only=True,
-                        )
-                        variants = set(sorted(flexions.split("|")))
-                    cleaned.extend(f"# {{{{rev-flexion|{v}}}}}" for v in sorted(variants))
+                    if not rest:
+                        tpl_code += "}}"
+                    forms = utils.process_templates(
+                        word,
+                        tpl_code,
+                        locale,
+                        templates_status=templates_status,
+                        variant_only=True,
+                    )
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
                     if rest:
                         cleaned.append(rest)
                     tpl_code = ""
-                continue
-
-            cleaned.append(line)
+            else:
+                cleaned.append(line)
 
         code = "\n".join(cleaned)
 
