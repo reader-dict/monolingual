@@ -17,7 +17,7 @@ thousands_separator = " "
 section_patterns = ("#", r"\*", ":#")
 sublist_patterns = ("#", r"\*")
 section_level = 1
-section_sublevels = (2,)
+section_sublevels = (2, 3)
 head_sections = ("{{-pt-}}", "{{-mult-}}")
 etyl_section = ("{{etimologia|pt}}", "{{etimologia|mult}}", "etimologia")
 _sections = [
@@ -31,6 +31,7 @@ _sections = [
     "antepositivo",
     "artigo",
     "caractere",
+    "conjugação",
     "conjunção",
     "contração",
     "elemento de composição",
@@ -91,7 +92,10 @@ sections = tuple(_sections)
 variant_titles = sections
 variant_templates = ("{{flexion",)
 
-reverse_variant_titles = ("{{flex.pt",)
+reverse_variant_titles = (
+    "{{conj/",
+    "{{flex.",
+)
 reverse_variant_templates = ("{{rev-flexion",)
 
 definitions_to_ignore = ("peçodef",)
@@ -204,6 +208,9 @@ def adjust_wikicode(
 
     # <li value="2"> → ''
     code = re.sub(r"<li [^>]+>", "", code)
+
+    # `={{-pt-}}=\n{{flex.}}` → `={{-pt-}}=\n==Substantivo==\n{{flex.}}`
+    code = re.sub(r"=\s*{{-pt-}}\s*=\n{{flex", r"={{-pt-}}=\n==Substantivo==\n{{flex", code)
 
     #
     # Variants

@@ -20,12 +20,19 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0]
 
+    forms: set[str]
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "pt")
-    forms = set(re.findall(r"\[\[(.+)#Português\|\1\]\]", table))
+    if tpl.startswith("flex."):
+        forms = set(re.findall(r"\[\[(.+)#Português\|\1\]\]", table))
+    else:
+        lines = "\n".join(line for line in table.splitlines() if line.startswith("| "))
+        lines = re.sub(r"<sup>\d+</sup>", "", lines)
+        lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
+        forms = {form[2:].strip().removeprefix("não ").removesuffix(" /") for form in lines.splitlines()}
     return "|".join(form.strip() for form in forms if "{" not in form if form)
 
 
 handlers = {
     "flexion": render_variant,
-    **dict.fromkeys({"rev-flexion", "flex.pt"}, render_reverse_variant),
+    **dict.fromkeys({"rev-flexion", "conj/pt", "flex.pt"}, render_reverse_variant),
 }

@@ -16,7 +16,7 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
     [
         (
             "6",
@@ -27,6 +27,7 @@ def setup_lua_ctx() -> None:
                 "Pronome": ["(<i>internetês</i>) cês"],
                 "Símbolo": ["algarismo indo-arábico que representa o numeral seis"],
             },
+            [],
             [],
         ),
         (
@@ -48,15 +49,75 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["-", "a", "as"],
         ),
-        ("ababalhar", [], [], ["De baba."], {"Verbo": ["(<i>popular</i>) babar; conspurcar"]}, []),
+        (
+            "ababalhar",
+            [],
+            [],
+            ["De baba."],
+            {"Verbo": ["(<i>popular</i>) babar; conspurcar"]},
+            [],
+            [
+                "ababalha",
+                "ababalhado",
+                "ababalhai",
+                "ababalhais",
+                "ababalham",
+                "ababalhamos",
+                "ababalhando",
+                "ababalhara",
+                "ababalharam",
+                "ababalharas",
+                "ababalhardes",
+                "ababalharei",
+                "ababalhareis",
+                "ababalharem",
+                "ababalharemos",
+                "ababalhares",
+                "ababalharia",
+                "ababalhariam",
+                "ababalharias",
+                "ababalharmos",
+                "ababalhará",
+                "ababalharás",
+                "ababalharão",
+                "ababalharíamos",
+                "ababalharíeis",
+                "ababalhas",
+                "ababalhasse",
+                "ababalhassem",
+                "ababalhasses",
+                "ababalhaste",
+                "ababalhastes",
+                "ababalhava",
+                "ababalhavam",
+                "ababalhavas",
+                "ababalhe",
+                "ababalhei",
+                "ababalheis",
+                "ababalhem",
+                "ababalhemos",
+                "ababalhes",
+                "ababalho",
+                "ababalhou",
+                "ababalhámos",
+                "ababalháramos",
+                "ababalháreis",
+                "ababalhásseis",
+                "ababalhássemos",
+                "ababalhávamos",
+                "ababalháveis",
+            ],
+        ),
         (
             "alguém",
             ["/aɫ.ˈɡɐ̃j̃/"],
             [],
             ["Do latim <i>alĭquem</i>."],
-            {"Pronome": ["pessoa não identificada"]},
+            {"Acrónimo": ["De <b>1</b>: ninguém"], "Pronome": ["pessoa não identificada"]},
             [],
+            ["alguéns"],
         ),
         (
             "algo",
@@ -65,8 +126,9 @@ def setup_lua_ctx() -> None:
             [],
             {"Advérbio": ["um pouco, de certo modo"], "Pronome": ["objeto (não-identificado) de que se fala"]},
             [],
+            [],
         ),
-        ("anões", [], [], [], {}, ["anão"]),
+        ("anões", [], [], [], {}, ["anão"], []),
         (
             "baiano",
             [],
@@ -74,12 +136,14 @@ def setup_lua_ctx() -> None:
             ["Derivado de Bahia, mais o sufixo ano, com perda do H."],
             {
                 "Adjetivo": ["do Estado da Bahia, Brasil"],
+                "Expressão": ["<b>alqueire baiano</b>:", "<b>rodar a baiana</b>:"],
                 "Substantivo": [
                     "natural ou habitante do Estado da Bahia, Brasil",
                     "(<i>São Paulo,&nbsp;Brasil,&nbsp;popular,&nbsp;pejorativo e&nbsp;racismo</i>) pessoa que se veste de maneira incomum ou brega; fora da moda",
                 ],
             },
             [],
+            ["baiana", "baianas", "baianos"],
         ),
         (
             "cabrum",
@@ -91,6 +155,7 @@ def setup_lua_ctx() -> None:
                 "Interjeição": ["indica estrondo"],
             },
             [],
+            ["cabruns"],
         ),
         (
             "COPOM",
@@ -103,6 +168,7 @@ def setup_lua_ctx() -> None:
                     "(Brasil, governo) <b>Co</b>mitê de <b>Po</b>lítica <b>M</b>onetária",
                 ]
             },
+            [],
             [],
         ),
         (
@@ -119,8 +185,9 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            ["dezassetes"],
         ),
-        ("ensimesmariam", [], [], [], {}, ["ensimesmar"]),
+        ("ensimesmariam", [], [], [], {}, ["ensimesmar"], []),
         (
             "etc",
             [],
@@ -132,6 +199,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "galium",
@@ -142,6 +210,7 @@ def setup_lua_ctx() -> None:
             ],
             {"Substantivo": ["planta do gênero <i>Galium</i>. De entre elas o amor-de-hortelão, (<i>G. aparine</i>)"]},
             [],
+            ["galiuns"],
         ),
         (
             "giro-",
@@ -149,6 +218,7 @@ def setup_lua_ctx() -> None:
             [],
             ["Do grego antigo <i>γῦρος</i>&nbsp;<i>(gyros)</i>, pelo latim <i>gyrus</i>."],
             {"Afixo": ["círculo", "redondo"]},
+            [],
             [],
         ),
         (
@@ -167,6 +237,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "Ku",
@@ -174,6 +245,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {"Substantivo": ["símbolo químico do kurtschatóvio"]},
+            [],
             [],
         ),
         (
@@ -188,6 +260,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "não tenho trocado",
@@ -201,6 +274,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "nomenclaturar",
@@ -209,6 +283,57 @@ def setup_lua_ctx() -> None:
             [],
             {"Verbo": ["fazer a nomenclatura de"]},
             [],
+            [
+                "nomenclatura",
+                "nomenclaturado",
+                "nomenclaturai",
+                "nomenclaturais",
+                "nomenclaturam",
+                "nomenclaturamos",
+                "nomenclaturando",
+                "nomenclaturara",
+                "nomenclaturaram",
+                "nomenclaturaras",
+                "nomenclaturardes",
+                "nomenclaturarei",
+                "nomenclaturareis",
+                "nomenclaturarem",
+                "nomenclaturaremos",
+                "nomenclaturares",
+                "nomenclaturaria",
+                "nomenclaturariam",
+                "nomenclaturarias",
+                "nomenclaturarmos",
+                "nomenclaturará",
+                "nomenclaturarás",
+                "nomenclaturarão",
+                "nomenclaturaríamos",
+                "nomenclaturaríeis",
+                "nomenclaturas",
+                "nomenclaturasse",
+                "nomenclaturassem",
+                "nomenclaturasses",
+                "nomenclaturaste",
+                "nomenclaturastes",
+                "nomenclaturava",
+                "nomenclaturavam",
+                "nomenclaturavas",
+                "nomenclature",
+                "nomenclaturei",
+                "nomenclatureis",
+                "nomenclaturem",
+                "nomenclaturemos",
+                "nomenclatures",
+                "nomenclaturo",
+                "nomenclaturou",
+                "nomenclaturámos",
+                "nomenclaturáramos",
+                "nomenclaturáreis",
+                "nomenclaturásseis",
+                "nomenclaturássemos",
+                "nomenclaturávamos",
+                "nomenclaturáveis",
+            ],
         ),
         (
             "objetiva",
@@ -222,16 +347,18 @@ def setup_lua_ctx() -> None:
                 ],
             },
             ["objetivar", "objetivo"],
+            [],
         ),
         (
             "para",
             ["/ˈpɐ.ɾɐ/"],
             [],
-            [],
+            ["Do latim <i>per</i> <i>ad</i>."],
             {
                 "Preposição": ["exprime fim, destino, lugar, tempo, direção etc"],
             },
             ["parar"],
+            [],
         ),
         (
             "paulista",
@@ -249,6 +376,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            ["paulistas"],
         ),
         (
             "quebrar galho",
@@ -256,6 +384,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {"Expressão": ["resolver uma situação difícil ou complicada"]},
+            [],
             [],
         ),
         (
@@ -265,14 +394,16 @@ def setup_lua_ctx() -> None:
             [],
             {"Adjetivo": ["<b>Romanização</b>", ("<b>Pinyin</b>: duo1 shan1",), "montanhoso"]},
             [],
+            [],
         ),
-        ("tenui-", [], [], [], {"Antepositivo": ["variante ortográfica de <b>tenu-</b>"]}, []),
+        ("tenui-", [], [], [], {"Antepositivo": ["variante ortográfica de <b>tenu-</b>"]}, [], []),
         (
             "tique-taque",
             [],
             [],
             [],
             {"Onomatopeia": ["imitativa do som compassado do mecanismo de um relógio a trabalhar"]},
+            [],
             [],
         ),
         (
@@ -286,6 +417,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["ta", "tas", "tos"],
         ),
         (
             "ũa",
@@ -294,8 +426,9 @@ def setup_lua_ctx() -> None:
             ["Do Latim <i>una-</i>: <i>una-</i> deu <b>ũa</b> por queda do <b>n</b> com a nasalação do <b>ũ</b>."],
             {"Artigo": ["ortografia antiga de uma"]},
             [],
+            ["ũas", "ũu", "ũus"],
         ),
-        ("UTC", [], [], [], {"Sigla": ["(<i>estrangeirismo</i>) ver TUC"]}, []),
+        ("UTC", [], [], [], {"Sigla": ["(<i>estrangeirismo</i>) ver TUC"]}, [], []),
     ],
 )
 def test_parse_word(
@@ -305,6 +438,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -315,3 +449,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
