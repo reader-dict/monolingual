@@ -157,9 +157,8 @@ def init(db: Path, locale: str, *, read_only: bool = True) -> None:
         return
 
     with _lock:
-        _contexts[pid] = Context(db, locale, read_only=not read_only)
+        _contexts[pid] = Context(db, locale, read_only=read_only)
         atexit.register(close_ctx)
-        adapt_templates("fr")
 
 
 def close_ctx() -> None:
