@@ -161,12 +161,12 @@ def init(db: Path, locale: str, *, read_only: bool = True) -> None:
 
     with _lock:
         _contexts[pid] = Context(db, locale, read_only=read_only)
-        atexit.register(close_ctx)
+        atexit.register(lambda: close_ctx(pid))
 
 
-def close_ctx() -> None:
+def close_ctx(pid: int | None = None) -> None:
     with _lock:
-        if ctx := _contexts.pop(os.getpid(), None):
+        if ctx := _contexts.pop(pid or os.getpid(), None):
             ctx.close()
 
 
