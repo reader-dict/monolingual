@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+import atexit
 import logging
 import os
 import re
+import time
 from collections import defaultdict
 from functools import cache, partial
+from multiprocessing import Manager
+from multiprocessing.managers import DictProxy
+from threading import Lock
 from typing import TYPE_CHECKING
 
 import regex
@@ -18,9 +23,141 @@ from .hiero_utils import render_hiero
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+
 KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 
 log = logging.getLogger(__name__)
+
+# ============================================================================
+# Performance tracking for template expansion
+# ============================================================================
+
+# Shared dictionary for multiprocessing - will be initialized in init_perf_tracking
+_perf_stats: DictProxy | None = None
+_perf_lock: Lock | None = None
+_perf_manager: Manager | None = None
+
+
+def init_perf_tracking(manager: Manager) -> tuple[DictProxy, Lock]:
+    """
+    Initialize performance tracking with multiprocessing support.
+
+    Args:
+        manager: A multiprocessing.Manager instance for shared state.
+
+    Returns:
+        Tuple of (perf_stats dict, perf_lock) to be passed to child processes
+    """
+    global _perf_stats, _perf_lock, _perf_manager
+
+    _perf_manager = manager
+
+    # Shared dictionary structure:
+    # {
+    #   'template_name': {
+    #       'count': int,
+    #       'total_time': float,
+    #       'min_time': float,
+    #       'max_time': float
+    #   }
+    # }
+    _perf_stats = manager.dict()
+    _perf_lock = manager.Lock()
+
+    # Register the exit handler to print statis tics (only once in main process)
+    atexit.register(print_perf_stats)
+
+    return _perf_stats, _perf_lock
+
+
+def set_perf_tracking(perf_stats: DictProxy, perf_lock: Lock) -> None:
+    """
+    Set performance tracking objects in child processes.
+
+    Args:
+        perf_stats: Shared dictionary for performance statistics
+        perf_lock: Shared lock for thread-safe updates
+    """
+    global _perf_stats, _perf_lock
+    _perf_stats = perf_stats
+    _perf_lock = perf_lock
+
+
+def track_template_expansion(tpl: str, execution_time: float) -> None:
+    """
+    Track performance metrics for a template expansion.
+
+    Args:
+        tpl: The template string (e.g., "{{template_name|arg1|arg2}}")
+        execution_time: Time taken to execute clean(context.expand(tpl, locale)) in seconds
+    """
+    if _perf_stats is None or _perf_lock is None:
+        return  # Performance tracking not initialized
+
+    # Extract template name from the template string
+    # {{template_name|arg1|arg2}} -> template_name
+    template_name = tpl.strip()
+    if template_name.startswith("{{") and template_name.endswith("}}"):
+        template_name = template_name[2:-2].split("|")[0].strip()
+    else:
+        template_name = "unknown"
+
+    with _perf_lock:
+        if template_name not in _perf_stats:
+            _perf_stats[template_name] = {"count": 0, "total_time": 0.0, "min_time": float("inf"), "max_time": 0.0}
+
+        stats = dict(_perf_stats[template_name])  # Get a copy
+        stats["count"] += 1
+        stats["total_time"] += execution_time
+        stats["min_time"] = min(stats["min_time"], execution_time)
+        stats["max_time"] = max(stats["max_time"], execution_time)
+        _perf_stats[template_name] = stats
+
+
+def print_perf_stats() -> None:
+    """
+    Print performance statistics for all tracked templates.
+    Called automatically at program exit via atexit.
+    """
+    if _perf_stats is None or len(_perf_stats) == 0:
+        return
+
+    print("\n" + "=" * 100)
+    print("TEMPLATE EXPANSION PERFORMANCE STATISTICS")
+    print("=" * 100)
+
+    # Convert to regular dict and sort by total time (descending)
+    stats_dict = dict(_perf_stats)
+    sorted_stats = sorted(stats_dict.items(), key=lambda x: x[1]["total_time"], reverse=True)
+
+    # Print header
+    print(f"{'Template Name':<40} {'Count':>10} {'Total (s)':>12} {'Avg (ms)':>12} {'Min (ms)':>12} {'Max (ms)':>12}")
+    print("-" * 100)
+
+    # Print each template's statistics
+    total_count = 0
+    total_time = 0.0
+
+    for template_name, stats in sorted_stats[:50]:
+        count = stats["count"]
+        total = stats["total_time"]
+        avg = (total / count) * 1000  # Convert to milliseconds
+        min_time = stats["min_time"] * 1000  # Convert to milliseconds
+        max_time = stats["max_time"] * 1000  # Convert to milliseconds
+
+        total_count += count
+        total_time += total
+
+        # Truncate long template names
+        display_name = template_name[:37] + "..." if len(template_name) > 40 else template_name
+
+        print(f"{display_name:<40} {count:>10} {total:>12.4f} {avg:>12.4f} {min_time:>12.4f} {max_time:>12.4f}")
+
+    # Print summary
+    print("-" * 100)
+    avg_overall = (total_time / total_count) * 1000 if total_count > 0 else 0
+    print(f"{'TOTAL':<40} {total_count:>10} {total_time:>12.4f} {avg_overall:>12.4f}")
+    print("=" * 100 + "\n")
 
 
 def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
@@ -864,7 +1001,10 @@ def process_templates(
 
             # Expand the template
             else:
+                start_time = time.perf_counter()
                 new_text = clean(context.expand(tpl, locale))
+                execution_time = time.perf_counter() - start_time
+                track_template_expansion(tpl, execution_time)
 
             text = text.replace(tpl, new_text)
 

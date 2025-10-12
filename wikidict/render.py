@@ -576,7 +576,16 @@ def render_words(
     locale: str,
     *,
     templates_status: list[tuple[str, str]] | None = None,
+    perf_stats=None,
+    perf_lock=None,
 ) -> None:
+    """Render words in a child process."""
+    # Set up performance tracking in this child process
+    if perf_stats is not None and perf_lock is not None:
+        from .utils import set_perf_tracking
+
+        set_perf_tracking(perf_stats, perf_lock)
+
     if not context.setup_modules_db(locale):
         exit(1)
 
@@ -600,6 +609,7 @@ def render_words(
 
 
 def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
+    """Render all *words* and return a list of *Word*."""
     items = in_words.items()
     chunk_size, extra = divmod(len(items), workers)
     if extra:
@@ -611,13 +621,23 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
     templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
+
+    # Initialize performance tracking
+    from .utils import init_perf_tracking
+
+    perf_stats, perf_lock = init_perf_tracking(manager)
+
     jobs = []
 
     for chunk in batched(items, chunk_size):
         job = multiprocessing.Process(
             target=render_words,
             args=(chunk, results, locale),
-            kwargs={"templates_status": templates_status},
+            kwargs={
+                "templates_status": templates_status,
+                "perf_stats": perf_stats,
+                "perf_lock": perf_lock,
+            },
         )
         jobs.append(job)
         job.start()
