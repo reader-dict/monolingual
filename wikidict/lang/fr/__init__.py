@@ -1,6 +1,7 @@
 """French language."""
 
 import re
+from itertools import product
 
 from ... import utils
 from .template_adapters import adapters as template_adapters  # noqa: F401
@@ -86,7 +87,7 @@ sections = (
 variant_titles = (
     *[f"{{{{s|{section}|fr}}" for section in core_sections],
     *[f"{{{{s|{section}|fr|flexion" for section in core_sections],
-    *[f"{{{{s|{section}|fr|num={idx}|flexion" for idx, section in enumerate(["adjectif", "nom"], 1)],
+    *[f"{{{{s|{section}|fr|num={idx}|flexion" for section, idx in product(["adjectif", "nom"], range(1, 4))],
 )
 variant_templates = (
     "{{fr-accord-",

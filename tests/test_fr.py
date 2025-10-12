@@ -450,7 +450,7 @@ def setup_lua_ctx() -> None:
                 "Nom": [
                     "Règle ; leçon ; enseignement.",
                     "Règle morale ou religieuse.",
-                    "<i>(Philosophie)</i> Ce qui ne peut pas ne pas être autrement.&nbsp;référence nécessaire (pourquoi ? résoudre le problème)",
+                    "<i>(Philosophie)</i> Ce qui ne peut pas ne pas être autrement.",
                     "<i>(Religion)</i> Commandement et, surtout, commandement de Dieu, ou commandement de l’Église, etc.",
                 ]
             },
