@@ -3,6 +3,7 @@
 import re
 
 from ... import utils
+from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -258,6 +259,8 @@ def adjust_wikicode(
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
                     if not rest:
                         tpl_code += "}}"
+                    tpl_name = tpl_code[2 : tpl_code.find("|")].strip()
+                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
                     forms = utils.process_templates(
                         word,
                         tpl_code,

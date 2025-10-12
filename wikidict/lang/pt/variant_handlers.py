@@ -34,5 +34,12 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
 handlers = {
     "flexion": render_variant,
-    **dict.fromkeys({"rev-flexion", "conj/pt", "flex.pt"}, render_reverse_variant),
+    "rev-flexion": render_reverse_variant,
 }
+
+
+def append_to_reverse_variants(tpl: str) -> None:
+    """Dynamically append a template to reverse variants templates."""
+    if tpl in handlers:
+        return
+    handlers[tpl] = render_reverse_variant
