@@ -96,22 +96,8 @@ variant_templates = (
 )
 
 definitions_to_ignore = (
-    "eo-excl-étyl",
-    "Gallica",
     "{doute",
     "{ébauche",
-    "{ébauche-déc",
-    "{ébauche-déf",
-    "{ébauche-étym",
-    "{ébauche-étym-nom-scientifique",
-    "{ébauche-exe",
-    "{ébauche-gent",
-    "{ébauche-pron",
-    "{ébauche-syn",
-    "{ébauche-trad",
-    "{ébauche-trad-exe",
-    "{ébauche-trans",
-    "{ébauche2-exe",
     "{exemple|",
 )
 
@@ -127,6 +113,7 @@ templates_ignored = (
     "{{R:",
     "{{RÉF",
     "{{réf",
+    "{{refnec",
     "{{source",
     "{{Source-wikt",
     "{{trier",
