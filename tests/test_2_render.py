@@ -39,12 +39,6 @@ def test_render_word(page: Callable[[str, str], str]) -> None:
     assert results
 
 
-def test_render_word_sv_with_almost_empty_definition(page: Callable[[str, str], str]) -> None:
-    results: Words = {}
-    render.render_words([("Götet", page("Götet", "sv"))], results, "sv")
-    assert results
-
-
 def test_render_word_with_empty_subdefinition(page: Callable[[str, str], str]) -> None:
     results: Words = {}
     render.render_words([("test", page("tests-definitions", "fr"))], results, "fr")

@@ -17,11 +17,15 @@ from .get_word import get_word
 from .stubs import Variants, Words
 
 
-def main(locale: str, words: str, output: str, *, format: str = "kobo") -> int:
+def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -> int:
     """Entry point."""
 
-    output_dir = Path(os.getenv("CWD", "")) / output
-    output_dir.mkdir(parents=True, exist_ok=True)
+    if isinstance(output, str):
+        output_dir = Path(os.getenv("CWD", "")) / output
+        output_dir.mkdir(parents=True, exist_ok=True)
+    else:
+        output_dir = output
+
     words_stripped = [word_stripped for word in words.split(",") if (word_stripped := word.strip())]
     all_words = {word: get_word(word, locale) for word in words_stripped}
     variants: Variants = make_variants(all_words)

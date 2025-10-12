@@ -32,7 +32,7 @@ SELECT title
     FROM pages
     WHERE
         (namespace_id = 10 AND body LIKE '%PAGENAME%')
-     OR (namespace_id = 828 AND body LIKE '%getCurrentTitle()%')
+     OR (namespace_id = 828 AND body LIKE '%getCurrentTitle%')
 """
 
 
@@ -89,9 +89,12 @@ class Context:
 
     def _get_cache_exclusions(self) -> tuple[str, ...]:
         """Templates/Modules using the current word should not be cached."""
-        return tuple(
-            f"{{{{{page[0].split(':', 1)[1]}|"  # `Template:foo` → `{{foo|`
-            for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()
+        return (
+            "{{PAGENAME",
+            *(
+                f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
+                for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()
+            ),
         )
 
     def get_errors(self) -> list[str]:
@@ -167,9 +170,9 @@ def close_ctx() -> None:
             ctx.close()
 
 
-def reset(locale: str) -> bool:
+def reset(locale: str, *, read_only: bool = True) -> bool:
     close_ctx()
-    return setup_modules_db(locale)
+    return setup_modules_db(locale, read_only=read_only)
 
 
 def get_errors() -> list[str]:

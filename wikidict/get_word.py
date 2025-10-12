@@ -28,7 +28,8 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
         req.raise_for_status()
         code = req.text
 
-    context.setup_modules_db(locale)
+    if not context.setup_modules_db(locale):
+        exit(1)
 
     return parse_word(word, code, locale, force=True, templates_status=templates_status)
 

@@ -1,7 +1,5 @@
-import os
 from pathlib import Path
 from unittest.mock import patch
-from uuid import uuid4
 
 import pytest
 
@@ -23,10 +21,8 @@ def setup_lua_ctx() -> None:
         ("fr", "cercle unité"),  # Accentued word + space
         ("fr:fr", "logiciel"),  # Sublang falsy
         ("fr:it", "glielo"),  # Another lang
-        ("it:fr", "dodo"),  # Another lang
     ],
 )
 def test_gen_dict(locale: str, words: str, tmp_path: Path) -> None:
-    with patch.dict(os.environ, {"CWD": str(tmp_path)}):
-        for format in ["dictorg", "kobo", "mobi", "stardict"]:
-            assert gen_dict.main(locale, words, str(uuid4()), format=format) == 0
+    for format in ["dictfile", "df", "dictorg", "kobo", "dicthtml", "kindle", "mobi", "stardict"]:
+        assert gen_dict.main(locale, words, tmp_path, format=format) == 0

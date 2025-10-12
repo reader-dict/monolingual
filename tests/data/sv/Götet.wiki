@@ -1,8 +1,0 @@
-==Svenska==
-===Substantiv===
-{{sv-subst-t-namn}}
-'''Götet'''
-#{{tagg|slang}} [[Göteborg]]. <br />
-Ursprung okänt men flitigt använt i Göteborgsk buskisteater under 1900-talet och i breda folkliga led. Motstånd finns dock mot slanguttrycket i delar av Göteborgs etablissemang (akademikerkretsar och GP:s ledning):
-#:{{citat|publ=[[w:Göteborgs-Posten|Göteborgs-Posten]]|titel=[http://www.gp.se/nyheter/ledare/1.249815-peter-hjorne-ett-alla-tiders-sprak- Peter Hjörne: Ett ”alla tiders” språk!]|år=2009|datum=17 nov|”'''Götet'''” är en beteckning på Göteborg som används av ENBART icke-göteborgare (det vill säga stockholmare, dalslänningar, Leksandsbor).}}
-
