@@ -320,11 +320,13 @@ def clean_html_output(html: str, locale: str) -> str:
     ''
     >>> clean_html_output('&nbsp;[[:en:Special:Search/volley|<sup class="dewikttm">→&nbsp;en</sup>]][[Kategorie:Übersetzungen (Englisch)]]', "de")  # hüpfen
     ''
+    >>> clean_html_output('&nbsp;<sup>→&nbsp;en</sup>', "de")  # hüpfen
+    ''
     """
     # Wipe out inter project links
     html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
-    if locale == "de":
-        html = re.sub(r"&nbsp;\[\[:.+\]\]", "", html)
+    html = re.sub(r"&nbsp;\[\[:.+\]\]", "", html)
+    html = re.sub(r"&nbsp;<sup>→&nbsp;\w+</sup>", "", html)
 
     # Apply italic on labels
     html = re.sub(r'<span class="ib-content[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
