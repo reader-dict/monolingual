@@ -216,6 +216,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{da}}==\n{{da-noun-infl|et|er}}", "da")
     '=={{da}}==\n# {{rev-flexion|genom}}\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
 
+    >>> context.new_word("atlas")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|et|atlas|atlasset|atlas(ser)|atlasse(r)ne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|atlasser}}\n# {{rev-flexion|atlasserne}}\n# {{rev-flexion|atlasset}}'
     """
     code = code.replace("----", "")
 

@@ -15,6 +15,16 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[-1]
 
 
+def remove_parens(text: str) -> str:
+    if "(" in text:
+        # atlase(r)ne
+        text = re.sub(r"(\w+)\b\((\w+)\)\b(\w+)", r"\1\2\3", text)
+    if "(" in text:
+        # atlas(ser)
+        text = re.sub(r"(\w+)\b\((\w+)\)", r"\1\2", text)
+    return text
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["baskylen"], defaultdict(str), "baskyle")
@@ -31,7 +41,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         forms = set(re.findall(r'\| style="background-color:#f9f9f9;"\|\s*\[\[(.*?)\]\]', table))
     else:
         forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table))
-    return "|".join(form.strip() for form in forms if "{" not in form if form and form != "-")
+    return "|".join(remove_parens(form.strip()) for form in forms if "{" not in form if form and form != "-")
 
 
 handlers = {
