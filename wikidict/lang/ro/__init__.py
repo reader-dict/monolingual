@@ -2,7 +2,7 @@
 
 import re
 
-from ... import utils
+from ... import lang, utils
 from .langs import langs
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -212,14 +212,15 @@ def adjust_wikicode(
     # Reverse variants
     #
 
-    if any(tpl in code for tpl in reverse_variant_titles):
+    interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
+    if any(tpl in code for tpl in interesting_reverse_variant_titles):
         cleaned = []
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
             line = line.strip()
-            if line.startswith(reverse_variant_titles):
+            if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 
             if in_tpl:

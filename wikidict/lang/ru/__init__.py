@@ -2,7 +2,7 @@
 
 import re
 
-from ... import utils
+from ... import lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -116,11 +116,7 @@ def adjust_wikicode(
     # Reverse variants
     #
 
-    interesting_reverse_variant_titles = (
-        reverse_variant_titles
-        if locale == "ru"
-        else tuple(tpl.replace(" ru", f" {locale}") for tpl in reverse_variant_titles)
-    )
+    interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
         cleaned: list[str] = []
         in_expected_section = False
