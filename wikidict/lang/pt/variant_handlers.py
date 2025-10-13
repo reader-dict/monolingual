@@ -23,7 +23,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     forms: set[str]
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "pt")
     if tpl.startswith("flex."):
-        forms = set(re.findall(r"\[\[(.+)#Português\|\1\]\]", table))
+        forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table))
     else:
         lines = "\n".join(line for line in table.splitlines() if line.startswith("| "))
         lines = re.sub(r"<sup>\d+</sup>", "", lines)
