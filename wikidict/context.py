@@ -126,7 +126,7 @@ def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
 
     snapshot = input_file.stem[6:14]
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
-    db_path = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
+    db_path = parse.get_output_file_modules(source_dir, lang_src, lang_src, snapshot)
     db_path.parent.mkdir(exist_ok=True)
     init(db_path, lang_dst, read_only=read_only)
     return True
