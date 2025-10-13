@@ -87,7 +87,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     pattern = re.compile(rf"(\{{\{{transcriptions-{locale}[^}}]+}}}})")
     res: set[str] = set()
     for tpl in pattern.findall(code):
-        res.update(re.findall(r"&#91;([^&]+)&#93;", context.expand(tpl, locale)))
+        res.update(re.findall(r"&#91;([^&]+)&#93;", context.expand(tpl, "ru")))
     return sorted(f"[{pron}]" for pron in res)
 
 

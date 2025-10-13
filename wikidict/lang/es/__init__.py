@@ -106,7 +106,7 @@ def find_pronunciations(
 
     res: set[str] = set()
     for tpl in pattern.findall(code):
-        table = context.expand(tpl, locale)
+        table = context.expand(tpl, "es")
         res.update(find_prons.findall(table))
     return sorted(res)
 
