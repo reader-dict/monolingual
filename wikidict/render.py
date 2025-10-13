@@ -231,6 +231,9 @@ def find_etymology(
         else:
             if skip:
                 items = [item for item in items if not item.lstrip().lower().startswith(skip)]
+        if items:
+            ignored_terms = {term.lower() for term in lang.definitions_to_ignore[lang_dst]}
+            items = [item for item in items if all(ignore_me not in item.lower() for ignore_me in ignored_terms)]
         return items
 
     match lang_src:
