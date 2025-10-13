@@ -259,7 +259,7 @@ def adjust_wikicode(
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
                     if not rest:
                         tpl_code += "}}"
-                    tpl_name = tpl_code[2 : tpl_code.find("|")].strip()
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
                     forms = utils.process_templates(
                         word,
