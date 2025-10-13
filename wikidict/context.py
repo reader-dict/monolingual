@@ -132,29 +132,6 @@ def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
     return True
 
 
-def patch() -> None:
-    # Too dangerous, to be rethinked.
-    return
-
-    # Remove noisy `print()` statements emitted from Lua code
-    # https://github.com/tatuylonen/wikitextprocessor/blob/1ab82dac511a36ad3aa089ff908637d2ddabf5e2/src/wikitextprocessor/lua/mw.lua#L68
-    lua_src = Path(wikitextprocessor.__file__).parent / "lua"
-    lua_mv = lua_src / "mw.lua"
-    lua_mv.write_text(
-        lua_mv.read_text()
-        .replace(
-            '    print("mw.addWarning", text)',
-            '    -- print("mw.addWarning", text)',
-            count=1,
-        )
-        .replace(
-            '    print("mw.incrementExpensiveFunctionCount")',
-            '    -- print("mw.incrementExpensiveFunctionCount")',
-            count=1,
-        )
-    )
-
-
 def init(db: Path, locale: str, *, read_only: bool = True) -> None:
     if (pid := os.getpid()) in _contexts:
         return
