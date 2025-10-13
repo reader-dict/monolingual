@@ -8,15 +8,11 @@ import re
 from datetime import timedelta
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING
 
 from requests.exceptions import HTTPError
 from rich.progress import BarColumn, DownloadColumn, Progress, TextColumn, TimeRemainingColumn, TransferSpeedColumn
 
 from . import constants, utils
-
-if TYPE_CHECKING:
-    pass
 
 log = logging.getLogger(__name__)
 
