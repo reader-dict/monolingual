@@ -32,8 +32,17 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     'miror'
     >>> render_variant("απαρ", ["ενεστώτα", "miror", "en", "foo"], defaultdict(str), "Μιρέλλα")
     'miror'
+
+    >>> render_variant("μτχα", ["förklara", "sv"], defaultdict(str), "förklarad")
+    'förklara'
     """
-    return parts[1] if tpl == "απαρ" else parts[-1] if parts else word
+    match tpl:
+        case "απαρ":
+            return parts[1]
+        case "μτχα":
+            return parts[0]
+        case _:
+            return parts[-1] if parts else word
 
 
 handlers = {
@@ -90,6 +99,7 @@ handlers = {
             "κλ",
             "απαρ",
             "πλ",
+            "μτχα",
             "infl",
         },
         render_variant,
