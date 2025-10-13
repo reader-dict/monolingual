@@ -7,6 +7,7 @@ mistune==3.1.4  # for DictFile reading
 pyglossary==5.1.1
 python-idzip==0.3.9
 requests==2.32.5
+rich==14.2.0
 scour==0.38.2
 wikitextparser==0.56.4
 git+https://github.com/tatuylonen/wikitextprocessor.git@1ab82dac511a36ad3aa089ff908637d2ddabf5e2

@@ -13,6 +13,18 @@ from time import monotonic
 from typing import TYPE_CHECKING
 from xml.sax.saxutils import unescape
 
+from rich.progress import (
+    BarColumn,
+    FileSizeColumn,
+    Progress,
+    SpinnerColumn,
+    TaskProgressColumn,
+    TextColumn,
+    TimeRemainingColumn,
+    TotalFileSizeColumn,
+    TransferSpeedColumn,
+)
+
 from . import constants, context, lang, utils
 
 if TYPE_CHECKING:
@@ -32,23 +44,50 @@ DEBUG_PARSE = "DEBUG_PARSE" in os.environ
 
 def xml_iter_parse(file: Path) -> Generator[str]:
     """Efficient XML parsing for big files."""
-    with bz2.open(file, "rt", encoding="utf-8") as fh:
-        current_page: list[str] = []
-        in_page = False
+    file_size = file.stat().st_size
 
-        start_tag = "  <page>\n"
-        end_tag = "  </page>\n"
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+        TaskProgressColumn(),
+        "•",
+        FileSizeColumn(),
+        "/",
+        TotalFileSizeColumn(),
+        "•",
+        TransferSpeedColumn(),
+        "•",
+        TimeRemainingColumn(),
+    ) as progress:
+        task = progress.add_task(f"[cyan]Parsing {file.name}...", total=file_size)
+        with bz2.open(file, "rt", encoding="utf-8") as fh:
+            current_page: list[str] = []
+            in_page = False
 
-        for line in fh:
-            if in_page:
-                if line == end_tag:
-                    yield "".join(current_page)
-                    current_page.clear()
-                    in_page = False
-                else:
-                    current_page.append(line)
-            elif line == start_tag:
-                in_page = True
+            start_tag = "  <page>\n"
+            end_tag = "  </page>\n"
+            bytes_read = 0
+            for line in fh:
+                if in_page:
+                    if line == end_tag:
+                        yield "".join(current_page)
+                        current_page.clear()
+                        in_page = False
+                    else:
+                        current_page.append(line)
+                elif line == start_tag:
+                    in_page = True
+
+                try:
+                    new_bytes = fh.buffer._buffer.raw._fp.tell()  # type: ignore[attr-defined]
+                    if new_bytes > bytes_read:
+                        progress.update(task, completed=new_bytes)
+                except (AttributeError, OSError):
+                    pass
+
+        # Ensure progress bar shows completion
+        progress.update(task, completed=file_size)
 
 
 def xml_parse_element(

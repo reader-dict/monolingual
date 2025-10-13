@@ -1,4 +1,3 @@
-import logging
 import os
 import re
 from collections.abc import Callable
@@ -130,15 +129,6 @@ def test_no_dump_found(craft_data: Callable[[str], bytes]) -> None:
         assert not (output_dir / f"pages-{dump}.xml.bz2").is_file()
 
 
-def test_progress_callback(caplog: pytest.LogCaptureFixture) -> None:
-    with caplog.at_level(logging.DEBUG):
-        download.callback_progress("Some text", 42 * 1024, False)
-        download.callback_progress("Some text", 42 * 1024, True)
-
-    assert caplog.records[0].getMessage() == "Some text: 43,008 bytes"
-    assert caplog.records[1].getMessage() == "Some text: OK [43,008 bytes]"
-
-
 @pytest.mark.parametrize(
     "locale, lang_src, lang_dst",
     [
@@ -167,4 +157,4 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
 
             download.main(locale)
             mocked_gofc.assert_called_once_with(lang_src, snapshot)
-            mocked_fp.assert_called_once_with(snapshot, lang_src, pages_compressed, callback=download.callback_progress)
+            mocked_fp.assert_called_once_with(snapshot, lang_src, pages_compressed)
