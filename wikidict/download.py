@@ -11,19 +11,14 @@ from time import monotonic
 from typing import TYPE_CHECKING
 
 from requests.exceptions import HTTPError
+from rich.progress import BarColumn, DownloadColumn, Progress, TextColumn, TimeRemainingColumn, TransferSpeedColumn
 
 from . import constants, utils
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    pass
 
 log = logging.getLogger(__name__)
-
-
-def callback_progress(text: str, done: int, last: bool) -> None:
-    """Progression callback. Used when fetching the Wiktionary dump and when extracting it."""
-    size = f"OK [{done:,} bytes]" if last else f"{done:,} bytes"
-    log.debug("%s: %s", text, size)
 
 
 def fetch_snapshots(locale: str) -> list[str]:
@@ -38,7 +33,7 @@ def fetch_snapshots(locale: str) -> list[str]:
         return sorted(re.findall(r'href="(\d+)/"', req.text))
 
 
-def fetch_pages(date: str, locale: str, output: Path, *, callback: Callable[[str, int, bool], None]) -> None:
+def fetch_pages(date: str, locale: str, output: Path) -> None:
     """Download all pages, current versions only.
     Return the path of the XML file BZ2 compressed.
     """
@@ -55,13 +50,25 @@ def fetch_pages(date: str, locale: str, output: Path, *, callback: Callable[[str
         # Ensure the folder exists
         output.parent.mkdir(exist_ok=True, parents=True)
 
-        with output.open(mode="wb") as fh:
-            done = 0
-            for chunk in req.iter_content(chunk_size=1024**2):
-                done += fh.write(chunk)
-                callback(msg, done, False)
+        # Get total file size from headers
+        total_size = int(req.headers.get("content-length", 0))
 
-    callback(msg, output.stat().st_size, True)
+        # Create a rich progress bar
+        with Progress(
+            TextColumn("[bold blue]{task.description}"),
+            BarColumn(),
+            DownloadColumn(),
+            TransferSpeedColumn(),
+            TimeRemainingColumn(),
+        ) as progress:
+            task = progress.add_task(f"Downloading {locale} dump", total=total_size)
+
+            with output.open(mode="wb") as fh:
+                for chunk in req.iter_content(chunk_size=1024**2):
+                    size = fh.write(chunk)
+                    progress.update(task, advance=size)
+
+    log.info("Download complete: %s [%s bytes]", output, f"{output.stat().st_size:,}")
 
 
 def get_output_file_compressed(locale: str, snapshot: str) -> Path:
@@ -81,7 +88,7 @@ def main(locale: str) -> int:
     for snapshot in snapshots[::-1]:
         file_compressed = get_output_file_compressed(locale, snapshot)
         try:
-            fetch_pages(snapshot, locale, file_compressed, callback=callback_progress)
+            fetch_pages(snapshot, locale, file_compressed)
             break
         except HTTPError as exc:
             file_compressed.unlink(missing_ok=True)
