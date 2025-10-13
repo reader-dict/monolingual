@@ -16,13 +16,14 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "-acho",
             ["[ˈa.t͡ʃo]"],
             ["Del latín <i>-acĕus</i>. De allí también <i>-áceo</i>."],
             {"Sufijo": ["Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos."]},
+            [],
             [],
         ),
         (
@@ -37,6 +38,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "buque_mercante",
@@ -47,6 +49,7 @@ def setup_lua_ctx() -> None:
                     "Náutica, comercio: Buque que pertenece a persona o empresa particular, y que se emplea en la conducción de pasajeros y mercancías."
                 ]
             },
+            [],
             [],
         ),
         (
@@ -64,6 +67,7 @@ def setup_lua_ctx() -> None:
                     "Variante de&nbsp;cártel.",
                 ]
             },
+            [],
             [],
         ),
         (
@@ -86,6 +90,62 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [
+                "coma",
+                "comamos",
+                "coman",
+                "comas",
+                "come",
+                "comed",
+                "comemos",
+                "comen",
+                "comeremos",
+                "comerá",
+                "comerán",
+                "comerás",
+                "comeré",
+                "comeréis",
+                "comería",
+                "comeríais",
+                "comeríamos",
+                "comerían",
+                "comerías",
+                "comes",
+                "comido",
+                "comiendo",
+                "comiera",
+                "comierais",
+                "comieran",
+                "comieras",
+                "comiere",
+                "comiereis",
+                "comieren",
+                "comieres",
+                "comieron",
+                "comiese",
+                "comieseis",
+                "comiesen",
+                "comieses",
+                "comimos",
+                "comiste",
+                "comisteis",
+                "comiéramos",
+                "comiéremos",
+                "comiésemos",
+                "comió",
+                "como",
+                "comáis",
+                "comás",
+                "comé",
+                "coméis",
+                "comés",
+                "comí",
+                "comía",
+                "comíais",
+                "comíamos",
+                "comían",
+                "comías",
+            ],
         ),
         (
             "entrada",
@@ -126,6 +186,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             ["entrar"],
+            [],
         ),
         (
             "extenuado",
@@ -138,6 +199,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             ["extenuar"],
+            [],
         ),
         (
             "futuro",
@@ -154,6 +216,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            [],
         ),
         (
             "gracias",
@@ -166,6 +229,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "Guyana",
@@ -176,6 +240,7 @@ def setup_lua_ctx() -> None:
                     "Países: País ubicado al noreste de Sudamérica. Limita al oeste con Venezuela, al norte con el océano Atlántico, al este con Surinam y al sur Brasil.",
                 ],
             },
+            [],
             [],
         ),
         (
@@ -198,6 +263,7 @@ def setup_lua_ctx() -> None:
                 "Sustantivo": ["Grafía obsoleta de&nbsp;asta."],
             },
             [],
+            [],
         ),
         (
             "hocico",
@@ -214,6 +280,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "hala",  # Important, it is mostly used to check for infinite loop in the Lua interpreter
@@ -221,6 +288,7 @@ def setup_lua_ctx() -> None:
             ["Incierta. Voz expresiva."],
             {"Interjección": ["Expresión para demandar prisa o sorpresa."]},
             ["halar"],
+            [],
         ),
         (
             "los",
@@ -233,12 +301,14 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            [],
         ),
         (
             "Mús.",
             ["[ˈmus]"],
             [],
             {"Abreviatura": ["<i>Abreviatura lexicográfica convencional de la palabra</i> música."]},
+            [],
             [],
         ),
         (
@@ -247,6 +317,7 @@ def setup_lua_ctx() -> None:
             [],
             {"Sustantivo": ["Súplica, petición hecha con el fin de alcanzar lo que se pide."]},
             ["rogar"],
+            [],
         ),
         (
             "también",
@@ -259,12 +330,14 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "uni-",
             ["[ˈu.ni]"],
             ["Del latín <i>uni-</i>, del latín <i>unus</i>."],
             {"Prefijo": ["Elemento compositivo que significa uno. un único, relativo a uno solo."]},
+            [],
             [],
         ),
         (
@@ -277,6 +350,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
     ],
 )
@@ -286,6 +360,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -295,3 +370,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
