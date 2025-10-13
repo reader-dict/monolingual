@@ -141,7 +141,7 @@ def find_section_definitions(
     definitions: list[Definition] = []
 
     if lang_src == "es":
-        if section.title.strip().lower().startswith(("forma adjetiva", "forma verbal")):
+        if section.title.lstrip().lower().startswith("forma"):
             return []
         if lists := section.get_lists(pattern="[:;]"):
             section.contents = "".join(es_replace_defs_list_with_numbered_lists(lst) for lst in lists)
