@@ -219,6 +219,10 @@ def adjust_wikicode(
     >>> context.new_word("atlas")
     >>> adjust_wikicode("=={{da}}==\n{{da-noun|et|atlas|atlasset|atlas(ser)|atlasse(r)ne}}", "da")
     '=={{da}}==\n# {{rev-flexion|atlasser}}\n# {{rev-flexion|atlasserne}}\n# {{rev-flexion|atlasset}}'
+
+    >>> context.new_word("forlige")
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|forlig|forlige|forliger|forligte/forligede|har/er|forlig(e)t}}", "da")
+    '=={{da}}==\n# {{rev-flexion|forlig}}\n# {{rev-flexion|forlige}}\n# {{rev-flexion|forligede}}\n# {{rev-flexion|forliger}}\n# {{rev-flexion|forliget}}\n# {{rev-flexion|forligte}}'
     """
     code = code.replace("----", "")
 

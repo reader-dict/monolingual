@@ -33,10 +33,14 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0].strip()
 
-    forms: set[str]
+    forms: set[str] = set()
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "da")
     if "verb" in tpl:
-        forms = set(re.findall(r"<b>\[\[([^\]]+)\]\]</b>", table))
+        for form in re.findall(r"<b>\[\[([^\]]+)\]\]</b>", table):
+            if "/" in form:
+                forms.update(form.split("/"))
+            else:
+                forms.add(form)
     elif "infl" in tpl:
         forms = set(re.findall(r'\| style="background-color:#f9f9f9;"\|\s*\[\[(.*?)\]\]', table))
     else:
