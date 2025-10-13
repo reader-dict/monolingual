@@ -230,6 +230,16 @@ def adjust_wikicode(
     >>> context.new_word("magma")
     >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|magma|magmaen|magmaer|magmaerne}} / {{da-noun|et|magma|magmaet|magmaer|magmaerne}}", "da")
     '=={{da}}==\n# {{rev-flexion|magmaen}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaet}}'
+
+    >>> context.new_word("forhammer")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n:{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller uofficielt\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} (''plante'')\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}} (''grøntsag'')", "da")
+    '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
     """
     code = code.replace("----", "")
 
@@ -293,11 +303,9 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        code = code.replace("}} / {{", "}}\n{{")
+        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+}}}})"
         cleaned: list[str] = []
         in_expected_section = False
-        in_tpl = False
-        tpl_code = ""
 
         for line in code.splitlines():
             line = line.strip()
@@ -307,32 +315,13 @@ def adjust_wikicode(
             elif line.startswith("=={{"):
                 in_expected_section = False
 
-            if not in_expected_section:
+            if not in_expected_section or not any(tpl in line for tpl in interesting_reverse_variant_titles):
+                cleaned.append(line)
                 continue
 
-            if line.startswith(interesting_reverse_variant_titles):
-                in_tpl = True
-
-            if in_tpl:
-                tpl_code += line
-                if tpl_code.count("{") == tpl_code.count("}"):
-                    in_tpl = False
-                    tpl_code, rest = tpl_code.rsplit("}}", 1)
-                    if not rest:
-                        tpl_code += "}}"
-                    forms = utils.process_templates(
-                        word,
-                        tpl_code,
-                        locale,
-                        templates_status=templates_status,
-                        variant_only=True,
-                    )
-                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
-                    if rest:
-                        cleaned.append(rest)
-                    tpl_code = ""
-            else:
-                cleaned.append(line)
+            for tpl in re.findall(pattern, line):
+                forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)
+                cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
 
         code = "\n".join(cleaned)
 
