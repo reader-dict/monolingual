@@ -223,6 +223,10 @@ def adjust_wikicode(
     >>> context.new_word("forlige")
     >>> adjust_wikicode("=={{da}}==\n{{da-verb|forlig|forlige|forliger|forligte/forligede|har/er|forlig(e)t}}", "da")
     '=={{da}}==\n# {{rev-flexion|forlig}}\n# {{rev-flexion|forlige}}\n# {{rev-flexion|forligede}}\n# {{rev-flexion|forliger}}\n# {{rev-flexion|forliget}}\n# {{rev-flexion|forligte}}'
+
+    >>> context.new_word("magma")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|magma|magmaen|magmaer|magmaerne}} / {{da-noun|et|magma|magmaet|magmaer|magmaerne}}", "da")
+    '=={{da}}==\n# {{rev-flexion|magmaen}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaet}}'
     """
     code = code.replace("----", "")
 
@@ -283,6 +287,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
+        code = code.replace("}} / {{", "}}\n{{")
         cleaned: list[str] = []
         in_expected_section = False
         in_tpl = False
