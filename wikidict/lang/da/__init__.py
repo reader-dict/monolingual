@@ -160,6 +160,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("{{(}}\n* {{en}}: {{trad|en|limnology}}\n{{)}}", "da")
     ''
 
+    >>> adjust_wikicode("{{trans-top|en kødbolle lavet af hakket fars}}\n*{{en}}: {{t|en|meatball}}\n*{{fi}}: {{t|fi|lihapulla}}f}}\n*{{el}}: {{t|el|κεφτές|m|sc=Grek}}\n**{{grc}}: {{t|grc|ἰσίκιον|n}}\n{{trans-mid}}\n*{{it}}: {{t|it|polpetta}}\n*{{es}}: {{t|es|albóndigas}}\n*{{sv}}: {{t|sv|frikadell|c}}\n*{{de}}: {{t|de|Frikadelle|f}}\n{{trans-bottom}}", "da")
+    ''
+
     >>> adjust_wikicode("{{=da=}}", "da")
     '=={{da}}=='
 
@@ -232,6 +235,9 @@ def adjust_wikicode(
 
     # {{(}} .* {{)}}
     code = re.sub(r"\{\{\(\}\}(.+)\{\{\)\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
+
+    # {{trans-top|...}}...{{trans-bottom}}
+    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     # {{=da=}} → =={{da}}==
     code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
