@@ -37,7 +37,7 @@ SELECT title
 
 
 class Context:
-    def __init__(self, db: Path, locale: str, *, read_only: bool = True) -> None:
+    def __init__(self, db: Path, locale: str, *, db_already_setup: bool = True) -> None:
         self.ctx = wikitextprocessor.Wtp(
             db,
             extension_tags={"phonos": {"content": ["phrasing"]}},
@@ -62,9 +62,7 @@ class Context:
         execute("PRAGMA cache_size = 1000000000;")
         execute("PRAGMA temp_store = memory;")
 
-        if read_only:
-            execute("PRAGMA query_only = ON;")
-        else:
+        if not db_already_setup:
             init_interwiki_map(self.ctx)
             add_default_templates(self.ctx)
 
@@ -117,7 +115,7 @@ def get_ctx() -> Context:
         raise RuntimeError(msg) from exc
 
 
-def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
+def setup_modules_db(locale: str, *, db_already_setup: bool = True) -> bool:
     lang_src, _ = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_file(source_dir)):
@@ -128,16 +126,16 @@ def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
     db_path = parse.get_output_file_modules(source_dir, lang_src, lang_src, snapshot)
     db_path.parent.mkdir(exist_ok=True)
-    init(db_path, lang_src, read_only=read_only)
+    init(db_path, lang_src, db_already_setup=db_already_setup)
     return True
 
 
-def init(db: Path, locale: str, *, read_only: bool = True) -> None:
+def init(db: Path, locale: str, *, db_already_setup: bool = True) -> None:
     if (pid := os.getpid()) in _contexts:
         return
 
     with _lock:
-        _contexts[pid] = Context(db, locale, read_only=read_only)
+        _contexts[pid] = Context(db, locale, db_already_setup=db_already_setup)
         atexit.register(lambda: close_ctx(pid))
 
 
@@ -147,9 +145,9 @@ def close_ctx(pid: int | None = None) -> None:
             ctx.close()
 
 
-def reset(locale: str, *, read_only: bool = True) -> bool:
+def reset(locale: str, *, db_already_setup: bool = True) -> bool:
     close_ctx()
-    return setup_modules_db(locale, read_only=read_only)
+    return setup_modules_db(locale, db_already_setup=db_already_setup)
 
 
 def get_errors() -> list[str]:

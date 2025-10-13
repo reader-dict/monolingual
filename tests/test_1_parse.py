@@ -12,7 +12,7 @@ from wikidict import context, parse
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("fr", read_only=False)
+        assert context.reset("fr", db_already_setup=False)
 
 
 def save(path: Path, content: str) -> Path:
