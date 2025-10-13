@@ -29,7 +29,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "ru")
     if table.startswith("{"):
         table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ")
-        forms = {form[2:].strip() for form in table.splitlines() if form.startswith("| ")}
+        forms = {form[2:].strip() for form in table.splitlines() if form.startswith("| ") and not form.endswith("| ")}
     else:
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
         forms = set(re.findall(r"<td>([^<]+)</td>", table))
