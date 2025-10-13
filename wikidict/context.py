@@ -324,11 +324,16 @@ def clean_html_output(html: str, locale: str) -> str:
     ''
     >>> clean_html_output('&nbsp;<sup style="color:slategray;">→&nbsp;en</sup>', "de")  # hüpfen
     ''
+    >>> clean_html_output('<nowiki />', "da")  # ABC
+    ''
     """
     # Wipe out inter project links
     html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
     html = re.sub(r"&nbsp;\[\[:.+\]\]", "", html)
     html = re.sub(r"&nbsp;<sup[^>]*>→&nbsp;\w+</sup>", "", html)
+
+    # Remove nowiki tags
+    html = re.sub(r"<nowiki[^>]*>", "", html)
 
     # Apply italic on labels
     html = re.sub(r'<span class="ib-content[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
