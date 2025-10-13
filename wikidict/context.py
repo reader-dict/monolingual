@@ -118,7 +118,7 @@ def get_ctx() -> Context:
 
 
 def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
-    lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
+    lang_src, _ = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_file(source_dir)):
         print("No dump found. Run with --parse first ... ")
@@ -128,7 +128,7 @@ def setup_modules_db(locale: str, *, read_only: bool = True) -> bool:
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
     db_path = parse.get_output_file_modules(source_dir, lang_src, lang_src, snapshot)
     db_path.parent.mkdir(exist_ok=True)
-    init(db_path, lang_dst, read_only=read_only)
+    init(db_path, lang_src, read_only=read_only)
     return True
 
 
