@@ -44,7 +44,7 @@ def setup_lua_ctx() -> None:
             ["[ˈvɔle]", "[ˈvɔli]", "[ˈvɔlɛɪ̯]"],
             [],
             [
-                "Dem seit 1960 im Duden lexikalisierten Wort liegt die englische Kollokation <i>at/on the volley&nbsp;<sup>→&nbsp;en</sup></i> ‚aus der Luft‘ zugrunde.",
+                "Dem seit 1960 im Duden lexikalisierten Wort liegt die englische Kollokation <i>at/on the volley</i> ‚aus der Luft‘ zugrunde.",
             ],
             {
                 "Adverb": [
