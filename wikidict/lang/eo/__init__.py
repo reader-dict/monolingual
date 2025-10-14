@@ -91,6 +91,7 @@ variant_templates = ("{{form-eo}}",)
 templates_ignored = (
     "{{?",
     "{{aŭdo",  # audio
+    "{{PRON",  # audio
     "{{quote-",
     "{{ref-",
     "{{Vd",  # see also
