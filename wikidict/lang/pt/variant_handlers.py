@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-from ... import context
+from ... import context, utils
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -36,7 +36,9 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
         forms = {form.split("|")[-1].strip() for form in lines.splitlines()}
     return "|".join(
-        form_san for form in forms if (form_san := form.strip()) and "{" not in form_san and "&" not in form_san
+        utils.remove_parens(form_san)
+        for form in forms
+        if (form_san := form.strip()) and "{" not in form_san and "&" not in form_san
     )
 
 

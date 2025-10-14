@@ -1055,3 +1055,13 @@ def table2html(word: str, locale: str, table: wikitextparser.Table) -> str:
         phrase += "</tr>"
     phrase += "</table>"
     return phrase
+
+
+def remove_parens(text: str) -> str:
+    if "(" in text:
+        # atlase(r)ne
+        text = re.sub(r"(\w+)\b\((\w+)\)\b(\w+)", r"\1\2\3", text)
+    if "(" in text:
+        # atlas(ser)
+        text = re.sub(r"(\w+)\b\((\w+)\)", r"\1\2", text)
+    return text
