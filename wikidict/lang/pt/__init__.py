@@ -286,11 +286,12 @@ def adjust_wikicode(
                     if "{{" in tpl_code:
                         # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
                         tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
-                    if "-div" in tpl_code:
+                    if "-div" in tpl_code and "{{" not in tpl_code:
                         tpl_code = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_code)
 
                     # Remove unrelated templates after a reverse variant one
                     # `{{flex.pt|...}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}` → `{{flex.pt|...}}`
+                    # but not `{{flex.pt|fs=caceta|fp=cacetas|fs-div=ca.{{grifar|ce}}.ta|fp-div=ca.{{grifar|ce}}.tas}}`
                     tpl_code = re.split(r"}}\s*\{\{", tpl_code, maxsplit=1)[0]
                     if not tpl_code.endswith("}}"):
                         tpl_code += "}}"
