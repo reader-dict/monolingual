@@ -103,6 +103,7 @@ definitions_to_ignore = ("peçodef",)
 
 templates_ignored = (
     "{{?",
+    "{{camonismo",  # ? (it is append in https://pt.wiktionary.org/wiki/Calisto)
     "{{cont",  # incomplete
 )
 
