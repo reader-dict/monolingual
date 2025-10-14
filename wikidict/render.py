@@ -583,6 +583,8 @@ def render_words(
     if not context.setup_modules_db(locale):
         exit(1)
 
+    logging.basicConfig(level=logging.INFO)
+
     for word, code in words:
         try:
             details = parse_word(word, code, locale, templates_status=templates_status)
