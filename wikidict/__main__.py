@@ -7,7 +7,7 @@ Usage:
     wikidict LOCALE --download
     wikidict LOCALE --parse
     wikidict LOCALE --render [--workers=N]
-    wikidict LOCALE --convert
+    wikidict LOCALE --convert [--format=FORMAT] [--with-etym-only]
     wikidict LOCALE --get-word=WORD [--raw]
     wikidict LOCALE --gen-dict=WORDS --output=FILENAME [--format=FORMAT]
     wikidict LOCALE --show-pos
@@ -25,13 +25,13 @@ Options:
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.zip": StarDict format.
                                 - "data/$LOCALE/dicthtml-$LOCALE-$LOCALE.zip": Kobo format.
                                 - "data/$LOCALE/dictorg-$LOCALE-$LOCALE.zip": DICT.org format.
+                            --with-etym-only    Only generate dictionaries with etymologies
   --get-word=WORD [--raw]   Get and render WORD. Pass --raw to ouput the raw HTML code.
   --gen-dict=WORDS          DEBUG: Generate dictionary for specific words. Pass multiple words
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.
-                            --format=FORMAT     Format can be dictfile, df, dictorg, kobo, dicthtml, kindle, mobi, stardict [default: kobo]
   --show-pos                Show part of speechs.
-
+  --format=FORMAT           Format can be all, dictfile, df, dictorg, kobo, dicthtml, kindle, mobi, stardict or a comma separated list
 If no argument given, --download, --parse, --render, --show-pos, and --convert, will be done automatically.
 """
 
@@ -69,7 +69,9 @@ def main() -> int:
     if args["--convert"]:
         from . import convert
 
-        return convert.main(args["LOCALE"])
+        return convert.main(
+            args["LOCALE"], format=args.get("--format", "all"), with_etym_only=args.get("--with-etym-only", False)
+        )
 
     if args["--get-word"] is not None:
         from . import get_word
@@ -83,7 +85,7 @@ def main() -> int:
             args["LOCALE"],
             args["--gen-dict"],
             args["--output"],
-            format=args["--format"],
+            format=args.get["--format", "kobo"],
         )
 
     if args["--show-pos"]:

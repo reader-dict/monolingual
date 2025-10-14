@@ -4,17 +4,9 @@ import os
 from datetime import UTC, datetime
 from pathlib import Path
 
-from .convert import (
-    DictFileFormat,
-    DictOrgFormat,
-    KoboFormat,
-    StarDictFormat,
-    make_variants,
-    run_formatter,
-    run_mobi_formatter,
-)
+from .convert import convert, get_formatters, make_variants
 from .get_word import get_word
-from .stubs import Variants, Words
+from .stubs import Variants
 
 
 def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -> int:
@@ -29,29 +21,18 @@ def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -
     words_stripped = [word_stripped for word in words.split(",") if (word_stripped := word.strip())]
     all_words = {word: get_word(word, locale) for word in words_stripped}
     variants: Variants = make_variants(all_words)
-    args: tuple[str, Path, Words, Variants, str] = (
-        locale,
+    snapshot = datetime.now(tz=UTC).strftime("%Y%m%d")
+    primary_formatters, secondary_formatters, mobi_run = get_formatters(format)
+    convert(
+        primary_formatters,
+        secondary_formatters,
+        mobi_run,
         output_dir,
+        snapshot,
+        locale,
         all_words,
         variants,
-        datetime.now(tz=UTC).strftime("%Y%m%d"),
+        with_etym_only=True,
     )
-
-    match format:
-        case "dictfile" | "df":
-            run_formatter(DictFileFormat, *args)
-        case "dictorg":
-            run_formatter(DictFileFormat, *args)
-            run_formatter(DictOrgFormat, *args)
-        case "kobo" | "dicthtml":
-            run_formatter(KoboFormat, *args)
-        case "kindle" | "mobi":
-            run_mobi_formatter(output_dir, Path(f"data-{args[-1]}.json"), locale, all_words, variants)
-        case "stardict":
-            run_formatter(DictFileFormat, *args)
-            run_formatter(StarDictFormat, *args)
-        case _:
-            print(f"Unknown {format = }")
-            return 1
 
     return 0
