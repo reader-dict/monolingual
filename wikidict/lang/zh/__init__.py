@@ -199,4 +199,7 @@ def adjust_wikicode(
     # `;限定代詞` → `:: 限定代詞`
     code = re.sub(r"^;\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
 
+    for pattern in {"{xī}", "{zi}"}:
+        code = code.replace(pattern, "")
+
     return code

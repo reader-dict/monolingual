@@ -341,9 +341,10 @@ def clean_html_output(html: str, locale: str) -> str:
 
     # Remove those tags
     html = re.sub(r"</?(?:a|bdi|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
+    html = html.replace("<hr>", "<br>")
 
     # Clean-up attributes from those tags
-    html = re.sub(r"<(b|i|small|sub|sup)\s+[^>]+>", r"<\1>", html)
+    html = re.sub(r"<(b|dl|i|small|sub|sup)\s+[^>]+>", r"<\1>", html)
 
     # Remove unwanted categories
     return clean_html_input(html, locale).strip()
