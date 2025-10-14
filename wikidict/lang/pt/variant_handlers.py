@@ -35,7 +35,9 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         )
         lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
         forms = {form.split("|")[-1].strip() for form in lines.splitlines()}
-    return "|".join(form.strip() for form in forms if "{" not in form if form)
+    return "|".join(
+        form_san for form in forms if (form_san := form.strip()) and "{" not in form_san and "&" not in form_san
+    )
 
 
 handlers = {

@@ -158,7 +158,7 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
+    r"""
     >>> adjust_wikicode("=={{Substantivo|pt}}<sup>1</sup>==", "pt")
     '=={{Substantivo 1|pt}}=='
     >>> adjust_wikicode("==Substantivo<sup>2</sup>==", "pt")
@@ -199,8 +199,20 @@ def adjust_wikicode(
     >>> from ... import context
     >>> _ = context.reset("pt")
     >>> context.new_word("formolado")
-    >>> adjust_wikicode("{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", "pt")
-    ''
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", "pt")
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|formolada}}\n# {{rev-flexion|formoladas}}\n# {{rev-flexion|formolado}}\n# {{rev-flexion|formolados}}'
+
+    >>> context.new_word("focinho")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}", "pt")
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinho}}\n# {{rev-flexion|focinhos}}'
+
+    >>> context.new_word("che")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.gl|ms=che|mp=ches}} (è)", "pt")
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|che}}\n# {{rev-flexion|ches}}'
+
+    >>> context.new_word("kelvinometria")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", "pt")
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometria}}\n# {{rev-flexion|kelvinometrias}}'
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
@@ -258,11 +270,19 @@ def adjust_wikicode(
                 tpl_code += line
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
-                    tpl_code, rest = tpl_code.rsplit("}}", 1)
-                    if not rest:
-                        tpl_code += "}}"
+                    tpl_code = tpl_code.rsplit("}}", 1)[0]
+                    tpl_code += "}}"
                     tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
+
+                    # Apply some clean-up to prevent breaking everything
+                    if "#if:" in tpl_code:
+                        # {{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}
+                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{3\}\}\}[^}]*}}", "", tpl_code)
+                    if "{{" in tpl_code:
+                        # {{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}
+                        tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
+
                     forms = utils.process_templates(
                         word,
                         tpl_code,
@@ -271,8 +291,6 @@ def adjust_wikicode(
                         variant_only=True,
                     )
                     cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
-                    if rest:
-                        cleaned.append(rest)
                     tpl_code = ""
             else:
                 cleaned.append(line)
