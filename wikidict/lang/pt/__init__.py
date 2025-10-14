@@ -213,6 +213,10 @@ def adjust_wikicode(
     >>> context.new_word("kelvinometria")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", "pt")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometria}}\n# {{rev-flexion|kelvinometrias}}'
+
+    >>> context.new_word("abaixador")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", "pt")
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixador}}\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
@@ -277,11 +281,19 @@ def adjust_wikicode(
 
                     # Apply some clean-up to prevent breaking everything
                     if "#if:" in tpl_code:
-                        # {{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}
-                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{3\}\}\}[^}]*}}", "", tpl_code)
+                        # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
+                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_code)
                     if "{{" in tpl_code:
-                        # {{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}
+                        # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
                         tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
+                    if "-div" in tpl_code:
+                        tpl_code = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_code)
+
+                    # Remove unrelated templates after a reverse variant one
+                    # `{{flex.pt|...}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}` → `{{flex.pt|...}}`
+                    tpl_code = re.split(r"}}\s*\{\{", tpl_code, maxsplit=1)[0]
+                    if not tpl_code.endswith("}}"):
+                        tpl_code += "}}"
 
                     forms = utils.process_templates(
                         word,

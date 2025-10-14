@@ -22,6 +22,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     forms: set[str]
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "pt")
+
     if tpl.startswith("flex."):
         forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table))
     elif tpl.startswith("conj/"):
@@ -35,6 +36,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         )
         lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
         forms = {form.split("|")[-1].strip() for form in lines.splitlines()}
+
     return "|".join(
         utils.remove_parens(form_san)
         for form in forms
