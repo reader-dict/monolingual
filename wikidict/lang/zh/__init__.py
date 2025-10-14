@@ -136,6 +136,27 @@ templates_ignored = (
 )
 
 
+def find_pronunciations(code: str, locale: str) -> list[str]:
+    """
+    >>> from wikidict import context
+    >>> _ = context.reset("zh")
+    >>> context.new_word("word")
+
+    >> find_pronunciations("{{zh-pron|m=bǎi jiàzi|c=baai2 gaa3 zi2|j=bai2 jia3 zeh|cat=v}}", "zh")
+    ['/bǎi jiàzi/']
+    >>> find_pronunciations("{{zh-pron|m=shāohòu|c=saau2 hau6|cat=adv,v}}", "zh")
+    ['/shāohòu/']
+    """
+    from wikidict import context
+
+    res: set[str] = set()
+    pattern = r"\[\[(.+)#官話\|\1\]\]"
+    for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]+}}}})", code):
+        if prons := re.findall(pattern, context.expand(tpl, "zh")):
+            res.add(prons[0])
+    return sorted(f"/{pron}/" for pron in res)
+
+
 def adjust_wikicode(
     code: str,
     locale: str,

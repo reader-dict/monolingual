@@ -28,7 +28,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "稍後",
-            [],
+            ["/shāohòu/"],
             [],
             [],
             {
@@ -39,7 +39,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "佛教",
-            [],
+            ["/Fójiào/"],
             [],
             [],
             {
