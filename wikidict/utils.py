@@ -222,6 +222,8 @@ def format_pos(locale: str, value: str) -> str:
     'Substantivo'
     >>> format_pos("pt", "substantivo²")
     'Substantivo'
+    >>> format_pos("pt", "Substantivo")
+    'Substantivo'
     >>> format_pos("pt", "substantivo <small>''Feminino''</small>")
     'Substantivo'
     >>> format_pos("pt", "{{locução substantiva|pt}}<sup><small>2</small></sup>")
@@ -229,6 +231,8 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("pt", "pronome pessoal")
     'Pronome'
     >>> format_pos("pt", "verbo")
+    'Verbo'
+    >>> format_pos("pt", "verbos derivados")
     'Verbo'
 
     >>> format_pos("ro", "{{verb auxiliar}}")

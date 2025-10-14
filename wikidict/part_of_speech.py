@@ -62,6 +62,10 @@ PATTERNS = {
         re.compile(r"([^\d¹²³<,]+),?\s*.*").sub,
         # `pronome pessoal` → `pronome`
         re.compile(r"(adjetivo|caractere|expressão|expressões|frase|locução|numeral|pronome|verbo)\s+.*").sub,
+        # `substantivos` → `substantivo`
+        re.compile("(.+)s$").sub,
+        # `símbolos derivado` → `símbolo`
+        re.compile("(.+)s derivado").sub,
     ],
     "ro": [
         # `{{nume taxonomic|conv}}` → `nume taxonomic`
@@ -213,6 +217,7 @@ MERGE = {
         "forma verbal": "verbo",
         "locução substantiva": "substantivo",
         "pepb": "acrónimo",
+        "prefixos relacionado": "prefixo",
         "siglas": "sigla",
         "substantivo comum": "substantivo",
         "top": "substantivo",
