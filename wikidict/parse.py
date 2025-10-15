@@ -62,12 +62,13 @@ def xml_iter_parse(file: Path) -> Generator[str]:
     ) as progress:
         task = progress.add_task(f"[cyan]Parsing {file.name}...", total=file_size)
         with bz2.open(file, "rt", encoding="utf-8") as fh:
+            current_size = fh.buffer._buffer.raw._fp.tell  # type: ignore[attr-defined]
             current_page: list[str] = []
             in_page = False
-
             start_tag = "  <page>\n"
             end_tag = "  </page>\n"
-            bytes_read = 0
+            lines = 0
+
             for line in fh:
                 if in_page:
                     if line == end_tag:
@@ -79,12 +80,9 @@ def xml_iter_parse(file: Path) -> Generator[str]:
                 elif line == start_tag:
                     in_page = True
 
-                try:
-                    new_bytes = fh.buffer._buffer.raw._fp.tell()  # type: ignore[attr-defined]
-                    if new_bytes > bytes_read:
-                        progress.update(task, completed=new_bytes)
-                except (AttributeError, OSError):
-                    pass
+                if (lines := lines + 1) == 100:
+                    lines = 0
+                    progress.update(task, completed=current_size())
 
         # Ensure progress bar shows completion
         progress.update(task, completed=file_size)
