@@ -185,7 +185,7 @@ def process(file: Path, locale: str) -> dict[str, str]:
         )
         if not title or not code or (lang_dst == "en" and title[:19] == "Unsupported titles/"):
             continue
-        words[unescape(title)] = unescape(code)
+        words[unescape(title, entities=constants.HTML_REPL_TITLE)] = unescape(code, entities=constants.HTML_REPL_BODY)
 
     context.adapt_templates(lang_dst)
     context.close_ctx()
