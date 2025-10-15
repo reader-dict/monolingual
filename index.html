@@ -419,7 +419,7 @@
             }
 
             async lookup(word) {
-                const normalizedWord = word.trim().toLowerCase();
+                const normalizedWord = word.trim();
                 if (!normalizedWord) return null;
 
                 await this.loadManifest();
@@ -434,7 +434,7 @@
             }
 
             async search(query, limit = 10) {
-                const normalizedQuery = query.trim().toLowerCase();
+                const normalizedQuery = query.trim();
                 if (!normalizedQuery) return [];
 
                 await this.loadManifest();
@@ -594,7 +594,7 @@
                 if (suggestions.length > 0) {
                     this.showSuggestions(suggestions);
                     // Auto-display first exact match
-                    if (suggestions[0].word === query.toLowerCase()) {
+                    if (suggestions[0].word === query) {
                         await this.displayWord(suggestions[0].word);
                     }
                 } else {
