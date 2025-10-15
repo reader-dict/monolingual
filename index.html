@@ -63,8 +63,6 @@
             transition: opacity 0.3s ease;
         }
 
-
-
         .loading.visible {
             opacity: 1;
         }
@@ -150,8 +148,6 @@
             color: #555;
             line-height: 1.6;
         }
-
-
 
         .part-of-speech-section {
             margin-top: 24px;
@@ -705,9 +701,14 @@
                 // Add etymology if available
                 if (data.e) {
                     html += `<div class="word-etymology">
-                        <div class="etymology-label">Etymology</div>
-                        <div class="etymology-text">${data.e}</div>
-                    </div>`;
+                        <div class="etymology-label">Etymology</div>`;
+
+                    const etymArray = Array.isArray(data.e) ? data.e : [data.e];
+                    etymArray.forEach(item => {
+                        html += `<div class="etymology-text">${item}</div>`;
+                    });
+
+                    html += `</div>`;
                 }
 
                 // Add definitions grouped by part of speech
