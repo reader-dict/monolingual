@@ -35,13 +35,13 @@ def test_empty_json_file(tmp_path: Path) -> None:
 
 def test_render_word(page: Callable[[str, str], str]) -> None:
     results: Words = {}
-    render.render_words([("π", page("π", "fr"))], results, "fr")
+    render.render_word(("π", page("π", "fr")), results, "fr")
     assert results
 
 
 def test_render_word_with_empty_subdefinition(page: Callable[[str, str], str]) -> None:
     results: Words = {}
-    render.render_words([("test", page("tests-definitions", "fr"))], results, "fr")
+    render.render_word(("test", page("tests-definitions", "fr")), results, "fr")
     assert results
 
     defs = results["test"].definitions
