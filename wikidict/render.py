@@ -18,6 +18,16 @@ from typing import TYPE_CHECKING, Any
 
 import wikitextparser as wtp
 import wikitextparser._spans
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    SpinnerColumn,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+)
 
 from . import constants, context, lang, utils
 from .stubs import Definition, Definitions, Word
@@ -579,6 +589,8 @@ def render_words(
     locale: str,
     *,
     templates_status: list[tuple[str, str]] | None = None,
+    progress_counter: dict[int, int] | None = None,
+    worker_id: int = 0,
 ) -> None:
     if not context.setup_modules_db(locale):
         exit(1)
@@ -595,10 +607,15 @@ def render_words(
         else:
             if details.definitions or details.variants or details.reverse_variants:
                 results[word] = details
+                if progress_counter is not None:
+                    progress_counter[worker_id] = progress_counter.get(worker_id, 0) + 1
                 continue
 
         if DEBUG_EMPTY_WORDS:
             print(f"Empty {word = }", flush=True)
+
+        if progress_counter is not None:
+            progress_counter[worker_id] = progress_counter.get(worker_id, 0) + 1
 
     if DEBUG_LUA:
         log.info("Job done.")
@@ -616,44 +633,94 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     manager = multiprocessing.Manager()
     results: DictProxy[str, Word] = manager.dict()
     templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
+    progress_counter: DictProxy[int, int] = manager.dict()
     jobs = []
-
-    for chunk in batched(items, chunk_size):
-        job = multiprocessing.Process(
-            target=render_words,
-            args=(chunk, results, locale),
-            kwargs={"templates_status": templates_status},
+  
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(complete_style="green", finished_style="bold green"),
+        TaskProgressColumn(),
+        MofNCompleteColumn(),
+        TextColumn("•"),
+        TimeElapsedColumn(),
+        TextColumn("•"),
+        TimeRemainingColumn(),
+        transient=False
+    ) as progress:
+        main_task = progress.add_task(
+            f"[cyan]Rendering {len(in_words):,} words with {workers} workers", total=len(in_words)
         )
-        jobs.append(job)
-        job.start()
+        worker_id = 0
+        for chunk in batched(items, chunk_size):
+            job = multiprocessing.Process(
+                target=render_words,
+                args=(chunk, results, locale),
+                kwargs={
+                    "templates_status": templates_status,
+                    "progress_counter": progress_counter,
+                    "worker_id": worker_id,
+                },
+            )
+            jobs.append(job)
+            job.start()
+            worker_id += 1
 
-    for job in jobs:
-        job.join()
+        # Monitor progress while workers are running
+        import time
 
-    utils.check_for_templates_status(templates_status._getvalue())
+        while any(job.is_alive() for job in jobs):
+            active_jobs = sum(1 for job in jobs if job.is_alive())
+            total_processed = sum(progress_counter.values())
+            progress.update(
+                main_task,
+                completed=total_processed,
+                description=f"[cyan]Rendering {len(in_words):,} words • [green]{active_jobs}/{workers}[/green] workers active",
+            )
+            time.sleep(0.1)  # Update every 100ms
 
-    results_final: Words = results._getvalue()
+        # Final update to ensure we show 100%
+        total_processed = sum(progress_counter.values())
+        progress.update(main_task, completed=total_processed,
+            description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete")
 
-    _, lang_dst = utils.guess_locales(locale, use_log=False)
-    if lang.reverse_variant_titles[lang_dst]:
-        log.info("Handling reverse variants ...")
+        for job in jobs:
+            job.join()
 
-        for word, details in results.items():
-            if not details.reverse_variants:
-                continue
+        utils.check_for_templates_status(templates_status._getvalue())
 
-            if not details.definitions and all(form not in results_final for form in details.reverse_variants):
-                # Most likely a foreign word with no definitions in the current locale
-                results_final.pop(word, None)
-                continue
+        results_final: Words = results._getvalue()
 
-            for form in details.reverse_variants:
-                try:
-                    results_final[form].variants = sorted({*results_final[form].variants, word})
-                except KeyError:
-                    results_final[form] = Word([], [], [], {}, [word], [])
+        _, lang_dst = utils.guess_locales(locale, use_log=False)
+        if lang.reverse_variant_titles[lang_dst]:
 
-        log.info("Handling reverse variants ... Done")
+            reverse_task = progress.add_task(
+                "[magenta]Handling reverse variants",
+                total=len(results)
+            )
+
+            for word, details in results.items():
+                if not details.reverse_variants:
+                    progress.update(reverse_task, advance=1)
+                    continue
+
+                if not details.definitions and all(form not in results_final for form in details.reverse_variants):
+                    # Most likely a foreign word with no definitions in the current locale
+                    results_final.pop(word, None)
+                    progress.update(reverse_task, advance=1)
+                    continue
+
+                for form in details.reverse_variants:
+                    try:
+                        results_final[form].variants = sorted({*results_final[form].variants, word})
+                    except KeyError:
+                        results_final[form] = Word([], [], [], {}, [word], [])
+                progress.update(reverse_task, advance=1)
+
+            progress.update(
+                reverse_task,
+                description="[magenta]Handled reverse variants • [green]✓[/green] Complete"
+            )
 
     return results_final
 
