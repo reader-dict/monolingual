@@ -351,6 +351,7 @@ FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY = """\
 
 
 """
+FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY = """"""
 
 
 @pytest.mark.parametrize(
@@ -360,6 +361,7 @@ FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY = """\
         (convert.KoboFormat, False, FORMATTED_WORD_KOBO_NO_ETYMOLOGY),
         (convert.DictFileFormat, True, FORMATTED_WORD_DICTFILE),
         (convert.DictFileFormat, False, FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY),
+        (convert.JSONVolumeFormat, True, FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY),
     ],
 )
 def test_word_rendering(

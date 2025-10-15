@@ -647,21 +647,15 @@ class JSONVolumeFormat(BaseFormat):
     """Save the data into JSON volumes with range-based splitting."""
 
     output_file = "jsonvolume-{lang_src}-{lang_dst}{etym_suffix}"
+    max_volume_size_kb = 200  # Target volume size in KB
+    max_volume_bytes = max_volume_size_kb * 1024
 
-    def __init__(
-        self,
-        locale: str,
-        output_dir: Path,
-        words: Words,
-        variants: Variants,
-        snapshot: str,
-        *,
-        include_etymology: bool = True,
-        max_volume_size_kb: int = 200,  # Target volume size in KB
-    ) -> None:
-        super().__init__(locale, output_dir, words, variants, snapshot, include_etymology=include_etymology)
-        self.max_volume_size_kb = max_volume_size_kb
-        self.max_volume_bytes = max_volume_size_kb * 1024
+    KEY_DEFINITION = "d"
+    KEY_ETYMOLOGY = "e"
+    KEY_GENDER = "g"
+    KEY_PRONUNCIATION = "p"
+    KEY_REDIRECT = "r"
+    KEY_VARIANT = "v"
 
     def process(self) -> None:
         if not self.include_etymology:
@@ -682,7 +676,12 @@ class JSONVolumeFormat(BaseFormat):
         # Sort alphabetically
         all_words.sort(key=lambda x: x[0])
 
-        log.info(f"[{self.id()}] Processing {len(all_words)} words into volumes (max {self.max_volume_size_kb}KB each)")
+        log.info(
+            "[%s] Processing %s words into volumes (max %dKB each)",
+            self.id(),
+            f"{len(all_words):,}",
+            self.max_volume_size_kb,
+        )
 
         # Split into volumes
         volumes = self._create_volumes(all_words, output_base)
@@ -692,39 +691,28 @@ class JSONVolumeFormat(BaseFormat):
 
         # Summary
         log.info(
-            "[%s] Generated %d volumes with %d total words (max size: %dKB)",
+            "[%s] Generated %s volumes with %s total words (max size: %dKB)",
             self.id(),
-            len(volumes),
-            len(all_words),
+            f"{len(volumes):,}",
+            f"{len(all_words):,}",
             self.max_volume_size_kb,
         )
 
     def _format_word_data(self, word: str, details: Word) -> dict[str, Any]:
         """Format a single word's data for JSON output."""
-        if not details.definitions and details.variants:
-            return {"redirect": details.variants[0]}
+        if not details.definitions:
+            if details.reverse_variants:
+                return {self.KEY_REDIRECT: details.reverse_variants[0]}
+            return {self.KEY_REDIRECT: details.variants[0]}
 
-        word_data: dict[str, Any] = {}
-
-        if details.pronunciations:
-            word_data["pronunciation"] = ", ".join(details.pronunciations)
-        else:
-            word_data["pronunciation"] = ""
-
-        if details.genders:
-            word_data["gender"] = details.genders if len(details.genders) > 1 else details.genders[0]
-        else:
-            word_data["gender"] = ""
-
-        if self.include_etymology and details.etymology:
-            word_data["etymology"] = self._format_etymology(details.etymology)
-        else:
-            word_data["etymology"] = ""
-
-        word_data["definitions"] = self._format_definitions(details.definitions)
-
-        if self.variants.get(word):
-            word_data["variants"] = sorted(self.variants[word])
+        word_data: dict[str, Any] = {
+            self.KEY_DEFINITION: self._format_definitions(details.definitions),
+            self.KEY_ETYMOLOGY: self._format_etymology(details.etymology),
+            self.KEY_GENDER: utils.convert_gender(details.genders),
+            self.KEY_PRONUNCIATION: utils.convert_pronunciation(details.pronunciations),
+        }
+        if variants := self.variants.get(word):
+            word_data[self.KEY_VARIANT] = sorted(variants)
 
         return word_data
 
@@ -747,7 +735,7 @@ class JSONVolumeFormat(BaseFormat):
 
     def _format_etymology(self, etymology: list[Definition]) -> str | list[Any]:
         """Format etymology preserving nested structure."""
-        if len(etymology) == 0:
+        if not etymology:
             return ""
 
         if len(etymology) == 1 and isinstance(etymology[0], str):
@@ -813,7 +801,12 @@ class JSONVolumeFormat(BaseFormat):
         return volumes
 
     def _save_volume(
-        self, volume_num: int, words: dict[str, Any], first_word: str, last_word: str, output_dir: Path
+        self,
+        volume_num: int,
+        words: dict[str, Any],
+        first_word: str,
+        last_word: str,
+        output_dir: Path,
     ) -> dict[str, Any]:
         """Save a single volume and return its metadata."""
         volume_data = {"words": words}
@@ -821,14 +814,17 @@ class JSONVolumeFormat(BaseFormat):
         filename = f"vol-{volume_num:08d}.json"
         filepath = output_dir / filename
 
-        with filepath.open("w", encoding="utf-8") as f:
-            json.dump(volume_data, f, ensure_ascii=False, separators=(",", ":"))
-
+        filepath.write_text(json.dumps(volume_data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         file_size = self._estimate_json_size(volume_data)
 
         log.info(
-            f"[{self.id()}] Volume {volume_num:08d}: {first_word} → {last_word} "
-            f"({len(words)} words, {file_size / 1024:.1f}KB)"
+            "[%s] Volume %s: %s → %s (%s words, %sKB)",
+            self.id(),
+            f"{volume_num:08d}",
+            first_word,
+            last_word,
+            f"{len(words):,}",
+            f"{file_size / 1024:.1f}",
         )
 
         return {

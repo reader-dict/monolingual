@@ -308,12 +308,12 @@
 
         // Function to construct basePath from language parameters
         function constructBasePath(langSrc, langDst) {
-            return `/data/${langSrc}/${langDst}/output/jsonvolume-${langSrc}-${langDst}/`;
+            return `data/${langSrc}/${langDst}/output/jsonvolume-${langSrc}-${langDst}/`;
         }
 
         // Volume-based Dictionary Loader
         class VolumeLoader {
-            constructor(basePath = '/data/fr/fr/output/jsonvolume-fr-fr/') {
+            constructor(basePath) {
                 this.basePath = basePath;
                 this.volumeCache = new Map();  // Cache loaded volumes
                 this.manifest = null;
@@ -341,17 +341,17 @@
                     return this.volumeCache.get(cacheKey);
                 }
 
+                const volumeName = String(volumeNum).padStart(8, '0');
                 try {
-                    const filename = `vol-${String(volumeNum).padStart(8, '0')}.json`;
+                    const filename = `vol-${volumeName}.json`;
                     const response = await fetch(`${this.basePath}${filename}`);
                     const volume = await response.json();
 
-
                     this.volumeCache.set(cacheKey, volume);
-                    console.log(`Loaded volume ${volumeNum}`);
+                    console.log(`Loaded volume ${volumeName}`);
                     return volume;
                 } catch (error) {
-                    console.error(`Failed to load volume ${volumeNum}:`, error);
+                    console.error(`Failed to load volume ${volumeName}:`, error);
                     return null;
                 }
             }
@@ -468,8 +468,8 @@
                 if (!entry) return null;
 
                 // Handle redirect
-                if (entry.redirect) {
-                    const headword = entry.redirect;
+                if (entry.r) {
+                    const headword = entry.r;
                     const definition = await this.lookup(headword);
                     return {
                         searchWord: word,
@@ -477,8 +477,6 @@
                         isRedirect: true,
                         data: definition
                     };
-
-
                 }
 
                 // Direct entry
@@ -508,9 +506,7 @@
 
             init() {
                 this.searchInput.addEventListener('input', (e) => this.handleInput(e));
-                this.search
-
-                Input.addEventListener('keydown', (e) => this.handleKeydown(e));
+                this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
                 document.addEventListener('click', (e) => this.handleClickOutside(e));
             }
 
@@ -559,9 +555,7 @@
                 }
             }
 
-            handle
-
-            ClickOutside(e) {
+            handleClickOutside(e) {
                 if (!this.searchInput.contains(e.target) && !this.suggestions.contains(e.target)) {
                     this.hideSuggestions();
                 }
@@ -587,17 +581,15 @@
             }
 
             showSuggestions(suggestions) {
-                this.suggestions.innerHTML = suggestions
-
-                    .map((item, index) => {
-                        const isRedirect = item.data.redirect;
-                        return `
+                this.suggestions.innerHTML = suggestions.map((item, index) => {
+                    const isRedirect = item.data.r;
+                    return `
                         <div class="suggestion-item" data-index="${index}" data-word="${item.word}">
                             <span class="suggestion-word">${item.word}</span>
-                            ${isRedirect ? `<span class="suggestion-redirect">→ ${item.data.redirect}</span>` : ''}
+                            ${isRedirect ? `<span class="suggestion-redirect">→ ${item.data.r}</span>` : ''}
                         </div>
                     `;
-                    }).join('');
+                }).join('');
 
                 this.suggestions.classList.add('visible');
 
@@ -611,9 +603,7 @@
 
             hideSuggestions() {
                 this.suggestions.classList.remove('visible');
-                this.selectedSuggestionIndex = -1
-
-                    ;
+                this.selectedSuggestionIndex = -1;
             }
 
             updateSuggestionSelection() {
@@ -640,8 +630,6 @@
                 this.hideLoading();
 
                 if (!result || !result.data) {
-
-
                     this.showNoResults();
                     return;
                 }
@@ -656,28 +644,28 @@
                         <div class="word-meta">`;
 
                 // Add pronunciation if available
-                if (data.pronunciation) {
-                    html += `<div class="word-pronunciation">${data.pronunciation}</div>`;
+                if (data.p) {
+                    html += `<div class="word-pronunciation">${data.p}</div>`;
                 }
 
                 // Add gender if available
-                if (data.gender) {
-                    html += `<span class="word-gender">${data.gender}</span>`;
+                if (data.g) {
+                    html += `<span class="word-gender">${data.g}</span>`;
                 }
 
                 html += `</div></div>`;
 
                 // Add etymology if available
-                if (data.etymology) {
+                if (data.e) {
                     html += `<div class="word-etymology">
                         <div class="etymology-label">Etymology</div>
-                        <div class="etymology-text">${data.etymology}</div>
+                        <div class="etymology-text">${data.e}</div>
                     </div>`;
                 }
 
                 // Add definitions grouped by part of speech
-                if (data.definitions && typeof data.definitions === 'object') {
-                    for (const [partOfSpeech, definitions] of Object.entries(data.definitions)) {
+                if (data.d && typeof data.d === 'object') {
+                    for (const [partOfSpeech, definitions] of Object.entries(data.d)) {
                         html += `<div class="part-of-speech-section">
                             <h2 class="part-of-speech">${partOfSpeech}</h2>
                             <ol class="definitions-list">`;
