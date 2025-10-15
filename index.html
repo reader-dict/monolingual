@@ -467,23 +467,47 @@
                 let entry = await this.lookup(word);
                 if (!entry) return null;
 
-                // Handle redirect
-                if (entry.r) {
+                const originalWord = word;
+                const redirectChain = [word];
+                const maxRedirects = 10; // Prevent infinite loops
+                let redirectCount = 0;
+
+                // Follow the redirect chain until we find a non-redirect entry
+                while (entry.r && redirectCount < maxRedirects) {
                     const headword = entry.r;
-                    const definition = await this.lookup(headword);
-                    return {
-                        searchWord: word,
-                        headword: headword,
-                        isRedirect: true,
-                        data: definition
-                    };
+
+                    // Check for circular redirects
+                    if (redirectChain.includes(headword)) {
+                        console.warn(`Circular redirect detected: ${redirectChain.join(' → ')} → ${headword}`);
+                        break;
+                    }
+
+                    redirectChain.push(headword);
+                    const nextEntry = await this.lookup(headword);
+
+                    if (!nextEntry) {
+                        console.warn(`Redirect chain broken: ${headword} not found`);
+                        break;
+                    }
+
+                    entry = nextEntry;
+                    redirectCount++;
                 }
 
-                // Direct entry
+                if (redirectCount >= maxRedirects) {
+                    console.warn(`Maximum redirect depth reached for word: ${originalWord}`);
+                }
+
+                // Get the final headword (last in the chain)
+                const finalHeadword = redirectChain[redirectChain.length - 1];
+                const isRedirect = redirectChain.length > 1;
+
+                // Direct entry or final redirect target
                 return {
-                    searchWord: word,
-                    headword: word,
-                    isRedirect: false,
+                    searchWord: originalWord,
+                    headword: finalHeadword,
+                    isRedirect: isRedirect,
+                    redirectChain: isRedirect ? redirectChain : null,
                     data: entry
                 };
             }
@@ -580,15 +604,30 @@
                 this.hideLoading();
             }
 
-            showSuggestions(suggestions) {
-                this.suggestions.innerHTML = suggestions.map((item, index) => {
-                    const isRedirect = item.data.r;
+            async showSuggestions(suggestions) {
+                // Resolve redirect chains for all suggestions
+                const resolvedSuggestions = await Promise.all(
+                    suggestions.map(async (item) => {
+                        if (item.data.r) {
+                            // Use the existing resolveWord method to get the full chain
+                            const resolved = await this.loader.resolveWord(item.word);
+                            return {
+                                ...item,
+                                redirectChain: resolved.redirectChain,
+                                finalTarget: resolved.headword
+                            };
+                        }
+                        return item;
+                    })
+                );
+
+                this.suggestions.innerHTML = resolvedSuggestions.map((item, index) => {
+                    const hasRedirect = item.redirectChain && item.redirectChain.length > 1;
                     return `
-                        <div class="suggestion-item" data-index="${index}" data-word="${item.word}">
-                            <span class="suggestion-word">${item.word}</span>
-                            ${isRedirect ? `<span class="suggestion-redirect">→ ${item.data.r}</span>` : ''}
-                        </div>
-                    `;
+                    <div class="suggestion-item" data-index="${index}" data-word="${item.word}">
+                        <span class="suggestion-word">${item.word}</span>
+                        ${hasRedirect ? `<span class="suggestion-redirect">→ ${item.redirectChain.slice(1).join(' → ')}</span>` : ''}
+                    </div>`;
                 }).join('');
 
                 this.suggestions.classList.add('visible');
@@ -640,7 +679,7 @@
                 let html = `<div class="definition-card">
                     <div class="word-header">
                         <h1 class="word-title">${result.headword}</h1>
-                        ${result.isRedirect ? `<div class="word-redirect">${result.searchWord} → ${result.headword}</div>` : ''}
+                        ${result.isRedirect ? `<div class="word-redirect">${result.redirectChain ? result.redirectChain.join(' → ') : result.searchWord + ' → ' + result.headword}</div>` : ''}
                         <div class="word-meta">`;
 
                 // Add pronunciation if available
