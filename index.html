@@ -524,6 +524,7 @@
                 this.debounceTimer = null;
                 this.selectedSuggestionIndex = -1;
                 this.currentSuggestions = [];
+                this.currentWord = "";
 
                 this.init();
             }
@@ -675,6 +676,12 @@
 
                 const data = result.data;
 
+                if (result.headword === this.currentWord) {
+                    return;
+                }
+
+                this.currentWord = result.headword;
+
                 // Build HTML for the word entry
                 let html = `<div class="definition-card">
                     <div class="word-header">
@@ -744,6 +751,7 @@
                         Start typing to search the dictionary
                     </div>
                 `;
+                this.currentWord = "";
             }
 
             showNoResults() {
@@ -752,6 +760,7 @@
                         No results found
                     </div>
                 `;
+                this.currentWord = "";
             }
         }
 
