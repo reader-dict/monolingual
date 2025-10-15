@@ -705,12 +705,15 @@ class JSONVolumeFormat(BaseFormat):
                 return {self.KEY_REDIRECT: details.reverse_variants[0]}
             return {self.KEY_REDIRECT: details.variants[0]}
 
-        word_data: dict[str, Any] = {
-            self.KEY_DEFINITION: self._format_definitions(details.definitions),
-            self.KEY_ETYMOLOGY: self._format_etymology(details.etymology),
-            self.KEY_GENDER: utils.convert_gender(details.genders),
-            self.KEY_PRONUNCIATION: utils.convert_pronunciation(details.pronunciations),
-        }
+        word_data: dict[str, Any] = {}
+        if defs := self._format_definitions(details.definitions):
+            word_data[self.KEY_DEFINITION] = defs
+        if etyms := self._format_etymology(details.etymology):
+            word_data[self.KEY_ETYMOLOGY] = etyms
+        if genders := utils.convert_gender(details.genders):
+            word_data[self.KEY_GENDER] = genders
+        if prons := utils.convert_pronunciation(details.pronunciations):
+            word_data[self.KEY_PRONUNCIATION] = prons
         if variants := self.variants.get(word):
             word_data[self.KEY_VARIANT] = sorted(variants)
 
@@ -718,20 +721,16 @@ class JSONVolumeFormat(BaseFormat):
 
     def _format_definitions(self, definitions: Definitions) -> dict[str, list[Any]]:
         """Format definitions preserving nested structure."""
-        result = {}
-        for pos, pos_definitions in definitions.items():
-            formatted_defs = []
-            for definition in pos_definitions:
-                formatted_defs.append(self._format_definition_item(definition))
-            result[pos] = formatted_defs
-        return result
+        return {
+            pos: [self._format_definition_item(definition) for definition in pos_definitions]
+            for pos, pos_definitions in definitions.items()
+        }
 
     def _format_definition_item(self, definition: Definition) -> str | list[Any]:
         """Recursively format a definition item, preserving nesting."""
         if isinstance(definition, str):
             return definition
-        elif isinstance(definition, tuple):
-            return [self._format_definition_item(sub_def) for sub_def in definition]
+        return [self._format_definition_item(sub_def) for sub_def in definition]
 
     def _format_etymology(self, etymology: list[Definition]) -> str | list[Any]:
         """Format etymology preserving nested structure."""
@@ -745,7 +744,7 @@ class JSONVolumeFormat(BaseFormat):
         for etym in etymology:
             if isinstance(etym, str):
                 result.append(etym)
-            elif isinstance(etym, tuple):
+            else:
                 result.append([self._format_definition_item(sub_etym) for sub_etym in etym])
 
         return result
