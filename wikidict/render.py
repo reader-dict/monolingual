@@ -12,10 +12,9 @@ from collections import defaultdict
 from contextlib import suppress
 from datetime import timedelta
 from functools import partial
-from multiprocessing.managers import DictProxy, ListProxy
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import wikitextparser as wtp
 import wikitextparser._spans
@@ -608,20 +607,24 @@ def render_word(
     if DEBUG_LUA:
         log.info("Job done.")
 
-def init_worker(locale:str):
+
+def init_worker(locale: str) -> None:
     logging.basicConfig(level=logging.INFO)
     if not context.setup_modules_db(locale):
         exit(1)
+
 
 def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     if multiprocessing.get_start_method() != "spawn":
         multiprocessing.set_start_method("spawn", force=True)
 
     manager = multiprocessing.Manager()
-    results: DictProxy[str, Word] = manager.dict()
-    templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
-    progress_counter: DictProxy[int, int] = manager.dict()
-  
+    managed_results = manager.dict()
+    results: dict[str, Word] = cast(dict[str, Word], managed_results)
+    managed_template_status = manager.list()
+    templates_status: list[tuple[str, str]] = cast(list[tuple[str, str]], managed_template_status)
+    manager.dict()
+
     with Progress(
         SpinnerColumn(),
         TextColumn("[bold blue]{task.description}"),
@@ -632,33 +635,34 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         TimeElapsedColumn(),
         TextColumn("•"),
         TimeRemainingColumn(),
-        transient=False
+        transient=False,
     ) as progress:
-        main_task = progress.add_task(
-            f"[cyan]Rendering {len(in_words):,} words", total=len(in_words)
-        )
-        with suppress(KeyboardInterrupt), multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,) ) as pool:
+        main_task = progress.add_task(f"[cyan]Rendering {len(in_words):,} words", total=len(in_words))
+        with (
+            suppress(KeyboardInterrupt),
+            multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
+        ):
             for _ in pool.imap_unordered(
                 partial(render_word, results=results, locale=locale, templates_status=templates_status),
-                in_words.items(), chunksize = 1000
+                in_words.items(),
+                chunksize=1000,
             ):
                 progress.advance(main_task)
 
         # Final update to ensure we show 100%
-        progress.update(main_task, completed=len(in_words),
-            description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete")
+        progress.update(
+            main_task,
+            completed=len(in_words),
+            description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete",
+        )
 
-        utils.check_for_templates_status(templates_status._getvalue())
+        utils.check_for_templates_status(managed_template_status._getvalue())
 
-        results_final: Words = results._getvalue()
+        results_final: Words = managed_results._getvalue()
 
         _, lang_dst = utils.guess_locales(locale, use_log=False)
         if lang.reverse_variant_titles[lang_dst]:
-
-            reverse_task = progress.add_task(
-                "[magenta]Handling reverse variants",
-                total=len(results)
-            )
+            reverse_task = progress.add_task("[magenta]Handling reverse variants", total=len(results))
 
             for word, details in results.items():
                 if not details.reverse_variants:
@@ -678,10 +682,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
                         results_final[form] = Word([], [], [], {}, [word], [])
                 progress.update(reverse_task, advance=1)
 
-            progress.update(
-                reverse_task,
-                description="[magenta]Handled reverse variants • [green]✓[/green] Complete"
-            )
+            progress.update(reverse_task, description="[magenta]Handled reverse variants • [green]✓[/green] Complete")
 
     return results_final
 
