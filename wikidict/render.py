@@ -637,12 +637,22 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     _, lang_dst = utils.guess_locales(locale, use_log=False)
     if lang.reverse_variant_titles[lang_dst]:
         log.info("Handling reverse variants ...")
+
         for word, details in results.items():
+            if not details.reverse_variants:
+                continue
+
+            if not details.definitions and all(form not in results_final for form in details.reverse_variants):
+                # Most likely a foreign word with no definitions in the current locale
+                results_final.pop(word, None)
+                continue
+
             for form in details.reverse_variants:
                 try:
                     results_final[form].variants = sorted({*results_final[form].variants, word})
                 except KeyError:
                     results_final[form] = Word([], [], [], {}, [word], [])
+
         log.info("Handling reverse variants ... Done")
 
     return results_final
