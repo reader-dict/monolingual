@@ -9,8 +9,9 @@ import multiprocessing
 import os
 import re
 from collections import defaultdict
+from contextlib import suppress
 from datetime import timedelta
-from itertools import batched
+from functools import partial
 from multiprocessing.managers import DictProxy, ListProxy
 from pathlib import Path
 from time import monotonic
@@ -583,50 +584,36 @@ def load(file: Path) -> dict[str, str]:
     return words
 
 
-def render_words(
-    words: list[tuple[str, str]],
+def render_word(
+    w: tuple[str, str],
     results: Words,
     locale: str,
     *,
     templates_status: list[tuple[str, str]] | None = None,
-    progress_counter: dict[int, int] | None = None,
-    worker_id: int = 0,
 ) -> None:
-    if not context.setup_modules_db(locale):
-        exit(1)
+    word, code = w
+    try:
+        details = parse_word(word, code, locale, templates_status=templates_status)
+    except KeyboardInterrupt:
+        pass
+    except Exception:
+        log.exception("ERROR with %r", word)
+    else:
+        if details.definitions or details.variants or details.reverse_variants:
+            results[word] = details
 
-    logging.basicConfig(level=logging.INFO)
-
-    for word, code in words:
-        try:
-            details = parse_word(word, code, locale, templates_status=templates_status)
-        except KeyboardInterrupt:
-            pass
-        except Exception:
-            log.exception("ERROR with %r", word)
-        else:
-            if details.definitions or details.variants or details.reverse_variants:
-                results[word] = details
-                if progress_counter is not None:
-                    progress_counter[worker_id] = progress_counter.get(worker_id, 0) + 1
-                continue
-
-        if DEBUG_EMPTY_WORDS:
-            print(f"Empty {word = }", flush=True)
-
-        if progress_counter is not None:
-            progress_counter[worker_id] = progress_counter.get(worker_id, 0) + 1
+    if DEBUG_EMPTY_WORDS:
+        print(f"Empty {word = }", flush=True)
 
     if DEBUG_LUA:
         log.info("Job done.")
 
+def init_worker(locale:str):
+    logging.basicConfig(level=logging.INFO)
+    if not context.setup_modules_db(locale):
+        exit(1)
 
 def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
-    items = in_words.items()
-    chunk_size, extra = divmod(len(items), workers)
-    if extra:
-        chunk_size += 1
-
     if multiprocessing.get_start_method() != "spawn":
         multiprocessing.set_start_method("spawn", force=True)
 
@@ -634,7 +621,6 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     results: DictProxy[str, Word] = manager.dict()
     templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
     progress_counter: DictProxy[int, int] = manager.dict()
-    jobs = []
   
     with Progress(
         SpinnerColumn(),
@@ -649,43 +635,18 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         transient=False
     ) as progress:
         main_task = progress.add_task(
-            f"[cyan]Rendering {len(in_words):,} words with {workers} workers", total=len(in_words)
+            f"[cyan]Rendering {len(in_words):,} words", total=len(in_words)
         )
-        worker_id = 0
-        for chunk in batched(items, chunk_size):
-            job = multiprocessing.Process(
-                target=render_words,
-                args=(chunk, results, locale),
-                kwargs={
-                    "templates_status": templates_status,
-                    "progress_counter": progress_counter,
-                    "worker_id": worker_id,
-                },
-            )
-            jobs.append(job)
-            job.start()
-            worker_id += 1
-
-        # Monitor progress while workers are running
-        import time
-
-        while any(job.is_alive() for job in jobs):
-            active_jobs = sum(1 for job in jobs if job.is_alive())
-            total_processed = sum(progress_counter.values())
-            progress.update(
-                main_task,
-                completed=total_processed,
-                description=f"[cyan]Rendering {len(in_words):,} words • [green]{active_jobs}/{workers}[/green] workers active",
-            )
-            time.sleep(0.1)  # Update every 100ms
+        with suppress(KeyboardInterrupt), multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,) ) as pool:
+            for _ in pool.imap_unordered(
+                partial(render_word, results=results, locale=locale, templates_status=templates_status),
+                in_words.items(), chunksize = 1000
+            ):
+                progress.advance(main_task)
 
         # Final update to ensure we show 100%
-        total_processed = sum(progress_counter.values())
-        progress.update(main_task, completed=total_processed,
+        progress.update(main_task, completed=len(in_words),
             description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete")
-
-        for job in jobs:
-            job.join()
 
         utils.check_for_templates_status(templates_status._getvalue())
 
