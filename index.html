@@ -530,6 +530,7 @@
             }
 
             init() {
+                this.searchInput.addEventListener('focus', (e) => this.searchInput.select());
                 this.searchInput.addEventListener('input', (e) => this.handleInput(e));
                 this.searchInput.addEventListener('keydown', (e) => this.handleKeydown(e));
                 document.addEventListener('click', (e) => this.handleClickOutside(e));
