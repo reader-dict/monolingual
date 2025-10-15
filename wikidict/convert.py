@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from collections.abc import Generator
     from typing import Any
 
-    from .stubs import Groups, Variants, Words
+    from .stubs import Definition, Definitions, Groups, Variants, Words
 
 # Kobo-related dictionaries
 # Note: We cannot remove the space before the slash in `<a name="{{ word }}" />` because
@@ -643,8 +643,248 @@ class StarDictFormat(ConverterFromDictFile):
         ifo.write_text(content)
 
 
+class JSONVolumeFormat(BaseFormat):
+    """Save the data into JSON volumes with range-based splitting."""
+
+    output_file = "jsonvolume-{lang_src}-{lang_dst}{etym_suffix}"
+
+    def __init__(
+        self,
+        locale: str,
+        output_dir: Path,
+        words: Words,
+        variants: Variants,
+        snapshot: str,
+        *,
+        include_etymology: bool = True,
+        max_volume_size_kb: int = 200,  # Target volume size in KB
+    ) -> None:
+        super().__init__(locale, output_dir, words, variants, snapshot, include_etymology=include_etymology)
+        self.max_volume_size_kb = max_volume_size_kb
+        self.max_volume_bytes = max_volume_size_kb * 1024
+
+    def process(self) -> None:
+        if not self.include_etymology:
+            return
+
+        """Generate the JSON volumes."""
+        output_base = self.dictionary_file(self.output_file)
+        output_base.mkdir(exist_ok=True, parents=True)
+
+        # Get all words sorted alphabetically
+        all_words = []
+        for word, details in self.words.items():
+            # Skip variant-only words without definitions
+            if details.is_variant and not details.definitions:
+                continue
+            all_words.append((word, details))
+
+        # Sort alphabetically
+        all_words.sort(key=lambda x: x[0])
+
+        log.info(f"[{self.id()}] Processing {len(all_words)} words into volumes (max {self.max_volume_size_kb}KB each)")
+
+        # Split into volumes
+        volumes = self._create_volumes(all_words, output_base)
+
+        # Generate and save manifest
+        self._save_manifest(volumes, output_base)
+
+        # Summary
+        log.info(
+            "[%s] Generated %d volumes with %d total words (max size: %dKB)",
+            self.id(),
+            len(volumes),
+            len(all_words),
+            self.max_volume_size_kb,
+        )
+
+    def _format_word_data(self, word: str, details: Word) -> dict[str, Any]:
+        """Format a single word's data for JSON output."""
+        if not details.definitions and details.variants:
+            return {"redirect": details.variants[0]}
+
+        word_data: dict[str, Any] = {}
+
+        if details.pronunciations:
+            word_data["pronunciation"] = ", ".join(details.pronunciations)
+        else:
+            word_data["pronunciation"] = ""
+
+        if details.genders:
+            word_data["gender"] = details.genders if len(details.genders) > 1 else details.genders[0]
+        else:
+            word_data["gender"] = ""
+
+        if self.include_etymology and details.etymology:
+            word_data["etymology"] = self._format_etymology(details.etymology)
+        else:
+            word_data["etymology"] = ""
+
+        word_data["definitions"] = self._format_definitions(details.definitions)
+
+        if self.variants.get(word):
+            word_data["variants"] = sorted(self.variants[word])
+
+        return word_data
+
+    def _format_definitions(self, definitions: Definitions) -> dict[str, list[Any]]:
+        """Format definitions preserving nested structure."""
+        result = {}
+        for pos, pos_definitions in definitions.items():
+            formatted_defs = []
+            for definition in pos_definitions:
+                formatted_defs.append(self._format_definition_item(definition))
+            result[pos] = formatted_defs
+        return result
+
+    def _format_definition_item(self, definition: Definition) -> str | list[Any]:
+        """Recursively format a definition item, preserving nesting."""
+        if isinstance(definition, str):
+            return definition
+        elif isinstance(definition, tuple):
+            return [self._format_definition_item(sub_def) for sub_def in definition]
+
+    def _format_etymology(self, etymology: list[Definition]) -> str | list[Any]:
+        """Format etymology preserving nested structure."""
+        if len(etymology) == 0:
+            return ""
+
+        if len(etymology) == 1 and isinstance(etymology[0], str):
+            return etymology[0]
+
+        result: list[str | list[Any]] = []
+        for etym in etymology:
+            if isinstance(etym, str):
+                result.append(etym)
+            elif isinstance(etym, tuple):
+                result.append([self._format_definition_item(sub_etym) for sub_etym in etym])
+
+        return result
+
+    def _estimate_json_size(self, data: dict[str, dict[str, Any]]) -> int:
+        """Estimate the size of JSON data in bytes."""
+        json_str = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+        return len(json_str.encode("utf-8"))
+
+    def _create_volumes(self, all_words: list[tuple[str, Word]], output_dir: Path) -> list[dict[str, Any]]:
+        """Split words into volumes based on size."""
+        volumes = []
+        current_volume_words: dict[str, dict[str, Any]] = {}
+        current_volume_size = 0
+        volume_num = 0
+        first_word = ""
+
+        for word, details in all_words:
+            word_data = self._format_word_data(word, details)
+
+            # Estimate size of adding this word
+            test_entry = {word: word_data}
+            word_size = self._estimate_json_size(test_entry)
+
+            # If this is the first word in the volume, track it
+            if not current_volume_words:
+                first_word = word
+
+            # Check if adding this word would exceed the limit
+            if current_volume_size + word_size > self.max_volume_bytes and current_volume_words:
+                # Save current volume
+                last_word = list(current_volume_words.keys())[-1]
+                volume_info = self._save_volume(volume_num, current_volume_words, first_word, last_word, output_dir)
+                volumes.append(volume_info)
+
+                # Start new volume
+                volume_num += 1
+                current_volume_words = {}
+                current_volume_size = 0
+                first_word = word
+
+            # Add word to current volume
+            current_volume_words[word] = word_data
+            current_volume_size += word_size
+            self.words_count += 1
+
+        # Save the last volume
+        if current_volume_words:
+            last_word = list(current_volume_words.keys())[-1]
+            volume_info = self._save_volume(volume_num, current_volume_words, first_word, last_word, output_dir)
+            volumes.append(volume_info)
+
+        return volumes
+
+    def _save_volume(
+        self, volume_num: int, words: dict[str, Any], first_word: str, last_word: str, output_dir: Path
+    ) -> dict[str, Any]:
+        """Save a single volume and return its metadata."""
+        volume_data = {"words": words}
+
+        filename = f"vol-{volume_num:08d}.json"
+        filepath = output_dir / filename
+
+        with filepath.open("w", encoding="utf-8") as f:
+            json.dump(volume_data, f, ensure_ascii=False, separators=(",", ":"))
+
+        file_size = self._estimate_json_size(volume_data)
+
+        log.info(
+            f"[{self.id()}] Volume {volume_num:08d}: {first_word} → {last_word} "
+            f"({len(words)} words, {file_size / 1024:.1f}KB)"
+        )
+
+        return {
+            "filename": filename,
+            "volumeNum": volume_num,
+            "firstWord": first_word,
+            "lastWord": last_word,
+            "wordCount": len(words),
+            "sizeBytes": file_size,
+        }
+
+    def _save_manifest(self, volumes: list[dict[str, Any]], output_dir: Path) -> None:
+        """Generate and save the manifest.json file."""
+        manifest = {
+            "version": "3.0",
+            "totalVolumes": len(volumes),
+            "totalWords": self.words_count,
+            "maxVolumeSizeKB": self.max_volume_size_kb,
+            "volumes": [
+                {
+                    "file": vol["filename"],
+                    "volumeNum": vol["volumeNum"],
+                    "firstWord": vol["firstWord"],
+                    "lastWord": vol["lastWord"],
+                    "wordCount": vol["wordCount"],
+                    "sizeBytes": vol["sizeBytes"],
+                }
+                for vol in volumes
+            ],
+        }
+
+        manifest_path = output_dir / "manifest.json"
+        with manifest_path.open("w", encoding="utf-8") as f:
+            json.dump(manifest, f, ensure_ascii=False, indent=2)
+
+        log.info("[%s] Generated manifest.json with %d volumes", self.id(), len(volumes))
+        self.compute_checksum(manifest_path)
+
+    def summary(self, file: Path) -> None:
+        """Override summary to handle directory output."""
+        log.info(
+            "[%s] Generated JSON volumes with %s words in %s",
+            self.id(),
+            f"{self.words_count:,}",
+            timedelta(seconds=monotonic() - self.start),
+        )
+        log.info(
+            "[%s] Finished the conversion with %s words, and %s variants, as expected.",
+            self.id(),
+            f"{len(self.words):,}",
+            f"{len(self.variants):,}",
+        )
+
+
 def get_primary_formatters() -> set[type[BaseFormat]]:
-    return {KoboFormat, DictFileFormat}
+    return {KoboFormat, DictFileFormat, JSONVolumeFormat}
 
 
 def get_secondary_formatters() -> set[type[BaseFormat]]:
@@ -826,6 +1066,8 @@ def get_formatters(input: str) -> tuple[set[type[BaseFormat]], set[type[BaseForm
             case "dictorg":
                 primary_formatters.add(DictFileFormat)
                 secondary_formatters.add(DictOrgFormat)
+            case "jsonvolume":
+                primary_formatters.add(JSONVolumeFormat)
             case "kobo" | "dicthtml":
                 primary_formatters.add(KoboFormat)
             case "kindle" | "mobi":

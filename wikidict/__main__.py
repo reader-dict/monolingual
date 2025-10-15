@@ -31,7 +31,7 @@ Options:
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.
   --show-pos                Show part of speechs.
-  --format=FORMAT           Format can be all, dictfile, df, dictorg, kobo, dicthtml, kindle, mobi, stardict or a comma separated list
+  --format=FORMAT           Format can be all, dictfile, df, dictorg, jsonvolume, kobo, dicthtml, kindle, mobi, stardict or a comma separated list
 If no argument given, --download, --parse, --render, --show-pos, and --convert, will be done automatically.
 """
 

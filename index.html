@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Merriweather', serif;
+            background-color: #f4f1ea;
+            color: #2d2d2d;
+            line-height: 1.8;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .search-container {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 18px;
+            font-family: 'Georgia', serif;
+            border: 2px solid #d4cfc4;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #2d2d2d;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #8b7355;
+            box-shadow: 0 2px 8px rgba(139, 115, 85, 0.1);
+        }
+
+        .search-box::placeholder {
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            color: #8b7355;
+            font-size: 14px;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+
+
+        .loading.visible {
+            opacity: 1;
+        }
+
+        .definition-card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .definition-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .word-header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e8e4dc;
+            padding-bottom: 16px;
+        }
+
+        .word-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .word-redirect {
+            font-size: 16px;
+            color: #8b7355;
+            font-style: italic;
+            margin-bottom: 8px;
+        }
+
+        .word-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .word-pronunciation {
+            font-size: 18px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .word-gender {
+            display: inline-block;
+            font-size: 14px;
+            color: #8b7355;
+            background-color: #f9f7f3;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .word-etymology {
+            margin-top: 16px;
+            padding: 16px;
+            background-color: #f9f7f3;
+            border-left: 3px solid #8b7355;
+            border-radius: 4px;
+        }
+
+        .etymology-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8b7355;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .etymology-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+
+
+        .part-of-speech-section {
+            margin-top: 24px;
+        }
+
+        .part-of-speech-section:first-child {
+            margin-top: 0;
+        }
+
+        .part-of-speech {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e8e4dc;
+        }
+
+        .definitions-list {
+            list-style: none;
+            counter-reset: definition-counter;
+        }
+
+        .definition-item {
+            margin-bottom: 20px;
+            padding-left: 32px;
+            position: relative;
+            counter-increment: definition-counter;
+        }
+
+        .definition-item::before {
+            content: counter(definition-counter) ".";
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            color: #8b7355;
+        }
+
+        .definition-text {
+            font-size: 18px;
+            line-height:
+
+                1.8;
+            color: #2d2d2d;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #999;
+            font-size: 16px;
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #8b7355;
+            font-size: 20px;
+            margin-top: 60px;
+            font-style: italic;
+        }
+
+        /* Autocomplete suggestions */
+        .suggestions {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 2px solid #d4cfc4;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .suggestions.visible {
+            display: block;
+        }
+
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2 s ease;
+            border-bottom: 1px solid #f0ede5;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item.selected {
+            background-color: #f9f7f3;
+        }
+
+        .suggestion-word {
+            font-weight: 600;
+            color: #2d2d2d;
+        }
+
+        .suggestion-redirect {
+            font-size: 14px;
+            color: #8b7355;
+            margin-left: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+
+            .definition-card {
+                padding: 24px;
+            }
+
+            .word-title {
+                font-size: 28px;
+            }
+
+            .definition-text {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search for a word..." id="searchInput" autocomplete="off"
+                spellcheck="false">
+            <div class="suggestions" id="suggestions"></div>
+            <div class="loading" id="loading">Loading...</div>
+        </div>
+
+        <div id="results">
+            <div class="welcome-message">
+                Start typing to search the dictionary
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to get query parameters from URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            const langSrc = params.get('lang_src') || 'en';
+            const langDst = params.get('lang_dst') || 'en';
+            return { langSrc, langDst };
+        }
+
+        // Function to construct basePath from language parameters
+        function constructBasePath(langSrc, langDst) {
+            return `/data/${langSrc}/${langDst}/output/jsonvolume-${langSrc}-${langDst}/`;
+        }
+
+        // Volume-based Dictionary Loader
+        class VolumeLoader {
+            constructor(basePath = '/data/fr/fr/output/jsonvolume-fr-fr/') {
+                this.basePath = basePath;
+                this.volumeCache = new Map();  // Cache loaded volumes
+                this.manifest = null;
+            }
+
+            async loadManifest() {
+                if (this.manifest) return this
+
+                    .manifest;
+
+                try {
+                    const response = await fetch(`${this.basePath}manifest.json`);
+                    this.manifest = await response.json();
+                    console.log(`Manifest loaded: ${this.manifest.totalVolumes} volumes, ${this.manifest.totalWords} words`);
+                    return this.manifest;
+                } catch (error) {
+                    console.error('Failed to load manifest:', error);
+                    return null;
+                }
+            }
+
+            async loadVolume(volumeNum) {
+                const cacheKey = volumeNum;
+                if (this.volumeCache.has(cacheKey)) {
+                    return this.volumeCache.get(cacheKey);
+                }
+
+                try {
+                    const filename = `vol-${String(volumeNum).padStart(8, '0')}.json`;
+                    const response = await fetch(`${this.basePath}${filename}`);
+                    const volume = await response.json();
+
+
+                    this.volumeCache.set(cacheKey, volume);
+                    console.log(`Loaded volume ${volumeNum}`);
+                    return volume;
+                } catch (error) {
+                    console.error(`Failed to load volume ${volumeNum}:`, error);
+                    return null;
+                }
+            }
+
+            findVolumeForWord(word) {
+                // Binary search to find which volume contains this word
+                if (!this.manifest || !this.manifest.volumes) return null;
+
+                const volumes = this.manifest.volumes;
+                let left = 0;
+                let right = volumes.length - 1;
+
+                while (left <= right) {
+                    const mid = Math.floor((left + right) / 2);
+                    const volume = volumes[mid];
+
+                    if (word < volume.firstWord) {
+                        right = mid - 1;
+                    } else if (word > volume.lastWord) {
+                        left = mid + 1;
+                    } else {
+                        // Word is in this volume's range
+                        return volume;
+                    }
+                }
+
+                // If not found in range, return the closest volume
+                // This handles edge cases where word might be between volumes
+                if (left < volumes.length) {
+                    return volumes[left];
+                }
+                if (right >= 0) {
+                    return volumes[right];
+                }
+
+                return null;
+            }
+
+            findVolumesForPrefix(prefix, limit = 3) {
+                // Find volumes that might contain words starting with this prefix
+                if (!this.manifest || !this.manifest.volumes) return [];
+
+                const volumes = this.manifest.volumes;
+                const matchingVolumes = [];
+
+                for (const volume of volumes) {
+                    // Check if this volume could contain words with this prefix
+                    //A volume contains the prefix if:
+                    // 1. firstWord starts with prefix, OR
+                    // 2. lastWord starts with prefix, OR
+                    // 3. prefix is between firstWord and lastWord
+
+                    if (volume.firstWord.startsWith(prefix) ||
+                        volume.lastWord.startsWith(prefix) ||
+                        (prefix >= volume.firstWord && prefix <= volume.lastWord)) {
+                        matchingVolumes.push(volume);
+
+                        if (matchingVolumes.length >= limit) {
+                            break;
+                        }
+                    }
+                }
+
+                return matchingVolumes;
+            }
+
+            async lookup(word) {
+                const normalizedWord = word.trim().toLowerCase();
+                if (!normalizedWord) return null;
+
+                await this.loadManifest();
+
+                const volumeInfo = this.findVolumeForWord(normalizedWord);
+                if (!volumeInfo) return null;
+
+                const volume = await this.loadVolume(volumeInfo.volumeNum);
+                if (!volume || !volume.words) return null;
+
+                return volume.words[normalizedWord] || null;
+            }
+
+            async search(query, limit = 10) {
+                const normalizedQuery = query.trim().toLowerCase();
+                if (!normalizedQuery) return [];
+
+                await this.loadManifest();
+
+                // Find volumes that might contain words with this prefix
+                const volumeInfos = this.findVolumesForPrefix(normalizedQuery, 3);
+                if (volumeInfos.length === 0) return [];
+
+                // Load volumes and search for matches
+                const results = [];
+
+                for (const volumeInfo of volumeInfos) {
+                    const volume = await this.loadVolume(volumeInfo.volumeNum);
+                    if (!volume || !volume.words) continue;
+
+                    for (const [word, data] of Object.entries(volume.words)) {
+                        if (word.startsWith(normalizedQuery)) {
+                            results.push({ word, data });
+                            if (results.length >= limit) {
+                                return results;
+                            }
+                        }
+                    }
+                }
+
+                return results;
+            }
+
+            async resolveWord(word) {
+                let entry = await this.lookup(word);
+                if (!entry) return null;
+
+                // Handle redirect
+                if (entry.redirect) {
+                    const headword = entry.redirect;
+                    const definition = await this.lookup(headword);
+                    return {
+                        searchWord: word,
+                        headword: headword,
+                        isRedirect: true,
+                        data: definition
+                    };
+
+
+                }
+
+                // Direct entry
+                return {
+                    searchWord: word,
+                    headword: word,
+                    isRedirect: false,
+                    data: entry
+                };
+            }
+        }
+
+        // UI Controller
+        class DictionaryUI {
+            constructor(basePath) {
+                this.loader = new VolumeLoader(basePath);
+                this.searchInput = document.getElementById('searchInput');
+                this.results = document.getElementById('results');
+                this.loading = document.getElementById('loading');
+                this.suggestions = document.getElementById('suggestions');
+                this.debounceTimer = null;
+                this.selectedSuggestionIndex = -1;
+                this.currentSuggestions = [];
+
+                this.init();
+            }
+
+            init() {
+                this.searchInput.addEventListener('input', (e) => this.handleInput(e));
+                this.search
+
+                Input.addEventListener('keydown', (e) => this.handleKeydown(e));
+                document.addEventListener('click', (e) => this.handleClickOutside(e));
+            }
+
+            handleInput(e) {
+                const query = e.target.value.trim();
+
+                clearTimeout(this.debounceTimer);
+
+                if (!query) {
+                    this.showWelcome();
+                    this.hideSuggestions();
+                    return;
+                }
+
+                this.showLoading();
+
+                this.debounceTimer = setTimeout(async () => {
+                    await this.performSearch(query);
+                }, 300);
+            }
+
+            handleKeydown(e) {
+                if (!this.suggestions.classList.contains('visible')) return;
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    this.selectedSuggestionIndex = Math.min(
+                        this.selectedSuggestionIndex + 1,
+                        this.currentSuggestions.length - 1
+                    );
+                    this.updateSuggestionSelection();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    this.selectedSuggestionIndex = Math.max(this.selectedSuggestionIndex - 1, -1);
+                    this.updateSuggestionSelection();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.selectedSuggestionIndex >= 0) {
+                        const selected = this.currentSuggestions[this.selectedSuggestionIndex];
+                        this.selectWord(selected.word);
+                    } else if (this.currentSuggestions.length > 0) {
+                        this.selectWord(this.currentSuggestions[0].word);
+                    }
+                } else if (e.key === 'Escape') {
+                    this.hideSuggestions();
+                }
+            }
+
+            handle
+
+            ClickOutside(e) {
+                if (!this.searchInput.contains(e.target) && !this.suggestions.contains(e.target)) {
+                    this.hideSuggestions();
+                }
+            }
+
+            async performSearch(query) {
+                const suggestions = await this.loader.search(query, 10);
+                this.currentSuggestions = suggestions;
+                this.selectedSuggestionIndex = -1;
+
+                if (suggestions.length > 0) {
+                    this.showSuggestions(suggestions);
+                    // Auto-display first exact match
+                    if (suggestions[0].word === query.toLowerCase()) {
+                        await this.displayWord(suggestions[0].word);
+                    }
+                } else {
+                    this.hideSuggestions();
+                    this.showNoResults();
+                }
+
+                this.hideLoading();
+            }
+
+            showSuggestions(suggestions) {
+                this.suggestions.innerHTML = suggestions
+
+                    .map((item, index) => {
+                        const isRedirect = item.data.redirect;
+                        return `
+                        <div class="suggestion-item" data-index="${index}" data-word="${item.word}">
+                            <span class="suggestion-word">${item.word}</span>
+                            ${isRedirect ? `<span class="suggestion-redirect">→ ${item.data.redirect}</span>` : ''}
+                        </div>
+                    `;
+                    }).join('');
+
+                this.suggestions.classList.add('visible');
+
+                // Add click handlers
+                this.suggestions.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.selectWord(item.dataset.word);
+                    });
+                });
+            }
+
+            hideSuggestions() {
+                this.suggestions.classList.remove('visible');
+                this.selectedSuggestionIndex = -1
+
+                    ;
+            }
+
+            updateSuggestionSelection() {
+                const items = this.suggestions.querySelectorAll('.suggestion-item');
+                items.forEach((item, index) => {
+                    if (index === this.selectedSuggestionIndex) {
+                        item.classList.add('selected');
+                        item.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        item.classList.remove('selected');
+                    }
+                });
+            }
+
+            async selectWord(word) {
+                this.searchInput.value = word;
+                this.hideSuggestions();
+                await this.displayWord(word);
+            }
+
+            async displayWord(word) {
+                this.showLoading();
+                const result = await this.loader.resolveWord(word);
+                this.hideLoading();
+
+                if (!result || !result.data) {
+
+
+                    this.showNoResults();
+                    return;
+                }
+
+                const data = result.data;
+
+                // Build HTML for the word entry
+                let html = `<div class="definition-card">
+                    <div class="word-header">
+                        <h1 class="word-title">${result.headword}</h1>
+                        ${result.isRedirect ? `<div class="word-redirect">${result.searchWord} → ${result.headword}</div>` : ''}
+                        <div class="word-meta">`;
+
+                // Add pronunciation if available
+                if (data.pronunciation) {
+                    html += `<div class="word-pronunciation">${data.pronunciation}</div>`;
+                }
+
+                // Add gender if available
+                if (data.gender) {
+                    html += `<span class="word-gender">${data.gender}</span>`;
+                }
+
+                html += `</div></div>`;
+
+                // Add etymology if available
+                if (data.etymology) {
+                    html += `<div class="word-etymology">
+                        <div class="etymology-label">Etymology</div>
+                        <div class="etymology-text">${data.etymology}</div>
+                    </div>`;
+                }
+
+                // Add definitions grouped by part of speech
+                if (data.definitions && typeof data.definitions === 'object') {
+                    for (const [partOfSpeech, definitions] of Object.entries(data.definitions)) {
+                        html += `<div class="part-of-speech-section">
+                            <h2 class="part-of-speech">${partOfSpeech}</h2>
+                            <ol class="definitions-list">`;
+
+                        const defArray = Array.isArray(definitions) ? definitions : [definitions];
+                        defArray.forEach(def => {
+                            html += `<li class="definition-item">
+                                <div class="definition-text">${def}</div>
+                            </li>`;
+                        });
+
+                        html += `</ol></div>`;
+                    }
+                }
+
+                html += `</div>`;
+
+                this.results.innerHTML = html;
+
+                // Trigger animation
+                setTimeout(() => {
+                    const card = this.results.querySelector('.definition-card');
+                    if (card) card.classList.add('visible');
+                }, 10);
+            }
+
+            showLoading() {
+                this.loading.classList.add('visible');
+            }
+
+            hideLoading() {
+                this.loading.classList.remove('visible');
+            }
+
+            showWelcome() {
+                this.results.innerHTML = `<div class="welcome-message">
+                        Start typing to search the dictionary
+                    </div>
+                `;
+            }
+
+            showNoResults() {
+                this.results.innerHTML = `
+                    <div class="no-results">
+                        No results found
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize the app with query parameters
+        const { langSrc, langDst } = getQueryParams();
+        const basePath = constructBasePath(langSrc, langDst);
+        console.log(`Initializing dictionary with basePath: ${basePath}`);
+        const app = new DictionaryUI(basePath);
+    </script>
+</body>
+
+</html>
