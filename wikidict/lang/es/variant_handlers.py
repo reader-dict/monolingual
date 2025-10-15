@@ -41,6 +41,7 @@ handlers = {
             "forma adjetiva",
             "forma adjetivo",
             "forma adjetivo 2",
+            "forma artículo",
             "forma diminutivo",
             "forma participio",
             "forma pronombre",
