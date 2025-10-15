@@ -190,7 +190,7 @@ def process(file: Path, locale: str) -> dict[str, str]:
         words[unescape(title)] = unescape(code)
 
     context.adapt_templates(lang_dst)
-
+    context.close_ctx()
     return words
 
 
