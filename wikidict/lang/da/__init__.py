@@ -123,6 +123,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
 
 ALL_FORMS = [
+    "bestemt ental af",
     "da-adj-1",
     "da-adj-2",
     "da-noun-1",
@@ -136,13 +137,17 @@ ALL_FORMS = [
     "ental bestemt af",
     "flertal af",
     "genitivform af",
+    "genitiv bestemt ental af",
     "genitiv ental ubestemt af",
     "genitiv ubestemt entalsform af",
+    "imperativ af",
     "nutid af",
     "pluralis af",
+    "præsens af",
     "præsens participium af",
     "præteritum participium af",
     "præteritum af",
+    "ubestemt flertal af",
 ]
 
 
