@@ -140,7 +140,9 @@ ALL_FORMS = [
     "genitiv ubestemt entalsform af",
     "nutid af",
     "pluralis af",
+    "præsens participium af",
     "præteritum participium af",
+    "præteritum af",
 ]
 
 
@@ -199,6 +201,8 @@ def adjust_wikicode(
     '# {{flexion|tale}}'
     >>> adjust_wikicode("# {{flertal af}} '''[[tale]]'''", "da")
     '# {{flexion|tale}}'
+    >>> adjust_wikicode("#''præsens participium af'' '''[[abandonnere]]'''.", "da")
+    '# {{flexion|abandonnere}}'
     >>> adjust_wikicode("# {{flertal af}} {{l|da|tale}}", "da")
     '# {{flexion|{{l|da|tale}}}}'
     >>> adjust_wikicode("# {{flertal af}} {{l|da|tale|taler}}", "da")
@@ -283,7 +287,9 @@ def adjust_wikicode(
         rf"(?:{forms})\s+\[\[([^\]#|]+)(?:[#|].+)?]]",
         # {{flertal af}} '''[[tale]]'''
         rf"\{{\{{(?:{forms})\}}\}} '*\[\[([^\]]+)",
-        # `# {{flertal af}} {{l|da|tale}}
+        #''præsens participium af'' '''[[abandonnere]]'''.
+        rf"'+(?:{forms})[\s']+\[\[([^\]]+)",
+        # {{flertal af}} {{l|da|tale}}
         rf".*\{{\{{(?:{forms})\}}\}}\s+(\{{\{{[^}}]+\}}\}})",
     ]
 
