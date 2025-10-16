@@ -42,7 +42,7 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Suffixe": [
-                    "Suffixe servant à former des mots féminins.<b>Note : </b> Voir aussi au suffixe <i>-esse</i>."
+                    "Suffixe servant à former des mots féminins.<br/><b>Note : </b> Voir aussi au suffixe <i>-esse</i>."
                 ]
             },
             [],
