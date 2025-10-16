@@ -50,8 +50,12 @@ handlers = {
         },
         render_variant,
     ),
-    **dict.fromkeys(
-        {"rev-flexion", "da-noun", "da-noun-infl", "da-verb"},
-        render_reverse_variant,
-    ),
+    "rev-flexion": render_reverse_variant,
 }
+
+
+def append_to_reverse_variants(tpl: str) -> None:
+    """Dynamically append a template to reverse variants templates."""
+    if tpl in handlers:
+        return
+    handlers[tpl] = render_reverse_variant
