@@ -119,7 +119,7 @@ def get_ctx() -> Context:
 
 
 def setup_modules_db(locale: str, *, db_already_setup: bool = True) -> bool:
-    lang_src, _ = utils.guess_locales(locale, use_log=False)
+    lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
     if not (input_file := parse.get_latest_xml_file(source_dir)):
         print("No dump found. Run with --parse first ... ")
@@ -127,7 +127,7 @@ def setup_modules_db(locale: str, *, db_already_setup: bool = True) -> bool:
 
     snapshot = input_file.stem[6:14]
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
-    db_path = parse.get_output_file_modules(source_dir, lang_src, lang_src, snapshot)
+    db_path = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
     db_path.parent.mkdir(exist_ok=True)
     init(db_path, lang_src, db_already_setup=db_already_setup)
     return True
