@@ -344,7 +344,7 @@ def adjust_wikicode(
                 continue
 
             for tpl in re.findall(pattern, line):
-                tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip()
+                tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)
                 cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
