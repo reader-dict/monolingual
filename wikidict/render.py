@@ -614,9 +614,9 @@ def init_worker(locale: str) -> None:
         exit(1)
 
 
-def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
-    if multiprocessing.get_start_method() != "spawn":
-        multiprocessing.set_start_method("spawn", force=True)
+def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_start_method: str = "spawn") -> Words:
+    if multiprocessing.get_start_method() != parallelism_start_method:
+        multiprocessing.set_start_method(parallelism_start_method, force=True)
 
     manager = multiprocessing.Manager()
     managed_results = manager.dict()
@@ -729,7 +729,7 @@ def hook_after(words: Words) -> None:
     pass
 
 
-def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
+def main(locale: str, *, workers: int = multiprocessing.cpu_count(), parallelism_start_method: str = "spawn") -> int:
     """Entry point."""
 
     start = monotonic()
@@ -748,7 +748,7 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count()) -> int:
 
     log.info("Rendering ...")
     workers = workers or multiprocessing.cpu_count()
-    hook_after(words := render(in_words, locale, workers))
+    hook_after(words := render(in_words, locale, workers, parallelism_start_method=parallelism_start_method))
 
     ret = 1
     if words:
