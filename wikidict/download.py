@@ -12,7 +12,16 @@ from pathlib import Path
 from time import monotonic
 
 from requests.exceptions import HTTPError
-from rich.progress import BarColumn, DownloadColumn, Progress, TextColumn, TimeRemainingColumn, TransferSpeedColumn
+from rich.progress import (
+    BarColumn,
+    DownloadColumn,
+    Progress,
+    SpinnerColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
+)
 
 from . import constants, utils
 
@@ -28,8 +37,10 @@ def decompress(locale: str, file_in: Path, file_out: Path) -> None:
         return
 
     with Progress(
+        SpinnerColumn(),
         TextColumn("[bold blue]{task.description}"),
         BarColumn(),
+        TimeElapsedColumn(),
     ) as progress:
         progress.add_task(f"[{locale.upper()}] Decompressing dump", total=None)
 
