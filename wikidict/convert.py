@@ -185,7 +185,7 @@ class BaseFormat:
         self.words_count = 0
         self.variants_count = 0
 
-        utils.setup_logging(self.effective_lang_src(), self.effective_lang_dst())
+        utils.setup_logging(self.effective_lang_dst(), self.effective_lang_src())
         log.info(
             "[%s] Starting the conversion with %s words, and %s variants ...",
             self.id(),
