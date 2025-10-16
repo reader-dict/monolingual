@@ -9,15 +9,25 @@ import multiprocessing
 import os
 import re
 from collections import defaultdict
+from contextlib import suppress
 from datetime import timedelta
-from itertools import batched
-from multiprocessing.managers import DictProxy, ListProxy
+from functools import partial
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import wikitextparser as wtp
 import wikitextparser._spans
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    SpinnerColumn,
+    TaskProgressColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+)
 
 from . import constants, context, lang, utils
 from .stubs import Definition, Definitions, Word
@@ -573,87 +583,106 @@ def load(file: Path) -> dict[str, str]:
     return words
 
 
-def render_words(
-    words: list[tuple[str, str]],
+def render_word(
+    w: tuple[str, str],
     results: Words,
     locale: str,
     *,
     templates_status: list[tuple[str, str]] | None = None,
 ) -> None:
-    if not context.setup_modules_db(locale):
-        exit(1)
+    word, code = w
+    try:
+        details = parse_word(word, code, locale, templates_status=templates_status)
+    except KeyboardInterrupt:
+        pass
+    except Exception:
+        log.exception("ERROR with %r", word)
+    else:
+        if details.definitions or details.variants or details.reverse_variants:
+            results[word] = details
 
-    logging.basicConfig(level=logging.INFO)
-
-    for word, code in words:
-        try:
-            details = parse_word(word, code, locale, templates_status=templates_status)
-        except KeyboardInterrupt:
-            pass
-        except Exception:
-            log.exception("ERROR with %r", word)
-        else:
-            if details.definitions or details.variants or details.reverse_variants:
-                results[word] = details
-                continue
-
-        if DEBUG_EMPTY_WORDS:
-            print(f"Empty {word = }", flush=True)
+    if DEBUG_EMPTY_WORDS:
+        print(f"Empty {word = }", flush=True)
 
     if DEBUG_LUA:
         log.info("Job done.")
 
 
-def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
-    items = in_words.items()
-    chunk_size, extra = divmod(len(items), workers)
-    if extra:
-        chunk_size += 1
+def init_worker(locale: str) -> None:
+    logging.basicConfig(level=logging.INFO)
+    if not context.setup_modules_db(locale):
+        exit(1)
 
+
+def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
     if multiprocessing.get_start_method() != "spawn":
         multiprocessing.set_start_method("spawn", force=True)
 
     manager = multiprocessing.Manager()
-    results: DictProxy[str, Word] = manager.dict()
-    templates_status: ListProxy[list[tuple[str, str, str]]] = manager.list()
-    jobs = []
+    managed_results = manager.dict()
+    results: dict[str, Word] = cast(dict[str, Word], managed_results)
+    managed_template_status = manager.list()
+    templates_status: list[tuple[str, str]] = cast(list[tuple[str, str]], managed_template_status)
+    manager.dict()
 
-    for chunk in batched(items, chunk_size):
-        job = multiprocessing.Process(
-            target=render_words,
-            args=(chunk, results, locale),
-            kwargs={"templates_status": templates_status},
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(complete_style="green", finished_style="bold green"),
+        TaskProgressColumn(),
+        MofNCompleteColumn(),
+        TextColumn("•"),
+        TimeElapsedColumn(),
+        TextColumn("•"),
+        TimeRemainingColumn(),
+        transient=False,
+    ) as progress:
+        main_task = progress.add_task(f"[cyan]Rendering {len(in_words):,} words", total=len(in_words))
+        with (
+            suppress(KeyboardInterrupt),
+            multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
+        ):
+            for _ in pool.imap_unordered(
+                partial(render_word, results=results, locale=locale, templates_status=templates_status),
+                in_words.items(),
+                chunksize=1000,
+            ):
+                progress.advance(main_task)
+
+        # Final update to ensure we show 100%
+        progress.update(
+            main_task,
+            completed=len(in_words),
+            description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete",
         )
-        jobs.append(job)
-        job.start()
 
-    for job in jobs:
-        job.join()
+        utils.check_for_templates_status(managed_template_status._getvalue())
 
-    utils.check_for_templates_status(templates_status._getvalue())
+        results_final: Words = managed_results._getvalue()
 
-    results_final: Words = results._getvalue()
+        _, lang_dst = utils.guess_locales(locale, use_log=False)
+        if lang.reverse_variant_titles[lang_dst]:
+            reverse_task = progress.add_task("[magenta]Handling reverse variants", total=len(results))
 
-    _, lang_dst = utils.guess_locales(locale, use_log=False)
-    if lang.reverse_variant_titles[lang_dst]:
-        log.info("Handling reverse variants ...")
+            for word, details in results.items():
+                if not details.reverse_variants:
+                    progress.update(reverse_task, advance=1)
+                    continue
 
-        for word, details in results.items():
-            if not details.reverse_variants:
-                continue
+                if not details.definitions and all(form not in results_final for form in details.reverse_variants):
+                    # Most likely a foreign word with no definitions in the current locale
+                    results_final.pop(word, None)
+                    progress.update(reverse_task, advance=1)
+                    continue
 
-            if not details.definitions and all(form not in results_final for form in details.reverse_variants):
-                # Most likely a foreign word with no definitions in the current locale
-                results_final.pop(word, None)
-                continue
+                for form in details.reverse_variants:
+                    try:
+                        results_final[form].variants = sorted({*results_final[form].variants, word})
+                    except KeyError:
+                        results_final[form] = Word([], [], [], {}, [word], [])
+                progress.update(reverse_task, advance=1)
 
-            for form in details.reverse_variants:
-                try:
-                    results_final[form].variants = sorted({*results_final[form].variants, word})
-                except KeyError:
-                    results_final[form] = Word([], [], [], {}, [word], [])
-
-        log.info("Handling reverse variants ... Done")
+            progress.update(reverse_task, description="[magenta]Handled reverse variants • [green]✓[/green] Complete")
 
     return results_final
 
