@@ -7,7 +7,10 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return form.replace("&nbsp;", " ").strip()
+    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").strip(" []()")
+    if " (" in cleaned:
+        cleaned = cleaned.split(" (", 1)[0]
+    return cleaned
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -38,12 +41,16 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                     elif line in {"Akkusativ", "Bestemt", "Dativ", "Genitiv", "Nominativ", "Ubestemt"}:
                         continue
                     # Try 3
-                    elif line.strip("[]"):
-                        forms.add(cleanup(line))
+                    elif line.strip("[]()"):
+                        if ",<br>" in line:
+                            forms.update([cleanup(f) for f in line.split(",<br>")])
+                        else:
+                            forms.add(cleanup(line))
 
     forms.discard(word)
     forms.discard("-")
     forms.discard("—")
+    forms.discard("")
 
     if "s" in forms:
         forms.discard("s")
@@ -71,7 +78,13 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0].strip()
 
-    table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "da")
+    template = "|".join((*parts, *[f"{k}={v}" for k, v in data.items()]))
+    table = context.expand(f"{{{{{tpl}|{template}}}}}", "da")
+    if not table.startswith("{|"):
+        if (idx := table.find("{|")) == -1:
+            return ""
+        table = table[idx:]
+
     return "|".join(
         utils.remove_parens(form.strip())
         for form in table_to_forms(word, table)
