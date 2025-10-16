@@ -87,6 +87,8 @@ def fetch_pages(date: str, locale: str, output: Path) -> None:
             DownloadColumn(),
             TransferSpeedColumn(),
             TimeRemainingColumn(),
+            TextColumn("•"),
+            TimeElapsedColumn(),
         ) as progress:
             task = progress.add_task(f"[{locale.upper()}] Downloading dump", total=total_size)
 

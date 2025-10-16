@@ -19,6 +19,7 @@ from rich.progress import (
     SpinnerColumn,
     TaskProgressColumn,
     TextColumn,
+    TimeElapsedColumn,
     TimeRemainingColumn,
     TotalFileSizeColumn,
     TransferSpeedColumn,
@@ -58,6 +59,8 @@ def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
         TransferSpeedColumn(),
         "•",
         TimeRemainingColumn(),
+        "•",
+        TimeElapsedColumn(),
     ) as progress:
         task = progress.add_task(f"[cyan][{locale.upper()}] Parsing {file.name}", total=file_size)
         with file.open(encoding="utf-8") as fh:
