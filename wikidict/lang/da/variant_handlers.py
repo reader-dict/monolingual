@@ -10,7 +10,7 @@ def cleanup(form: str) -> str:
     cleaned = utils.remove_parens(form).replace("&nbsp;", " ").strip(" []()")
     if " (" in cleaned:
         cleaned = cleaned.split(" (", 1)[0]
-    return cleaned
+    return "" if "{" in cleaned else cleaned
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -34,7 +34,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             data = table.data(span=False)
             for lines in data[1:]:
                 for line in lines:
-                    if "''" in line:
+                    if not line or "''" in line:
                         continue
                     if form := re.findall(r"\[\[([^\]#]+)", line):
                         forms.add(cleanup(form[0]))
@@ -84,12 +84,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         if (idx := table.find("{|")) == -1:
             return ""
         table = table[idx:]
-
-    return "|".join(
-        utils.remove_parens(form.strip())
-        for form in table_to_forms(word, table)
-        if "{" not in form and form not in {"-", word}
-    )
+    return "|".join(table_to_forms(word, table))
 
 
 handlers = {
