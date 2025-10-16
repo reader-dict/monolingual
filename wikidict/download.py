@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import bz2
 import logging
 import os
 import re
+import shutil
 from datetime import timedelta
 from pathlib import Path
 from time import monotonic
@@ -15,6 +17,24 @@ from rich.progress import BarColumn, DownloadColumn, Progress, TextColumn, TimeR
 from . import constants, utils
 
 log = logging.getLogger(__name__)
+
+
+def decompress(locale: str, file_in: Path, file_out: Path) -> None:
+    """Decompress a BZ2 file."""
+    msg = f"Uncompressing into {file_out}"
+    log.info(msg)
+
+    if file_out.is_file():
+        return
+
+    with Progress(
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(),
+    ) as progress:
+        progress.add_task(f"[{locale.upper()}] Decompressing dump", total=None)
+
+        with bz2.BZ2File(file_in, mode="rb") as fr, file_out.open(mode="wb") as fw:
+            shutil.copyfileobj(fr, fw)
 
 
 def fetch_snapshots(locale: str) -> list[str]:
@@ -71,6 +91,10 @@ def get_output_file_compressed(locale: str, snapshot: str) -> Path:
     return Path(os.getenv("CWD", "")) / "data" / locale / f"pages-{snapshot}.xml.bz2"
 
 
+def get_output_file_uncompressed(file: Path) -> Path:
+    return file.with_suffix(file.suffix.replace(".bz2", ""))
+
+
 def main(locale: str) -> int:
     """Entry point."""
 
@@ -83,11 +107,14 @@ def main(locale: str) -> int:
     # Fetch and uncompress the snapshot file
     for snapshot in snapshots[::-1]:
         file_compressed = get_output_file_compressed(locale, snapshot)
+        file_uncompressed = get_output_file_uncompressed(file_compressed)
         try:
             fetch_pages(snapshot, locale, file_compressed)
+            decompress(locale, file_compressed, file_uncompressed)
             break
         except HTTPError as exc:
             file_compressed.unlink(missing_ok=True)
+            file_uncompressed.unlink(missing_ok=True)
             if exc.response.status_code != 404:
                 raise
             log.warning("Wiktionary dump is ongoing ... ")

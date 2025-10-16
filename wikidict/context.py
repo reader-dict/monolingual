@@ -121,7 +121,7 @@ def get_ctx() -> Context:
 def setup_modules_db(locale: str, *, db_already_setup: bool = True) -> bool:
     lang_src, _ = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
-    if not (input_file := parse.get_latest_file(source_dir)):
+    if not (input_file := parse.get_latest_xml_file(source_dir)):
         print("No dump found. Run with --parse first ... ")
         return False
 

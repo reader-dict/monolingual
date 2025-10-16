@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import bz2
 import json
 import logging
 import os
@@ -61,8 +60,8 @@ def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
         TimeRemainingColumn(),
     ) as progress:
         task = progress.add_task(f"[cyan][{locale.upper()}] Parsing {file.name}", total=file_size)
-        with bz2.open(file, "rt", encoding="utf-8") as fh:
-            current_size = fh.buffer._buffer.raw._fp.tell  # type: ignore[attr-defined]
+        with file.open(encoding="utf-8") as fh:
+            current_size = fh.buffer.tell  # type: ignore[attr-defined]
             current_page: list[str] = []
             in_page = False
             start_tag = "  <page>\n"
@@ -154,12 +153,11 @@ def xml_parse_element(
 
 def process(file: Path, locale: str) -> dict[str, str]:
     """Process the big XML file and retain only information we are interested in."""
-    utils.setup_logging(*utils.guess_locales(locale, use_log=False))
-    context.setup_modules_db(locale, db_already_setup=False)
-
-    words: dict[str, str] = {}
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
+    utils.setup_logging(lang_src, lang_dst)
+
+    words: dict[str, str] = {}
     log.info("Processing %s for destination lang %r ...", file, lang_dst)
 
     if lang_src == "de":
@@ -172,9 +170,22 @@ def process(file: Path, locale: str) -> dict[str, str]:
             flags=re.IGNORECASE | re.MULTILINE,
         ).finditer  # type: ignore[assignment]
 
-    module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]+)</title>").finditer
-    template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
-    appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
+    if is_monolingual := lang_src == lang_dst:
+        context.setup_modules_db(locale, db_already_setup=False)
+
+        module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]+)</title>").finditer
+        template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
+        appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
+    else:
+
+        def module_matcher(*_, **__):  # type: ignore[no-untyped-def]
+            yield from ()
+
+        def template_matcher(*_, **__):  # type: ignore[no-untyped-def]
+            yield from ()
+
+        def appendix_matcher(*_, **__):  # type: ignore[no-untyped-def]
+            yield from ()
 
     for element in xml_iter_parse(file, lang_dst):
         title, code = xml_parse_element(
@@ -188,8 +199,10 @@ def process(file: Path, locale: str) -> dict[str, str]:
             continue
         words[unescape(title, entities=constants.HTML_REPL_TITLE)] = unescape(code, entities=constants.HTML_REPL_BODY)
 
-    context.adapt_templates(lang_dst)
-    context.close_ctx()
+    if is_monolingual:
+        context.adapt_templates(lang_dst)
+        context.close_ctx()
+
     return words
 
 
@@ -206,9 +219,9 @@ def save(output: Path, words: dict[str, str]) -> None:
     log.info("Saved %s words into %s", f"{len(words):,}", output)
 
 
-def get_latest_file(source_dir: Path) -> Path | None:
-    """Get the name of the latest downloaded dump file."""
-    files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml.bz2"))
+def get_latest_xml_file(source_dir: Path) -> Path | None:
+    """Get the name of the last pages-*.xml file."""
+    files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml"))
     return sorted(files)[-1] if files else None
 
 
@@ -231,7 +244,7 @@ def main(locale: str) -> int:
     lang_src, lang_dst = utils.guess_locales(locale)
 
     source_dir = get_source_dir(lang_src)
-    if not (input_file := get_latest_file(source_dir)):
+    if not (input_file := get_latest_xml_file(source_dir)):
         log.error("No dump found. Run with --download first ... ")
         return 1
 
