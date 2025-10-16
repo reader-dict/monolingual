@@ -35,7 +35,6 @@ def setup_logging(lang_src: str, lang_dst: str) -> None:
         format="%(asctime)s %(levelname)s:%(name)s:%(process)d %(message)s",
         level=logging.INFO,
     )
-    print("Logs:", log_file, flush=True)
 
 
 def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
