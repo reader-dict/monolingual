@@ -8,11 +8,15 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     """
     >>> render_variant("прич.", ["зыбить"], defaultdict(str), "")
     'зыбить'
+    >>> render_variant("прич.", ["находить (наталкиваться)", "наст"], defaultdict(str), "")
+    'находить'
     >>> render_variant("прич.", ["<small>?</small>"], defaultdict(str), "")
     ''
     """
     if (variant := parts[0]) == "<small>?</small>":
         variant = ""
+    if " (" in variant:
+        variant = variant.split(" (", 1)[0]
     return variant
 
 
