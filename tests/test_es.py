@@ -301,7 +301,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
-            [],
+            ["le", "les", "se"],
         ),
         (
             "Mús.",

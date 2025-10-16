@@ -1,7 +1,43 @@
 import re
 from collections import defaultdict
 
-from ... import context
+import wikitextparser as wtp
+
+from ... import context, utils
+
+
+def cleanup(form: str) -> str:
+    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").strip(" []()")
+    if " (" in cleaned:
+        cleaned = cleaned.split(" (", 1)[0]
+    return "" if "{" in cleaned else cleaned
+
+
+def table_to_forms(word: str, wikitext: str) -> list[str]:
+    forms: set[str] = set()
+    tables = wtp.parse(wikitext).get_tables(recursive=True)
+
+    # Try 1
+    for table in tables:
+        cells = table.data(span=False)
+        for lines in cells:
+            for line in lines:
+                if not line:
+                    continue
+                forms.update([cleanup(form) for form in re.findall(r"\[\[([^\]]+)\|\1\]\]", line)])
+
+        # Try 2
+        if not forms:
+            for lines in cells:
+                for line in lines[1:]:  # Skip the header
+                    if not line:
+                        continue
+                    forms.update([cleanup(form) for form in re.findall(r"\[\[([^#]+)#", line)])
+
+    forms.discard(word)
+    forms.discard("")
+
+    return sorted(forms)
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -22,14 +58,13 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0]
 
-    forms: set[str]
-    expanded = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "es")
-    if tpl.endswith(".v"):
-        forms = set(re.findall(r"\[\[([^\]]+)\|\1\]\]", expanded))
-    else:
-        table = "\n".join(line for line in expanded.splitlines() if line.lstrip().startswith("|[["))
-        forms = set(re.findall(r"\[\[([^#]+)#", table))
-    return "|".join(form.strip() for form in sorted(forms) if "{" not in form if form)
+    template = "|".join((*parts, *[f"{k}={v}" for k, v in data.items()]))
+    table = context.expand(f"{{{{{tpl}|{template}}}}}", "da")
+    if not table.startswith("{|"):
+        if (idx := table.find("{|")) == -1:
+            return ""
+        table = table[idx:]
+    return "|".join(table_to_forms(word, table))
 
 
 handlers = {
