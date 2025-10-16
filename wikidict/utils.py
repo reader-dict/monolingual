@@ -24,13 +24,14 @@ KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 log = logging.getLogger(__name__)
 
 
-def setup_logging(lang_src: str, lang_dst: str) -> Path:
+def setup_logging(lang_src: str, lang_dst: str, file_mode: str = "a") -> Path:
     log_dir = Path("logs") / lang_dst
     log_dir.mkdir(exist_ok=True, parents=True)
     log_file = log_dir / f"{lang_src}.log"
     logging.basicConfig(
         datefmt="%Y-%m-%d %H:%M:%S",
         filename=log_file,
+        filemode=file_mode,
         force=True,
         format="%(asctime)s %(levelname)s:%(name)s:%(process)d %(message)s",
         level=logging.INFO,
