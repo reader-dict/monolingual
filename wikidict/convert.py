@@ -1047,15 +1047,14 @@ def get_latest_json_file(source_dir: Path) -> Path | None:
     return sorted(files)[-1] if files else None
 
 
-def get_formatters(input: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]], bool]:
+def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]], bool]:
     primary_formatters: set[type[BaseFormat]] = set()
     secondary_formatters: set[type[BaseFormat]] = set()
     mobi_run = False
-    if not input:
-        input = "all"
-    formats = input.split(",")
-    for f in formats:
-        match f:
+    if not formats:
+        formats = "all"
+    for fmt in formats.split(","):
+        match fmt:
             case "dictfile" | "df":
                 primary_formatters.add(DictFileFormat)
             case "dictorg":
@@ -1076,7 +1075,7 @@ def get_formatters(input: str) -> tuple[set[type[BaseFormat]], set[type[BaseForm
                 mobi_run = True
                 break
             case _:
-                print(f"Unknown format: {f}")
+                print(f"Unknown format: {fmt}")
     return primary_formatters, secondary_formatters, mobi_run
 
 
