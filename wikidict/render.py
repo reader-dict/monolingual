@@ -8,6 +8,7 @@ import logging
 import multiprocessing
 import os
 import re
+import warnings
 from collections import defaultdict
 from contextlib import suppress
 from datetime import timedelta
@@ -615,6 +616,9 @@ def init_worker(locale: str) -> None:
 
 
 def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_start_method: str = "spawn") -> Words:
+    if parallelism_start_method == "fork":
+        warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*may lead to deadlocks in the child.*")
+
     if multiprocessing.get_start_method() != parallelism_start_method:
         multiprocessing.set_start_method(parallelism_start_method, force=True)
 
