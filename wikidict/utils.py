@@ -24,7 +24,7 @@ KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 log = logging.getLogger(__name__)
 
 
-def setup_logging(lang_src: str, lang_dst: str) -> None:
+def setup_logging(lang_src: str, lang_dst: str) -> Path:
     log_dir = Path("logs") / lang_dst
     log_dir.mkdir(exist_ok=True, parents=True)
     log_file = log_dir / f"{lang_src}.log"
@@ -35,6 +35,7 @@ def setup_logging(lang_src: str, lang_dst: str) -> None:
         format="%(asctime)s %(levelname)s:%(name)s:%(process)d %(message)s",
         level=logging.INFO,
     )
+    return log_file
 
 
 def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
