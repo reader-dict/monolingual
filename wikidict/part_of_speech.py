@@ -227,6 +227,12 @@ MERGE = {
         "expr": "expresie",
         "top": "substantiv",
     },
+    "ru": {
+        "семантические свойства": "свойства",  # semantic properties
+        "морфологические и синтаксические свойства": "свойства",  # morphological and syntactic properties
+        "как самостоятельный глагол": "глагол",  # verb
+        "в значении вспомогательного глагола или связки": "глагол",  # auxiliary verb
+    },
     "sv": {
         "förkortningar": "förkortning",
         "prepositionsfras": "preposition",
