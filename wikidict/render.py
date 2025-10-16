@@ -653,7 +653,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         progress.update(
             main_task,
             completed=len(in_words),
-            description=f"[magenta]Rendered {len(in_words):,} words • [green]✓[/green] Complete",
+            description="[magenta]Rendered words • [green]✓[/green] Complete",
         )
 
         utils.check_for_templates_status(managed_template_status._getvalue())
