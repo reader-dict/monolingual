@@ -64,7 +64,7 @@ def fetch_pages(date: str, locale: str, output: Path) -> None:
                     size = fh.write(chunk)
                     progress.update(task, advance=size)
 
-    log.info("Download complete: %s [%s bytes]", output, f"{output.stat().st_size:,}")
+    log.info(f"[{locale.upper()}] Download complete: %s [%s bytes]", output, f"{output.stat().st_size:,}")
 
 
 def get_output_file_compressed(locale: str, snapshot: str) -> Path:

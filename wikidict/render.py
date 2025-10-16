@@ -654,7 +654,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         progress.update(
             main_task,
             completed=len(in_words),
-            description="[magenta]Rendered words • [green]✓[/green] Complete",
+            description=f"[magenta][{lang_dst.upper()}] Rendered words [green]✓[/green] Complete",
         )
 
         utils.check_for_templates_status(managed_template_status._getvalue())
@@ -684,7 +684,10 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
                         results_final[form] = Word([], [], [], {}, [word], [])
                 progress.update(reverse_task, advance=1)
 
-            progress.update(reverse_task, description="[magenta]Handled reverse variants • [green]✓[/green] Complete")
+            progress.update(
+                reverse_task,
+                description=f"[magenta][{lang_dst.upper()}] Handled reverse variants [green]✓[/green] Complete",
+            )
 
     return results_final
 
