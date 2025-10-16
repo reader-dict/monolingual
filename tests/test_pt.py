@@ -49,7 +49,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
-            ["-", "a", "as"],
+            ["a", "as"],
         ),
         (
             "ababalhar",

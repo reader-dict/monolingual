@@ -1,7 +1,42 @@
 import re
 from collections import defaultdict
 
+import wikitextparser as wtp
+
 from ... import context, utils
+
+
+def cleanup(form: str) -> str:
+    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").replace("não ", "").strip(" []()/")
+    if " (" in cleaned:
+        cleaned = cleaned.split(" (", 1)[0]
+    if any(char in cleaned for char in "{|[]") or cleaned.lower() in {"plural", "singular", "subjuntivo"}:
+        return ""
+    return cleaned
+
+
+def table_to_forms(word: str, wikitext: str) -> list[str]:
+    wikitext = re.sub(r"<sup>\d+</sup>", "", wikitext)
+    wikitext = wikitext.replace("<br>", "\n| ").replace("<br/>", "\n| ")
+
+    forms: set[str] = set()
+    tables = wtp.parse(wikitext).get_tables(recursive=True)
+
+    for table in tables:
+        cells = table.data(span=False)
+        for lines in cells:
+            for item in lines:
+                if not item or "''" in item:
+                    continue
+                raw_forms = re.findall(r"\[\[(.+)#\w+\|\1\]\]", item) or [item]
+                forms.update([cleanup(form) for form in raw_forms])
+
+    forms.discard(word)
+    forms.discard("&ndash;")
+    forms.discard("-")
+    forms.discard("")
+
+    return sorted(forms)
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -20,28 +55,13 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0]
 
-    forms: set[str]
-    table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "pt")
-
-    if tpl.startswith("flex."):
-        forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table))
-    elif tpl.startswith("conj/"):
-        lines = "\n".join(line for line in table.splitlines() if line.startswith("| "))
-        lines = re.sub(r"<sup>\d+</sup>", "", lines)
-        lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
-        forms = {form[2:].strip().removeprefix("não ").removesuffix(" /") for form in lines.splitlines()}
-    else:
-        lines = "\n".join(
-            line for line in table.splitlines() if line.startswith('| bgcolor="#F5F5F5"') and not line.endswith("''")
-        )
-        lines = lines.replace("<br>", "\n| ").replace("<br/>", "\n| ")
-        forms = {form.split("|")[-1].strip() for form in lines.splitlines()}
-
-    return "|".join(
-        utils.remove_parens(form_san)
-        for form in forms
-        if (form_san := form.strip()) and "{" not in form_san and "&" not in form_san
-    )
+    template = "|".join((*parts, *[f"{k}={v}" for k, v in data.items()]))
+    table = context.expand(f"{{{{{tpl}|{template}}}}}", "da")
+    if not table.startswith("{|"):
+        if (idx := table.find("{|")) == -1:
+            return ""
+        table = table[idx:]
+    return "|".join(table_to_forms(word, table))
 
 
 handlers = {
