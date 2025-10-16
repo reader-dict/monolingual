@@ -7,6 +7,7 @@ import os
 import re
 from collections import defaultdict
 from functools import cache, partial
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import regex
@@ -21,6 +22,20 @@ if TYPE_CHECKING:
 KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 
 log = logging.getLogger(__name__)
+
+
+def setup_logging(lang_src: str, lang_dst: str) -> None:
+    log_dir = Path("logs") / lang_dst
+    log_dir.mkdir(exist_ok=True, parents=True)
+    log_file = log_dir / f"{lang_src}.log"
+    logging.basicConfig(
+        datefmt="%Y-%m-%d %H:%M:%S",
+        filename=log_file,
+        force=True,
+        format="%(asctime)s %(levelname)s:%(name)s:%(process)d %(message)s",
+        level=logging.INFO,
+    )
+    print("Logs:", log_file, flush=True)
 
 
 def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:

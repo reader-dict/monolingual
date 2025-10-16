@@ -31,6 +31,7 @@ def main(locale: str) -> int:
     """Entry point."""
 
     lang_src, lang_dst = utils.guess_locales(locale)
+    utils.setup_logging(lang_src, lang_dst)
 
     source_dir = render.get_source_dir(lang_src, lang_dst)
     if not (input_file := render.get_latest_json_file(source_dir)):

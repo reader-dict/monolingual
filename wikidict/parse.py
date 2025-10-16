@@ -154,6 +154,7 @@ def xml_parse_element(
 
 def process(file: Path, locale: str) -> dict[str, str]:
     """Process the big XML file and retain only information we are interested in."""
+    utils.setup_logging(*utils.guess_locales(locale, use_log=False))
     context.setup_modules_db(locale, db_already_setup=False)
 
     words: dict[str, str] = {}

@@ -609,7 +609,7 @@ def render_word(
 
 
 def init_worker(locale: str) -> None:
-    logging.basicConfig(level=logging.INFO)
+    utils.setup_logging(*utils.guess_locales(locale, use_log=False))
     if not context.setup_modules_db(locale):
         exit(1)
 

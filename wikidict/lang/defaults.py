@@ -2,11 +2,8 @@
 See `wikidict.langs.__init__` for details.
 """
 
-import logging
 from collections import defaultdict
 from collections.abc import Callable
-
-log = logging.getLogger(__name__)
 
 module_trans = "Module"
 template_trans = "Template"

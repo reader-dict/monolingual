@@ -75,6 +75,7 @@ def main(locale: str) -> int:
     """Entry point."""
 
     start = monotonic()
+    utils.setup_logging(*utils.guess_locales(locale, use_log=False))
     locale = utils.guess_lang_origin(locale)
 
     # Get the snapshot to handle
