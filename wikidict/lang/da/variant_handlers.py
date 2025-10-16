@@ -26,6 +26,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     forms: set[str] = set()
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "da")
     if "verb" in tpl:
+        table = table.replace("<br />", "]]</b><b>[[")
         for form in re.findall(r"<b>\[\[([^\]]+)\]\]</b>", table):
             if "/" in form:
                 forms.update(form.split("/"))

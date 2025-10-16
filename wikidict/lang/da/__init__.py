@@ -257,6 +257,10 @@ def adjust_wikicode(
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
     >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} (''plante'')\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}} (''grøntsag'')", "da")
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
+
+    >>> context.new_word("føde")
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|fød|føde|føder|fødede<br />fødte|har|fødet<br />født}}", "da")
+    '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|føde}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
     """
     code = code.replace("----", "")
 
