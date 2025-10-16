@@ -30,12 +30,12 @@ from rich.progress import (
 )
 
 from . import constants, context, lang, utils
-from .stubs import Definition, Definitions, Word
+from .stubs import Definition, Definitions, Word, Words
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from .stubs import Definitions, SubDefinition, Words
+    from .stubs import Definitions, SubDefinition
 
 
 # As stated in wikitextparser._spans.parse_pm_pf_tl():
@@ -620,7 +620,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
     manager = multiprocessing.Manager()
     managed_results = manager.dict()
-    results: dict[str, Word] = cast(dict[str, Word], managed_results)
+    results: Words = cast(Words, managed_results)
     managed_template_status = manager.list()
     templates_status: list[tuple[str, str]] = cast(list[tuple[str, str]], managed_template_status)
     manager.dict()
@@ -637,7 +637,7 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         TimeRemainingColumn(),
         transient=False,
     ) as progress:
-        main_task = progress.add_task(f"[cyan]Rendering {len(in_words):,} words", total=len(in_words))
+        main_task = progress.add_task("[cyan]Rendering words", total=len(in_words))
         with (
             suppress(KeyboardInterrupt),
             multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
