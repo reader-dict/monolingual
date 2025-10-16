@@ -637,7 +637,8 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
         TimeRemainingColumn(),
         transient=False,
     ) as progress:
-        main_task = progress.add_task("[cyan]Rendering words", total=len(in_words))
+        _, lang_dst = utils.guess_locales(locale, use_log=False)
+        main_task = progress.add_task(f"[cyan][{lang_dst.upper()}] Rendering words", total=len(in_words))
         with (
             suppress(KeyboardInterrupt),
             multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
@@ -660,9 +661,10 @@ def render(in_words: dict[str, str], locale: str, workers: int) -> Words:
 
         results_final: Words = managed_results._getvalue()
 
-        _, lang_dst = utils.guess_locales(locale, use_log=False)
         if lang.reverse_variant_titles[lang_dst]:
-            reverse_task = progress.add_task("[magenta]Handling reverse variants", total=len(results))
+            reverse_task = progress.add_task(
+                f"[magenta][{lang_dst.upper()}] Handling reverse variants", total=len(results)
+            )
 
             for word, details in results.items():
                 if not details.reverse_variants:

@@ -42,7 +42,7 @@ RE_TITLE_WORD = re.compile(r"<title>([^:]*)</title>").finditer
 DEBUG_PARSE = "DEBUG_PARSE" in os.environ
 
 
-def xml_iter_parse(file: Path) -> Generator[str]:
+def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
     """Efficient XML parsing for big files."""
     file_size = file.stat().st_size
 
@@ -60,7 +60,7 @@ def xml_iter_parse(file: Path) -> Generator[str]:
         "•",
         TimeRemainingColumn(),
     ) as progress:
-        task = progress.add_task(f"[cyan]Parsing {file.name}...", total=file_size)
+        task = progress.add_task(f"[cyan][{locale.upper()}] Parsing {file.name}", total=file_size)
         with bz2.open(file, "rt", encoding="utf-8") as fh:
             current_size = fh.buffer._buffer.raw._fp.tell  # type: ignore[attr-defined]
             current_page: list[str] = []
@@ -176,7 +176,7 @@ def process(file: Path, locale: str) -> dict[str, str]:
     template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
     appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
 
-    for element in xml_iter_parse(file):
+    for element in xml_iter_parse(file, lang_src):
         title, code = xml_parse_element(
             element,
             head_sections_matcher,

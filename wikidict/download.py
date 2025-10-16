@@ -57,7 +57,7 @@ def fetch_pages(date: str, locale: str, output: Path) -> None:
             TransferSpeedColumn(),
             TimeRemainingColumn(),
         ) as progress:
-            task = progress.add_task(f"Downloading {locale} dump", total=total_size)
+            task = progress.add_task(f"[{locale.upper()}] Downloading dump", total=total_size)
 
             with output.open(mode="wb") as fh:
                 for chunk in req.iter_content(chunk_size=1024**2):
