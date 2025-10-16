@@ -35,7 +35,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     elif "infl" in tpl:
         forms = set(re.findall(r'\| style="background-color:#f9f9f9;"\|\s*\[\[(.*?)\]\]', table))
     else:
-        forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table))
+        forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table)) or set(re.findall(r"\| (\w+)\s", table))
     return "|".join(utils.remove_parens(form.strip()) for form in forms if "{" not in form if form and form != "-")
 
 
