@@ -176,7 +176,7 @@ def process(file: Path, locale: str) -> dict[str, str]:
     template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
     appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
 
-    for element in xml_iter_parse(file, lang_src):
+    for element in xml_iter_parse(file, lang_dst):
         title, code = xml_parse_element(
             element,
             head_sections_matcher,
