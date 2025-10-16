@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from wikidict import context
+from wikidict.lang.da.variant_handlers import table_to_forms
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
@@ -184,3 +185,49 @@ def test_parse_word(
     assert definitions == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
+
+
+@pytest.mark.parametrize(
+    "word, wikitext, forms",
+    [
+        (
+            "baskyle",
+            """{| border=0 \n|-\n|bgcolor="#fff3f3" valign=top width=25%|\n{|\nEntal&nbsp;ubestemt<br>\nen&nbsp;<b>[[bakterie]]</b>\n|}\n| width=1% |\n|bgcolor="#fff3f3" valign=top width=25%|\n{|\nEntal&nbsp;bestemt<br>\n<b>[[bakterien#Dansk|bakterien]]</b>\n|}\n| width=1% |\n|bgcolor="#fff3f3" valign=top width=25%|\n{|\nFlertal&nbsp;ubestemt<br>\n<b>[[bakterier#Dansk|bakterier]]</b>\n|}\n| width=1% |\n|bgcolor="#fff3f3" valign=top width=25%|\n{|\nFlertal&nbsp;bestemt<br>\n<b>[[bakterierne#Dansk|bakterierne]]</b>\n|}\n|}""",
+            ["bakterie", "bakterien", "bakterier", "bakterierne"],
+        ),
+        (
+            "hund",
+            """&nbsp; &nbsp; Bøjning af „hund“\n\n{| class="inflection-table" style="text-align:center;width:100%;"\n|- style="background-color:#eee;"\n! rowspan="2" style="width:25%;" | fælleskøn\n! colspan="2" | \'\'Ental\'\'\n! colspan="2" | \'\'Flertal\'\'\n|- style="font-size:90%;background-color:#eee;"\n! \'\'ubestemt\'\' || \'\'bestemt\'\' || \'\'ubestemt\'\' || \'\'bestemt\'\'\n|-\n! style="background-color:#eee;" | \'\'[[nominativ]]\'\', \'\'[[dativ]]\'\' og \'\'[[akkusativ]]\'\'\n| style="background-color:#f9f9f9;"| [[hund]]\n| style="background-color:#f9f9f9;"| [[hunden]]\n| style="background-color:#f9f9f9;"| [[hunde]]\n| style="background-color:#f9f9f9;"| [[hundene]]\n|-\n! style="background-color:#eee;" | \'\'[[genitiv]]\'\'\n| style="background-color:#f9f9f9;"| [[hunds]]\n| style="background-color:#f9f9f9;"| [[hundens]]\n| style="background-color:#f9f9f9;"| [[hundes]]\n| style="background-color:#f9f9f9;"| [[hundenes]]\n|-\n|}""",
+            ["hunde", "hunden", "hundene", "hundenes", "hundens", "hundes", "hunds"],
+        ),
+        (
+            "kapitel",
+            """{|  style="background-color:#FFFAFA; color: #8B795E; text-align:center; border: 1px solid #EEE9BF; font-size:11px; line-height:14px; font-stretch:extra-expanded;" cellpadding="3" cellspacing="1"\n|- style="background-color:#EEE9BF; "\n! width=70 | Bøjning af \'\'[[kapitel]] \'\'\n! colspan=2 | Ental\n! colspan=2  | Flertal\n|- style="background-color:#EEE9BF; "\n! \'\'\'intetkøn\'\'\'\n! width=65 | Ubestemt\n! width=65 | Bestemt || width=65 | Ubestemt || width=65 | Bestemt\n|- align=center\n!style="background-color:#EEE9BF; " | Nominativ\n| [[]]\n| [[kapitlet]] || [[]]\n| [[kapitlen]]\n|- align=center\n!style="background-color:#EEE9BF; " | Genitiv\n| [[s]]\n| [[kapitlets]] || [[s]]\n| [[kapitlens]]\n|}""",
+            ["kapitels", "kapitlen", "kapitlens", "kapitlet", "kapitlets"],
+        ),
+        (
+            "hond",
+            """{| class="prettytable" style="margin-left: 15px;"\n|- style="text-align:center;"\n|width=30px| \'\'\'Bøjning\'\'\'\n|width=80px colspan="2"| Ental\n|width=80px colspan="2"| Flertal\n|- style="text-align:center;"\n|width=30px|\n|bgcolor="#ffffff"| Ubestemt\n|bgcolor="#efefef"| Bestemt\n|bgcolor="#ffffff"| Ubestemt\n|bgcolor="#efefef"| Bestemt\n|- style="text-align:center;"\n| Nominativ\n|bgcolor="#ffffff"| hond\n|bgcolor="#efefef"| hondin\n|bgcolor="#ffffff"| hendur\n|bgcolor="#efefef"| hendurnar\n|- style="text-align:center;"\n| Akkusativ\n|bgcolor="#ffffff"| hond\n|bgcolor="#efefef"| hondina\n|bgcolor="#ffffff"| hendur\n|bgcolor="#efefef"| hendurnar\n|- style="text-align:center;"\n| Dativ\n|bgcolor="#ffffff"| hond\n|bgcolor="#efefef"| hondini\n|bgcolor="#ffffff"| hondum\n|bgcolor="#efefef"| hondunum\n|- style="text-align:center;"\n| Genitiv\n|bgcolor="#ffffff"| handar\n|bgcolor="#efefef"| handarinnar\n|bgcolor="#ffffff"| handa \n|bgcolor="#efefef"| handanna\n|}""",
+            [
+                "handa",
+                "handanna",
+                "handar",
+                "handarinnar",
+                "hendur",
+                "hendurnar",
+                "hondin",
+                "hondina",
+                "hondini",
+                "hondum",
+                "hondunum",
+            ],
+        ),
+        (
+            "hond",
+            """{| class="wikitable"\n|-\n! Ental !! Flertal !! Diminutiv ental !!Diminutiv flertal\n|- align="center"\n| hond || honde &nbsp;\n| hondjie || hondjies\n|}""",
+            ["honde", "hondjie", "hondjies"],
+        ),
+    ],
+)
+def test_table_to_forms(word: str, wikitext: str, forms: list[str]) -> None:
+    assert table_to_forms(word, wikitext) == forms

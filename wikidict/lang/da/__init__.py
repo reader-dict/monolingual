@@ -226,42 +226,42 @@ def adjust_wikicode(
     >>> _ = context.reset("da")
 
     >>> context.new_word("baskyle")
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|baskyle|baskylen|baskyler|baskylerne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|baskyle|baskylen|baskyler|baskylerne}}", "da", word="baskyle")
     '=={{da}}==\n# {{rev-flexion|baskylen}}\n# {{rev-flexion|baskyler}}\n# {{rev-flexion|baskylerne}}'
 
     >>> context.new_word("hav")
-    >>> adjust_wikicode("=={{da}}==\n{{da-verb|hav|have|har|havde|har|haft}}", "da")
-    '=={{da}}==\n# {{rev-flexion|haft}}\n# {{rev-flexion|har}}\n# {{rev-flexion|hav}}\n# {{rev-flexion|havde}}\n# {{rev-flexion|have}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|hav|have|har|havde|har|haft}}", "da", word="hav")
+    '=={{da}}==\n# {{rev-flexion|haft}}\n# {{rev-flexion|har}}\n# {{rev-flexion|havde}}\n# {{rev-flexion|have}}'
 
     >>> context.new_word("genom")
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun-infl|et|er}}", "da")
-    '=={{da}}==\n# {{rev-flexion|genom}}\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun-infl|et|er}}", "da", word="genom")
+    '=={{da}}==\n# {{rev-flexion|genomer}}\n# {{rev-flexion|genomerne}}\n# {{rev-flexion|genomernes}}\n# {{rev-flexion|genomers}}\n# {{rev-flexion|genomet}}\n# {{rev-flexion|genomets}}\n# {{rev-flexion|genoms}}'
 
     >>> context.new_word("atlas")
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|et|atlas|atlasset|atlas(ser)|atlasse(r)ne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|et|atlas|atlasset|atlas(ser)|atlasse(r)ne}}", "da", word="atlas")
     '=={{da}}==\n# {{rev-flexion|atlasser}}\n# {{rev-flexion|atlasserne}}\n# {{rev-flexion|atlasset}}'
 
     >>> context.new_word("forlige")
-    >>> adjust_wikicode("=={{da}}==\n{{da-verb|forlig|forlige|forliger|forligte/forligede|har/er|forlig(e)t}}", "da")
-    '=={{da}}==\n# {{rev-flexion|forlig}}\n# {{rev-flexion|forlige}}\n# {{rev-flexion|forligede}}\n# {{rev-flexion|forliger}}\n# {{rev-flexion|forliget}}\n# {{rev-flexion|forligte}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|forlig|forlige|forliger|forligte/forligede|har/er|forlig(e)t}}", "da", word="forlige")
+    '=={{da}}==\n# {{rev-flexion|forlig}}\n# {{rev-flexion|forligede}}\n# {{rev-flexion|forliger}}\n# {{rev-flexion|forliget}}\n# {{rev-flexion|forligte}}'
 
     >>> context.new_word("magma")
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|magma|magmaen|magmaer|magmaerne}} / {{da-noun|et|magma|magmaet|magmaer|magmaerne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|magma|magmaen|magmaer|magmaerne}} / {{da-noun|et|magma|magmaet|magmaer|magmaerne}}", "da", word="magma")
     '=={{da}}==\n# {{rev-flexion|magmaen}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaer}}\n# {{rev-flexion|magmaerne}}\n# {{rev-flexion|magmaet}}'
 
     >>> context.new_word("forhammer")
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n:{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n:{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da", word="forhammer")
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da", word="forhammer")
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller uofficielt\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} eller uofficielt\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}}", "da", word="forhammer")
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
-    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} (''plante'')\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}} (''grøntsag'')", "da")
+    >>> adjust_wikicode("=={{da}}==\n{{da-noun|en|forhammer|forhammeren|forhamre|forhamrene}} (''plante'')\n{{da-noun|en|forhammer|forhammeren|forhammere|forhammerne}} (''grøntsag'')", "da", word="forhammer")
     '=={{da}}==\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhamre}}\n# {{rev-flexion|forhamrene}}\n# {{rev-flexion|forhammere}}\n# {{rev-flexion|forhammeren}}\n# {{rev-flexion|forhammerne}}'
 
     >>> context.new_word("føde")
-    >>> adjust_wikicode("=={{da}}==\n{{da-verb|fød|føde|føder|fødede<br />fødte|har|fødet<br />født}}", "da")
-    '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|føde}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
+    >>> adjust_wikicode("=={{da}}==\n{{da-verb|fød|føde|føder|fødede<br />fødte|har|fødet<br />født}}", "da", word="føde")
+    '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
     """
     code = code.replace("----", "")
 

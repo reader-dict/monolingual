@@ -1,7 +1,55 @@
 import re
 from collections import defaultdict
 
+import wikitextparser as wtp
+
 from ... import context, utils
+
+
+def cleanup(form: str) -> str:
+    return form.replace("&nbsp;", " ").strip()
+
+
+def table_to_forms(word: str, wikitext: str) -> list[str]:
+    forms: set[str] = set()
+    tables = wtp.parse(wikitext).get_tables(recursive=True)
+
+    # Try 1
+    for table in tables:
+        line = str(table).splitlines()[2]
+        for form in re.findall(r"<b>\[\[([^\]#]+)", line):
+            if "<br />" in form:
+                forms.update([cleanup(f) for f in form.split("<br />")])
+            elif "/" in form:
+                forms.update([cleanup(f) for f in form.split("/")])
+            else:
+                forms.add(cleanup(form))
+
+    # Try 2
+    if not forms:
+        for table in tables:
+            data = table.data(span=False)
+            for lines in data[1:]:
+                for line in lines:
+                    if "''" in line:
+                        continue
+                    if form := re.findall(r"\[\[([^\]#]+)", line):
+                        forms.add(cleanup(form[0]))
+                    elif line in {"Akkusativ", "Bestemt", "Dativ", "Genitiv", "Nominativ", "Ubestemt"}:
+                        continue
+                    # Try 3
+                    elif line.strip("[]"):
+                        forms.add(cleanup(line))
+
+    forms.discard(word)
+    forms.discard("-")
+    forms.discard("—")
+
+    if "s" in forms:
+        forms.discard("s")
+        forms.add(f"{word}s")
+
+    return sorted(forms)
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -23,20 +71,12 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0].strip()
 
-    forms: set[str] = set()
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "da")
-    if "verb" in tpl:
-        table = table.replace("<br />", "]]</b><b>[[")
-        for form in re.findall(r"<b>\[\[([^\]]+)\]\]</b>", table):
-            if "/" in form:
-                forms.update(form.split("/"))
-            else:
-                forms.add(form)
-    elif "infl" in tpl:
-        forms = set(re.findall(r'\| style="background-color:#f9f9f9;"\|\s*\[\[(.*?)\]\]', table))
-    else:
-        forms = set(re.findall(r"\[\[(.+)#\w+\|\1\]\]", table)) or set(re.findall(r"\| (\w+)\s", table))
-    return "|".join(utils.remove_parens(form.strip()) for form in forms if "{" not in form if form and form != "-")
+    return "|".join(
+        utils.remove_parens(form.strip())
+        for form in table_to_forms(word, table)
+        if "{" not in form and form not in {"-", word}
+    )
 
 
 handlers = {
