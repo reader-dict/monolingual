@@ -1057,6 +1057,7 @@ def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFo
         match fmt:
             case "dictfile" | "df":
                 primary_formatters.add(DictFileFormat)
+                secondary_formatters.add(BZ2DictFileFormat)
             case "dictorg":
                 primary_formatters.add(DictFileFormat)
                 secondary_formatters.add(DictOrgFormat)
