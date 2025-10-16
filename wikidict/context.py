@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import atexit
+import logging
 import os
 import re
 from functools import lru_cache
@@ -34,6 +35,8 @@ SELECT title
         (namespace_id = 10 AND body LIKE '%PAGENAME%')
      OR (namespace_id = 828 AND body LIKE '%getCurrentTitle%')
 """
+
+log = logging.getLogger(__name__)
 
 
 class Context:
@@ -171,12 +174,13 @@ def adapt_templates(locale: str) -> None:
 
     for template, adapter in lang.template_adapters[locale].items():
         if not (page := ctx.get_page(template)):
-            raise RuntimeError(f"Module/Template not found in the database: {template!r}")
+            log.error("Module/Template not found in the database: %r", template)
+            continue
 
         assert page.body  # For Mypy
 
         if (new_body := adapter(page.body)) == page.body:
-            print(f"Module/Template body unchanged: {template!r}")
+            log.info("Module/Template body unchanged: %r", template)
             continue
 
         ctx.add_page(
