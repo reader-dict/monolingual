@@ -209,6 +209,12 @@ def process(file: Path, locale: str) -> dict[str, str]:
         words[unescape(title, entities=constants.HTML_REPL_TITLE)] = unescape(code, entities=constants.HTML_REPL_BODY)
 
     if is_monolingual:
+        # Check that modules were properly imported
+        iterator = context.get_ctx().ctx.get_all_pages(namespace_ids=[10, 828])
+        next(iterator)  # special sandbox module
+        next(iterator)  # at least one template/module
+        del iterator
+
         context.adapt_templates(lang_dst)
         context.close_ctx()
 
