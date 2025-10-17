@@ -78,7 +78,7 @@ def main() -> int:
             args["LOCALE"],
             args["--gen-dict"],
             args["--output"],
-            format=args.get["--format", "kobo"],
+            format=args.get("--format", "kobo"),
         )
 
     if args["--show-pos"]:
