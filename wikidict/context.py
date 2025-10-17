@@ -342,6 +342,9 @@ def clean_html_output(html: str, locale: str) -> str:
     html = re.sub(r"&nbsp;\[\[:.+\]\]", "", html)
     html = re.sub(r"&nbsp;<sup[^>]*>→&nbsp;\w+</sup>", "", html)
 
+    # Purge
+    html = html.replace(" <small>[script needed]</small>", "")
+
     # Remove nowiki tags
     html = re.sub(r"<nowiki[^>]*>", "", html)
 
