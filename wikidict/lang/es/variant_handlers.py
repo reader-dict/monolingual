@@ -5,7 +5,9 @@ import wikitextparser as wtp
 
 from ... import context, utils
 
-cleanup = utils.cleanup_rev_variant
+
+def cleanup(form: str) -> str:
+    return utils.cleanup_rev_variant(form)
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:

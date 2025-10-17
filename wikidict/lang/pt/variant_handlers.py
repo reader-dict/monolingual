@@ -1,12 +1,13 @@
 import re
 from collections import defaultdict
-from functools import partial
 
 import wikitextparser as wtp
 
 from ... import context, utils
 
-cleanup = partial(utils.cleanup_rev_variant, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
+
+def cleanup(form: str) -> str:
+    return utils.cleanup_rev_variant(form, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
