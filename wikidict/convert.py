@@ -647,7 +647,7 @@ class JSONVolumeFormat(BaseFormat):
     """Save the data into JSON volumes with range-based splitting."""
 
     output_file = "jsonvolume-{lang_src}-{lang_dst}{etym_suffix}"
-    max_volume_size_kb = 200  # Target volume size in KB
+    max_volume_size_kb = 1024  # Target volume size in KB
     max_volume_bytes = max_volume_size_kb * 1024
 
     KEY_DEFINITION = "d"
@@ -810,11 +810,15 @@ class JSONVolumeFormat(BaseFormat):
         """Save a single volume and return its metadata."""
         volume_data = {"words": words}
 
-        filename = f"vol-{volume_num:08d}.json"
+        filename = f"vol-{volume_num:08d}.json.gz"
         filepath = output_dir / filename
 
-        filepath.write_text(json.dumps(volume_data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-        file_size = self._estimate_json_size(volume_data)
+        # Write gzipped JSON
+        json_content = json.dumps(volume_data, ensure_ascii=False, separators=(",", ":"))
+        with gzip.open(filepath, "wt", encoding="utf-8") as f:
+            f.write(json_content)
+
+        file_size = filepath.stat().st_size  # Get actual compressed file size
 
         log.info(
             "[%s] Volume %s: %s → %s (%s words, %sKB)",

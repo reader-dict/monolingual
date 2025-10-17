@@ -342,7 +342,7 @@
 
                 const volumeName = String(volumeNum).padStart(8, '0');
                 try {
-                    const filename = `vol-${volumeName}.json`;
+                    const filename = `vol-${volumeName}.json.gz`;
                     const response = await fetch(`${this.basePath}${filename}`);
                     const volume = await response.json();
 
