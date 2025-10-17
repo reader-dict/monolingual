@@ -70,7 +70,11 @@ class Context:
         execute("PRAGMA cache_size = 1000000000;")
         execute("PRAGMA temp_store = memory;")
 
-        if not db_already_setup:
+        if db_already_setup:
+            # Pre-check: modules were properly imported earlier (at the --parse step)
+            # Note: checking for `> 1` because of the presence of the special sandbox module
+            assert len(list(self.ctx.get_all_pages(namespace_ids=[10, 828]))) > 1, "Empty DB!"
+        else:
             init_interwiki_map(self.ctx)
             add_default_templates(self.ctx)
 
