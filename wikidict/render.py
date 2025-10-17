@@ -637,8 +637,6 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
         MofNCompleteColumn(),
         TextColumn("•"),
         TimeElapsedColumn(),
-        TextColumn("•"),
-        TimeRemainingColumn(),
         transient=False,
     ) as progress:
         lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
