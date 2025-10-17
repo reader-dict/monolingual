@@ -1,7 +1,9 @@
 import re
 from collections import defaultdict
 
-from ... import context
+from ... import context, utils
+
+cleanup = utils.cleanup_rev_variant
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -29,7 +31,6 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return parts[0].strip()
 
     forms: set[str]
-
     table = context.expand(f"{{{{{tpl}|{'|'.join(parts)}|{'|'.join(f'{k}={v}' for k, v in data.items())}}}}}", "ru")
     if table.startswith("{"):
         table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ")
@@ -38,8 +39,12 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
         forms = set(re.findall(r"<td>([^<]+)</td>", table))
 
-    # Skip missing forms (printed `{{{основа1}}}` as-is on the Wiktionary)
-    return "|".join(form.strip() for form in forms if "{" not in form if form)
+    if forms:
+        forms = {cleanup(form) for form in forms}
+        forms.discard(word)
+        forms.discard("")
+
+    return "|".join(forms)
 
 
 handlers = {

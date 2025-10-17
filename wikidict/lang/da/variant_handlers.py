@@ -1,16 +1,12 @@
 import re
 from collections import defaultdict
+from functools import partial
 
 import wikitextparser as wtp
 
 from ... import context, utils
 
-
-def cleanup(form: str) -> str:
-    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").strip(" []()")
-    if " (" in cleaned:
-        cleaned = cleaned.split(" (", 1)[0]
-    return "" if "{" in cleaned else cleaned
+cleanup = partial(utils.cleanup_rev_variant, skip={"akkusativ", "bestemt", "dativ", "genitiv", "nominativ", "ubestemt"})
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -38,8 +34,6 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                         continue
                     if form := re.findall(r"\[\[([^\]#]+)", line):
                         forms.add(cleanup(form[0]))
-                    elif line in {"Akkusativ", "Bestemt", "Dativ", "Genitiv", "Nominativ", "Ubestemt"}:
-                        continue
                     # Try 3
                     elif line.strip("[]()"):
                         if ",<br>" in line:

@@ -5,12 +5,7 @@ import wikitextparser as wtp
 
 from ... import context, utils
 
-
-def cleanup(form: str) -> str:
-    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").strip(" []()")
-    if " (" in cleaned:
-        cleaned = cleaned.split(" (", 1)[0]
-    return "" if "{" in cleaned else cleaned
+cleanup = utils.cleanup_rev_variant
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:

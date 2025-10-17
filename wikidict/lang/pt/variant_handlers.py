@@ -1,18 +1,12 @@
 import re
 from collections import defaultdict
+from functools import partial
 
 import wikitextparser as wtp
 
 from ... import context, utils
 
-
-def cleanup(form: str) -> str:
-    cleaned = utils.remove_parens(form).replace("&nbsp;", " ").replace("não ", "").strip(" []()/")
-    if " (" in cleaned:
-        cleaned = cleaned.split(" (", 1)[0]
-    if any(char in cleaned for char in "{|[]") or cleaned.lower() in {"plural", "singular", "subjuntivo"}:
-        return ""
-    return cleaned
+cleanup = partial(utils.cleanup_rev_variant, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:

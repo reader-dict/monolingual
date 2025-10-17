@@ -1083,3 +1083,21 @@ def remove_parens(text: str) -> str:
         # atlas(ser)
         text = re.sub(r"(\w+)\b\((\w+)\)", r"\1\2", text)
     return text
+
+
+def cleanup_rev_variant(form: str, *, rpl: set[str] | None = None, skip: set[str] | None = None) -> str:
+    cleaned = remove_parens(form).replace("&nbsp;", " ")
+    for replacement in rpl or []:
+        cleaned = cleaned.replace(replacement, "")
+    cleaned = cleaned.strip(" []()/")
+
+    if " (" in cleaned:
+        cleaned = cleaned.split(" (", 1)[0]
+
+    if any(char in cleaned for char in "{|[]"):
+        return ""
+
+    if (to_skip := (skip or set())) and cleaned.lower() in to_skip:
+        return ""
+
+    return cleaned.strip()
