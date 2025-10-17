@@ -33,13 +33,6 @@ if not DEBUG_LUA:
     # Remove a noisy `print()` statement on error
     setattr(wikitextprocessor.Wtp, "_fmt_errmsg", lambda *_: None)
 
-SQL_TPL_USING_CURRENT_WORD = """
-SELECT title
-    FROM pages
-    WHERE
-        (namespace_id = 10 AND body LIKE '%PAGENAME%')
-     OR (namespace_id = 828 AND body LIKE '%getCurrentTitle%')
-"""
 
 log = logging.getLogger(__name__)
 
@@ -70,13 +63,13 @@ class Context:
         execute("PRAGMA cache_size = 1000000000;")
         execute("PRAGMA temp_store = memory;")
 
-        if not db_already_setup:
+        if db_already_setup:
+            self._cache: dict[str, str] = {}
+            self._cache_exclusions = self._get_cache_exclusions()
+            self.stats = {"cached": 0, "missed": 0, "skipped": 0}
+        else:
             init_interwiki_map(self.ctx)
             add_default_templates(self.ctx)
-
-        self._cache: dict[str, str] = {}
-        self._cache_exclusions = self._get_cache_exclusions()
-        self.stats = {"cached": 0, "missed": 0, "skipped": 0}
 
     def close(self) -> None:
         self.ctx.close_db_conn()
@@ -93,14 +86,116 @@ class Context:
             self.stats["cached"] += 1
         return expanded
 
+    def set_cache_exclusions(self) -> None:
+        # sourcery skip: extract-duplicate-method
+        """Update the database to set the cacheable state of templates/modules.
+        Ones using the current word should not be cached.
+
+        We first fetch modules to exclude from the cache.
+        As a module can use the current word, but the upper call from a template will not know it, the template exclusion process is split:
+
+            1. Fetch templates using the current word, simple cases.
+            2. Fetch templates using excluded modules, complex cases.
+
+        Complex case example:
+
+            [EN] The "ms-pron" module uses the current word (so it must be excluded), and the caller template "ms-IPA" only contains `{{#invoke:ms-pron|show}}`,
+            so we need to exclude both "ms-pron" & "ms-IPA".
+        """
+        conn = self.ctx.db_conn
+
+        # Add a new column: cacheable (defaults to 1)
+        conn.executescript("""
+            BEGIN;
+            ALTER TABLE pages
+                    ADD COLUMN cacheable INTEGER NOT NULL DEFAULT 1;
+            COMMIT;
+        """)
+
+        # Modules to exclude
+        conn.execute(
+            """
+            UPDATE pages
+               SET cacheable = 0
+             WHERE namespace_id = 828
+               AND instr(body, 'getCurrentTitle') > 0
+            """
+        )
+
+        # Templates & modules to exclude, simple cases
+        conn.execute("""
+            UPDATE pages
+               SET cacheable = 0
+             WHERE cacheable != 0
+               AND instr(body, 'PAGENAME') > 0
+        """)
+
+        # Templates to exclude, complex cases (in 2 steps)
+
+        # 1) Create a temporary table with patterns to exclude (i.e.: excluded modules)
+        conn.executescript("""
+            BEGIN;
+            CREATE TEMP TABLE patterns (pat TEXT PRIMARY KEY);
+            INSERT INTO patterns(pat)
+                  SELECT trim(
+                        CASE
+                            WHEN instr(title, ':') > 0 THEN substr(title, instr(title, ':') + 1)
+                            ELSE title
+                        END
+                    )
+                   FROM pages
+                  WHERE cacheable = 0
+                    AND namespace_id = 828;
+            COMMIT;
+        """)
+
+        # 2) Use the temporary table to properly set the templates "cacheable" state
+        conn.execute("""
+            UPDATE pages
+               SET cacheable = 0
+             WHERE namespace_id = 10
+               AND EXISTS (
+                    SELECT 1
+                      FROM patterns
+                     WHERE instr(pages.body, '#invoke:' || pat || '|') > 0
+                        OR instr(pages.body, '#invoke:' || pat || '}') > 0
+                        OR instr(pages.body, '#invoke:' || pat || '/') > 0
+                );
+        """)
+
+        # Handle redirections (a template redirecting to an uncachable template must also be uncacheable)
+        conn.execute("""
+            UPDATE pages
+               SET cacheable = 0
+             WHERE cacheable = 1
+               AND namespace_id = 10
+               AND redirect_to IS NOT NULL
+               AND redirect_to <> ''
+               AND EXISTS (
+                    SELECT 1
+                      FROM pages AS target
+                     WHERE target.cacheable = 0
+                       AND pages.redirect_to = target.title
+                   )
+        """)
+
+        # Finally, create the partial covering index to speed-up read queries
+        conn.execute("""
+            CREATE INDEX idx_pages_cacheable0_title
+                      ON pages(title)
+                   WHERE cacheable = 0
+        """)
+        conn.execute("ANALYZE")
+        conn.commit()
+
     def _get_cache_exclusions(self) -> tuple[str, ...]:
         """Templates/Modules using the current word should not be cached."""
-        return (
-            "{{PAGENAME",
-            *(
+        query = "SELECT title FROM pages WHERE cacheable = 0"
+        return tuple(
+            sorted(
                 f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
-                for page in self.ctx.db_conn.execute(SQL_TPL_USING_CURRENT_WORD).fetchall()
-            ),
+                for page in self.ctx.db_conn.execute(query).fetchall()
+            )
         )
 
     def get_errors(self) -> list[str]:
@@ -176,7 +271,10 @@ def expand(wikitext: str, locale: str) -> str:
 
 
 def adapt_templates(locale: str) -> None:
-    ctx = get_ctx().ctx
+    this_ctx = get_ctx()
+    this_ctx.set_cache_exclusions()
+
+    ctx = this_ctx.ctx
 
     for template, adapter in lang.template_adapters[locale].items():
         if not (page := ctx.get_page(template)):
