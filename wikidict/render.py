@@ -10,7 +10,6 @@ import os
 import re
 import warnings
 from collections import defaultdict
-from contextlib import suppress
 from datetime import timedelta
 from functools import partial
 from pathlib import Path
@@ -593,8 +592,6 @@ def render_word(
     word, code = w
     try:
         details = parse_word(word, code, locale, templates_status=templates_status)
-    except KeyboardInterrupt:
-        pass
     except Exception:
         log.exception("ERROR with %r", word)
     else:
@@ -643,10 +640,7 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
             f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Rendering words",
             total=len(in_words),
         )
-        with (
-            suppress(KeyboardInterrupt),
-            multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
-        ):
+        with multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool:
             for _ in pool.imap_unordered(
                 partial(render_word, results=results, locale=locale, templates_status=templates_status),
                 in_words.items(),
