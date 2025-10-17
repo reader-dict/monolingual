@@ -44,25 +44,27 @@ DEBUG_PARSE = "DEBUG_PARSE" in os.environ
 
 def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
     """Efficient XML parsing for big files."""
+    lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
     file_size = file.stat().st_size
 
     with Progress(
         SpinnerColumn(),
         TextColumn("[bold blue]{task.description}"),
-        BarColumn(),
+        BarColumn(complete_style="green", finished_style="bold green"),
         TaskProgressColumn(),
-        "•",
+        TextColumn("•"),
         FileSizeColumn(),
-        "/",
+        TextColumn("/"),
         TotalFileSizeColumn(),
-        "•",
+        TextColumn("•"),
         TransferSpeedColumn(),
-        "•",
-        TimeRemainingColumn(),
-        "•",
+        TextColumn("•"),
         TimeElapsedColumn(),
+        TextColumn("•"),
+        TimeRemainingColumn(),
     ) as progress:
-        task = progress.add_task(f"[cyan][{locale.upper()}] Parsing {file.name}", total=file_size)
+        task = progress.add_task(f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Parsing {file.name}", total=file_size)
+
         with file.open(encoding="utf-8") as fh:
             current_size = fh.buffer.tell  # type: ignore[attr-defined]
             current_page: list[str] = []
@@ -86,8 +88,12 @@ def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
                     lines = 0
                     progress.update(task, completed=current_size())
 
-        # Ensure progress bar shows completion
-        progress.update(task, completed=file_size)
+        # Final update to ensure we show 100%
+        progress.update(
+            task,
+            completed=file_size,
+            description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Parsed {file.name} [green]✓[/green]",
+        )
 
 
 def xml_parse_element(
@@ -190,7 +196,7 @@ def process(file: Path, locale: str) -> dict[str, str]:
         def appendix_matcher(*_, **__):  # type: ignore[no-untyped-def]
             yield from ()
 
-    for element in xml_iter_parse(file, lang_dst):
+    for element in xml_iter_parse(file, locale):
         title, code = xml_parse_element(
             element,
             head_sections_matcher,

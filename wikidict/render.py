@@ -641,8 +641,11 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
         TimeRemainingColumn(),
         transient=False,
     ) as progress:
-        _, lang_dst = utils.guess_locales(locale, use_log=False)
-        main_task = progress.add_task(f"[cyan][{lang_dst.upper()}] Rendering words", total=len(in_words))
+        lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
+        main_task = progress.add_task(
+            f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Rendering words",
+            total=len(in_words),
+        )
         with (
             suppress(KeyboardInterrupt),
             multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool,
@@ -658,7 +661,7 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
         progress.update(
             main_task,
             completed=len(in_words),
-            description=f"[magenta][{lang_dst.upper()}] Rendered words [green]✓[/green] Complete",
+            description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Rendered words [green]✓[/green]",
         )
 
         utils.check_for_templates_status(managed_template_status._getvalue())
@@ -667,7 +670,7 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
 
         if lang.reverse_variant_titles[lang_dst]:
             reverse_task = progress.add_task(
-                f"[magenta][{lang_dst.upper()}] Handling reverse variants", total=len(results)
+                f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handling reverse variants", total=len(results)
             )
 
             for word, details in results.items():
@@ -690,7 +693,7 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
 
             progress.update(
                 reverse_task,
-                description=f"[magenta][{lang_dst.upper()}] Handled reverse variants [green]✓[/green] Complete",
+                description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handled reverse variants [green]✓[/green]",
             )
 
     return results_final

@@ -39,13 +39,21 @@ def decompress(locale: str, file_in: Path, file_out: Path) -> None:
     with Progress(
         SpinnerColumn(),
         TextColumn("[bold blue]{task.description}"),
-        BarColumn(),
+        BarColumn(complete_style="green", finished_style="bold green"),
         TimeElapsedColumn(),
     ) as progress:
-        progress.add_task(f"[{locale.upper()}] Decompressing dump", total=None)
+        task = progress.add_task(f"[cyan][{locale.upper()}] Decompressing dump", total=None)
 
         with bz2.BZ2File(file_in, mode="rb") as fr, file_out.open(mode="wb") as fw:
             shutil.copyfileobj(fr, fw)
+
+        # Final update to ensure we show 100%
+        progress.update(
+            task,
+            total=100,
+            completed=100,
+            description=f"[magenta][{locale.upper()}] Decompressed dump [green]✓[/green]",
+        )
 
 
 def fetch_snapshots(locale: str) -> list[str]:
@@ -64,13 +72,10 @@ def fetch_pages(date: str, locale: str, output: Path) -> None:
     """Download all pages, current versions only.
     Return the path of the XML file BZ2 compressed.
     """
-    url = constants.DUMP_URL.format(locale=locale, snapshot=date)
-    msg = f"Fetching {url} into {output}"
-    log.info(msg)
-
     if output.is_file():
         return
 
+    url = constants.DUMP_URL.format(locale=locale, snapshot=date)
     with constants.SESSION.get(url, stream=True) as req:
         req.raise_for_status()
 
@@ -82,22 +87,29 @@ def fetch_pages(date: str, locale: str, output: Path) -> None:
 
         # Create a rich progress bar
         with Progress(
+            SpinnerColumn(),
             TextColumn("[bold blue]{task.description}"),
-            BarColumn(),
+            BarColumn(complete_style="green", finished_style="bold green"),
             DownloadColumn(),
             TransferSpeedColumn(),
+            TextColumn("•"),
             TimeRemainingColumn(),
             TextColumn("•"),
             TimeElapsedColumn(),
         ) as progress:
-            task = progress.add_task(f"[{locale.upper()}] Downloading dump", total=total_size)
+            task = progress.add_task(f"[cyan][{locale.upper()}] Downloading dump", total=total_size)
 
             with output.open(mode="wb") as fh:
                 for chunk in req.iter_content(chunk_size=1024**2):
                     size = fh.write(chunk)
                     progress.update(task, advance=size)
 
-    log.info(f"[{locale.upper()}] Download complete: %s [%s bytes]", output, f"{output.stat().st_size:,}")
+            # Final update to ensure we show 100%
+            progress.update(
+                task,
+                completed=total_size,
+                description=f"[magenta][{locale.upper()}] Downloaded dump [green]✓[/green]",
+            )
 
 
 def get_output_file_compressed(locale: str, snapshot: str) -> Path:
