@@ -24,6 +24,11 @@ _lock = Lock()
 #    DEBUG_LUA=2 python -m wikidict LOCALE --render
 DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 1
 
+# Remove greedy methods we do not need
+setattr(wikitextprocessor.Wtp, "debug", lambda *_, **__: None)
+setattr(wikitextprocessor.Wtp, "note", lambda *_, **__: None)
+setattr(wikitextprocessor.Wtp, "warning", lambda *_, **__: None)
+
 if not DEBUG_LUA:
     # Remove a noisy `print()` statement on error
     setattr(wikitextprocessor.Wtp, "_fmt_errmsg", lambda *_: None)
@@ -99,7 +104,8 @@ class Context:
         )
 
     def get_errors(self) -> list[str]:
-        return [error["msg"] for error in self.ctx.to_return()["errors"]]
+        everything = self.ctx.to_return()
+        return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
 
     def new_page(self, title: str, namespace_id: int, body: str, redirect_to: str | None) -> None:
         model = "Scribunto" if namespace_id == 828 else "wikitext"
