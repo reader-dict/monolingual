@@ -10,7 +10,6 @@ import os
 import re
 import warnings
 from collections import defaultdict
-from collections.abc import Iterator
 from contextlib import suppress
 from datetime import timedelta
 from functools import partial
@@ -615,8 +614,8 @@ def init_worker(locale: str) -> None:
 
 
 def render(
-    in_words: dict[str, str],
-    redirections: dict[str, str],
+    in_words: list[tuple[str, str]],
+    redirections: list[tuple[str, str]],
     locale: str,
     workers: int,
     *,
@@ -653,7 +652,7 @@ def render(
         with multiprocessing.Pool(processes=workers, initializer=init_worker, initargs=(locale,)) as pool:
             for _ in pool.imap_unordered(
                 partial(render_word, results=results, locale=locale, templates_status=templates_status),
-                in_words.items(),
+                in_words,
                 chunksize=1000,
             ):
                 progress.advance(main_task)
@@ -673,7 +672,7 @@ def render(
             f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Adding redirections",
             total=len(redirections),
         )
-        for word, redirect_to in redirections.items():
+        for word, redirect_to in redirections:
             with suppress(KeyError):
                 results_final[redirect_to].variants.append(word)
                 progress.update(redirection_task, advance=1)
@@ -741,16 +740,17 @@ def get_output_file(source_dir: Path, snapshot: str) -> Path:
     return source_dir / f"data-{snapshot}.json"
 
 
-def load_words(lang_src: str, lang_dst: str) -> tuple[str, dict[str, str], dict[str, str]]:
+def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]], list[tuple[str, str]]]:
     if lang_src == "de":
         # It is not possible to use a regexp matcher
-        def head_sections_matcher(wikicode: str) -> Iterator[str]:
-            return (s for s in lang.head_sections[lang_dst] if s in wikicode.lower())
+        def has_interesting_sections(wikicode: str) -> bool:
+            wikicode = wikicode.lower()
+            return any(hs in wikicode for hs in lang.head_sections[lang_dst])
     else:
-        head_sections_matcher = re.compile(
+        has_interesting_sections = re.compile(
             rf"^=*\s*(?:{'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
             flags=re.IGNORECASE | re.MULTILINE,
-        ).finditer  # type: ignore[assignment]
+        ).search  # type: ignore[assignment]
 
     ctx = context.get_ctx()
 
@@ -761,7 +761,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, dict[str, str], dict[
         TimeElapsedColumn(),
     ) as progress:
         task = progress.add_task(f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Loading words", total=None)
-        words = {title: body for title, body in ctx.fetch_words().items() if next(head_sections_matcher(body), None)}
+        words = [(title, body) for title, body in ctx.fetch_words() if has_interesting_sections(body)]
 
         # Final update to ensure we show 100%
         progress.update(

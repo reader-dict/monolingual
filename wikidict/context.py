@@ -4,6 +4,7 @@ import atexit
 import logging
 import os
 import re
+from collections.abc import Generator
 from functools import lru_cache
 from pathlib import Path
 from threading import Lock
@@ -199,13 +200,13 @@ class Context:
             ]
         )
 
-    def fetch_words(self) -> dict[str, str]:
+    def fetch_words(self) -> Generator[tuple[str, str]]:
         query = "SELECT title, body FROM pages WHERE namespace_id = 0 AND redirect_to IS NULL"
-        return dict(self.ctx.db_conn.execute(query).fetchall())
+        yield from self.ctx.db_conn.execute(query)
 
-    def fetch_redirections(self) -> dict[str, str]:
+    def fetch_redirections(self) -> list[tuple[str, str]]:
         query = "SELECT title, redirect_to FROM pages WHERE namespace_id = 0 AND redirect_to IS NOT NULL"
-        return dict(self.ctx.db_conn.execute(query).fetchall())
+        return self.ctx.db_conn.execute(query).fetchall()
 
     def get_errors(self) -> list[str]:
         everything = self.ctx.to_return()
