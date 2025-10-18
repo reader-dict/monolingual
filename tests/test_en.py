@@ -300,7 +300,6 @@ def setup_lua_ctx() -> None:
             [],
             [
                 "From <i>u-</i> (“micro-”) +&lrm; <i>s</i> (“second”).",
-                "Etymology treeMiddle English <i>us</i>English <i><b>us</b></i>",
                 "From Middle English <i>us</i>, from Old English <i>ūs</i> (“us”, dative personal pronoun), from Proto-West Germanic <i>&#42;uns</i>, from Proto-Germanic <i>&#42;uns</i> (“us”), from Proto-Indo-European <i>&#42;n̥swé</i>, alteration of <i>&#42;n̥smé</i> (“us”). The compensatory lengthening was lost in Middle English due to the word being unstressed when used. Cognate with Saterland Frisian <i>uus</i> (“us”), West Frisian <i>us</i>, <i>ús</i> (“us”), Low German <i>uns</i>, <i>us</i> (“us”), Dutch <i>ons</i> (“us”), German <i>uns</i> (“us”), Danish <i>os</i> (“us”), Latin <i>nōs</i> (“we, us”).",
                 "From <i>u-</i> (“micro-, 10<sup>-6</sup>”) +&lrm; <i>s</i> (“second”).",
             ],
@@ -350,7 +349,6 @@ def setup_lua_ctx() -> None:
             ],
             [],
             [
-                "Etymology treeMiddle English <i>water</i>English <i><b>water</b></i>",
                 "From Middle English <i>water</i>, from Old English <i>wæter</i> (“water”), from Proto-West Germanic <i>&#42;watar</i>, from Proto-Germanic <i>&#42;watōr</i> (“water”), from Proto-Indo-European <i>&#42;wódr̥</i> (“water”).",
                 "Cognates",
                 "Cognate with Scots <i>watter</i> (“water”), Yola <i>wadher</i>, <i>waudher</i> (“water”), North Frisian <i>weeder</i>, <i>Weeter</i>, <i>wååder</i> (“water”), Saterland Frisian <i>Woater</i> (“water”), West Frisian <i>wetter</i> (“water”), Cimbrian <i>bassar</i>, <i>bazzar</i> (“water”), Dutch <i>water</i> (“water”), Dutch Low Saxon <i>water</i>, <i>wotter</i> (“water”), German <i>Wasser</i> (“water”), German Low German <i>Water</i>, <i>Woter</i> (“water”), Gottscheerish <i>boßər</i>, <i>bàsser</i> (“water”), Limburgish <i>Waater</i>, <i>water</i> (“water”), Luxembourgish <i>Waasser</i> (“water”), Mòcheno <i>bòsser</i> (“water”), Vilamovian <i>woser</i> (“water”), West Flemish <i>woater</i> (“water”), Yiddish <i>וואַסער</i> (vaser, “water”), Danish <i>vand</i> (“water”), Elfdalian <i>wattn</i> (“water”), Faroese, Icelandic, Norwegian Nynorsk <i>vatn</i> (“water”), Norwegian Bokmål <i>vann</i> (“water”), Swedish <i>vatten</i> (“water”), Gothic <i>𐍅𐌰𐍄𐍉</i> (watō, “water”), Old Irish <i>coin fodorne</i> (“otters”, literally “water-dogs”), Latin <i>unda</i> (“wave”), Lithuanian <i>vanduõ</i> (“water”), Russian <i>вода́</i> (vodá, “water”), Albanian <i>ujë</i> (“water”), Ancient Greek <i>ὕδωρ</i> (húdōr, “water”), Armenian <i>գետ</i> (get, “river”), Sanskrit <i>उदन्</i> (udán, “wave, water”), Hittite <i>𒉿𒀀𒋻</i> (wa-a-tar).",

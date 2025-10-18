@@ -92,6 +92,7 @@ templates_ignored = (
     "{{cleanup",
     "{{def-",
     "{{emojipic",
+    "{{etymon",
     "{{examples",
     "{{hide",
     "{{hot ",
