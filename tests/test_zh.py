@@ -63,6 +63,7 @@ def test_parse_word(
     """Test the sections finder and definitions getter."""
     code = page(word, "zh")
     details = parse_word(word, code, "zh", force=True)
+    assert details
     assert pronunciations == details.pronunciations
     assert genders == details.genders
     assert etymology == details.etymology

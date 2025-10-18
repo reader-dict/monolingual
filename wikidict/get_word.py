@@ -31,7 +31,7 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
     if not context.setup_modules_db(locale):
         exit(1)
 
-    return parse_word(word, code, locale, force=True, templates_status=templates_status)
+    return parse_word(word, code, locale, force=True, templates_status=templates_status) or Word([], [], [], {}, [], [])
 
 
 def int_to_roman(number: int) -> str:

@@ -34,7 +34,7 @@ def main(locale: str) -> int:
     utils.setup_logging(lang_src, lang_dst)
 
     source_dir = render.get_source_dir(lang_src, lang_dst)
-    if not (input_file := render.get_latest_json_file(source_dir)):
+    if not (input_file := convert.get_latest_json_file(source_dir)):
         log.error("No dump found. Run with --parse first ... ")
         return 1
 

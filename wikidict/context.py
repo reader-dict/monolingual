@@ -39,6 +39,7 @@ log = logging.getLogger(__name__)
 
 class Context:
     def __init__(self, db: Path, locale: str, *, db_already_setup: bool = True) -> None:
+        self.snapshot = db.stem.split("-", 1)[-1]
         self.ctx = wikitextprocessor.Wtp(
             db,
             extension_tags={"phonos": {"content": ["phrasing"]}},
@@ -66,7 +67,6 @@ class Context:
         if db_already_setup:
             self._cache: dict[str, str] = {}
             self._cache_exclusions = self._get_cache_exclusions()
-            self.stats = {"cached": 0, "missed": 0, "skipped": 0}
         else:
             init_interwiki_map(self.ctx)
             add_default_templates(self.ctx)
@@ -77,13 +77,9 @@ class Context:
     def expand(self, wikitext: str, locale: str) -> str:
         if wikitext.startswith(self._cache_exclusions):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
-            self.stats["skipped"] += 1
         elif not (expanded := self._cache.get(wikitext, "")):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
             self._cache[wikitext] = expanded
-            self.stats["missed"] += 1
-        else:
-            self.stats["cached"] += 1
         return expanded
 
     def set_cache_exclusions(self) -> None:
@@ -127,6 +123,7 @@ class Context:
             UPDATE pages
                SET cacheable = 0
              WHERE cacheable != 0
+               AND namespace_id IN (10, 828)
                AND instr(body, 'PAGENAME') > 0
         """)
 
@@ -175,7 +172,8 @@ class Context:
                     SELECT 1
                       FROM pages AS target
                      WHERE target.cacheable = 0
-                       AND pages.redirect_to = target.title
+                       AND target.namespace_id = 10
+                       AND target.title = pages.redirect_to
                    )
         """)
 
@@ -192,17 +190,28 @@ class Context:
         """Templates/Modules using the current word should not be cached."""
         query = "SELECT title FROM pages WHERE cacheable = 0"
         return tuple(
-            sorted(
-                f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
-                for page in self.ctx.db_conn.execute(query).fetchall()
-            )
+            [
+                "{{PAGENAME",
+                *(
+                    f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
+                    for page in self.ctx.db_conn.execute(query).fetchall()
+                ),
+            ]
         )
+
+    def fetch_words(self) -> dict[str, str]:
+        query = "SELECT title, body FROM pages WHERE namespace_id = 0 AND redirect_to IS NULL"
+        return dict(self.ctx.db_conn.execute(query).fetchall())
+
+    def fetch_redirections(self) -> dict[str, str]:
+        query = "SELECT title, redirect_to FROM pages WHERE namespace_id = 0 AND redirect_to IS NOT NULL"
+        return dict(self.ctx.db_conn.execute(query).fetchall())
 
     def get_errors(self) -> list[str]:
         everything = self.ctx.to_return()
         return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
 
-    def new_page(self, title: str, namespace_id: int, body: str, redirect_to: str | None) -> None:
+    def new_page(self, title: str, namespace_id: int, body: str | None, redirect_to: str | None) -> None:
         model = "Scribunto" if namespace_id == 828 else "wikitext"
         self.ctx.add_page(title, namespace_id, body=body, model=model, redirect_to=redirect_to)
 
@@ -220,15 +229,15 @@ def get_ctx() -> Context:
 
 
 def setup_modules_db(locale: str, *, db_already_setup: bool = True) -> bool:
-    lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
+    lang_src, _ = utils.guess_locales(locale, use_log=False)
     source_dir = parse.get_source_dir(lang_src)
-    if not (input_file := parse.get_latest_xml_file(source_dir)):
-        print("No dump found. Run with --parse first ... ")
+    if not (input_file := parse.get_latest_dump_file(source_dir)):
+        print("No dump found. Run with --download first ... ")
         return False
 
     snapshot = input_file.stem[6:14]
     assert len(snapshot) == 8 and snapshot.isdigit(), repr(snapshot)
-    db_path = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
+    db_path = parse.get_output_file(source_dir, snapshot)
     db_path.parent.mkdir(exist_ok=True)
     init(db_path, lang_src, db_already_setup=db_already_setup)
     return True
@@ -258,7 +267,7 @@ def get_errors() -> list[str]:
     return get_ctx().get_errors()
 
 
-def new_page(title: str, namespace_id: int, body: str, redirect_to: str | None) -> None:
+def new_page(title: str, namespace_id: int, body: str | None, redirect_to: str | None) -> None:
     get_ctx().new_page(title, namespace_id, body, redirect_to)
 
 
@@ -272,7 +281,6 @@ def expand(wikitext: str, locale: str) -> str:
 
 def adapt_templates(locale: str) -> None:
     this_ctx = get_ctx()
-    this_ctx.set_cache_exclusions()
 
     ctx = this_ctx.ctx
 
@@ -295,6 +303,8 @@ def adapt_templates(locale: str) -> None:
             need_pre_expand=page.need_pre_expand,
             redirect_to=page.redirect_to,
         )
+
+    this_ctx.set_cache_exclusions()
 
 
 @lru_cache(maxsize=256)

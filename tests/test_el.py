@@ -124,6 +124,7 @@ def test_parse_word(
     print(f"{word = }")
     code = page(word, "el")
     details = parse_word(word, code, "el", force=True)
+    assert details
     assert pronunciations == details.pronunciations
     assert genders == details.genders
     assert definitions == details.definitions

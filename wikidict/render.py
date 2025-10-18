@@ -10,6 +10,8 @@ import os
 import re
 import warnings
 from collections import defaultdict
+from collections.abc import Iterator
+from contextlib import suppress
 from datetime import timedelta
 from functools import partial
 from pathlib import Path
@@ -28,7 +30,7 @@ from rich.progress import (
     TimeElapsedColumn,
 )
 
-from . import constants, context, lang, utils
+from . import context, lang, utils
 from .stubs import Definition, Definitions, Word, Words
 
 if TYPE_CHECKING:
@@ -485,16 +487,12 @@ def parse_word(
     *,
     force: bool = False,
     templates_status: list[tuple[str, str]] | None = None,
-) -> Word:
+) -> Word | None:
     """Parse *code* Wikicode to find word details.
     *force* can be set to True to force the pronunciation and gender guessing.
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
-    if code.startswith(constants.REDIRECT_KEY):
-        redirect = code.removeprefix(constants.REDIRECT_KEY)
-        return Word([], [], [], {}, [], [redirect])
-
     # Init the Lua interpreter for this word
     if DEBUG_LUA:
         log.info(word)
@@ -611,7 +609,14 @@ def init_worker(locale: str) -> None:
         exit(1)
 
 
-def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_start_method: str = "spawn") -> Words:
+def render(
+    in_words: dict[str, str],
+    redirections: dict[str, str],
+    locale: str,
+    workers: int,
+    *,
+    parallelism_start_method: str = "spawn",
+) -> Words:
     if parallelism_start_method == "fork":
         warnings.filterwarnings("ignore", category=DeprecationWarning, message=".*may lead to deadlocks in the child.*")
 
@@ -659,9 +664,23 @@ def render(in_words: dict[str, str], locale: str, workers: int, *, parallelism_s
 
         results_final: Words = managed_results._getvalue()
 
+        redirection_task = progress.add_task(
+            f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Adding redirections",
+            total=len(redirections),
+        )
+        for word, redirect_to in redirections.items():
+            with suppress(KeyError):
+                results_final[redirect_to].variants.append(word)
+                progress.update(redirection_task, advance=1)
+        progress.update(
+            redirection_task,
+            description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Added redirections [green]✓[/green]",
+        )
+
         if lang.reverse_variant_titles[lang_dst]:
             reverse_task = progress.add_task(
-                f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handling reverse variants", total=len(results)
+                f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handling reverse variants",
+                total=len(results),
             )
 
             for word, details in results.items():
@@ -703,16 +722,10 @@ def save(output: Path, words: Words) -> None:
                 return dataclasses.asdict(o)  # type: ignore[arg-type]
             return super().default(o)
 
+    output.parent.mkdir(exist_ok=True, parents=True)
     with output.open(mode="w", encoding="utf-8") as fh:
         json.dump(words, fh, cls=EnhancedJSONEncoder, ensure_ascii=False, indent=4, sort_keys=True)
     log.info("Saved %s words into %s", f"{len(words):,}", output)
-
-
-def get_latest_json_file(source_dir: Path) -> Path | None:
-    """Get the name of the last data_wikicode-*.json file."""
-    if not (files := list(source_dir.glob(f"data_wikicode-{'[0-9]' * 8}.json"))):
-        return None
-    return sorted(files)[-1]
 
 
 def get_source_dir(lang_src: str, lang_dst: str) -> Path:
@@ -723,6 +736,42 @@ def get_output_file(source_dir: Path, snapshot: str) -> Path:
     return source_dir / f"data-{snapshot}.json"
 
 
+def load_words(lang_src: str, lang_dst: str) -> tuple[str, dict[str, str], dict[str, str]]:
+    if lang_src == "de":
+        # It is not possible to use a regexp matcher
+        def head_sections_matcher(wikicode: str) -> Iterator[str]:
+            return (s for s in lang.head_sections[lang_dst] if s in wikicode.lower())
+    else:
+        head_sections_matcher = re.compile(
+            rf"^=*\s*(?:{'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
+            flags=re.IGNORECASE | re.MULTILINE,
+        ).finditer  # type: ignore[assignment]
+
+    ctx = context.get_ctx()
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.description}"),
+        BarColumn(complete_style="green", finished_style="bold green"),
+        TimeElapsedColumn(),
+    ) as progress:
+        task = progress.add_task(f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Loading words", total=None)
+        words = {title: body for title, body in ctx.fetch_words().items() if next(head_sections_matcher(body), None)}
+
+        # Final update to ensure we show 100%
+        progress.update(
+            task,
+            total=100,
+            completed=100,
+            description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Loaded words [green]✓[/green]",
+        )
+
+    redirections = ctx.fetch_redirections()
+    snapshot = ctx.snapshot
+    context.close_ctx()
+    return snapshot, words, redirections
+
+
 def hook_after(words: Words) -> None:
     pass
 
@@ -731,26 +780,33 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count(), parallelism
     """Entry point."""
 
     start = monotonic()
-    lang_src, lang_dst = utils.guess_locales(locale)
 
-    source_dir = get_source_dir(lang_src, lang_dst)
-    if not (input_file := get_latest_json_file(source_dir)):
+    if not context.setup_modules_db(locale):
         log.error("No dump found. Run with --parse first ... ")
         return 1
 
-    log.info("Loading %s ...", input_file)
-    in_words: dict[str, str] = load(input_file)
+    lang_src, lang_dst = utils.guess_locales(locale)
+    snapshot, in_words, redirections = load_words(lang_src, lang_dst)
     if not in_words:
         log.error("No word found!")
         return 1
 
     log.info("Rendering ...")
     workers = workers or multiprocessing.cpu_count()
-    hook_after(words := render(in_words, locale, workers, parallelism_start_method=parallelism_start_method))
+    hook_after(
+        words := render(
+            in_words,
+            redirections,
+            locale,
+            workers,
+            parallelism_start_method=parallelism_start_method,
+        )
+    )
 
     ret = 1
     if words:
-        output = get_output_file(source_dir, input_file.stem.split("-")[-1])
+        source_dir = get_source_dir(lang_src, lang_dst)
+        output = get_output_file(source_dir, snapshot)
         save(output, words)
         ret = 0
 

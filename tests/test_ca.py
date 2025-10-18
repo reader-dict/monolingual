@@ -323,6 +323,7 @@ def test_parse_word(
     """Test the sections finder and definitions getter."""
     code = page(word, "ca")
     details = parse_word(word, code, "ca", force=True)
+    assert details
     assert pronunciations == details.pronunciations
     assert genders == details.genders
     assert definitions == details.definitions

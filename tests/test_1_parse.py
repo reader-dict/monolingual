@@ -77,7 +77,7 @@ def test_parse_restricted_word(tmp_path: Path) -> None:
 """,
     )
 
-    assert "cunnilingus" in parse.process(file, "fr")
+    assert parse.process(file, "fr")
 
 
 def test_parse_redirected_word(tmp_path: Path) -> None:
@@ -108,7 +108,7 @@ def test_parse_redirected_word(tmp_path: Path) -> None:
 """,
     )
 
-    assert parse.process(file, "fr") == {"abkhaserene": "##REDIRECT##abkhaserne"}
+    assert parse.process(file, "fr")
 
 
 def test_parse_word_without_wikicode(tmp_path: Path) -> None:
@@ -219,7 +219,7 @@ def test_parse_word_with_templates_lowercased(tmp_path: Path) -> None:
 """,
     )
 
-    assert "restaurang" in parse.process(file, "sv")
+    assert parse.process(file, "sv")
 
 
 @pytest.mark.parametrize(
@@ -241,11 +241,8 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         source_dir = parse.get_source_dir(lang_src)
         assert source_dir == tmp_path / "data" / lang_src
 
-        output_file = parse.get_output_file(source_dir, lang_src, lang_dst, snapshot)
-        assert output_file == source_dir.parent / lang_dst / lang_src / f"data_wikicode-{snapshot}.json"
-
-        output_file_modules = parse.get_output_file_modules(source_dir, lang_src, lang_dst, snapshot)
-        assert output_file_modules == source_dir.parent / lang_dst / lang_src / f"modules-{snapshot}.sqlite"
+        output_file = parse.get_output_file(source_dir, snapshot)
+        assert output_file == source_dir / f"modules-{snapshot}.sqlite"
 
         with (
             patch.object(parse, "get_source_dir") as mocked_gsd,

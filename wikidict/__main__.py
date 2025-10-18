@@ -14,8 +14,7 @@ Usage:
 
 Options:
   --download                Retrieve the latest Wiktionary dump into "data/$LOCALE/pages-$DATE.xml".
-  --parse                   Parse and store raw Wiktionary data into "data/$LOCALE/data_wikicode-$DATE.json".
-                            Also store Wiktionary modules & templates content into "data/$LOCALE/modules-$DATE.sqlite".
+  --parse                   Parse and store raw Wiktionary data into "data/$LOCALE/pages-$DATE.sqlite".
   --render                  Render templates from raw data into "data/$LOCALE/data-$DATE.json".
                             --workers=N         Set the number of multiprocessing workers,
                                                 defaults to the number of CPU in the system.
