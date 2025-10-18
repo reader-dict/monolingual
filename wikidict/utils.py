@@ -972,6 +972,28 @@ def extract_keywords_from(parts: list[str]) -> defaultdict[str, str]:
     return data
 
 
+def extract_relevant_sections(wikitext: str, locale: str) -> str:
+    """Extract relevant sections for the chosen locale from a given wikitext."""
+    level = lang.section_level[locale]
+    equals = "=" * level
+
+    interesting_sections_raw = []
+    for section in lang.head_sections[locale]:
+        interesting_sections_raw.extend([f"{equals}{section}", f"{equals} {section}"])
+    interesting_sections = tuple(interesting_sections_raw)
+
+    cleaned: list[str] = []
+    in_expected_section = False
+    for line in wikitext.splitlines():
+        if not (line := line.strip()):
+            continue
+        if line.startswith(equals) and line[level] != "=":
+            in_expected_section = line.lower().startswith(interesting_sections)
+        if in_expected_section:
+            cleaned.append(line)
+    return "" if len(cleaned) < 2 else "\n".join(cleaned)
+
+
 def transform_variant(word: str, template: str, locale: str) -> str:
     parts_raw = template.split("|")
     parts = [p.strip().strip("\u200e") for p in parts_raw]

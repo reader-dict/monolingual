@@ -76,7 +76,6 @@ def setup_lua_ctx() -> None:
             },
             [],
         ),
-        ("og", [], [], {}, []),
         (
             "sand",
             ["/sand/"],

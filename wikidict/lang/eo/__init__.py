@@ -152,25 +152,30 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("{{Deklinacio-eo}}", "eo")
+    r"""
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Deklinacio-eo}}", "eo")
     ''
 
-    >>> adjust_wikicode("{{form-eo}}", "eo")
-    '# {{form-eo}}'
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{form-eo}}", "eo")
+    '=={{Lingvo|eo}}==\n# {{form-eo}}'
 
-    >>> adjust_wikicode("{{xxx}}", "eo")
-    '==== {{xxx}} ===='
-    >>> adjust_wikicode("{{xx-x}}", "eo")
-    '==== {{xx-x}} ===='
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xxx}}", "eo")
+    '=={{Lingvo|eo}}==\n==== {{xxx}} ===='
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xx-x}}", "eo")
+    '=={{Lingvo|eo}}==\n==== {{xx-x}} ===='
 
-    >>> adjust_wikicode("{{Vorterseparo}}:{{radi|tret}} + {{fina|i}}", "eo")
-    '\\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\\n'
-    >>> adjust_wikicode("{{Vorterseparo}}\\n:{{radi|tret}} + {{fina|i}}", "eo")
-    '\\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\\n'
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}:{{radi|tret}} + {{fina|i}}", "eo")
+    '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}\n:{{radi|tret}} + {{fina|i}}", "eo")
+    '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
     """
+
     # Wipe out {{Deklinacio-eo}}
     code = code.replace(f"{{{{Deklinacio-{locale}}}}}", "")
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
 
     # Wipe out unwanted sub-sections
     cleaned: list[str] = []

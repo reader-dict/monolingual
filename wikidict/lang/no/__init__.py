@@ -114,12 +114,12 @@ def adjust_wikicode(
     templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
-    # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("----", "no")
+    # sourcery skip: assign-if-exp, inline-immediately-returned-variable, reintroduce-else
+    r"""
+    >>> adjust_wikicode("==Norsk==\n----", "no")
     ''
 
-    >>> adjust_wikicode("<includeonly>\\n{{rfscript|und|sc=Deva}}, <br /></includeonly>", "no")
+    >>> adjust_wikicode("==Norsk==\n<includeonly>\n{{rfscript|und|sc=Deva}}, <br /></includeonly>", "no")
     ''
     """
     code = code.replace("----", "")
@@ -127,4 +127,5 @@ def adjust_wikicode(
     # <includeonly>...</includeonly> → ''
     code = re.sub(r"(<includeonly>.+</includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE)
 
-    return code
+    # Keep interesting sections only
+    return utils.extract_relevant_sections(code, locale)

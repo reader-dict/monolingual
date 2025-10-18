@@ -126,8 +126,8 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("{{ES|xxx|núm=1}}", "es")
-    '== {{lengua|es}} =='
+    >>> adjust_wikicode("{{ES|xxx|núm=1}}\nfoo", "es")
+    '== {{lengua|es}} ==\nfoo'
 
     >>> from ... import context
     >>> _ = context.reset("es")
@@ -143,6 +143,10 @@ def adjust_wikicode(
     # {{ES|xxx|núm=n}} → == {{lengua|es}} ==
     code = re.sub(rf"^\{{\{{{locale.upper()}\|.+}}}}", rf"== {{{{lengua|{locale}}}}} ==", code, flags=re.MULTILINE)
 
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     #
     # Reverse variants
     #
@@ -150,22 +154,10 @@ def adjust_wikicode(
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
         cleaned: list[str] = []
-        in_expected_section = False
-        expected_section = (f"== {{{{lengua|{locale}}}", f"=={{{{lengua|{locale}}}")
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
-            line = line.strip()
-            if not in_expected_section:
-                if line.startswith(expected_section):
-                    in_expected_section = True
-            elif line.startswith(("= {", "={")):
-                in_expected_section = False
-
-            if not in_expected_section:
-                continue
-
             if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 
@@ -173,9 +165,8 @@ def adjust_wikicode(
                 tpl_code += line
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
-                    tpl_code, rest = tpl_code.rsplit("}}", 1)
-                    if not rest:
-                        tpl_code += "}}"
+                    tpl_code = tpl_code.rsplit("}}", 1)[0]
+                    tpl_code += "}}"
                     tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
                     forms = utils.process_templates(
@@ -186,8 +177,6 @@ def adjust_wikicode(
                         variant_only=True,
                     )
                     cleaned.extend(f";1: {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
-                    if rest:
-                        cleaned.append(rest)
                     tpl_code = ""
             else:
                 cleaned.append(line)

@@ -197,7 +197,11 @@ def setup_lua_ctx() -> None:
             "scourge",
             ["/skɜɹd͡ʒ/", "/skɜːd͡ʒ/"],
             [],
-            [],
+            [
+                "From Middle English <i>scourge</i> (“a lash, whip, scourge; affliction, calamity; person who causes affliction or calamity; shoot of a vine”), and then either:",
+                "CognatesItalian <i>scuriada</i>, <i>scuriata</i>",
+                "From Middle English <i>scourgen</i> (“to whip, scourge; to afflict; to punish”), and then either:",
+            ],
             {
                 "Noun": [
                     "(weaponry,&#32;chiefly&#32;historical) A whip, often made of leather and having multiple tails; a lash.",
@@ -206,7 +210,17 @@ def setup_lua_ctx() -> None:
                         "A person or thing regarded as an agent of divine punishment.",
                         "A source of persistent (and often widespread) pain and suffering or trouble, such as a cruel ruler, disease, pestilence, or war.",
                     ),
-                ]
+                ],
+                "Verb": [
+                    "To strike (a person, an animal, etc.) with a scourge <i>(noun sense&nbsp;1)</i> or whip; to flog, to whip.",
+                    "To drive, or force (a person, an animal, etc.) to move, with or as if with a scourge or whip.",
+                    "(<i>figurative</i>)",
+                    (
+                        "To punish (a person, an animal, etc.); to chastise.",
+                        "To cause (someone or something) persistent (and often widespread) pain and suffering or trouble; to afflict, to torment.",
+                        "(Scotland,&#32;agriculture) Of a crop or a farmer: to deplete the fertility of (land or soil).",
+                    ),
+                ],
             },
             [],
         ),

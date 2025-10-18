@@ -70,3 +70,20 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     pattern = re.compile(rf"\{{uttal\|{locale}\|(?:[^\|]+\|)?ipa=([^}}|]+)}}?\|?")
     return [f"/{p}/" for p in utils.unique(pattern.findall(code))]
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    templates_status: list[tuple[str, str]] | None = None,
+    word: str = "",
+) -> str:
+    r"""
+    >>> adjust_wikicode("==Svenska==\n===Substantiv===\n'''dufvor'''", "sv")
+    "==Svenska==\n===Substantiv===\n'''dufvor'''"
+    >>> adjust_wikicode("==Danska==\n===Substantiv===\n'''dufvor'''", "sv")
+    ''
+    """
+    # Keep interesting sections only
+    return utils.extract_relevant_sections(code, locale)

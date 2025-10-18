@@ -114,47 +114,44 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("{{(|adept al liberalismului}}\\n*{{eng}}: {{trad|en|liberal}}\\n{{-}}\\n{{)}}\\nfoo\\n{{bar}}#foo\\n{{(|baz}}\\n*sdf\\n{{)}}", "ro")
-    'foo\\n{{bar}}#foo'
+    r"""
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{(|adept al liberalismului}}\n*{{eng}}: {{trad|en|liberal}}\n{{-}}\n{{)}}\nfoo\n{{bar}}#foo\n{{(|baz}}\n*sdf\n{{)}}", "ro")
+    '=={{limba|ron}}==\nfoo\n{{bar}}#foo'
 
-    >>> adjust_wikicode("{{-avv-|ANY|ANY}}", "ro")
-    '=== {{avv|ANY|ANY}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ANY|ANY}}", "ro")
+    '=={{limba|ron}}==\n=== {{avv|ANY|ANY}} ==='
 
-    >>> adjust_wikicode("====Verb tranzitiv====", "ro")
-    '=== {{Verb tranzitiv}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n====Verb tranzitiv====", "ro")
+    '=={{limba|ron}}==\n=== {{Verb tranzitiv}} ==='
 
-    >>> adjust_wikicode("{{-avv-|ron}}", "ro")
-    '=== {{avv}} ==='
-    >>> adjust_wikicode("{{-avv-|ro}}", "ro")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ron}}", "ro")
+    '=={{limba|ron}}==\n=== {{avv}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ro}}", "ro")
+    '=={{limba|ron}}==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("{{-avv-|ANY}}", "ro")
-    '=== {{avv|ANY}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ANY}}", "ro")
+    '=={{limba|ron}}==\n=== {{avv|ANY}} ==='
 
-    >>> adjust_wikicode("{{-avv-}}", "ro")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-}}", "ro")
+    '=={{limba|ron}}==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("{{-nume propriu-}}", "ro")
-    '=== {{nume propriu}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{-nume propriu-}}", "ro")
+    '=={{limba|ron}}==\n=== {{nume propriu}} ==='
 
-    >>> adjust_wikicode("==Romanian==", "ro")
-    '== {{limba|ron}} =='
+    >>> adjust_wikicode("==Romanian==\n===Adjective===", "ro")
+    '== {{limba|ron}} ==\n=== {{Adjective}} ==='
 
-    >>> adjust_wikicode("==Romanian==\\n===Adjective===", "ro")
-    '== {{limba|ron}} ==\\n=== {{Adjective}} ==='
+    >>> adjust_wikicode("=={{limba|ron}}==\n#''forma de feminin singular pentru'' [[frumos]].", "ro")
+    '=={{limba|ron}}==\n# {{flexion|frumos}}'
+    >>> adjust_wikicode("=={{limba|ron}}==\n#''formă alternativă pentru'' [[fântânioară]].", "ro")
+    '=={{limba|ron}}==\n# {{flexion|fântânioară}}'
 
-    >>> adjust_wikicode("#''forma de feminin singular pentru'' [[frumos]].", "ro")
-    '# {{flexion|frumos}}'
-    >>> adjust_wikicode("#''formă alternativă pentru'' [[fântânioară]].", "ro")
-    '# {{flexion|fântânioară}}'
-
-    >>> adjust_wikicode("{{substantiv-ron\\n|gen={{f}}\\n|nom-sg=piatră\\n|nom-pl=pietre\\n|art-sg=piatra\\n|art-pl=pietrele\\n|dat-sg=pietrei\\n|dat-pl=pietrelor\\n|voc-sg=piatră\\n|voc-pl=pietrelor\\n}}", "ro")
-    '# {{rev-flexion|piatra}}\\n# {{rev-flexion|piatră}}\\n# {{rev-flexion|pietre}}\\n# {{rev-flexion|pietrei}}\\n# {{rev-flexion|pietrele}}\\n# {{rev-flexion|pietrelor}}'
-    >>> adjust_wikicode("{{adjectiv-ron\\n|m-sg=interocular\\n|m-pl=[[interoculari]]\\n|f-sg=[[interoculară]]\\n|f-pl=interoculare/roof (2)\\n|voc-pl=\\n|voc-sg=electronică<br />electronico\\n}}", "ro")
-    '# {{rev-flexion|electronico}}\\n# {{rev-flexion|electronică}}\\n# {{rev-flexion|interocular}}\\n# {{rev-flexion|interoculare}}\\n# {{rev-flexion|interoculari}}\\n# {{rev-flexion|interoculară}}\\n# {{rev-flexion|roof}}'
-    >>> adjust_wikicode("{{adjectiv-ron|m-sg=interocular|m-pl=[[interoculari]]|f-sg=[[interoculară]]|f-pl=[[interoculare]]|voc-pl={{inv}}|voc-sg=}}# părul", "ro")
-    '# {{rev-flexion|interocular}}\\n# {{rev-flexion|interoculare}}\\n# {{rev-flexion|interoculari}}\\n# {{rev-flexion|interoculară}}\\n# părul'
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{substantiv-ron\n|gen={{f}}\n|nom-sg=piatră\n|nom-pl=pietre\n|art-sg=piatra\n|art-pl=pietrele\n|dat-sg=pietrei\n|dat-pl=pietrelor\n|voc-sg=piatră\n|voc-pl=pietrelor\n}}", "ro")
+    '=={{limba|ron}}==\n# {{rev-flexion|piatra}}\n# {{rev-flexion|piatră}}\n# {{rev-flexion|pietre}}\n# {{rev-flexion|pietrei}}\n# {{rev-flexion|pietrele}}\n# {{rev-flexion|pietrelor}}'
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{adjectiv-ron\n|m-sg=interocular\n|m-pl=[[interoculari]]\n|f-sg=[[interoculară]]\n|f-pl=interoculare/roof (2)\n|voc-pl=\n|voc-sg=electronică<br />electronico\n}}", "ro")
+    '=={{limba|ron}}==\n# {{rev-flexion|electronico}}\n# {{rev-flexion|electronică}}\n# {{rev-flexion|interocular}}\n# {{rev-flexion|interoculare}}\n# {{rev-flexion|interoculari}}\n# {{rev-flexion|interoculară}}\n# {{rev-flexion|roof}}'
+    >>> adjust_wikicode("=={{limba|ron}}==\n{{adjectiv-ron|m-sg=interocular|m-pl=[[interoculari]]|f-sg=[[interoculară]]|f-pl=[[interoculare]]|voc-pl={{inv}}|voc-sg=}}# părul", "ro")
+    '=={{limba|ron}}==\n# {{rev-flexion|interocular}}\n# {{rev-flexion|interoculare}}\n# {{rev-flexion|interoculari}}\n# {{rev-flexion|interoculară}}\n# părul'
     """
     locale_3_chars, lang_name = langs[locale]
 
@@ -195,6 +192,10 @@ def adjust_wikicode(
         # `===Adjective===` → `=== {{Adjective}} ===`
         code = re.sub(r"===(\w+)===", r"=== {{\1}} ===", code)
 
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     #
     # Variants
     #
@@ -219,7 +220,6 @@ def adjust_wikicode(
         tpl_code = ""
 
         for line in code.splitlines():
-            line = line.strip()
             if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 

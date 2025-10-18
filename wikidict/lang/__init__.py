@@ -85,6 +85,8 @@ find_pronunciations: dict[str, Callable[[str, str], list[str]]] = _populate("fin
 # URL to fetch a random word (in the current locale preferrably)
 random_word_url: dict[str, str] = _populate("random_word_url")
 
-# Function to adapt the word wikicode before rendering
+# Function to adapt the word wikicode before rendering.
+# Note: This function must return only the wikicode for the current locale,
+#       skipping other locales since they will create unnecessary work.
 # TODO: typing, but I do not know yet how to set keyword-arguments
 adjust_wikicode = _populate("adjust_wikicode")

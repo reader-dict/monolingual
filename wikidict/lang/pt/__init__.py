@@ -159,42 +159,42 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("=={{Substantivo|pt}}<sup>1</sup>==", "pt")
-    '=={{Substantivo 1|pt}}=='
-    >>> adjust_wikicode("==Substantivo<sup>2</sup>==", "pt")
-    '=={{Substantivo 2}}=='
+    >>> adjust_wikicode("={{-pt-}}=\n=={{Substantivo|pt}}<sup>1</sup>==", "pt")
+    '={{-pt-}}=\n=={{Substantivo 1|pt}}=='
+    >>> adjust_wikicode("={{-pt-}}=\n==Substantivo<sup>2</sup>==", "pt")
+    '={{-pt-}}=\n=={{Substantivo 2}}=='
 
-    >>> adjust_wikicode('#<li value="2"> [[toca]], [[covil]]', "pt")
-    '# [[toca]], [[covil]]'
+    >>> adjust_wikicode('={{-pt-}}=\n#<li value="2"> [[toca]], [[covil]]', "pt")
+    '={{-pt-}}=\n# [[toca]], [[covil]]'
 
-    >>> adjust_wikicode(":# [[plural]] [[de]] '''[[anão]]'''", "pt")
-    '# {{flexion|anão}}'
-    >>> adjust_wikicode("* [[plural]] [[de]] '''[[anão]]'''", "pt")
-    '# {{flexion|anão}}'
-    >>> adjust_wikicode("# [[plural]] [[de]] '''[[anão]]'''", "pt")
-    '# {{flexion|anão}}'
-    >>> adjust_wikicode("# plural de [[anão]]", "pt")
-    '# {{flexion|anão}}'
+    >>> adjust_wikicode("={{-pt-}}=\n:# [[plural]] [[de]] '''[[anão]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|anão}}'
+    >>> adjust_wikicode("={{-pt-}}=\n* [[plural]] [[de]] '''[[anão]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|anão}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[plural]] [[de]] '''[[anão]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|anão}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", "pt")
+    '={{-pt-}}=\n# {{flexion|anão}}'
 
-    >>> adjust_wikicode("*{{f}} de [[objetivo]]", "pt")
-    '# {{flexion|objetivo}}'
+    >>> adjust_wikicode("={{-pt-}}=\n*{{f}} de [[objetivo]]", "pt")
+    '={{-pt-}}=\n# {{flexion|objetivo}}'
 
-    >>> adjust_wikicode("# plural de [[anão]]", "pt")
-    '# {{flexion|anão}}'
-    >>> adjust_wikicode("# feminino plural de [[sardenho]]", "pt")
-    '# {{flexion|sardenho}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", "pt")
+    '={{-pt-}}=\n# {{flexion|anão}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# feminino plural de [[sardenho]]", "pt")
+    '={{-pt-}}=\n# {{flexion|sardenho}}'
 
-    >>> adjust_wikicode("# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''", "pt")
-    '# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''", "pt")
-    '# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("#terceira pessoa do singular  do presente indicativo  do verbo [[ensimesmar]]", "pt")
-    '# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("# [[infinitivo pessoal]] da [[terceira pessoa]] do [[plural]] do verbo '''[[acarretar]]'''", "pt")
-    '# {{flexion|acarretar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|ensimesmar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|ensimesmar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n#terceira pessoa do singular  do presente indicativo  do verbo [[ensimesmar]]", "pt")
+    '={{-pt-}}=\n# {{flexion|ensimesmar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da [[terceira pessoa]] do [[plural]] do verbo '''[[acarretar]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|acarretar}}'
 
-    >>> adjust_wikicode("# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
-    '# {{flexion|abotecar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|abotecar}}'
 
     >>> from ... import context
     >>> _ = context.reset("pt")
@@ -204,7 +204,7 @@ def adjust_wikicode(
 
     >>> context.new_word("focinho")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinho}}\n# {{rev-flexion|focinhos}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinhos}}'
 
     >>> context.new_word("che")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.gl|ms=che|mp=ches}} (è)", "pt")
@@ -212,17 +212,21 @@ def adjust_wikicode(
 
     >>> context.new_word("kelvinometria")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometria}}\n# {{rev-flexion|kelvinometrias}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometrias}}'
 
     >>> context.new_word("abaixador")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixador}}\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
 
     # `==Substantivo<sup>2</sup>==` → `=={{Substantivo 2}}==`
     code = re.sub(r"==\s*Substantivo\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \1}}==", code)
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
 
     # <li value="2"> → ''
     code = re.sub(r"<li [^>]+>", "", code)
@@ -251,22 +255,10 @@ def adjust_wikicode(
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
         cleaned: list[str] = []
-        in_expected_section = False
-        expected_section = (f"= {{{{-{locale}-}}", f"={{{{-{locale}-}}")
         in_tpl = False
         tpl_code = ""
 
         for line in code.splitlines():
-            line = line.strip()
-            if not in_expected_section:
-                if line.startswith(expected_section):
-                    in_expected_section = True
-            elif line.startswith(("= {", "={")):
-                in_expected_section = False
-
-            if not in_expected_section:
-                continue
-
             if line.startswith(interesting_reverse_variant_titles):
                 in_tpl = True
 

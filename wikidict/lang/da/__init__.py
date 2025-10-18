@@ -179,48 +179,44 @@ def adjust_wikicode(
     >>> adjust_wikicode("{{trans-top|en kødbolle lavet af hakket fars}}\n*{{en}}: {{t|en|meatball}}\n*{{fi}}: {{t|fi|lihapulla}}f}}\n*{{el}}: {{t|el|κεφτές|m|sc=Grek}}\n**{{grc}}: {{t|grc|ἰσίκιον|n}}\n{{trans-mid}}\n*{{it}}: {{t|it|polpetta}}\n*{{es}}: {{t|es|albóndigas}}\n*{{sv}}: {{t|sv|frikadell|c}}\n*{{de}}: {{t|de|Frikadelle|f}}\n{{trans-bottom}}", "da")
     ''
 
-    >>> adjust_wikicode("{{=da=}}", "da")
-    '=={{da}}=='
+    >>> adjust_wikicode("{{=da=}}\nfoo", "da")
+    '=={{da}}==\nfoo'
 
-    >>> adjust_wikicode("===dansk===", "da")
-    '=={{da}}=='
-    >>> adjust_wikicode("===Engelsk===", "da")
-    '=={{en}}=='
-    >>> adjust_wikicode("===Foo===", "da")
-    '===Foo==='
+    >>> adjust_wikicode("===dansk===\nfoo", "da")
+    '=={{da}}==\nfoo'
 
-    >>> adjust_wikicode("{{-avv-|da}}", "da")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("=={{da}}==\n{{-avv-|da}}", "da")
+    '=={{da}}==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("{{-avv-|ANY}}", "da")
-    '=== {{avv|ANY}} ==='
+    >>> adjust_wikicode("=={{da}}==\n{{-avv-|ANY}}", "da")
+    '=={{da}}==\n=== {{avv|ANY}} ==='
 
-    >>> adjust_wikicode("{{-avv-}}", "da")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("=={{da}}==\n{{-avv-}}", "da")
+    '=={{da}}==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("*Pluralis af [[tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("#Pluralis af [[tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("#Pluralis af [[tale|tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("#Pluralis af [[tale#Substantiv|tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("# Nutid af [[tale#Verbum|tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("# Flertal af [[tale]]: [[ui]].", "da")
-    '# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n*Pluralis af [[tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n#Pluralis af [[tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n#Pluralis af [[tale|tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n#Pluralis af [[tale#Substantiv|tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n# Nutid af [[tale#Verbum|tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n# Flertal af [[tale]]: [[ui]].", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
 
-    >>> adjust_wikicode("# {{flertal af}} [[tale]]", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("# {{flertal af}} '''[[tale]]'''", "da")
-    '# {{flexion|tale}}'
-    >>> adjust_wikicode("#''præsens participium af'' '''[[abandonnere]]'''.", "da")
-    '# {{flexion|abandonnere}}'
-    >>> adjust_wikicode("# {{flertal af}} {{l|da|tale}}", "da")
-    '# {{flexion|{{l|da|tale}}}}'
-    >>> adjust_wikicode("# {{flertal af}} {{l|da|tale|taler}}", "da")
-    '# {{flexion|{{l|da|tale|taler}}}}'
+    >>> adjust_wikicode("=={{da}}==\n# {{flertal af}} [[tale]]", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n# {{flertal af}} '''[[tale]]'''", "da")
+    '=={{da}}==\n# {{flexion|tale}}'
+    >>> adjust_wikicode("=={{da}}==\n#''præsens participium af'' '''[[abandonnere]]'''.", "da")
+    '=={{da}}==\n# {{flexion|abandonnere}}'
+    >>> adjust_wikicode("=={{da}}==\n# {{flertal af}} {{l|da|tale}}", "da")
+    '=={{da}}==\n# {{flexion|{{l|da|tale}}}}'
+    >>> adjust_wikicode("=={{da}}==\n# {{flertal af}} {{l|da|tale|taler}}", "da")
+    '=={{da}}==\n# {{flexion|{{l|da|tale|taler}}}}'
 
     >>> from ... import context
     >>> _ = context.reset("da")
@@ -263,13 +259,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{da}}==\n{{da-verb|fød|føde|føder|fødede<br />fødte|har|fødet<br />født}}", "da", word="føde")
     '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
     """
+
     code = code.replace("----", "")
-
-    # {{(}} .* {{)}}
-    code = re.sub(r"\{\{\(\}\}(.+)\{\{\)\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
-
-    # {{trans-top|...}}...{{trans-bottom}}
-    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     # {{=da=}} → =={{da}}==
     code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
@@ -295,6 +286,16 @@ def adjust_wikicode(
 
     # {{-avv-}} → === {{avv}} ===
     code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
+    # {{(}} .* {{)}}
+    code = re.sub(r"\{\{\(\}\}(.+)\{\{\)\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
+
+    # {{trans-top|...}}...{{trans-bottom}}
+    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     #
     # Variants
@@ -329,17 +330,9 @@ def adjust_wikicode(
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
         pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+}}}})"
         cleaned: list[str] = []
-        in_expected_section = False
 
         for line in code.splitlines():
-            line = line.strip()
-            if not in_expected_section:
-                if line.startswith(f"=={{{{{locale}}}"):
-                    in_expected_section = True
-            elif line.startswith("=={{"):
-                in_expected_section = False
-
-            if not in_expected_section or not any(tpl in line for tpl in interesting_reverse_variant_titles):
+            if not any(tpl in line for tpl in interesting_reverse_variant_titles):
                 cleaned.append(line)
                 continue
 

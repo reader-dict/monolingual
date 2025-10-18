@@ -196,65 +196,70 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode('<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")
-    ' Qui a rapport avec un type de [[discours]].'
+    r"""
+    >>> adjust_wikicode('== {{langue|fr}} =\n<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")
+    '== {{langue|fr}} =\n Qui a rapport avec un type de [[discours]].'
 
-    >>> adjust_wikicode("{{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}", "fr")
-    '# {{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n{{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}", "fr")
+    '== {{langue|fr}} =\n# {{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}'
 
     >>> adjust_wikicode("== {{caractère}} ==", "fr")
-    '== {{caractère}} ==\\n=== {{s|caractère}} ==='
+    '== {{caractère}} ==\n=== {{s|caractère}} ==='
 
-    >>> adjust_wikicode("=== {{s|caractère}} ===\\n{{hangeul unicode}}", "fr")
-    '=== {{s|caractère}} ===\\n# {{hangeul unicode}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n=== {{s|caractère}} ===\n{{hangeul unicode}}", "fr")
+    '== {{langue|fr}} =\n=== {{s|caractère}} ===\n# {{hangeul unicode}}'
 
-    >>> adjust_wikicode("* ''Féminin (singulier) de'' {{lien|terne|fr}}.", "fr")
-    '# {{flexion|terne}}'
-    >>> adjust_wikicode("# ''Féminin singulier de'' {{lien|terne|fr}}.", "fr")
-    '# {{flexion|terne}}'
-    >>> adjust_wikicode("#''Féminin singulier de l’[[adjectif]]'' [[pressant]].", "fr")
-    '# {{flexion|pressant}}'
-    >>> adjust_wikicode("#''Féminin (singulier) de '' [[chacun]].", "fr")
-    '# {{flexion|chacun}}'
-    >>> adjust_wikicode("# ''Pluriel de ''[[anisophylle]]''.''", "fr")
-    '# {{flexion|anisophylle}}'
-    >>> adjust_wikicode("# ''Pluriel de'' [[antiproton#fr|antiproton]].", "fr")
-    '# {{flexion|antiproton}}'
-    >>> adjust_wikicode("# ''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
-    '# {{flexion|anisophylle}}'
-    >>> adjust_wikicode("# ''Pluriel'' ''de ''[[nécrophage]].", "fr")
-    '# {{flexion|nécrophage}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n* ''Féminin (singulier) de'' {{lien|terne|fr}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|terne}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Féminin singulier de'' {{lien|terne|fr}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|terne}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n#''Féminin singulier de l’[[adjectif]]'' [[pressant]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|pressant}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n#''Féminin (singulier) de '' [[chacun]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|chacun}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Pluriel de ''[[anisophylle]]''.''", "fr")
+    '== {{langue|fr}} =\n# {{flexion|anisophylle}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Pluriel de'' [[antiproton#fr|antiproton]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|antiproton}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|anisophylle}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Pluriel'' ''de ''[[nécrophage]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|nécrophage}}'
 
-    >>> adjust_wikicode("# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir#fr|venir]].", "fr")
-    '# {{flexion|venir}}'
-    >>> adjust_wikicode("# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].", "fr")
-    '# {{flexion|venir}}'
-    >>> adjust_wikicode("# ''Participe passé masculin singulier du verbe'' [[pouvoir]].", "fr")
-    '# {{flexion|pouvoir}}'
-    >>> adjust_wikicode("# ''Participe passé masculin singulier du verbe'' [[pouvoir#fr|pouvoir]].", "fr")
-    '# {{flexion|pouvoir}}'
-    >>> adjust_wikicode("# ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].", "fr")
-    '# {{flexion|manger}}'
-    >>> adjust_wikicode("# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|manger|fr}}.", "fr")
-    '# {{flexion|manger}}'
-    >>> adjust_wikicode("#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", "fr")
-    "#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'')."
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir#fr|venir]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|venir}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|venir}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Participe passé masculin singulier du verbe'' [[pouvoir]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|pouvoir}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Participe passé masculin singulier du verbe'' [[pouvoir#fr|pouvoir]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|pouvoir}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].", "fr")
+    '== {{langue|fr}} =\n# {{flexion|manger}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|manger|fr}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|manger}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", "fr")
+    "== {{langue|fr}} =\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'')."
 
-    >>> adjust_wikicode("# ''Pluriel de'' {{lien|anisophylle|fr}}.\\n*''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
-    '# {{flexion|anisophylle}}\\n# {{flexion|anisophylle}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Pluriel de'' {{lien|anisophylle|fr}}.\n*''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|anisophylle}}\n# {{flexion|anisophylle}}'
     """
-    # <li value="2"> → ''
-    code = re.sub(r"<li [^>]+>", "", code)
-
-    # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
-    code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)
 
     # == {{caractère}} == → '== {{caractère}} ==\n=== {{s|caractère}} ==='
     code = re.sub(r"(==\s*{{caractère}}\s*==)", r"\1\n=== {{s|caractère}} ===", code)
 
     # === {{s|caractère}} ===\n{{hangeul unicode}} → '=== {{s|caractère}} ===\n# {{hangeul unicode}}'
     code = re.sub(r"=== \{\{s\|caractère}} ===\n\s*\{\{", "=== {{s|caractère}} ===\n# {{", code, flags=re.MULTILINE)
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
+    # <li value="2"> → ''
+    code = re.sub(r"<li [^>]+>", "", code)
+
+    # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
+    code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)
 
     #
     # Variants

@@ -477,7 +477,9 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     func: Callable[..., str] = lang.adjust_wikicode[locale]
-    return func(context.clean_html_input(code, locale), locale, templates_status=templates_status, word=word)
+    code = context.clean_html_input(code, locale)
+    code = func(code, locale, templates_status=templates_status, word=word)
+    return code
 
 
 def parse_word(
@@ -500,7 +502,10 @@ def parse_word(
 
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
 
-    code = adjust_wikicode(code, lang_dst, templates_status=templates_status, word=word)
+    # Fast path: stop right now when nothing interesting is found for this word
+    if not (code := adjust_wikicode(code, lang_dst, templates_status=templates_status, word=word)):
+        return None
+
     top_sections, parsed_sections = find_sections(word, code, lang_src, lang_dst)
     prons = []
     genders = []
@@ -593,7 +598,7 @@ def render_word(
     except Exception:
         log.exception("ERROR with %r", word)
     else:
-        if details.definitions or details.variants or details.reverse_variants:
+        if details and (details.definitions or details.variants or details.reverse_variants):
             results[word] = details
 
     if DEBUG_EMPTY_WORDS:

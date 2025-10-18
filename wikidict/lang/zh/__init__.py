@@ -2,6 +2,8 @@
 
 import re
 
+from ... import utils
+
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 float_separator = ","
@@ -165,18 +167,23 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("{{zh-pron\\n|m=huángmǎguà,er=y\\n|c=wong4 maa5 kwaa3-2\\n|cat=n\\n}}", "zh")
-    '# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
+    r"""
+    >>> adjust_wikicode("==漢語==\n{{zh-pron\n|m=huángmǎguà,er=y\n|c=wong4 maa5 kwaa3-2\n|cat=n\n}}", "zh")
+    '==漢語==\n# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
 
-    >>> adjust_wikicode("{{trans-top|...}}\\n...\\n{{trans-bottom}}", "zh")
-    ''
+    >>> adjust_wikicode("==漢語==\n{{trans-top|...}}\n...\n{{trans-bottom}}", "zh")
+    '==漢語=='
 
-    >>> adjust_wikicode("; '''限定代詞'''", "zh")
-    ''
-    >>> adjust_wikicode(";限定代詞", "zh")
-    ''
+    >>> adjust_wikicode("==漢語==\n; '''限定代詞'''", "zh")
+    '==漢語==\n'
+    >>> adjust_wikicode("==漢語==\n;限定代詞", "zh")
+    '==漢語==\n'
     """
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
     # `# {{zh-pron\n|...` → `# {{zh-pron|...`

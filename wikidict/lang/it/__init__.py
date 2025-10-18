@@ -98,43 +98,41 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
-    >>> adjust_wikicode("[[w:A|B]]", "it")
-    '[[A|B]]'
+    r"""
+    >>> adjust_wikicode("== {{-it-}} ==\n[[w:A|B]]", "it")
+    '== {{-it-}} ==\n[[A|B]]'
 
-    >>> adjust_wikicode("[[en:foo]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n[[en:foo]]", "it")
     ''
 
-    >>> adjust_wikicode("{{-verb form-}}", "it")
-    '=== {{verb form}} ==='
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form-}}", "it")
+    '== {{-it-}} ==\n=== {{verb form}} ==='
 
-    >>> adjust_wikicode("{{-avv-|it}}", "it")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-|it}}", "it")
+    '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("{{-avv-|ANY}}", "it")
-    '=== {{avv|ANY}} ==='
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-|ANY}}", "it")
+    '== {{-it-}} ==\n=== {{avv|ANY}} ==='
 
-    >>> adjust_wikicode("{{-avv-}}", "it")
-    '=== {{avv}} ==='
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-}}", "it")
+    '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("# plurale di [[-ectomia]]", "it")
-    '# {{flexion|-ectomia}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# plurale di [[-ectomia]]", "it")
+    '== {{-it-}} ==\n# {{flexion|-ectomia}}'
 
-    >>> adjust_wikicode("#participio presente di [[amare]]", "it")
-    '# {{flexion|amare}}'
-    >>> adjust_wikicode("#participio passato di [[amare]]", "it")
-    '# {{flexion|amare}}'
-    >>> adjust_wikicode("# participio presente di [[amare]]", "it")
-    '# {{flexion|amare}}'
-    >>> adjust_wikicode("#2ª pers. singolare indicativo presente del verbo [[amare]]", "it")
-    '# {{flexion|amare}}'
-    >>> adjust_wikicode("# {{3}} singolare imperativo presente del verbo [[amare]]", "it")
-    '# {{flexion|amare}}'
-    >>> adjust_wikicode("# {{1}}, 2ª pers. e {{3}} singolare congiuntivo presente del verbo [[amare]]", "it")
-    '# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n#participio presente di [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n#participio passato di [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# participio presente di [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n#2ª pers. singolare indicativo presente del verbo [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# {{3}} singolare imperativo presente del verbo [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# {{1}}, 2ª pers. e {{3}} singolare congiuntivo presente del verbo [[amare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|amare}}'
     """
-    # [[w:A|B]] → [[A|B]]
-    code = code.replace("[[w:", "[[")
 
     # [[en:foo]] → ''
     code = re.sub(r"(\[\[\w+:\w+\]\])", "", code)
@@ -150,6 +148,13 @@ def adjust_wikicode(
 
     # {{-avv-}} → === {{avv}} ===
     code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
+    # [[w:A|B]] → [[A|B]]
+    code = code.replace("[[w:", "[[")
 
     #
     # Variants

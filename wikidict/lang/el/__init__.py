@@ -192,3 +192,20 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         if parts := [part for part in parts if "=" not in part and part not in {"ΔΦΑ", locale}]:
             res.append(f"/{parts[-1]}/")
     return utils.unique(res)
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    templates_status: list[tuple[str, str]] | None = None,
+    word: str = "",
+) -> str:
+    r"""
+    >>> adjust_wikicode("=={{-el-}}==\n==={{ετυμολογία}} 1===\n: '''{{PAGENAME}}''' < {{κλη|grc|el|ἀνα-}} < [[πρόθεση]] [[ἀνά]]", "el")
+    "=={{-el-}}==\n==={{ετυμολογία}} 1===\n: '''{{PAGENAME}}''' < {{κλη|grc|el|ἀνα-}} < [[πρόθεση]] [[ἀνά]]"
+    >>> adjust_wikicode("=={{-fr-}}==\n==={{ετυμολογία}} 1===\n: '''{{PAGENAME}}''' < {{κλη|grc|el|ἀνα-}} < [[πρόθεση]] [[ἀνά]]", "el")
+    ''
+    """
+    # Keep interesting sections only
+    return utils.extract_relevant_sections(code, locale)
