@@ -10,4 +10,4 @@ requests==2.32.5
 rich==14.2.0
 scour==0.38.2
 wikitextparser==0.56.4
-git+https://github.com/tatuylonen/wikitextprocessor.git@361bf0e5757756ee4d0c3aa4ae9e0aa7fede52d6
+git+https://github.com/reader-dict/wikitextprocessor.git@cd9bd03d2825b06093cd012e530a02557c223c1e
