@@ -204,9 +204,9 @@ class Context:
         query = "SELECT title, body FROM pages WHERE namespace_id = 0 AND redirect_to IS NULL"
         yield from self.ctx.db_conn.execute(query)
 
-    def fetch_redirections(self) -> list[tuple[str, str]]:
+    def fetch_redirections(self) -> Generator[tuple[str, str]]:
         query = "SELECT title, redirect_to FROM pages WHERE namespace_id = 0 AND redirect_to IS NOT NULL"
-        return self.ctx.db_conn.execute(query).fetchall()
+        yield from self.ctx.db_conn.execute(query)
 
     def get_errors(self) -> list[str]:
         everything = self.ctx.to_return()

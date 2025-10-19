@@ -748,7 +748,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
             return any(hs in wikicode for hs in lang.head_sections[lang_dst])
     else:
         has_interesting_sections = re.compile(
-            rf"^=*\s*(?:{'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
+            rf"^={{1,2}}[ ]*({'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
             flags=re.IGNORECASE | re.MULTILINE,
         ).search  # type: ignore[assignment]
 
@@ -761,7 +761,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
         TimeElapsedColumn(),
     ) as progress:
         task = progress.add_task(f"[cyan][{lang_src.upper()}-{lang_dst.upper()}] Loading words", total=None)
-        words = [(title, body) for title, body in ctx.fetch_words() if has_interesting_sections(body)]
+        words = [item for item in ctx.fetch_words() if has_interesting_sections(item[1])]
 
         # Final update to ensure we show 100%
         progress.update(
@@ -771,7 +771,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
             description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Loaded words [green]✓[/green]",
         )
 
-    redirections = ctx.fetch_redirections()
+    redirections = list(ctx.fetch_redirections())
     snapshot = ctx.snapshot
     context.close_ctx()
     return snapshot, words, redirections
