@@ -126,9 +126,6 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("{{ES|xxx|núm=1}}\nfoo", "es")
-    '== {{lengua|es}} ==\nfoo'
-
     >>> from ... import context
     >>> _ = context.reset("es")
 
@@ -140,8 +137,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{lengua|es}} ==\n{{inflect.la.sust.1|flamm}}", "es", word="flamma")
     '== {{lengua|es}} ==\n;1: {{rev-flexion|flammae}}\n;1: {{rev-flexion|flammam}}\n;1: {{rev-flexion|flammarum}}\n;1: {{rev-flexion|flammas}}\n;1: {{rev-flexion|flammis}}'
     """
-    # {{ES|xxx|núm=n}} → == {{lengua|es}} ==
-    code = re.sub(rf"^\{{\{{{locale.upper()}\|.+}}}}", rf"== {{{{lengua|{locale}}}}} ==", code, flags=re.MULTILINE)
 
     # Keep interesting sections only
     if not (code := utils.extract_relevant_sections(code, locale)):

@@ -3,7 +3,6 @@
 import re
 
 from ... import lang, utils
-from .langs import langs
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -21,7 +20,7 @@ head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
 etyl_section = ("{{etimologie}}",)
 sections = (
     *etyl_section,
-    "{{abr}}",
+    "{{abr}",
     "{{abreviere}",
     "{{adjectiv}",
     "{{adjective}",
@@ -29,7 +28,7 @@ sections = (
     "{{articol}",
     "{{conjuncție}",
     "{{cuvânt compus}",
-    "{{expr}}",
+    "{{expr}",
     "{{expresie}",
     "{{expresie|ro",
     "{{interjecție}",
@@ -49,7 +48,7 @@ sections = (
     "{{substantiv}",
     "{{sufix}",
     "{{simbol|conv}",
-    "{{unități}}",
+    "{{unități}",
     "{{verb auxiliar}",
     "{{verb copulativ}",
     "{{verb predicativ}",
@@ -121,14 +120,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ANY|ANY}}", "ro")
     '=={{limba|ron}}==\n=== {{avv|ANY|ANY}} ==='
 
-    >>> adjust_wikicode("=={{limba|ron}}==\n====Verb tranzitiv====", "ro")
-    '=={{limba|ron}}==\n=== {{Verb tranzitiv}} ==='
-
-    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ron}}", "ro")
-    '=={{limba|ron}}==\n=== {{avv}} ==='
-    >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ro}}", "ro")
-    '=={{limba|ron}}==\n=== {{avv}} ==='
-
     >>> adjust_wikicode("=={{limba|ron}}==\n{{-avv-|ANY}}", "ro")
     '=={{limba|ron}}==\n=== {{avv|ANY}} ==='
 
@@ -137,9 +128,6 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("=={{limba|ron}}==\n{{-nume propriu-}}", "ro")
     '=={{limba|ron}}==\n=== {{nume propriu}} ==='
-
-    >>> adjust_wikicode("==Romanian==\n===Adjective===", "ro")
-    '== {{limba|ron}} ==\n=== {{Adjective}} ==='
 
     >>> adjust_wikicode("=={{limba|ron}}==\n#''forma de feminin singular pentru'' [[frumos]].", "ro")
     '=={{limba|ron}}==\n# {{flexion|frumos}}'
@@ -153,7 +141,10 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{limba|ron}}==\n{{adjectiv-ron|m-sg=interocular|m-pl=[[interoculari]]|f-sg=[[interoculară]]|f-pl=[[interoculare]]|voc-pl={{inv}}|voc-sg=}}# părul", "ro")
     '=={{limba|ron}}==\n# {{rev-flexion|interocular}}\n# {{rev-flexion|interoculare}}\n# {{rev-flexion|interoculari}}\n# {{rev-flexion|interoculară}}\n# părul'
     """
-    locale_3_chars, lang_name = langs[locale]
+
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
 
     # Wipe out `{{(|...}}...{{)}}`
     if "{{(|" in code:
@@ -174,27 +165,12 @@ def adjust_wikicode(
     # `====Verb tranzitiv====` → `=== {{Verb tranzitiv}} ===`
     code = re.sub(r"====([^=]+)====", r"=== {{\1}} ===", code)
 
-    # `{{-avv-|ron}}` → `=== {{avv}} ===`
-    code = re.sub(rf"^\{{\{{-(.+)-\|({locale}|{locale_3_chars})\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
     # `{{-avv-|ANY}}` → `=== {{avv|ANY}} ===`
     code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
 
     # `{{-avv-}}` → `=== {{avv}} ===`
     # `{{-nume propriu-}}` → `=== {{nume propriu}} ===`
     code = re.sub(r"^\{\{-([\w ]+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # Try to convert old Wikicode
-    if f"=={lang_name}==" in code:
-        # `==Romanian==` → `== {{limba|ron}} ==`
-        code = code.replace(f"=={lang_name}==", f"== {{{{limba|{locale_3_chars}}}}} ==")
-
-        # `===Adjective===` → `=== {{Adjective}} ===`
-        code = re.sub(r"===(\w+)===", r"=== {{\1}} ===", code)
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     #
     # Variants

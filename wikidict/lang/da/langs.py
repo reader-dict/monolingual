@@ -263,6 +263,7 @@ langs = {
     "or": "oriya",
     "os": "ossetisk",
     "osx": "oldsaksisk",
+    "otk": "oldtyrkisk",
     "pa": "punjabi",
     "pcd": "pikardisk",
     "pdc": "pennsylvania dutch",
@@ -329,6 +330,7 @@ langs = {
     "swa": "swahili",
     "swe": "svensk",
     "syc": "syrisk",
+    "syr": "assyrisk",
     "szl": "schlesisk",
     "ta": "tamilsk",
     "tah": "tahitisk",
@@ -381,5 +383,5 @@ langs = {
     "zu": "zulu",
     "zul": "zulu",
     "zza": "zazaki",
-}  # 397
+}  # 399
 # END

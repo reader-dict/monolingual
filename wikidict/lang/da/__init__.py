@@ -4,7 +4,6 @@ import re
 
 from ... import lang, utils
 from . import variant_handlers as variant_handlers_mod
-from .langs import langs
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://da.wiktionary.org/wiki/Speciel:RandomRootpage"
@@ -166,24 +165,16 @@ def adjust_wikicode(
     *,
     templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
-    all_langs_iso: str = "|".join(langs),
-    all_langs_name: str = "|".join(langs.values()),
     forms: str = "|".join(ALL_FORMS),
     start: str = rf"^(?:{'|'.join(section_patterns)})\s*",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("{{(}}\n* {{en}}: {{trad|en|limnology}}\n{{)}}", "da")
-    ''
+    >>> adjust_wikicode("=={{da}}==\n{{(}}\n* {{en}}: {{trad|en|limnology}}\n{{)}}", "da")
+    '=={{da}}=='
 
-    >>> adjust_wikicode("{{trans-top|en kødbolle lavet af hakket fars}}\n*{{en}}: {{t|en|meatball}}\n*{{fi}}: {{t|fi|lihapulla}}f}}\n*{{el}}: {{t|el|κεφτές|m|sc=Grek}}\n**{{grc}}: {{t|grc|ἰσίκιον|n}}\n{{trans-mid}}\n*{{it}}: {{t|it|polpetta}}\n*{{es}}: {{t|es|albóndigas}}\n*{{sv}}: {{t|sv|frikadell|c}}\n*{{de}}: {{t|de|Frikadelle|f}}\n{{trans-bottom}}", "da")
-    ''
-
-    >>> adjust_wikicode("{{=da=}}\nfoo", "da")
-    '=={{da}}==\nfoo'
-
-    >>> adjust_wikicode("===dansk===\nfoo", "da")
-    '=={{da}}==\nfoo'
+    >>> adjust_wikicode("=={{da}}==\n{{trans-top|en kødbolle lavet af hakket fars}}\n*{{en}}: {{t|en|meatball}}\n*{{fi}}: {{t|fi|lihapulla}}f}}\n*{{el}}: {{t|el|κεφτές|m|sc=Grek}}\n**{{grc}}: {{t|grc|ἰσίκιον|n}}\n{{trans-mid}}\n*{{it}}: {{t|it|polpetta}}\n*{{es}}: {{t|es|albóndigas}}\n*{{sv}}: {{t|sv|frikadell|c}}\n*{{de}}: {{t|de|Frikadelle|f}}\n{{trans-bottom}}", "da")
+    '=={{da}}=='
 
     >>> adjust_wikicode("=={{da}}==\n{{-avv-|da}}", "da")
     '=={{da}}==\n=== {{avv}} ==='
@@ -260,23 +251,11 @@ def adjust_wikicode(
     '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
     """
 
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     code = code.replace("----", "")
-
-    # {{=da=}} → =={{da}}==
-    code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
-
-    # ===dansk=== → =={{da}}==
-    code = re.sub(
-        rf"=+\s*({all_langs_name})\s*=+",
-        lambda m: f"=={{{{{next(iso for iso, name in langs.items() if m[1].lower() == name)}}}}}==",
-        code,
-        flags=re.IGNORECASE | re.MULTILINE,
-    )
-
-    # Transform sub-locales into their own section to prevent mixing stuff
-    # {{-da-}} → =={{da}}==
-    # {{-mul-}} → =={{mul}}==
-    code = re.sub(rf"\{{\{{-({all_langs_iso})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
     # {{-avv-|da}} → === {{avv}} ===
     code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
@@ -286,10 +265,6 @@ def adjust_wikicode(
 
     # {{-avv-}} → === {{avv}} ===
     code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     # {{(}} .* {{)}}
     code = re.sub(r"\{\{\(\}\}(.+)\{\{\)\}\}", "", code, flags=re.DOTALL | re.MULTILINE)

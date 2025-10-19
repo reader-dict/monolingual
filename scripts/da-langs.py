@@ -9,6 +9,8 @@ langs = re.findall(pattern, soup)
 
 # Missing langs
 langs.append(("enm", "middelengelsk"))
+langs.append(("otk", "oldtyrkisk"))
+langs.append(("syr", "assyrisk"))
 
 # Aliases
 soup = get_content("https://da.wiktionary.org/wiki/Bruger:PolyBot~dawiktionary/Languages?action=raw")

@@ -25,6 +25,7 @@ from rich.progress import (
 )
 
 from . import constants, context, lang, utils
+from .lang.da.langs import langs as langs_da
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Generator, Iterator
@@ -191,6 +192,18 @@ def process(file: Path, locale: str) -> bool:
 
         title = unescape(title, entities=constants.HTML_REPL_TITLE)
         body = unescape(code, entities=constants.HTML_REPL_BODY)
+
+        # Header section adjustments may be required to search for specific locale in --render
+        match lang_dst:
+            case "da":
+                # `{{=da=}}` → `=={{da}}==`
+                body = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
+
+                # Transform sub-locales into their own section to prevent mixing stuff
+                # `{{-da-}}` → `=={{da}}==`
+                # `{{-mul-}}` → `=={{mul}}==`
+                body = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", body, flags=re.MULTILINE)
+
         context.new_page(title, 0, body, None)
         word_count += 1
 

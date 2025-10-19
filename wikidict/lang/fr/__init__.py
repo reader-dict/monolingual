@@ -245,15 +245,15 @@ def adjust_wikicode(
     '== {{langue|fr}} =\n# {{flexion|anisophylle}}\n# {{flexion|anisophylle}}'
     """
 
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     # == {{caractère}} == → '== {{caractère}} ==\n=== {{s|caractère}} ==='
     code = re.sub(r"(==\s*{{caractère}}\s*==)", r"\1\n=== {{s|caractère}} ===", code)
 
     # === {{s|caractère}} ===\n{{hangeul unicode}} → '=== {{s|caractère}} ===\n# {{hangeul unicode}}'
     code = re.sub(r"=== \{\{s\|caractère}} ===\n\s*\{\{", "=== {{s|caractère}} ===\n# {{", code, flags=re.MULTILINE)
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     # <li value="2"> → ''
     code = re.sub(r"<li [^>]+>", "", code)
