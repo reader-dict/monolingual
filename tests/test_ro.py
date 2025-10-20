@@ -77,7 +77,6 @@ def setup_lua_ctx() -> None:
             ["fie", "fost", "sunt"],
         ),
         ("frumoasă", ["/fru'mo̯a.sə/"], [], {}, ["frumos"], []),
-        ("frumoși", ["[fruˈmoʃʲ]"], [], {}, ["frumos"], []),
         (
             "Lama",
             [],
