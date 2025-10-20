@@ -169,6 +169,8 @@ ALL_FORMS = [
 FORMS = "|".join(ALL_FORMS)
 START = rf"^(?:{'|'.join(section_patterns)})\s*'*"
 PATTERNS = [
+    # ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.
+    r"(?:(?:(?:Agglutination|Forme) de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).+du verbe''\s*\{\{lien\|([^\|}]+).+ avec.+",
     # ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}
     r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?) du verbe''\s*\{\{lien\|([^\|}]+)",
     # ''Féminin singulier de'' {{lien|terne|fr}}.
@@ -249,6 +251,8 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("== {{langue|fr}} =\n# ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}.", "fr")
     '== {{langue|fr}} =\n# {{flexion|interpolare}}'
+    >>> adjust_wikicode("== {{langue|fr}} =\n# ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.", "fr")
+    '== {{langue|fr}} =\n# {{flexion|agguagliare}}'
     """
 
     # Keep interesting sections only
