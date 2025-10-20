@@ -991,7 +991,7 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
             in_expected_section = line.lower().startswith(interesting_sections)
         if in_expected_section:
             cleaned.append(line)
-    return "" if len(cleaned) < 2 else "\n".join(cleaned)
+    return "\n".join(cleaned) if cleaned else ""
 
 
 def transform_variant(word: str, template: str, locale: str) -> str:

@@ -154,7 +154,7 @@ def adjust_wikicode(
     # sourcery skip: inline-immediately-returned-variable
     r"""
     >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Deklinacio-eo}}", "eo")
-    ''
+    '=={{Lingvo|eo}}=='
 
     >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{form-eo}}", "eo")
     '=={{Lingvo|eo}}==\n# {{form-eo}}'

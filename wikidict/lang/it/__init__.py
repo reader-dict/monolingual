@@ -103,7 +103,7 @@ def adjust_wikicode(
     '== {{-it-}} ==\n[[A|B]]'
 
     >>> adjust_wikicode("== {{-it-}} ==\n[[en:foo]]", "it")
-    ''
+    '== {{-it-}} =='
 
     >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form-}}", "it")
     '== {{-it-}} ==\n=== {{verb form}} ==='
