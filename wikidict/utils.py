@@ -1084,8 +1084,8 @@ def convert_math(match: str | re.Match[str], word: str) -> str:
 
 def table2html(word: str, locale: str, table: wikitextparser.Table) -> str:
     phrase = "<table>"
-    style_table = 'style="border: 1px solid black; border-collapse: collapse;"'
-    style_td = 'style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;"'
+    style_table = 'style="border: 1px solid black; border-collapse: collapse; font-size: inherit;"'
+    style_td = 'style="border: 1px solid black; padding: 0.2em 0.4em;"'
     phrase = f"<table {style_table}>"
     for row in table.cells(span=False):
         phrase += "<tr>"
