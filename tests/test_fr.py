@@ -35,7 +35,7 @@ def setup_lua_ctx() -> None:
             ["\\(ə).ʁɛs\\"],
             ["f"],
             [
-                "<i>(Date à préciser)</i> Ce suffixe est né d’une coupe erronée du suffixe des mots comme <i>enchanteresse</i> et <i>pécheresse</i>. En effet, ces derniers sont en fait le cas sujet de mots en <i>-eur</i> auquel on a ajouté le suffixe féminisant <i>-esse</i> sous le schéma suivant :",
+                "Ce suffixe est né d’une coupe erronée du suffixe des mots comme <i>enchanteresse</i> et <i>pécheresse</i>. En effet, ces derniers sont en fait le cas sujet de mots en <i>-eur</i> auquel on a ajouté le suffixe féminisant <i>-esse</i> sous le schéma suivant :",
                 '<table style="border: 1px solid black; border-collapse: collapse;"><tr><th style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">cas sujet</th><th style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">cas régime</th><th style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">cas sujet + <i>-esse</i></th></tr><tr><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">pechere</td><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">pecheur</td><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">pecheresse</td></tr><tr><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">enchantere</td><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">enchanteur</td><td style="border: 1px solid black; padding: 0.2em 0.4em; font-size: 2.5em;">enchanteresse</td></tr></table>',
                 "Le suffixe a alors été confondu avec <i>-erece</i>, suffixe ancien français féminin de <i>-erez</i>, qui n’a rien laissé en français moderne directement (indirectement, on note <i>couperet</i> et <i>guilleret</i>, issus de confusions avec d’autres suffixes).",
                 "<b>-eresse</b> a été très productif au Moyen Âge mais il subit depuis le XVI<sup>e</sup> siècle la concurrence du suffixe <i>-euse</i> qui l’a presque entièrement remplacé.",
@@ -163,9 +163,7 @@ def setup_lua_ctx() -> None:
             "base",
             ["\\bɑz\\"],
             ["f"],
-            [
-                "<i>(Date à préciser)</i> Du latin <i>basis</i> («&nbsp;id.&nbsp;»), du grec ancien βάσις, <i>básis</i> («&nbsp;marche&nbsp;»)."
-            ],
+            ["Du latin <i>basis</i> («&nbsp;id.&nbsp;»), du grec ancien βάσις, <i>básis</i> («&nbsp;marche&nbsp;»)."],
             {
                 "Nom": [
                     "Partie inférieure d’un corps quelconque qui lui sert de soutien.",
@@ -357,8 +355,8 @@ def setup_lua_ctx() -> None:
             ["\\ɡʁe.fje\\", "\\ɡʁɛ.fje\\"],
             ["m"],
             [
-                "(<i>Nom commun 1</i>) <i>(Date à préciser)</i> Du latin <i>graphiarius</i> («&nbsp;d’écriture, de style, de poinçon&nbsp;») ou dérivé de <i>greffe</i>, avec le suffixe <i>-ier</i>.",
-                "(<i>Nom commun 2</i>) <i>(Date à préciser)</i> Sans doute par jeu de mot avec <i>griffes</i> → voir <i>chat-fourré</i>.",
+                "(<i>Nom commun 1</i>) Du latin <i>graphiarius</i> («&nbsp;d’écriture, de style, de poinçon&nbsp;») ou dérivé de <i>greffe</i>, avec le suffixe <i>-ier</i>.",
+                "(<i>Nom commun 2</i>) Sans doute par jeu de mot avec <i>griffes</i> → voir <i>chat-fourré</i>.",
             ],
             {
                 "Nom": [

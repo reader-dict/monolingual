@@ -114,7 +114,6 @@ templates_ignored = (
     "{{R:",
     "{{RÉF",
     "{{réf",
-    "{{refnec",
     "{{source",
     "{{Source-wikt",
     "{{trier",
