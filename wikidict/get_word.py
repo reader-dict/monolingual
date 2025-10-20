@@ -4,13 +4,11 @@ from __future__ import annotations
 
 import os
 import re
-from typing import TYPE_CHECKING
 
 from . import constants, context, utils
+from .lang.da.langs import langs as langs_da
 from .render import parse_word
-
-if TYPE_CHECKING:
-    from .stubs import Word
+from .stubs import Word
 
 
 def bold(value: str) -> str:
@@ -27,6 +25,18 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
     with constants.SESSION.get(url) as req:
         req.raise_for_status()
         code = req.text
+
+    # Header section adjustments may be required to search for specific locale
+    _, lang_dst = utils.guess_locales(locale, use_log=False)
+    match lang_dst:
+        case "da":
+            # `{{=da=}}` → `=={{da}}==`
+            code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
+
+            # Transform sub-locales into their own section to prevent mixing stuff
+            # `{{-da-}}` → `=={{da}}==`
+            # `{{-mul-}}` → `=={{mul}}==`
+            code = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
     if not context.setup_modules_db(locale):
         exit(1)
