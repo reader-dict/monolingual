@@ -48,7 +48,6 @@ core_sections = [
     "locution-phrase",
     "locution phrase",
     "nom commun",
-    "nom de famille",
     "nom propre",
     "nom scientifique",
     "nom",
