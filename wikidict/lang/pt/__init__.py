@@ -198,13 +198,14 @@ def adjust_wikicode(
 
     >>> from ... import context
     >>> _ = context.reset("pt")
+
     >>> context.new_word("formolado")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", "pt")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|formolada}}\n# {{rev-flexion|formoladas}}\n# {{rev-flexion|formolado}}\n# {{rev-flexion|formolados}}'
 
     >>> context.new_word("focinho")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinhos}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinho}}\n# {{rev-flexion|focinhos}}'
 
     >>> context.new_word("che")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.gl|ms=che|mp=ches}} (è)", "pt")
@@ -212,21 +213,21 @@ def adjust_wikicode(
 
     >>> context.new_word("kelvinometria")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometrias}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometria}}\n# {{rev-flexion|kelvinometrias}}'
 
     >>> context.new_word("abaixador")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixador}}\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
     """
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
 
     # `==Substantivo<sup>2</sup>==` → `=={{Substantivo 2}}==`
     code = re.sub(r"==\s*Substantivo\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \1}}==", code)
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     # <li value="2"> → ''
     code = re.sub(r"<li [^>]+>", "", code)
@@ -271,22 +272,22 @@ def adjust_wikicode(
                     tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
-                    # Apply some clean-up to prevent breaking everything
-                    if "#if:" in tpl_code:
-                        # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
-                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_code)
-                    if "{{" in tpl_code:
-                        # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
-                        tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
-                    if "-div" in tpl_code and "{{" not in tpl_code:
-                        tpl_code = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_code)
-
                     # Remove unrelated templates after a reverse variant one
                     # `{{flex.pt|...}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}` → `{{flex.pt|...}}`
                     # but not `{{flex.pt|fs=caceta|fp=cacetas|fs-div=ca.{{grifar|ce}}.ta|fp-div=ca.{{grifar|ce}}.tas}}`
                     tpl_code = re.split(r"}}\s*\{\{", tpl_code, maxsplit=1)[0]
                     if not tpl_code.endswith("}}"):
                         tpl_code += "}}"
+
+                    # Apply some clean-up to prevent breaking everything
+                    if "#if:" in tpl_code:
+                        # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
+                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_code)
+                    if tpl_code.count("{{") > 1:
+                        # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
+                        tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
+                    if "-div" in tpl_code and tpl_code.count("{{") == 1:
+                        tpl_code = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_code)
 
                     forms = utils.process_templates(
                         word,
