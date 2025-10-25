@@ -167,6 +167,19 @@ def adjust_wikicode(
     # Remove tables (cf issue #2073)
     code = re.sub(r"^\{\|.*?\|\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
+    # Wipe out `{{text float box|...}}`
+    if "{{text float box" in code:
+        cleaned: list[str] = []
+        in_unwanted_section = False
+        for line in code.splitlines():
+            if line.startswith("{{text float box|"):
+                in_unwanted_section = True
+            elif line.endswith("}}"):
+                in_unwanted_section = False
+            elif not in_unwanted_section:
+                cleaned.append(line)
+        code = "\n".join(cleaned)
+
     # Keep interesting sections only
     if not (code := utils.extract_relevant_sections(code, locale)):
         return ""
