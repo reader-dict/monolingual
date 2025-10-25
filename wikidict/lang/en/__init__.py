@@ -112,6 +112,7 @@ templates_ignored = (
     "{{t-needed",
     "{{unsupported",
     "{{wiki",
+    "{{Wiktionary:Picture",
     "{{wp",
 )
 
