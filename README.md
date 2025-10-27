@@ -6,7 +6,7 @@
 
 ---
 
-## Development
+## Usage
 
 Set up a virtual environment:
 
@@ -27,7 +27,23 @@ python -m pip install -U pip
 python -m pip install -r requirements-tests.txt
 ```
 
-Run tests:
+Download the dictionary for your LOCALE:
+
+```
+python -m wikidict.__main__ LOCALE
+```
+
+Where `LOCALE` is a [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements).
+
+Example:
+
+```
+python -m wikidict.__main__ en
+```
+
+## Development
+
+Before submitting a PR, run tests:
 
 ```bash
 # All tests, must be run in two steps to prevent database issues
@@ -38,7 +54,7 @@ python -m pytest tests
 python -m pytest tests -m "not webtest"
 ```
 
-Run linters, and quality checkers, before submitting a pull-request:
+and linters as well as quality checkers:
 
 ```bash
 ./check.sh
