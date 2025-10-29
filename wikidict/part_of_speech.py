@@ -46,6 +46,21 @@ PATTERNS = {
         # `{{nome}}` → `nome`
         re.compile(r"\{\{([^}]+).*").sub,
     ],
+    "ja": [
+        # `{{noun|ja}}` → `noun`
+        re.compile(r"((?:noun|prov)).+").sub,
+        # `{{verb}}（中国地方）` → `verb`
+        re.compile(r"\{\{([^}]+).*").sub,
+        # `動詞 見てる・縮約形` → `動詞`
+        re.compile(r"(動詞).*").sub,
+        # `副詞1` → `副詞`
+        # `助詞（[[漢文]]）` → `助詞`
+        # `名詞: 将棋の駒 • Abbr` → `名詞`
+        # `名詞：ダブリュー` → `名詞：ダブリュー`
+        # `名詞・サ変動詞` → `名詞・サ変動詞`
+        # `名詞･田の実` → `名詞`
+        re.compile(r"([^\d（:：・･]+).*").sub,
+    ],
     "no": [
         # `verb 1` → `verb`
         re.compile(r"([^\s,]+),?\s+.*").sub,
@@ -204,6 +219,24 @@ MERGE = {
         "suff": "suffisso",
         "top": "sostantivo",
         "verb form": "verb",
+    },
+    "ja": {
+        "adjc": "形容動詞",
+        "adjective": "形容動詞",
+        "adjectivenoun": "形容動詞",
+        "colloc": "連語",
+        "collocation": "連語",
+        "conjug": "活用",
+        "conjugation": "活用",
+        "idiom": "成句",
+        "noun": "名詞",
+        "prov": "ことわざ",
+        "proverb": "ことわざ",
+        "top": "名詞",  # noun
+        "verb": "動詞",
+        "活用形": "活用",  # conjugation form
+        "慣用句": "成句",  # idiom
+        "名詞形": "名詞",  # noun form
     },
     "no": {
         "forkortelser": "forkortelse",

@@ -200,6 +200,21 @@ class Context:
             ]
         )
 
+    def translate_requires(self, current_value: str, new_value: str) -> None:
+        """Translate Lua inline module imports.
+
+        Example with the JA dictionary:
+            - `require "Module:xxx"` → `require "モジュール:xxx"`
+            - `require("Module:xxx")` → `require("モジュール:xxx")`
+            - `loadData("Module:xxx")` → `loadData("モジュール:xxx")`
+        """
+        search = f'"{current_value}:'
+        replace = f'"{new_value}:'
+        like = f"%{search}%"
+        query = "UPDATE pages SET body = REPLACE(body, ?, ?) WHERE namespace_id = 828 AND body LIKE ?"
+        self.ctx.db_conn.execute(query, (search, replace, like))
+        self.ctx.db_conn.commit()
+
     def fetch_words(self) -> Generator[tuple[str, str]]:
         query = "SELECT title, body FROM pages WHERE namespace_id = 0 AND redirect_to IS NULL"
         yield from self.ctx.db_conn.execute(query)
@@ -304,6 +319,9 @@ def adapt_templates(locale: str) -> None:
             need_pre_expand=page.need_pre_expand,
             redirect_to=page.redirect_to,
         )
+
+    if locale == "ja":
+        this_ctx.translate_requires("Module", "モジュール")
 
     this_ctx.set_cache_exclusions()
 
@@ -462,7 +480,7 @@ def clean_html_output(html: str, locale: str) -> str:
     html = re.sub(r'<span class="label[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
 
     # Remove those tags
-    html = re.sub(r"</?(?:a|bdi|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
+    html = re.sub(r"</?(?:a|bdi|cite|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
     html = html.replace("<hr>", "<br>")
 
     # Clean-up attributes from those tags

@@ -225,6 +225,27 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("it", "nome")
     'Nome'
 
+    >>> format_pos("ja", "{{noun|ja}}")
+    '名詞'
+    >>> format_pos("ja", "{{prov|jpn}}")
+    'ことわざ'
+    >>> format_pos("ja", "{{verb}}（中国地方）")
+    '動詞'
+    >>> format_pos("ja", "動詞 見てる・縮約形")
+    '動詞'
+    >>> format_pos("ja", "副詞1")
+    '副詞'
+    >>> format_pos("ja", "助詞（[[漢文]]）")
+    '助詞'
+    >>> format_pos("ja", "名詞: 将棋の駒 • Abbr")
+    '名詞'
+    >>> format_pos("ja", "名詞：ダブリュー")
+    '名詞'
+    >>> format_pos("ja", "名詞・サ変動詞")
+    '名詞'
+    >>> format_pos("ja", "名詞･田の実")
+    '名詞'
+
     >>> format_pos("no", "verb 1")
     'Verb'
     >>> format_pos("no", "egennavn, toponym")
@@ -674,6 +695,8 @@ def clean(text: str) -> str:
         ''
         >>> clean("<nowiki>«</nowiki>")
         '«'
+        >>> clean("<noinclude>{{字源|拳}}</noinclude>")
+        ''
         >>> clean("foo|anticuado por [[cerrojo]] e influido por [[fierro]] [http://books.google.es/books?id=or7_PqeALCMC&pg=PA21&dq=%22ferrojo%22]|yeah")
         'foo|anticuado por cerrojo e influido por fierro |yeah'
         >>> clean("<<country>>")
@@ -750,6 +773,9 @@ def clean(text: str) -> str:
     # <nowiki>»</nowiki> → '»'
     text = sub("<nowiki>([^<]+)</nowiki>", r"\1", text)
 
+    # <noinclude>»</noinclude> → ''
+    text = sub("<noinclude>[^<]+</noinclude>", "", text)
+
     # <gallery>
     text = sub(r"<gallery>[\s\S]*?</gallery>", "", text)
 
@@ -807,7 +833,7 @@ def clean(text: str) -> str:
 
     # Convert single "< ", and " >" to HTML quotes
     text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
-    text = re.sub(r'(?<!\\")[ ]+>', " &gt;", text)
+    text = re.sub(r'(?<!")[ ]+>', " &gt;", text)
 
     # Restore math formulas
     for idx, formula in enumerate(formulas):

@@ -287,6 +287,8 @@ def find_etymology(
             return definitions
         case "it":
             items = get_items(("",), skip=("=== {{etim",))
+        case "ja":
+            items = get_items(("#", r"\*"))
         case "no" | "zh":
             items = get_items(("#", ":", r"\*"))
         case "pt":
