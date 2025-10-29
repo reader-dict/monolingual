@@ -156,8 +156,8 @@ def xml_parse_element(
             return empty
 
         # Actual word
-        text = next(RE_TEXT(element, pos=element.find("<text", title.endpos)), "")
-        return title[1], text[1]
+        if text := next(RE_TEXT(element, pos=element.find("<text", title.endpos)), ""):
+            return title[1], text[1]
 
     # No Wikicode; unfinished page; no interesting head section; a foreign word, or a module/template.
     return empty

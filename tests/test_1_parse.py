@@ -141,6 +141,37 @@ def test_parse_word_without_wikicode(tmp_path: Path) -> None:
     assert not parse.process(file, "fr")
 
 
+def test_parse_word_without_wikicode_2(tmp_path: Path) -> None:
+    file = save(
+        tmp_path,
+        """\
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.11/" xml:lang="fr">
+  <page>
+    <title>MediaWiki</title>
+    <ns>8</ns>
+    <id>12</id>
+    <revision>
+        <id>403956</id>
+        <parentid>33016</parentid>
+        <timestamp>2006-02-13T09:08:31Z</timestamp>
+        <contributor>
+        <username>Bob</username>
+            <id>-42</id>
+            </contributor>
+        <comment>changement de titre pour meilleur référencement dans les moteurs de recherche</comment>
+        <model>wikitext</model>
+        <format>text/x-wiki</format>
+        <text bytes="0" sha1="40helna9646ffk0utvwm8bkdlzi1eck" />
+        <sha1>40helna9646ffk0utvwm8bkdlzi1eck</sha1>
+    </revision>
+  </page>
+</mediawiki>
+""",
+    )
+
+    assert not parse.process(file, "fr")
+
+
 def test_parse_word_with_colons(tmp_path: Path) -> None:
     file = save(
         tmp_path,
