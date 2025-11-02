@@ -508,14 +508,6 @@ def setup_lua_ctx() -> None:
             ["suivre", "être"],
         ),
         (
-            "Turgeon",
-            ["\\tyʁ.ʒɔ̃\\"],
-            [],
-            ["Nom en rapport avec l’esturgeon."],
-            {"Nom": ["Nom de famille."]},
-            [],
-        ),
-        (
             "venoient",
             [],
             [],
