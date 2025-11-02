@@ -702,6 +702,10 @@ def clean(text: str) -> str:
 
         >>> clean(" <")
         '<'
+        >>> clean('<\\"')
+        '<\\"'
+        >>> clean('< \\"')
+        '< \\"'
         >>> clean("< ")
         '&lt;'
         >>> clean(" < ")
@@ -712,6 +716,10 @@ def clean(text: str) -> str:
         '>'
         >>> clean(" > ")
         '&gt;'
+        >>> clean('\\">')
+        '\\">'
+        >>> clean('\\" >')
+        '\\" >'
     """
 
     # Speed-up lookup
@@ -798,7 +806,8 @@ def clean(text: str) -> str:
     # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", text)
 
     # Convert single "< ", and " >" to HTML quotes
-    text = text.replace("< ", "&lt; ").replace(" >", " &gt;")
+    text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
+    text = re.sub(r'(?<!\\")[ ]+>', " &gt;", text)
 
     # Restore math formulas
     for idx, formula in enumerate(formulas):
