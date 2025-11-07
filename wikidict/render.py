@@ -112,11 +112,7 @@ def find_definitions(
                     if pos_def not in target_pos:
                         target_pos.append(pos_def)
 
-    if not definitions:
-        return {}
-
-    # Sort by part of speech (POS)
-    return dict(sorted(definitions.items(), key=lambda kv: kv[0]))
+    return dict(definitions)
 
 
 def es_replace_defs_list_with_numbered_lists(
@@ -730,7 +726,7 @@ def save(output: Path, words: Words) -> None:
 
     output.parent.mkdir(exist_ok=True, parents=True)
     with output.open(mode="w", encoding="utf-8") as fh:
-        json.dump(words, fh, cls=EnhancedJSONEncoder, ensure_ascii=False, indent=4, sort_keys=True)
+        json.dump(words, fh, cls=EnhancedJSONEncoder, ensure_ascii=False, indent=2)
     log.info("Saved %s words into %s", f"{len(words):,}", output)
 
 

@@ -101,7 +101,7 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
         strip_html(utils.convert_gender(details.genders).lstrip()),
     )
 
-    for pos, definitions in sorted(details.definitions.items(), key=lambda kv: kv[0]):
+    for pos, definitions in details.definitions.items():
         print("\n", bold(pos))
         index = 1
         for definition in definitions:
