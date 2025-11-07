@@ -286,7 +286,7 @@ class BaseFormat:
                     if is_japanese:
                         variants = []
                     else:
-                        # Filter out variants with a different prefix that their word.
+                        # Filter out variants with a different prefix than their word.
                         # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
                         current_word_group_prefix = guess_prefix(current_word)
                         variants = [
