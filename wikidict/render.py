@@ -676,6 +676,7 @@ def render(
                 progress.update(redirection_task, advance=1)
         progress.update(
             redirection_task,
+            completed=len(redirections),
             description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Added redirections [green]✓[/green]",
         )
 
