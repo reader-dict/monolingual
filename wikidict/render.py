@@ -708,6 +708,8 @@ def render(
                 description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handled reverse variants [green]✓[/green]",
             )
 
+        hook_after(results_final, progress)
+
     return results_final
 
 
@@ -775,7 +777,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
     return snapshot, words, redirections
 
 
-def hook_after(words: Words) -> None:
+def hook_after(words: Words, progress: Progress) -> None:
     pass
 
 
@@ -796,14 +798,12 @@ def main(locale: str, *, workers: int = multiprocessing.cpu_count(), parallelism
 
     log.info("Rendering ...")
     workers = workers or multiprocessing.cpu_count()
-    hook_after(
-        words := render(
-            in_words,
-            redirections,
-            locale,
-            workers,
-            parallelism_start_method=parallelism_start_method,
-        )
+    words = render(
+        in_words,
+        redirections,
+        locale,
+        workers,
+        parallelism_start_method=parallelism_start_method,
     )
 
     ret = 1
