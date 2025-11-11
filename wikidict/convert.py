@@ -12,6 +12,7 @@ import os
 import shutil
 import threading
 from collections import defaultdict
+from contextlib import suppress
 from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 from functools import partial
@@ -280,7 +281,8 @@ class BaseFormat:
 
                 # Nullify variant words to prevent polluting the dictionary with duplicates
                 for variant in variants:
-                    words[variant].is_variant = True
+                    with suppress(KeyError):
+                        words[variant].is_variant = True
 
                 if isinstance(self, KoboFormat):
                     if is_japanese:
