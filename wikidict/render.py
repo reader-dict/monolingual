@@ -670,13 +670,15 @@ def render(
             f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Adding redirections",
             total=len(redirections),
         )
+        redirection_count = 0
         for word, redirect_to in redirections:
             with suppress(KeyError):
                 results_final[redirect_to].variants.append(word)
-                progress.update(redirection_task, advance=1)
+                redirection_count += 1
+                progress.update(redirection_task, completed=redirection_count)
         progress.update(
             redirection_task,
-            completed=len(redirections),
+            total=redirection_count,
             description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Added redirections [green]✓[/green]",
         )
 
