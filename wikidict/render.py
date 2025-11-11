@@ -682,7 +682,7 @@ def render(
             description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Added redirections [green]✓[/green]",
         )
 
-        if lang.reverse_variant_titles[lang_dst]:
+        if lang.reverse_variant_templates[lang_dst]:
             reverse_task = progress.add_task(
                 f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Handling reverse variants",
                 total=len(results),
