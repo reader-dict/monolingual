@@ -16,7 +16,7 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
     [
         (
             "@",
@@ -30,6 +30,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "CIA",
@@ -38,6 +39,25 @@ def setup_lua_ctx() -> None:
             ["Abkürzung von Central Intelligence Agency"],
             {"Abkürzung": ["US-amerikanischer Auslandsnachrichtendienst"]},
             [],
+            [],
+        ),
+        (
+            "Informationsverlusts",
+            ["[ɪnfɔʁmaˈt͡si̯oːnsfɛɐ̯ˌlʊst͡s]"],
+            [],
+            [],
+            {},
+            ["Informationsverlust"],
+            ["Informationsverlustes"],
+        ),
+        (
+            "kartel",
+            ["[ˈkaʁtl̩]"],
+            [],
+            [],
+            {},
+            ["karteln"],
+            ["kartele", "kartle"],
         ),
         (
             "volley",
@@ -52,9 +72,10 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
-        ("trage", ["[ˈtʁaːɡə]"], [], [], {}, ["tragen"]),
-        ("daß", [], [], [], {}, ["dass"]),
+        ("trage", ["[ˈtʁaːɡə]"], [], [], {}, ["tragen"], ["trag"]),
+        ("daß", [], [], [], {}, ["dass"], []),
     ],
 )
 def test_parse_word(
@@ -64,6 +85,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -75,3 +97,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants

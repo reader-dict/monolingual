@@ -1,0 +1,17 @@
+== Informationsverlusts ({{Sprache|Deutsch}}) ==
+=== {{Wortart|Deklinierte Form|Deutsch}} ===
+
+{{Nebenformen}}
+:[[Informationsverlustes]]
+
+{{Worttrennung}}
+:In·for·ma·ti·ons·ver·lusts
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|ɪnfɔʁmaˈt͡si̯oːnsfɛɐ̯ˌlʊst͡s}}
+:{{Hörbeispiele}} {{Audio|De-Informationsverlusts.ogg}}
+
+{{Grammatische Merkmale}}
+*Genitiv Singular des Substantivs '''[[Informationsverlust]]'''
+
+{{Grundformverweis Dekl|Informationsverlust}}

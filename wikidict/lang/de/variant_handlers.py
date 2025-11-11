@@ -18,6 +18,15 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return variant.split("#", 1)[0]
 
 
+def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
+    """
+    >>> render_reverse_variant("rev-flexion", ["kartlet"], defaultdict(str), "kartelt")
+    'kartlet'
+    """
+    return parts[0].strip()
+
+
 handlers = {
     "flexion": render_variant,
+    "rev-flexion": render_reverse_variant,
 }

@@ -1,0 +1,24 @@
+== kartel ({{Sprache|Deutsch}}) ==
+=== {{Wortart|Konjugierte Form|Deutsch}} ===
+
+{{Nebenformen}}
+:''2. Person Singular Imperativ Präsens Aktiv:'' [[kartle]]
+:''1. Person Singular Indikativ Präsens Aktiv:'' [[kartle]]
+:''2. Person Singular Imperativ Präsens Aktiv:'' [[kartele]]
+:''1. Person Singular Indikativ Präsens Aktiv:'' [[kartele]]
+
+{{Worttrennung}}
+:kar·tel
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|ˈkaʁtl̩}}
+:{{Hörbeispiele}} {{Audio|De-kartel.ogg}}
+:{{Reime}} {{Reim|aʁtl̩|Deutsch}}
+
+{{Grammatische Merkmale}}
+*2. Person Singular Imperativ Präsens Aktiv des Verbs '''[[karteln]]'''
+*1. Person Singular Indikativ Präsens Aktiv des Verbs '''[[karteln]]'''
+
+{{Grundformverweis Konj|karteln}}
+
+{{Ähnlichkeiten 1|Anagramme=[[erkalt]], [[kalter]], [[kartle]], [[rektal]]}}

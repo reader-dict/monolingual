@@ -20,6 +20,7 @@ sections = (
     *etyl_section,
     "{{aussprache}",
     "{{bedeutungen}",
+    "{{nebenformen}",
     "{{variant}",
 )
 
@@ -28,6 +29,8 @@ variant_titles = (
     "konjugierte form",
 )
 variant_templates = ("{{flexion",)
+
+reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
     "{{Audio",
@@ -75,17 +78,22 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
-    """
+    r"""
     >>> adjust_wikicode("{{Grundformverweis Konj|tragen}}", "de")
-    '==== {{Variant}} ====\\n# {{flexion|tragen}}'
+    '==== {{Variant}} ====\n# {{flexion|tragen}}'
 
     >>> adjust_wikicode("== CIA ({{Sprache|Deutsch}}) ==", "de")
     '== {{Sprache|Deutsch}} =='
 
-    >>> adjust_wikicode("{{Bedeutungen}}\\n:[1] \\n\\n{{Herkunft}}\\n:[[Abkürzung]] von [[Sturmkanone]]", "de")
-    '==== {{Bedeutungen}} ====\\n# \\n\\n==== {{Herkunft}} ====\\n:[[Abkürzung]] von [[Sturmkanone]]'
-    >>> adjust_wikicode("{{Bedeutungen}}\\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", "de")
-    '==== {{Bedeutungen}} ====\\n# {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}'
+    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] \n\n{{Herkunft}}\n:[[Abkürzung]] von [[Sturmkanone]]", "de")
+    '==== {{Bedeutungen}} ====\n# \n\n==== {{Herkunft}} ====\n:[[Abkürzung]] von [[Sturmkanone]]'
+    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", "de")
+    '==== {{Bedeutungen}} ====\n# {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}'
+
+    >>> adjust_wikicode("{{Bedeutungen}}\n=== {{Wortart|Konjugierte Form|Deutsch}} ===\n{{Nebenformen}}\n:''2. Person Plural Konjunktiv I Präsens Aktiv:'' [[kartlet]]", "de")
+    '==== {{Bedeutungen}} ====\n=== {{Wortart|Konjugierte Form|Deutsch}} ===\n==== {{Nebenformen}} ====\n# {{rev-flexion|kartlet}}\n'
+    >>> adjust_wikicode("{{Bedeutungen}}\n==== {{Nebenformen}} ====\n:[[rev var 1]], [[rev var 2]]", "de")
+    '==== {{Bedeutungen}} ====\n==== {{Nebenformen}} ====\n# {{rev-flexion|rev var 1}}\n# {{rev-flexion|rev var 2}}\n'
     """
     # `{{Grundformverweis Konj|tragen}}` → `{{flexion|tragen}}`
     code = re.sub(
@@ -105,5 +113,16 @@ def adjust_wikicode(
     # Note: using `[ ]*` rather than `\s*` to bypass issues when a section above another one
     #       contains an empty item.
     code = re.sub(r":\[\d+\][ ]*", "# ", code)
+
+    #
+    # Reverse variants
+    #
+
+    if "{{Nebenformen}" in code:
+        for section_code in re.findall(r"^=+[ ]*{{Nebenformen}}[ ]*=+([^=]+)", code, flags=re.DOTALL | re.MULTILINE):
+            new_code = "\n".join(
+                f"# {{{{rev-flexion|{form}}}}}" for form in re.findall(r"\[\[([^\]]+)\]\]", section_code)
+            )
+            code = code.replace(section_code, f"\n{new_code}\n", count=1)
 
     return code
