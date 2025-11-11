@@ -668,15 +668,12 @@ class JSONVolumeFormat(BaseFormat):
         output_base.mkdir(exist_ok=True, parents=True)
 
         # Get all words sorted alphabetically
-        all_words = []
-        for word, details in self.words.items():
+        all_words = sorted(
+            (word, details)
+            for word, details in self.words.items()
             # Skip variant-only words without definitions
-            if details.is_variant and not details.definitions:
-                continue
-            all_words.append((word, details))
-
-        # Sort alphabetically
-        all_words.sort(key=lambda x: x[0])
+            if not details.is_variant or details.definitions
+        )
 
         log.info(
             "[%s] Processing %s words into volumes (max %dKB each)",
