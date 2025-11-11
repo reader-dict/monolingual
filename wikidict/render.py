@@ -246,7 +246,7 @@ def find_etymology(
         case "da":
             items = get_items(("#", ":"))
         case "de":
-            items = get_items((":",))
+            items = get_items(("#", ":"))
         case "el":
             items = get_items((": ", "#"))
         case "en":
