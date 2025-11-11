@@ -15,28 +15,14 @@ from wikidict.constants import ASSET_CHECKSUM_ALGO
 from wikidict.stubs import Variants, Word, Words
 
 WORDS = {
-    "empty": Word([], [], [], {}, [], []),
-    "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, [], []),
-    "foos": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"], []),
-    "baz": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"], []),
-    "empty1": Word([], [], [], {}, ["foo"], []),
-    "empty2": Word([], [], [], {}, ["empty1"], []),
-    "Multiple Etymologies": Word(
-        ["pron"],
-        ["gender"],
-        ["etyl 1", ("setyl 1",)],
-        {"Noun": ["def 1", ("sdef 1",)]},
-        [],
-        [],
-    ),
-    "Multiple Etymology": Word(
-        ["pron0"],
-        ["gender0"],
-        ["etyl0"],
-        {"Noun": ["def 0"]},
-        ["Multiple Etymologies"],
-        [],
-    ),
+    "empty": Word(),
+    "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}),
+    "foos": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"]),
+    "baz": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"]),
+    "empty1": Word(variants=["foo"]),
+    "empty2": Word(variants=["empty1"]),
+    "Multiple Etymologies": Word(["pron"], ["gender"], ["etyl 1", ("setyl 1",)], {"Noun": ["def 1", ("sdef 1",)]}),
+    "Multiple Etymology": Word(["pron0"], ["gender0"], ["etyl0"], {"Noun": ["def 0"]}, ["Multiple Etymologies"]),
     "GIF": Word(
         ["pron"],
         ["gender"],
@@ -52,7 +38,6 @@ WORDS = {
             ]
         },
         ["gif"],
-        [],
     ),
 }
 
@@ -384,102 +369,21 @@ def test_word_rendering(
 
 
 WORDS_VARIANTS_FR = words = {
-    "estre": Word(
-        pronunciations=["\\ɛtʁ\\"],
-        genders=[],
-        etymology=[],
-        definitions={"Verbe": ["Définition de 'estre'."]},
-        variants=[],
-        reverse_variants=[],
-    ),
-    "être": Word(
-        pronunciations=["\\ɛtʁ\\"],
-        genders=["m"],
-        etymology=[],
-        definitions={
-            "Verbe": [
-                "Définition de 'être'.",
-            ]
-        },
-        variants=[],
-        reverse_variants=[],
-    ),
-    "suis": Word(
-        pronunciations=["\\sɥi\\"],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["suivre", "être", "estre"],
-        reverse_variants=[],
-    ),
-    "suivre": Word(
-        pronunciations=["\\sɥivʁ\\"],
-        genders=[],
-        etymology=[],
-        definitions={"Verbe": ["Définition de 'suivre'."]},
-        variants=[],
-        reverse_variants=[],
-    ),
+    "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'estre'."]}),
+    "être": Word(pronunciations=["\\ɛtʁ\\"], genders=["m"], definitions={"Verbe": ["Définition de 'être'."]}),
+    "suis": Word(pronunciations=["\\sɥi\\"], variants=["suivre", "être", "estre"]),
+    "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions={"Verbe": ["Définition de 'suivre'."]}),
 }
 WORDS_VARIANTS_ES = {
-    "gastadan": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["gastada"],
-        reverse_variants=[],
-    ),
-    "gastada": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["gastado"],
-        reverse_variants=[],
-    ),
-    "gastado": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["gastar"],
-        reverse_variants=[],
-    ),
-    "gastar": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={"Verb": ["Definition of 'gastar'."]},
-        variants=[],
-        reverse_variants=[],
-    ),
+    "gastadan": Word(variants=["gastada"]),
+    "gastada": Word(variants=["gastado"]),
+    "gastado": Word(variants=["gastar"]),
+    "gastar": Word(definitions={"Verb": ["Definition of 'gastar'."]}),
 }
 WORDS_VARIANTS_ES_2 = {
-    "-foba": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["-fobo"],
-        reverse_variants=[],
-    ),
-    "-fobas": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={},
-        variants=["-foba", "-fobo"],
-        reverse_variants=[],
-    ),
-    "-fobo": Word(
-        pronunciations=[],
-        genders=[],
-        etymology=[],
-        definitions={"Suffix": ["-phobe", "-phobic"]},
-        variants=[],
-        reverse_variants=[],
-    ),
+    "-foba": Word(variants=["-fobo"]),
+    "-fobas": Word(variants=["-foba", "-fobo"]),
+    "-fobo": Word(definitions={"Suffix": ["-phobe", "-phobic"]}),
 }
 
 

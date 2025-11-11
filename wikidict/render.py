@@ -703,7 +703,7 @@ def render(
                     try:
                         results_final[form].variants = sorted({*results_final[form].variants, word})
                     except KeyError:
-                        results_final[form] = Word([], [], [], {}, [word], [])
+                        results_final[form] = Word(variants=[word])
                 progress.update(reverse_task, advance=1)
 
             progress.update(
@@ -726,7 +726,8 @@ def save(output: Path, words: Words) -> None:
     class EnhancedJSONEncoder(json.JSONEncoder):
         def default(self, o: object) -> Any:
             if dataclasses.is_dataclass(o):
-                return dataclasses.asdict(o)  # type: ignore[arg-type]
+                # Skip falsy values (empty list, `is_variant` being only defined/updated in/for --convert)
+                return dataclasses.asdict(o, dict_factory=lambda x: {k: v for (k, v) in x if v})  # type: ignore[arg-type]
             return super().default(o)
 
     output.parent.mkdir(exist_ok=True, parents=True)

@@ -1,6 +1,6 @@
 """Type annotations."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 SubDefinition = str | tuple[str, ...]
 Definition = str | tuple[str, ...] | tuple[SubDefinition, ...]
@@ -11,12 +11,12 @@ Variants = dict[str, list[str]]
 
 @dataclass(slots=True)
 class Word:
-    pronunciations: list[str]
-    genders: list[str]
-    etymology: list[Definition]
-    definitions: Definitions
-    variants: list[str]
-    reverse_variants: list[str]
+    pronunciations: list[str] = field(default_factory=list)
+    genders: list[str] = field(default_factory=list)
+    etymology: list[Definition] = field(default_factory=list)
+    definitions: Definitions = field(default_factory=dict)
+    variants: list[str] = field(default_factory=list)
+    reverse_variants: list[str] = field(default_factory=list)
     is_variant: bool = False
 
 
