@@ -1017,6 +1017,8 @@ def make_variants(words: Words) -> Variants:
     for word, details in words.items():
         for variant in details.variants:
             variants[variant].append(word)
+        for variant in details.reverse_variants:
+            variants[word].append(variant)
     log.info("Created %s variants", f"{len(variants):,}")
     return variants
 
