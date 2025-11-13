@@ -184,6 +184,8 @@ def adjust_wikicode(
                 continue
 
             # Remove current page name template: `{{日本語変格活用|{{PAGENAME}}}}` → `{{日本語変格活用|<WORD>}}`
+            if "{{FULLPAGENAME" in line:
+                line = line.replace("{{FULLPAGENAME}}", word)
             if "{{PAGENAME" in line:
                 line = line.replace("{{PAGENAME}}", word)
 

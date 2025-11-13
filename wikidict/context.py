@@ -125,6 +125,7 @@ class Context:
                SET cacheable = 0
              WHERE cacheable != 0
                AND namespace_id IN (10, 828)
+               AND instr(body, 'FULLPAGENAME') > 0
                AND instr(body, 'PAGENAME') > 0
         """)
 
@@ -190,14 +191,13 @@ class Context:
     def _get_cache_exclusions(self) -> tuple[str, ...]:
         """Templates/Modules using the current word should not be cached."""
         query = "SELECT title FROM pages WHERE cacheable = 0"
-        return tuple(
-            [
-                "{{PAGENAME",
-                *(
-                    f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
-                    for page in self.ctx.db_conn.execute(query).fetchall()
-                ),
-            ]
+        return (
+            "{{FULLPAGENAME",
+            "{{PAGENAME",
+            *(
+                f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
+                for page in self.ctx.db_conn.execute(query).fetchall()
+            ),
         )
 
     def translate_requires(self, current_value: str, new_value: str) -> None:
