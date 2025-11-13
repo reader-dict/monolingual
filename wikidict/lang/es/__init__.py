@@ -133,11 +133,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{lengua|es}} ==\n{{es.v}}", "es", word="autocompletar")
     '== {{lengua|es}} ==\n;1: {{rev-flexion|autocompleta}}\n;1: {{rev-flexion|autocompletaba}}\n;1: {{rev-flexion|autocompletabais}}\n;1: {{rev-flexion|autocompletaban}}\n;1: {{rev-flexion|autocompletabas}}\n;1: {{rev-flexion|autocompletad}}\n;1: {{rev-flexion|autocompletado}}\n;1: {{rev-flexion|autocompletamos}}\n;1: {{rev-flexion|autocompletan}}\n;1: {{rev-flexion|autocompletando}}\n;1: {{rev-flexion|autocompletara}}\n;1: {{rev-flexion|autocompletarais}}\n;1: {{rev-flexion|autocompletaran}}\n;1: {{rev-flexion|autocompletaras}}\n;1: {{rev-flexion|autocompletare}}\n;1: {{rev-flexion|autocompletareis}}\n;1: {{rev-flexion|autocompletaremos}}\n;1: {{rev-flexion|autocompletaren}}\n;1: {{rev-flexion|autocompletares}}\n;1: {{rev-flexion|autocompletaron}}\n;1: {{rev-flexion|autocompletará}}\n;1: {{rev-flexion|autocompletarán}}\n;1: {{rev-flexion|autocompletarás}}\n;1: {{rev-flexion|autocompletaré}}\n;1: {{rev-flexion|autocompletaréis}}\n;1: {{rev-flexion|autocompletaría}}\n;1: {{rev-flexion|autocompletaríais}}\n;1: {{rev-flexion|autocompletaríamos}}\n;1: {{rev-flexion|autocompletarían}}\n;1: {{rev-flexion|autocompletarías}}\n;1: {{rev-flexion|autocompletas}}\n;1: {{rev-flexion|autocompletase}}\n;1: {{rev-flexion|autocompletaseis}}\n;1: {{rev-flexion|autocompletasen}}\n;1: {{rev-flexion|autocompletases}}\n;1: {{rev-flexion|autocompletaste}}\n;1: {{rev-flexion|autocompletasteis}}\n;1: {{rev-flexion|autocomplete}}\n;1: {{rev-flexion|autocompletemos}}\n;1: {{rev-flexion|autocompleten}}\n;1: {{rev-flexion|autocompletes}}\n;1: {{rev-flexion|autocompleto}}\n;1: {{rev-flexion|autocompletá}}\n;1: {{rev-flexion|autocompletábamos}}\n;1: {{rev-flexion|autocompletáis}}\n;1: {{rev-flexion|autocompletáramos}}\n;1: {{rev-flexion|autocompletáremos}}\n;1: {{rev-flexion|autocompletás}}\n;1: {{rev-flexion|autocompletásemos}}\n;1: {{rev-flexion|autocompleté}}\n;1: {{rev-flexion|autocompletéis}}\n;1: {{rev-flexion|autocompletés}}\n;1: {{rev-flexion|autocompletó}}'
     """
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     #
     # Reverse variants
     #

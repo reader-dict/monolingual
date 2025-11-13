@@ -37,3 +37,13 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     return []
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    templates_status: list[tuple[str, str]] | None = None,
+    word: str = "",
+) -> str:
+    return code

@@ -2,8 +2,6 @@
 
 import re
 
-from ... import utils
-
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 float_separator = ","
@@ -179,11 +177,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("==漢語==\n;限定代詞", "zh")
     '==漢語==\n'
     """
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
     # `# {{zh-pron\n|...` → `# {{zh-pron|...`

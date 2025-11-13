@@ -37,6 +37,12 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
             # `{{-da-}}` → `=={{da}}==`
             # `{{-mul-}}` → `=={{mul}}==`
             code = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
+        case "de":
+            # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
+            code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
+        case "ja":
+            if "{{kanji header" in code:
+                code = f"=={{{{kanji}}}}==\n{code}"
 
     if not context.setup_modules_db(locale):
         exit(1)

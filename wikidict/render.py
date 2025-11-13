@@ -473,10 +473,12 @@ def adjust_wikicode(
     templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
-    func: Callable[..., str] = lang.adjust_wikicode[locale]
+    # Keep interesting sections only
+    if not (code := utils.extract_relevant_sections(code, locale)):
+        return ""
+
     code = context.clean_html_input(code, locale)
-    code = func(code, locale, templates_status=templates_status, word=word)
-    return code
+    return lang.adjust_wikicode[locale](code, locale, templates_status=templates_status, word=word)  # type: ignore[no-any-return]
 
 
 def parse_word(

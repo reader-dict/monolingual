@@ -120,11 +120,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{L|ja}}==\n=== {{etym}}1 ===", "ja", word="いる")
     '=={{L|ja}}==\n==={{etym}}==='
 
-    >>> adjust_wikicode("{{kanji header|部画=人:2+6}}", "ja", word="併")
-    '=={{kanji}}==\n{{kanji header|部画=人:2+6}}'
-
     >>> adjust_wikicode("=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号", "ja", word="いる")
-    '=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n# [[バナジウム]]の元素記号'
+    '=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号'
 
     >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id="語義1"></span> [[月]]', "ja", word="新月")
     '=={{L|ja}}==\n=== {{noun}} ===\n# [[月]]'
@@ -148,14 +145,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{ruby|有|ゆう}}|する}}", "ja", word="有する")
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|有される}}\n# {{rev-flexion|有した}}\n# {{rev-flexion|有しない}}\n# {{rev-flexion|有します}}\n# {{rev-flexion|有しろ}}\n# {{rev-flexion|有すること}}\n# {{rev-flexion|有すれば}}\n# {{rev-flexion|有せず}}\n# {{rev-flexion|有せよ}}'
     """
-
-    if "{{kanji header" in code:
-        code = f"=={{{{kanji}}}}==\n{code}"
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     # `<span style="font-size:smaller;">` → ``
     code = re.sub(r'<span style="font-size:[ ]*small[^"]*">([^<]+)</span>', r"<small>\1</small>", code)
 

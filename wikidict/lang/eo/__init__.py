@@ -169,13 +169,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}\n:{{radi|tret}} + {{fina|i}}", "eo")
     '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
     """
-
     # Wipe out {{Deklinacio-eo}}
     code = code.replace(f"{{{{Deklinacio-{locale}}}}}", "")
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     # Wipe out unwanted sub-sections
     cleaned: list[str] = []

@@ -149,10 +149,6 @@ def adjust_wikicode(
     # {{-avv-}} → === {{avv}} ===
     code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     # [[w:A|B]] → [[A|B]]
     code = code.replace("[[w:", "[[")
 

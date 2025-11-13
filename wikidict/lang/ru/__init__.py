@@ -109,17 +109,12 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 2b\n|основа=коро́л\n|основа1=корол\n|слоги={{по-слогам|ко|ро́ль}}\n}}", "ru")
     '= {{-ru-}} =\n{{сущ ru m a 2b|}}\n# {{rev-flexion|коро́ль}}\n# {{rev-flexion|короле́}}\n# {{rev-flexion|короле́й}}\n# {{rev-flexion|короли́}}\n# {{rev-flexion|королю́}}\n# {{rev-flexion|короля́}}\n# {{rev-flexion|короля́м}}\n# {{rev-flexion|короля́ми}}\n# {{rev-flexion|короля́х}}\n# {{rev-flexion|королём}}'
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1*a\n|основа=бессу́дорожн\n|основа1=\n|тип=\n|слоги={{по-слогам|бес|су́|до|рож|ный}}\n|степень=\n|краткая=\n|коммент=\n|дореф=\n}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}", "ru")
-    '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|бессу́дорожна}}\n# {{rev-flexion|бессу́дорожная}}\n# {{rev-flexion|бессу́дорожно}}\n# {{rev-flexion|бессу́дорожного}}\n# {{rev-flexion|бессу́дорожное}}\n# {{rev-flexion|бессу́дорожной}}\n# {{rev-flexion|бессу́дорожном}}\n# {{rev-flexion|бессу́дорожному}}\n# {{rev-flexion|бессу́дорожною}}\n# {{rev-flexion|бессу́дорожную}}\n# {{rev-flexion|бессу́дорожны}}\n# {{rev-flexion|бессу́дорожные}}\n# {{rev-flexion|бессу́дорожный}}\n# {{rev-flexion|бессу́дорожным}}\n# {{rev-flexion|бессу́дорожными}}\n# {{rev-flexion|бессу́дорожных}}\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}'
+    '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|бессу́дорожна}}\n# {{rev-flexion|бессу́дорожная}}\n# {{rev-flexion|бессу́дорожно}}\n# {{rev-flexion|бессу́дорожного}}\n# {{rev-flexion|бессу́дорожное}}\n# {{rev-flexion|бессу́дорожной}}\n# {{rev-flexion|бессу́дорожном}}\n# {{rev-flexion|бессу́дорожному}}\n# {{rev-flexion|бессу́дорожною}}\n# {{rev-flexion|бессу́дорожную}}\n# {{rev-flexion|бессу́дорожны}}\n# {{rev-flexion|бессу́дорожные}}\n# {{rev-flexion|бессу́дорожный}}\n# {{rev-flexion|бессу́дорожным}}\n# {{rev-flexion|бессу́дорожными}}\n# {{rev-flexion|бессу́дорожных}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}'
 
     >>> context.new_word("Адрианович")
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 4a\n|основа={{PAGENAME}}\n|основа1={{PAGENAME}}\n|слоги={{по-слогам|Ад|ри|.|а́|.|но|вич}}\n}} {{собств.|ru|тип=отчество}}", "ru")
     '= {{-ru-}} =\n{{сущ ru m a 4a|}}\n# {{rev-flexion|Адрианович}}\n# {{rev-flexion|Адриановича}}\n# {{rev-flexion|Адриановичам}}\n# {{rev-flexion|Адриановичами}}\n# {{rev-flexion|Адриановичах}}\n# {{rev-flexion|Адриановиче}}\n# {{rev-flexion|Адриановичей}}\n# {{rev-flexion|Адриановичем}}\n# {{rev-flexion|Адриановичи}}\n# {{rev-flexion|Адриановичу}}'
     """
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     #
     # Reverse variants
     #

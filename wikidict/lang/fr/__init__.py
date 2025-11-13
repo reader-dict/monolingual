@@ -257,11 +257,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{langue|fr}} =\n# ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.", "fr")
     '== {{langue|fr}} =\n# {{flexion|sparlare}}'
     """
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     # == {{caractère}} == → '== {{caractère}} ==\n=== {{s|caractère}} ==='
     code = re.sub(r"(==\s*{{caractère}}\s*==)", r"\1\n=== {{s|caractère}} ===", code)
 

@@ -103,9 +103,6 @@ def adjust_wikicode(
         flags=re.MULTILINE,
     )
 
-    # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
-    code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
-
     # `{{Bedeutungen}}` → `==== {{Bedeutungen}} ====`
     code = re.sub(r"^\{\{(.+)\}\}", r"==== {{\1}} ====", code, flags=re.MULTILINE)
 

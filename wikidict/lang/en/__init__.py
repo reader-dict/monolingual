@@ -158,13 +158,12 @@ def adjust_wikicode(
     # sourcery skip: assign-if-exp, inline-immediately-returned-variable, inline-variable, reintroduce-else
     r"""
     >>> adjust_wikicode('== English ==\n{| class="floatright"\n|-\n| {{PIE word|en|h₁eǵʰs}}\n| {{PIE word|en|ḱóm}}\n|}', "en")
-    '== English =='
+    '== English ==\n'
     >>> adjust_wikicode('== English ==\n{| class="floatright"\n|-\n| {{PIE word|en|h₁eǵʰs}}\n| {{PIE word|en|ḱóm}}\n|}{{root|en|ine-pro|*(s)ker-|id=cut|*h₃reǵ-}}', "en")
     '== English ==\n{{root|en|ine-pro|*(s)ker-|id=cut|*h₃reǵ-}}'
     >>> adjust_wikicode("== English ==\n<math>\\frac{|AP|}{|BP|} = \\frac{|AC|}{|BC|}</math>", "en")
     '== English ==\n<math>\\frac{|AP|}{|BP|} = \\frac{|AC|}{|BC|}</math>'
     """
-
     # Remove tables (cf issue #2073)
     code = re.sub(r"^\{\|.*?\|\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
@@ -180,9 +179,5 @@ def adjust_wikicode(
             elif not in_unwanted_section:
                 cleaned.append(line)
         code = "\n".join(cleaned)
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
 
     return code

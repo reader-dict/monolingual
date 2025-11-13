@@ -82,7 +82,7 @@ def page() -> Callable[[str, str], str]:
 
 @pytest.fixture(scope="session")
 def html() -> Callable[[str, str], str]:
-    """Return the HTML of a word stored into "data/$LOCALE/word.html"."""
+    """Return the HTML of a word stored into "data/LOCALE/WORD.html"."""
 
     def _html(word: str, locale: str) -> str:
         data = Path(os.environ["CWD"]) / "data" / locale

@@ -1018,8 +1018,8 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
 
     cleaned: list[str] = []
     in_expected_section = False
-    for line in wikitext.splitlines():
-        if not (line := line.strip()):
+    for raw_line in wikitext.splitlines():
+        if not (line := raw_line.strip()):
             continue
         if line.startswith(equals) and line[level] != "=":
             in_expected_section = any(pattern.match(line) for pattern in interesting_sections)

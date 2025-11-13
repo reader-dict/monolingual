@@ -93,20 +93,3 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     pattern = re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)")
     return utils.unique(pattern.findall(code))
-
-
-def adjust_wikicode(
-    code: str,
-    locale: str,
-    *,
-    templates_status: list[tuple[str, str]] | None = None,
-    word: str = "",
-) -> str:
-    r"""
-    >>> adjust_wikicode("== {{-ca-}} ==\n=== Nom ===\n{{ca-nom|m}}", "ca")
-    '== {{-ca-}} ==\n=== Nom ===\n{{ca-nom|m}}'
-    >>> adjust_wikicode("== {{-fr-}} ==\n=== Nom ===\n{{ca-nom|m}}", "ca")
-    ''
-    """
-    # Keep interesting sections only
-    return utils.extract_relevant_sections(code, locale)

@@ -203,6 +203,12 @@ def process(file: Path, locale: str) -> bool:
                 # `{{-da-}}` → `=={{da}}==`
                 # `{{-mul-}}` → `=={{mul}}==`
                 body = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", body, flags=re.MULTILINE)
+            case "de":
+                # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
+                body = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
+            case "ja":
+                if "{{kanji header" in body:
+                    body = f"=={{{{kanji}}}}==\n{body}"
 
         context.new_page(title, 0, body, None)
         word_count += 1

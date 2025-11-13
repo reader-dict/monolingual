@@ -142,11 +142,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{limba|ron}}==\n{{adjectiv-ron|m-sg=interocular|m-pl=[[interoculari]]|f-sg=[[interoculară]]|f-pl=[[interoculare]]|voc-pl={{inv}}|voc-sg=}}# părul", "ro")
     '=={{limba|ron}}==\n# {{rev-flexion|interocular}}\n# {{rev-flexion|interoculare}}\n# {{rev-flexion|interoculari}}\n# {{rev-flexion|interoculară}}\n# părul'
     """
-
-    # Keep interesting sections only
-    if not (code := utils.extract_relevant_sections(code, locale)):
-        return ""
-
     # Wipe out `{{(|...}}...{{)}}`
     if "{{(|" in code:
         cleaned: list[str] = []

@@ -117,15 +117,14 @@ def adjust_wikicode(
     # sourcery skip: assign-if-exp, inline-immediately-returned-variable, reintroduce-else
     r"""
     >>> adjust_wikicode("==Norsk==\n----", "no")
-    '==Norsk=='
+    '==Norsk==\n'
 
     >>> adjust_wikicode("==Norsk==\n<includeonly>\n{{rfscript|und|sc=Deva}}, <br /></includeonly>", "no")
-    '==Norsk=='
+    '==Norsk==\n'
     """
     code = code.replace("----", "")
 
     # <includeonly>...</includeonly> → ''
     code = re.sub(r"(<includeonly>.+</includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE)
 
-    # Keep interesting sections only
-    return utils.extract_relevant_sections(code, locale)
+    return code

@@ -159,6 +159,11 @@ def test_parse_word(
 ) -> None:
     """Test the sections finder and definitions getter."""
     code = page(word, "ja")
+
+    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a tekn path by the test)
+    if "{{kanji header" in code:
+        code = f"=={{{{kanji}}}}==\n{code}"
+
     details = parse_word(word, code, "ja", force=True)
     assert details
     assert pronunciations == details.pronunciations
