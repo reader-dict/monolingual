@@ -2,7 +2,7 @@ from collections import defaultdict
 
 import wikitextparser as wtp
 
-from ... import context
+from ... import context, utils
 
 
 def cleanup(form: str) -> str:
@@ -35,11 +35,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0]
 
-    template = f"{{{{{tpl}"
-    if args := "|".join((*parts, *[f"{k}={v}" for k, v in data.items()])):
-        template += f"|{args}"
-    template += "}}"
-    table = context.expand(template, "ja")
+    table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "ja")
     return "|".join(table_to_forms(word, table))
 
 

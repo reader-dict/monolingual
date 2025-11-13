@@ -73,8 +73,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if tpl == "rev-flexion":
         return parts[0].strip()
 
-    template = "|".join((*parts, *[f"{k}={v}" for k, v in data.items()]))
-    table = context.expand(f"{{{{{tpl}|{template}}}}}", "da")
+    table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "da")
     if not table.startswith("{|"):
         if (idx := table.find("{|")) == -1:
             return ""

@@ -1157,3 +1157,26 @@ def cleanup_rev_variant(form: str, *, rpl: set[str] | None = None, skip: set[str
         return ""
 
     return cleaned.strip()
+
+
+def reconstruct_tpl(tpl: str, parts: list[str], data: defaultdict[str, str]) -> str:
+    """
+    >>> reconstruct_tpl("name", ["a", "", "b"], defaultdict(str, {"c": "", "d": "1"}))
+    '{{name|a||b|c=|d=1}}'
+    >>> reconstruct_tpl("name", [], defaultdict(str))
+    '{{name}}'
+    >>> reconstruct_tpl("name", [], defaultdict(str, {}))
+    '{{name}}'
+    >>> reconstruct_tpl("name", [""], defaultdict(str))
+    '{{name|}}'
+    """
+    template = f"{{{{{tpl}"
+    args = []
+    if parts:
+        args.extend(parts)
+    if data:
+        args.extend(f"{k}={v}" for k, v in data.items())
+    if args:
+        template += f"|{'|'.join(args)}"
+    template += "}}"
+    return template
