@@ -20,7 +20,7 @@ def setup_lua_ctx() -> None:
     [
         (
             "-acho",
-            ["[ˈa.t͡ʃo]"],
+            ["[ˈat͡ʃo]"],
             ["Del latín <i>-acĕus</i>. De allí también <i>-áceo</i>."],
             {"Sufijo": ["Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos."]},
             [],
@@ -28,7 +28,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "bicicleta",
-            ["[bi.siˈkle.t̪a]", "[bi.θiˈkle.t̪a]"],
+            ["[bisiˈklet̪a]", "[biθiˈklet̪a]"],
             [
                 "Del francés <i>bicyclette</i> y este diminutivo del francés <i>bicycle</i>, formado sobre el modelo del francés <i>tricycle</i>, del latín <i>bis</i>) y -cycle ( del latín <i>cyclus</i>, del griego κύκλος&nbsp;(kýklos,&nbsp;'círculo; rueda'))."
             ],
@@ -42,7 +42,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "buque_mercante",
-            ["[bu.ke_.meɾˈkan̪.t̪e]"],
+            ["[buke&#95;meɾˈkãn̪t̪e]"],
             [],
             {
                 "Locución": [
@@ -149,7 +149,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "entrada",
-            ["[en̪ˈt̪ɾa.ð̞a]"],
+            ["[ẽn̪ˈt̪ɾað̞a]"],
             ["De <i>entrado</i> (<i>participio de <i>entrar</i></i>) y el sufijo flexivo -a para el femenino."],
             {
                 "Sustantivo": [
@@ -190,7 +190,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "extenuado",
-            ["[eks.t̪eˈnwa.ð̞o]"],
+            ["[ekst̪eˈnwað̞o]"],
             [],
             {
                 "Adjetivo": [
@@ -203,7 +203,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "futuro",
-            ["[fuˈtu.ɾo]"],
+            ["[fuˈt̪uɾo]"],
             [
                 'Del latín <i>futūrus</i>, participio activo futuro irregular de esse&nbsp;(\'ser\'), y este el protoindoeuropeo bhū-, bʰew- ("existir", "llegar a ser").'
             ],
@@ -220,7 +220,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "gracias",
-            ["[ˈɡɾa.sjas]", "[ˈɡɾa.θjas]"],
+            ["[ˈgɾasjas]", "[ˈgɾaθjas]"],
             [],
             {
                 "Interjección": [
@@ -233,7 +233,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Guyana",
-            ["[ɡuˈʃa.na]", "[ɡuˈʒa.na]", "[ɡuˈʝa.na]"],
+            ["[guˈʃana]", "[guˈʒana]", "[guˈʝana]"],
             [],
             {
                 "Sustantivo": [
@@ -245,7 +245,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hasta",
-            ["[ˈas.t̪a]"],
+            ["[ˈast̪a]"],
             [
                 "Del castellano antiguo <i>fasta</i>, del castellano antiguo <i>hata</i>, fata, del árabe حتى (<i>ḥattā</i>), influido por el latín ad&nbsp;('a') ista&nbsp;('esta').",
             ],
@@ -267,7 +267,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hocico",
-            ["[oˈsi.ko]", "[oˈθi.ko]"],
+            ["[oˈsiko]", "[oˈθiko]"],
             ["De hocicar."],
             {
                 "Sustantivo": [
@@ -284,7 +284,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hala",  # Important, it is mostly used to check for infinite loop in the Lua interpreter
-            ["[ˈa.la]"],
+            ["[ˈala]"],
             ["Incierta. Voz expresiva."],
             {"Interjección": ["Expresión para demandar prisa o sorpresa."]},
             ["halar"],
@@ -313,7 +313,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "ruego",
-            ["[ˈrwe.ɣ̞o]"],
+            ["[ˈrweɣ̞o]"],
             [],
             {"Sustantivo": ["Súplica, petición hecha con el fin de alcanzar lo que se pide."]},
             ["rogar"],
@@ -321,7 +321,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "también",
-            ["[t̪amˈbjen]"],
+            ["[t̪ãmˈbjẽŋ]"],
             ["Compuesto de <i>tan</i> y <i>bien</i>"],
             {
                 "Adverbio": [
@@ -334,7 +334,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "uni-",
-            ["[ˈu.ni]"],
+            ["[ˈuni]"],
             ["Del latín <i>uni-</i>, del latín <i>unus</i>."],
             {"Prefijo": ["Elemento compositivo que significa uno. un único, relativo a uno solo."]},
             [],
