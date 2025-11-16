@@ -250,7 +250,12 @@ def find_etymology(
         case "el":
             items = get_items((": ", "#"))
         case "en":
-            items = get_items(("",), skip=("===etymology", "{{pie root"))
+            items = []
+            for item in get_items(("",), skip=("===etymology", "{{pie root")):
+                if "{{zh-x" in item:
+                    item = item.replace("collapsed=y", "collapsed=n")
+                    item = utils.clean(context.expand(item, "en"))
+                items.append(item)
         case "eo":
             items = get_items((":",))
         case "es":
@@ -285,7 +290,7 @@ def find_etymology(
             items = get_items(("",), skip=("=== {{etim",))
         case "ja":
             items = get_items(("#", r"\*"))
-        case "no" | "zh":
+        case "no":
             items = get_items(("#", ":", r"\*"))
         case "pt":
             items = get_items((r"[:]", r"\*"))
@@ -296,6 +301,8 @@ def find_etymology(
             items = [
                 tpl.__str__()[len("{{etymologi|") : -2] for tpl in parsed_section.templates if tpl.name == "etymologi"
             ]
+        case "zh":
+            items = get_items(("#", ":", r"\*"))
         case _:
             items = [parsed_section.contents]
 
