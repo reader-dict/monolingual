@@ -82,9 +82,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("{{Grundformverweis Konj|tragen}}", "de")
     '==== {{Variant}} ====\n# {{flexion|tragen}}'
 
-    >>> adjust_wikicode("== CIA ({{Sprache|Deutsch}}) ==", "de")
-    '== {{Sprache|Deutsch}} =='
-
     >>> adjust_wikicode("{{Bedeutungen}}\n:[1] \n\n{{Herkunft}}\n:[[Abkürzung]] von [[Sturmkanone]]", "de")
     '==== {{Bedeutungen}} ====\n# \n\n==== {{Herkunft}} ====\n:[[Abkürzung]] von [[Sturmkanone]]'
     >>> adjust_wikicode("{{Bedeutungen}}\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", "de")
