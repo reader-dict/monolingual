@@ -121,7 +121,6 @@ sections = (
 )
 
 variant_titles = sections
-variant_templates = ()
 
 templates_ignored = (
     "{{attention",
