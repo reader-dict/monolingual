@@ -100,6 +100,7 @@ templates_ignored = (
     "{{Image requested",
     "{{img",
     "{{listen",
+    "{{mapframe",
     "{{multiple ",
     "{{no entry",
     "{{nonlemma",
