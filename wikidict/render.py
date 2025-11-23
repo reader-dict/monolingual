@@ -252,7 +252,7 @@ def find_etymology(
         case "en":
             items = []
             for item in get_items(("",), skip=("===etymology", "{{pie root")):
-                if "{{zh-x" in item or "{{zh-q":
+                if "{{zh-x" in item or "{{zh-q" in item:
                     item = item.replace("collapsed=y", "collapsed=n")
                     item = utils.clean(context.expand(item, "en"))
                 items.append(item)
