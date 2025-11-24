@@ -395,6 +395,9 @@ def clean_html_input(code: str, locale: str) -> str:
     'ab'
     >>> clean_html_input('a<references>xcv</references>b', "fr")
     'ab'
+
+    >>> clean_html_input("# {{lb|en|<<transitive>> or (obsolete) <<reflexive>>}} to [[ask]] politely, to say [[please]]", "en")
+    '# {{lb|en|<<transitive>> or (obsolete) <<reflexive>>}} to [[ask]] politely, to say [[please]]'
     """
     sub = re.sub
 
@@ -436,7 +439,7 @@ def clean_html_input(code: str, locale: str) -> str:
     # <ref>foo</ref> → ''
     # <ref name="CFC">{{Import:CFC}}</ref> → ''
     # <ref name="CFC"><tag>...</tag></ref> → ''
-    code = sub(r"<ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)", "", code)
+    code = sub(r"<+ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)", lambda m: m[0] if m[0].startswith("<<") else "", code)
 
     # <ref> → ''
     # </ref> → ''
