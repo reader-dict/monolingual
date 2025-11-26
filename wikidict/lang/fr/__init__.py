@@ -65,7 +65,6 @@ core_sections = [
     "pronom",
     "proverbe",
     "préfixe",
-    "prénom",
     "préposition",
     "substantif",
     "suffixe",
