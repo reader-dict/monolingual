@@ -1014,7 +1014,8 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
     equals = "=" * level
 
     interesting_sections = [
-        re.compile(rf"{equals}[ ]*{section}[ ]*{equals}", flags=re.IGNORECASE) for section in lang.head_sections[locale]
+        re.compile(rf"{equals}[ ]*{re.escape(section)}[ ]*{equals}", flags=re.IGNORECASE)
+        for section in lang.head_sections[locale]
     ]
 
     cleaned: list[str] = []
