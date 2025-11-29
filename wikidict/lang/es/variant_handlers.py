@@ -19,9 +19,12 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
         cells = table.data(span=False)
         for lines in cells:
             for line in lines:
-                if not line:
+                if "[[" not in line:
                     continue
-                forms.update([cleanup(form) for form in re.findall(r"\[\[([^\]]+)\|\1\]\]", line)])
+                if "&ensp;" in line:
+                    line = line.split("&ensp;", 1)[1]
+                line = re.sub(r"\[\[([^|]+)\|\1\]\]", r"\1", line)
+                forms.update([cleanup(form) for form in line.split(",")])
 
         # Try 2
         if not forms:
@@ -32,6 +35,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                     forms.update([cleanup(form) for form in re.findall(r"\[\[([^#]+)#", line)])
 
     forms.discard(word)
+    forms.discard("―")
     forms.discard("")
 
     return sorted(forms)
