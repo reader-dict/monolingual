@@ -1,11 +1,11 @@
 import re
 
-from scripts_utils import get_content, get_soup
+from scripts_utils import get_content
 
 # Primary
-soup = get_soup("https://da.wiktionary.org/wiki/Modul:lang/data").text
+data = get_content("https://da.wiktionary.org/wiki/Modul:lang/data?action=raw")
 pattern = re.compile(r'data\["([^"]+)"\]\s+=\s+\{\s+name\s+=\s+"([^"]+)",')
-langs = re.findall(pattern, soup)
+langs = re.findall(pattern, data)
 
 # Missing langs
 langs.append(("enm", "middelengelsk"))
@@ -13,9 +13,9 @@ langs.append(("otk", "oldtyrkisk"))
 langs.append(("syr", "assyrisk"))
 
 # Aliases
-soup = get_content("https://da.wiktionary.org/wiki/Bruger:PolyBot~dawiktionary/Languages?action=raw")
+data = get_content("https://da.wiktionary.org/wiki/Bruger:PolyBot~dawiktionary/Languages?action=raw")
 pattern = re.compile(r"^\| (\w+)\|\|\|\|(\w+)\|\|", flags=re.MULTILINE)
-langs.extend(re.findall(pattern, soup))
+langs.extend(re.findall(pattern, data))
 
 known_langs: set[str] = set()
 print("langs = {")

@@ -1,12 +1,8 @@
-import warnings
 from time import sleep
 from typing import Any
 
 import requests
-from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning
 from requests.exceptions import HTTPError, RequestException
-
-warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 
 SESSION = requests.Session()
 SESSION.headers["User-Agent"] = "https://www.reader-dict.com"
@@ -36,8 +32,3 @@ def get_content(url: str, *, max_retries: int = 5, sleep_time: int = 5, as_json:
             sleep(sleep_time)
             retry += 1
     raise RuntimeError(f"Sorry, too many tries [{retry}] for {url!r}")
-
-
-def get_soup(url: str) -> BeautifulSoup:
-    page = str(get_content(url))
-    return BeautifulSoup(page, features="html.parser")
