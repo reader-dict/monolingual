@@ -519,9 +519,6 @@ class ConverterFromDictFile(DictFileFormat):
         if isinstance(self, StarDictFormat):
             writer_cls = glos.plugins["Stardict"].writerClass
 
-            # We do not want to compress the `.syn` file as it does not work everywhere (see issue #2407)
-            writer_cls.dictzipSynFile = False
-
             # Do not append extra data to the book name
             def get_bookname(cls) -> str:  # type: ignore[no-untyped-def]
                 bookname = str(cls._glos.getInfo("name"))
