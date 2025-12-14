@@ -1,16 +1,26 @@
 import os
 from collections.abc import Callable
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
 from wikidict import context, parse
 
 
-@pytest.fixture(scope="module", autouse=True)
-def setup_lua_ctx() -> None:
-    with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
+@pytest.fixture(autouse=True)
+def setup_lua_ctx(craft_data: Callable[[str], bytes]) -> None:
+    output_dir = Path(os.environ["CWD"]) / "data" / "fr"
+
+    # Delete an previously created file to cover the save() part
+    for file in output_dir.glob("*.sqlite"):
+        file.unlink()
+
+    # Ensure there is data to process.
+    compressed = craft_data("fr")
+    (output_dir / "pages-20201217.xml.bz2").write_bytes(compressed)
+
+    with patch.object(context, "init_interwiki_map", Mock()):
         assert context.reset("fr", db_already_setup=False)
 
 
@@ -20,22 +30,12 @@ def save(path: Path, content: str) -> Path:
     return file
 
 
-def test_simple(craft_data: Callable[[str], bytes]) -> None:
-    output_dir = Path(os.environ["CWD"]) / "data" / "fr"
-
-    # Delete an previously created file to cover the save() part
-    for file in output_dir.glob("data_wikicode-*.json"):
-        file.unlink()
-
-    # Ensure there is data to process.
-    compressed = craft_data("fr")
-    (output_dir / "pages-20201217.xml.bz2").write_bytes(compressed)
-
+def test_simple() -> None:
     assert parse.main("fr") == 0
 
 
 def test_no_xml_file() -> None:
-    with patch.object(parse, "get_latest_file", return_value=None):
+    with patch.object(parse, "get_latest_xml_file", return_value=None):
         assert parse.main("fr") == 1
 
 
@@ -273,13 +273,12 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         assert source_dir == tmp_path / "data" / lang_src
 
         output_file = parse.get_output_file(source_dir, snapshot)
-        assert output_file == source_dir / f"modules-{snapshot}.sqlite"
+        assert output_file == source_dir / f"pages-{snapshot}.sqlite"
 
         with (
             patch.object(parse, "get_source_dir") as mocked_gsd,
             patch.object(parse, "get_latest_xml_file") as mocked_glxf,
             patch.object(parse, "process") as mocked_p,
-            patch.object(parse, "save") as mocked_s,
         ):
             mocked_glxf.return_value = pages
             mocked_gsd.return_value = source_dir
@@ -289,4 +288,3 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
             mocked_gsd.assert_called_once_with(lang_src)
             mocked_glxf.assert_called_once_with(source_dir)
             mocked_p.assert_called_once_with(pages, locale)
-            mocked_s.assert_called_once_with(output_file, words)

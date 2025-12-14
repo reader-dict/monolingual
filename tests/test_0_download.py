@@ -175,4 +175,4 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
             mocked_gofc.assert_called_once_with(lang_src, snapshot)
             mocked_gofu.assert_called_once_with(pages_compressed)
             mocked_fp.assert_called_once_with(snapshot, lang_src, pages_compressed)
-            mocked_d.assert_called_once_with(pages_compressed, pages_uncompressed)
+            mocked_d.assert_called_once_with(lang_src, pages_compressed, mocked_gofu())

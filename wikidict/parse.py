@@ -169,7 +169,6 @@ def process(file: Path, locale: str) -> bool:
 
     utils.setup_logging(lang_src, lang_dst)
 
-    word_count = 0
     log.info("Processing %s for destination lang %r ...", file, lang_dst)
 
     module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]+)</title>").finditer
@@ -211,7 +210,6 @@ def process(file: Path, locale: str) -> bool:
                     body = f"=={{{{kanji}}}}==\n{body}"
 
         context.new_page(title, 0, body, None)
-        word_count += 1
 
     if is_monolingual:
         with Progress(
@@ -231,8 +229,9 @@ def process(file: Path, locale: str) -> bool:
                 description=f"[magenta][{lang_src.upper()}-{lang_dst.upper()}] Adapted templates [green]✓[/green]",
             )
 
+    word_count = context.get_word_count()
     context.close_ctx()
-    return word_count > 1
+    return word_count > 0
 
 
 def get_latest_dump_file(source_dir: Path) -> Path | None:

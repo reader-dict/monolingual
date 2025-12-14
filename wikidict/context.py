@@ -227,6 +227,10 @@ class Context:
         everything = self.ctx.to_return()
         return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
 
+    def get_word_count(self) -> int:
+        query = "SELECT count(*) FROM pages WHERE namespace_id = 0"
+        return int(self.ctx.db_conn.execute(query).fetchone()[0])
+
     def new_page(self, title: str, namespace_id: int, body: str | None, redirect_to: str | None) -> None:
         model = "Scribunto" if namespace_id == 828 else "wikitext"
         self.ctx.add_page(title, namespace_id, body=body, model=model, redirect_to=redirect_to)
@@ -281,6 +285,10 @@ def reset(locale: str, *, db_already_setup: bool = True) -> bool:
 
 def get_errors() -> list[str]:
     return get_ctx().get_errors()
+
+
+def get_word_count() -> int:
+    return get_ctx().get_word_count()
 
 
 def new_page(title: str, namespace_id: int, body: str | None, redirect_to: str | None) -> None:
