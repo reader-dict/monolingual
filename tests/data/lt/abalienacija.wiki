@@ -1,0 +1,36 @@
+{{see|abalienaciją}}
+== {{ltv}} ==
+
+=== ''Daiktavardis'' ===
+{{ltdkt|forma=f-mot-6l-a|šakn=abalienacij|pform=[[abalienacija]]|skiem=a-ba-lie-na-ci-ja}}
+
+'''abalienãcija''':
+
+# {{Kategorija|Ekonomika}} - [[turtas|turto]] [[nusavinimas]] arba [[perleidimas]].
+
+==== Etimologija ====
+
+{{la|abalienatio}}
+
+[[Category:Lotyniškos kilmės žodžiai/Lietuvių kalba]]
+
+<br clear=all />
+==== Vertimai ====
+
+{{trans-top|kalba=lt|vardas=abalienacija|kt=Ekonomika}}
+{{env1}} {{t+|en|transfer of property}}
+{{versk|et|abalienacija}}
+{{versk|es|abalienacija}}
+{{versk|it|abalienacija}}
+{{versk|lv|abalienacija}}
+{{versk|pl|abalienacija}}
+{{trans-mid}}
+{{lav1}} {{t+|la|abalienatio}}
+{{versk|pt|abalienacija}}
+{{versk|fr|abalienacija}}
+{{versk|ru|abalienacija}}
+{{versk|de|abalienacija}}
+{{trans-bottom}}
+
+<br clear=all>
+----

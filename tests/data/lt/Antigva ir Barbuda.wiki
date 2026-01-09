@@ -1,0 +1,88 @@
+[[Image:LocationAntiguaAndBarbuda.png|thumb|250px|[[Antigva ir Barbuda]]]]
+{{vikipedija|Antigva ir Barbuda}}
+== {{ltv}} ==
+=== ''Daiktavardis'' ===
+{{ltdkt}} {{f}}
+
+'''[[Antigva ir Barbuda]]'''
+# {{Kategorija|Valstybės|zodis=Antigva ir Barbuda}}&#32;- salų valstybė rytinėje [[Karibų jūra|Karibų jūros]] dalyje, [[Mažųjų Antilų salynas|Mažųjų Antilų salyne]], šalia [[Atlanto vandenynas|Atlanto vandenyno]].
+
+
+==== Etimologija ====
+{{Žodžiai|jung}}
+*[[Antigva]]
+*[[Barbuda]]
+
+<br clear=all />
+==== Vertimai ====
+
+{{trans-top|vardas=Antigva ir Barbuda|kalba=lt|kt=Šalys Šiaurės Amerikoje}}
+{{afv1}} {{t+|af|Antigua en Barbuda}}
+{{sqv1}} {{t+|sq|Antigua dhe Barbuda}}
+{{env1}} {{t+|en|Antigua and Barbuda}}
+{{arv1}} {{t+|ar|أنتيغوا وبربودا|tr='antiighwaa wa-barbuudaa|sc=Arab}}
+{{hyv1}} {{t+|hy|Անտիգուա Բարբուդա|tr=Antigua Barbuda|sc=Armn}}
+{{bev1}} {{t+|be|Антыгуа і Барбуда|f|tr=Antýhua i Barbúda}}
+{{bnv1}} {{t+|bn|এন্টিগুয়া এবং বার্বুডা|sc=Beng}}
+{{bsv1}} {{t+|bs|Antigva i Barbuda|f}}
+{{brv1}} {{t+|br|Antigua ha Barbuda}}
+{{bgv1}} {{t+|bg|Антигуа и Барбуда|tr=Antigua i Barbuda}}
+{{wov1}} {{t+|wo|Antigua ak Barbuda}}
+{{csv1}} {{t+|cs|Antigua a Barbuda}}
+{{dav1}} {{t+|da|Antigua og Barbuda}}
+{{eov1}} {{t+|eo|Antigvo-Barbudo}}
+{{etv1}} {{t+|et|Antigua ja Barbuda}}
+{{glv1}} {{t+|gl|Antiga e Barbuda}}
+{{elv1}} {{t+|el|Αντίγκουα και Μπαρμπούντα|tr=Antígoua kai Barboúda|f|sc=Grek}}
+{{guv1}} {{t+|gu|એંટિગુવા અને બર્બુડા|sc=Gujr}}
+{{hev1}} {{t+|he|אנטיגואה וברבודה|tr=antigvah ve-barbudah|sc=Hebr}}
+{{hiv1}} {{t+|hi|एन्टिगुवा और बर्बुडा|tr=enṭiguvā aur barbuḍā|sc=Deva}}
+{{idv1}} {{t+|id|Antigua dan Barbuda}}
+{{iav1}} {{t+|ia|Antigua e Barbuda}}
+{{isv1}} {{t+|is|Antígva og Barbúda}}
+{{esv1}} {{t+|es|Antigua y Barbuda|f}}
+{{itv1}} {{t+|it|Antigua e Barbuda}}
+{{jav1}} {{t+|ja|アンティグア・バーブーダ|tr=Antigua Bābūda}}
+{{cav1}} {{t+|ca|Antigua i Barbuda}}
+{{zhv1}}
+{{cmnv1}} {{t+|cmn|安提瓜島和巴布達|sc=Hani}}, {{t+|cmn|安提瓜岛和巴布达|tr=Āntíguā hé Bābùdá|sc=Hani}}
+{{kov1}} {{t+|ko|앤티가 바부다|tr=Aentiga Babuda|sc=Kore}}
+{{trans-mid}}
+{{hrv1}} {{t+|hr|Antigva i Barbuda}}
+{{lvv1}} {{t+|lv|Antigva un Barbuda}}
+{{plv1}} {{t+|pl|Antigua i Barbuda|f}}
+{{mkv1}} {{t+|mk|Антигва и Барбуда|f|tr=Antígva i Barbúda}}
+{{msv1}} {{t+|ms|Antigua dan Barbuda}}
+{{mtv1}} {{t+|mt|Antigwa u Barbuda}}
+{{mrv1}} {{t+|mr|एन्टिगुवा आणि बर्बूडा|tr=enṭiguvā āṇi barbūḍā|sc=Deva}}
+{{nav1}} {{t+|na|Antigua me Barbuda}}
+{{nvv1}} {{tø|nv|Antíígwa dóó Hashkʼaan Bikéyah Yázhí}}
+{{nov1}} {{t+|no|Antigua og Barbuda}}
+{{nlv1}} {{t+|nl|Antigua en Barbuda}}
+{{fav1}} {{t+|fa|آنتیگوا و باربودا|tr=Ântigvâ va Bârbudâ|sc=fa-Arab}}
+{{ptv1}} {{t+|pt|Antígua e Barbuda}}
+{{frv1}} {{t+|fr|Antigua-et-Barbuda}}
+{{rov1}} {{t+|ro|Antigua și Barbuda|f}}
+{{ruv1}} {{t+|ru|Антигуа и Барбуда|f|tr=Antígua i Barbúda}}
+{{shv1}}
+*:Kirilica: {{t+|sh|Антигва и Барбуда|sc=Cyrl}}
+*:Lotyniškai: {{t+|sh|Antigva i Barbuda}}
+{{skv1}} {{t+|sk|Antigua a Barbuda}}
+{{slv1}} {{t+|sl|Antigva in Barbuda}}
+{{fiv1}} {{t+|fi|Antigua ja Barbuda}}
+{{swv1}} {{t+|sw|Antigua na Barbuda}}
+{{gdv1}} {{t+|gd|Antigua agus Barbuda}}
+{{svv1}} {{t+|sv|Antigua och Barbuda}}
+{{tlv1}} {{t+|tl|Antigua at Barbuda}}
+{{trv1}} {{t+|tr|Antigua ve Barbuda}}
+{{ukv1}} {{t+|uk|Антигуа і Барбуда|f|tr=Antýhua i Barbúda}}
+{{huv1}} {{t+|hu|Antigua és Barbuda}}
+{{dev1}} {{t+|de|Antigua und Barbuda|n}}
+{{ruev1}} {{t+|rue|Антіґуа і Барбуда|f|tr=Antig'ua i Barbuda|sc=Cyrl}}
+{{extv1}} {{t+|ext|Antígua i Barbua}}
+{{trans-bottom}}
+
+=== Taip pat žiūrėkite ===
+
+{{Amerika}}
+{{Commons|Antigua and Barbuda|no=T}}

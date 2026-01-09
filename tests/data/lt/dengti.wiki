@@ -1,0 +1,96 @@
+== {{ltv}} ==
+=== ''Veiksmažodis'' ===
+{{ltvks|forma=f-1a-gti-ia-ė
+|bšakn=den|eslšakn=deng|btklšakn=deng
+|pform=[[dengti]]
+|pform1=[[dengia]]
+|pform2=[[dengė]]
+|dalyviai=t
+|skiem=deng-ti}}
+
+'''[[dengti]]''' 
+# [[dėti]], [[kloti]] ant viršaus
+#* '''''Dengė''' puodą (su) dangčiu. Stalas baltai '''dengtas'''.''
+# [[traukti]], [[gobti]]
+#* ''Debesys '''dengia''' dangų. Sniegas '''dengė''' žemę.'' 
+# [[dėti]] (stogą), [[stiegti]]
+#* ''Stogas čerpėmis '''dengtas'''. Dangumi '''dengtas''' (be stogo).''
+# [[aprūpinti]] drabužiais, [[rengti]]
+#* ''Jį giminės '''dengia''' ir maitina.''
+# {{p}} [[ginti]], [[užstoti]], [[slėpti]]
+#* ''Kas nusikaltėlį '''dengia'''? Kulkosvaidžiu '''dengė''' atsitraukiantį dalinį.'' 
+# {{Kategorija|Sportas}} - [[neleisti]] laisvai [[veikti]] varžovų puolėjui
+#* ''Puolė gerai, bet '''dengė''' prastai.''
+# {{š}} greitai, smarkiai ką [[daryti]] ([[eiti]], [[bėgti]], [[važiuoti]]; [[mušti]], [[trenkti]], [[rėžti]]; [[valgyti]], [[gerti]])
+
+<br clear=all />
+==== Sinonimai ====
+
+{{sin-top|kalba=lt|vardas=dengti|tipas=bendrai}}
+* {{t+|lt|bėgti}}
+* {{t+|lt|kloti}}
+* {{t+|lt|pleikti|t}}
+* {{t+|lt|rengti}}
+{{sin-mid}}
+* {{t+|lt|smogti  }}
+* {{t+|lt|stiegti}}
+* {{t+|lt|tiesti}}
+{{sin-bottom}}
+
+==== Antonimai ====
+
+{{ant-top|kalba=lt|vardas=dengti|tipas=bendrai}}
+* {{t+|lt|nedengti}}
+{{ant-mid}}
+{{ant-bottom}}
+
+==== Išvestiniai žodžiai ====
+
+{{rel-top|kalba=lt|vardas=dengti|tipas=Išvestiniai žodžiai}}
+* {{t+|lt|antdengti}}
+* {{t+|lt|apdengti}}
+* {{t+|lt|atidengti}}
+* {{t+|lt|dengikas}}
+* {{t+|lt|dengikė}}
+* {{t+|lt|dengimasis}}
+* {{t+|lt|dengimas}}
+* {{t+|lt|dengtis}}
+* {{t+|lt|dengėjas}}
+* {{t+|lt|dengėja}}
+{{rel-mid}}
+* {{t+|lt|išdengti}}
+* {{t+|lt|nedengti}}
+* {{t+|lt|nudengti}}
+* {{t+|lt|padengti}}
+* {{t+|lt|pardengti}}
+* {{t+|lt|perdengti}}
+* {{t+|lt|pradengti}}
+* {{t+|lt|pridengti}}
+* {{t+|lt|sudengti}}
+* {{t+|lt|uždengti}}
+{{rel-bottom}}
+
+==== Vertimai ====
+
+{{trans-top|kalba=lt|vardas=dengti|tipas=bendrai}}
+{{env1}} {{t+|en|lay|pst=stalą}}, {{t+|en|enshroud}}, {{t+|en|shroud}}, {{t+|en|clothe}}, {{t+|en|bury}}, {{t+|en|cloak}}, {{t+|en|coat}}, {{t+|en|cap}}, {{t+|en|screen|pst=apsaugojant}}, {{t+|en|cover}}, {{t+|en|mark}}
+{{trans-mid}}
+{{trans-bottom}}
+
+
+<br clear=all>
+----
+=== ''Dalyvis'' ===
+{{ltdlv|tipas=įvard|forma=f-as|dalis=[[būt. l.]] [[neveik. dlv.]]|šakn=dengt
+|pform=[[dengtas]]
+|pformm=[[dengta]]
+|skiem=deng-ti}}
+
+'''[[dengti]]''' 
+# tas kurį [[dengė]]
+
+==== Etimologija ====
+<=  [[dengti]], [[dengia]], [[dengė]]
+
+<br clear=all>
+----

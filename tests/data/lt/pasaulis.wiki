@@ -1,0 +1,94 @@
+[[Image:The Blue Marble.jpg|thumb|250px|[[Žemė]]]]
+{{vikipedija|Žemė}}
+{{vikicitatos|Pasaulis}}
+== {{ltv}} ==
+=== ''Daiktavardis'' ===
+{{ltdkt|forma=f-vyr-3l-is|šakn=pasaul|šakn2=pasaul}}
+'''[[pasaulis]]''' 
+# visa žemė; [[Žemė]]s rutulys
+# visi žmonės; aplinkiniai žmonės
+# [[visata]]
+
+==== Simboliai ====
+* [[🜨]], [[♁]]
+
+==== Išraiškos arba posakiai ====
+*'''[[Pasaulio vandenynas]]''' {{Kategorija|Vandenynai}} 
+
+==== Vertimai ====
+{{trans-top|vardas=pasaulis|kalba=lt|tipas=visa žemė}}
+{{gav1}} {{t+|ga|domhan|m}}
+{{akzv1}} {{t+|akz|ihaani onaami}}
+{{amsv1}} {{t+|ams|シェかい|tr=sjexa'i}}
+{{env1}} {{t+|en|world}}
+{{arv1}} {{t+|ar|عالم|m|tr=3aalam}}, {{t+|ar|دنيا|tr=dunyaa}}
+{{hyv1}} {{t+|hy|աշխարհ|tr=ašxarh}}
+{{versk|ast|pasaulis}}
+{{euv1}} {{t+|eu|mundu}}, {{t+|eu|lur}}
+{{bnv1}} {{t+|bn|দুনিয়া|tr=duniya|sc=Beng|xs=Bengali}}
+{{bsv1}} {{t+|bs|svijet|m}}
+{{versk|dz|pasaulis}}
+{{brv1}} {{t+|br|bed|m}}
+{{csv1}} {{t+|cs|svět|m}}
+{{dav1}} {{t+|da|verden|c}}
+{{etv1}} {{t+|et|maakera}}
+{{eev1}} {{t+|ee|xexeme}}
+{{fyv1}} {{t+|fy|wrâld}}, {{t+|fy|ierde}}
+{{elv1}} {{t+|el|κόσμος|m|tr=kósmos}}
+{{hev1}} {{t+|he|עולם|m|tr=olám}}
+{{hiv1}} {{t+|hi|दुनिया|f|tr=duniyā|xs=Hindi}}
+{{idv1}} {{t+|id|Dunia}}
+{{isv1}} {{t+|is|veröld|f}}
+{{esv1}} {{t+|es|mundo|m}}, {{t+|es|globo|m}}, {{t+|es|tierra|f}}
+{{itv1}} {{t+|it|mondo|m}}
+{{jav1}} {{t+|ja|世界|sc=Jpan}} ({{t+|ja|せかい|sc=Jpan}}, sekai)
+{{yiv1}} {{t+|yi|וועלט|sc=Hebr}}
+{{sgsv1}} {{t+|sgs|sviets}}
+{{versk|kn|pasaulis}}
+{{versk|km|pasaulis}}
+{{zhv1}}
+{{cmnv1}} {{t+|cmn|世界|tr=shìjiè|sc=Hani}}
+{{kov1}} {{t+|ko|세계|tr=segye|sc=Hang}}
+{{hrv1}} {{t+|hr|svijet|m}}
+{{xugv1}} {{t+|xug|シケー|tr=si↗kee|sc=Jpan}}
+{{kuv1}} {{t+|ku|دنیا|sc=ku-Arab}}, {{t+|ku|dinya}}
+{{ltgv1}} {{t+|ltg|pasauļs|m}}
+{{lvv1}} {{t+|lv|pasaule|f}}
+{{trans-mid}}
+{{plv1}} {{t+|pl|świat|m}}
+{{lav1}} {{t+|la|mundus|m}}
+{{msv1}} {{t+|ms|dunia|xs=Malay}}
+{{versk|my|pasaulis}}
+{{nov1}} {{t+|no|verden|m}}
+{{ryuv1}} {{t+|ryu|しけー|tr=sikee|sc=Jpan}}
+{{versk|oc|pasaulis}}
+* [[Old Frisian]]: [[wrald]]
+{{nlv1}} {{t+|nl|aarde|f|m}}, {{t+|nl|wereld|m|f}}
+{{fav1}} {{t+|fa|گیتی|tr=giti|xs=Persian}}, {{t+|fa|جهان|tr=jahân|xs=Persian}}
+{{nanv1}} {{t+|nan|世界}} ({{t+|nan|sè-kài}})
+{{ptv1}} {{t+|pt|mundo|m}}
+{{frv1}} {{t+|fr|monde|m}}, {{t+|fr|Terre|f}}
+{{rmv1}} {{t+|rm|mund|m}}
+{{rov1}} {{t+|ro|lume}}, {{t+|ro|pământ}}
+{{ruv1}} {{t+|ru|мир|m|tr=mir}}, {{t+|ru|свет|m|tr=svet}}
+{{cuv1}} {{t+|cu|миръ|m|tr=mirŭ|sc=Glag}}, {{t+|cu|ⰏⰉⰓⰟ|m|tr=mirŭ|sc=Glag}}
+{{grcv1}} {{t+|grc|κόσμος|tr=kosmos|sc=polytonic}}
+{{srv1}} {{t+|sr|свет|m|sc=Cyrl}}, {{t+|sr|svet|m}}, {{t+|sr|свијет|m|sc=Cyrl}}, {{t+|sr|svijet|m}}
+{{scnv1}} {{t+|scn|munnu|m}}, {{t+|scn|terra|f}}
+{{fiv1}} {{t+|fi|maailma}}, {{t+|fi|maapallo}}, {{t+|fi|maa}}
+{{scov1}} {{t+|sco|warld}}
+{{gdv1}} {{t+|gd|saoghal|m|xs=Scottish Gaelic}}, {{t+|gd|cruinne-cè|m|f}}
+{{svv1}} {{t+|sv|värld|c}}
+{{versk|th|pasaulis}}
+{{versk|ta|pasaulis}}
+{{versk|te|pasaulis}}
+{{bov1}} {{t+|bo|འཛམ་གླིང་།|tr='dzam gling|sc=Tibt}}
+{{trv1}} {{t+|tr|Dünya}}, {{t+|tr|acun}}
+{{ukv1}} {{t+|uk|світ|m|xs=Ukrainian}}
+{{urv1}} {{t+|ur|دنیا|f|xs=Urdu}}
+{{cyv1}} {{t+|cy|byd|m}}
+{{huv1}} {{t+|hu|világ}}
+{{viv1}} {{t+|vi|thế giới}}
+{{dev1}} {{t+|de|Welt|f}}, {{t+|de|Erde|f}}
+{{trans-bottom}}
+----

@@ -246,6 +246,9 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("ja", "名詞･田の実")
     '名詞'
 
+    >>> format_pos("lt", "daiktavardis #1")
+    'Daiktavardis'
+
     >>> format_pos("no", "verb 1")
     'Verb'
     >>> format_pos("no", "egennavn, toponym")
