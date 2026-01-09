@@ -5,9 +5,9 @@ file = Path(sys.argv[1])
 with file.open("rt", encoding="utf-8") as fh:
     jobs = {}
     for line in fh:
-        if not line.startswith("INFO:wikidict.render"):
+        if "INFO:wikidict.render" not in line:
             continue
-        job, word = line.split(" ", 1)
+        *_, job, word = line.split(" ", 3)
         job = job.split(":")[-1]
         if "Job done." in word:
             jobs.pop(job, None)
@@ -16,4 +16,4 @@ with file.open("rt", encoding="utf-8") as fh:
 
 main_proc = list(jobs.keys())[0]
 jobs.pop(main_proc, None)
-print(jobs)
+print(sorted(jobs.items()))
