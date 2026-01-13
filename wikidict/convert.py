@@ -326,7 +326,7 @@ class BaseFormat:
         log.info("[%s] Crafted %s (%s)", self.id(), checksum_file.name, checksum)
 
     def summary(self, file: Path) -> None:
-        if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__}:
+        if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__, DictFileFormatForMobi.__name__}:
             log.info(
                 "[%s] Effective words + variants: %s + %s => %s",
                 self.id(),
