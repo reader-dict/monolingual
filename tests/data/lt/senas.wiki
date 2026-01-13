@@ -1,0 +1,660 @@
+== {{ltv}} ==
+=== ''Būdvardis'' ===
+{{ltbdv|tipas=įvard-laips|forma=f-as
+|šakn=sen
+|pform=[[senas]]
+|pformm=[[sena]]
+|skiem=sẽ-nas}}
+
+'''[[senas]]''' 
+
+#jau kuris [[laikas]] [[esantis]]
+#ilgai [[vartotas]], [[palaikis]]
+#anksčiau [[buvęs]], [[nedabartinis]], [[pasenęs]]
+#prieš tai buvęs
+#[[pabuvęs]], [[palaikytas]], [[pastovėjęs]]
+<br clear=all />
+
+=== Tarimas ===
+{{IPA|[ˈsʲæːnɐs]}}
+
+==== Etimologija ====
+Iš {{proto|indoeuropiečių|sénos}}. Plg. senovės graikų k. ''[[ἕνος]]'' (henos), sanskrito [[सन]] (sána) ir gotų k. [[𐍃𐌹𐌽𐌴𐌹𐌲𐍃]] (sineigs).
+
+<br clear=all />
+==== Sinonimai ====
+
+{{sin-top|kalba=lt|vardas=senas|tipas=bendrai}}
+* {{t+|lt|archajiškas}}
+{{sin-mid}}
+* {{t+|lt|nejaunas}}
+{{sin-bottom}}
+
+==== Antonimai ====
+
+{{ant-top|kalba=lt|vardas=senas|tipas=bendrai}}
+* {{t+|lt|jaunas}}
+{{ant-mid}}
+* {{t+|lt|naujas}}
+{{ant-bottom}}
+
+==== Išraiškos arba posakiai ====
+{{rel-top|kalba=lt|vardas=senas|tipas=Kilę žodžiai}}
+* [[apsenys]]
+* [[apyseniai]]
+* [[apysenis]]
+* [[pasenas]]
+* [[paseniai]]
+* [[paseniūnis]] 
+* [[pasenokas]] 
+* [[pasenusiai]] 
+* [[pasenykščiom]]
+* [[pasenys]]
+* [[pasenėlis]]
+* [[persena]]
+* [[persenis]]
+* [[persenėlis]]
+* [[po senam]]
+* [[po seno]] 
+* [[poseniai]]
+* [[posenis]] 
+* [[posenolis]]
+* [[prasenas]] 
+* [[prasenis]] 
+* [[prasenobė]] 
+* [[prasenoviškas]]
+* [[prasenovė]] 
+* [[priesenis]]
+* [[priešsenatvinis]] 
+* [[proprosenelis]] 
+* [[proprosenelė]] 
+* [[proproseniai]] 
+* [[proprosenolis]] 
+* [[proprosenolė]] 
+* [[prosenas]] 
+* [[proseneliai]] 
+* [[prosenelis]] 
+* [[proseneliškas]] 
+* [[proseniai]] 
+* [[prosenis]]
+* [[prosenobinis]] 
+* [[prosenobiškas]] 
+* [[prosenobė]] 
+* [[prosenoliai]] 
+* [[prosenolis]] 
+* [[prosenovinis]] 
+* [[prosenoviškas]] 
+* [[prosenovė]] 
+* [[prosenutis]]
+* [[prosenučiai]] 
+* [[pussenis]]
+* [[sansenis]]
+* [[sen]]
+* [[sena galvelė]]
+* [[sena lapė]], [[senas lapė]] 
+* [[senaamžis]] 
+* [[senabiškas]] 
+* [[senabuvys]] 
+* [[senabė]] 
+* [[senadienis]] 
+* [[senadorius]] 
+* [[senaduonis]] 
+* [[senadvaris]] 
+* [[senaesiai]] 
+* [[senagagas]]
+* [[senagalas]] 
+* [[senagalvėlis]] 
+* [[senagalys]] 
+* [[senagirė]] 
+* [[senagulis]]
+* [[senai]] 
+* [[senaip]] 
+* [[senakaimis]] 
+* [[senakapiai]] 
+* [[senakapis]] 
+* [[senakelis]] 
+* [[senakelė]] 
+* [[senakurys]] 
+* [[senalamstis]] 
+* [[senalietuviškas]] 
+* [[senalis]] 
+* [[senamadis]] 
+* [[senamadiškas]] 
+* [[senamadiškumas]] 
+* [[senamartė]] 
+* [[senamedis]]  
+* [[senamedė]] 
+* [[senamiestis]] 
+* [[senamiškis]] 
+* [[senamotė]] 
+* [[senamėžinis]] 
+* [[senamėžis]] 
+* [[senamėžymis]] 
+* [[senamėžė]] 
+* [[senapalaikis]] 
+* [[senapaukštis]] 
+* [[senapienė]] 
+* [[senapievė]] 
+* [[senapilis]] 
+* [[senapilė]] 
+* [[senaprūdė]] 
+* [[senaprūsiai]] 
+* [[senaprūsis]] 
+* [[senaprūsiškas]] 
+* [[senapušis]] 
+* [[senapušė]] 
+* [[senaryčiai]] 
+* [[senas]] 
+* [[Senasis Testamentas]]
+* [[senasis vilkas]]
+* [[senasis]] 
+* [[senasis įstatymas]]
+* [[senaskynimis]] 
+* [[senasodis]] 
+* [[senasparniai]] 
+* [[senastis]] 
+* [[senasėdija]] 
+* [[senasėdis]] 
+* [[senata]]  
+* [[senatas]] 
+* [[senatikis]] 
+* [[senatikiškas]] 
+* [[senatis]] 
+* [[senatorybė]]  
+* [[senatuva]] 
+* [[senatuvė]] 
+* [[senatva]] 
+* [[senatvia]] 
+* [[senatvija]] 
+* [[senatvinis]] 
+* [[senatviškas]] 
+* [[senatvė]] 
+* [[senatėvis]] 
+* [[senauklė]] 
+* [[senaupis]] 
+* [[senaupė]] 
+* [[senauti]] 
+* [[senavadas]] 
+* [[senavagis]] 
+* [[senavedys]] 
+* [[senavedžiai]] 
+* [[senavietė]] 
+* [[senavikas]] 
+* [[senavimas]] 
+* [[senašilis]] 
+* [[senažiūris]] 
+* [[senažiūriškumas]] 
+* [[senažiūrumas]] 
+* [[senažydis]] 
+* [[senbabis]] 
+* [[senbajoris]] 
+* [[senbalė]] 
+* [[senbernauti]] 
+* [[senberniauti]] 
+* [[senberniavimas]] 
+* [[senbernis]] 
+* [[senberniškas]] 
+* [[senbernystė]] 
+* [[senbernėti]] 
+* [[senbezda]] 
+* [[senbiza]] 
+* [[senbizda]] 
+* [[senbizdis]] 
+* [[senbobinis]]  
+* [[senbobė]] 
+* [[senbočiai]] 
+* [[senbutelis]] 
+* [[senbutybė]] 
+* [[senbuvis]] 
+* [[senbuvybė]] 
+* [[sendaiktininkas]] 
+* [[sendaiktinė]] 
+* [[sendaiktis]] 
+* [[sendaržis]] 
+* [[sendavatkė]] 
+* [[sendinimas]] 
+* [[sendinti]] 
+* [[sendinėti]] 
+* [[sendirvis]] 
+* [[sendirvonis]] 
+* [[sendirvė]] 
+* [[sendrabužis]] 
+* [[sendraugis]] 
+* [[senduonė]] 
+* [[sendvaris]] 
+* [[sendvariškis]]  
+* [[sendyti]] 
+* [[sendzūkiai]] 
+* [[sendėdžius]] 
+* [[sendžiūvis]] 
+* [[senega]] 
+* [[seneikščias]] 
+* [[seneklis]] 
+* [[seneliai]] 
+* [[seneliausias]] 
+* [[seneliokas]] 
+* [[seneliotė]] 
+* [[senelis]] 
+* [[seneliukiškas]] 
+* [[seneliškas]] 
+* [[seneliūkštis]] 
+* [[seneluitis]] 
+* [[senenybė]] 
+* [[senesnybė]] 
+* [[senest]] 
+* [[senetva]] 
+* [[senežeris]] 
+* [[senežė]] 
+* [[sengalis]] 
+* [[sengalva]] 
+* [[sengalvis]] 
+* [[sengalvužėlis]] 
+* [[sengalvėjėlis]] 
+* [[sengalvėlis]] 
+* [[sengatvis]] 
+* [[sengeležis]] 
+* [[sengelžis]] 
+* [[sengentė]] 
+* [[sengiris]] 
+* [[sengirė]] 
+* [[sengobšis]] 
+* [[sengraikiai]] 
+* [[sengraikiškas]] 
+* [[sengriovis]] 
+* [[sengrybis]] 
+* [[sengudrystė]] 
+* [[sengūžis]] 
+* [[seniadie]] 
+* [[seniai]] 
+* [[seniaik]] 
+* [[seniapalakis]] 
+* [[senickai]] 
+* [[senickas]] 
+* [[senidien]] 
+* [[seniekas]] 
+* [[seniena]] 
+* [[senienininkas]] 
+* [[senieninkas]] 
+* [[senika]] 
+* [[senikas]] 
+* [[senikė]] 
+* [[senimas]] 
+* [[senina]] 
+* [[seninimas]] 
+* [[seninis]] 
+* [[seninteliai]] 
+* [[senintelis]] 
+* [[seninti]] 
+* [[seniokas]] 
+* [[seniokiškas]] 
+* [[seniokšlis]] 
+* [[seniotė]]  
+* [[senis]] 
+* [[senitelaitis]] 
+* [[senitelys]] 
+* [[senitkas]] 
+* [[seniuoti]] 
+* [[senius]] 
+* [[seniuvienė]] 
+{{rel-mid}}
+* [[seniądien]] 
+* [[seniškas]] 
+* [[seniūga]] 
+* [[seniūgas]] 
+* [[seniūkštis]] 
+* [[seniūna]] 
+* [[seniūnas]] 
+* [[seniūnauti]] 
+* [[seniūnavimas]] 
+* [[seniūnienė]] 
+* [[seniūnija]] 
+* [[seniūninkauti]] 
+* [[seniūniokas]] 
+* [[seniūnis]] 
+* [[seniūniukas]] 
+* [[seniūnybė]] 
+* [[seniūnystė]] 
+* [[senkaimis]] 
+* [[senkalbė]] 
+* [[senkalkis]] 
+* [[senkalnis]] 
+* [[senkapiai]] 
+* [[senkapis]] 
+* [[senkarklis]] 
+* [[senkaršis]] 
+* [[senkatalikas]] 
+* [[senkatalikis]] 
+* [[senkatalikiškas]] 
+* [[senkatalikystė]] 
+* [[senkelis]]  
+* [[senkelmis]] 
+* [[senkeris]] 
+* [[senkiaulė]] 
+* [[senkietis]] 
+* [[senkinti]] 
+* [[senkis]] 
+* [[senklonis]] 
+* [[senknygės]] 
+* [[senkriaušė]] 
+* [[senkromis]] 
+* [[senkrėtinis]] 
+* [[senkrėtis]] 
+* [[senkunigis]] 
+* [[senlaikiai]] 
+* [[senlaikis]] 
+* [[senlatviai]] 
+* [[senlaukis]] 
+* [[senlenkiškas]] 
+* [[senlietuviai]] 
+* [[senlietuviškas]] 
+* [[senlizdis]] 
+* [[senmadiškas]] 
+* [[senmalis]] 
+* [[senmalžė]] 
+* [[senmarka]] 
+* [[senmartė]] 
+* [[senmatė]] 
+* [[senmedis]] 
+* [[senmerga]] 
+* [[senmergauti]] 
+* [[senmergiauti]] 
+* [[senmergiškas]] 
+* [[senmergysta]] 
+* [[senmergystė]] 
+* [[senmergė]] 
+* [[senmielės]] 
+* [[senmiestis]] 
+* [[senmiestiškas]] 
+* [[senmiestiškis]] 
+* [[senmilžė]] 
+* [[senmiškis]] 
+* [[senmotinė]] 
+* [[senmotė]] 
+* [[senmėšlis]] 
+* [[senniekis]] 
+* [[senobelė]] 
+* [[senobiausias]] 
+* [[senobinis]] 
+* [[senobinė]] 
+* [[senobiškas]] 
+* [[senobiškumas]] 
+* [[senobė]] 
+* [[senoji]] 
+* [[senokai]] 
+* [[senokas]] 
+* [[senoklis]] 
+* [[senoklė]] 
+* [[senokumas]] 
+* [[senoliai]] 
+* [[senolis]] 
+* [[senolius]] 
+* [[senoliškas]] 
+* [[senomis]] 
+* [[senomė]] 
+* [[senonis]] 
+* [[senopas]] 
+* [[senota]] 
+* [[senotaras]] 
+* [[senotariškas]] 
+* [[senotas]] 
+* [[senovesnis]] 
+* [[senoviausias]] 
+* [[senovininkas]] 
+* [[senovinis]] 
+* [[senoviniškas]] 
+* [[senovinti]] 
+* [[senovinė]] 
+* [[senoviškas]] 
+* [[senoviškis]] 
+* [[senoviškumas]] 
+* [[senovybinis]] 
+* [[senovybė]] 
+* [[senovystė]] 
+* [[senovė]] 
+* [[senpaikis]] 
+* [[senpaikšis]] 
+* [[senpalaikis]] 
+* [[senpanė]] 
+* [[senpenis]] 
+* [[senpirda]] 
+* [[senpjovis]] 
+* [[senplėšiniai]] 
+* [[senponis]] 
+* [[senpopieris]] 
+* [[senprūsiai]] 
+* [[senprūsis]] 
+* [[senprūsiškas]] 
+* [[senpuvis]] 
+* [[senpušynis]] 
+* [[senpušė]] 
+* [[senraistis]] 
+* [[senraštis]] 
+* [[senraštvietė]] 
+* [[senromėniškas]] 
+* [[senrūbiai]] 
+* [[senrūgis]] 
+* [[senrūsis]]  
+* [[sensausis]] 
+* [[sensena]] 
+* [[sensenis]] 
+* [[sensenovė]] 
+* [[senskolė]] 
+* [[senskrabis]] 
+* [[senslaviai]] 
+* [[senslovėniai]] 
+* [[senslovėniškas]] 
+* [[senslėnis]] 
+* [[sensniegis]] 
+* [[sensodis]] 
+* [[senstelėti]] 
+* [[sensterėti]] 
+* [[sensvietis]] 
+* [[sentakis]] 
+* [[sentaukiai]] 
+* [[sentelėti]] 
+* [[senterėti]] 
+* [[sentestamentiškas]] 
+* [[senti]] 
+* [[sentikis]] 
+* [[sentikiškas]] 
+* [[sentimentalinis]] 
+* [[sentimentalinti]] 
+* [[sentimentalistas]] 
+* [[sentimentalizmas]] 
+* [[sentimentališkas]] 
+* [[sentimentalumas]] 
+* [[sentimentalus]] 
+* [[sentimentas]] 
+* [[sentorpynė]] 
+* [[sentošis]] 
+* [[sentrobė]] 
+* [[senturgis]] 
+* [[sentėtis]] 
+* [[sentėvas]] 
+* [[sentėviai]] 
+* [[sentėvis]] 
+* [[senugalis]] 
+* [[senugalvis]] 
+* [[senugnis]] 
+* [[senukai]] 
+* [[senulis]] 
+* [[senulė]] 
+* [[senuma]] 
+* [[senumas]] 
+* [[senumet]] 
+* [[senumynai]] 
+* [[senumynas]] 
+* [[senumė]] 
+* [[senuoliai]] 
+* [[senuolis]] 
+* [[senuolius]] 
+* [[senuoliškas]] 
+* [[senuomenė]] 
+* [[senuoti]] 
+* [[senuotis]] 
+* [[senupis]] 
+* [[senupė]] 
+* [[senurvis]] 
+* [[senutis]] 
+* [[senučiai]] 
+* [[senučiokas]] 
+* [[senučiotė]] 
+* [[senvadaksnis]] 
+* [[senvaginis]] 
+* [[senvagis]] 
+* [[senvagė]] 
+* [[senvaikis]] 
+* [[senvaikiškas]] 
+* [[senvaikysta]] 
+* [[senvaikystė]] 
+* [[senvaitis]] 
+* [[senvežis]] 
+* [[senvietė]] 
+* [[senvieškelis]] 
+* [[senvotė]] 
+* [[senvyris]] 
+* [[senvyriškas]] 
+* [[senyba]] 
+* [[senybas]] 
+* [[senybietis]] 
+* [[senybininkas]] 
+* [[senybinis]] 
+* [[senybinė]] 
+* [[senybiškas]] 
+* [[senybiškumas]] 
+* [[senybė]] 
+* [[senykščia]] 
+* [[senykščias]] 
+* [[senyla]] 
+* [[senylis]] 
+* [[senynas]] 
+* [[senysis]] 
+* [[senysta]] 
+* [[senystva]] 
+* [[senystė]] 
+* [[senyti]] 
+* [[senyva]] 
+* [[senyvas]] 
+* [[senyvis]] 
+* [[senyviškas]] 
+* [[senyvokas]] 
+* [[senyvumas]]  
+* [[senyvė]] 
+* [[senądien]] 
+* [[senė]] 
+* [[senėjimas]] 
+* [[senėta]] 
+* [[senėti]] 
+* [[senšaknė]] 
+* [[senšena]] 
+* [[senšluotė]] 
+* [[senšunis]] 
+* [[senūmenė]] 
+* [[senžagariai]] 
+* [[senžmogis]]
+* [[senžydis]] 
+* [[sąsenis]]  
+{{rel-bottom}}
+{{rel-top|kalba=lt|vardas=senas|tipas=Išraiškos}}
+* {{t+|lt|iš senų dienų}}
+* {{t+|lt|iš senų metų}}
+* {{t+|lt|senas dienas}}, {{t+|lt|seni dieni}}
+{{rel-mid}}
+* {{t+|lt|senos bėdos}}
+* {{t+|lt|senos dienos}}
+{{rel-bottom}}
+
+==== Vertimai ====
+{{trans-top|kalba=lt|vardas=senas|tipas=apie negyvus objektus: ilgai egzistavęs}}
+{{versk|ay|senas}}
+{{gav1}} {{t+|ga|sean|xs=Irish}}
+{{amsv1}} {{t+|ams|フルサリ|tr=hurusari}}, {{t+|ams|フルー|tr=huruu}}
+{{env1}} {{t+|en|old}}
+{{arv1}} {{t+|ar|قديم|tr=qadīm|sc=Arab}}
+{{anv1}} {{t+|an|biello}}
+{{hyv1}} {{t+|hy|հին|tr=hin}}
+{{euv1}} {{t+|eu|zahar}}
+{{bsv1}} {{t+|bs|star}}
+{{csv1}} {{t+|cs|starý}}
+{{romv1}} {{t+|rom|phurano|m}}, {{t+|rom|phurane|p}}
+{{dav1}} {{t+|da|gammel}}
+{{versk|et|senas}}
+{{eev1}} {{t+|ee|xoxo}}
+{{fyv1}} {{t+|fy|âld|xs=West Frisian}}
+{{glv1}} {{t+|gl|vello|xs=Galician}}
+{{gotv1}} {{t+|got|𐍃𐌹𐌽𐌴𐌹𐌲𐍃|tr=sineigs}}
+{{elv1}} {{t+|el|παλιός|m}} (paliós), {{t+|el|αρχαίος|m}} (archaíos)
+{{hev1}} {{t+|he|ישן|tr=ya'shan}}, {{t+|he|יָשָׁן|tr=ya'shan}}
+{{iov1}} {{t+|io|anciena}}
+{{isv1}} {{t+|is|gamall}}
+{{esv1}} {{t+|es|antiguo|m}}; {{t+|es|viejo|m}}
+{{itv1}} {{t+|it|vecchio|m}}, vecchia {{f}}, vecchi {{p}}, vecchie {{f|p}}
+{{jav1}} {{t+|ja|古い}} ({{t+|ja|ふるい}}, furui)
+{{cav1}} {{t+|ca|vell|m}}, vella {{f}}, antic {{m}}, antiga {{f}}
+{{zhv1}}
+{{cmnv1}} {{t+|cmn|舊}}的, {{t+|cmn|旧}}的 (jiù de), 很{{t+|cmn|久}}的 (hěn jiǔ de), {{t+|cmn|古老}}的 (gǔlǎo de)
+{{kov1}} {{t+|ko|낡다|tr=nakda}}, {{t+|ko|오래되다|tr=orae-doeda}}
+{{hrv1}} {{t+|hr|star}}
+{{xugv1}} {{t+|xug|プルセン|tr=puruseN}}
+{{kuv1}} {{t+|ku|kevn}}, {{t+|ku|کۆن|sc=ku-Arab}}
+{{ltgv1}} {{t+|ltg|senejs|m}}
+{{lvv1}} {{t+|lv|sens|m}}, {{t+|lv|vecs|m}}
+{{plv1}} {{t+|pl|stary|m}}, {{t+|pl|stare|n}}
+{{trans-mid}}
+{{livv1}} {{t+|liv|muini}}
+{{mlv1}} {{t+|ml|പഴയ|tr=pazhaya}}, {{t+|ml|പഴയത്|tr=pazhayathu}}
+{{versk|gv|senas}}
+{{mviv1}} {{t+|mvi|フいーフい|tr=fuy:fuy}}
+{{nov1}} {{t+|no|gammel}}
+{{nlv1}} {{t+|nl|oud}}
+{{ryuv1}} {{t+|ryu|ふるさん|tr=hurusaN}}
+{{ocv1}} {{t+|oc|vièlh|m}}
+{{fav1}} {{t+|fa|کهن|tr=kohan|xs=Persian}}, {{t+|fa|دیرین|tr=dirin|xs=Persian}}
+{{ptv1}} {{t+|pt|velho}}
+{{frv1}} {{t+|fr|vieux|m}}, {{t+|fr|vieil}}
+{{rov1}} {{t+|ro|vechi|m}}
+{{ruv1}} {{t+|ru|старый|tr=stáryj}}
+{{sav1}} {{t+|sa|सन|tr=sána|sc=Deva}}
+{{angv1}} {{t+|ang|eald|xs=Old English}}, {{t+|ang|gamol|xs=Old English}}
+{{xclv1}} {{t+|xcl|հին|tr=hin}}
+{{cuv1}} {{t+|cu|старъ|tr=starŭ|sc=Cyrs}}
+{{srv1}}
+*:Kirilica: {{t+|sr|стар|sc=Cyrl}}
+*:Lotyniškai: {{r+|sr|star}}
+{{skv1}} {{t+|sk|starý|m}}
+{{slv1}} {{t+|sl|star|m}} 
+{{fiv1}} {{t+|fi|vanha}}
+{{swv1}} {{t+|sw|mkongwe|xs=Swahili}}, {{t+|sw|ukale|xs=Swahili}}
+{{gdv1}} {{t+|gd|sean}}, {{t+|gd|aosda}}, {{t+|gd|aosmhor}}
+{{svv1}} {{t+|sv|använd}}, {{t+|sv|förlegad}}, {{t+|sv|gammal}}, {{t+|sv|utsliten}}
+{{tlv1}} {{t+|tl|luma|xs=Tagalog}}
+{{tev1}} {{t+|te|పాత}} (paata)
+{{bov1}} {{t+|bo|རྙིང་པ་|tr=rnying pa|sc=Tibt}}
+{{trv1}} {{t+|tr|eski}}
+{{cyv1}} {{t+|cy|hen|xs=Welsh}}
+{{huv1}} {{t+|hu|régi}}
+{{dev1}} {{t+|de|alt}}
+{{trans-bottom}}
+{{trans-top|kalba=lt|vardas=senas|tipas=apie gyvus padarus: ilgai gyvenęs}}
+{{env1}} {{t+|en|old}}
+{{cccv1}} {{t+|ccc|shashaka}}
+{{etv1}} {{t+|et|vana}}
+{{esv1}} {{t+|es|viejo}}, {{t+|es|anciano}}
+{{versk|it|senas}}
+{{jav1}} {{t+|ja|年取った}} ({{t+|ja|としとった}}, toshitotta), {{t+|ja|老けた}} ({{t+|ja|ふけた}}, fuketa), {{t+|ja|年配の}} ({{t+|ja|ねんぱいの}}, nenpaino),  {{t+|ja|年寄りの}} ({{t+|ja|としよりの}}, toshiyorino), {{t+|ja|老年の}} ({{t+|ja|ろうねんの}}, rounennno)
+{{lvv1}} {{t+|lv|vecs|m}}
+{{plv1}} {{t+|pl|stary|m}}
+{{lav1}} {{t+|la|vetus|m}}
+{{trans-mid}}
+{{versk|pt|senas}}
+{{versk|fr|senas}}
+{{ruv1}} {{t+|ru|старый|tr=stáryj}}
+{{angv1}} {{t+|ang|eald}}, {{t+|ang|gamol}}
+{{cuv1}} {{t+|cu|старъ|tr=starŭ|sc=Cyrs}}
+{{slv1}} {{t+|sl|star|m}}
+{{fiv1}} {{t+|fi|vanha}}
+{{trv1}} {{t+|tr|yaşlı}}
+{{dev1}} {{t+|de|alt}}
+{{trans-bottom}}
+<br clear=all>
+----

@@ -1,0 +1,15 @@
+== {{ltv}} ==
+=== ''Būdvardis'' ===
+{{ltbdv|tipas=įvard-laips|forma=f-us|šakn=informatyv
+|pform=[[informatyvus]]
+|pformm=[[informatyvi]]
+|skiem=in-for-ma-ty-vus}}
+
+'''[[informatyvus]]''' 
+# teikiantis daug [[informacija|informacijos]]
+
+==== Etimologija ====
+[[informuoti]] + [[-atyv]]
+
+<br clear=all>
+----

@@ -1,0 +1,4 @@
+== {{ltv}} ==
+=== ''Daiktavardis'' ===
+{{ltdkt|forma=f-mot-6l-a|šakn=informatik|šakn2=informatik|šakn3=informatik|šakn4=informatik
+|pform=[[informatika]]}}
