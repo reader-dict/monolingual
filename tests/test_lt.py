@@ -303,7 +303,7 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Daiktavardis": ["visa žemė; Žemės rutulys", "visi žmonės; aplinkiniai žmonės", "visata"],
-                "Simboliai": ["🜨, ♁"],
+                "Simbolis": ["🜨, ♁"],
             },
             [],
             [

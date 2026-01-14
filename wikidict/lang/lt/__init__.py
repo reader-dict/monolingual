@@ -15,7 +15,7 @@ template_trans = "Šablonas"
 float_separator = ","
 
 section_patterns = ("#", r"\*")
-sublist_patterns = ("#", r"\*")
+sublist_patterns = ("#", r"\*", ":")
 section_sublevels = (3, 4)
 head_sections = ("{{ltv}}",)
 etyl_section = ("etimologija",)
@@ -29,13 +29,17 @@ sections = (
     "dalelytė",  # particle
     # "išraiškos arba posakiai",  # expressions or sayings
     "įvardis",  # pronoun
+    "jungtukas",  # connector
     "jaustukas",  # emoticon
     "padalyvis",  # participle
     "prielinksnis",  # preposition
+    "priešdėlis",  # prefix
     "prieveiksmis",  # adverb
     "pusdalyvis",  # participle
     "raidė",  # letter
+    "santrumpa",  # abbreviation
     "simboliai",  # symbols
+    "simbolis",  # symbol
     "skaitvardis",  # numerical
     "veiksmažodis",  # verb
     "žodžių junginys",  # phrase
@@ -54,6 +58,11 @@ reverse_variant_titles = (
     "{{ltvks",
 )
 reverse_variant_templates = ("{{rev-flexion",)
+
+templates_ignored = (
+    "{{bot-entry",
+    "{{etimologija-stub",
+)
 
 
 def find_genders(code: str, locale: str) -> list[str]:
@@ -132,7 +141,7 @@ def adjust_wikicode(
     lines: list[str] = []
     in_section = False
     for line in code.splitlines():
-        if "{{Žodžiai" in line or "Žodžių junginį" in line:
+        if "{{Žodžiai" in line or "Žodžių junginį" in line or "Santrumpą sudaro" in line:
             in_section = True
             continue
         if in_section:

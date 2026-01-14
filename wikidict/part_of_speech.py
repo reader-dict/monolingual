@@ -244,6 +244,7 @@ MERGE = {
     },
     "lt": {
         "top": "daiktavardis",
+        "simboliai": "simbolis",  # symbol
     },
     "no": {
         "forkortelser": "forkortelse",
