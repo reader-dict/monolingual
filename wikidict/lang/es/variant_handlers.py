@@ -24,15 +24,17 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                 if "&ensp;" in line:
                     line = line.split("&ensp;", 1)[1]
                 line = re.sub(r"\[\[([^|]+)\|\1\]\]", r"\1", line)
-                forms.update([cleanup(form) for form in line.split(",")])
+                forms.update(cleanup(form) for form in line.split(","))
+
+        forms.discard("")
 
         # Try 2
         if not forms:
             for lines in cells:
                 for line in lines[1:]:  # Skip the header
-                    if not line:
+                    if not line.endswith("]]"):
                         continue
-                    forms.update([cleanup(form) for form in re.findall(r"\[\[([^#]+)#", line)])
+                    forms.update(cleanup(form) for form in re.findall(r"\[\[([^#]+)#", line))
 
     forms.discard(word)
     forms.discard("―")

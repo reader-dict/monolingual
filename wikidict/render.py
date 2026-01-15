@@ -572,8 +572,12 @@ def parse_word(
             if not title.startswith(interesting_titles):
                 continue
             for parsed in parsed_section:
+                parsed_title = (parsed.title or "").strip()
                 for tpl in parsed.templates:
                     tpl = str(tpl)
+                    if lang_src == "es" and tpl in parsed_title:
+                        # [ES] `=== {{verbo transitivo|en}} ===` section title seen as a variant template
+                        continue
                     if tpl.startswith(interesting_templates):
                         add_potential_variant(word, tpl, lang_dst, variants)
                     elif tpl.startswith(interesting_templates_reverse):
