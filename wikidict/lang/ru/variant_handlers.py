@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from unicodedata import name
 
 from ... import context, utils
 
@@ -35,18 +36,39 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     forms: set[str]
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "ru")
     if table.startswith("{"):
+        table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
         table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ")
         forms = {form[2:].strip() for form in table.splitlines() if form.startswith("| ") and not form.endswith("| ")}
     else:
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
         forms = set(re.findall(r"<td>([^<]+)</td>", table))
 
-    if forms:
-        forms = {cleanup(form) for form in forms}
-        forms.discard(word)
-        forms.discard("")
+    if not forms:
+        return ""
+
+    forms = {cleanup(form) for form in forms}
+    forms.discard("")
+
+    if need_to_dedup_forms(word, data["основа"]):
+        # When the base form is different than the template argument, we generate both.
+        # Ex: the "подельник" word uses the "поде́льник" argument
+        provided_base = data["основа"]
+        for form in forms.copy():
+            forms.add(form.replace(provided_base, word))
+        forms.add(provided_base)
+
+    forms.discard(word)
 
     return "|".join(forms)
+
+
+def need_to_dedup_forms(orginal_base: str, provided_base: str) -> bool:
+    if not orginal_base or not provided_base:
+        return False
+
+    normalized_1 = [c for c in list(orginal_base) if name(c) != "COMBINING ACUTE ACCENT"]
+    normalized_2 = [c for c in list(provided_base) if name(c) != "COMBINING ACUTE ACCENT"]
+    return len(normalized_1) == len(normalized_2) and orginal_base != provided_base
 
 
 handlers = {

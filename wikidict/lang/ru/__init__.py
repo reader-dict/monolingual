@@ -33,7 +33,7 @@ variant_titles = ("значение", "морфологические и син�
 variant_templates = ("{{прич.",)
 
 reverse_variant_templates = ("{{rev-flexion",)
-reverse_variant_titles = ("{{сущ ru", "{{прил ru")
+reverse_variant_titles = ("{{сущ ru", "{{прил ru", "{{прич ru", "{{гл ru")
 
 templates_ignored = (
     "{{?",
@@ -112,8 +112,20 @@ def adjust_wikicode(
     '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|бессу́дорожна}}\n# {{rev-flexion|бессу́дорожная}}\n# {{rev-flexion|бессу́дорожно}}\n# {{rev-flexion|бессу́дорожного}}\n# {{rev-flexion|бессу́дорожное}}\n# {{rev-flexion|бессу́дорожной}}\n# {{rev-flexion|бессу́дорожном}}\n# {{rev-flexion|бессу́дорожному}}\n# {{rev-flexion|бессу́дорожною}}\n# {{rev-flexion|бессу́дорожную}}\n# {{rev-flexion|бессу́дорожны}}\n# {{rev-flexion|бессу́дорожные}}\n# {{rev-flexion|бессу́дорожный}}\n# {{rev-flexion|бессу́дорожным}}\n# {{rev-flexion|бессу́дорожными}}\n# {{rev-flexion|бессу́дорожных}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}'
 
     >>> context.new_word("Адрианович")
-    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 4a\n|основа={{PAGENAME}}\n|основа1={{PAGENAME}}\n|слоги={{по-слогам|Ад|ри|.|а́|.|но|вич}}\n}} {{собств.|ru|тип=отчество}}", "ru")
-    '= {{-ru-}} =\n{{сущ ru m a 4a|}}\n# {{rev-flexion|Адрианович}}\n# {{rev-flexion|Адриановича}}\n# {{rev-flexion|Адриановичам}}\n# {{rev-flexion|Адриановичами}}\n# {{rev-flexion|Адриановичах}}\n# {{rev-flexion|Адриановиче}}\n# {{rev-flexion|Адриановичей}}\n# {{rev-flexion|Адриановичем}}\n# {{rev-flexion|Адриановичи}}\n# {{rev-flexion|Адриановичу}}'
+    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 4a\n|основа={{PAGENAME}}\n|основа1={{PAGENAME}}\n|слоги={{по-слогам|Ад|ри|.|а́|.|но|вич}}\n}} {{собств.|ru|тип=отчество}}", "ru", word="Адрианович")
+    '= {{-ru-}} =\n{{сущ ru m a 4a|}}\n# {{rev-flexion|Адриановича}}\n# {{rev-flexion|Адриановичам}}\n# {{rev-flexion|Адриановичами}}\n# {{rev-flexion|Адриановичах}}\n# {{rev-flexion|Адриановиче}}\n# {{rev-flexion|Адриановичей}}\n# {{rev-flexion|Адриановичем}}\n# {{rev-flexion|Адриановичи}}\n# {{rev-flexion|Адриановичу}}'
+
+    >>> context.new_word("подельник")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 3a\n|основа=поде́льник\n|слоги={{по-слогам|по|де́ль|ник}}\n}}", "ru", word="подельник")
+    '= {{-ru-}} =\n{{сущ ru m a 3a|}}\n# {{rev-flexion|поде́льник}}\n# {{rev-flexion|поде́льника}}\n# {{rev-flexion|поде́льникам}}\n# {{rev-flexion|поде́льниками}}\n# {{rev-flexion|поде́льниках}}\n# {{rev-flexion|поде́льнике}}\n# {{rev-flexion|поде́льники}}\n# {{rev-flexion|поде́льников}}\n# {{rev-flexion|поде́льником}}\n# {{rev-flexion|поде́льнику}}\n# {{rev-flexion|подельника}}\n# {{rev-flexion|подельникам}}\n# {{rev-flexion|подельниками}}\n# {{rev-flexion|подельниках}}\n# {{rev-flexion|подельнике}}\n# {{rev-flexion|подельники}}\n# {{rev-flexion|подельников}}\n# {{rev-flexion|подельником}}\n# {{rev-flexion|подельнику}}'
+
+    >>> context.new_word("хвост")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m ina 1b\n|основа=хвост\n|основа1=хвост\n|слоги={{по слогам|хвост}}\n|М=(на)&nbsp;хвосте́;<br/>(на)&nbsp;хвосту́&nbsp;({{устар.|-}})\n}}", "ru", word="хвост")
+    '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста́}}\n# {{rev-flexion|хвоста́м}}\n# {{rev-flexion|хвоста́ми}}\n# {{rev-flexion|хвоста́х}}\n# {{rev-flexion|хвосте́}}\n# {{rev-flexion|хвосто́в}}\n# {{rev-flexion|хвосто́м}}\n# {{rev-flexion|хвосту́}}\n# {{rev-flexion|хвосты́}}'
+
+    >>> context.new_word("виться")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
+    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|ве́йся}}\n# {{rev-flexion|ве́йтесь}}\n# {{rev-flexion|ви́лось}}\n# {{rev-flexion|ви́лся}}\n# {{rev-flexion|вила́сь}}\n# {{rev-flexion|вью́сь}}\n# {{rev-flexion|вью́тся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
     """
     #
     # Reverse variants
@@ -135,7 +147,7 @@ def adjust_wikicode(
                     in_tpl = False
                     tpl_code = tpl_code.rsplit("}}", 1)[0]
                     tpl_code += "}}"
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
                     # Remove unrelated templates after a reverse variant one
