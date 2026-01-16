@@ -194,6 +194,8 @@ def format_pos(locale: str, value: str) -> str:
     'Proper Noun'
     >>> format_pos("en", "proper noun")
     'Proper Noun'
+    >>> format_pos("en", "symbols")
+    'Symbol'
 
     >>> format_pos("eo", "{{signifoj}}")
     'Signifo'

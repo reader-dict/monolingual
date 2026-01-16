@@ -23,6 +23,8 @@ PATTERNS = {
     "en": [
         # `proper noun 1` → `proper noun`
         re.compile(r"(proper noun|suffix|symbol).+").sub,
+        # `symbols` → `symbol`
+        re.compile("(.+)s$").sub,
     ],
     "eo": [
         # `{{vortospeco|adverbo, vortgrupo|eo}}` → `adverbo, vortgrupo`
