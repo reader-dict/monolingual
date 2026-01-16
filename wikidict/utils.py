@@ -746,6 +746,11 @@ def clean(text: str) -> str:
         '\\">'
         >>> clean('\\" >')
         '\\" >'
+
+        >>> clean("<sup></sup>")
+        ''
+        >>> clean("<i> </i>")
+        ''
     """
 
     # Speed-up lookup
@@ -823,7 +828,8 @@ def clean(text: str) -> str:
 
     # Remove empty HTML tags
     # <sup></sup> → ''
-    text = sub(r"<([^>]+)></\1>", "", text)
+    # <i> </i> → ''
+    text = sub(r"<([^>]+)>[ ]*</\1>", "", text)
 
     # Remove extra spaces
     text = sub(r"\s{2,}", " ", text)
