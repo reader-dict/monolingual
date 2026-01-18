@@ -208,6 +208,12 @@ def process(file: Path, locale: str) -> bool:
             case "ja":
                 if "{{kanji header" in body:
                     body = f"=={{{{kanji}}}}==\n{body}"
+            case "ru":
+                # Redirections (`#перенаправление [[REDIRECT_TO]]`
+                if body.startswith("#перенаправление"):
+                    redirect_to = re.findall(r"#перенаправление \[\[([^\]]+)\]\]", body)[0]
+                    context.new_page(title, 0, None, redirect_to)
+                    continue
 
         context.new_page(title, 0, body, None)
 
