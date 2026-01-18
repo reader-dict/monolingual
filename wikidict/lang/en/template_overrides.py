@@ -1,5 +1,8 @@
-def code(kind: str, value: str) -> str:
+def code(kind: str, value: str | None) -> str:
     """
+    >>> code("a", None)
+    '<code>a</code>'
+
     >>> code("html", "")
     ''
     >>> code("html", "</span>")
@@ -14,6 +17,9 @@ def code(kind: str, value: str) -> str:
     """
     from html import escape
 
+    if value is None:
+        return f"<code>{kind}</code>"
+
     if not value:
         return ""
     if value[0] == "=":
@@ -24,5 +30,5 @@ def code(kind: str, value: str) -> str:
 
 
 overrides = {
-    "code": lambda args: code(args[1], args[2]),
+    "code": lambda args: code(args[1], args[2] if len(args) > 2 else None),
 }
