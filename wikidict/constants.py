@@ -24,8 +24,8 @@ WIKIMEDIA_URL_MATH_RENDER = f"{WIKIMEDIA_URL_BASE}/media/math/render/{{format}}/
 NO_ETYMOLOGY_SUFFIX = "-noetym"
 
 # ZIP files
-ZIP_WORDS_COUNT = "words.count"
-ZIP_WORDS_SNAPSHOT = "words.snapshot"
+ZIP_WORDS_COUNT = "___count.txt"
+ZIP_WORDS_SNAPSHOT = "___snapshot.txt"
 
 # Algorithm used to compute dictionaries checksum
 ASSET_CHECKSUM_ALGO = "sha256"
