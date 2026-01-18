@@ -590,14 +590,6 @@ def parse_word(
     return Word(prons, genders, etymology, definitions, variants, reverse_variants)
 
 
-def load(file: Path) -> dict[str, str]:
-    """Load the JSON file containing all words and their details."""
-    with file.open(encoding="utf-8") as fh:
-        words: dict[str, str] = json.load(fh)
-    log.info("Loaded %s words from %s", f"{len(words):,}", file)
-    return words
-
-
 def render_word(
     w: tuple[str, str],
     results: Words,
@@ -706,12 +698,6 @@ def render(
 
             for word, details in results.items():
                 if not details.reverse_variants:
-                    progress.update(reverse_task, advance=1)
-                    continue
-
-                if not details.definitions and all(form not in results_final for form in details.reverse_variants):
-                    # Most likely a foreign word with no definitions in the current locale
-                    results_final.pop(word, None)
                     progress.update(reverse_task, advance=1)
                     continue
 
