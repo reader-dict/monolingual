@@ -33,7 +33,16 @@ variant_titles = ("значение", "морфологические и син�
 variant_templates = ("{{прич.", "{{Форма-гл")
 
 reverse_variant_templates = ("{{rev-flexion",)
-reverse_variant_titles = ("{{сущ ru", "{{прил ru", "{{прич ru", "{{гл ru")
+reverse_variant_titles = (
+    "{{сущ ru",
+    "{{сущ-ru",
+    "{{прил ru",
+    "{{прил-ru",
+    "{{прич ru",
+    "{{прич-ru",
+    "{{гл ru",
+    "{{гл-ru",
+)
 
 templates_ignored = (
     "{{?",
@@ -108,27 +117,27 @@ def adjust_wikicode(
 
     >>> context.new_word("король")
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 2b|основа=коро́л|основа1=корол}}", "ru", word="король")
-    '= {{-ru-}} =\n{{сущ ru m a 2b|}}\n# {{rev-flexion|коро́ль}}\n# {{rev-flexion|короле́}}\n# {{rev-flexion|короле́й}}\n# {{rev-flexion|короли́}}\n# {{rev-flexion|королю́}}\n# {{rev-flexion|короля́}}\n# {{rev-flexion|короля́м}}\n# {{rev-flexion|короля́ми}}\n# {{rev-flexion|короля́х}}\n# {{rev-flexion|королём}}'
+    '= {{-ru-}} =\n{{сущ ru m a 2b|}}\n# {{rev-flexion|короле}}\n# {{rev-flexion|королеи}}\n# {{rev-flexion|королем}}\n# {{rev-flexion|короли}}\n# {{rev-flexion|королю}}\n# {{rev-flexion|короля}}\n# {{rev-flexion|королям}}\n# {{rev-flexion|королями}}\n# {{rev-flexion|королях}}'
 
     >>> context.new_word("бессудорожный")
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1*a\n|основа=бессу́дорожн\n|основа1=\n|тип=\n|слоги={{по-слогам|бес|су́|до|рож|ный}}\n|степень=\n|краткая=\n|коммент=\n|дореф=\n}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}", "ru", word="бессудорожный")
-    '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|бессу́дорожна}}\n# {{rev-flexion|бессу́дорожная}}\n# {{rev-flexion|бессу́дорожно}}\n# {{rev-flexion|бессу́дорожного}}\n# {{rev-flexion|бессу́дорожное}}\n# {{rev-flexion|бессу́дорожной}}\n# {{rev-flexion|бессу́дорожном}}\n# {{rev-flexion|бессу́дорожному}}\n# {{rev-flexion|бессу́дорожною}}\n# {{rev-flexion|бессу́дорожную}}\n# {{rev-flexion|бессу́дорожны}}\n# {{rev-flexion|бессу́дорожные}}\n# {{rev-flexion|бессу́дорожный}}\n# {{rev-flexion|бессу́дорожным}}\n# {{rev-flexion|бессу́дорожными}}\n# {{rev-flexion|бессу́дорожных}}\n# {{rev-flexion|бессудорожна}}\n# {{rev-flexion|бессудорожная}}\n# {{rev-flexion|бессудорожно}}\n# {{rev-flexion|бессудорожного}}\n# {{rev-flexion|бессудорожное}}\n# {{rev-flexion|бессудорожной}}\n# {{rev-flexion|бессудорожном}}\n# {{rev-flexion|бессудорожному}}\n# {{rev-flexion|бессудорожною}}\n# {{rev-flexion|бессудорожную}}\n# {{rev-flexion|бессудорожны}}\n# {{rev-flexion|бессудорожные}}\n# {{rev-flexion|бессудорожным}}\n# {{rev-flexion|бессудорожными}}\n# {{rev-flexion|бессудорожных}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}'
+    '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|бессудорожна}}\n# {{rev-flexion|бессудорожная}}\n# {{rev-flexion|бессудорожно}}\n# {{rev-flexion|бессудорожного}}\n# {{rev-flexion|бессудорожное}}\n# {{rev-flexion|бессудорожнои}}\n# {{rev-flexion|бессудорожном}}\n# {{rev-flexion|бессудорожному}}\n# {{rev-flexion|бессудорожною}}\n# {{rev-flexion|бессудорожную}}\n# {{rev-flexion|бессудорожны}}\n# {{rev-flexion|бессудорожные}}\n# {{rev-flexion|бессудорожныи}}\n# {{rev-flexion|бессудорожным}}\n# {{rev-flexion|бессудорожными}}\n# {{rev-flexion|бессудорожных}}\n\n{{слобр|ru|судорожный|{{выдел|бес}} + судорожный|п|и=}}\n{{морфо-ru|бес-|судорож|-н|+ый}}'
 
     >>> context.new_word("Адрианович")
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 4a\n|основа={{PAGENAME}}\n|основа1={{PAGENAME}}\n|слоги={{по-слогам|Ад|ри|.|а́|.|но|вич}}\n}} {{собств.|ru|тип=отчество}}", "ru", word="Адрианович")
-    '= {{-ru-}} =\n{{сущ ru m a 4a|}}\n# {{rev-flexion|Адриановича}}\n# {{rev-flexion|Адриановичам}}\n# {{rev-flexion|Адриановичами}}\n# {{rev-flexion|Адриановичах}}\n# {{rev-flexion|Адриановиче}}\n# {{rev-flexion|Адриановичей}}\n# {{rev-flexion|Адриановичем}}\n# {{rev-flexion|Адриановичи}}\n# {{rev-flexion|Адриановичу}}'
+    '= {{-ru-}} =\n{{сущ ru m a 4a|}}\n# {{rev-flexion|Адриановича}}\n# {{rev-flexion|Адриановичам}}\n# {{rev-flexion|Адриановичами}}\n# {{rev-flexion|Адриановичах}}\n# {{rev-flexion|Адриановиче}}\n# {{rev-flexion|Адриановичеи}}\n# {{rev-flexion|Адриановичем}}\n# {{rev-flexion|Адриановичи}}\n# {{rev-flexion|Адриановичу}}'
 
     >>> context.new_word("подельник")
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m a 3a\n|основа=поде́льник\n|слоги={{по-слогам|по|де́ль|ник}}\n}}", "ru", word="подельник")
-    '= {{-ru-}} =\n{{сущ ru m a 3a|}}\n# {{rev-flexion|поде́льник}}\n# {{rev-flexion|поде́льника}}\n# {{rev-flexion|поде́льникам}}\n# {{rev-flexion|поде́льниками}}\n# {{rev-flexion|поде́льниках}}\n# {{rev-flexion|поде́льнике}}\n# {{rev-flexion|поде́льники}}\n# {{rev-flexion|поде́льников}}\n# {{rev-flexion|поде́льником}}\n# {{rev-flexion|поде́льнику}}\n# {{rev-flexion|подельника}}\n# {{rev-flexion|подельникам}}\n# {{rev-flexion|подельниками}}\n# {{rev-flexion|подельниках}}\n# {{rev-flexion|подельнике}}\n# {{rev-flexion|подельники}}\n# {{rev-flexion|подельников}}\n# {{rev-flexion|подельником}}\n# {{rev-flexion|подельнику}}'
+    '= {{-ru-}} =\n{{сущ ru m a 3a|}}\n# {{rev-flexion|подельника}}\n# {{rev-flexion|подельникам}}\n# {{rev-flexion|подельниками}}\n# {{rev-flexion|подельниках}}\n# {{rev-flexion|подельнике}}\n# {{rev-flexion|подельники}}\n# {{rev-flexion|подельников}}\n# {{rev-flexion|подельником}}\n# {{rev-flexion|подельнику}}'
 
     >>> context.new_word("хвост")
     >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m ina 1b\n|основа=хвост\n|основа1=хвост\n|слоги={{по слогам|хвост}}\n|М=(на)&nbsp;хвосте́;<br/>(на)&nbsp;хвосту́&nbsp;({{устар.|-}})\n}}", "ru", word="хвост")
-    '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста́}}\n# {{rev-flexion|хвоста́м}}\n# {{rev-flexion|хвоста́ми}}\n# {{rev-flexion|хвоста́х}}\n# {{rev-flexion|хвосте́}}\n# {{rev-flexion|хвосто́в}}\n# {{rev-flexion|хвосто́м}}\n# {{rev-flexion|хвосту́}}\n# {{rev-flexion|хвосты́}}'
+    '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста}}\n# {{rev-flexion|хвостам}}\n# {{rev-flexion|хвостами}}\n# {{rev-flexion|хвостах}}\n# {{rev-flexion|хвосте}}\n# {{rev-flexion|хвостов}}\n# {{rev-flexion|хвостом}}\n# {{rev-flexion|хвосту}}\n# {{rev-flexion|хвосты}}'
 
     >>> context.new_word("виться")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
-    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|ве́йся}}\n# {{rev-flexion|ве́йтесь}}\n# {{rev-flexion|ви́лось}}\n# {{rev-flexion|ви́лся}}\n# {{rev-flexion|вила́сь}}\n# {{rev-flexion|вью́сь}}\n# {{rev-flexion|вью́тся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
+    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|веися}}\n# {{rev-flexion|веитесь}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьемся}}\n# {{rev-flexion|вьетесь}}\n# {{rev-flexion|вьется}}\n# {{rev-flexion|вьешься}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}'
     """
 
     # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
