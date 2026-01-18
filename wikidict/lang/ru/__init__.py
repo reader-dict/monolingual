@@ -16,7 +16,7 @@ thousands_separator = " "
 
 section_level = 1
 section_sublevels = (3, 4)
-head_sections = ("{{-ru-}}",)
+head_sections = ("{{-ru-}}", "{{-ru-|nocat}}")
 etyl_section = ("этимология",)
 sections = (
     *etyl_section,
@@ -30,7 +30,7 @@ sections = (
 )
 
 variant_titles = ("значение", "морфологические и синтаксические свойства")
-variant_templates = ("{{прич.",)
+variant_templates = ("{{прич.", "{{Форма-гл")
 
 reverse_variant_templates = ("{{rev-flexion",)
 reverse_variant_titles = ("{{сущ ru", "{{прил ru", "{{прич ru", "{{гл ru")
@@ -100,6 +100,9 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
+    >>> adjust_wikicode("= {{-ru-|nocat}} =\n{{Форма-гл\n|база=выбирать}}", "ru", word="выбирали")
+    '= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл\n|база=выбирать}}'
+
     >>> from ... import context
     >>> _ = context.reset("ru")
 
@@ -127,6 +130,15 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
     '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|ве́йся}}\n# {{rev-flexion|ве́йтесь}}\n# {{rev-flexion|ви́лось}}\n# {{rev-flexion|ви́лся}}\n# {{rev-flexion|вила́сь}}\n# {{rev-flexion|вью́сь}}\n# {{rev-flexion|вью́тся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
     """
+
+    # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
+    code = re.sub(
+        r"(^=[ ]*\{\{-ru-\|nocat\}\}[ ]*=)\n(\{\{Форма-гл.+)",
+        r"\1\n=== Морфологические и синтаксические свойства ===\n\2",
+        code,
+        flags=re.DOTALL | re.MULTILINE,
+    )
+
     #
     # Reverse variants
     #

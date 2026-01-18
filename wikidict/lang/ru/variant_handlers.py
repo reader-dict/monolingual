@@ -11,6 +11,9 @@ def cleanup(form: str) -> str:
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
+    >>> render_variant("Форма-гл", [], defaultdict(str, {'база': 'выбирать', 'время': 'пр', 'род': '', 'лицо': '123', 'число': 'мн', 'накл': '', 'деепр': '', 'прич': '', 'кр': '', 'помета': '', 'знач': '', 'язык': 'ru', 'слоги': 'выбирали', 'МФА': '', 'аудио': '', 'омофоны': '', 'коммент': '', 'дореф': ''}), "выбирали")
+    'выбирать'
+
     >>> render_variant("прич.", ["зыбить"], defaultdict(str), "")
     'зыбить'
     >>> render_variant("прич.", ["находить (наталкиваться)", "наст"], defaultdict(str), "")
@@ -18,6 +21,9 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("прич.", ["<small>?</small>"], defaultdict(str), "")
     ''
     """
+    if tpl == "Форма-гл" and (base := data["база"]):
+        return base
+
     if (variant := parts[0]) == "<small>?</small>":
         variant = ""
     if " (" in variant:
@@ -83,6 +89,7 @@ def remove_diacritics(text: str) -> str:
 
 handlers = {
     "прич.": render_variant,
+    "Форма-гл": render_variant,
     "rev-flexion": render_reverse_variant,
 }
 
