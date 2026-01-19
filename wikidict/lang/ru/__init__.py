@@ -42,6 +42,8 @@ reverse_variant_titles = (
     "{{прич-ru",
     "{{гл ru",
     "{{гл-ru",
+    "{{числ ru",
+    "{{числ-ru",
 )
 
 templates_ignored = (
@@ -138,6 +140,10 @@ def adjust_wikicode(
     >>> context.new_word("виться")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
     '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|веися}}\n# {{rev-flexion|веитесь}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьемся}}\n# {{rev-flexion|вьетесь}}\n# {{rev-flexion|вьется}}\n# {{rev-flexion|вьешься}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}'
+
+    >>> context.new_word("оба")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{числ ru оба\n|основа=о́б\n|основа1=об\n|слоги={{по-слогам|о́|.|ба}}\n|тип=собирательное\n}}", "ru", word="оба")
+    '= {{-ru-}} =\n{{числ ru оба|}}\n# {{rev-flexion|обе}}\n# {{rev-flexion|обеим}}\n# {{rev-flexion|обеими}}\n# {{rev-flexion|обеих}}\n# {{rev-flexion|обоим}}\n# {{rev-flexion|обоими}}\n# {{rev-flexion|обоих}}'
     """
 
     # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
