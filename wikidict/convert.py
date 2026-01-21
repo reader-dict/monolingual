@@ -233,8 +233,10 @@ class BaseFormat:
         Special handling for Japanese on Kobo: variants are not supported as other locales, so we duplicate entries as normal words.
         """
 
+        for_kobo = isinstance(self, KoboFormat)
+
         # Prevent storing variants definitions in DictFile & co
-        if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not isinstance(self, KoboFormat):
+        if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not for_kobo:
             return
 
         details = deepcopy(chosen_word)
@@ -244,7 +246,7 @@ class BaseFormat:
         guess_prefix = partial(utils.guess_prefix, locale=lang_src)
         word_group_prefix = guess_prefix(word)
 
-        if details.variants and isinstance(self, KoboFormat):
+        if details.variants and for_kobo:
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
             # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
@@ -260,7 +262,7 @@ class BaseFormat:
                 continue
 
             all_variants = self.variants
-            if variants := deepcopy(all_variants.get(current_word, [])):
+            if variants := set(deepcopy(all_variants.get(current_word, []))):
                 # Add variants of empty* variant, only 1 redirection:
                 #   [ES] gastada* -> gastado* -> gastar --> (gastada, gastado) -> gastar
                 # Note: the process works backward: from gastar up to gastado up to gastada.
@@ -270,31 +272,37 @@ class BaseFormat:
                         and not wv.definitions
                         and (new_variants := all_variants.get(variant))
                     ):
-                        variants.extend(new_variants)
+                        variants.update(new_variants)
 
                 # Filter out variants being identical to the word (it happens when altering `current_words`, cf [***])
-                variants = [variant for variant in variants if variant not in {word, current_word}]
+                variants.discard(word)
+                variants.discard(current_word)
 
                 # Nullify variant words to prevent polluting the dictionary with duplicates
                 for variant in variants:
                     with suppress(KeyError):
                         words[variant].is_variant = True
 
-                if isinstance(self, KoboFormat):
+                if for_kobo:
                     if is_japanese:
-                        variants = []
+                        variants.clear()
                     else:
                         # Filter out variants with a different prefix than their word.
                         # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
                         current_word_group_prefix = guess_prefix(current_word)
-                        variants = [
+                        variants = {
                             variant.lower().strip()
                             for variant in variants
                             if guess_prefix(variant) == current_word_group_prefix
-                        ]
+                        }
 
-                if len(variants := list(set(variants))) > MAX_VARIANTS:
+                if len(variants) > MAX_VARIANTS:
                     log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
+
+            # On Kobo, we want to display a variant being the same word lowercased:
+            #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
+            elif for_kobo and current_word[0].isupper() and (lowercase_word := current_word.lower()) in words:
+                variants.add(lowercase_word)
 
             yield self.render_word(
                 self.template,

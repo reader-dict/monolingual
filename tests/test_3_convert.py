@@ -368,11 +368,17 @@ def test_word_rendering(
     assert content == expected
 
 
-WORDS_VARIANTS_FR = words = {
+WORDS_VARIANTS_FR = {
     "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'estre'."]}),
     "être": Word(pronunciations=["\\ɛtʁ\\"], genders=["m"], definitions={"Verbe": ["Définition de 'être'."]}),
     "suis": Word(pronunciations=["\\sɥi\\"], variants=["suivre", "être", "estre"]),
     "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions={"Verbe": ["Définition de 'suivre'."]}),
+}
+WORDS_VARIANTS_FR_2 = {
+    "loches": Word(variants=["loche", "locher"]),
+    "loche": Word(definitions={"Nom": ["Définitions de 'loche'."]}, variants=["locher"]),
+    "locher": Word(definitions={"Verbe": ["Définitions de 'locher'."]}),
+    "Loches": Word(definitions={"Nom Propre": ["Définitions de 'Loches'."]}),
 }
 WORDS_VARIANTS_ES = {
     "gastadan": Word(variants=["gastada"]),
@@ -446,6 +452,15 @@ def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path
     assert "variant" not in suis  # Because variant == word
     assert "variant" not in être  # Because group prefixes are differents
     assert '<var><variant name="suis"/></var>' in suivre  # Because group prefixes are the same
+
+
+def test_kobo_format_variants_from_lowercased_word(tmp_path: Path) -> None:
+    words = WORDS_VARIANTS_FR_2
+    variants = convert.make_variants(words)
+    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20260121")
+
+    Loches = "".join(formatter.handle_word("Loches", words))
+    assert '<var><variant name="loches"/></var>' in Loches
 
 
 def test_kobo_format_variants_empty_variant_level_1(tmp_path: Path) -> None:
