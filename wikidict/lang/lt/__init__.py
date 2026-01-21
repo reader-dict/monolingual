@@ -14,8 +14,6 @@ template_trans = "Šablonas"
 
 float_separator = ","
 
-section_patterns = ("#", r"\*")
-sublist_patterns = ("#", r"\*", ":")
 section_sublevels = (3, 4)
 head_sections = ("{{ltv}}",)
 etyl_section = ("etimologija",)

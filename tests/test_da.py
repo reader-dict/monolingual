@@ -43,7 +43,7 @@ def setup_lua_ctx() -> None:
             "disse",
             [],
             [],
-            {"Substantiv": ["ikke noget"]},
+            {"Substantiv": ["ikke noget", ("<i>ikke en disse</i>",)]},
             ["denne"],
             [],
         ),
@@ -51,7 +51,7 @@ def setup_lua_ctx() -> None:
             "et",
             [],
             [],
-            {"Artikel": ["intetkøn af en"]},
+            {"Artikel": ["intetkøn af en", ("<i>Jeg ønsker mig et skib</i>",)]},
             [],
             [],
         ),
@@ -78,11 +78,13 @@ def setup_lua_ctx() -> None:
                 "Menes at stamme fra indoeuropæisk sprog <i>ḱʷn̥tós</i>, fra <i>ḱwṓ</i> og derfra videre til germansk sprog <i>*hundaz</i> og fra oldnordisk hundr."
             ],
             {
-                "Decl": ["I sammensætninger er formen <i>hunde-</i> f.eks. <i>hundehus</i>, <i>hundeliv</i>."],
                 "Substantiv": [
                     "(<i>zoologi</i>): et pattedyr af underarten <i>Canis lupus familiaris</i>.",
+                    ("<i>Jeg er ikke bange for <b>hunde</b>.</i>",),
                     "(<i>slang</i>): 100 DKK-seddel (bruges ikke i flertal)",
+                    ("Vil du låne mig en <b>hund</b>?",),
                 ],
+                "Decl": ["I sammensætninger er formen <i>hunde-</i> f.eks. <i>hundehus</i>, <i>hundeliv</i>."],
             },
             [],
             ["hunde", "hunden", "hundene", "hundenes", "hundens", "hundes", "hunds"],
@@ -95,7 +97,28 @@ def setup_lua_ctx() -> None:
             [],
             [],
         ),
-        ("jørme", [], [], {"Verbum": ["vrimle, myldre; sværme"]}, [], []),
+        (
+            "jørme",
+            [],
+            [],
+            {
+                "Verbum": [
+                    "vrimle, myldre; sværme",
+                    (
+                        "<b>1958</b>, <i>Sprog og kultur</i>",
+                        (
+                            "»Ja: jørme. Eks.: Han bløw saa maj jørmendes gal.« 1714 Fjelsø, Rinds h. - » Det <b>jørmede</b> op i mig. Tror ikke, det bruges i andre betydninger.« 1715 Simested, Rinds h. - »Dæe wa manno mæ te de markin, di <b>jørme</b> hiele plassen fuld.",
+                        ),
+                        "<b>1841</b>, Christian Molbech, <i>Dansk Dialect-Lexikon, indeholdende Ord, Udtryk og Talemaader af den danske Almues Tungemaal i Rigets forskiellige Landskaber og Egne, forsaavidt som de ere fremmede for Skriftsproget og almindelig Sprogbrug, med Forklaring og Oplysninger</i>, page 664:",
+                        (
+                            "(fra Virnæs S.) vørme, v. m. (J. Ogsaa: <b>jørme</b>.) vrimle, mylre; f. Er. om en stor Mængde Smaadyr, der bevæge sig imellem hverandre, som Orme, Myrer, o. desl. (Støvring Herr) – Deraf: Vørm, en Vrimmel, en mylrende Mængde. En Vørm Bier &nbsp;...",
+                        ),
+                    ),
+                ]
+            },
+            [],
+            [],
+        ),
         (
             "mus",
             [],
@@ -103,7 +126,13 @@ def setup_lua_ctx() -> None:
                 "Fra oldnordisk mús.",
                 "Fra engelsk mouse.",
             ],
-            {"Substantiv": ["(<i>zoologi</i>) pattedyr", "(<i>data</i>) en enhed som tilsluttes computere"]},
+            {
+                "Substantiv": [
+                    "(<i>zoologi</i>) pattedyr",
+                    ("<i>Min kat er bange for mus</i>.",),
+                    "(<i>data</i>) en enhed som tilsluttes computere",
+                ]
+            },
             [],
             ["mus'", "musen", "musene", "musenes", "musens"],
         ),
@@ -111,11 +140,18 @@ def setup_lua_ctx() -> None:
             "-ør",
             [],
             ["Fra fransk: -eur, af latin -ator."],
-            {"Endelse": ["Betegner den, der udfører et arbejde."]},
+            {"Endelse": ["Betegner den, der udfører et arbejde.", ("<i>For eksempel gravør; den der graverer.</i>",)]},
             [],
             [],
         ),
-        ("skulle", [], [], {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre."]}, [], ["skal", "skullet"]),
+        (
+            "skulle",
+            [],
+            [],
+            {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre.", ("<i>Du skal bruge sikkerhedssele.</i>",)]},
+            [],
+            ["skal", "skullet"],
+        ),
         (
             "søm",
             [],
@@ -135,7 +171,12 @@ def setup_lua_ctx() -> None:
             [
                 'Indoeuropæisk: *ad (i betydningen: fastsætte, ordne) -> germansk *tila- (i betydningen: mål; jf. tysk: Ziel) -> oldnordisk til. Ordet betyder altså egentlig: "<i>med</i> xxx <i>som mål</i>", hvor xxx kan erstattes af et substantiv (navneord).'
             ],
-            {"Præposition": ["Ordet betegner en retning hen imod eller et tilhørsforhold"]},
+            {
+                "Præposition": [
+                    "Ordet betegner en retning hen imod eller et tilhørsforhold",
+                    ("<b>Til</b> lands, til vands og i luften.",),
+                ]
+            },
             [],
             [],
         ),
@@ -143,7 +184,7 @@ def setup_lua_ctx() -> None:
             "tolvte",
             ["/ˈtɔldə/"],
             ["Fra oldnordisk tolfti."],
-            {"Ordenstal": ["nummer tolv i rækken"]},
+            {"Ordenstal": ["nummer tolv i rækken", ("før: ellevte", "efter: trettende")]},
             [],
             [],
         ),
@@ -152,7 +193,10 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Substantiv": ["En person, der uretmæssigt tager andre folks ejendele i besiddelse."],
+                "Substantiv": [
+                    "En person, der uretmæssigt tager andre folks ejendele i besiddelse.",
+                    ("<i>Pas på, at tyven ikke stjæler dine ting, når du går på gaden.</i>",),
+                ],
                 "Udtryk": [
                     "(når noget bliver gjort uden at nogen får det at vide før det er for sent): Som en <b>tyv</b> om natten."
                 ],

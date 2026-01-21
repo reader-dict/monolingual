@@ -4,6 +4,7 @@ import re
 from itertools import product
 
 from ... import utils
+from ..defaults import section_patterns
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -16,7 +17,6 @@ float_separator = ","
 thousands_separator = " "
 
 # https://fr.wiktionary.org/wiki/Wiktionnaire:Liste_des_sections_de_types_de_mots
-section_patterns = ("#", r"\*")
 head_sections = ("{{langue|fr}}", "{{langue|conv}}", "{{caractère}}")
 etyl_section = ("{{s|étymologie}}",)
 core_sections = [

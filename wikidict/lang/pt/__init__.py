@@ -3,6 +3,7 @@
 import re
 
 from ... import lang, utils
+from .. import defaults
 from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -15,8 +16,7 @@ template_trans = "Predefinição"
 float_separator = ","
 thousands_separator = " "
 
-section_patterns = ("#", r"\*", ":#")
-sublist_patterns = ("#", r"\*")
+section_patterns = defaults.section_patterns + (":#",)
 section_level = 1
 section_sublevels = (2, 3)
 head_sections = ("{{-pt-}}", "{{-mult-}}")

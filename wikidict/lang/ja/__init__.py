@@ -25,7 +25,6 @@ head_sections = (
     "日本語",  # japanese
     "記号",  # symbol
 )
-section_patterns = ("#", r"\*")
 section_sublevels = (5, 4, 3)
 etyl_section = ("{{etym}}", "字源")
 sections = (

@@ -3,6 +3,7 @@
 import re
 
 from ... import lang, utils
+from ..defaults import section_patterns
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -14,7 +15,6 @@ template_trans = "Skabelon"
 float_separator = ","
 thousands_separator = " "
 
-section_patterns = ("#", r"\*")
 section_sublevels = (3, 4)
 head_sections = (
     "{{da}}",

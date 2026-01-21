@@ -15,6 +15,7 @@ thousands_separator = " "
 
 # https://sv.wiktionary.org/wiki/Wiktionary:Stilguide#Ordklassrubriken
 head_sections = ("svenska",)
+section_patterns = ("#",)
 sections = (
     "adjektiv",
     "adverb",
@@ -53,7 +54,18 @@ templates_ignored = (
     "{{inget uppslag",  # nospread
     "{{fakta",  # facts
     "{{källa-so",  # missing source
-    "{{konstr",  # incomplete construction
+    "{{konstr",  # incomplete construction*
+    # Templates used in sublists, not needed for us
+    "{{homofoner",
+    "{{synonymer",
+    "{{varianter",
+    "{{sammansättningar",
+    "{{användning",
+    "{{etymologi",
+    "{{jämför",
+    "{{fraser",
+    "{{seäven",
+    "{{besläktade ord",
 )
 
 
