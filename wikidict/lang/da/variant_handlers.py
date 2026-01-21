@@ -7,7 +7,15 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, skip={"akkusativ", "bestemt", "dativ", "genitiv", "nominativ", "ubestemt"})
+    """
+    >>> cleanup("(den) studerende")
+    'studerende'
+    """
+    return utils.cleanup_rev_variant(
+        form,
+        skip={"akkusativ", "bestemt", "dativ", "genitiv", "nominativ", "ubestemt"},
+        rpl={"(de) ", "(den) "},
+    )
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
