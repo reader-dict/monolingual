@@ -412,9 +412,9 @@ def test_kobo_format_variants_different_prefix_with_definition(tmp_path: Path) -
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count('<a name="suis" />') == 4
+    assert suis.count('<a name="suis" />') == 3
     assert "<b>estre</b>" in suis
-    assert "<b>suivre</b>" in suis
+    assert "<b>suivre</b>" not in suis
     assert "<b>suis</b>" in suis
     assert "<b>être</b>" in suis
     assert "variant" not in estre  # Because group prefixes are differents
@@ -438,9 +438,9 @@ def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path
     être = "".join(formatter.handle_word("être", words))
     suis = "".join(formatter.handle_word("suis", words))
     suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count('<a name="suis" />') == 3
+    assert suis.count('<a name="suis" />') == 2
     assert "<b>estre</b>" in suis
-    assert "<b>suivre</b>" in suis
+    assert "<b>suivre</b>" not in suis
     assert "<b>être</b>" in suis
     assert "variant" not in estre  # Because group prefixes are differents
     assert "variant" not in suis  # Because variant == word
