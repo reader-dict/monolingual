@@ -95,14 +95,7 @@ sections = (
 )
 
 variant_titles = sections
-variant_templates = (
-    "alternativ form",
-    "{{alternativ stavemåde af",
-    "{{form of",
-    "{{flexion",
-    "{{imperativ af",
-    "{{imperativ form af",
-)
+variant_templates = ("{{alternativ stavemåde af", "{{form of", "{{flexion", "{{imperativ af", "{{imperativ form af")
 
 reverse_variant_titles = (
     "{{da-noun",
