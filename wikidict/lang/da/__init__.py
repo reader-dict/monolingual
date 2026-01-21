@@ -31,6 +31,7 @@ sections = (
     *etyl_section,
     "adjektiv",
     "adverbium",
+    "alternativ form",
     "bogstav",
     "bøjning",
     "fast udtryk",
@@ -94,7 +95,14 @@ sections = (
 )
 
 variant_titles = sections
-variant_templates = ("{{alternativ stavemåde af", "{{form of", "{{flexion", "{{imperativ af", "{{imperativ form af")
+variant_templates = (
+    "alternativ form",
+    "{{alternativ stavemåde af",
+    "{{form of",
+    "{{flexion",
+    "{{imperativ af",
+    "{{imperativ form af",
+)
 
 reverse_variant_titles = (
     "{{da-noun",
@@ -170,6 +178,9 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
+    >>> adjust_wikicode("== Dansk ==\n=== Alternativ form ===\n* {{l|da|vørme}}", "da")
+    '== Dansk ==\n=== Alternativ form ===\n* {{flexion|vørme}}'
+
     >>> adjust_wikicode("=={{da}}==\n{{(}}\n* {{en}}: {{trad|en|limnology}}\n{{)}}", "da")
     '=={{da}}=='
 
@@ -251,6 +262,14 @@ def adjust_wikicode(
     '=={{da}}==\n# {{rev-flexion|fød}}\n# {{rev-flexion|fødede}}\n# {{rev-flexion|føder}}\n# {{rev-flexion|fødet}}\n# {{rev-flexion|født}}\n# {{rev-flexion|fødte}}'
     """
     code = code.replace("----", "")
+
+    # `=== Alternativ form ===\n* {{l|...}}` → `=== Alternativ form ===\n* {{flexion|...}}`
+    code = re.sub(
+        r"^(={3,}[ ]*Alternativ form[ ]*={3,})\n\* \{\{l\|[^|]+\|([^}]+)\}\}",
+        r"\1\n* {{flexion|\2}}",
+        code,
+        flags=re.MULTILINE,
+    )
 
     # {{-avv-|da}} → === {{avv}} ===
     code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)

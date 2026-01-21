@@ -95,7 +95,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
         ),
-        ("jørme", [], [], {"Verbum": ["vrimle, myldre; sværme"]}, [], []),
+        ("jørme", [], [], {"Verbum": ["vrimle, myldre; sværme"]}, ["vørme"], []),
         (
             "mus",
             [],
