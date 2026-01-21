@@ -227,6 +227,10 @@ class Context:
         everything = self.ctx.to_return()
         return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
 
+    def get_word(self, title: str) -> str:
+        query = "SELECT body FROM pages WHERE namespace_id = 0 AND title = ?"
+        return str(self.ctx.db_conn.execute(query, (title,)).fetchone()[0])
+
     def get_word_count(self) -> int:
         query = "SELECT count(*) FROM pages WHERE namespace_id = 0"
         return int(self.ctx.db_conn.execute(query).fetchone()[0])
@@ -285,6 +289,10 @@ def reset(locale: str, *, db_already_setup: bool = True) -> bool:
 
 def get_errors() -> list[str]:
     return get_ctx().get_errors()
+
+
+def get_word(title: str) -> str:
+    return get_ctx().get_word(title)
 
 
 def get_word_count() -> int:
