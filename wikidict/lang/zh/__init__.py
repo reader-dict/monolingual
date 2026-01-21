@@ -2,12 +2,14 @@
 
 import re
 
+from .. import defaults
+
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 float_separator = ","
 thousands_separator = ","
 
-section_patterns = ("#", r"\*", ":")
+section_patterns = defaults.section_patterns + (":",)
 head_sections = ("漢語", "汉语", "{{漢}}")
 etyl_section = ("词源", "詞源")
 sections = (
@@ -198,7 +200,7 @@ def adjust_wikicode(
     # `;限定代詞` → `:: 限定代詞`
     code = re.sub(r"^;\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
 
-    for pattern in {"{xī}", "{zi}"}:
+    for pattern in {"{chóng}", "{xī}", "{zi}"}:
         code = code.replace(pattern, "")
 
     return code

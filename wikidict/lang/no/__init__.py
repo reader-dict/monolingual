@@ -14,6 +14,7 @@ float_separator = ","
 thousands_separator = " "
 
 head_sections = ("norsk",)
+section_patterns = ("#",)
 section_sublevels = (3, 4)
 etyl_section = ("etymologi",)
 sections = (

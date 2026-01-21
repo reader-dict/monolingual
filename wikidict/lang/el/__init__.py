@@ -15,7 +15,6 @@ thousands_separator = "."
 head_sections = ("{{-el-}}",)
 etyl_section = ("{{ετυμολογία}}",)
 section_sublevels = (3, 4)
-section_patterns = ("#", r"\*")
 sections = (
     *head_sections,
     *etyl_section,

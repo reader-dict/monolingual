@@ -27,16 +27,24 @@ def setup_lua_ctx() -> None:
                 "Av fornsvenska&nbsp;<i>ēn</i>, av fornnordiska&nbsp;<i>*æiniʀ</i>, av urgermanska&nbsp;<i>*jainjaz</i>",
             ],
             {
-                "Adverb": ["ungefär; omkring"],
-                "Artikel": ["obestämd artikel singular utrum"],
+                "Adverb": ["ungefär; omkring", ("<i>Jag kommer hem om <b>en</b> 20 minuter.</i>",)],
+                "Artikel": ["obestämd artikel singular utrum", ("<i><b>En</b> mus.</i>",)],
                 "Pronomen": [
                     "objektsform av <i>man</i>",
+                    ("<i>Det man inte vet skadar <b>en</b> inte.</i>",),
                     "<i>(vardagligt, dialektalt)</i> man",
+                    ("<i>Vad kan <b>en</b> göra åt det?</i>",),
                     "<i>(dialektalt)</i> honom, 'an",
+                    ("<i>Har'u sett'<b>en</b> idag?</i>",),
                     "syftar tillbaka på det tidigare nämnda substantivet",
+                    (
+                        "<i>Jag ville ha en gul godis så vad är det här för någon röd <b>en</b>?</i>",
+                        "<i>Jag vill hellst ha en fin <b>en</b>.</i>",
+                    ),
                 ],
                 "Substantiv": [
-                    "<i>(träd)</i> en vintergrön barrväxt, en buske eller ett träd med tätt grenverk och vassa barr, av arten <i>Juniperus communis</i> inom släktet enar (<i>Juniperus</i>) och familjen cypressväxter (Cupressaceae)"
+                    "<i>(träd)</i> en vintergrön barrväxt, en buske eller ett träd med tätt grenverk och vassa barr, av arten <i>Juniperus communis</i> inom släktet enar (<i>Juniperus</i>) och familjen cypressväxter (Cupressaceae)",
+                    ("<i>Ibland hör man också talas om <b>enen</b> som nordens cypress</i>",),
                 ],
             },
             [],
@@ -66,13 +74,19 @@ def setup_lua_ctx() -> None:
                 'I svenskan sedan 1631, från franska <i>mine</i> (varav även tyska <i>Miene</i>, engelska <i>mien</i>), av bretonskans <i>min</i>, "mun", "näbb", "nos"',
             ],
             {
-                "Förkortning": ["<i>förkortning för</i> minut", "<i>förkortning för</i> minimum"],
                 "Pronomen": [
                     "possessivt pronomen som indikerar ägande av eller tillhörighet till den talande (jag) om det ägda eller tillhörande är i ental och har n-genus; possessivt pronomen i första person singular med huvudordet i singular utrum",
+                    (
+                        "<i><b>Min</b> julskinka smakar gott.</i>",
+                        "<i>Mitt headset faller isär, <b>min</b> musmatta kan snart klassas som odlingsfält och musen brukade vara ihålig.</i>",
+                    ),
                     "ovanstående i självständig form",
+                    ("<i>Du kan få skärmen, men datorn förblir <b>min</b>.</i>",),
                     "reflexivt possessivt pronomen som syftar tillbaka på och indikerar ägande av eller tillhörighet till subjektet om subjektet är i första person singular (jag) och om det ägda eller tillhörande är i ental och har n-genus; reflexivt possessivt pronomen i första person singular med huvudordet i singular utrum",
+                    ("<i>Hon klappar <b>min</b> katt.</i>",),
                 ],
                 "Substantiv": ["känslouttryck i ansiktet"],
+                "Förkortning": ["<i>förkortning för</i> minut", "<i>förkortning för</i> minimum"],
             },
             [],
         ),
@@ -85,6 +99,7 @@ def setup_lua_ctx() -> None:
             {
                 "Substantiv": [
                     "sten som blivit till små korn, antingen genom väder och vind eller på konstgjord väg",
+                    ("<i>Jag har aldrig sett så mycket <b>sand</b>, sa turisten på besök i Saharaöknen.</i>",),
                     "<i>(geologi)</i> jordart med kornstorlek mellan 0,06 och 2 mm",
                 ]
             },

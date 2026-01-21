@@ -34,7 +34,21 @@ def setup_lua_ctx() -> None:
             {
                 "Sufix": [
                     "Aplicat a un substantiu o adjectiu forma un verb que expressa la seva realització o convertir-se'n.",
-                ]
+                    (
+                        "<i>sexual</i> + <i>-itzar</i> → <i>sexualitzar</i>, <i>gallec</i> + <i>-itzar</i> → <i>galleguitzar</i>",
+                    ),
+                ],
+                "Notes": [
+                    "En grafia medieval i moderna arcaica s'escrivia predominantment <i>-isar</i>: realisar, actualisar... La forma <i>-itzar</i> era un cultisme usat especialment en paraules gregues religioses.",
+                    "Actualment és un sufix productiu en tecnicismes. S'aplica també a algun nom propi (pasteuritzar) o acrònim (uperitzar).",
+                    "La pronúncia tradicional era fricativa [z] i la culta africada [d͡z].",
+                    (
+                        "En català central i nord-occidental s’ha generalitzat la pronúncia culta considerant la tradicional com a arcaica o relaxada.",
+                        "En balear predomina la pronúncia tradicional, però en registres formals s’usa la culta.",
+                        "En valencià s’accepta la pronúncia tradicional en registres formals.",
+                    ),
+                    "És una hipercorrecció aplicar-lo a verbs formats per una arrel <i>-is-</i> que donen la terminació <i>-isar</i> (matisar).",
+                ],
             },
             [],
         ),
@@ -101,34 +115,41 @@ def setup_lua_ctx() -> None:
                 "Del llatí vulgar <i>*capu(m)</i>, variant de l’acusatiu <i>caput</i>, segle XIII. Com a adjectiu pel sentit d’«extrem, punta». Com a preposició pel sentit de «part anterior (vers un lloc)»."
             ],
             {
-                "Adjectiu": [
-                    "(<i>negatiu</i>) Ni un.",
-                    "(interrogatiu,&#32;condicional) Algun.",
-                    "(<i>negatiu</i>) Gens de.",
-                    "(interrogatiu,&#32;condicional) Alguna mena de.",
-                ],
                 "Nom": [
                     "(<i>anatomia</i>) Part superior i anterior del cos d'un animal.",
+                    ("<i>Al cap hi trobem el cervell.</i>",),
                     "Part superior del cos de l'ésser humà, considerada com a seu del pensament, l'intel·lecte, judici, talent, seny.",
+                    ("<i>Aquesta noia té molt de cap.</i>",),
                     "Lloc de preferència, central.",
+                    ("<i>En Pere és el cap de taula.</i>",),
                     "Localitat principal d'un territori; capital.",
+                    ("<i>El cap de comarca és a prop del riu.</i>",),
                     "La part més alta d'una cosa.",
                     "Individu considerat com a membre d’una col·lectivitat.",
                     "Extremitat en general.",
-                    (
-                        "Part anterior, per on comença una cosa.",
-                        "Part final, per on acaba una cosa.",
-                    ),
+                    ("Part anterior, per on comença una cosa.", "Part final, per on acaba una cosa."),
                     "Part de terra que s'endinsa en la mar.",
                     "(<i>nàutica</i>) corda",
                     "En un repartiment, cadascun dels participants.",
+                    (
+                        "<i>Tinc deu caramels i som cinc, per tant toquen deu per cap.</i>",
+                        "<i>A 10 per cap = indicar que a cadascú correspon pagar o cobrar 10.</i>",
+                    ),
                     "(<i>golf</i>) Part final d'un bastó, que impacta en la bola en executar el colp.",
                     "(<i>pilota basca</i>) Part més ampla d'una eina.",
                     "(<i>bàdminton</i>) base",
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
+                    ("<i>Ahir vaig demanar al meu cap quan podria fer vacances.</i>",),
                     "Grau militar.",
                 ],
-                "Preposició": ["cap a"],
+                "Adjectiu": [
+                    "(<i>negatiu</i>) Ni un.",
+                    ("<i>No ens queda cap cartó de llet, n'haurem de comprar més.</i>",),
+                    "(interrogatiu,&#32;condicional) Algun.",
+                    "(<i>negatiu</i>) Gens de.",
+                    "(interrogatiu,&#32;condicional) Alguna mena de.",
+                ],
+                "Preposició": ["cap a", ("<i>Anàvem cap amunt i a mitja muntanya ens vam aturar a descansar.</i>",)],
             },
             ["cabre", "capar"],
         ),
@@ -138,14 +159,19 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["Del llatí <i>casus</i> &lrm;(«caiguda, cas fortuït»), de <i>cadere</i> &lrm;(«caure»), segle XIV."],
             {
-                "Contracció": [
-                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
-                ],
                 "Nom": [
                     "Situació particular que es produeix entre les diverses possibles.",
                     "Objecte d'estudi d'alguna disciplina.",
                     "(<i>lingüística</i>) Categoria gramatical que marca la funció sintàctica d’un mot.",
                     "Atenció, cura.",
+                    ("<i>Fes cas.</i>",),
+                ],
+                "Contracció": [
+                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
+                ],
+                "Notes": [
+                    "Quan la contracció es troba davant d'una paraula que compleix els requisits per apostrofar l'article es, cal trencar la contracció i aplicar l'apostrofació de l'article.",
+                    ("Exemple: <i>Ca s'Arabins</i>",),
                 ],
             },
             ["ca", "casar"],
@@ -159,15 +185,15 @@ def setup_lua_ctx() -> None:
                 "Nom Propi": [
                     "Diversos topònims, especialment:",
                     (
-                        "Es Castell, municipi de Menorca.",
-                        "Castell de l'Areny, municipi del Berguedà.",
-                        "Castell de Cabres, municipi del Baix Maestrat.",
-                        "Castell de Castells, municipi de la Marina Alta.",
-                        "El Castell de Guadalest, municipi de la Marina Baixa.",
-                        "Castell de Mur, municipi del Pallars Jussà.",
-                        "Castell i Platja d'Aro, municipi del Baix Empordà.",
-                        "Castell de Vernet, municipi del Conflent.",
-                        "El Castell de Vilamalefa, municipi de l’Alt Millars.",
+                        "Es Castell&#x202F;, municipi de Menorca.",
+                        "Castell de l'Areny&#x202F;, municipi del Berguedà.",
+                        "Castell de Cabres&#x202F;, municipi del Baix Maestrat.",
+                        "Castell de Castells&#x202F;, municipi de la Marina Alta.",
+                        "El Castell de Guadalest&#x202F;, municipi de la Marina Baixa.",
+                        "Castell de Mur&#x202F;, municipi del Pallars Jussà.",
+                        "Castell i Platja d'Aro&#x202F;, municipi del Baix Empordà.",
+                        "Castell de Vernet&#x202F;, municipi del Conflent.",
+                        "El Castell de Vilamalefa&#x202F;, municipi de l’Alt Millars.",
                     ),
                     "Cognom&nbsp;d’origen d’habitatge",
                 ]
@@ -189,6 +215,9 @@ def setup_lua_ctx() -> None:
                 "Nom": [
                     "Natural de Catalunya.",
                     "Natural dels Països Catalans.",
+                    (
+                        "«He pellucat una trentena de topònims marinencs que podem qualificar de genèrics, però que sonen com a més habituals per a un <b>català</b> de Mallorca.» (Vicenç M. Rosselló i Verger, <i>Toponímia, geografia i cartografia</i>, 2004, →ISBN)",
+                    ),
                     "(<i>masculí singular</i>) Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
                     "catalanoparlant",
                 ],
@@ -234,9 +263,15 @@ def setup_lua_ctx() -> None:
             {
                 "Numeral": [
                     "(<i>cardinal</i>) Nombre enter situat entre el setze i el divuit.",
+                    ("<i>Té disset anys</i>",),
                     "(<i>valor ordinal</i>) dissetè, dissetena.",
+                    ("<i>La pàgina disset</i>", "<i>El dia disset de maig</i>"),
                 ],
-                "Nom": ["Xifra i nombre 17.", "Dissetena hora."],
+                "Nom": [
+                    "Xifra i nombre 17.",
+                    "Dissetena hora.",
+                    ("<i>L'autobús surt a les disset (les cinc de la tarda)</i>",),
+                ],
             },
             [],
         ),
@@ -250,11 +285,27 @@ def setup_lua_ctx() -> None:
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del grec modern."],
                 "Article": [
-                    "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya."
+                    "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya.",
+                    ("<i><b>El</b> mosquit tigre fa <b>el</b> relleu diürn al mosquit tradicional.</i>",),
+                ],
+                "Notes": [
+                    "S’apostrofa davant de vocal o davant de la <i>h</i>, llevat de vocal amb so semivocàlic (quan fa diftong).",
+                    ("<i><b>l’</b>oceà, <b>el</b> iot</i>",),
+                    "També s'utilitza la forma apostrofada davant sigles, independentment de com s'escriuen, si en pronunciar-les aquestes també tenen un so inicial de vocal.",
+                    ("<i><b>l’</b>RSS</i>",),
+                    "En alguns topònims s’usa article dins d’un context llevat d'algunes situacions aïllades com les enumeracions.",
+                    ("<i><b>El</b> Caire és una ciutat misteriosa.</i>",),
+                    "Tots els topònims han de portar l'article quan aquest s'acompanya d'algun complement. L'article també pot ser indeterminat.",
+                    ("<i>Montjuïc, <b>el</b> Montjuïc de l'olimpíada, <b>un</b> Montjuïc com cal.</i>",),
+                    "Quan s'escriu darrere el verb se separa d'aquest amb un guió i pren la forma <i>lo</i>: <i>-lo</i>.",
+                    "Només s'apostrofa si al seu costat hi ha un so vocàlic (però no un so semivocàlic).",
+                    "La forma apostrofada, quan correspon, pren la forma <i>l'</i> quan la paraula associada està a la seva dreta, o bé, <i>'l</i> quan la paraula associada està a la seva esquerra.",
                 ],
                 "Pronom": [
                     'Acusatiu del masculí singular del pronom personal "ell".',
+                    ("<i><b>El</b> mira.</i>",),
                     'Substitueix el complement directe quan aquest porta l\'article "el".',
+                    ("<i>Vols el regle? —Sí que <b>el</b> vull.</i>",),
                 ],
                 "Nom": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
             },
@@ -274,7 +325,14 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(«hivernar»)."],
-            {"Nom": ["Cobert per a protegir plantes del vent o del fred extrem."]},
+            {
+                "Nom": [
+                    "Cobert per a protegir plantes del vent o del fred extrem.",
+                    (
+                        "«—Segur que la teva família no... voldrà fer servir aquest lloc? —No, ningú ve a seure a l'<b>hivernacle</b> als matins. —D'acord.» (Alice Oseman (trad. Lluís Delgado), <i>Heartstopper 2: La meva persona favorita</i> (pàg. 340), jul. 2020.)",
+                    ),
+                ]
+            },
             [],
         ),
         ("Mn.", [], [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),

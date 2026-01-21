@@ -135,7 +135,7 @@ def setup_lua_ctx() -> None:
             [],
             ["Derivado de Bahia, mais o sufixo ano, com perda do H."],
             {
-                "Adjetivo": ["do Estado da Bahia, Brasil"],
+                "Adjetivo": ["do Estado da Bahia, Brasil", ("bala baiana",)],
                 "Expressão": ["<b>alqueire baiano</b>:", "<b>rodar a baiana</b>:"],
                 "Substantivo": [
                     "natural ou habitante do Estado da Bahia, Brasil",
@@ -257,6 +257,7 @@ def setup_lua_ctx() -> None:
                 "Prefixo": [
                     "exprime a ideia de <i>novo</i>",
                     "<b>Nota:</b> Liga-se por hífen ao morfema seguinte quando este começa por <b>vogal</b>, <b>h</b>, <b>r</b> ou <b>s</b>.",
+                    ("<b>e.g.:</b> neo-árico, neo-helénico, neo-impressionismo, neo-realismo, neófito, neófobo, etc",),
                 ]
             },
             [],

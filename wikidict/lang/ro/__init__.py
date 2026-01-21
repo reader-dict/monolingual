@@ -14,7 +14,6 @@ template_trans = "Format"
 float_separator = ","
 thousands_separator = "."
 
-section_patterns = ("#", r"\*")
 section_sublevels = (3,)
 head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")
 etyl_section = ("{{etimologie}}",)

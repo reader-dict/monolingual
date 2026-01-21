@@ -34,6 +34,7 @@ sections = (
     "interjecció",
     "lletra",
     "nom",
+    "notes",
     "numeral",
     "prefix",
     "preposició",
@@ -93,3 +94,22 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     pattern = re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)")
     return utils.unique(pattern.findall(code))
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    templates_status: list[tuple[str, str]] | None = None,
+    word: str = "",
+) -> str:
+    # sourcery skip: inline-immediately-returned-variable
+    r"""
+    >>> adjust_wikicode("== {{-ca-}} ==\n{{-notes-}}\n* Note 1", "ca")
+    '== {{-ca-}} ==\n=== Notes ===\n* Note 1'
+    """
+    code = code.replace("{{-notes-}}", "=== Notes ===")
+    for section_to_skip in ["comp", "der", "rel", "sin", "trad", "var"]:
+        code = code.replace(f"{{{{-{section_to_skip}-}}}}", "===== Skip =====")
+
+    return code

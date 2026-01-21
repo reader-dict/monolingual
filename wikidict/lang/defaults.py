@@ -14,8 +14,8 @@ template_overrides: dict[str, Callable[[tuple[str, ...]], str]] = {}
 float_separator = ""
 thousands_separator = ""
 
-section_patterns = ("#",)
-sublist_patterns = ("#",)
+section_patterns = ("#", r"\*")
+sublist_patterns = ("#", r"\*", ":")
 section_level = 2
 section_sublevels = (3,)
 head_sections = ("",)

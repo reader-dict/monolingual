@@ -53,7 +53,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             [],
-            {"Frase": ["<i>(om straffedømt)</i> i fengsel"]},
+            {"Frase": ["<i>(om straffedømt)</i> i fengsel", ("<i>Den mistenkte ble satt bak <b>lås og slå</b>.</i>",)]},
             [],
         ),
         (
@@ -64,9 +64,13 @@ def setup_lua_ctx() -> None:
             {
                 "Adverb": [
                     "begrensende, kun",
+                    ("<i>Det er <b>bare</b> lov å spise brunost</i>",),
                     "Gir dempende effekt",
+                    ("<i>Jeg skal <b>bare</b> på do</i>",),
                     "Gir forsterkende effekt",
+                    ("<i>Han er <b>bare</b> så kul!</i>",),
                     "Gir en sitatfunksjon, særlig i muntlig språk.",
+                    ("<i>Hun <b>bare</b>: GI meg katten min!</i>",),
                 ]
             },
             ["bar"],
@@ -112,7 +116,9 @@ def setup_lua_ctx() -> None:
                 "Substantiv": [
                     "(<i>anatomi</i>) kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
                     "side",
+                    ("<i>Butikken ligger på høyre <b>hånd</b>.</i>",),
                     "(<i>kortspill</i>) kortene en spiller sitter med",
+                    ("<i>Det var lenge siden jeg hadde hatt en så god <b>hånd</b>.</i>",),
                 ]
             },
             [],
@@ -133,7 +139,9 @@ def setup_lua_ctx() -> None:
             {
                 "Substantiv": [
                     "Det å konsentrere seg; ha stort fokus på noe.",
+                    ("<i><b>Konsentrasjon</b> er viktig for å ikke bli avledet.</i>",),
                     "(<i>kjemi</i>) Andelen stoff i noe; mengde stoff løst pr. enhet.",
+                    ("<i><b>Konsentrasjonen</b> i løsningen er på 0,1 molar.</i>",),
                 ]
             },
             [],
@@ -156,7 +164,9 @@ def setup_lua_ctx() -> None:
             {
                 "Subjunksjon": [
                     "Antyder at noe er på lek, at man later som noe.",
+                    ("<i>Vi fant på masse liksom-ord, og lagde vårt eget språk.</i>",),
                     "Antyder en sammenligning, brukes ofte som et slags fyllord, særlig i muntlig språk.",
+                    ("<i>Det var liksom veldig ordentlig.</i>", "<i>Bark er liksom huden til trærne.</i>"),
                 ]
             },
             [],
@@ -193,7 +203,12 @@ def setup_lua_ctx() -> None:
             [],
             [],
             ["Av norrønt <i>sik</i>."],
-            {"Pronomen": ["refleksivt pronomen, tredje person entall og flertall"]},
+            {
+                "Pronomen": [
+                    "refleksivt pronomen, tredje person entall og flertall",
+                    ("Han skyndte <b>seg</b> til bussen.", "De bestemte <b>seg</b> for å vente."),
+                ]
+            },
             [],
         ),
         (
@@ -233,7 +248,12 @@ def setup_lua_ctx() -> None:
             [],
             [],
             ["Fra gammeldansk: hwærki/hwærkin via dansk: hverken. Jamfør norrønt: hvárki."],
-            {"Konjunksjon": ["danner sammen med eller en konjunksjon som binder sammen to nektinger"]},
+            {
+                "Konjunksjon": [
+                    "danner sammen med eller en konjunksjon som binder sammen to nektinger",
+                    ("<i>Han fikk verken vått <b>eller</b> tørt.</i>", "<i>Jeg har verken tid <b>eller</b> råd.</i>"),
+                ]
+            },
             ["verk"],
         ),
         (
