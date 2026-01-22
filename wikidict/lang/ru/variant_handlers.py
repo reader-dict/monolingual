@@ -10,7 +10,11 @@ def strip_accents(text: str) -> str:
 
 
 def cleanup(form: str) -> str:
-    return strip_accents(utils.cleanup_rev_variant(form))
+    """
+    >>> cleanup(" &#42;ультрамонтанства")
+    'ультрамонтанства'
+    """
+    return strip_accents(utils.cleanup_rev_variant(form, rpl={"&#42;"}))
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
