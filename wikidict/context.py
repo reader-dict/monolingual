@@ -76,7 +76,9 @@ class Context:
         self.ctx.close_db_conn()
 
     def expand(self, wikitext: str, locale: str) -> str:
-        if wikitext.startswith(self._cache_exclusions):
+        if wikitext.startswith("{{rev-flexion"):
+            return ""
+        elif wikitext.startswith(self._cache_exclusions):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
         elif not (expanded := self._cache.get(wikitext, "")):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
