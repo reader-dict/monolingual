@@ -7,8 +7,8 @@ import re
 
 from . import constants, context, utils
 from .lang.da.langs import langs as langs_da
-from .render import parse_word
-from .stubs import Word
+from .render import parse_word, render_word
+from .stubs import Word, Words
 
 
 def bold(value: str) -> str:
@@ -73,7 +73,7 @@ def int_to_roman(number: int) -> str:
     return "".join(result)
 
 
-def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
+def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool = False) -> None:
     """Get a *word* wikicode, parse it and print it."""
 
     def strip_html(text: str) -> str:
@@ -100,7 +100,17 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False) -> None:
         return text
 
     templates_status: list[tuple[str, str]] = []
-    details = get_word(word, locale, templates_status=templates_status)
+
+    if local:
+        if not context.setup_modules_db(locale):
+            exit(1)
+
+        all_words: Words = {}
+        render_word((word, context.get_word(word)), all_words, locale, templates_status=templates_status)
+        details = all_words[word]
+    else:
+        details = get_word(word, locale, templates_status=templates_status)
+
     print(
         word,
         utils.convert_pronunciation(details.pronunciations).lstrip(),
@@ -153,7 +163,7 @@ def set_output(locale: str, word: str) -> None:
         fh.write(f"[{locale.upper()}] {word!r}\n".encode())
 
 
-def main(locale: str, word: str, *, raw: bool = False) -> int:
+def main(locale: str, word: str, *, raw: bool = False, local: bool = False) -> int:
     """Entry point."""
 
     _, lang_dst = utils.guess_locales(locale, use_log=False)
@@ -162,5 +172,5 @@ def main(locale: str, word: str, *, raw: bool = False) -> int:
     word = word or utils.get_random_word(lang_dst)
 
     set_output(locale, word)
-    get_and_parse_word(word, locale, raw=raw)
+    get_and_parse_word(word, locale, raw=raw, local=local)
     return 0

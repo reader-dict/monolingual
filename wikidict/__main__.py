@@ -8,7 +8,7 @@ Usage:
     wikidict LOCALE --parse
     wikidict LOCALE --render [--workers=N]
     wikidict LOCALE --convert [--format=FORMAT] [--with-etym-only]
-    wikidict LOCALE --get-word=WORD [--raw]
+    wikidict LOCALE --get-word=WORD [--raw] [--local]
     wikidict LOCALE --gen-dict=WORDS --output=FILENAME [--format=FORMAT]
     wikidict LOCALE --show-pos
 
@@ -68,7 +68,7 @@ def main() -> int:
     if args["--get-word"] is not None:
         from . import get_word
 
-        return get_word.main(args["LOCALE"], args["--get-word"], raw=args["--raw"])
+        return get_word.main(args["LOCALE"], args["--get-word"], raw=args["--raw"], local=args["--local"])
 
     if args["--gen-dict"] is not None:
         from . import gen_dict
