@@ -327,7 +327,7 @@ def find_etymology(
             "es": {
                 "<i>Si puedes, incorpórala: ver cómo</i>.",
             },
-            "ru": {"??", "Из ??", "От", "От ??", "Происходит от", "Происходит от ??"},
+            "ru": {"??", "Из ??", "От", "От ??", "Происходит от", "Происходит от ??", "Происходит от&nbsp;??"},
         }.get(lang_src, set())
         etyms = [etym for etym in etyms if etym not in useless]
 
