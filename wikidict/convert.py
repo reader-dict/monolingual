@@ -243,6 +243,7 @@ class BaseFormat:
         current_words = {word: details}
         lang_src = self.effective_lang_src()
         is_japanese = lang_src == "ja"
+        is_russian = lang_src == "ru"
         guess_prefix = partial(utils.guess_prefix, locale=lang_src)
         word_group_prefix = guess_prefix(word)
 
@@ -299,10 +300,14 @@ class BaseFormat:
                 if len(variants) > MAX_VARIANTS:
                     log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
 
-            # On Kobo, we want to display a variant being the same word lowercased:
+            # On Kobo, we want to display a variant being the same word lowercased (see #2579):
             #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
             elif for_kobo and current_word[0].isupper() and (lowercase_word := current_word.lower()) in words:
                 variants.add(lowercase_word)
+
+            # Russian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
+            elif is_russian and isinstance(self, DictFileFormatForMobi) and current_word.isupper():
+                variants.add(current_word.lower())
 
             yield self.render_word(
                 self.template,

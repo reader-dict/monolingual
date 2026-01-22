@@ -391,6 +391,9 @@ WORDS_VARIANTS_ES_2 = {
     "-fobas": Word(variants=["-foba", "-fobo"]),
     "-fobo": Word(definitions={"Suffix": ["-phobe", "-phobic"]}),
 }
+WORDS_VARIANTS_RU = {
+    "ФСБ": Word(definitions={"Значение": ["Definition of 'ФСБ'."]}),
+}
 
 
 def test_make_variants() -> None:
@@ -455,6 +458,7 @@ def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path
 
 
 def test_kobo_format_variants_from_lowercased_word(tmp_path: Path) -> None:
+    """See issue #2579."""
     words = WORDS_VARIANTS_FR_2
     variants = convert.make_variants(words)
     formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20260121")
@@ -506,6 +510,17 @@ def test_kobo_format_variants_duplicates(tmp_path: Path) -> None:
     assert not foba
     assert not fobas
     assert '<var><variant name="-foba"/><variant name="-fobas"/></var>' in fobo
+
+
+def test_kindle_format_variants_from_uppercase_only_word(tmp_path: Path) -> None:
+    """See issue #2623."""
+    words = WORDS_VARIANTS_RU
+    variants = convert.make_variants(words)
+    formatter = convert.DictFileFormatForMobi("ru", tmp_path, words, variants, "20260122")
+
+    ФСБ = "".join(formatter.handle_word("ФСБ", words))
+    assert "@ ФСБ" in ФСБ
+    assert "& фсб" in ФСБ
 
 
 def test_df_format(tmp_path: Path) -> None:
