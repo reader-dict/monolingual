@@ -114,6 +114,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-|nocat}} =\n{{Форма-гл\n|база=выбирать}}", "ru", word="выбирали")
     '= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл\n|база=выбирать}}'
 
+    >>> adjust_wikicode("= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.{{etym-lang|{{{1|ru}}}|grc}}", "ru", word="дискос")
+    '= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.'
+
     >>> from ... import context
     >>> _ = context.reset("ru")
 
@@ -157,6 +160,9 @@ def adjust_wikicode(
         code,
         flags=re.DOTALL | re.MULTILINE,
     )
+
+    # Remove `{{etym-lang|...}}`
+    code = re.sub(r"\{\{etym-lang\|.+}$", "", code, flags=re.MULTILINE)
 
     #
     # Reverse variants
