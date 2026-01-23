@@ -156,6 +156,10 @@ def adjust_wikicode(
     >>> context.new_word("нутряной")
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1bX\n|основа=нутрян\n|основа1=\n|слоги={{по-слогам|нутряно́й}}\n|тип=относительное\n|степень=\n|краткая=\n|Категория={{{Категория|Прилагательные, склонение 1bX}}}\n}}", "ru", word="нутряной")
     '= {{-ru-}} =\n{{прил ru 1bX|}}\n# {{rev-flexion|нутряна}}\n# {{rev-flexion|нутряная}}\n# {{rev-flexion|нутряно}}\n# {{rev-flexion|нутряного}}\n# {{rev-flexion|нутряное}}\n# {{rev-flexion|нутрянои}}\n# {{rev-flexion|нутряном}}\n# {{rev-flexion|нутряному}}\n# {{rev-flexion|нутряною}}\n# {{rev-flexion|нутряную}}\n# {{rev-flexion|нутряны}}\n# {{rev-flexion|нутряные}}\n# {{rev-flexion|нутряным}}\n# {{rev-flexion|нутряными}}\n# {{rev-flexion|нутряных}}'
+
+    >>> context.new_word("фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтаза")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru f ina 1a\n|основа=фо̀сфорибозѝл-аминоимидазо̀л-сукцинокарбоксамѝд-синта́з\n|слоги={{по-слогам|фос|фо|ри|бо|зил|-|а|.|ми|но|и|ми|да|зол-}}{{по-слогам|сук|ци|но|кар|бо|кса|мид|-|син|та́|за}}\n}}", "ru", word="фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтаза")
+    '= {{-ru-}} =\n{{сущ ru f ina 1a|}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтаз}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазам}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазами}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазах}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазе}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазои}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазою}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазу}}\n# {{rev-flexion|фосфорибозил-аминоимидазол-сукцинокарбоксамид-синтазы}}'
     """
 
     # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
@@ -190,16 +194,12 @@ def adjust_wikicode(
                 tpl_code += line
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
-                    tpl_code = tpl_code.rsplit("}}", 1)[0]
-                    tpl_code += "}}"
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
-                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
-
                     # Remove unrelated templates after a reverse variant one
                     # `{{сущ ru m a 4a|...}} {{собств.|ru|тип=отчество}}` → `{{сущ ru m a 4a|...}}`
-                    tpl_code_2 = re.split(r"}}\s*\{\{", tpl_code, maxsplit=1)[0]
-                    if tpl_code != tpl_code_2:
-                        tpl_code = tpl_code_2 + "}}"
+                    tpl_code = extract_templates(tpl_code)[0]
+
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
+                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
                     forms = utils.process_templates(
                         word,
@@ -217,3 +217,23 @@ def adjust_wikicode(
         code = "\n".join(cleaned)
 
     return code
+
+
+def extract_templates(templates: str) -> list[str]:
+    r"""
+    >>> extract_templates("{{сущ ru f ina 1a\n|основа=фо̀сфорибозѝл-аминоимидазо̀л-сукцинокарбоксамѝд-синта́з\n|слоги={{по-слогам|фос|фо|ри|бо|зил|-|а|.|ми|но|и|ми|да|зол-}}{{по-слогам|сук|ци|но|кар|бо|кса|мид|-|син|та́|за}}\n}}")
+    ['{{сущ ru f ina 1a\n|основа=фо̀сфорибозѝл-аминоимидазо̀л-сукцинокарбоксамѝд-синта́з\n|слоги={{по-слогам|фос|фо|ри|бо|зил|-|а|.|ми|но|и|ми|да|зол-}}{{по-слогам|сук|ци|но|кар|бо|кса|мид|-|син|та́|за}}\n}}']
+    >>> extract_templates("{{сущ ru m a 4a|...}} {{собств.|ru|тип=отчество}}")
+    ['{{сущ ru m a 4a|...}}', ' {{собств.|ru|тип=отчество}}']
+    """
+    res: list[str] = []
+
+    current_template = ""
+    for char in list(templates):
+        current_template += char
+        if char != "}" or len(current_template) <= 4 or current_template.count("{") != current_template.count("}"):
+            continue
+        res.append(current_template)
+        current_template = ""
+
+    return res
