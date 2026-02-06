@@ -83,10 +83,11 @@ START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
 PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
-    r".+(?:femminile|singolare|plurale)[^[\n]+\[\[([^#\]]+)",
+    # gerundio presente di [[abalienare]
+    r".+(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]+)",
     # participio presente di [[amare]]
     # participio passato di [[amare]]
-    r"participio (?:passato|presente)[^[\n]+\[\[([^#\]]+)",
+    r"participio (?:passato|presente)[^\n]+di \[\[([^#\]]+)",
 ]
 
 
@@ -134,6 +135,10 @@ def adjust_wikicode(
     '== {{-it-}} ==\n# {{flexion|amare}}'
     >>> adjust_wikicode("== {{-it-}} ==\n# prima persona singolare dell'indicativo presente di [[ducere#Italiano|ducere]]", "it")
     '== {{-it-}} ==\n# {{flexion|ducere}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# gerundio presente di [[abalienare]", "it")
+    '== {{-it-}} ==\n# {{flexion|abalienare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# seconda persona plurale dell'[[indicativo]] [[presente]] di [[abalienare]]", "it")
+    '== {{-it-}} ==\n# {{flexion|abalienare}}'
     """
 
     # [[en:foo]] → ''
