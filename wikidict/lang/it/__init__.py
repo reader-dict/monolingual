@@ -83,10 +83,10 @@ START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
 PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
-    r".+(?:femminile|singolare|plurale)[^[\n]+\[\[([^\]]+)\]\]",
+    r".+(?:femminile|singolare|plurale)[^[\n]+\[\[([^#\]]+)",
     # participio presente di [[amare]]
     # participio passato di [[amare]]
-    r"participio (?:passato|presente)[^[\n]+\[\[([^\]]+)\]\]",
+    r"participio (?:passato|presente)[^[\n]+\[\[([^#\]]+)",
 ]
 
 
@@ -132,6 +132,8 @@ def adjust_wikicode(
     '== {{-it-}} ==\n# {{flexion|amare}}'
     >>> adjust_wikicode("== {{-it-}} ==\n# {{1}}, 2ª pers. e {{3}} singolare congiuntivo presente del verbo [[amare]]", "it")
     '== {{-it-}} ==\n# {{flexion|amare}}'
+    >>> adjust_wikicode("== {{-it-}} ==\n# prima persona singolare dell'indicativo presente di [[ducere#Italiano|ducere]]", "it")
+    '== {{-it-}} ==\n# {{flexion|ducere}}'
     """
 
     # [[en:foo]] → ''
