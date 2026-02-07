@@ -36,7 +36,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("прич.", ["<small>?</small>"], defaultdict(str), "")
     ''
     """
-    if tpl in {"Форма-гл", "Форма-сущ"} and (base := data["база"]) and not parts:
+    if tpl.startswith("Форма-") and (base := data["база"]) and not parts:
         parts.append(base)
 
     if (variant := parts[0]) == "<small>?</small>":
@@ -81,6 +81,10 @@ handlers = {
     "прич.": render_variant,
     "Форма-гл": render_variant,
     "Форма-сущ": render_variant,
+    "Форма-прил": render_variant,
+    "Форма-мест": render_variant,
+    "Форма-прич": render_variant,
+    "Форма-числ": render_variant,
     "rev-flexion": render_reverse_variant,
 }
 
