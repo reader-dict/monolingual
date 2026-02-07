@@ -31,7 +31,7 @@ sections = (
 )
 
 variant_titles = ("значение", "морфологические и синтаксические свойства")
-variant_templates = ("{{прич.", "{{Форма-гл")
+variant_templates = ("{{прич.", "{{Форма-гл", "{{Форма-сущ")
 
 reverse_variant_templates = ("{{rev-flexion",)
 reverse_variant_titles = (
@@ -164,7 +164,7 @@ def adjust_wikicode(
 
     # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
     code = re.sub(
-        r"(^=[ ]*\{\{-ru-\|nocat\}\}[ ]*=)\n(\{\{Форма-гл.+)",
+        r"(^=[ ]*\{\{-ru-\|nocat\}\}[ ]*=)\n(\{\{Форма-.+)",
         r"\1\n=== Морфологические и синтаксические свойства ===\n\2",
         code,
         flags=re.DOTALL | re.MULTILINE,

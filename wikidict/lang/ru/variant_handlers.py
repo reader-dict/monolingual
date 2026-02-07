@@ -24,6 +24,11 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("Форма-гл", ["есть#(глагол_I)", "пр", "м", "", "ед"], defaultdict(str, {"залог": "действ", "язык": "ru", "слоги": "{{по-слогам|ел}}", "МФА": "{{t-ru|ел}}}"}), "ел")
     'есть'
 
+    >>> render_variant("Форма-сущ", [], defaultdict(str, {"база": "аба", "слоги": "{{по-слогам|аб}}", "МФА": "{{t-ru|аб}}"}), "аб")
+    'аба'
+    >>> render_variant("Форма-сущ", ["аба", "р", "мн", "", "", "", "ru"], defaultdict(str, {"слоги": "{{по-слогам|аб}}", "МФА": "{{t-ru|аб}}"}), "аб")
+    'аба'
+
     >>> render_variant("прич.", ["зыбить"], defaultdict(str), "")
     'зыбить'
     >>> render_variant("прич.", ["находить (наталкиваться)", "наст"], defaultdict(str), "")
@@ -31,7 +36,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("прич.", ["<small>?</small>"], defaultdict(str), "")
     ''
     """
-    if tpl == "Форма-гл" and (base := data["база"]) and not parts:
+    if tpl in {"Форма-гл", "Форма-сущ"} and (base := data["база"]) and not parts:
         parts.append(base)
 
     if (variant := parts[0]) == "<small>?</small>":
@@ -75,6 +80,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 handlers = {
     "прич.": render_variant,
     "Форма-гл": render_variant,
+    "Форма-сущ": render_variant,
     "rev-flexion": render_reverse_variant,
 }
 
