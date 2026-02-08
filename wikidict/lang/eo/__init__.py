@@ -3,7 +3,7 @@
 import re
 from collections import defaultdict
 
-from ... import utils
+from ... import lang, utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 from .variant_handlers import render_reverse_variant
 
@@ -90,7 +90,7 @@ sections = (
 variant_titles = sections
 variant_templates = ("{{form-eo}}",)
 
-reverse_variant_titles = ("{{Esperanta verbo}}",)
+reverse_variant_titles = ("{{Deklinacio-eo}}", "{{Esperanta verbo}}")
 reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
@@ -158,9 +158,6 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Deklinacio-eo}}", "eo")
-    '=={{Lingvo|eo}}=='
-
     >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{form-eo}}", "eo")
     '=={{Lingvo|eo}}==\n# {{form-eo}}'
 
@@ -181,25 +178,24 @@ def adjust_wikicode(
     >>> adjust_wikicode("{{Esperanta verbo}}", "eo", word="ekami")
     '# {{rev-flexion|ekamanta}}\n# {{rev-flexion|ekamante}}\n# {{rev-flexion|ekamanto}}\n# {{rev-flexion|ekamas}}\n# {{rev-flexion|ekamata}}\n# {{rev-flexion|ekamate}}\n# {{rev-flexion|ekamato}}\n# {{rev-flexion|ekaminta}}\n# {{rev-flexion|ekaminte}}\n# {{rev-flexion|ekaminto}}\n# {{rev-flexion|ekamis}}\n# {{rev-flexion|ekamita}}\n# {{rev-flexion|ekamite}}\n# {{rev-flexion|ekamito}}\n# {{rev-flexion|ekamonta}}\n# {{rev-flexion|ekamonte}}\n# {{rev-flexion|ekamonto}}\n# {{rev-flexion|ekamos}}\n# {{rev-flexion|ekamota}}\n# {{rev-flexion|ekamote}}\n# {{rev-flexion|ekamoto}}\n# {{rev-flexion|ekamu}}\n# {{rev-flexion|ekamus}}'
     """
-    # Wipe out {{Deklinacio-eo}}
-    code = code.replace(f"{{{{Deklinacio-{locale}}}}}", "")
-
     # Wipe out unwanted sub-sections
     cleaned: list[str] = []
     in_unwanted_section = False
     unwanted = (
-        "{{Anagramoj",
-        "{{Ekzemploj",
-        "{{Derivaĵoj",
-        "{{Referencoj",
-        "{{Sinonimoj",
-        "{{Tradukoj",
-        "{{Vortfaradoj",
-        "{{trad-",
+        r"\{\{Anagramoj",
+        r"\{\{Ekzemploj",
+        r"\{\{Fontoj",
+        r"\{\{Derivaĵoj",
+        r"\{\{Referencoj",
+        r"\{\{Similaĵoj",
+        r"\{\{Sinonimoj",
+        r"\{\{Tradukoj",
+        r"\{\{Vortfaradoj",
+        r"\{\{trad-",
     )
     for line in code.splitlines():
         if line.startswith(("{{", "=")):
-            in_unwanted_section = line.startswith(unwanted)
+            in_unwanted_section = bool(re.search(rf"^[= ]*(?:{'|'.join(unwanted)})", line, flags=re.MULTILINE))
         if not in_unwanted_section:
             cleaned.append(line)
     code = "\n".join(cleaned)
@@ -207,6 +203,8 @@ def adjust_wikicode(
     # Variants
     # {{form-eo}} → # {{form-eo}}
     code = code.replace(f"{{{{form-{locale}}}}}", f"# {{{{form-{locale}}}}}")
+    for tpl in lang.reverse_variant_titles[locale]:
+        code = code.replace(tpl, f"# {tpl}")
 
     # {{xxx}} → ==== {{xxx}} ====
     # {{xx-x}} → ==== {{xx-x}} ====
@@ -219,15 +217,8 @@ def adjust_wikicode(
     # Reverse variants
     #
 
-    if (
-        locale.startswith("eo")
-        and reverse_variant_titles[0] in code
-        and (forms := render_reverse_variant(reverse_variant_titles[0].strip("{}"), [], defaultdict(str), word))
-    ):
-        code = code.replace(
-            reverse_variant_titles[0],
-            "\n".join(f"# {{{{rev-flexion|{form}}}}}" for form in forms.split("|")),
-            count=1,
-        )
+    for tpl in lang.reverse_variant_titles[locale]:
+        if tpl in code and (forms := render_reverse_variant(tpl.strip("{}"), [], defaultdict(str), word)):
+            code = code.replace(tpl, "\n# ".join(f"{{{{rev-flexion|{form}}}}}" for form in forms.split("|")), count=1)
 
     return code

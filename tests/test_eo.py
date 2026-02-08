@@ -47,7 +47,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
-            [],
+            ["alkazaboj", "alkazabojn", "alkazabon"],
         ),
         (
             "ekami",
@@ -102,7 +102,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
-            [],
+            ["kaskedoj", "kaskedojn", "kaskedon"],
         ),
         (
             "komputilo",
@@ -115,7 +115,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
-            [],
+            ["komputiloj", "komputilojn", "komputilon"],
         ),
         (
             "latina",
@@ -139,7 +139,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
-            [],
+            ["lukoj", "lukojn", "lukon"],
         ),
         (
             "Teodoriko",
