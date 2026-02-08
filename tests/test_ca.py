@@ -72,9 +72,9 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             [
-                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> &lrm;(«bóta»), segle XIII.",
+                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> &lrm;(‘bóta’), segle XIII.",
                 "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
-                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> &lrm;(«barca petita»), actualment <i>boat</i>.",
+                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> &lrm;(‘barca petita’), actualment <i>boat</i>.",
                 "[4] Informàtica: afèresi de <i>robot</i>, calc de l’anglès <i>bot</i>, segle XX.",
             ],
             {
@@ -136,7 +136,7 @@ def setup_lua_ctx() -> None:
             "cas",
             [],
             ["m"],
-            ["Del llatí <i>casus</i> &lrm;(«caiguda, cas fortuït»), de <i>cadere</i> &lrm;(«caure»), segle XIV."],
+            ["Del llatí <i>casus</i> &lrm;(‘caiguda, cas fortuït’), de <i>cadere</i> &lrm;(‘caure’), segle XIV."],
             {
                 "Contracció": [
                     "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
@@ -159,15 +159,15 @@ def setup_lua_ctx() -> None:
                 "Nom Propi": [
                     "Diversos topònims, especialment:",
                     (
-                        "Es Castell, municipi de Menorca.",
-                        "Castell de l'Areny, municipi del Berguedà.",
-                        "Castell de Cabres, municipi del Baix Maestrat.",
-                        "Castell de Castells, municipi de la Marina Alta.",
-                        "El Castell de Guadalest, municipi de la Marina Baixa.",
-                        "Castell de Mur, municipi del Pallars Jussà.",
-                        "Castell i Platja d'Aro, municipi del Baix Empordà.",
-                        "Castell de Vernet, municipi del Conflent.",
-                        "El Castell de Vilamalefa, municipi de l’Alt Millars.",
+                        "Es Castell&#x202F;, municipi de Menorca.",
+                        "Castell de l'Areny&#x202F;, municipi del Berguedà.",
+                        "Castell de Cabres&#x202F;, municipi del Baix Maestrat.",
+                        "Castell de Castells&#x202F;, municipi de la Marina Alta.",
+                        "El Castell de Guadalest&#x202F;, municipi de la Marina Baixa.",
+                        "Castell de Mur&#x202F;, municipi del Pallars Jussà.",
+                        "Castell i Platja d'Aro&#x202F;, municipi del Baix Empordà.",
+                        "Castell de Vernet&#x202F;, municipi del Conflent.",
+                        "El Castell de Vilamalefa&#x202F;, municipi de l’Alt Millars.",
                     ),
                     "Cognom&nbsp;d’origen d’habitatge",
                 ]
@@ -179,7 +179,7 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             [
-                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(«lacetans»), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
+                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
             {
                 "Adjectiu": [
@@ -229,7 +229,7 @@ def setup_lua_ctx() -> None:
             [],
             ["m", "f"],
             [
-                "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> &lrm;(literalment «deu i set»), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
+                "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> &lrm;(literalment ‘deu i set’), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
             ],
             {
                 "Numeral": [
@@ -273,7 +273,7 @@ def setup_lua_ctx() -> None:
             "hivernacle",
             [],
             ["m"],
-            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(«hivernar»)."],
+            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(‘hivernar’)."],
             {"Nom": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
@@ -295,7 +295,7 @@ def setup_lua_ctx() -> None:
                 "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
                 "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
                 "[3] Nota musical: de les inicials llatines <i>Sancte</i> <i>Ioannes</i> de l'himne <i>Ut queant laxis</i> de Pau el Diaca d'on es va extraure l'escala musical, segle XIII.",
-                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> &lrm;(«ell»).",
+                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> &lrm;(‘ell’).",
             ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],
