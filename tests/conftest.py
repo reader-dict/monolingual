@@ -78,15 +78,3 @@ def page() -> Callable[[str, str], str]:
         return file.read_text(encoding="utf-8")
 
     return _page
-
-
-@pytest.fixture(scope="session")
-def html() -> Callable[[str, str], str]:
-    """Return the HTML of a word stored into "data/LOCALE/WORD.html"."""
-
-    def _html(word: str, locale: str) -> str:
-        data = Path(os.environ["CWD"]) / "data" / locale
-        file = data / f"{word}.html"
-        return file.read_text(encoding="utf-8")
-
-    return _html

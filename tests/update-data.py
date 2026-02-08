@@ -25,11 +25,6 @@ def main() -> int:
             url = url_fmt.format(locale.name, file.stem)
             fetch_and_store_if_updated(file, url)
 
-            html_file = file.with_suffix(".html")
-            if html_file.is_file():
-                url = url.replace("&action=raw", "")
-                fetch_and_store_if_updated(html_file, url)
-
     return 0
 
 
