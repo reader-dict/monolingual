@@ -1,4 +1,7 @@
+import re
 from collections import defaultdict
+
+from ... import context, utils
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -11,6 +14,28 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[1 if tpl.endswith("avledning") else -1]
 
 
+def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
+    """
+    >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
+    'foo'
+    """
+    if tpl == "rev-flexion":
+        return parts[0]
+
+    template = utils.reconstruct_tpl(tpl, parts, data)
+    table = context.expand(template, "sv")
+
+    forms: set[str] = set()
+    for line in table.splitlines():
+        if not line.startswith("|") or line.startswith(("|-", "|}")):
+            continue
+        forms.update(utils.cleanup_rev_variant(form) for form in re.findall(r"\[\[([^\]]+)\]\]", line))
+
+    forms.discard(word)
+
+    return "|".join(sorted(forms))
+
+
 handlers = {
     **dict.fromkeys(
         {
@@ -18,5 +43,13 @@ handlers = {
             "böjning",
         },
         render_variant,
-    )
+    ),
+    "rev-flexion": render_reverse_variant,
 }
+
+
+def append_to_reverse_variants(tpl: str) -> None:
+    """Dynamically append a template to reverse variants templates."""
+    if tpl in handlers:
+        return
+    handlers[tpl] = render_reverse_variant

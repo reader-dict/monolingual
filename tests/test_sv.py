@@ -16,9 +16,9 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
-        ("auto", [], [], {"Substantiv": ["automatiskt läge", "autostart"]}, []),
+        ("auto", [], [], {"Substantiv": ["automatiskt läge", "autostart"]}, [], []),
         (
             "en",
             ["/en/", "/eːn/", "/ɛn/"],
@@ -40,9 +40,10 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            [],
         ),
-        ("dufvor", [], [], {}, ["dufva"]),
-        ("harmonierar", [], [], {}, ["harmoniera"]),
+        ("dufvor", [], [], {}, ["dufva"], []),
+        ("harmonierar", [], [], {}, ["harmoniera"], []),
         (
             "-hörning",
             [],
@@ -56,6 +57,7 @@ def setup_lua_ctx() -> None:
                     "<i>suffix i ord som har med djurs horn att göra</i>",
                 ]
             },
+            [],
             [],
         ),
         (
@@ -75,6 +77,7 @@ def setup_lua_ctx() -> None:
                 "Substantiv": ["känslouttryck i ansiktet"],
             },
             [],
+            ["minen", "minens", "miner", "minerna", "minernas", "miners", "mins"],
         ),
         (
             "sand",
@@ -89,6 +92,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["sanden", "sandens", "sands"],
         ),
         (
             "svenska",
@@ -105,6 +109,7 @@ def setup_lua_ctx() -> None:
                 "Verb": ["<i>(mindre brukligt)</i> tala svenska"],
             },
             ["svensk"],
+            ["svenskan", "svenskans", "svenskas", "svenskor", "svenskorna", "svenskornas", "svenskors"],
         ),
     ],
 )
@@ -114,6 +119,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -124,3 +130,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
