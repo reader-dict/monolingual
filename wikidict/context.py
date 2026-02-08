@@ -127,8 +127,7 @@ class Context:
                SET cacheable = 0
              WHERE cacheable != 0
                AND namespace_id IN (10, 828)
-               AND instr(body, 'FULLPAGENAME') > 0
-               AND instr(body, 'PAGENAME') > 0
+               AND (instr(body, 'FULLPAGENAME') > 0 OR instr(body, 'PAGENAME') > 0)
         """)
 
         # Templates to exclude, complex cases (in 2 steps)
