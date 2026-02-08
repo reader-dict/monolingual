@@ -257,7 +257,7 @@ def find_etymology(
                     item = utils.clean(context.expand(item, "en"))
                 items.append(item)
         case "eo":
-            items = get_items((":",))
+            items = get_items((":", "#"))
         case "es":
             items = get_items((r";\d",), skip=("=== etimología",))
         case "fr":
