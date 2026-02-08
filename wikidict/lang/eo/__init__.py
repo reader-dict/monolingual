@@ -90,6 +90,7 @@ sections = (
 variant_titles = sections
 variant_templates = ("{{form-eo}}",)
 
+reverse_variant_titles = ("{{Esperanta verbo}}",)
 reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
@@ -220,11 +221,11 @@ def adjust_wikicode(
 
     if (
         locale.startswith("eo")
-        and "{{Esperanta verbo}}" in code
-        and (forms := render_reverse_variant("Esperanta verbo", [], defaultdict(str), word))
+        and reverse_variant_titles[0] in code
+        and (forms := render_reverse_variant(reverse_variant_titles[0].strip("{}"), [], defaultdict(str), word))
     ):
         code = code.replace(
-            "{{Esperanta verbo}}",
+            reverse_variant_titles[0],
             "\n".join(f"# {{{{rev-flexion|{form}}}}}" for form in forms.split("|")),
             count=1,
         )
