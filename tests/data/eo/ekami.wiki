@@ -1,0 +1,25 @@
+== Esperanto ==
+=== Verbo ===
+{{livs|eo|VE|fra=[M:ek]+[N:am]+[I:i]}}
+{{Esperanta verbo}}
+
+{{Prononco}}
+: {{aŭdo|LL-Q143 (epo)-Lepticed7-ekami.wav}}
+
+===={{Signifoj}}====
+# {{k|eo|G: VTR.}} komenci senti [[amo]]n por iu aŭ eĉ io
+#: {{vian|[[enamiĝi]] ''(netransitiva)''}}
+#: (Stellan Engholm, ''Vivo vokas'', Ĉapitro 3) ''— Jam la unuan fojon, kiam ni estis kune, mi '''ekamis''' vin, li diris, '''ekamis''', kiel kulpa pentanto '''ekamas''' homon, kiu akceptas lin.''
+#: (Vladimir Okc (translator), ''Unuetaĝa Usono'' (''Одноэтажная Америка'' / ''Little Golden America'') by Ilya Ilf and Yevgeny Petrov, Chapter 11) ''Jam vespere ŝajnas, ke li sukcesis '''ekami''' la urbeton.''
+
+===={{Tradukoj}}====
+{{trad-eko}}
+* angla: {{t|en|fall in love|not=netransitiva, kun prepozicio "with"}}
+* sveda: {{t|sv|förälska sig|not=refleksiva, kun prepozicio "i"}}
+{{trad-fino}}
+
+{{Vortfaradoj}}
+{{vfvg|eo}}
+
+{{Referencoj}}
+* {{ref-PIV}}

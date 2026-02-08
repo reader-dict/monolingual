@@ -1,9 +1,11 @@
 """Esperanto language."""
 
 import re
+from collections import defaultdict
 
 from ... import utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
+from .variant_handlers import render_reverse_variant
 
 random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage"
 
@@ -88,6 +90,8 @@ sections = (
 variant_titles = sections
 variant_templates = ("{{form-eo}}",)
 
+reverse_variant_templates = ("{{rev-flexion",)
+
 templates_ignored = (
     "{{?",
     "{{aŭdo",  # audio
@@ -168,6 +172,13 @@ def adjust_wikicode(
     '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
     >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}\n:{{radi|tret}} + {{fina|i}}", "eo")
     '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
+
+    >>> from ... import context
+    >>> _ = context.reset("eo")
+
+    >>> context.new_word("ekami")
+    >>> adjust_wikicode("{{Esperanta verbo}}", "eo", word="ekami")
+    '# {{rev-flexion|ekamanta}}\n# {{rev-flexion|ekamante}}\n# {{rev-flexion|ekamanto}}\n# {{rev-flexion|ekamas}}\n# {{rev-flexion|ekamata}}\n# {{rev-flexion|ekamate}}\n# {{rev-flexion|ekamato}}\n# {{rev-flexion|ekaminta}}\n# {{rev-flexion|ekaminte}}\n# {{rev-flexion|ekaminto}}\n# {{rev-flexion|ekamis}}\n# {{rev-flexion|ekamita}}\n# {{rev-flexion|ekamite}}\n# {{rev-flexion|ekamito}}\n# {{rev-flexion|ekamonta}}\n# {{rev-flexion|ekamonte}}\n# {{rev-flexion|ekamonto}}\n# {{rev-flexion|ekamos}}\n# {{rev-flexion|ekamota}}\n# {{rev-flexion|ekamote}}\n# {{rev-flexion|ekamoto}}\n# {{rev-flexion|ekamu}}\n# {{rev-flexion|ekamus}}'
     """
     # Wipe out {{Deklinacio-eo}}
     code = code.replace(f"{{{{Deklinacio-{locale}}}}}", "")
@@ -202,5 +213,20 @@ def adjust_wikicode(
 
     # Easier pronunciation
     code = re.sub(r"==== {{Vorterseparo}} ====\s*:(.+)\s*", r"\n{{PRON|`\1`}}\n", code, flags=re.MULTILINE)
+
+    #
+    # Reverse variants
+    #
+
+    if (
+        locale.startswith("eo")
+        and "{{Esperanta verbo}}" in code
+        and (forms := render_reverse_variant("Esperanta verbo", [], defaultdict(str), word))
+    ):
+        code = code.replace(
+            "{{Esperanta verbo}}",
+            "\n".join(f"# {{{{rev-flexion|{form}}}}}" for form in forms.split("|")),
+            count=1,
+        )
 
     return code

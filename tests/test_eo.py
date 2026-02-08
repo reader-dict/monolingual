@@ -16,7 +16,7 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
     [
         (
             "♍",
@@ -25,6 +25,7 @@ def setup_lua_ctx() -> None:
             [],
             {"Signifo": ["(<i>astrologio</i>) zodiaka signo de Virgulino (<i>Virgo</i>)"]},
             [],
+            [],
         ),
         (
             "💀",
@@ -32,6 +33,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {"Signifo": ["morto"]},
+            [],
             [],
         ),
         (
@@ -45,6 +47,40 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
+        ),
+        (
+            "ekami",
+            [],
+            [],
+            [],
+            {"Signifo": ["(<i>transitiva</i>) komenci senti amon por iu aŭ eĉ io"]},
+            [],
+            [
+                "ekamanta",
+                "ekamante",
+                "ekamanto",
+                "ekamas",
+                "ekamata",
+                "ekamate",
+                "ekamato",
+                "ekaminta",
+                "ekaminte",
+                "ekaminto",
+                "ekamis",
+                "ekamita",
+                "ekamite",
+                "ekamito",
+                "ekamonta",
+                "ekamonte",
+                "ekamonto",
+                "ekamos",
+                "ekamota",
+                "ekamote",
+                "ekamoto",
+                "ekamu",
+                "ekamus",
+            ],
         ),
         (
             "ekamus",
@@ -53,6 +89,7 @@ def setup_lua_ctx() -> None:
             [],
             {},
             ["ekami"],
+            [],
         ),
         (
             "kaskedo",
@@ -64,6 +101,7 @@ def setup_lua_ctx() -> None:
                     "Ĉapo kun viziero, civilvesta aŭ uniforma: <i>homoj armitaj en nigraj kaskedetoj; la hotela pordisto levis sian kaskedon.</i>"
                 ]
             },
+            [],
             [],
         ),
         (
@@ -77,6 +115,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "latina",
@@ -84,6 +123,7 @@ def setup_lua_ctx() -> None:
             [],
             ["De Latino"],
             {"Adjektivo": ["rilata al Latino."]},
+            [],
             [],
         ),
         (
@@ -99,6 +139,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "Teodoriko",
@@ -106,6 +147,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             [],
             {},
+            [],
             [],
         ),
     ],
@@ -117,6 +159,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -128,3 +171,4 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
