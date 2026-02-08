@@ -4,6 +4,10 @@ from collections import defaultdict
 from ... import context, utils
 
 
+def cleanup(form: str) -> str:
+    return utils.cleanup_rev_variant(form, rpl={"(av)"})
+
+
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_variant("böjning", ["sv", "subst", "boll"], defaultdict(str), "")
@@ -29,7 +33,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     for line in table.splitlines():
         if not line.startswith("|") or line.startswith(("|-", "|}")):
             continue
-        forms.update(utils.cleanup_rev_variant(form) for form in re.findall(r"\[\[([^\]]+)\]\]", line))
+        forms.update(cleanup(form) for form in re.findall(r"\[\[([^\]#]+)", line))
 
     forms.discard(word)
 

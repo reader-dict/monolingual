@@ -48,7 +48,12 @@ variant_templates = (
     "{{böjning",
 )
 
-reverse_variant_titles = ("{{sv-subst-",)
+reverse_variant_titles = (
+    "{{sv-adj",
+    "{{sv-adv",
+    "{{sv-subst",
+    "{{sv-verb",
+)
 reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
@@ -87,6 +92,10 @@ def adjust_wikicode(
     r"""
     >>> from ... import context
     >>> _ = context.reset("sv")
+
+    >>> context.new_word("dribbla")
+    >>> adjust_wikicode("{{sv-verb-ar|perfpart=(av)[[dribblad]]}}", "sv", word="dribbla")
+    '# {{rev-flexion|dribblad}}\n# {{rev-flexion|dribblade}}\n# {{rev-flexion|dribblades}}\n# {{rev-flexion|dribblande}}\n# {{rev-flexion|dribblandes}}\n# {{rev-flexion|dribblar}}\n# {{rev-flexion|dribblas}}\n# {{rev-flexion|dribblat}}\n# {{rev-flexion|dribblats}}'
 
     >>> context.new_word("parentestecken")
     >>> adjust_wikicode("{{sv-subst-t-0|rot=parentesteckn}}", "sv", word="parentestecken")

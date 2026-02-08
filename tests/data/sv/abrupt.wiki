@@ -1,0 +1,48 @@
+==Svenska==
+===Adjektiv===
+{{sv-adj-alt|pers=|adv=}}
+'''abrupt'''
+#{{tagg|ålderdomligt}} [[avbruten]], [[osammanhängande]]
+#[[plötslig]], [[oväntad]]
+#:{{synonymer|[[hastig]], [[oväntad]], [[plötslig]], [[tvär]]}}
+
+====Översättningar====
+{{ö-topp|(ålderdomligt) avbruten, osammanhängande}}
+*tyska: {{ö+|de|abgebrochen}}
+{{ö-botten}}
+
+{{ö-topp|plötslig}}
+*engelska: {{ö+|en|abrupt}}
+*esperanto: {{ö|eo|abrupta}}
+*ryska: {{ö+|ru|внеза́пный}}
+*spanska: {{ö+|es|abrupto}}
+*tyska: {{ö+|de|abrupt}}
+{{ö-botten}}
+
+===Adverb===
+{{sv-adv|rot=abrupt}}
+'''abrupt'''
+#{{tagg|ålderdomligt}} [[avbrutet]], [[osammanhängande]]
+#{{avledning|sv|abrupt|adj}}; [[plötsligt]], [[oväntat]]
+#:{{synonymer|[[hastigt]], [[oväntat]], [[plötsligt]], [[tvärt]]}}
+
+====Översättningar====
+{{ö-topp|plötsligt}}
+*engelska: {{ö+|en|abruptly}}
+*esperanto: {{ö+|eo|abrupte}}
+*ryska: {{ö+|ru|внеза́пно}}
+*spanska: {{ö+|es|abruptamente}}
+{{ö-botten}}
+
+==Engelska==
+===Adjektiv===
+{{adj|en}}
+'''abrupt'''
+#[[#Svenska|abrupt]], [[plötslig]]
+#:{{besläktade ord|[[abruptness]], [[abruptly]], [[abruption]]}}
+
+==Tyska==
+===Adjektiv===
+{{de-adj|fog=e}}
+'''abrupt'''
+#[[#Svenska|abrupt]], [[plötslig]], tvärt avbruten

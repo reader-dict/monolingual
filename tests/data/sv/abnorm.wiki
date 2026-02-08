@@ -1,0 +1,30 @@
+==Svenska==
+===Adjektiv===
+{{sv-adj|pers=|adv=}}
+'''[[ab-|ab]][[norm]]'''
+#[[onormal]], mycket långt ifrån att vara [[normal]], [[onaturlig]], [[felaktig]]
+#:''Jag börjar tröttna på min mans '''abnorma''' misstänksamhet.''
+#:''Patientens fetma var '''abnorm'''.''
+#:{{synonymer|[[avvikande]], [[grotesk]], [[onaturlig]], [[onormal]], [[rubbad]], [[sjuklig]], [[underlig]], [[missbildad]]}}
+#:{{sammansättningar|[[abnormpsykologi]], [[abnormskola]], [[abnormtillstånd]]}}
+#:{{besläktade ord|[[abnormitet]]}}
+
+====Översättningar====
+{{ö-topp|onormal}}
+*albanska: {{ö+|sq|anormal}}
+*engelska: {{ö+|en|abnormal}}
+*esperanto: {{ö|eo|abnorma}}
+*finska: {{ö+|fi|poikkeava}}
+*franska: {{ö+|fr|aberrant}}, {{ö+|fr|anormal}}
+*portugisiska: {{ö|pt|abnorme, abnormal, anormal|mf|s}}
+*ryska: {{ö+|ru|неесте́ственный}}, {{ö+|ru|ненорма́льный}}, {{ö+|ru|анорма́льный}}, {{ö+|ru|уро́дливый}}, {{ö+|ru|безобра́зный}}
+*spanska: {{ö+|es|anormal}}
+*tyska: {{ö+|de|abnorm}}, {{ö+|de|abnormal}}, {{ö+|de|krankhaft}}
+{{ö-botten}}
+
+==Tyska==
+===Adjektiv===
+{{de-adj-okomp}}
+'''abnorm'''
+#[[#Svenska|abnorm]]
+#:{{synonymer|[[krankhaft]], [[normwidrig]]}}

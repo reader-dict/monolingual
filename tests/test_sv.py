@@ -18,6 +18,25 @@ def setup_lua_ctx() -> None:
 @pytest.mark.parametrize(
     "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
+        (
+            "abnorm",
+            [],
+            [],
+            {"Adjektiv": ["onormal, mycket långt ifrån att vara normal, onaturlig, felaktig"]},
+            [],
+            ["abnorma", "abnormare", "abnormast", "abnormaste", "abnorme", "abnormt"],
+        ),
+        (
+            "abrupt",
+            [],
+            [],
+            {
+                "Adjektiv": ["<i>(ålderdomligt)</i> avbruten, osammanhängande", "plötslig, oväntad"],
+                "Adverb": ["<i>(ålderdomligt)</i> avbrutet, osammanhängande"],
+            },
+            [],
+            ["abrupta", "abruptare", "abruptast", "abruptaste", "abrupte"],
+        ),
         ("auto", [], [], {"Substantiv": ["automatiskt läge", "autostart"]}, [], []),
         (
             "en",
@@ -40,7 +59,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
-            [],
+            ["enar", "enarna", "enarnas", "enars", "enen", "enens", "ens"],
         ),
         ("dufvor", [], [], {}, ["dufva"], []),
         ("harmonierar", [], [], {}, ["harmoniera"], []),
@@ -109,7 +128,22 @@ def setup_lua_ctx() -> None:
                 "Verb": ["<i>(mindre brukligt)</i> tala svenska"],
             },
             ["svensk"],
-            ["svenskan", "svenskans", "svenskas", "svenskor", "svenskorna", "svenskornas", "svenskors"],
+            [
+                "svenskade",
+                "svenskades",
+                "svenskan",
+                "svenskande",
+                "svenskandes",
+                "svenskans",
+                "svenskar",
+                "svenskas",
+                "svenskat",
+                "svenskats",
+                "svenskor",
+                "svenskorna",
+                "svenskornas",
+                "svenskors",
+            ],
         ),
     ],
 )
