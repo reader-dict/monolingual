@@ -638,7 +638,6 @@ def render(
     results: Words = cast(Words, managed_results)
     managed_template_status = manager.list()
     templates_status: list[tuple[str, str]] = cast(list[tuple[str, str]], managed_template_status)
-    manager.dict()
 
     with Progress(
         SpinnerColumn(),
