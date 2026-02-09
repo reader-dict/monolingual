@@ -136,22 +136,23 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
-    """
+    r"""
     >>> find_pronunciations("", "fr")
     []
-    >>> find_pronunciations("{{pron|ɑ|fr}}", "fr")
-    ['\\\\ɑ\\\\']
-    >>> find_pronunciations("{{pron|ɑ|fr}}, {{pron|a|fr}}", "fr")
-    ['\\\\ɑ\\\\', '\\\\a\\\\']
+    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}", "fr")
+    ['\\ɑ\\']
+    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}, {{pron|a|fr}}", "fr")
+    ['\\a\\', '\\ɑ\\']
+    >>> find_pronunciations("{{pron|un|fr} {{pron|ɔ̃|fr}}\n'''fongus''' {{pron|fɔ̃.ɡys|fr}} {{m}}", "fr")
+    ['\\fɔ̃.ɡys\\']
     """
-    pattern = re.compile(rf"\{{pron(?:\|lang={locale})?\|([^}}\|]+)")
-    if not (match := pattern.search(code)):
-        return []
-
-    # There is at least one match, we need to get whole line
-    # in order to be able to find multiple pronunciations
-    line = code[match.start() : code.find("\n", match.start())]
-    return [f"\\{p}\\" for p in utils.unique(pattern.findall(line))]
+    pattern = re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]+)")
+    res: set[str] = set()
+    for line in code.splitlines():
+        if not line.startswith("'''"):
+            continue
+        res.update(f"\\{p}\\" for p in pattern.findall(line) if p)
+    return sorted(res)
 
 
 ALL_FORMS = [
