@@ -212,7 +212,7 @@ def setup_lua_ctx() -> None:
                     ),
                 ],
                 "Verb": [
-                    "To strike (a person, an animal, etc.) with a scourge <i>(noun etymology 1, sense&nbsp;1)</i> or whip; to flog, to whip.",
+                    "To strike (a person, an animal, etc.) with a scourge <i>(noun etymology 1 sense&nbsp;1)</i> or whip; to flog, to whip.",
                     "To drive, or force (a person, an animal, etc.) to move, with or as if with a scourge or whip.",
                     "(<i>figurative</i>)",
                     (

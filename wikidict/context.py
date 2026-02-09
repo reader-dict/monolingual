@@ -483,6 +483,8 @@ def clean_html_output(html: str, locale: str) -> str:
     ''
     >>> clean_html_output('<nowiki />', "da")  # ABC
     ''
+    >>> clean_html_output("Possibly from Pictish <small>[Term?]</small>", "en")  # Dull
+    'Possibly from Pictish'
     """
     # Wipe out inter project links
     html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
@@ -491,6 +493,7 @@ def clean_html_output(html: str, locale: str) -> str:
 
     # Purge
     html = html.replace(" <small>[script needed]</small>", "")
+    html = html.replace(" <small>[Term?]</small>", "")
 
     # Remove nowiki tags
     html = re.sub(r"<nowiki[^>]*>", "", html)
