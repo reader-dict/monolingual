@@ -54,7 +54,7 @@ sections = (
     "{{vortospeco|interjekcio|eo}",
     "{{vortospeco|konjunkcio|eo}",
     "{{vortospeco|liternomo|eo}",
-    "{{vortospeco|litero|eo}",
+    # "{{vortospeco|litero|eo}",  # See #2634
     "{{vortospeco|literoparo|eo}",
     "{{vortospeco|loknomo|eo}",
     "{{vortospeco|mallongigo|eo}",

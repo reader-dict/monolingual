@@ -30,13 +30,13 @@ sections = (
     # "išraiškos arba posakiai",  # expressions or sayings
     "įvardis",  # pronoun
     "jungtukas",  # connector
-    "jaustukas",  # emoticon
+    # "jaustukas",  # emoticon, see #2634
     "padalyvis",  # participle
     "prielinksnis",  # preposition
     "priešdėlis",  # prefix
     "prieveiksmis",  # adverb
     "pusdalyvis",  # participle
-    "raidė",  # letter
+    # "raidė",  # letter, see #2634
     "santrumpa",  # abbreviation
     "simboliai",  # symbols
     "simbolis",  # symbol

@@ -58,14 +58,6 @@ def setup_lua_ctx() -> None:
                 "<i>(Symbole 6)</i> Abréviation de <i><b>a</b>ccélération</i>.",
             ],
             {
-                "Caractère": [
-                    "Première lettre et première voyelle de l’alphabet latin (minuscule). Unicode&nbsp;:&#32;U+0061.",
-                    "Chiffre hexadécimal dix (minuscule).",
-                ],
-                "Lettre": [
-                    "Première lettre et première voyelle de l’alphabet français.",
-                    "Le son \\a\\ ou \\ɑ\\ de cette lettre. <b>Note : </b> Le français parisien a perdu la distinction entre les deux.",
-                ],
                 "Pronom": [
                     "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
                     "<i>(Québec)</i> <i>(Familier)</i> Elle.",
@@ -87,9 +79,6 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Caractère": [
-                    "Lettre minuscule grecque pi. Seizième lettre et onzième consonne de l’alphabet grec. Unicode : U+03C0."
-                ],
                 "Symbole": [
                     "<i>(Mathématiques)</i> Symbole représentant le rapport constant entre la circonférence d’un cercle et son diamètre, aussi appelé en français la <i>constante d’Archimède</i>.",
                     "<i>(Bases de données)</i> Symbole de la projection.",

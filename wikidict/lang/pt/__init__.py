@@ -31,7 +31,7 @@ _sections = [
     "afixo",
     "antepositivo",
     "artigo",
-    "caractere",
+    # "caractere",  # See #2634
     "conjugação",
     "conjunção",
     "contração",
@@ -58,7 +58,7 @@ _sections = [
     "infixo",
     "interjeição",
     "interfixo",
-    "letra",
+    # "letra",  # See #2634
     "locução",
     "locução adjetiva",
     "locução adverbial",
