@@ -32,8 +32,8 @@ sections = (
     "冠詞",
     "冠词",
     # Chinese character
-    "漢字",
-    "汉字",
+    # "漢字",  # See #2634
+    # "汉字",  # See #2634
     # conjunction
     "連詞",
     "连词",
@@ -59,7 +59,7 @@ sections = (
     "感叹词",
     "感歎詞",
     # letter
-    "字母",
+    # "字母",  # See #2634
     # morpheme
     "詞素",
     "词素",

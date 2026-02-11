@@ -26,7 +26,7 @@ sections = (
     "contraction",
     "determiner",
     "interjection",
-    "letter",
+    # "letter",  # See #2634
     "noun",
     "numeral",
     "number",

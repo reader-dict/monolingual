@@ -202,9 +202,6 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del chamorro."],
-                "Lletra": [
-                    "(<i>arcaisme</i>) Especialment a final de mot, dígraf amb una consonant muda per remarcar la grafia d’una oclusiva velar sorda [k] i no pas una de sonora [ɡ]."
-                ],
             },
             [],
         ),

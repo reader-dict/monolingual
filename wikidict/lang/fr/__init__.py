@@ -44,7 +44,7 @@ core_sections = [
     "infixe",
     "interfixe",
     "interjection",
-    "lettre",
+    # "lettre",  # See #2634
     "locution-phrase",
     "locution phrase",
     "nom commun",
@@ -79,7 +79,7 @@ sections = (
     *[f"{{{{s|{section}|fr|" for section in core_sections],
     *[f"{{{{s|{section}|fr}}" for section in core_sections],
     *[f"{{{{s|{section}|num" for section in core_sections],
-    "{{s|caractère}",
+    # "{{s|caractère}",  # See #2634
 )
 
 variant_titles = (

@@ -24,7 +24,7 @@ sections = (
     "adjectiu",
     "adverbi",
     "article",
-    "caràcter",
+    # "caràcter",  # See #2634
     "conjunció",
     "contracció",
     "desinència",
@@ -32,7 +32,7 @@ sections = (
     "frase feta",
     "infix",
     "interjecció",
-    "lletra",
+    # "lletra",  # See #2634
     "nom",
     "numeral",
     "prefix",
