@@ -298,7 +298,12 @@ class BaseFormat:
                         }
 
                 if len(variants) > MAX_VARIANTS:
-                    log.warning("Word %r has too many variants (%d): %r", current_word, len(variants), variants)
+                    log.warning(
+                        "Word %r has too many variants (%d): %r",
+                        current_word,
+                        len(variants),
+                        sorted(variants)[:10],
+                    )
 
             # On Kobo, we want to display a variant being the same word lowercased (see #2579):
             #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
