@@ -175,6 +175,8 @@ def adjust_wikicode(
     '==漢語==\n'
     >>> adjust_wikicode("==漢語==\n;限定代詞", "zh")
     '==漢語==\n'
+    >>> adjust_wikicode("==漢語==\n:限定代詞", "zh")
+    '==漢語==\n'
     """
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
@@ -196,7 +198,7 @@ def adjust_wikicode(
 
     # `; '''限定代詞'''` → `:: 限定代詞`
     # `;限定代詞` → `:: 限定代詞`
-    code = re.sub(r"^;\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
+    code = re.sub(r"^[;:]\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
 
     for pattern in {"{xī}", "{zi}"}:
         code = code.replace(pattern, "")
