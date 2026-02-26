@@ -2,21 +2,20 @@
 *.sha256
 *.bz2
 *.df
-*.json
 *.log
 *.mobi
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 *.xml
 *.zip
 dict-data.*
 sections.txt
 templates.txt
 /data/
-tests/data/*/*/
-
-# Project stuff - update-bot.py
-apicache-py3
-pywikibot.lwp
-throttle.ctrl
+tests/data/fr/fr/data_wikicode-*.json
+tests/data/fr/fr/output/
+tests/data/fr/fr/tmp/
 
 # Python stuff
 .coverage*

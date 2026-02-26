@@ -2,6 +2,7 @@ import logging
 import os
 import shutil
 from copy import deepcopy
+from datetime import UTC, datetime
 from pathlib import Path
 from unittest.mock import patch
 from zipfile import ZipFile
@@ -59,48 +60,32 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
     # Check for all dictionaries
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
 
-    # DictFile
-    assert (output_dir / "dict-fr-fr.df").is_file()
-    assert (output_dir / f"dict-fr-fr.df.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dict-fr-fr-noetym.df").is_file()
-    assert (output_dir / f"dict-fr-fr-noetym.df.{ASSET_CHECKSUM_ALGO}").is_file()
+    count = 0
+    for file in [
+        "dict-fr-fr{etym}.df",  # DictFile
+        "dict-fr-fr{etym}.df.bz2",  # DictFile bz2
+        "dictorg-fr-fr{etym}.zip",  # DICT.org
+        "dicthtml-fr-fr{etym}.zip",  # Kobo
+        "dict-fr-fr{etym}.mobi.zip",  # Mobi
+        "dict-fr-fr{etym}.zip",  # StarDict
+    ]:
+        for etym in ["", "-noetym"]:
+            fname = file.format(etym=etym)
+            assert (output_dir / fname).is_file()
+            assert (output_dir / f"{fname}.{ASSET_CHECKSUM_ALGO}").is_file()
+            count += 2
 
-    # DictFile bz2
-    assert (output_dir / "dict-fr-fr.df.bz2").is_file()
-    assert (output_dir / f"dict-fr-fr.df.bz2.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dict-fr-fr-noetym.df.bz2").is_file()
-    assert (output_dir / f"dict-fr-fr-noetym.df.bz2.{ASSET_CHECKSUM_ALGO}").is_file()
+    assert count == 24
 
-    # DICT.org
-    assert (output_dir / "dictorg-fr-fr.zip").is_file()
-    assert (output_dir / f"dictorg-fr-fr.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dictorg-fr-fr-noetym.zip").is_file()
-    assert (output_dir / f"dictorg-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-
-    # Kobo
     dicthtml = output_dir / "dicthtml-fr-fr.zip"
-    assert dicthtml.is_file()
-    assert (output_dir / f"dicthtml-fr-fr.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dicthtml-fr-fr-noetym.zip").is_file()
-    assert (output_dir / f"dicthtml-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-
-    # Mobi
     mobi_file = output_dir / "dict-fr-fr.mobi.zip"
-    assert mobi_file.is_file()
-    assert (output_dir / f"dict-fr-fr.mobi.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dict-fr-fr-noetym.mobi.zip").is_file()
-    assert (output_dir / f"dict-fr-fr-noetym.mobi.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-
-    # StarDict
     stardict = output_dir / "dict-fr-fr.zip"
-    assert stardict.is_file()
-    assert (output_dir / f"dict-fr-fr.zip.{ASSET_CHECKSUM_ALGO}").is_file()
-    assert (output_dir / "dict-fr-fr-noetym.zip").is_file()
-    assert (output_dir / f"dict-fr-fr-noetym.zip.{ASSET_CHECKSUM_ALGO}").is_file()
 
     # Check the Kobo ZIP content
     expected_files = [
         "11.html",
+        constants.ZIP_WORDS_COUNT,
+        constants.ZIP_WORDS_SNAPSHOT,
         "aa.html",
         "ac.html",
         "ba.html",
@@ -127,11 +112,8 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "si.html",
         "sl.html",
         "te.html",
-        "tu.html",
         "ve.html",
         "words",
-        constants.ZIP_WORDS_COUNT,
-        constants.ZIP_WORDS_SNAPSHOT,
         "ép.html",
         "œc.html",
         "πa.html",
@@ -144,7 +126,6 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "Bogotanais",
         "DES",
         "Slovène",
-        "Turgeon",
         "a",
         "accueil",
         "acrologie",
@@ -208,13 +189,13 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "StarDict's dict ifo file",
         "version=3.0.0",
         "bookname=reader.dict FR",
-        "wordcount=40",
-        "idxfilesize=635",
+        "wordcount=39",
+        "idxfilesize=619",
         "sametypesequence=h",
         "synwordcount=5",
         "website=https://www.reader-dict.com",
         "date=2020-12-17",
-        "description=© reader.dict 2025",
+        f"description=© reader.dict {datetime.now(tz=UTC).year}",
         "lang=fr-fr",
     ]
     with ZipFile(stardict) as fh:
@@ -237,9 +218,9 @@ def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
         "kindlegenbuild.log",
         "mobi7",
         "mobi7/Images",
-        "mobi7/Images/cover00021.jpeg",
-        "mobi7/Images/image00020.gif",
-        "mobi7/Images/image00023.jpeg",
+        "mobi7/Images/cover00022.jpeg",
+        "mobi7/Images/image00021.gif",
+        "mobi7/Images/image00024.jpeg",
         "mobi7/book.html",
         "mobi7/content.opf",
         "mobi7/toc.ncx",
@@ -641,10 +622,49 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         mocked_l.assert_called_once_with(pages)
         mocked_mv.assert_called_once_with(words)
 
-        args = (source_dir / "output", pages, locale, words, variants)
+        args = (source_dir / "output", snapshot, locale, words, variants)
         for include_etymology in [False, True]:
             mocked_dw.assert_any_call(convert.get_primary_formatters(), *args, include_etymology=include_etymology)
             mocked_dw.assert_any_call(convert.get_secondary_formatters(), *args, include_etymology=False)
             mocked_rmf.assert_any_call(*args, include_etymology=False)
         assert mocked_dw.call_count == 4
         assert mocked_rmf.call_count == 2
+
+
+@pytest.mark.parametrize("format", list(convert.FORMATTERS.keys()))
+def test_format(format: str) -> None:
+    primary, secondary, mobi_run = convert.get_formatters(format)
+    assert primary == {convert.FORMATTERS[format][0]}
+    if secondary:
+        assert secondary == {convert.FORMATTERS[format][1]}
+    assert not mobi_run
+
+
+@pytest.mark.parametrize("format", ["mobi", "kindle"])
+def test_format_mobi(format: str) -> None:
+    primary, secondary, mobi_run = convert.get_formatters(format)
+    assert not primary
+    assert not secondary
+    assert mobi_run
+
+
+@pytest.mark.parametrize("format", ["", "all"])
+def test_format_all(format: str) -> None:
+    primary, secondary, mobi_run = convert.get_formatters(format)
+    assert primary == convert.get_primary_formatters()
+    assert secondary == convert.get_secondary_formatters()
+    assert mobi_run
+
+
+def test_format_unknown() -> None:
+    primary, secondary, mobi_run = convert.get_formatters("unknown")
+    assert not primary
+    assert not secondary
+    assert not mobi_run
+
+
+def test_formats() -> None:
+    primary, secondary, mobi_run = convert.get_formatters("df,mobi")
+    assert primary == {convert.FORMATTERS["df"][0]}
+    assert secondary == {convert.FORMATTERS["df"][1]}
+    assert mobi_run
