@@ -122,12 +122,17 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("'''[[foo]]'''", "lt", word="foo")
     ''
+    >>> adjust_wikicode("'''[[foo]]''' - ", "lt", word="foo")
+    ''
 
     >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n==== Etimologija ====\n{{Žodžiai|jung}}\n*[[Antigva]]\n*[[Barbuda]]", "lt", word="foo")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ===\n==== Etimologija ===="
 
     >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n'''Žodžių junginį sudaro žodžiai:'''\n* {{t+|lt|būtasis}}\n* {{t+|lt|laikas}}", "lt", word="foo")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ==="
+
+    >>> adjust_wikicode("== {{ltv}} ==\n==== Etimologija ====\n==== Vertimai ====\n<br clear=all />\n{{trans-top|prietaisas}}\n{{sqv1}} {{t+|sq|lesë|f}}\n{{trans-bottom}}", "lt", word="akėčios")
+    '== {{ltv}} ==\n==== Etimologija ====\n'
 
     >>> from ... import context
     >>> _ = context.reset("lt")
@@ -136,6 +141,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n{{ltdkt|forma=f-{{{forma|vyr-1l-as}}}|tikr=tikr|šakn=Kvietkausk|šakn2={{{sakn2}}}}}", "lt", word="Kvietkauskas")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ===\n# {{rev-flexion|Kvietkauskai}}\n# {{rev-flexion|Kvietkauskais}}\n# {{rev-flexion|Kvietkauskams}}\n# {{rev-flexion|Kvietkauske}}\n# {{rev-flexion|Kvietkausko}}\n# {{rev-flexion|Kvietkausku}}\n# {{rev-flexion|Kvietkauskui}}\n# {{rev-flexion|Kvietkauskuose}}\n# {{rev-flexion|Kvietkauskus}}\n# {{rev-flexion|Kvietkauską}}\n# {{rev-flexion|Kvietkauskų}}\n{{m}}"
     """
+
+    # {{trans-top|...}}...{{trans-bottom}}
+    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     # Drop "see also" inline text
     lines: list[str] = []
@@ -166,6 +174,7 @@ def adjust_wikicode(
     # More clean-up
     code = re.sub(r"<br clear=all[ ]*/?>", "", code)
     code = code.replace("----", "")
+    code = code.replace(f"'''[[{word}]]''' - ", "")
     code = code.replace(f"'''[[{word}]]'''", "")
 
     #
