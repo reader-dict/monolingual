@@ -303,11 +303,12 @@ def find_etymology(
             ]
         case "zh":
             items = []
-            for item in get_items(("#", ":", r"\*")):
-                if "{{zh-x" in item or "{{zh-q" in item:
-                    item = item.replace("collapsed=y", "collapsed=n")
+            for line_ in parsed_section.contents.splitlines():
+                line = line_.lstrip(":;#*")
+                if "{{zh-x" in line or "{{zh-q" in line:
+                    item = line.replace("collapsed=y", "collapsed=n")
                     item = utils.clean(context.expand(item, "zh"))
-                items.append(item)
+                items.append(line)
         case _:
             items = [parsed_section.contents]
 

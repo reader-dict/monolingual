@@ -173,12 +173,14 @@ def adjust_wikicode(
     >>> adjust_wikicode("==漢語==\n{{trans-top|...}}\n...\n{{trans-bottom}}", "zh")
     '==漢語==\n'
 
-    >>> adjust_wikicode("==漢語==\n; '''限定代詞'''", "zh")
+    >> adjust_wikicode("==漢語==\n; '''限定代詞'''", "zh")
     '==漢語==\n'
-    >>> adjust_wikicode("==漢語==\n;限定代詞", "zh")
+    >> adjust_wikicode("==漢語==\n;限定代詞", "zh")
     '==漢語==\n'
-    >>> adjust_wikicode("==漢語==\n:限定代詞", "zh")
+    >> adjust_wikicode("==漢語==\n:限定代詞", "zh")
     '==漢語==\n'
+    >> adjust_wikicode("==漢語==\n; “位置，立場”\n: 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n; “意識形態”\n:{{wasei kango|主%義|しゅ%ぎ}}。", "zh")
+    "==漢語==\n 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n{{wasei kango|主%義|しゅ%ぎ}}。"
     """
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
@@ -190,9 +192,10 @@ def adjust_wikicode(
 
     # `; '''限定代詞'''` → `:: 限定代詞`
     # `;限定代詞` → `:: 限定代詞`
-    code = re.sub(r"^[;:]\s*'*[^'\s]+'*", "", code, flags=re.MULTILINE)
+    # (skipped due to #2655)
+    # code = re.sub(r"^[;:][ ]*'*[^' {]+'*", "", code, flags=re.MULTILINE)
 
-    for pattern in {"{xī}", "{zi}"}:
+    for pattern in {"{wéi}", "{xī}", "{zi}"}:
         code = code.replace(pattern, "")
 
     return code
