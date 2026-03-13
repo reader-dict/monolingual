@@ -245,6 +245,8 @@ def adjust_wikicode(
     '== {{langue|fr}} =\n# {{flexion|manger}}'
     >>> adjust_wikicode("== {{langue|fr}} =\n# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|manger|fr}}.", "fr")
     '== {{langue|fr}} =\n# {{flexion|manger}}'
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''[[troisième personne du singulier|Troisième personne du singulier]] du [[subjonctif présent]] du [[verbe auxiliaire]] '' [[avoir]].", "fr")
+    '== {{langue|fr}} ==\n# {{flexion|avoir}}'
     >>> adjust_wikicode("== {{langue|fr}} =\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", "fr")
     "== {{langue|fr}} =\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'')."
 
@@ -276,9 +278,9 @@ def adjust_wikicode(
 
     lines: list[str] = []
     for line in code.splitlines():
-        if re.match(START, line):
+        if re.match(START, line) and "Ancienne forme" not in line and "Forme courante" not in line:
             for pattern in PATTERNS:
-                line, count = re.subn(rf"{START}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                line, count = re.subn(rf".*{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
                 if count:
                     break
         lines.append(line)
