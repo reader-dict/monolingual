@@ -169,7 +169,7 @@ def adjust_wikicode(
     '==漢語==\n# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
 
     >>> adjust_wikicode("==漢語==\n{{trans-top|...}}\n...\n{{trans-bottom}}", "zh")
-    '==漢語=='
+    '==漢語==\n'
 
     >>> adjust_wikicode("==漢語==\n; '''限定代詞'''", "zh")
     '==漢語==\n'
@@ -184,17 +184,7 @@ def adjust_wikicode(
     code = re.sub(r"^(# \{\{zh-pron.*?\}\})", lambda m: m[0].replace("\n", ""), code, flags=re.DOTALL | re.MULTILINE)
 
     # Wipe out `{{trans-top|...}}...{{trans-bottom}}`
-    if "{{trans-top" in code:
-        cleaned: list[str] = []
-        in_unwanted_section = False
-        for line in code.splitlines():
-            if line.startswith("{{trans-top"):
-                in_unwanted_section = True
-            elif line.startswith("{{trans-bottom}}"):
-                in_unwanted_section = False
-            elif not in_unwanted_section:
-                cleaned.append(line)
-        code = "\n".join(cleaned)
+    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     # `; '''限定代詞'''` → `:: 限定代詞`
     # `;限定代詞` → `:: 限定代詞`
