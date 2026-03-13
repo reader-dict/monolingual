@@ -161,7 +161,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
 
 # Example: 興{xīng}
-HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\p{Han})(\{[^{}]+\})")
+HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\[?\p{Han}\]?)(\{[^{}]+\})")
 
 
 def adjust_wikicode(
@@ -181,6 +181,8 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("興{xīng}", "zh")
     '興'
+    >>> adjust_wikicode("[群]{Qún}", "zh")
+    '[群]'
     >>> adjust_wikicode("月亮是眾生不停輪迴轉世的象徵{{...}}所以用“月亮”這", "zh")
     '月亮是眾生不停輪迴轉世的象徵{{...}}所以用“月亮”這'
 
