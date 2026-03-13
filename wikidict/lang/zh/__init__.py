@@ -2,6 +2,8 @@
 
 import re
 
+from .template_overrides import overrides as template_overrides  # noqa: F401
+
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 float_separator = ","

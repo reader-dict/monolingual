@@ -1,0 +1,150 @@
+==漢語==
+{{zh-forms|s=世界语|type=21}}
+{{zh-wp}}
+{{interwiktionary|code=eo}}
+
+===詞源===
+{{wasei kango|世%界%語|せ%かい%ご}}。經過[[:w:二葉亭四迷|二葉亭四迷]]於1906年出版的同名書籍而普及。<ref>{{cite-web|url=http://www.espero.com.cn/2014-01/06/content_31101253.htm|title=Partopreninte la 32-an Komunan Seminarion de Aziaj Junularoj|work=El Popola Ĉinio|lang=eo|date=2014-01-06}}</ref>
+
+===發音===
+{{zh-pron
+|m=shìjièyǔ
+|c=sai3 gaai3 jyu5
+|mn=Sè-kài-gí
+|cat=pn
+}}
+
+===專有名詞===
+{{zh-proper noun}}
+
+# [[波蘭]]籍[[猶太人]][[眼科]][[醫生]]{{w|柴門霍夫}}博士（1859-1917）在1887年公佈的一種[[人造]]的[[國際輔助語]]
+
+====翻譯====
+{{trans-top|人工語言}}
+* 阿尔巴尼亚语：{{t+|sq|esperanto|n}}
+* 阿拉伯语：{{t+|ar|إِسْبَرَانْتُو|m|tr=ʾisbarantū}}、{{t|ar|إِسْپَرَانْتُو|m|tr=ʾisparantū}}
+* 亚美尼亚语：{{t+|hy|էսպերանտո}}
+* 阿萨姆语：{{t|as|এস্পেৰাণ্ট ভাষা}}
+* 阿斯图里亚斯语：{{t+|ast|esperantu|m}}
+* 巴斯克语：{{t+|eu|esperanto}}
+* 白俄罗斯语：{{t+|be|эспера́нта|n}}、{{t|be|эспэра́нта|n}} {{qualifier|傳統正字法}}
+* 布列塔尼语：{{t+|br|esperanteg|m}}
+* 保加利亚语：{{t|bg|есперанто}}
+* 加泰罗尼亚语：{{t+|ca|esperanto|m}}
+* 捷克语：{{t+|cs|esperanto|n}}
+* 迪维希语：{{t|dv|އެސްޕެރަންތޯ}}
+* 荷兰语：{{t+|nl|Esperanto|n}}
+* 英語：{{t+|en|Esperanto}}
+* 世界语：{{t+|eo|Esperanto}}
+* 爱沙尼亚语：{{t+|et|Esperanto}}
+* 芬兰语：{{t+|fi|esperanto}}
+* 法语：{{t+|fr|espéranto|m}}
+* 加利西亚语：{{t+|gl|esperanto|m}}
+* 格鲁吉亚语：{{t|ka|ესპერანტო}}
+* 德语：{{t+|de|Esperanto|n}}
+* 希腊语：{{t|el|Εσπεράντο}}
+* 格陵兰语：{{t|kl|Esperanto}}
+* 古吉拉特语：{{t+|gu|એસ્પેરાન્તો}}
+* 夏威夷语：{{t|haw|‘ōlelo Ekepelānako}}
+* 希伯来语：{{t+|he|אֶסְפֶּרַנְטוֹ|tr=esperanto}}
+* 印地语：{{t+|hi|एस्पेरान्तो}}
+* 匈牙利语：{{t+|hu|eszperantó}}
+* 伊多语：{{t+|io|Esperanto}}、{{t+|io|Espo}}
+* 因特语：{{t+|ia|esperanto}}
+* 因紐特語：{{t+|iu|ᐃᓯᐱᕋᓐᑐ}}
+* 爱尔兰语：{{t|ga|Esperanto}}、{{t|ga|Sprantais|f}}
+* 意大利语：{{t+|it|esperanto}}
+* 日语：{{t+|ja|エスペラント|tr=Esuperanto}}、{{t+|ja|エスペラント語|tr=Esuperanto-go}}
+* 卡舒比語：{{t|csb|esperanto|n}}
+* 哈萨克语：{{t|kk|эсперанто}}
+* 朝鲜语：{{t+|ko|^에스페란토}}
+* 库尔德语：
+*: 北库尔德语：{{t+|kmr|esperantoyî|f}}
+* 拉丁语：{{t|la|Lingua Esperantica|f}}、{{t|la|Lingua Zamenhofiana|f}}
+* 马其顿语：{{t|mk|еспера́нто|n}}
+* 马拉雅拉姆语：{{t|ml|എസ്പെരാന്തോ}}
+* 纳瓦特尔语：{{t|nah|netēmachīliztlahtōlli}}、{{t|nah|esperantotlahtōlli}}
+* 挪威语：{{t+|no|esperanto}}
+* 奥克语：{{t+|oc|esperanto|m}}
+* 波斯语：{{t+|fa|اسپرانتو|tr=esperânto}}
+* 波兰语：{{t+|pl|esperanto|n}}
+* 葡萄牙语：{{t+|pt|esperanto|m}}
+* 罗马尼亚语：{{t+|ro|esperanto}}、{{t|ro|[[limba]] [[esperanto]]}}
+* 俄语：{{t+|ru|эспера́нто|n}}
+* 盧森尼亞語：{{t|rue|есперанто|n}}
+* 盧旺達語：{{t|rw|Icyesiperanto}}
+* 塞尔维亚-克罗地亚语：
+*: 西里尔字母：{{t|sh|еспера̀нто|m}}、{{t|sh|есперантски|m}}
+*: 罗马字母：{{t+|sh|esperànto|m}}、{{t+|sh|esperantski|m}}
+* 西西里语：{{t+|scn|esperantu|m}}
+* 西里西亞語：{{t|szl|esperanto|n}}
+* 斯洛伐克语：{{t+|sk|esperanto|n}}
+* 斯洛文尼亚语：{{t+|sl|esperanto|n}}
+* 索布语：
+*: 下索布语：{{t|dsb|esperanto|n}}
+*: 上索布语：{{t+|hsb|esperanto|n}}
+* 西班牙语：{{t+|es|esperanto|m}}
+* 斯瓦希里语：{{t|sw|Kiesperanto}}
+* 史瓦濟語：{{t|ss|sí-Speranto}}、{{t|ss|síSperanto}}
+* 瑞典语：{{t+|sv|esperanto|c}}
+* 他加禄语：{{t+|tl|Esperanto}}
+* 泰语：{{t|th|เอสเปรันโต|tr=àyt-bpay-ran-dtoh}}、{{t+|th|ภาษาเอสเปรันโต|tr=paa-săa àyt-bpay-ran-dtoh}}
+* 土耳其语：{{t+|tr|Esperanto}}
+* 越南语：{{t+|vi|quốc tế ngữ}}、{{t|vi|tiếng quốc tế ngữ}}、{{t+|vi|thế giới ngữ}}
+* 沃拉普克语：{{t+|vo|Sperantapük}}
+* 意第绪语：{{t+|yi|עספּעראַנטאָ|n}}
+{{trans-bottom}}
+
+===參見===
+* {{langcat|eo}}
+
+===參考資料===
+<references />
+
+===延伸閱讀===
+* {{ISO 639|ref=1|eo||epo}}
+* {{ethnologue|epo}}
+
+{{zh-cat|人造語言}}
+
+==日語==
+{{ja-kanjitab|せ|かい|ご|yomi=o}}
+
+===發音===
+{{ja-pron|せかいご|acc=h|acc_ref=DJR}}
+
+===名詞===
+{{ja-noun|せかいご}}
+
+# [[國際輔助語]]
+# [[世界語言]]
+
+====近義詞====
+* {{ja-r|国%際%語|こく%さい%ご}}
+* {{ja-r|国%際%補%助%語|こく%さい% ほ%じょ%ご}}
+
+====派生語彙====
+* {{desc|zh|-|bor=1}} {{zh-l|世界語}}
+* {{desc|ko|-|bor=1}} {{ko-l|세계어}}
+* {{desc|vi|-|bor=1}} {{vi-l|thế giới ngữ}}
+
+===參考資料===
+<references/>
+
+{{c|ja|人造語言|sort=せかいこ'}}
+
+==朝鮮語==
+{{ko-hanjatab}}
+
+===名詞===
+{{ko-noun|hangeul=세계어|head=[[世界]][[語]]}}
+
+# {{hanja form of|세계어|[[國際輔助語]]}}
+
+==越南語==
+{{vi-hantutab}}
+
+===專有名詞===
+{{vi-proper noun|sc=Hani}}
+
+# {{han tu form of|thế giới ngữ}}
