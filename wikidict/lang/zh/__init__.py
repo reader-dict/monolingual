@@ -2,6 +2,8 @@
 
 import re
 
+import regex
+
 from .template_overrides import overrides as template_overrides  # noqa: F401
 
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
@@ -158,6 +160,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return sorted(f"/{pron}/" for pron in res)
 
 
+# Example: 興{xīng}
+HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\p{Han})(\{[^}]+\})")
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -195,7 +201,6 @@ def adjust_wikicode(
     # (skipped due to #2655)
     # code = re.sub(r"^[;:][ ]*'*[^' {]+'*", "", code, flags=re.MULTILINE)
 
-    for pattern in {"{wéi}", "{xī}", "{zi}"}:
-        code = code.replace(pattern, "")
+    code = HAN_FOLLOWED_BY_BRACKETS.sub("", code)
 
     return code
