@@ -1,0 +1,70 @@
+==漢語==
+{{zh-forms}}
+{{zh-wp}}
+
+===詞源===
+現存最早的文獻紀錄見於下方兩者：
+: 如《[[禮記]]》所述：
+{{zh-x|前 有 摯-獸，則 載 貔貅。|當前面有兇猛的野獸（獵物）時，應懸掛披有'''貔貅'''（豹皮）的旗幟。|ref=Liji|collapsed=yes}}
+: 如《{{w|逸周书}}》所述：
+{{zh-x|山 之 深 也，虎-豹 貔貅 何為{wéi} 可 服？|山如此之深，虎、豹、'''貔貅'''如何馴服？|ref=Yizhoushu|collapsed=yes}}
+
+===發音===
+{{zh-pron
+|m=píxiū
+|c=pei4 jau1
+|mc=y
+|oc=y
+|cat=n,c:a
+}}
+
+===名詞===
+{{head|zh|名詞}}
+
+# {{lb|zh|Chinese mythology}} [[傳說]]的一種[[瑞獸]]，能帶來[[歡樂]]及[[好運]]
+# {{lb|zh|figurative}} [[勇猛]]的[[戰士]]
+
+====同義詞====
+* {{zh-l|天祿}}
+
+====參見====
+* {{zh-l|天鹿}}
+* {{zh-l|辟邪}}
+
+===形容詞===
+{{head|zh|形容詞}}
+
+# {{lb|zh|粵語}} [[頑皮]]，[[淘氣]]
+
+{{zh-cat|Disyllabic}}
+
+==日語==
+{{ja-kanjitab|ひ|きゅう|yomi=o|alt=豼貅}}
+
+===發音===
+{{ja-pron|ひきゅう|acc=0|acc_ref=DJR}}
+
+===名詞===
+{{ja-noun|ひきゅう|hhira=ひきう}}
+
+# {{lb|ja|Chinese mythology|sort=ひきゅう}} [[傳說]]的一種[[瑞獸]]
+# {{lb|ja|figurative|sort=ひきゅう}} [[勇猛]]的[[戰士]]
+
+===來源===
+<references/>
+
+==朝鮮語==
+{{ko-hanjatab}}
+
+===名詞===
+{{ko-noun|hj|hangeul=비휴}}
+
+# {{hanja form of|비휴|}}
+
+==越南語==
+{{vi-hantutab}}
+
+===名詞===
+{{vi-noun|sc=Hani}}
+
+# {{han tu form of|tỳ hưu|}}

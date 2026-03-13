@@ -302,7 +302,12 @@ def find_etymology(
                 tpl.__str__()[len("{{etymologi|") : -2] for tpl in parsed_section.templates if tpl.name == "etymologi"
             ]
         case "zh":
-            items = get_items(("#", ":", r"\*"))
+            items = []
+            for item in get_items(("#", ":", r"\*")):
+                if "{{zh-x" in item or "{{zh-q" in item:
+                    item = item.replace("collapsed=y", "collapsed=n")
+                    item = utils.clean(context.expand(item, "zh"))
+                items.append(item)
         case _:
             items = [parsed_section.contents]
 
