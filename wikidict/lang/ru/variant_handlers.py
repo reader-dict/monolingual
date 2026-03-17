@@ -60,7 +60,13 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "ru")
     if table.startswith("{"):
         table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
-        table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ").replace(" || ", "\n| ").replace("(по) ", "\n| ")
+        table = (
+            table.replace("<br>", "\n| ")
+            .replace("<br/>", "\n| ")
+            .replace("<br />", "\n| ")
+            .replace(" || ", "\n| ")
+            .replace("(по) ", "\n| ")
+        )
         table = re.sub(r'^\|-? +bgcolor=".+$', "", table, flags=re.MULTILINE)
         forms = {form[1:].strip() for form in table.splitlines() if form.startswith("|") and not form.endswith("| ")}
     else:
