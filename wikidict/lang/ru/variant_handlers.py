@@ -61,7 +61,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if table.startswith("{"):
         table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
         table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ").replace(" || ", "\n| ").replace("(по) ", "\n| ")
-        forms = {form[2:].strip() for form in table.splitlines() if form.startswith("| ") and not form.endswith("| ")}
+        table = re.sub(r'^\|-? +bgcolor=".+$', "", table, flags=re.MULTILINE)
+        forms = {form[1:].strip() for form in table.splitlines() if form.startswith("|") and not form.endswith("| ")}
     else:
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
         forms = set(re.findall(r"<td>([^<]+)</td>", table))
@@ -73,6 +74,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     forms.discard("&#160;—&#32;")
     forms.discard("")
     forms.discard("-")
+    forms.discard("}")
     forms.discard(word)
 
     return "|".join(forms)
