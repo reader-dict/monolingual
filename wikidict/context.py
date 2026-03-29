@@ -384,6 +384,9 @@ def clean_html_input(code: str, locale: str) -> str:
     >>> clean_html_input("<!--\nsco\n-->", "it")
     ''
 
+    >>> clean_html_input("* {{IPA|en|/pɹoʊ/<q:obsolete><ref:{{R:Critical Pronouncing Dictionary|section=principles|page=37}}>}}", "en")
+    '* {{IPA|en|/pɹoʊ/<q:obsolete>}}'
+
     >>> clean_html_input("<ref name=oed/>Modelled<ref>Gerhard</ref> English<ref name=oed>Press.</ref>", "en")
     'Modelled English'
     >>> clean_html_input('From {{uder|en|la|Augeas}} {{suffix|en||an}}. {{w|Augeas}} is a figure in Greek mythology whose stables were never cleaned until {{w|Hercules}} was given the task of cleaning them.<ref name="AT">\n''Ariadne’s Thread: A Guide to International Tales Found in Classical Literature'' by William F. Hansen (2002; [http://www.cornellpress.cornell.edu/cup_detail.taf?ti_id=3674 Cornell University Press]; {{ISBN|9780801475726}}, 9780801436703), [http://books.google.co.uk/books?id=ezDlXl7gP9oC&pg=PA160&dq=%22Augean+stables%22&ei=ZAtOSoPJIY6-yQTn9ezvAg page 160]<br>  ''Herakles Cleans the Augean Stables''<br>  One of the best-known stories attached to Herakles tells how in one day he removed the dung from King Augeias’s cattle yard, which had not been cleaned in years.</ref>', "en")
@@ -448,6 +451,9 @@ def clean_html_input(code: str, locale: str) -> str:
     # HTML comments (multiline supported)
     # <!-- foo --> → ''
     code = sub(r"(?=<!--)([\s\S]*?-->)", "", code)
+
+    # <ref:...> → ''
+    code = sub(r"<ref:[^>]+>", "", code)
 
     # <ref name="CFC"/> → ''
     code = sub(r"<ref[^>]*/>", "", code)
