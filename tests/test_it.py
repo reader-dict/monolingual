@@ -94,6 +94,14 @@ def setup_lua_ctx() -> None:
             {},
             ["muratore"],
         ),
+        (
+            "rimpannucciare",
+            ['/rimpannutˈʧare/'],
+            [],
+            [],
+            {},
+            [],
+        ),
     ],
 )
 def test_parse_word(

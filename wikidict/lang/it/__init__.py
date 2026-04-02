@@ -48,7 +48,7 @@ variant_templates = (
     "{{Tabs",
 )
 
-templates_ignored = (
+definitions_to_ignore = (
     "{{Nodef",
     "{{Noetim",
     "{{Noref",

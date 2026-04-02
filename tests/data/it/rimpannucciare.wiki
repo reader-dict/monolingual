@@ -1,0 +1,44 @@
+== {{-it-}} ==
+{{-verb-|it}}
+{{trans|it}}
+{{Pn|c}}
+#{{Term|raro|it}} {{Nodef|it}}
+# {{Fig}} {{Nodef|it}}
+
+
+{{-sill-}}
+; rim | pan | nuc  | cià | re
+
+{{-pron-}}
+{{IPA|/rimpannutˈʧare/}}
+
+
+{{-etim-}}
+deriva da [[panno]]
+
+
+
+
+
+
+{{-sin-}}
+*[[rivestire]], [[vestire]]
+* {{Fig}} rimettere in arnese, rimettere in sesto 
+
+{{-ant-}}
+*[[spogliare]]
+* {{Fig}} [[impoverire]]
+
+{{-der-}}
+*[[rimpannuncciarsi]]
+
+{{-trad-}}
+{{Trad1|}}
+:*{{en}}:
+{{Trad2}}
+
+{{-ref-}}
+*{{Fonte|sin-co}}
+*{{Fonte|dem}}
+*{{Fonte|trec}}
+*{{Fonte|dizit}}
