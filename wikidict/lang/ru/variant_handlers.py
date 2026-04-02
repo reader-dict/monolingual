@@ -60,6 +60,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "ru")
     if table.startswith("{"):
         table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
+        table = re.sub(r"^\|\}<b>.+$", "", table, flags=re.MULTILINE)
         table = (
             table.replace("<br>", "\n| ")
             .replace("<br/>", "\n| ")
