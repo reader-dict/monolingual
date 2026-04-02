@@ -5,7 +5,7 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, rpl={"(av)"})
+    return utils.cleanup_rev_variant(form, rpl={"(av)", "(?)"})
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -31,7 +31,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     forms: set[str] = set()
     for line in table.splitlines():
-        if not line.startswith("|") or line.startswith(("|-", "|}")):
+        if not line.startswith("|") or line.startswith(("|-", "|}", '|colspan="2" rowspan="5"')):
             continue
         forms.update(cleanup(form) for form in re.findall(r"\[\[([^\]#]+)", line))
 
