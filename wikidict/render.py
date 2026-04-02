@@ -703,7 +703,7 @@ def render(
 
             for word, details in results.items():
                 if not details.reverse_variants:
-                    progress.update(reverse_task, advance=1)
+                    progress.advance(reverse_task)
                     continue
 
                 for form in details.reverse_variants:
@@ -711,7 +711,7 @@ def render(
                         results_final[form].variants = sorted({*results_final[form].variants, word})
                     except KeyError:
                         results_final[form] = Word(variants=[word])
-                progress.update(reverse_task, advance=1)
+                progress.advance(reverse_task)
 
             progress.update(
                 reverse_task,
