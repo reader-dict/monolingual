@@ -378,11 +378,11 @@ WORDS_VARIANTS_RU = {
 
 
 def test_make_variants() -> None:
-    assert convert.make_variants(WORDS_VARIANTS_FR) == {"suivre": ["suis"], "estre": ["suis"], "être": ["suis"]}
+    assert convert.make_variants(WORDS_VARIANTS_FR) == {"suivre": {"suis"}, "estre": {"suis"}, "être": {"suis"}}
     assert convert.make_variants(WORDS_VARIANTS_ES) == {
-        "gastada": ["gastadan"],
-        "gastado": ["gastada"],
-        "gastar": ["gastado"],
+        "gastada": {"gastadan"},
+        "gastado": {"gastada"},
+        "gastar": {"gastado"},
     }
 
 

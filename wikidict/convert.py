@@ -263,7 +263,7 @@ class BaseFormat:
                 continue
 
             all_variants = self.variants
-            if variants := set(deepcopy(all_variants.get(current_word, []))):
+            if variants := deepcopy(all_variants.get(current_word, set())):
                 # Add variants of empty* variant, only 1 redirection:
                 #   [ES] gastada* -> gastado* -> gastar --> (gastada, gastado) -> gastar
                 # Note: the process works backward: from gastar up to gastado up to gastada.
@@ -1035,12 +1035,12 @@ def load(file: Path) -> Words:
 def make_variants(words: Words) -> Variants:
     """Group word by variant."""
     log.info("Creating variants ...")
-    variants: Variants = defaultdict(list)
+    variants: Variants = defaultdict(set)
     for word, details in words.items():
         for variant in details.variants:
-            variants[variant].append(word)
+            variants[variant].add(word)
         for variant in details.reverse_variants:
-            variants[word].append(variant)
+            variants[word].add(variant)
     log.info("Created %s variants", f"{len(variants):,}")
     return variants
 

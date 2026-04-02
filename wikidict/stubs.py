@@ -6,7 +6,7 @@ SubDefinition = str | tuple[str, ...]
 Definition = str | tuple[str, ...] | tuple[SubDefinition, ...]
 Definitions = dict[str, list[Definition]]
 Parts = tuple[str, ...]
-Variants = dict[str, list[str]]
+Variants = dict[str, set[str]]
 
 
 @dataclass(slots=True)
