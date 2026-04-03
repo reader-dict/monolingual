@@ -5,7 +5,7 @@ mediawiki-langcodes==0.2.20  # for up-to-date langs data, required by wikitextpr
 mistune==3.2.0  # for DictFile reading
 pyglossary==5.2.1
 python-idzip==0.3.10
-requests==2.33.0
+requests==2.33.1
 rich==14.3.3
 scour==0.38.2
 wikitextparser==0.56.4
