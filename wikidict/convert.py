@@ -141,7 +141,7 @@ WORD_TPL_DICTFILE = Template(
         {%- endif -%}
     {%- endfor -%}
     <br/>
-{%- endif -%}</html>
+{%- endif %}
 
 
 """
