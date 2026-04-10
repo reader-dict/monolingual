@@ -3,7 +3,7 @@ Jinja2==3.1.6
 marisa-trie==1.4.0
 mediawiki-langcodes==0.2.20  # for up-to-date langs data, required by wikitextprocessor
 mistune==3.2.0  # for DictFile reading
-pyglossary==5.2.1
+pyglossary==5.3.0
 python-idzip==0.3.10
 requests==2.33.1
 rich==14.3.3
