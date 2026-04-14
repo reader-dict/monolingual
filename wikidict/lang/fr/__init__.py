@@ -167,7 +167,7 @@ ALL_FORMS = [
     "pluriel inhabituel",
 ]
 FORMS = "|".join(ALL_FORMS)
-START = rf"^(?:{'|'.join(section_patterns)})\s*'*"
+START = rf"^(?:{'|'.join(section_patterns)})[ ]*'*"
 PATTERNS = [
     # ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.
     r".+(?:première|deuxième|troisième) personne du (?:pluriel|singulier).+du verbe''\s*\{\{lien\|([^\|}]+)",
@@ -280,8 +280,10 @@ def adjust_wikicode(
     for line in code.splitlines():
         if re.match(START, line) and "Ancienne forme" not in line and "Forme courante" not in line:
             for pattern in PATTERNS:
-                line, count = re.subn(rf".*{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                line, count = re.subn(pattern, r"##\1##", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
                 if count:
+                    parts = line.split("##", 2)
+                    line = f"# {{{{flexion|{parts[1]}}}}}"
                     break
         lines.append(line)
 
