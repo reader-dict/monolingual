@@ -30,11 +30,6 @@ setattr(wikitextprocessor.Wtp, "debug", lambda *_, **__: None)
 setattr(wikitextprocessor.Wtp, "note", lambda *_, **__: None)
 setattr(wikitextprocessor.Wtp, "warning", lambda *_, **__: None)
 
-if not DEBUG_LUA:
-    # Remove a noisy `print()` statement on error
-    setattr(wikitextprocessor.Wtp, "_fmt_errmsg", lambda *_: None)
-
-
 log = logging.getLogger(__name__)
 
 
@@ -48,6 +43,7 @@ class Context:
             parser_function_aliases=constants.PARSER_FUNCTIONS_ALIASES.get(locale, {}),
             project="wiktionary",
             quiet=True,
+            quiet_output=not DEBUG_LUA,
             template_override_funcs={
                 "flexion": lambda _: "",
                 "rev-flexion": lambda _: "",
