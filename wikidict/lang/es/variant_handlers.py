@@ -1,18 +1,13 @@
 import re
 from collections import defaultdict
 
-import regex
 import wikitextparser as wtp
 
 from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    cleaned = utils.cleanup_rev_variant(form, rpl={"<sup>†</sup>", "<sup>ARG/URU</sup>"})
-    # Prevent keeping the "haber" auxiliary
-    if cleaned.startswith("haber "):
-        cleaned = cleaned.split(" ", 1)[1]
-    return cleaned
+    return utils.cleanup_rev_variant(form, rpl={"haber "})
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -73,9 +68,11 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             return ""
         table = table[idx:]
 
+        table = re.sub(r"<sup>[^<]+</sup>", "", table)
+
         # Prevent keeping the "haber" auxiliary
         # `[[habrías|habrías]][[ superscripto| superscripto]]` → `[[superscripto|superscripto]]`
-        table = regex.sub(r"\[\[(h[^|]+)\|\1\]\]\[\[ ([^|]+)\| \2\]\]", r"[[\2|\2]]", table)
+        table = re.sub(r"\[\[(h[^|]+)\|\1\]\]\[\[ ([^|]+)\| \2\]\]", r"[[\2|\2]]", table)
 
     return "|".join(table_to_forms(word, table))
 
