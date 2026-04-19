@@ -1155,13 +1155,20 @@ def remove_parens(text: str) -> str:
 
 
 def cleanup_rev_variant(form: str, *, rpl: set[str] | None = None, skip: set[str] | None = None) -> str:
+    """
+    >>> cleanup_rev_variant("mot (Français)")
+    'mot'
+    >>> cleanup_rev_variant("mot#Français")
+    'mot'
+    """
     cleaned = remove_parens(form).replace("&nbsp;", " ")
     for replacement in rpl or []:
         cleaned = cleaned.replace(replacement, "")
     cleaned = cleaned.strip(" []()/")
 
-    if " (" in cleaned:
-        cleaned = cleaned.split(" (", 1)[0]
+    for sep in {" (", "#"}:
+        if sep in cleaned:
+            cleaned = cleaned.split(sep, 1)[0]
 
     if any(char in cleaned for char in "{|[]"):
         return ""
