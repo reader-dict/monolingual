@@ -71,10 +71,10 @@ class Context:
     def close(self) -> None:
         self.ctx.close_db_conn()
 
-    def expand(self, wikitext: str, locale: str) -> str:
+    def expand(self, wikitext: str, locale: str, *, skip_cache: bool = False) -> str:
         if wikitext.startswith("{{rev-flexion"):
             return ""
-        elif wikitext.startswith(self._cache_exclusions):
+        elif skip_cache or wikitext.startswith(self._cache_exclusions):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
         elif not (expanded := self._cache.get(wikitext, "")):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
@@ -304,8 +304,8 @@ def new_word(word: str) -> None:
     get_ctx().new_word(word)
 
 
-def expand(wikitext: str, locale: str) -> str:
-    return get_ctx().expand(wikitext, locale)
+def expand(wikitext: str, locale: str, *, skip_cache: bool = False) -> str:
+    return get_ctx().expand(wikitext, locale, skip_cache=skip_cache)
 
 
 def adapt_templates(locale: str) -> None:
