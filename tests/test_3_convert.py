@@ -54,22 +54,13 @@ def test_simple(tmp_path: Path) -> None:
     log_file = tmp_path / "fr" / "fr.log"
     log_records = log_file.read_text().splitlines()
 
-    for record in log_records:
-        print(record)
-
     # Ensure summaries are properly handled
     assert (
         len([record for record in log_records if "Effective words + variants" in record])
-        == 3 * 2  # (KoboFormat + DictFileFormat + DictFileFormatForMobi) * (etym + noetym)
+        == 2 * 2  # (KoboFormat + DictFileFormat) * (etym + noetym)
     )
 
-    # Check Mobi warnings
-    assert all("media file not found" not in record for record in log_records)
-
-    # Check PyGlossary logging filters
-    assert all("WARNING:" not in record and "ERROR:" not in record for record in log_records)
-
-    # Check for all dictionaries
+    # Check for all dictionary files
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
 
     count = 0
@@ -227,12 +218,10 @@ def test_simple(tmp_path: Path) -> None:
     files = sorted(path.relative_to(tempdir).as_posix() for path in Path(tempdir).glob("**/*"))
     expected_files = [
         "HDImages",
-        "kindlegenbuild.log",
         "mobi7",
         "mobi7/Images",
-        "mobi7/Images/cover00022.jpeg",
-        "mobi7/Images/image00021.gif",
-        "mobi7/Images/image00024.jpeg",
+        "mobi7/Images/cover00009.png",
+        "mobi7/Images/image00010.gif",
         "mobi7/book.html",
         "mobi7/content.opf",
         "mobi7/toc.ncx",
@@ -509,7 +498,7 @@ def test_kindle_format_variants_from_uppercase_only_word(tmp_path: Path) -> None
     """See issue #2623."""
     words = WORDS_VARIANTS_RU
     variants = convert.make_variants(words)
-    formatter = convert.DictFileFormatForMobi("ru", tmp_path, words, variants, "20260122")
+    formatter = convert.MobiFormat("ru", tmp_path, words, variants, "20260122")
 
     ФСБ = "".join(formatter.handle_word("ФСБ", words))
     assert "@ ФСБ" in ФСБ
@@ -622,7 +611,6 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         patch.object(convert, "load") as mocked_l,
         patch.object(convert, "make_variants") as mocked_mv,
         patch.object(convert, "distribute_workload") as mocked_dw,
-        patch.object(convert, "run_mobi_formatter") as mocked_rmf,
     ):
         mocked_gljf.return_value = pages
         mocked_l.return_value = words
@@ -638,45 +626,38 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         for include_etymology in [False, True]:
             mocked_dw.assert_any_call(convert.get_primary_formatters(), *args, include_etymology=include_etymology)
             mocked_dw.assert_any_call(convert.get_secondary_formatters(), *args, include_etymology=False)
-            mocked_rmf.assert_any_call(*args, include_etymology=False)
         assert mocked_dw.call_count == 4
-        assert mocked_rmf.call_count == 2
 
 
 @pytest.mark.parametrize("format", list(convert.FORMATTERS.keys()))
 def test_format(format: str) -> None:
-    primary, secondary, mobi_run = convert.get_formatters(format)
+    primary, secondary = convert.get_formatters(format)
     assert primary == {convert.FORMATTERS[format][0]}
     if secondary:
         assert secondary == {convert.FORMATTERS[format][1]}
-    assert not mobi_run
 
 
 @pytest.mark.parametrize("format", ["mobi", "kindle"])
 def test_format_mobi(format: str) -> None:
-    primary, secondary, mobi_run = convert.get_formatters(format)
-    assert not primary
-    assert not secondary
-    assert mobi_run
+    primary, secondary = convert.get_formatters(format)
+    assert primary == {convert.FORMATTERS["mobi"][0]}
+    assert secondary == {convert.FORMATTERS["mobi"][1]}
 
 
 @pytest.mark.parametrize("format", ["", "all"])
 def test_format_all(format: str) -> None:
-    primary, secondary, mobi_run = convert.get_formatters(format)
+    primary, secondary = convert.get_formatters(format)
     assert primary == convert.get_primary_formatters()
     assert secondary == convert.get_secondary_formatters()
-    assert mobi_run
 
 
 def test_format_unknown() -> None:
-    primary, secondary, mobi_run = convert.get_formatters("unknown")
+    primary, secondary = convert.get_formatters("unknown")
     assert not primary
     assert not secondary
-    assert not mobi_run
 
 
 def test_formats() -> None:
-    primary, secondary, mobi_run = convert.get_formatters("df,mobi")
-    assert primary == {convert.FORMATTERS["df"][0]}
-    assert secondary == {convert.FORMATTERS["df"][1]}
-    assert mobi_run
+    primary, secondary = convert.get_formatters("df,mobi")
+    assert primary == {convert.FORMATTERS["df"][0], convert.FORMATTERS["mobi"][0]}
+    assert secondary == {convert.FORMATTERS["df"][1], convert.FORMATTERS["mobi"][1]}

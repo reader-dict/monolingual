@@ -323,7 +323,7 @@ class BaseFormat:
                 variants.add(lowercase_word)
 
             # Russian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
-            elif is_russian and isinstance(self, DictFileFormatForMobi) and current_word.isupper():
+            elif is_russian and isinstance(self, MobiFormat) and current_word.isupper():
                 variants.add(current_word.lower())
 
             yield self.render_word(
@@ -503,18 +503,11 @@ class DictFileFormat(Summary, BaseFormat):
         self.summary(file)
 
 
-class DictFileFormatForMobi(DictFileFormat):
-    """Save the data into a *.df* DictFile."""
-
-    output_file = f"altered-{DictFileFormat.output_file}"
-
-
 class ConverterFromDictFile(DictFileFormat):
     target_format = ""
     target_suffix = ""
     final_file = ""
     zip_glob_files = "dict-data.*"
-    dictfile_format_cls = DictFileFormat
     glossary_options: dict[str, str | bool] = {}
 
     def _patch_gc(self) -> None:
@@ -554,7 +547,7 @@ class ConverterFromDictFile(DictFileFormat):
             writer_cls = glos.plugins["Stardict"].writerClass
 
             # Do not append extra data to the book name
-            def get_bookname(cls) -> str:  # type: ignore[no-untyped-def]
+            def get_bookname(cls, partNumber: int | None = None) -> str:  # type: ignore[no-untyped-def]
                 bookname = str(cls._glos.getInfo("name"))
                 log.info("bookname: %s", bookname)
                 return bookname
@@ -569,10 +562,21 @@ class ConverterFromDictFile(DictFileFormat):
         glos.sourceLangName = self.effective_lang_src()
         glos.targetLangName = self.effective_lang_dst()
 
+        if isinstance(self, MobiFormat):
+            # Alter the generated word title to fix this Kindling warning:
+            # [warning R6.1] section 6.1 (p.22): Content is not well-formed XHTML. Kindle requires well-formed HTML documents for reliable conversion. Parse error: ill-formed document: expected `</br>`, but `</idx:orth>` was found (g000002.xhtml)
+            wordTitleStr_original = glos.wordTitleStr
+
+            def wordTitleStr(word: str, **kwargs: str) -> str:
+                # Do not end with `<br>` but `<br/>`
+                return str(wordTitleStr_original(word, **kwargs)).replace("<br>", "<br/>")
+
+            glos.wordTitleStr = wordTitleStr
+
         self.output_dir_tmp.mkdir()
         glos.convert(
             ConvertArgs(
-                inputFilename=str(self.dictionary_file(self.dictfile_format_cls.output_file)),
+                inputFilename=str(self.dictionary_file(DictFileFormat.output_file)),
                 outputFilename=str(self.output_dir_tmp / f"dict-data.{self.target_suffix}"),
                 writeOptions=self.glossary_options,
             )
@@ -619,33 +623,16 @@ class DictOrgFormat(ConverterFromDictFile):
 
 
 class MobiFormat(ConverterFromDictFile):
-    """Save the data into a Mobi file.
-
-    Incompatibility issues:
-
-    1) No support for multiple HTML tags, they will be ignored:
-
-        Warning(inputpreprocessor):W29007: Rejected unknown tag: <bdi>
-
-    2) Most locales are not fully supported:
-
-        Warning(index build):W15008: language not supported. Using default phonetics for spellchecker: english.
-
-    3) Greek (EL), and Russian (RU), locales might be incorrectly displayed:
-
-        Error(core):E1008: Failed conversion to unicode. The resulting string may contain wrong characters.
-
-    """
+    """Save the data into a MobiPocket file."""
 
     target_format = "mobi"
     target_suffix = "mobi"
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.mobi.zip"
     zip_glob_files = ""  # Will be set in `_compress()`
-    dictfile_format_cls = DictFileFormatForMobi
     glossary_options = {
         "cover_path": str(constants.COVER_FILE),
         "keep": True,
-        "kindlegen_path": str(constants.KINDLEGEN_FILE),
+        "kindlegen_path": str(constants.MOBIPOCKET_TOOL),
     }
 
     def _compress(self) -> Path:
@@ -913,16 +900,18 @@ class JSONVolumeFormat(BaseFormat):
 
 
 PRIMARY_FORMATTERS = {KoboFormat, DictFileFormat, JSONVolumeFormat}
-SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, StarDictFormat}
+SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, MobiFormat, StarDictFormat}
 FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     # "format": (primary formatter class, secondary formatter class)
     "dictfile": (DictFileFormat, BZ2DictFileFormat),
+    "dicthtml": (KoboFormat, None),
     "dictorg": (DictFileFormat, DictOrgFormat),
     "jsonvolume": (JSONVolumeFormat, None),
-    "dicthtml": (KoboFormat, None),
+    "mobi": (DictFileFormat, MobiFormat),
     "stardict": (DictFileFormat, StarDictFormat),
 }
 FORMATTERS["df"] = FORMATTERS["dictfile"]
+FORMATTERS["kindle"] = FORMATTERS["mobi"]
 FORMATTERS["kobo"] = FORMATTERS["dicthtml"]
 
 
@@ -933,93 +922,6 @@ def get_primary_formatters() -> set[type[BaseFormat]]:
 def get_secondary_formatters() -> set[type[BaseFormat]]:
     """Formatters that require files generated by `get_primary_formatters()`."""
     return SECONDARY_FORMATTERS
-
-
-def run_mobi_formatter(
-    output_dir: Path,
-    snapshot: str,
-    locale: str,
-    words: Words,
-    variants: Variants,
-    *,
-    include_etymology: bool = True,
-) -> None:
-    """Mobi formatter.
-
-    For multiple languages, we need to delete words if the total number of unique unicode characters is greater than 256.
-    To do this, we delete words using the least-used characters until we meet this condition.
-    """
-
-    if locale in constants.MOBI_SKIP:
-        log.info("[Mobi %s] Skipping as the final file size would be > 650 MiB", locale.upper())
-        return
-
-    def all_chars(word: str, details: Word) -> set[str]:
-        chars = set(word)
-        if definitions := details.definitions:
-            if isinstance(definitions, str):
-                chars.update(definitions)
-            elif isinstance(definitions, tuple):
-                chars.update(utils.flatten(definitions))
-        if etymology := details.etymology:
-            if isinstance(etymology, str):
-                chars.update(etymology)
-            elif isinstance(etymology, tuple):
-                chars.update(utils.flatten(etymology))
-        return chars
-
-    stats = defaultdict(list)
-    for word, details in words.copy().items():
-        if len(word) > 127:
-            log.info("[Mobi %s] Truncated word too long: %r", locale.upper(), word)
-            truncated = word[:127]
-            words[truncated] = words.pop(word)
-            word = truncated
-        for char in all_chars(word, details):
-            stats[char].append(word)
-
-    if locale in constants.MOBI_CLEANUP and len(stats) > 256:
-        new_words = words.copy()
-        threshold = 1
-        while len(stats) > 256:
-            log.info(
-                "[Mobi %s] Removing words with unique characters count at %d (total is %d)",
-                locale.upper(),
-                threshold,
-                len(stats),
-            )
-            for char, related_words in sorted(stats.copy().items(), key=lambda v: (char, len(v[1]))):
-                if len(related_words) == threshold:
-                    for w in related_words:
-                        new_words.pop(w, None)
-                    stats.pop(char)
-                if len(stats) <= 256:
-                    break
-            threshold += 1
-
-        log.info(
-            "[Mobi %s] Removed %s words from .mobi (total words count is %s, unique characters count is %d)",
-            locale.upper(),
-            f"{len(words) - len(new_words):,}",
-            f"{len(new_words):,}",
-            len(stats),
-        )
-        words = new_words
-        variants = make_variants(words)
-    else:
-        log.info(
-            "[Mobi %s] Untouched words for .mobi (total words count is %s, unique characters count is %d)",
-            locale.upper(),
-            f"{len(words):,}",
-            len(stats),
-        )
-
-    args = (locale, output_dir, words, variants, snapshot)
-    run_formatter(DictFileFormatForMobi, *args, include_etymology=include_etymology)
-    try:
-        run_formatter(MobiFormat, *args, include_etymology=include_etymology)
-    except Exception:
-        log.exception("[Mobi %s] Error with the Mobi conversion", locale.upper())
 
 
 def run_formatter(
@@ -1097,10 +999,9 @@ def get_latest_json_file(source_dir: Path) -> Path | None:
     return sorted(files)[-1] if files else None
 
 
-def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]], bool]:
+def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]]]:
     primary_formatters: set[type[BaseFormat]] = set()
     secondary_formatters: set[type[BaseFormat]] = set()
-    mobi_run = False
     for fmt in (formats or "all").split(","):
         match fmt:
             case _ if fmt in FORMATTERS:
@@ -1108,22 +1009,18 @@ def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFo
                 primary_formatters.add(primary)
                 if secondary:
                     secondary_formatters.add(secondary)
-            case "kindle" | "mobi":
-                mobi_run = True
             case "all":
                 primary_formatters = get_primary_formatters()
                 secondary_formatters = get_secondary_formatters()
-                mobi_run = True
                 break
             case _:
                 print(f"Unknown format: {fmt!r}")
-    return primary_formatters, secondary_formatters, mobi_run
+    return primary_formatters, secondary_formatters
 
 
 def convert(
     primary_formatters: set[type[BaseFormat]],
     secondary_formatters: set[type[BaseFormat]],
-    mobi_run: bool,
     output_dir: Path,
     snapshot: str,
     locale: str,
@@ -1137,8 +1034,6 @@ def convert(
     for include_etymology in include_etymologies:
         distribute_workload(primary_formatters, *args, include_etymology=include_etymology)
         distribute_workload(secondary_formatters, *args, include_etymology=include_etymology)
-        if mobi_run:
-            run_mobi_formatter(*args, include_etymology=include_etymology)
 
 
 def main(locale: str, format: str = "all", with_etym_only: bool = False) -> int:
@@ -1159,12 +1054,11 @@ def main(locale: str, format: str = "all", with_etym_only: bool = False) -> int:
     output_dir = source_dir / "output"
     output_dir.mkdir(exist_ok=True, parents=True)
 
-    primary_formatters, secondary_formatters, mobi_run = get_formatters(format)
+    primary_formatters, secondary_formatters = get_formatters(format)
     start = monotonic()
     convert(
         primary_formatters,
         secondary_formatters,
-        mobi_run,
         output_dir,
         input_file.stem.split("-")[-1],
         locale,
