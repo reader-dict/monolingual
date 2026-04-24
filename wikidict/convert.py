@@ -34,6 +34,12 @@ if TYPE_CHECKING:
 
     from .stubs import Definition, Definitions, Groups, Variants, Words
 
+#
+# Templates for devices/apps
+#
+# Note: we issue a line break (`<br/>`) at the end of etymologies to workaround a visual glitch when there are multiple results for a word:
+#       the next word would'nt be properly visually separated from the previous word's etymology.
+
 # Kobo-related dictionaries
 # Note: We cannot remove the space before the slash in `<a name="{{ word }}" />` because
 #       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
