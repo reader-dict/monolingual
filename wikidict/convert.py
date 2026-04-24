@@ -138,9 +138,9 @@ WORD_TPL_DICTFILE = Template(
     {%- for etymology in etymologies -%}
         {%- if etymology is string -%}
             {%- if etymology.startswith("<table") -%}
-            {{ etymology }}
+                {{ etymology }}
             {%- else -%}
-            <p>{{ etymology }}</p>
+                <p>{{ etymology }}</p>
             {%- endif -%}
         {%- else -%}
             <ol>
