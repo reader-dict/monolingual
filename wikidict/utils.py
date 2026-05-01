@@ -282,6 +282,11 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("ro", "verb")
     'Verb'
 
+    >>> format_pos("tr", "ad 2")
+    'Ad'
+    >>> format_pos("tr", "eylem oranlı")
+    'Eylem'
+
     >>> format_pos("zh", "發音 1")
     '發音'
     >>> format_pos("zh", "發音1")

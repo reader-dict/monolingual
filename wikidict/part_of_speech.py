@@ -94,6 +94,10 @@ PATTERNS = {
         # `verb auxiliar` → `verb`
         re.compile(r"(locuțiune|numeral|verb)\s+.*").sub,
     ],
+    "tr": [
+        # `ad 2` → `ad`
+        re.compile(r"(.+) +\d").sub,
+    ],
     "zh": [
         # `發音1` → `發音`
         # `發音 1` → `發音`
@@ -281,6 +285,10 @@ MERGE = {
         "prepositionsfras": "preposition",
         "top": "substantiv",
         "verbpartikel": "verb",
+    },
+    "tr": {
+        "eylem oranlı": "eylem",
+        "top": "ad",
     },
     "zh": {
         "縮寫": "缩写",  # abbreviation

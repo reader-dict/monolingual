@@ -1,0 +1,36 @@
+==Türkçe==
+
+===Söyleniş===
+* {{IPA|dil=tr|[ɪ‿.ˈnɛ jɑp.ɾɑc]}}
+* {{h|dil=tr||iğ|ne yap|rak}}
+
+===Ad===
+{{tr-ad}}
+
+# {{t|dil=tr|bitki anatomisi}} [[çam]] [[tür]]lerinde [[görülmek|görülen]], [[ince]] [[uzun]], [[sivri]] [[uçlu]] [[yaprak]]
+
+====Çekimleme====
+{{tr-ad-tablo}}
+
+====Üst kavramlar====
+* [[yaprak]]
+
+====Türetilmiş kavramlar====
+* [[iğne yapraklı]]
+
+====Çeviriler====
+{{Üst|iğne yaprağı|tip=çeviriler}}
+* Almanca: {{ç|de|Nadel|f}}
+* Estonca: {{ç|et|okas}}
+* Fince: {{ç|fi|havunneula}}, {{ç|fi|neulanen}}
+* İngilizce: {{ç|en|needle}}
+*: İskoç İngilizcesi: {{ç|sco|needle}}
+* İsveççe: {{ç|sv|barr}}
+* Kürtçe: {{ç|ku|pelstrî}}
+* Litvanca: {{ç|lt|spyglys|m}}
+* Livice: {{ç|liv|nõggõl}}
+* Rusça: {{ç|ru|иголка|f}}
+{{Alt}}
+
+===Kaynakça===
+* {{Kaynak-TDK}}

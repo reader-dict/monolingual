@@ -9,4 +9,4 @@ requests==2.33.1
 rich==15.0.0
 scour==0.38.2
 wikitextparser==0.56.4
-git+https://github.com/reader-dict/wikitextprocessor.git@ec45b7ca74ee87c5cf98542729ab29d8daa244c4
+git+https://github.com/reader-dict/wikitextprocessor.git@fde5aebb9411945f73b842b480cdb0232ce45fe6

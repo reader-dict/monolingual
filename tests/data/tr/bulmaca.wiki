@@ -1,0 +1,16 @@
+==Türkçe==
+===Ad===
+{{tr-ad}}
+{{Vikipedi}}
+# {{t|dil=tr|oyun}} [[çeşitli]] biçimlerde düzenlenen ve düşündürerek, aratarak buldurmayı amaç edinen oyun
+
+====Çeviriler====
+{{Üst|tip=çeviriler}}
+*Azerice: {{ç|az|krossvord}}
+*Fince: {{ç|fi|pulmatehtävä}}
+*Özbekçe: {{ç|uz|boshqotirma}}
+*Tatarca: {{ç|tt|başwatqıç}}
+{{Alt}}
+
+===Kaynakça===
+* {{kaynak-TDK}}

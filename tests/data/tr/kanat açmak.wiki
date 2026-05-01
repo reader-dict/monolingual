@@ -1,0 +1,13 @@
+==Türkçe==
+===Eylem===
+{{tr-eylem}}
+# [[bir]]ini [[korumak]], [[himaye etmek]]
+
+====Çeviriler====
+{{üst|tip=çeviriler}}
+*Fince: {{ç|fi|levittää siivet}}
+{{alt}}
+
+====Kaynakça====
+*{{kaynak-TDK}}
+

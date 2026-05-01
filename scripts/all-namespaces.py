@@ -7,7 +7,7 @@ ids = {6, 14}  # File, and Category
 
 results: dict[str, list[str]] = {}
 # XXX_LOCALES
-locales = ("ca", "da", "de", "el", "en", "eo", "es", "fr", "it", "ja", "lt", "no", "pt", "ro", "ru", "sv", "zh")
+locales = ("ca", "da", "de", "el", "en", "eo", "es", "fr", "it", "ja", "lt", "no", "pt", "ro", "ru", "sv", "tr", "zh")
 
 for locale in locales:
     result_discard_last: list[str] = []

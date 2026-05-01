@@ -1,0 +1,27 @@
+==Türkçe==
+
+===Köken 1===
+[[Dosya:Yellow Tabby Cat Lying on the Floor.jpg|küçükresim|Yerde uzanan '''sarman''' kedi.]]
+====Ad====
+{{tr-ad}}
+
+# {{t|dil=tr|kedigiller}} Sarı tüylü [[kedi]].
+#* {{kt|başlık=İzmir Postası'nın Adamları|yazar=Ahmet BÜKE|yayıncı=Kanat Yayınları|yıl=2004|sayfa=12|tanıklık=İhtiyar bir '''sarman''' dadanmıştı keyfime o günlerde.|dil=tr}}
+
+=====Çekimleme=====
+{{tr-çekim-ad-1|a|d}}
+
+====Ön ad====
+{{tr-ön ad}}
+
+# [[azman|Azman]], [[iri]].
+
+===Köken 2===
+
+====Ad====
+{{başlık başı|tr|çekimli ad}}
+
+# {{tr-ünlü-çekimi}}
+
+===Kaynakça===
+* {{KYK:TDK}}

@@ -1,0 +1,33 @@
+==Türkçe==
+===Ön ad===
+{{tr-ön ad}}
+'''Estonyalı''' -'sı
+ 
+# {{t|dil=tr|milliyetler}} ökeni [[Estonya]] olan kimse
+
+====Kaynakça====
+{{kaynak-TDK}}
+
+====Çeviriler====
+{{üst|tip=çeviriler}}
+*Estonca: {{ç|et|eestlane}}, {{ç|et|eestlanna}}
+*Fince: {{ç|fi|virolainen}}
+*Fransızca: {{ç|fr|Estonien}}
+*İngilizce: {{ç|en|Estonian}}
+{{alt}}
+
+===Ön ad===
+{{tr-ön ad}}
+# Kökeni Estonya olan.
+
+====Çeviriler====
+{{üst|tip=çeviriler}}
+*Estonca: {{ç|et|eesti}}
+*Fince: {{ç|fi|virolainen}}
+*İngilizce: {{ç|en|Estonian}}
+{{alt}}
+
+===[[Göz At]]===
+*[[Estonya]]
+*[[w:Estonya|Wikipedia Estonya]]
+*[[Wiktionary Appendix:Dünya ülkeleri|Dünya ülkeleri]]

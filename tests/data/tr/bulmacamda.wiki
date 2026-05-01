@@ -1,0 +1,6 @@
+==Türkçe==
+
+===Ad===
+{{başlık başı|tr|çekimli ad}}
+
+# {{tr-ünlü-çekimi}}

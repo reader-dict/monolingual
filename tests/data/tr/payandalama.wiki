@@ -1,0 +1,17 @@
+==Türkçe==
+
+===Ad===
+{{tr-ad}}
+
+# {{mastarı|dil=tr|payandalamak}}
+
+====Çekimleme====
+{{tr-çekim-ad-2|a}}
+
+===Eylem===
+{{başlık başı|tr|çekimli eylem}}
+
+# {{çekim|dil=tr|payandalamak||2t|imp|neg}}
+
+===Ek okumalar===
+* {{KYK:TDK}}
