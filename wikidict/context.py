@@ -220,6 +220,10 @@ class Context:
         query = "SELECT title, redirect_to FROM pages WHERE namespace_id = 0 AND redirect_to IS NOT NULL"
         yield from self.ctx.db_conn.execute(query)
 
+    def clear_errors(self) -> None:
+        """It might be desired to be able to purge the errors list."""
+        self.ctx.errors.clear()
+
     def get_errors(self) -> list[str]:
         everything = self.ctx.to_return()
         return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
@@ -282,6 +286,10 @@ def close_ctx(pid: int | None = None) -> None:
 def reset(locale: str, *, db_already_setup: bool = True) -> bool:
     close_ctx()
     return setup_modules_db(locale, db_already_setup=db_already_setup)
+
+
+def clear_errors() -> None:
+    get_ctx().clear_errors()
 
 
 def get_errors() -> list[str]:

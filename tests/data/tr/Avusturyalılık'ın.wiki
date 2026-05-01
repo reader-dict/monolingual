@@ -1,0 +1,13 @@
+==Türkçe==
+
+===Köken===
+:{{ek|dil=tr|Avusturyalılık|ğın}}
+
+===Söyleniş===
+* {{IPA|dil=tr|/a.vus.ˈtuɾ.ja.lɯ.ɫɯ.ˈ‿ɯn/}}
+* {{h|dil=tr||A|vus|tur|ya|lı|lık|'ın}}
+
+===Özel ad===
+{{başlık başı|tr|çekimli özel ad}}
+
+# {{hâl|Avusturyalılık|ğın}}

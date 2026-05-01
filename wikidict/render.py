@@ -301,6 +301,8 @@ def find_etymology(
             items = [
                 tpl.__str__()[len("{{etymologi|") : -2] for tpl in parsed_section.templates if tpl.name == "etymologi"
             ]
+        case "tr":
+            items = get_items(("#", ":"))
         case "zh":
             items = []
             for line_ in parsed_section.contents.splitlines():

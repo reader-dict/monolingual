@@ -21,6 +21,7 @@ namespaces = {
     "ro": ["Categorie", "Fişier", "Fișier", "Image", "Imagine"],
     "ru": ["Image", "Изображение", "К", "Категория", "Файл"],
     "sv": ["Bild", "Fil", "Image", "KAT", "Kategori"],
+    "tr": ["Dosya", "Image", "KAT", "Kategori", "Resim"],
     "zh": ["CAT", "Category", "File", "Image", "分类", "分類", "图像", "图片", "圖像", "圖片", "文件", "档案", "檔案"],
 }
 # END

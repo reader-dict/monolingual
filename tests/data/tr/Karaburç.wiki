@@ -1,0 +1,14 @@
+==Türkçe==
+===Özel ad===
+{{tr-özel ad|k=1}}
+
+# {{t|dil=tr|köyler}} [[Gaziantep]] ili [[Nizip]] ilçesine bağlı bir [[köy]].
+# {{t|dil=tr|köyler}} [[İzmir]] ili [[Kiraz]] ilçesine bağlı bir [[köy]].
+# {{t|dil=tr|köyler}} [[Nevşehir]] ili [[Hacıbektaş]] ilçesine bağlı bir [[köy]].
+# {{t|dil=tr|köyler}} [[Samsun]] ili [[Bafra]] ilçesine bağlı bir [[köy]].
+
+====Kaynakça====
+*{{proje bağlantısı|vikipedi|{{PAGENAME}}, Nizip}}
+*{{proje bağlantısı|vikipedi|{{PAGENAME}}, Kiraz}}
+*{{proje bağlantısı|vikipedi|{{PAGENAME}}, Hacıbektaş}}
+*{{proje bağlantısı|vikipedi|{{PAGENAME}}, Bafra}}
