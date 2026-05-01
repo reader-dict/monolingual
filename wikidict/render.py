@@ -319,6 +319,8 @@ def find_etymology(
             items = get_items(("",), skip=("=== {{etim",))
         case "ja":
             items = get_items(("#", r"\*"))
+        case "nl":
+            items = get_items((r"\*",))
         case "no":
             items = get_items(("#", ":", r"\*"))
         case "pt":
@@ -496,6 +498,12 @@ def add_potential_variant(
     >>> add_potential_variant("Ires", "{{fr-accord-mixte|ms=Ier{{!}}I{{er}}}}", "fr", variants_lst)
     >>> variants_lst
     ['Ier']
+
+    [NL] We do allow some special parenthesis
+    >>> variants_lst = []
+    >>> add_potential_variant("ijzerIIIfosfaten", "{{noun-pl|ijzer(III)fosfaat}}", "nl", variants_lst)
+    >>> variants_lst
+    ['ijzer(III)fosfaat']
     """
     if (variant := utils.process_templates(word, tpl, locale, variant_only=True)) and (
         variant_cleaned := repl("", variant)
@@ -507,6 +515,7 @@ def add_potential_variant(
             any(char in variant_cleaned for char in "<>|={}")
             or any(char in variant_cleaned for char in "()")
             and all(char not in word for char in "()")
+            and not (locale == "nl" and re.findall(r"\b\(I*\)\b", variant_cleaned))
         ):
             log.warning(f"Potential variant issue: {variant=} → {variant_cleaned=} for {word=}")
             return

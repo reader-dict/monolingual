@@ -1,0 +1,54 @@
+{{=nld=}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|koks}}
+{{-syll-}}
+*cokes
+{{-etym-}}
+*[A]: {{plurt|a}} van {{eng}} {{Q|{{pn}}|eng}}, in de betekenis van ‘residu van steenkool’ voor het eerst aangetroffen in het jaar 1829 {{sijs}}
+*[B]: {{Q|coke|nld|zn}} met de uitgang ''-s''
+{{-nlnoun-|{{pn}}|cokes||}}
+{{-noun-|nld}}
+{{-l-|p}}[[#Opmerkingen|*]]
+#ontgaste steenkool
+{{bijv-1|'''Cokes''' werden al meer dan duizend jaar geleden in China toegepast.}}
+{{citeer|web|citaat=Rechts in de verte is Swansea te zien, links de enorme ovens van Tata, de lopende band waarop de cokes binnenkomen, de cementfabriek en de haven. |url=https://www.nrc.nl/nieuws/2016/05/18/strijd-om-staal-en-brexit-in-wales-1619293-a484729 |titel=Strijd om staal en Brexit in Wales |auteur=Titia Ketelaar |datum=18 mei 2016 |website=nrc.nl|taal=nl|bezochtdatum=2020-11-15}}
+{{-l-|fm}}[[#Opmerkingen|*]]
+#ontgaste steenkool
+{{bijv-1|'''Cokes''' werd al meer dan duizend jaar geleden in China toegepast.}}
+{{citeer|web|citaat=De cokes (een zuivere vorm van steenkool) die in de fabriek wordt gemaakt, wordt namelijk als brandstof gebruikt in veel van de staalfabrieken in het land. |url=https://www.nrc.nl/nieuws/2015/03/25/kijken-zelfs-160-raketten-krijgen-deze-oekraiense-fabriek-niet-klein-a1417592 |titel=
+Zelfs 160 raketten krijgen deze Oekraïense fabriek niet klein |auteur=Joost Pijpker |datum=25 maart 2015 |website=nrc.nl|taal=nl|bezochtdatum=2020-11-15}}
+{{-note-}}
+*Het woord is oorspronkelijk als meervoud ontleend, maar doordat het als stofnaam wordt gebruikt, komt ook het gebruik als enkelvoud voor, zonder verschil in betekenis.
+{{-trans-}}
+{{trans-top|1. ontgaste steenkool}}
+*{{eus}}: {{trad|eu|koke}}
+*{{bul}}: {{trad|bg|Кокс}}
+*{{dan}}: {{trad|da|koks}}
+*{{deu}}: {{trad|de|Koks}}
+*{{eng}}: {{trad|en|coke}}
+*{{est}}: {{trad|et|koks}}
+*{{fin}}: {{trad|fi|koksi}}
+*{{fra}}: {{trad|fr|coke}}
+*{{ell}}: {{trad|el|οπτάνθρακας/κωκ/κοκαΐνη}}
+*{{hun}}: {{trad|hu|koksz}}
+{{trans-mid}}
+*{{ita}}: {{trad|it|coke}}
+*{{nor}}: {{trad|no|koks}}
+*{{pol}}: {{trad|pl|koks}}
+*{{por}}: {{trad|pt|coque}}
+*{{rus}}: {{trad|ru|кокс}}
+*{{slv}}: {{trad|sl|koks}}
+*{{slk}}: {{trad|sk|koks}}
+*{{spa}}: {{trad|es|coque}}
+*{{ces}}: {{trad|cs|koks}}
+*{{swe}}: {{trad|sv|koks}}
+{{trans-bottom}}
+{{-noun-|0}}
+{{noun-pl|coke|[B] cokes}}
+{{citeer|boek|citaat=Op weg naar het verpleeghuis maakte ik een omweg langs de McDonald's, waar ik een zak hamburgers, twee cokes en twee grote porties frites insloeg. |titel=P staat voor Pijngrens |auteur=Sue Grafton (vert. W. Holleman) |uitgever=Meulenhoff Boekerij B.V., Amsterdam |jaar=2014 |isbn=9789402300932 |url=https://books.google.nl/books?id=KONsBAAAQBAJ&lpg=PT172&ots=Zozv9qZmQd&dq=%22twee%20cokes%22&hl=nl&pg=PT171#v=onepage&q=%22twee%20cokes%22&f=false |pagina=hfst. 18 |taal=nl|bezochtdatum=2020-11-15}}
+{{-preval-}}
+{{wel-GB}}
+{{Leesonderzoek-2013}}
+{{-info-}}
+{{refs}}

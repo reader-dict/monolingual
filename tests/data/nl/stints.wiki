@@ -1,0 +1,12 @@
+{{=nld=}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|stɪnts}}
+{{-syll-}}
+*stints
+{{-etym-}}
+*[[stint]] met uitgang ''-s''
+{{-noun-|0}}
+{{noun-pl|stint}}
+{{-preval-}}
+{{wel-GB}}

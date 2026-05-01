@@ -1,0 +1,39 @@
+{{=nld=}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|kɔŋˈkani}}
+{{-syll-}}
+*Kon·ka·ni
+{{-nlnoun-|{{pn}}|{{pn}}||}}
+{{-noun-|nld}}
+{{-l-|fm}}
+#{{demoniem|nld}} iemand afkomstig van de [[Konkan]], het westelijk kustgebied van [[India]]
+{{-noun-|nld}}
+{{-l-|p}}
+#{{demoniem|nld}} de oorspronkelijke bevolking van de Konkan
+{{ISO|kok|g1={{inc:}}|g2={{iir:}}|g3={{ine:}}|g4={{und:}}}}
+{{-nlnoun-|name=1|gen=-|{{pn}}|-|-|-|}}
+{{-name-|nld}}
+{{-l-|n}}
+#{{singt|b}} {{taal|nld}} , ''(algemeen)'' Indische taal gesproken door 6 miljoen mensen in de Konkan ''(omvat de beide volgende talen)''
+#{{taal|nld}}, ''(specifiek)'' officiële taal van de deelstaat [[Goa]] in India
+#{{taal|nld}}, ''(specifiek)'' taal met verschillende dialecten in de deelstaat [[Maharashtra]] in India, die samen een overgang tussen [[Marathi]] en het [[Goa-Konkani]] vormen
+{{-syn-}}
+*[2] [[Goa-Konkani]]
+*[3] [[Maharashtra-Konkani]]
+{{-preval-}}
+{{niet-GB|0}}
+{{-info-}}
+
+{{=eng=}}
+{{-noun-|eng}}
+'''{{pn}}'''
+#{{demoniem|eng}} {{Q|{{pn}}|nld}}
+#{{taal|eng}} {{Q|{{pn}}|nld}}
+{{-syn-}}
+*[2] [[Konkanese]]
+{{-drv-}}
+*[2] [[North Konkan]]
+*[2] [[Central Konkan]]
+
+[[Categorie:Konkanitalen]]

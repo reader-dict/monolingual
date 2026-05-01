@@ -43,6 +43,9 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
         case "ja":
             if "{{kanji header" in code:
                 code = f"=={{{{kanji}}}}==\n{code}"
+        case "nl":
+            # `{{=nld=}}` → `=={{nld}}==`
+            code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
     if not context.setup_modules_db(locale):
         exit(1)

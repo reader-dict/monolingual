@@ -1,0 +1,22 @@
+{{=nld=}}
+<!--[[bestand:-|thumb|300px|right]]-->
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+<!--*{{WikiW|IPA}}: {{IPA-nl-standaard|}}-->
+{{-syll-}}
+* chat·ter·bot
+{{-etym-}}
+*{{samen|nld|chat|zn||robot|zn||}}
+{{-nlnoun-|{{pn}}|[[chatterbots]]|[[chatterbotje]]|[[chatterbotjes]]}}
+{{-noun-|nld}}
+{{-l-|m}}
+# {{internet|nld}} een geautomatiseerde gesprekspartner via het internet
+# 
+# 
+
+{{-syn-}}
+* [[chatbot]]
+
+{{-preval-}}
+{{niet-GB}}
+{{-info-|W=nl:chatbot}}

@@ -97,7 +97,7 @@ def test_parse_word(
     """Test the sections finder and definitions getter."""
     code = page(word, "de")
 
-    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a tekn path by the test)
+    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
     # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
     code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
 
