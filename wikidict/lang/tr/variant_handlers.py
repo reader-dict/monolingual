@@ -5,15 +5,21 @@ from ... import context, utils
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
-    forms: set[str] = set()
+    lines = wikitext.replace("| style='color:black' ", "")
 
-    lines = "\n".join(line for line in wikitext.splitlines() if line.startswith("| ["))
+    if "Template loop detected" in lines:
+        # `| (...) Template loop detected: [[&#x3a;Template&#x3a;SAYFAADI#Türkçe|:Template:SAYFAADI]]es` → `| [[WORDes]]`
+        lines = re.sub(r"\|.+Template loop detected:.+\]\](.+)", rf"| [[{word}\1]]", lines, flags=re.MULTILINE)
+
+    lines = "\n".join(line for line in lines.splitlines() if line.startswith("| ["))
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
-    for line in lines.splitlines():
-        forms.add(line.removeprefix("| [[").rstrip("]"))
+    forms = set(re.findall(r"\[\[([^#\]]+)\]\]", lines))  # `[[foo]]`
+    if "#" in lines:
+        forms.update(re.findall(r"#[^|]+\|([^\]]+)\]\]", lines))  # `[[foö#Türkçe|foo]]`
 
     forms.discard(word)
+
     return sorted(forms)
 
 

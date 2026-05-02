@@ -2,15 +2,11 @@
 
 import re
 
-from mediawiki_langcodes import get_all_names
-
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://tr.wiktionary.org/wiki/%C3%96zel:Rastgele"
-
-langs = {k: v.lower() for k, v in get_all_names("tr") if len(k) == 2}
 
 module_trans = "Modül"
 template_trans = "Şablon"
@@ -47,10 +43,10 @@ variant_templates = (
 )
 
 reverse_variant_titles = (
-    "{{tr-ad-tablo",
-    "{{tr-çekim",
-    # "{{tr-eylem-tablo",
-    # "{{tr-kıyaslanamayan-tablo",
+    "{{tr-ad-",
+    "{{tr-çekim-",
+    "{{tr-eylem-",
+    "{{tr-kıyaslanamayan-",
 )
 reverse_variant_templates = ("{{rev-flexion",)
 

@@ -12,6 +12,7 @@ from ruff_api import FormatOptions, format_string
 FILES = {
     "all-namespaces.py": "wikidict/namespaces.py",
     "da-langs.py": "wikidict/lang/da/langs.py",
+    "tr-langs.py": "wikidict/lang/tr/langs.py",
 }
 
 # En error will be raised when the percentage of deletions from the new content
