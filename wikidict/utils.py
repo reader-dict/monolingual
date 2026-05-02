@@ -1025,24 +1025,30 @@ def extract_keywords_from(parts: list[str]) -> defaultdict[str, str]:
 
 
 def extract_relevant_sections(wikitext: str, locale: str) -> str:
-    """Extract relevant sections for the chosen locale from a given wikitext."""
+    """Extract relevant sections for the chosen locale from a given wikitext.
+
+    Process: we check all lines in lower case but keep relevant ones in their original casing.
+    This is to workaround unicode diacritics being lost when working on Turkish, for instance.
+    See https://stackoverflow.com/q/79169550/1117028 for more details.
+    """
     level = lang.section_level[locale]
     equals = "=" * level
 
     interesting_sections = [
-        re.compile(rf"{equals}[ ]*{re.escape(section)}[ ]*{equals}", flags=re.IGNORECASE)
-        for section in lang.head_sections[locale]
+        re.compile(rf"{equals}[ ]*{re.escape(section)}[ ]*{equals}") for section in lang.head_sections[locale]
     ]
 
     cleaned: list[str] = []
     in_expected_section = False
-    for raw_line in wikitext.splitlines():
-        if not (line := raw_line.strip()):
+    raw_lines = wikitext.splitlines()
+    raw_lines_lower = wikitext.lower().splitlines()
+    for idx, raw_line_lower in enumerate(raw_lines_lower):
+        if not (line := raw_line_lower.strip()):
             continue
         if line.startswith(equals) and line[level] != "=":
             in_expected_section = any(pattern.match(line) for pattern in interesting_sections)
         if in_expected_section:
-            cleaned.append(line)
+            cleaned.append(raw_lines[idx])
     return "\n".join(cleaned) if cleaned else ""
 
 
