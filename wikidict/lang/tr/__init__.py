@@ -29,6 +29,7 @@ sections = (
     "ön ad",  # first name
     "özel ad",  # proper noun
     "söyleniş",  # pronunciation
+    "tanımlık",  # definition
     "yazılışlar",  # spellings
 )
 
