@@ -24,6 +24,7 @@ etyl_section = ("köken",)
 sections = (
     *etyl_section,
     "ad",  # noun
+    "belirteç",  # adverb
     "çekimleme",  # inflections
     # "çeviriler",  # translations
     # "deyimler",  # derived terms
@@ -32,6 +33,7 @@ sections = (
     "ön ad",  # first name
     "özel ad",  # proper noun
     "söyleniş",  # pronunciation
+    "yazılışlar",  # spellings
 )
 
 variant_titles = sections
@@ -57,7 +59,12 @@ definitions_to_ignore = (
     "{{tanımisteniyor",  # incomplete definition
 )
 
-templates_ignored = ("{{özel ad",)
+templates_ignored = (
+    "{{audio",
+    "{{clear",
+    "{{özel ad",
+    "{{ses",  # audio
+)
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
