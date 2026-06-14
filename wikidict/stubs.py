@@ -18,7 +18,6 @@ class Word:
     variants: list[str] = field(default_factory=list)
     reverse_variants: list[str] = field(default_factory=list)
     is_variant: bool = False
-    word: str = ""
 
 
 Words = dict[str, Word]
