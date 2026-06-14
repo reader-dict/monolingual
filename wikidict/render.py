@@ -595,7 +595,7 @@ def parse_word(
         if reverse_variants:
             reverse_variants = sorted(set(reverse_variants))
 
-    return Word(prons, genders, etymology, definitions, variants, reverse_variants)
+    return Word(prons, genders, etymology, definitions, variants, reverse_variants, word=word)
 
 
 def render_word(
@@ -712,7 +712,7 @@ def render(
                     try:
                         results_final[form].variants = sorted({*results_final[form].variants, word})
                     except KeyError:
-                        results_final[form] = Word(variants=[word])
+                        results_final[form] = Word(variants=[word], word=form)
                 progress.advance(reverse_task)
 
             progress.update(
