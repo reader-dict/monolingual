@@ -22,7 +22,14 @@ def setup_lua_ctx() -> None:
             "abnorm",
             [],
             [],
-            {"Adjektiv": ["onormal, mycket långt ifrån att vara normal, onaturlig, felaktig"]},
+            {
+                "Adjektiv": [
+                    "onormal, mycket långt ifrån att vara normal, onaturlig, felaktig",
+                    (
+                        '<dd class="semantic-relation template-synonymer">Synonymer: avvikande, grotesk, onaturlig, onormal, rubbad, sjuklig, underlig, missbildad</dd>',
+                    ),
+                ]
+            },
             [],
             ["abnorma", "abnormare", "abnormast", "abnormaste", "abnorme", "abnormt"],
         ),
@@ -31,7 +38,13 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Adjektiv": ["<i>(ålderdomligt)</i> avbruten, osammanhängande", "plötslig, oväntad"],
+                "Adjektiv": [
+                    "<i>(ålderdomligt)</i> avbruten, osammanhängande",
+                    "plötslig, oväntad",
+                    (
+                        '<dd class="semantic-relation template-synonymer">Synonymer: hastig, oväntad, plötslig, tvär</dd>',
+                    ),
+                ],
                 "Adverb": ["<i>(ålderdomligt)</i> avbrutet, osammanhängande"],
             },
             [],
@@ -73,6 +86,7 @@ def setup_lua_ctx() -> None:
             {
                 "Efterled": [
                     "<i>(geometri, vardagligt)</i> <i>suffix för månghörningar</i>",
+                    ('<dd class="semantic-relation template-synonymer">Synonymer: -gon</dd>',),
                     "<i>suffix i ord som har med djurs horn att göra</i>",
                 ]
             },

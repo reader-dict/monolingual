@@ -41,6 +41,7 @@ core_sections = (
     "prefix",
     "prepoziție",
     "pronume",
+    "sin",
     "substantiv",
     "sufix",
     "simbol",

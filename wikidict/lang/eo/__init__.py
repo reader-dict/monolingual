@@ -36,6 +36,7 @@ sections = (
     "radiko",
     "signifo",
     "signo",
+    "sinonimoj",
     "subjunkcio",
     "substantivo",
     "sufikso",
@@ -95,6 +96,7 @@ reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
     "{{?",
+    "{{bildodek",  # picture
     "{{aŭdo",  # audio
     "{{PRON",  # audio
     "{{quote-",
@@ -188,7 +190,6 @@ def adjust_wikicode(
         r"\{\{Derivaĵoj",
         r"\{\{Referencoj",
         r"\{\{Similaĵoj",
-        r"\{\{Sinonimoj",
         r"\{\{Tradukoj",
         r"\{\{Vortfaradoj",
         r"\{\{trad-",
@@ -199,6 +200,23 @@ def adjust_wikicode(
         if not in_unwanted_section:
             cleaned.append(line)
     code = "\n".join(cleaned)
+
+    # {{Sinonimoj}} → ==== Sinonimoj ====
+    # (add handle section content without patterns)
+    if "{{Sinonimoj}}" in code:
+        cleaned.clear()
+        in_section = False
+        for line in code.splitlines():
+            if line.startswith("{{Sinonimoj"):
+                line = "==== Sinonimoj ===="
+                in_section = True
+            elif in_section:
+                if line.startswith(("{{", "=")):
+                    in_section = False
+                elif not bool(re.search(rf"^(?:{'|'.join(section_patterns)})", line, flags=re.MULTILINE)):
+                    line = f"# {line}"
+            cleaned.append(line)
+        code = "\n".join(cleaned)
 
     # Variants
     # {{form-eo}} → # {{form-eo}}

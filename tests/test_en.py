@@ -63,24 +63,27 @@ def setup_lua_ctx() -> None:
                 'Variant of <i>come</i>, attested (in the basic sense "come, move from further to nearer, arrive") since Old English. The sexual sense of <i>come</i> is attested since the 1650s. In this sense and spelling, attested from 1970s.',
             ],
             {
-                "Adjective": ["Clipping of <i>cumulative</i>."],
+                "Symbol": [
+                    "(international standards,&#32;obsolete) <i>Former&#x20;ISO 639-3 language code for </i><b>Cumeral</b><i>.</i>"
+                ],
+                "Preposition": [
+                    "Used in indicating a thing or person which has two or more roles, functions, or natures, or which has changed from one to another."
+                ],
                 "Noun": [
                     "(colloquial,&#32;often&#32;vulgar) Semen.",
+                    ("Synonyms: jizz, (<i>chiefly UK</i>) spunk, (<i>US</i>) spooge, nut, skeet, junk, semen",),
                     "(colloquial,&#32;often&#32;vulgar) Female ejaculatory discharge.",
                     "(colloquial,&#32;often&#32;vulgar) An ejaculation.",
                     "Abbreviation of <i>cubic metre</i>.",
                 ],
-                "Preposition": [
-                    "Used in indicating a thing or person which has two or more roles, functions, or natures, or which has changed from one to another.",
-                ],
-                "Symbol": [
-                    "(international standards,&#32;obsolete) <i>Former&#x20;ISO 639-3 language code for </i><b>Cumeral</b><i>.</i>"
-                ],
                 "Verb": [
                     "(slang,&#32;often&#32;vulgar) To have an orgasm, to feel the sensation of an orgasm.",
+                    ("Synonym: climax",),
                     "(slang,&#32;often&#32;vulgar) To ejaculate.",
+                    ("Synonym: ejaculate",),
                     "Eye dialect spelling of <i>come</i> (“move from further to nearer; arrive”).",
                 ],
+                "Adjective": ["Clipping of <i>cumulative</i>."],
             },
             [],
         ),
@@ -148,6 +151,7 @@ def setup_lua_ctx() -> None:
                 "Proper Noun": [
                     "(<i>astronomy</i>) The fourth planet in the solar system. Symbol: <b>♂</b>",
                     "(<i>Roman mythology</i>) The Roman god of war.",
+                    ("Synonym: Ares",),
                     "(<i>poetic</i>) War; a personification of war.",
                     "A surname.",
                     "A brand of chocolate bar with caramel and nougat filling.",
@@ -166,15 +170,17 @@ def setup_lua_ctx() -> None:
                 "First used by Lewis Carroll in <i>Through the Looking-Glass</i> to describe the words he coined in “Jabberwocky”.",
             ],
             {
-                "Adjective": [
-                    "(attributive,&#32;linguistics) Made by combining two (or more) words, stories, etc., in the manner of a linguistic portmanteau."
-                ],
                 "Noun": [
                     "A large travelling case usually made of leather, and opening into two equal sections.",
                     "(Australia,&#32;dated) A schoolbag.",
+                    ("Synonyms: port, school port",),
                     "(<i>archaic</i>) A hook on which to hang clothing.",
                     "(<i>linguistics</i>) A word formed by putting two words together and thereby their meaning e.g. shrinkflation.",
+                    ("Synonyms: blend, frankenword, portmanteau word, portmantologism",),
                     "A portmanteau film.",
+                ],
+                "Adjective": [
+                    "(attributive,&#32;linguistics) Made by combining two (or more) words, stories, etc., in the manner of a linguistic portmanteau."
                 ],
                 "Verb": ["(<i>transitive</i>) To create a portmanteau word."],
             },
@@ -213,6 +219,7 @@ def setup_lua_ctx() -> None:
                 ],
                 "Verb": [
                     "To strike (a person, an animal, etc.) with a scourge <i>(noun etymology 1 sense&nbsp;1)</i> or whip; to flog, to whip.",
+                    ("Synonym: whip",),
                     "To drive, or force (a person, an animal, etc.) to move, with or as if with a scourge or whip.",
                     "(<i>figurative</i>)",
                     (
@@ -281,6 +288,7 @@ def setup_lua_ctx() -> None:
             {
                 "Interjection": [
                     "Expression of hesitation, uncertainty or space filler in conversation.",
+                    ("Synonyms: er, hmm, uh, eh",),
                     "(<i>chiefly&#32;US</i>) Dated spelling of <i>mmm</i>.",
                     "An expression to forcefully call attention to something wrong.",
                     "(<i>childish</i>) An expression of shocked disapproval used by a child who witnesses forbidden behavior.",
@@ -377,6 +385,7 @@ def setup_lua_ctx() -> None:
                     "(business,&#32;often&#32;attributive) The water supply, as a service or utility.",
                     "(figuratively,&#32;in the plural&#32;or&#32;in the singular) A state of affairs; conditions; usually with an adjective indicating an adverse condition.",
                     "(colloquial,&#32;figuratively) A person's intuition.",
+                    ("Synonym: bones",),
                     "(uncountable,&#32;dated,&#32;finance) Excess valuation of securities.",
                     "A particular quality or appearance suggestive of water:",
                     (
@@ -390,7 +399,9 @@ def setup_lua_ctx() -> None:
                     "(<i>transitive</i>) To provide (animals) with water for drinking.",
                     "(<i>intransitive</i>) To get or take in water.",
                     "(transitive,&#32;colloquial) To urinate onto.",
+                    ("Synonym: see urinate",),
                     "(<i>transitive</i>) To dilute.",
+                    ("Synonym: water down",),
                     "(transitive,&#32;dated,&#32;finance) To overvalue (securities), especially through deceptive accounting.",
                     "(<i>intransitive</i>) To fill with or secrete water or similar liquid.",
                     "(<i>transitive</i>) To wet and calender, as cloth, so as to impart to it a lustrous appearance in wavy lines; to diversify with wavelike lines.",
@@ -407,10 +418,6 @@ def setup_lua_ctx() -> None:
                 "Variant of <i>worth</i> (“to become, turn into, grow, get”), from Middle English <i>worthen</i>, from Old English <i>weorþan</i> (“to turn into, become, grow”), from Proto-West Germanic <i>&#42;werþan</i>, from Proto-Germanic <i>&#42;werþaną</i> (“to turn, turn into, become”). More at worth §\xa0Verb.",
             ],
             {
-                "Interjection": [
-                    '(<i>slang</i>) Truth, indeed, that is the truth! The shortened form of the statement "My word is my bond."',
-                    "(slang,&#32;emphatic,&#32;stereotypically&#32;African-American Vernacular) An abbreviated form of <i>word up</i>&#59; a statement of the acknowledgment of fact with a hint of nonchalant approval.",
-                ],
                 "Noun": [
                     "(<i>semantics</i>) The smallest unit of language that has a particular meaning and can be expressed by itself; the smallest discrete, meaningful unit of language. (contrast <i>morpheme</i>.)",
                     (
@@ -434,19 +441,27 @@ def setup_lua_ctx() -> None:
                     "(<i>uncountable</i>) News; tidings. &lsqb;from 10th c.&rsqb;",
                     "An order; a request or instruction; an expression of will. &lsqb;from 10th c.&rsqb;",
                     "A promise; an oath or guarantee. &lsqb;from 10th c.&rsqb;",
+                    ("Synonym: promise",),
                     "A brief discussion or conversation. &lsqb;from 15th c.&rsqb;",
                     "(<i>meiosis</i>) A minor reprimand.",
                     "(<i>in the plural</i>) <i>See</i> <b>words</b>.",
                     "(theology,&#32;sometimes <b>Word</b>) Communication from God; the message of the Christian gospel; the Bible, Scripture. &lsqb;from 10th c.&rsqb;",
+                    ("Synonyms: word of God, Bible",),
                     "(theology,&#32;sometimes <b>Word</b>) Logos, Christ. &lsqb;from 8th c.&rsqb;",
+                    ("Synonyms: God, Logos",),
                 ],
                 "Verb": [
                     "(<i>transitive</i>) To say or write (something) using particular words; to phrase (something).",
+                    ("Synonyms: express, phrase, put into words, state",),
                     "(transitive,&#32;obsolete) To flatter with words, to cajole.",
                     "(<i>transitive</i>) To ply or overpower with words.",
                     "(transitive,&#32;rare) To conjure with a word.",
                     "(intransitive,&#32;archaic) To speak, to use words; to converse, to discourse.",
                     "Alternative form of <i>worth</i> (“to become”).",
+                ],
+                "Interjection": [
+                    '(<i>slang</i>) Truth, indeed, that is the truth! The shortened form of the statement "My word is my bond."',
+                    "(slang,&#32;emphatic,&#32;stereotypically&#32;African-American Vernacular) An abbreviated form of <i>word up</i>&#59; a statement of the acknowledgment of fact with a hint of nonchalant approval.",
                 ],
             },
             [],

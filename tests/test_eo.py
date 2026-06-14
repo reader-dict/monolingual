@@ -112,7 +112,8 @@ def setup_lua_ctx() -> None:
             {
                 "Signifo": [
                     "(<i>komputado</i>) maŝino aŭ elektronikaĵo kiu kapablas kalkuli, precipe sen intervenoj de homoj, aŭ rapide trakti, stori, kaj preni larĝajn kvantojn de datumo"
-                ]
+                ],
+                "Sinonimoj": ["<i>(arkaikaj kaj evitendaj)</i> komputero, komputoro, komputatoro"],
             },
             [],
             ["komputiloj", "komputilojn", "komputilon"],
@@ -136,7 +137,8 @@ def setup_lua_ctx() -> None:
                     "ordinare vitrita aŭ kradita, en tegmento, plafono aŭ kelo, por enlasi lumon: <i>mansarda luko</i>.",
                     "fermebla per pordo aŭ tabuloj, en la ferdeko de ŝipo, por ebligi penetron en la holdon (pli precize: holdluko).",
                     "fermita per kovrilo el giso, kiu en la strato, sur trotuaro ks ebligas al metiisto malsupreniri en kloakon, aŭ subteran galerion.",
-                ]
+                ],
+                "Sinonimoj": ["lumluko, bovokulo, vazistaso."],
             },
             [],
             ["lukoj", "lukojn", "lukon"],

@@ -12,10 +12,12 @@
 {{ejemplo|En la oración "''los'' seres humanos son así", ''los'' denota que "seres humanos" se entiende en su sentido genérico.}}
 
 ==== {{pronombre personal|es}} ====
-{{inflect.es.pron.pers.3}}
-;2: ''{{plm|pronombre}} personal masculino de [[objeto directo]] ([[acusativo]]), tercera persona del plural.''.
+;2: ''{{plm|pronombre}} personal masculino de [[objeto directo]] ([[acusativo]]), tercera persona del plural.''
 {{uso|puede emplearse como enclítico|pero no se usa como objeto de preposición|se usa la forma masculina para referirse|cualquier grupo del que al menos un miembro es de género masculino}}
 {{ejemplo|¿Dónde están tus sombreros? Estuve buscándo''los'', pero no ''los'' encontré.}}
+
+==== Declinación ====
+{{es.pron}}
 
 ==== Véase también ====
 * [[artículo]]

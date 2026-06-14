@@ -646,6 +646,11 @@ def clean(text: str) -> str:
     Keeps links.
     Source: https://github.com/macbre/mediawiki-dump/blob/3f1553a/mediawiki_dump/tokenizer.py#L8
 
+        >>> clean(":*<b>Sinónimo:</b> irascibilidad.")  # iracundia
+        '<b>Sinónimo:</b> irascibilidad.'
+        >>> clean(":*<b>Sinónimos:</b> irascibilidad.")  # iracundia
+        '<b>Sinónimos:</b> irascibilidad.'
+
         >>> clean(r"<math>x \in ]x_0 - \epsilon, x_0[</math> och <math>f(x) > f(x_0)</math> för alla <math>x \in ]x_0, x_0 + \epsilon[</math>")
         '<math>x \\in ]x_0 - \\epsilon, x_0[</math> och <math>f(x) > f(x_0)</math> för alla <math>x \\in ]x_0, x_0 + \\epsilon[</math>'
         >>> clean(r'<math style="vertical-align:+0%;">x \in ]x_0 - \epsilon, x_0[</math>')
@@ -855,6 +860,9 @@ def clean(text: str) -> str:
     for idx, formula in enumerate(formulas):
         text = text.replace(f"##math{idx}##", formula)
 
+    # ES - clean-up synonyms
+    text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
+
     return text.strip()
 
 
@@ -938,7 +946,7 @@ def process_templates(
 
             # Expand the template
             else:
-                new_text = clean(context.expand(tpl, locale))
+                new_text = callback(context.expand(tpl, locale))
 
             text = text.replace(tpl, new_text)
 

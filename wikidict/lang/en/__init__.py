@@ -14,6 +14,7 @@ thousands_separator = ","
 
 head_sections = ("english", "translingual")
 section_patterns = ("#", r"\*")
+sublist_patterns = ("#", ":")
 section_sublevels = (4, 3)
 etyl_section = ("etymology", *[f"etymology {idx}" for idx in range(1, 20)])
 sections = (

@@ -95,19 +95,23 @@ def find_definitions(
             if pos_defs := find_section_definitions(
                 word, section, lang_src, lang_dst, templates_status=templates_status
             ):
-                if lang_src == "de" and not pos:
-                    pos = "substantiv"
-                elif lang_src == "en" and pos.startswith("etymology"):
+                section_pos = pos
+                if lang_src == "de":
+                    if not section_pos:
+                        section_pos = "substantiv"
+                    elif "synonyme" in section.title.lower():
+                        section_pos = "synonyme"
+                elif lang_src == "en" and section_pos.startswith("etymology"):
                     # Most of the time, definitions are symbols outside a subsection, like in the "wa" word
-                    pos = "symbol"
-                elif lang_src == "es" and pos.startswith("etimología"):
+                    section_pos = "symbol"
+                elif lang_src == "es" and section_pos.startswith("etimología"):
                     # Well, lets just put those elsewhere
-                    pos = "sustantivo"
-                elif lang_src == "pt" and "etimologia" in pos:
+                    section_pos = "sustantivo"
+                elif lang_src == "pt" and "etimologia" in section_pos:
                     # Well, lets just put those elsewhere
-                    pos = "substantivo"
+                    section_pos = "substantivo"
 
-                target_pos = definitions[utils.format_pos(lang_src, pos)]
+                target_pos = definitions[utils.format_pos(lang_src, section_pos)]
                 for pos_def in pos_defs:
                     if pos_def not in target_pos:
                         target_pos.append(pos_def)
@@ -119,11 +123,11 @@ def es_replace_defs_list_with_numbered_lists(
     lst: wtp.WikiList,
     *,
     regex_item: re.Pattern[str] = re.compile(
-        r"(^|\\n);\d+[ |:]+",
+        r"(^|\\n);\d+[ |:]+",  # `;1:`
         flags=re.MULTILINE,
     ),
     regex_subitem: re.Pattern[str] = re.compile(
-        r"(^|\\n):;\s*[a-z]:+\s+",
+        r"(^|\\n):;\s*[a-z]:+\s+",  # `:;a:`
         flags=re.MULTILINE,
     ),
 ) -> str:
@@ -175,11 +179,32 @@ def find_section_definitions(
                 # ... And its eventual sub-definitions
                 subdefinitions: list[SubDefinition] = []
                 for sublist in a_list.sublists(i=idx, pattern=lang.sublist_patterns[lang_dst]):
+                    if not (items := [item for item in sublist.items if item]):
+                        continue
+
+                    if lang_src == "el":
+                        # Only keep sublists specific to synonyms
+                        if sublist.pattern == "#:":
+                            items = [item for item in items if "{{συνων}}" in item]
+                        elif sublist.pattern.endswith(":"):
+                            continue
+
+                    if lang_src in {"en", "sv"}:
+                        # Only keep sublists specific to synonyms
+                        if sublist.pattern == "#:":
+                            items = [
+                                item.replace("Thesaurus:", "")
+                                for item in items
+                                if "{{syn|" in item or "{{synonym" in item
+                            ]
+                        elif sublist.pattern.endswith(":"):
+                            continue
+
                     if lang_src == "pt" and sublist.pattern == r"#\*":
                         # We want to keep sublists like "## ..." and "** ...", but not "#* ..."
                         continue
 
-                    for idx2, subcode in enumerate(sublist.items):
+                    for idx2, subcode in enumerate(items):
                         subdefinition = utils.process_templates(
                             word, subcode, lang_dst, templates_status=templates_status
                         )
@@ -191,6 +216,10 @@ def find_section_definitions(
 
                         subsubdefinitions: list[str] = []
                         for subsublist in sublist.sublists(i=idx2, pattern=lang.sublist_patterns[lang_dst]):
+                            if lang_src in {"en", "sv"} and subsublist.pattern.endswith(":"):
+                                # Only keep sublists specific to synonyms, we do not yet check for them at the lower level
+                                continue
+
                             for subsubcode in subsublist.items:
                                 if (
                                     subsubdefinition := utils.process_templates(
@@ -528,6 +557,7 @@ def parse_word(
     genders = []
     etymology = []
     etymology_sections: list[wtp.Section] = []
+    definitions: Definitions = {}
     variants: list[str] = []
     reverse_variants: list[str] = []
 
@@ -541,18 +571,28 @@ def parse_word(
     # Definitions
     if parsed_sections:
         definitions = find_definitions(word, parsed_sections, lang_src, lang_dst, templates_status=templates_status)
-    elif marker := {"no": "===", "pt": "=="}.get(lang_src):
-        # Some words have no head sections but only a list of definitions at the root of the "top" section
+
+    # Some words have no head sections but only a list of definitions at the root of the "top" section.
+    # Sometimes, there will be a section for synonyms, and we still need to check for top-section-less data.
+    if (lang_src == "no" and (not definitions or (len(definitions) == 1 and "Synonymer" in definitions))) or (
+        lang_src == "pt"
+        and (
+            not definitions
+            or (
+                len(definitions) == 1
+                and any(syn in definitions for syn in {"Sinónimo", "Sinónimos", "Sinônimo", "Sinônimos"})
+            )
+        )
+    ):
+        marker = "===" if lang_src == "no" else "=="
         for top in top_sections:
             contents = top.contents
             end = contents.find(marker)
             if end > 0:
                 top.contents = contents[:end]
-        definitions = find_definitions(
+        definitions |= find_definitions(
             word, {"top": top_sections}, lang_src, lang_dst, templates_status=templates_status
         )
-    else:
-        definitions = {}
 
     if definitions or force:
         prons = _find_pronunciations(top_sections, lang_src, lang_dst)

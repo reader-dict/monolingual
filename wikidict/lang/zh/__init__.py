@@ -112,6 +112,9 @@ sections = (
     # symbol
     "符號",
     "符号",
+    # synonyms
+    "同義詞",
+    "同义词",
     # verb
     "動詞",
     "动词",

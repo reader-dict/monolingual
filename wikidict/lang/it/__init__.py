@@ -30,9 +30,10 @@ sections = (
     "{{pref}",
     "{{prep}",
     "{{pron poss}",
-    "{{suff}",
+    "{{sin}",
     "{{sost}",
     "{{sost form}",
+    "{{suff}",
     "{{verb}",
     "{{verb form}",
 )
@@ -159,11 +160,26 @@ def adjust_wikicode(
     # [[w:A|B]] → [[A|B]]
     code = code.replace("[[w:", "[[")
 
+    # Synonyms
+    lines: list[str] = []
+    if "{{sin}}" in code:
+        in_section = False
+        for line in code.splitlines():
+            if line.startswith("=== {{sin}"):
+                in_section = True
+            elif in_section:
+                if line.startswith("*"):
+                    line = line.replace("*", "#")
+                else:
+                    in_section = False
+            lines.append(line)
+        code = "\n".join(lines)
+
     #
     # Variants
     #
 
-    lines: list[str] = []
+    lines.clear()
     for line in code.splitlines():
         if re.match(START, line):
             for pattern in PATTERNS:
