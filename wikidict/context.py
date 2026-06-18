@@ -313,7 +313,13 @@ def new_word(word: str) -> None:
 
 
 def expand(wikitext: str, locale: str, *, skip_cache: bool = False) -> str:
-    return get_ctx().expand(wikitext, locale, skip_cache=skip_cache)
+    ctx = get_ctx()
+    expanded = ctx.expand(wikitext, locale, skip_cache=skip_cache)
+
+    if locale == "tr" and "too deep recursion" in expanded:
+        ctx.clear_errors()
+
+    return expanded
 
 
 def adapt_templates(locale: str) -> None:
