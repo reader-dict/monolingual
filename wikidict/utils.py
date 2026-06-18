@@ -761,6 +761,8 @@ def clean(text: str) -> str:
 
         >>> clean("<sup></sup>")
         ''
+        >>> clean("<sup>?</sup>")
+        ''
         >>> clean("<i> </i>")
         ''
     """
@@ -840,8 +842,9 @@ def clean(text: str) -> str:
 
     # Remove empty HTML tags
     # <sup></sup> → ''
+    # <sup>?</sup> → ''
     # <i> </i> → ''
-    text = sub(r"<([^>]+)>[ ]*</\1>", "", text)
+    text = sub(r"<([^>]+)>[? ]*</\1>", "", text)
 
     # Remove extra spaces
     text = sub(r"\s{2,}", " ", text)
