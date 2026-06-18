@@ -6,10 +6,10 @@
 {{tr-ad}}
 
 # {{t|dil=tr|kedigiller}} Sarı tüylü [[kedi]].
-#* {{kt|başlık=İzmir Postası'nın Adamları|yazar=Ahmet BÜKE|yayıncı=Kanat Yayınları|yıl=2004|sayfa=12|tanıklık=İhtiyar bir '''sarman''' dadanmıştı keyfime o günlerde.|dil=tr}}
+#*{{kt|başlık=İzmir Postası'nın Adamları|yazar=Ahmet BÜKE|yayıncı=Kanat Yayınları|yıl=2004|sayfa=12|tanıklık=İhtiyar bir '''sarman''' dadanmıştı keyfime o günlerde.|dil=tr}}
 
-=====Çekimleme=====
-{{tr-çekim-ad-1|a|d}}
+====Çekimleme====
+{{tr-ad-tablo}}
 
 ====Ön ad====
 {{tr-ön ad}}

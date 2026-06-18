@@ -6,7 +6,7 @@
 # {{mastarı|dil=tr|payandalamak}}
 
 ====Çekimleme====
-{{tr-çekim-ad-2|a}}
+{{tr-ad-tablo}}
 
 ===Eylem===
 {{başlık başı|tr|çekimli eylem}}

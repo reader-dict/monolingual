@@ -5,7 +5,7 @@ from ... import context, utils
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
-    lines = wikitext.replace("| style='color:black' ", "")
+    lines = re.sub(r'^\| style="[^"]+"\s*', "", wikitext, flags=re.MULTILINE)
 
     if "Template loop detected" in lines:
         # `| (...) Template loop detected: [[&#x3a;Template&#x3a;SAYFAADI#Türkçe|:Template:SAYFAADI]]es` → `| [[WORDes]]`
