@@ -16,16 +16,18 @@ Options:
   --download                Retrieve the latest Wiktionary dump into "data/$LOCALE/pages-$DATE.xml".
   --parse                   Parse and store raw Wiktionary data into "data/$LOCALE/pages-$DATE.sqlite".
   --render                  Render templates from raw data into "data/$LOCALE/data-$DATE.json".
-                            --workers=N         Set the number of multiprocessing workers,
-                                                defaults to the number of CPU in the system.
+                              --workers=N  Set the number of multiprocessing workers, defaults to the number of CPU in the system.
   --convert                 Convert rendered data to working dictionaries into several files:
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.df.bz2": DictFile format.
+                                - "data/$LOCALE/dict-$LOCALE-$LOCALE.dic": Pocketbook/Vivlio format.
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.mobi": Kindle format.
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.zip": StarDict format.
                                 - "data/$LOCALE/dicthtml-$LOCALE-$LOCALE.zip": Kobo format.
                                 - "data/$LOCALE/dictorg-$LOCALE-$LOCALE.zip": DICT.org format.
-                            --with-etym-only    Only generate dictionaries with etymologies
-  --get-word=WORD [--raw]   Get and render WORD. Pass --raw to ouput the raw HTML code.
+                              --with-etym-only  Only generate dictionaries with etymologies
+  --get-word=WORD           Get and render WORD.
+                              --raw    Ouput the raw HTML code.
+                              --local  Use the local database content, no HTTP calls made.
   --gen-dict=WORDS          DEBUG: Generate dictionary for specific words. Pass multiple words
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.

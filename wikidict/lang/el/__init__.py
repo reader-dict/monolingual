@@ -16,6 +16,7 @@ head_sections = ("{{-el-}}",)
 etyl_section = ("{{ετυμολογία}}",)
 section_sublevels = (3, 4)
 section_patterns = ("#", r"\*")
+sublist_patterns = ("#", ":")
 sections = (
     *head_sections,
     *etyl_section,

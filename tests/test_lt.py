@@ -72,6 +72,7 @@ def setup_lua_ctx() -> None:
                     "(<i>šnek.</i>) greitai, smarkiai ką daryti (eiti, bėgti, važiuoti; mušti, trenkti, rėžti; valgyti, gerti)",
                 ],
                 "Dalyvis": ["tas kurį dengė"],
+                "Sinonimai": ["bėgti", "kloti", "pleikti&nbsp;(<i>tarm.</i>)", "rengti", "smogti", "stiegti", "tiesti"],
             },
             [],
             [
@@ -335,7 +336,8 @@ def setup_lua_ctx() -> None:
                     "anksčiau buvęs, nedabartinis, pasenęs",
                     "prieš tai buvęs",
                     "pabuvęs, palaikytas, pastovėjęs",
-                ]
+                ],
+                "Sinonimai": ["archajiškas", "nejaunas"],
             },
             [],
             [

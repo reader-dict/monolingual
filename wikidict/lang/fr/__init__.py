@@ -17,6 +17,7 @@ thousands_separator = " "
 
 # https://fr.wiktionary.org/wiki/Wiktionnaire:Liste_des_sections_de_types_de_mots
 section_patterns = ("#", r"\*")
+section_sublevels = (3, 4)
 head_sections = ("{{langue|fr}}", "{{langue|conv}}", "{{caractère}}")
 etyl_section = ("{{s|étymologie}}",)
 core_sections = [
@@ -79,6 +80,7 @@ sections = (
     *[f"{{{{s|{section}|fr|" for section in core_sections],
     *[f"{{{{s|{section}|fr}}" for section in core_sections],
     *[f"{{{{s|{section}|num" for section in core_sections],
+    "{{s|synonymes}",
     # "{{s|caractère}",  # See #2634
 )
 

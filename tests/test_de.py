@@ -28,7 +28,12 @@ def setup_lua_ctx() -> None:
                 "Symbol": [
                     "<i>Informatik (seit 1972):</i> das At; notwendiger Bestandteil und Trennzeichen zwischen Benutzername und Domainname bei E-Mail-Adressen",
                     "<i>Informatik:</i> das At; Syntax-Bestandteil einiger Programmiersprachen (beispielsweise als Präfix vor Array-Variablen in der Programmiersprache Perl)",
-                ]
+                ],
+                "Synonyme": [
+                    "At, At-Symbol, At-Zeichen, at sign, Ad-Zeichen, Ad, "
+                    "Affenschwanz, Affenohr, Affenschaukel, Alef, Astat, "
+                    "Klammeraffe"
+                ],
             },
             [],
             [],

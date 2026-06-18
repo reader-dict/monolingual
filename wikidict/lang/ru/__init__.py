@@ -28,6 +28,7 @@ sections = (
     "морфологические и синтаксические свойства",
     "как самостоятельный глагол",  # for verbs with aux
     "в значении вспомогательного глагола или связки",  # for verbs with aux
+    "синонимы",  # Synonyms
 )
 
 variant_titles = ("значение", "морфологические и синтаксические свойства")
@@ -118,6 +119,11 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.{{etym-lang|{{{1|ru}}}|grc}}", "ru", word="дискос")
     '= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.'
 
+    >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# —\n#\n", "ru", word="гонит")
+    '= {{-ru-}} =\n==== Синонимы ====\n#\n'
+    >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# ?\n#\n", "ru", word="гонит")
+    '= {{-ru-}} =\n==== Синонимы ====\n#\n'
+
     >>> from ... import context
     >>> _ = context.reset("ru")
 
@@ -173,6 +179,9 @@ def adjust_wikicode(
         code,
         flags=re.DOTALL | re.MULTILINE,
     )
+
+    # Delete empty synonyms
+    code = code.replace("# —\n", "").replace("# ?\n", "")
 
     # Remove `{{etym-lang|...}}`
     code = re.sub(r"\{\{etym-lang\|.+}$", "", code, flags=re.MULTILINE)

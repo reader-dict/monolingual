@@ -146,6 +146,7 @@ MERGE = {
         "seq-num": "ordenstal",
         "substantivisk ordforbindelse": "substantiv",
         "symb": "symbol",
+        "syn": "synonymer",
         "top": "substantiv",
         "ubest-pronon": "pronomen",
         "verb": "verbum",
@@ -224,6 +225,7 @@ MERGE = {
         "pref": "prefisso",
         "prep": "preposizione",
         "pron poss": "pronome possessivo",
+        "sin": "sinonimi",
         "sost form": "sostantivo",
         "sost": "sostantivo",
         "suff": "suffisso",
@@ -244,6 +246,7 @@ MERGE = {
         "proverb": "ことわざ",
         "top": "名詞",  # noun
         "verb": "動詞",
+        "syn": "類義語",
         "活用形": "活用",  # conjugation form
         "慣用句": "成句",  # idiom
         "名詞形": "名詞",  # noun form
@@ -265,6 +268,9 @@ MERGE = {
         "locução substantiva": "substantivo",
         "pepb": "acrónimo",
         "prefixos relacionado": "prefixo",
+        "sinônimo": "sinónimo",
+        "sinônimos": "sinónimo",
+        "sinónimos": "sinónimo",
         "substantivo comum": "substantivo",
         "top": "substantivo",
         "verbal": "verbo",
@@ -272,6 +278,7 @@ MERGE = {
     "ro": {
         "abr": "abreviere",
         "expr": "expresie",
+        "sin": "sinonime",
         "top": "substantiv",
     },
     "ru": {
@@ -327,6 +334,7 @@ MERGE = {
         "後綴": "后缀",  # suffixe
         "音節": "音节",  # syllable
         "符號": "符号",  # symbol
+        "同義詞": "同义词",  # synonyms
         "动词": "動詞",  # verb
     },
 }

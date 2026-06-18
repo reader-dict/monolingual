@@ -24,7 +24,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Pronome": ["(<i>internetês</i>) cês"],
+                "Pronome": ["(internetês) cês"],
                 "Símbolo": ["algarismo indo-arábico que representa o numeral seis"],
             },
             [],
@@ -56,7 +56,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             ["De baba."],
-            {"Verbo": ["(<i>popular</i>) babar; conspurcar"]},
+            {"Verbo": ["(popular) babar; conspurcar"]},
             [],
             [
                 "ababalha",
@@ -139,7 +139,7 @@ def setup_lua_ctx() -> None:
                 "Expressão": ["<b>alqueire baiano</b>:", "<b>rodar a baiana</b>:"],
                 "Substantivo": [
                     "natural ou habitante do Estado da Bahia, Brasil",
-                    "(<i>São Paulo,&nbsp;Brasil,&nbsp;popular,&nbsp;pejorativo e&nbsp;racismo</i>) pessoa que se veste de maneira incomum ou brega; fora da moda",
+                    "(São Paulo,&nbsp;Brasil,&nbsp;popular,&nbsp;pejorativo e&nbsp;racismo) pessoa que se veste de maneira incomum ou brega; fora da moda",
                 ],
             },
             [],
@@ -151,8 +151,9 @@ def setup_lua_ctx() -> None:
             ["mf"],
             ["Do latim <i>caprunu</i>&nbsp;“cabra”."],
             {
-                "Adjetivo": ["(<i>Pecuária</i>) de cabras:", "(<i>Brasil</i>) marido de mulher adúltera"],
+                "Adjetivo": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
                 "Interjeição": ["indica estrondo"],
+                "Sinónimo": ["caprídeo", "caprino"],
             },
             [],
             ["cabruns"],
@@ -257,7 +258,8 @@ def setup_lua_ctx() -> None:
                 "Prefixo": [
                     "exprime a ideia de <i>novo</i>",
                     "<b>Nota:</b> Liga-se por hífen ao morfema seguinte quando este começa por <b>vogal</b>, <b>h</b>, <b>r</b> ou <b>s</b>.",
-                ]
+                ],
+                "Sinónimo": ["novi-"],
             },
             [],
             [],
@@ -402,7 +404,10 @@ def setup_lua_ctx() -> None:
             [],
             [],
             [],
-            {"Onomatopeia": ["imitativa do som compassado do mecanismo de um relógio a trabalhar"]},
+            {
+                "Onomatopeia": ["imitativa do som compassado do mecanismo de um relógio a trabalhar"],
+                "Sinónimo": ["tic-tac"],
+            },
             [],
             [],
         ),
@@ -413,7 +418,7 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Contração": [
-                    "(<i>antigo</i>) contração do pronome pessoal te com o pronome pessoal ou demonstrativo o",
+                    "(antigo) contração do pronome pessoal te com o pronome pessoal ou demonstrativo o",
                 ]
             },
             [],
@@ -428,7 +433,7 @@ def setup_lua_ctx() -> None:
             [],
             ["ũas", "ũu", "ũus"],
         ),
-        ("UTC", [], [], [], {"Sigla": ["(<i>estrangeirismo</i>) ver TUC"]}, [], []),
+        ("UTC", [], [], [], {"Sigla": ["(estrangeirismo) ver TUC"]}, [], []),
     ],
 )
 def test_parse_word(

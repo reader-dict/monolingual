@@ -35,7 +35,10 @@ def setup_lua_ctx() -> None:
             [
                 "fra latin <i>bacterium</i>, latinisering af græsk <i>bakterion</i> (βακτήριον\xa0- lille stav), diminutiv af <i>baktron</i> (βάκτρον - stav)"
             ],
-            {"Substantiv": ["(mikrobiologi) en encellet mikroskopisk organisme uden cellekerne"]},
+            {
+                "Substantiv": ["(mikrobiologi) en encellet mikroskopisk organisme uden cellekerne"],
+                "Synonymer": ["bacille (ældre sprogbrug)"],
+            },
             [],
             ["bakterien", "bakterier", "bakterierne"],
         ),
@@ -67,6 +70,7 @@ def setup_lua_ctx() -> None:
                 "Formelt Subjekt": [
                     "bruges som upersonligt subjekt, refererer ofte fremad eller tilbage til et andet led i sætningen."
                 ],
+                "Synonymer": ["her er"],
             },
             [],
             [],
@@ -115,7 +119,14 @@ def setup_lua_ctx() -> None:
             [],
             [],
         ),
-        ("skulle", [], [], {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre."]}, [], ["skal", "skullet"]),
+        (
+            "skulle",
+            [],
+            [],
+            {"Verbum": ["Er nødt til at gøre. Forpligtet til at gøre."], "Synonymer": ["måtte", "burde"]},
+            [],
+            ["skal", "skullet"],
+        ),
         (
             "søm",
             [],

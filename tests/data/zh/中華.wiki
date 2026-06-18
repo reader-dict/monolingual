@@ -1,0 +1,113 @@
+==漢語==
+{{zh-forms|s=中华}}
+{{zh-wp|zh|yue:中華 (搞清楚)|hak:Chûng-fà|cdo:Dṳ̆ng-huà|nan:Tiong-hôa-lí (Siông-san-khu)}}
+
+===詞源===
+古代[[華夏]]族多建都於[[黃河]]南北，因其在[[四方]]之中，所以稱作'''中華'''。
+
+最早見於東晉{{w|孫盛}}《[[s:晉陽秋|晉陽秋]]》{{defdate|4世紀}}中記載，{{w|桓溫}}紀念{{w|譙秀}}而作的一則[[s:薦譙元彥表|上表]]{{defdate|347年}}，後來又被南朝宋史學家{{w|裴松之}}引用在《{{w|三國志注}}》{{defdate|5世紀早期}}中。
+: {{zh-x|於 時 皇極 遘 道消 之 會，群黎 蹈 顛沛 之 艱，中華 有 顧瞻 之 哀，幽谷 無 遷喬 之 望。|這時朝廷遇上衰落，民眾生活流離艱苦，'''中原'''[國家]有敗亡的憂慮，百姓沒有出頭高升的希望。|ref=Peizhu|collapsed=y}}
+
+裴松之在為《[[s:三國志/卷35#諸葛亮|諸葛亮傳]]》作注時，也使用了{{lang|zh|中華}}一詞。
+: {{zh-x|若 使 游步 ^中華，騁 其 龍光，豈 夫{fú} 多 士 所 能 沈{chén}翳 哉！||ref=Peizhu|collapsed=yes}}
+
+===發音===
+{{zh-pron
+|m=Zhōnghuá
+|c=zung1 waa4
+|ca=LL-Q9186 (yue)-Jonashtand-中華.wav
+|h=pfs=Chûng-fà;hrs=h:zhungˋ fa;gd=zung1 fa2;ct=zhong1 fa2
+|md=Dṳ̆ng-huà
+|mn=Tiong-hôa/tw:Tiong-hoa
+|mn-t=dong1 hua5
+|px=pt:^doeng1 *hua2/pt:^doeng1 hua2/xy:dyoeng1 *hua2/xy:dyoeng1 hua2
+|w=sh:1tson gho6;sz:1tson gho2
+|mc=1,1
+|oc=1;2
+|cat=pn
+}}
+
+===專有名詞===
+{{zh-proper noun}}
+
+# {{lb|zh|formal|poetic|exalted}} [[中國]]（多指文化、文明、民族等方面）
+#: {{zh-x|振興{xīng} ^中華|}}
+#: {{zh-x|^中華 名小吃|}}
+#: {{zh-x|^中華 文化|}}
+#: {{zh-x|^中華 文明|}}
+#: {{zh-x|^中華 世紀 壇|[[w:中華世紀壇|'''中華'''世紀壇]]}}
+#* {{zh-x|中華 衣冠 我 着服，中華 詩書 我 誦讀。我 三 師 尊 中華 義諦 聞 亦 多，白首 常 我 中華 歌。天下 人，傾耳 聽 我 中華 歌。|我穿著的是'''中華'''的衣服，我誦讀的是'''中華'''的詩書。我從老師那裡聽過許多尊崇'''中華'''的理由，所以即使我頭髮花白，也會時常歌頌'''中華'''。全天下的人啊，請你們來聽聽我為'''中華'''所作的頌歌。|CL-KR|tr={{lang|ko|'''중화'''의관<sup>{{small|([[-을]])}}</sup> 아착복<sup>{{small|([[하다|하]][[-고|고]])}}</sup> '''중화'''시서<sup>{{small|([[-를]])}}</sup> 아송독<sup>{{small|([[하다|하]][[-으니라|니라]]).}}</sup> 아삼사존'''중화'''의체<sup>{{small|([[-를]])}}</sup> 문역다<sup>{{small|([[하다|하]][[-야|야]])}}</sup> 백수상아'''중화'''가<sup>{{small|([[하다|하]][[-으니|니]])}}</sup>  천하인<sup>{{small|([[-아|아]])}}</sup> 경이청아'''중화'''가<sup>{{small|([[하다|하]][[-으라|라]]).}}</sup>}}<br>'''Junghwa''' uigwan{{small|[-eul]}} a chakbok{{small|[-hago]}} '''Junghwa''' siseo{{small|[-reul]}} a songdok{{small|[-hanira]}}. A sam sa jon '''Junghwa''' uiche{{small|[-reul]}} mun yeok da{{small|[-haya]}} baeksu sang a '''Junghwa''' ga{{small|[-hani]}} cheonha in{{small|[-a]}} gyeong'i cheong a '''Junghwa''' ga{{small|[-hara]}}.|ref='''1910'''年左右，{{w|柳麟錫}}{{lang|zh|《中華歌》}}}}
+# {{zh-div|里}} {{place|zh|里|區/松山|city/臺北|c/臺灣}}
+
+====同義詞====
+* {{s|中國}}
+{{syn-saurus|zh|中國}}
+
+====衍生詞====
+{{col3|zh|中華民族|中華民國|中華人民共和國|大中華|中華肝吸蟲|中華肝吸蟲病|中華山|中華路|中華臺北|中華鈰礦|中華文化圈|中華蘇維埃共和國|中華鱘|中華菊頭蝠|中華秋沙鴨|中華航空|中華民族偉大復興|中華帝國|中華門|中華淡竹葉|中華穿山甲}}
+
+====派生詞====
+{{CJKV||j=中%華|^ちゅう%か|^중화|Trung Hoa}}
+'''其他'''：
+* {{desc|bor=1|id|Tionghoa}}
+* {{desc|bor=1|za|Cunghvaz}}
+
+{{zh-cat|亞洲國家|中國}}
+
+==日語==
+{{ja-kanjitab|ちゅう|か|yomi=on}}
+
+===發音===
+{{ja-pron|ちゅうか|acc=1|acc_ref=DJR}}
+
+===名詞===
+{{ja-noun|ちゅうか}}
+
+# {{lb|ja|internet slang}} [[中國]][[公司]][[製造]]的[[產品]]
+
+===形容詞===
+{{ja-adj|ちゅうか}}
+
+# {{lb|ja|internet slang}} 中國公司製造的
+
+===專有名詞===
+{{ja-pos|proper|ちゅうか}}
+
+# {{lb|ja|通常用於組詞}} [[中國]]
+# {{short for|ja|中華料理|t=中國料理|tr=chūka ryōri}}
+#: {{ja-usex|[[今晩]]'''中華'''[[する]][[か#詞源 2|か]]|こんばん '''ちゅうか''' する か|今晚吃'''中國菜'''嗎？}}
+
+====衍生詞====
+{{col3|ja
+|{{ja-r|中%華%街|ちゅう%か%がい|[[唐人街]]}}
+|{{ja-r|中%華%圏|ちゅう%か%けん}}
+|{{ja-r|中%華%丼|ちゅう%か %どんぶり}}、{{ja-r|中%華%丼|ちゅう%か %どん}}
+|{{ja-r|中%華%鍋|ちゅう%か %なべ|[[炒鍋]]}}
+|{{ja-r|中%華%思%想|ちゅう%か %し%そう}}
+|{{ja-r|中%華蕎麦|ちゅう%か そば}}
+|{{ja-r|中%華%台北|^ちゅう%か %^タイペイ}}
+|{{ja-r|中%華%饅%頭|ちゅう%か %まん%じゅう|[[饅頭]]}}
+|{{ja-r|中%華%民国|^ちゅう%か ^%みんこく}}
+|{{ja-r|中%華%料%理|ちゅう%か %りょう%り|中國菜}}
+|{{ja-r|中%華%革命党|^ちゅう%か %^かくめいとう|{{w|中華革命黨}}}}
+|{{ja-r|中%華%人民%共%和%国|^ちゅう%か %^じんみん %^きょう%わ%こく|[[中華人民共和國]]}}
+}}
+
+===來源===
+<references/>
+
+==朝鮮語==
+{{ko-hanjatab}}
+
+===專有名詞===
+{{ko-noun|hangeul=중화}}
+
+# {{hanja form of|중화|}}
+
+==越南語==
+{{vi-hantutab}}
+
+===專有名詞===
+{{vi-proper noun|sc=Hani}}
+
+# {{han tu form of|Trung Hoa|}}

@@ -37,6 +37,7 @@ sections = (
     "{{idiom",
     "{{noun",
     "{{prov",
+    "{{syn",
     "{{verb",
     "形容動詞",  # adjective
     "副詞",  # adverb
@@ -56,6 +57,7 @@ sections = (
     # "備考",  # remark (example with the word "麒麟竭", but it requires more work)
     "意義",  # significance
     "記号",  # symbol
+    "類義語",  # synonyms
     "動詞",  # verb
 )
 

@@ -15,6 +15,7 @@ float_separator = ","
 thousands_separator = " "
 
 # https://sv.wiktionary.org/wiki/Wiktionary:Stilguide#Ordklassrubriken
+sublist_patterns = ("#", ":")
 head_sections = ("svenska",)
 sections = (
     "adjektiv",

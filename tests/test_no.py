@@ -113,7 +113,12 @@ def setup_lua_ctx() -> None:
                     "(<i>anatomi</i>) kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
                     "side",
                     "(<i>kortspill</i>) kortene en spiller sitter med",
-                ]
+                ],
+                "Synonymer": [
+                    "<i>(kropsdel)</i> neve",
+                    "<i>(retningsangivelse)</i> side",
+                    "<i>(spillkortterm)</i> kort på hånden",
+                ],
             },
             [],
         ),

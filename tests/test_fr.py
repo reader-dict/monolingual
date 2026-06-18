@@ -19,6 +19,26 @@ def setup_lua_ctx() -> None:
     "word, pronunciations, genders, etymology, definitions, variants",
     [
         (
+            "42",
+            ["\\ka.ʁɑ̃t.dø\\"],
+            ["m", "s"],
+            [],
+            {
+                "Nom": [
+                    "Quarante-deux.",
+                    "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
+                    "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
+                ],
+                "Nom Propre": ["<i>(France)</i> Département de la Loire."],
+                "Numéral": [
+                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
+                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
+                ],
+                "Synonymes": ["quatre deux <i>(Familier)</i>"],
+            },
+            [],
+        ),
+        (
             "5E",
             [],
             [],
@@ -58,10 +78,6 @@ def setup_lua_ctx() -> None:
                 "<i>(Symbole 6)</i> Abréviation de <i><b>a</b>ccélération</i>.",
             ],
             {
-                "Pronom": [
-                    "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
-                    "<i>(Québec)</i> <i>(Familier)</i> Elle.",
-                ],
                 "Symbole": [
                     "<i>(Linguistique)</i> Symbole de l’alphabet phonétique international pour la voyelle (ou vocoïde) ouverte antérieure non arrondie \\a\\.",
                     "<i>(Métrologie)</i> Symbole du Système international (SI) pour le préfixe <b>atto-</b> (&times;10<sup>&minus;18</sup>).",
@@ -69,6 +85,11 @@ def setup_lua_ctx() -> None:
                     "<i>(Métrologie)</i> Symbole (dérivé du système SI) de l’<b>année</b> (365,25 jours de 86,4 ks), du latin <i>annum</i>.",
                     "<i>(Chimie)</i> Symbole de l’activité chimique d’un composant.",
                     "<i>(Physique, Mécanique)</i> Symbole de l’accélération en tant que grandeur physique (uSI : mètre par seconde carré, m/s², m⋅s⁻² ; unité usuelle : g).",
+                ],
+                "Synonymes": ["γ («&nbsp;accélération&nbsp;»)"],
+                "Pronom": [
+                    "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
+                    "<i>(Québec)</i> <i>(Familier)</i> Elle.",
                 ],
             },
             ["avoir"],
@@ -87,25 +108,6 @@ def setup_lua_ctx() -> None:
             [],
         ),
         (
-            "42",
-            ["\\ka.ʁɑ̃t.dø\\"],
-            ["m", "s"],
-            [],
-            {
-                "Nom": [
-                    "Quarante-deux.",
-                    "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
-                    "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
-                ],
-                "Nom Propre": ["<i>(France)</i> Département de la Loire."],
-                "Numéral": [
-                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
-                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
-                ],
-            },
-            [],
-        ),
-        (
             "accueil",
             ["\\a.kœj\\"],
             ["m"],
@@ -117,7 +119,12 @@ def setup_lua_ctx() -> None:
                     "<i>(Vieilli)</i> Fait d’accueillir ou héberger.",
                     "Page d’accès ou d’accueil (lieu ci-dessus) à un site web.",
                     "Manière dont une œuvre a été acceptée lors de sa sortie par le public et les critiques.",
-                ]
+                ],
+                "Synonymes": [
+                    "home <i>(site web)</i> <i>(Anglicisme)</i>",
+                    "main page <i>(site web)</i> <i>(Anglicisme)</i>",
+                    "page d’accueil <i>(site web)</i>",
+                ],
             },
             [],
         ),
@@ -180,7 +187,15 @@ def setup_lua_ctx() -> None:
                     "<i>(Politique)</i> Ensemble des électeurs, des soutiens d’un politique ou d’un parti.",
                     "<i>(Sens figuré)</i> Ce qui est le principe, la donnée fondamentale d’une chose ou ce sur quoi elle repose.",
                     "<i>(Argot)</i> Cocaïne base.",
-                ]
+                ],
+                "Synonymes": [
+                    "support, soutien, appui, socle",
+                    "principe, fondement, socle",
+                    "assiette",
+                    "dé",
+                    "ingrédient",
+                    "numération",
+                ],
             },
             ["baser"],
         ),
@@ -204,6 +219,7 @@ def setup_lua_ctx() -> None:
                     "Papier à lettre de provenance anglaise, de belle qualité, qui a joui d’une grande vogue au XIX<sup>e</sup> siècle.",
                     "Mesure des liquides chez les Hébreux, valant 18,08 litres puis plus tard environ 38,88 litres.",
                 ],
+                "Synonymes": ["génial", "super <i>(Familier)</i>"],
             },
             [],
         ),
@@ -406,7 +422,8 @@ def setup_lua_ctx() -> None:
                     "<i>(Désuet)</i> Récemment ; il y a peu.",
                     "<i>(Désuet)</i> Peu de temps auparavant ; auparavant.",
                     "Il y a longtemps. <b>Note : </b> contrairement à l’étymologie qui implique un temps passé récent, l’usage moderne consacre le sens d’un temps antérieur, lointain, révolu – possiblement par litote.",
-                ]
+                ],
+                "Synonymes": ["autrefois", "jadis", "orains <i>(archaïque, régionalisme normand)</i>"],
             },
             [],
         ),
@@ -484,7 +501,8 @@ def setup_lua_ctx() -> None:
                     (
                         "<i>(Par extension)</i> Toutes sortes de mastics vendu en cartouche et ce indépendamment de sa composition.",
                     ),
-                ]
+                ],
+                "Synonymes": ["polysiloxane"],
             },
             ["siliconer"],
         ),
@@ -525,6 +543,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert genders == details.genders
-    assert definitions == details.definitions
     assert etymology == details.etymology
+    assert definitions == details.definitions
     assert variants == details.variants

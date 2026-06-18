@@ -1,0 +1,46 @@
+[[Fișier:Paliurus spina-christi.JPG|thumb|Un ''păliur'']]
+=={{limba|ron}}==
+{{-etimologie-}}
+Din latină ''[[Paliurus]]'' (numele științific al plantei).
+{{-pronunție-}}
+{{-pron-lipsă-|ron}}
+{{-substantiv-|ron}}
+{{substantiv-ron
+|gen={{m}}
+|nom-sg=păliur
+|nom-pl=păliuri
+|art-sg=păliurul
+|art-pl=păliurii
+|dat-sg=păliurului
+|dat-pl=păliurilor
+|voc-sg=păliurule
+|voc-pl=păliurilor
+}}
+#(''bot.'') (''Paliurus spina-christi'') [[arbust]] [[spinos]] de [[origine]] [[mediteranean]]ă, din al cărui [[lemn]] [[greu]], [[dur]] și [[elastic]] se [[face|fac]] [[coadă|cozi]] de [[unealtă|unelte]].
+{{-sin-}}
+* (bot.) [[spinul-lui-Cristos]], [[spinul-lui-Hristos]]
+{{-trans-}}
+{{(|arbust}}
+*{{aze}}: {{trad|az|tikanlı qaratikan}}
+*{{bul}}: {{trad|bg|драка}} (draka) {{f}}
+*{{cat}}: {{trad|ca|espinavessa}} {{f}}
+*{{zho}}: {{trad|zh|滨枣}}
+*{{hrv}}: {{trad|hr|drača}} {{f}}
+*{{eng}}: {{trad|en|Christ's thorn}}, {{trad|en|Jerusalem thorn}}
+*{{epo}}: {{trad|eo|kristodorno}}
+*{{fra}}: {{trad|fr|paliure}} {{m}}, {{trad|fr|épine-du-Christ}} {{f}}
+*{{deu}}: {{trad|de|Christusdorn}} {{m}}
+{{-}}
+*{{ita}}: {{trad|it|marruca}} {{f}}
+*{{lat}}: {{trad|la|paliurus}} {{m}}
+*{{hun}}: {{trad|hu|krisztustövis}}
+*{{rus}}: {{trad|ru|держи-дерево}} (derži-derevo) {{n}}
+*{{srp}}: {{trad|sr|драча}} ([[drača]]) {{f}}
+*{{spa}}: {{trad|es|espina santa}} {{f}}
+*{{swe}}: {{trad|sv|kristitörne}} {{n}}
+*{{ukr}}: {{trad|uk|держидерево}} (deržiderevo) {{n}}, {{trad|uk|держидерево звичайне}} (deržiderevo zvičajne) {{n}}
+{{)}}
+===Referințe===
+* DEX '98 via [http://dexonline.ro/ DEX online]
+
+[[Categorie:Arbuști în română]]

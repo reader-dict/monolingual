@@ -32,6 +32,10 @@ def setup_lua_ctx() -> None:
             ["Din latină <i>cantare</i>."],
             {
                 "Expresie": ["<i><b>Joacă cum îi cântă</b> = face întocmai cum îi poruncește altul</i>"],
+                "Sinonime": [
+                    "<b>1:</b> (muz.) executa, interpreta, intona, (pop.) glăsui, "
+                    "spune, viersui, zice, (înv.) glăsi, juca, (muz.) suna"
+                ],
                 "Verb": [
                     "(<i>v.intranz. și tranz.</i>) a emite cu vocea sau cu un instrument un șir de sunete muzicale care se rânduiesc într-o melodie, într-un acord etc.",
                     "(<i>despre păsări, insecte etc.</i>) a scoate sunete plăcute la auz. caracteristice speciei.",
@@ -111,6 +115,21 @@ def setup_lua_ctx() -> None:
             {"Simbol": ["simbol pentru megahertz"]},
             [],
             [],
+        ),
+        (
+            "păliur",
+            [],
+            ["Din latină <i>Paliurus</i> (numele științific al plantei)."],
+            {
+                "Sinonime": ["(bot.) spinul-lui-Cristos, spinul-lui-Hristos"],
+                "Substantiv": [
+                    "(<i>bot.</i>) (<i>Paliurus spina-christi</i>) arbust spinos "
+                    "de origine mediteraneană, din al cărui lemn greu, dur și "
+                    "elastic se fac cozi de unelte."
+                ],
+            },
+            [],
+            ["păliuri", "păliurii", "păliurilor", "păliurul", "păliurule", "păliurului"],
         ),
         ("portocale", ["/por.toˈka.le/"], [], {}, ["portocală"], []),
         (

@@ -25,6 +25,7 @@ sections = (
     # "çeviriler",  # translations
     # "deyimler",  # derived terms
     "eylem",  # action (?)
+    "edat",  # preposition
     # "kaynakça",  # bibliography
     "ön ad",  # first name
     "özel ad",  # proper noun

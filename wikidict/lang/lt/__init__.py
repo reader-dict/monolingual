@@ -40,6 +40,7 @@ sections = (
     "santrumpa",  # abbreviation
     "simboliai",  # symbols
     "simbolis",  # symbol
+    "sinonimai",  # synonym
     "skaitvardis",  # numerical
     "veiksmažodis",  # verb
     "žodžių junginys",  # phrase
@@ -164,7 +165,7 @@ def adjust_wikicode(
     in_section = False
     for line in code.splitlines():
         if line.startswith("==== "):
-            in_section = "Sinonimai" in line or "Vertimai" in line or "Išraiškos" in line or "Antonimai" in line
+            in_section = "Vertimai" in line or "Išraiškos" in line or "Antonimai" in line
         elif line.startswith("<br clear"):
             in_section = False
         if not in_section:

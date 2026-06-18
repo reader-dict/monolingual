@@ -50,6 +50,7 @@ sections = (
     "prœposition",
     "substantiv",
     "symbol",
+    "synonymer",
     "sætning",
     "ubestemt prononmen",
     "ubestemt pronomen",
@@ -90,6 +91,7 @@ sections = (
     "{{suf}",
     "{{symb}",
     "{{symb|mul}",
+    "{{syn}",
     "{{ubest-pronon}",
     "{{verb}",
 )

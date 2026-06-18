@@ -21,6 +21,7 @@ sections = (
     "{{aussprache}",
     "{{bedeutungen}",
     "{{nebenformen}",
+    "{{synonyme}",
     "{{variant}",
 )
 

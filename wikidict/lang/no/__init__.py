@@ -38,6 +38,7 @@ sections = (
     "subjunksjon",
     "substantiv",
     "suffiks",
+    "synonymer",
     "tallord",
     "verb",
 )
@@ -126,5 +127,20 @@ def adjust_wikicode(
 
     # <includeonly>...</includeonly> → ''
     code = re.sub(r"(<includeonly>.+</includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE)
+
+    # Synonyms
+    if "Synonymer" in code:
+        lines: list[str] = []
+        in_section = False
+        for line in code.splitlines():
+            if line.startswith("===") and "Synonymer" in line:
+                in_section = True
+            elif in_section:
+                if line.startswith("{{"):
+                    line = f"# {line}".rstrip("<br>")
+                else:
+                    in_section = False
+            lines.append(line)
+        code = "\n".join(lines)
 
     return code

@@ -40,6 +40,7 @@ sections = (
     "pronom",
     "proverbi",
     "sigles",
+    "sinònims",
     "sufix",
     "símbol",
     "verb",
@@ -93,3 +94,35 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     pattern = re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)")
     return utils.unique(pattern.findall(code))
+
+
+def adjust_wikicode(
+    code: str,
+    locale: str,
+    *,
+    templates_status: list[tuple[str, str]] | None = None,
+    word: str = "",
+) -> str:
+    # sourcery skip: inline-immediately-returned-variable
+    r"""
+    >>> adjust_wikicode("== {{-ca-}} ==\n=== Interjecció ===\n{{-sin-}}\n* [[quina llàstima]]\n* desaprofitat, fallit, malreeixit", "ca")
+    '== {{-ca-}} ==\n=== Interjecció ===\n=== Sinònims ===\n# [[quina llàstima]]\n# desaprofitat, fallit, malreeixit'
+    """
+    # {{-sin-}} → === Sinònims ===
+    code = code.replace("{{-sin-}}", "=== Sinònims ===")
+
+    # Change the list type type of synonyms
+    cleaned: list[str] = []
+    in_section = False
+    for line in code.splitlines():
+        if line.startswith("=== Sinònims"):
+            in_section = True
+        elif in_section:
+            if line.startswith("*"):
+                line = line.replace("*", "#")
+            else:
+                in_section = False
+        cleaned.append(line)
+    code = "\n".join(cleaned)
+
+    return code
