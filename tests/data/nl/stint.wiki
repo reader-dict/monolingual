@@ -1,0 +1,20 @@
+{{=nld=}}
+[[Bestand:Nieuwe versie Stint 05.jpg|thumb|1. Een groene '''stint'''.]]
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|stɪnt}}
+{{-syll-}}
+*stint
+{{-etym-}}
+*van de merknaam "Stint", gedeponeerd door het bedrijf ''Stint Urban Mobility''
+{{-nlnoun-|{{pn}}|[[stints]]|-|-}}
+{{-noun-|nld}}
+{{-l-|m}}
+#{{verkeer|nld}} elektrisch aangedreven karretje met een rechtop staande bestuurder en een bak waarin tot 10 jonge kinderen vervoerd kunnen worden
+{{citeer|web|citaat=De fabrikant van de stint, die vorige week betrokken was bij het ongeval op het spoor in Oss, laat alle 3.500 voertuigen die in gebruik zijn controleren. |titel=Fabrikant controleert alle stints na treinongeluk Oss |datum=24 september 2018 |url=https://www.nu.nl/binnenland/5476985/fabrikant-controleert-alle-stints-na-treinongeluk-oss.html |website=nu.nl |taal=nl |bezochtdatum=2025-05-19}}
+{{-syn-}}
+*[[bso-bus]]
+{{-preval-}}
+{{wel-GB}}
+{{-info-}}
+{{refs}}

@@ -1,0 +1,508 @@
+{{zie-ook/a}}
+
+{{=qtu=}}
+{{-letter-}}
+'''a'''
+# eerste letter van het Latijnse alfabet.
+#IPA-symbool voor een vrije klinker zoals in Nederlands [[laat]].
+{{-syn-}}
+*{{Q|Alfa|qtu}} ''([[NAVO-spellingsalfabet]])''
+{{-rel-}}
+* [[A]], [[à]], [[á]], [[â]], [[ã]], [[ä]], [[ae]], [[å]], [[æ]], [[ā]], [[ą]]
+{{Latijns alfabet}}
+{{IPA-alfabet}}
+{{-pref-|qtu}}
+'''a'''
+#{{natuurkunde|qtu}} [[voorvoegsel]] voor [[atto-]], 10<sup>−18</sup>
+{{-ant-}}
+* [[E]], [[exa-]]
+{{-drv-}}
+* [[am]], [[am²]], [[am³]], [[al]], [[aL]], [[aℓ]], [[ag]], [[as]], [[aA]], [[aV]], [[aW]], [[aΩ]], [[aS]], [[aF]], [[aH]], [[aBq]], [[aC]], [[aGy]], [[aHz]], [[aJ]], [[akat]], [[alm]], [[alx]], [[aN]], [[aPa]], [[aSv]], [[aT]], [[aWb]], [[acd]], [[aK]], [[amol]]
+{{-rel-}}
+{{eenheden-prefix}}
+{{-symbool-|qtu}}
+'''a'''
+#{{wiskunde|qtu}}, {{afkorting|qtu}} symbool voor ''[[are]]'', een [[oppervlaktemaat]], gelijk aan 100 [[m²]], gelijk aan tien bij tien [[meter]]
+#{{wiskunde|qtu}}, {{afkorting|qtu}} symbool voor ''[[acre]]'', een Engelse oppervlaktemaat.
+#{{tijdrekening|qtu}}, {{eenheid|qtu}}, {{geologie|qtu}}, {{astronomie|qtu}} het symbool voor [[annum]].
+#{{natuurkunde|qtu}} het symbool voor [[versnelling]].
+{{bijv-1|De grootheid "versnelling" '''a''' wordt o.a. uitgedrukt in de [[eenheid]] m/s<sup>2</sup> (geen symbool)}}
+#{{kristallografie|qtu}} het symbool voor een [[glijspiegelvlak]] waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.
+{{-drv-}}
+* [1] [[ca]], [[daa]], [[ha]]
+* [3] [[ka]], [[Ma]], [[Ga]]
+{{-rel-}}
+* [1]
+{{eenheden-oppervlakte}}
+* [3]
+{{eenheden-tijd}}
+* [5]
+{{Int-Notatie}}
+
+{{=nld=}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-a.ogg|a|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|a}}
+{{-syll-}}
+* a
+{{-nlnoun-|[[a]]|[[a's]]|[[a'tje]]|[[a'tjes]]}}
+{{-noun-|nld}}
+{{-l-|fm}}
+#{{taalkunde|nld}} de [[eerste]] [[letter]] van het [[alfabet]]
+#het op de eerste plaats genoemde
+#{{muziek|nld}} de standaardmuziektoon van 440 Hz
+#{{muziek|nld}} de [[tiende]] [[toon]] van de [[chromatische]], en de [[zesde]] toon van de [[diatonische]] [[toonladder]]
+#{{muziek|nld}}, {{afkorting|nld}} afkorting van “[[a-mineur]]”
+# het eerste element van een opsomming
+{{-writ-}}
+*[1] Volgens {{spellingregel|2.A}} wordt een lange a in een gesloten lettergreep gespeld als aa om het onderscheid met de korte a aan te geven ([[maat]] en [[mat]], [[baas]] en [[bas]].
+*[3] Kleine letter a bij: de naam van een toon, “kleine terts” en “mineur,” hoofdletter bij “grote terts” en “majeur”
+{{-homo-}}
+*[[A]]
+{{-syn-}}
+*[4] [[la]]
+{{-ant-}}
+*[5] [[A]]
+{{-prov-}}
+*Wie a zegt moet ook [[b]] zeggen.
+**''Als je aan iets bent begonnen moet je het ook afmaken''
+**''Stoppen is onverantwoordelijk''
+{{-expr-}}
+*van A tot Z
+**''Van het begin tot het einde.''
+{{-drv-}}
+*[[a capella]], [[a contrario]], [[a goet jor]], [[a goete woch]], [[a kleine terts]], [[a posteriori]], [[a prima vista]], [[a priori]], [[atechnisch]], [[aweg]], [[awel]]
+{{-trans-}}
+{{trans-top|4. de naam van een toon}}
+*{{deu}}: {{trad|de|a}} {{n}}
+{{trans-mid}}
+*{{fra}}: {{trad|fr|la}} {{m}}
+{{trans-bottom}}
+{{trans-top|5. afkorting van “a-mineur”}}
+*{{deu}}: {{trad|de|a}}
+{{trans-bottom}}
+{{-preval-}}
+{{wel-GB}}
+{{-info-}}
+
+{{=afr=}}
+{{-afnoun-|a|[[a's]]}}
+{{-etym-}}
+* Afgeleid van het Latijnse [[annus]]
+{{-noun-|afr}}
+'''a'''
+# {{Q|a|nld}}; {{afkorting|afr}} afkorting voor jaar
+
+{{=xno=}}
+{{-noun-|xno}}
+'''a'''
+# {{taalkunde|xno}} {{Q|a|nld}} ''(de eerste letter van het Anglo-Normandische alfabet)''
+{{-writ-}}
+*{{Q|A|xno}}
+
+{{=ang=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/ɑː/|ang}}
+{{-etym-}}
+* Afgeleid van het Proto-Germaanse [[*aiwaz]]
+{{-adverb-|ang}}
+'''a'''
+# [[altijd]]
+
+{{=bar=}}
+{{-art-|bar}}
+'''a'''
+# [['n]], [[een]]; onbepaald lidwoord
+
+{{=cim=}}
+{{-etym-}}
+* Afgeleid van het Middelhoogduitse [[ein]]
+{{-art-|cim}}
+'''a'''
+# [['n]], [[een]]; onbepaald lidwoord
+{{-writ-}}
+* [[an]]
+
+{{=deu=}}
+{{-pron-}}
+*{{sound}}: {{audio|de-a.OGG|a|deu}}
+{{-syll-}}
+*a
+{{-noun-|deu}}
+'''a''' {{n}}
+#{{muziek|deu}} de toon ”a”
+#{{muziek|deu}}, {{afkorting|deu}} afkorting van “[[a-mineur]]”
+{{bijv-2|Eine Sonate in '''a'''.|Een sonate in a.}}
+{{-writ-}}
+*Kleine letter a bij: een toon, “kleine terts” en “mineur, hoofdletter bij "grote terts" en "majeur"
+{{-ant-}}
+*[2] [[A]]
+{{-drv-}}
+*[2] [[a-Moll]], [[a-Moll-Tonleiter]]
+
+{{=eng=}}
+{{freq|5}}
+{{-art-|eng}}
+'''a'''
+#[[een]]
+{{-syn-}}
+*[[an]] (''voor woorden beginnend met een klinker'')
+
+{{=fra=}}
+{{-verb-|0}}
+{{fra-verb-form|avoir|pers=3|num=s|temp=ip}}
+{{bijv-1|Il '''a''' un cadeau pour ton anniversaire.|Hij '''heeft''' een cadeau voor je verjaardag.}}
+
+{{=gil=}}
+{{-pronoun-|gil}}
+'''a'''
+#[[zij]] (''meervoud'')
+
+{{=hun=}}
+{{-art-|hun}}
+'''a'''
+#[[de]], [[het]]
+{{-syn-}}
+*[[az]] (''voor woorden beginnend met een klinker'')
+
+{{=szl=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|szl}}
+{{-syll-}}
+* a
+{{-conj-|szl}}
+'''a'''
+# [[en]]
+{{-prtc-|szl}}
+'''a'''
+# [[en]]; een verbondenheid uitdrukkend met de voorgaande zin
+
+{{=ita=}}
+*{{sound}}: {{audio|it-a.ogg|a|ita}}
+*{{WikiW|IPA}}: {{IPA|/a/|ita}}
+{{-prep-|ita}}
+'''a'''
+#[[in]]
+#[[bij]]
+#[[naar]]
+
+{{=csb=}}
+{{-conj-|csb}}
+'''a'''
+# [[maar]]
+
+{{=lat=}}
+{{-prep-nv-|lat|abl|ā}}
+#nevenvorm van [[ab]] vóór een medeklinker
+
+{{=lav=}}
+{{-interj-|lav}}
+'''a'''
+#[[nou]] ''(om onwilligheid uit te drukken)''
+{{-rel-}}
+*[[e]]
+*[[eh]]
+*[[ek]]
+
+{{=lim=}}
+{{-syll-}}
+* a
+{{-noun-|lim}}
+'''a''' {{f}}
+# {{muziek|lim}} {{Q|a|nld}}; de standaardmuziektoon van 440 Hz
+
+{{=ltz=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/ɑ/|ltz}}
+{{-syll-}}
+* a
+{{-conj-|ltz}}
+'''a'''
+# [[en]]
+{{-writ-}}
+* [[an]]
+
+{{=enm=}}
+{{-pronom-pers-|enm}}
+'''a'''
+# [[ik]]; 1e persoon enkelvoud {{nv.nom}}
+{{-writ-}}
+* [[I]]
+
+{{=dum=}}
+{{-etym-}}
+* Afgeleid van het Oudnederlandse {{Q|a|odt}} / [[ā]]
+{{-noun-|dum}}
+'''a''' {{f}}
+# [[water]], [[watering]], [[watergang]]
+{{-writ-}}
+* [[â]]
+{{refs}}
+* [http://gtb.inl.nl/iWDB/search?wdb=VMNW&actie=article&id=ID90252 Vroegmiddelnederlands Woordenboek - Instituut voor de Nederlandse taal]
+
+{{=dsb=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|dsb}}
+{{-syll-}}
+* a
+{{-conj-|dsb}}
+'''a'''
+# [[en]]
+{{-typ-}}
+* [[a … a]]
+
+{{=nor=}}
+{{-pron-}}
+*{{sound}}: {{audio|no-a.ogg|a|nor}}
+{{-syll-}}
+*a
+{{-etym-}}
+*Afkomstig uit het Italiaans.
+{{-abbr-|nor}}
+'''a'''
+#{{afkorting|nor}} de Noorse afkorting voor ''anno''
+{{-drv-}}
+*[[a.D.]]
+{{-abbr-|nor}}
+'''a'''
+#{{wiskunde|nor}}, {{eenheid|nor}}, {{afkorting|nor}} de afkorting voor ''ar'', een oppervlaktemaat
+{{-abbr-|nor}}
+'''a'''
+#{{afkorting|nor}} de afkorting voor ''annet''
+#{{afkorting|nor}} de afkorting for ''andre''
+{{-drv-}}
+*[[m.a.]], [[o.a.]]
+{{-prep-|nor}}
+'''a'''
+#''(voornamelijk)'' [[met]], [[in]], [[op]], [[voor]]
+{{-drv-}}
+*[[a cappella]], [[a konto]]
+{{-nonoun-|a|a-en|a-er|a-ene|a-s|a-ens|a-ers|a-enes}}
+{{-noun-|nor}}
+'''a''' {{m}}
+#{{taalkunde|nor}} {{Q|a|nld}}, de eerste letter van het Noorse alfabet, klinker
+#{{muziek|nor}} a (kamertoon, normaaltoon, muzieknoot, geluid)
+{{-writ-}}
+*[[à]]
+*[[A]]
+{{-hyper-}}
+*[[bokstav]], [[vokal]]
+{{-drv-}}
+*[2]: [[a-moll]]
+{{-typ-}}
+{{expr|num=2|kammertone a|kamertoon a}}
+
+{{=nno=}}
+{{-pron-}}
+*{{sound}}: {{audio|no-a.ogg|a|nno}}
+{{-syll-}}
+*a
+{{-abbr-|nno}}
+'''a'''
+#{{afkorting|nno}} de Nynorske afkorting voor ''anno''
+{{-drv-}}
+*[[a.D.]]
+{{-abbr-|nno}}
+'''a'''
+#{{wiskunde|nno}}, {{eenheid|nno}}, {{afkorting|nno}} de afkorting voor ''ar'', een oppervlaktemaat
+{{-abbr-|nno}}
+'''a'''
+#{{afkorting|nno}} de afkorting voor ''anna''
+#{{afkorting|nno}} de afkorting for ''andre''
+{{-drv-}}
+*[[m.a.]], [[o.a.]]
+{{-etym-}}
+*Afkomstig uit het Italiaans.
+{{-prep-|nno}}
+'''a'''
+#''(voornamelijk)'' [[met]], [[in]], [[op]], [[voor]]
+{{-drv-}}
+*[[a cappella]], [[a konto]]
+{{-nnnoun1-|a|a-en|a-ar|a-ane}}
+{{-noun-|nno}}
+'''a''' {{m}}
+#{{taalkunde|nno}} {{Q|a|nld}}, de eerste letter van het Nynorske alfabet, klinker
+#{{muziek|nno}} a (kamertoon, normaaltoon, muzieknoot, geluid)
+{{-writ-}}
+*[[à]]
+*[[A]]
+{{-hyper-}}
+*[[bokstav]], [[vokal]]
+{{-drv-}}
+*[2]: [[a-moll]]
+{{-typ-}}
+{{expr|num=2|kammertone a|kamertoon a}}
+
+{{=hsb=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|hsb}}
+{{-syll-}}
+* a
+{{-conj-|hsb}}
+'''a'''
+# [[en]]
+
+{{=odt=}}
+{{-etym-}}
+* Afgeleid van het Proto-Germaanse [[*ahwō]]
+{{-noun-|odt}}
+'''a''' {{f}}
+# [[water]], [[rivier]]
+{{-writ-}}
+* [[ā]]
+* [[aha]]
+{{refs}}
+* [http://gtb.inl.nl/iWDB/search?wdb=ONW&actie=article&id=ID466 Oudnederlands Woordenboek - Instituur voor de Nederlandse taal]
+
+{{=non=}}
+{{-syll-}}
+*a
+{{-nonnoun-|a}}
+{{-noun-|non}}
+'''a''' {{m}}
+#{{taalkunde|non}} {{Q|a|nld}}, de eerste letter van het Oudnoorse alfabet, klinker
+{{-writ-}}
+*[[á]]
+*[[A]]
+{{-hyper-}}
+*[[bókstafr]], [[stafr]]
+
+{{=pol=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|pol}}
+{{-syll-}}
+* a
+{{-conj-|pol}}
+'''a'''
+# [[en]]
+# [[maar]]
+{{-syn-}}
+# [[i]], [[oraz]]
+# [[ale]], [[natomiast]], [[zaś]]
+
+{{=por=}}
+{{-syll-}}
+* a
+{{-art-|por}}
+'''a''' {{f}}
+# het enkelvoudig bepaald vrouwelijk [[lidwoord]]
+
+{{=sco=}}
+{{-art-|sco}}
+'''a'''
+# [['n]], [[een]]; onbepaald lidwoord
+
+{{=slk=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|slk}}
+{{-syll-}}
+* a
+{{-letter-|slk}}
+'''a'''
+# [[a]]; de eerste letter van het Slowaakse alfabet.
+{{-etym-}}
+* Afgeleid van het Proto-Slavische [[*a]].
+{{-conj-|slk}}
+'''a'''
+# [[en]]; twee woorden of twee zinnen verbindend.
+{{-syn-}}
+* [[i]]
+{{-typ-}}
+{{(}}
+* [[a čo]]
+* [[a jednako]]
+* [[a predsa]]
+{{==}}
+* [[a preto]]
+* [[a tak]]
+* [[a teda]]
+{{)}}
+
+{{=sux=}}
+{{-noun-|sux}}
+'''a'''
+# [[water]]
+
+{{=spa=}}
+{{-pron-}}
+*{{sound}}: {{audio|es-a.ogg|a|spa}}
+<!--*{{WikiW|IPA}}: {{IPA|/ xxxx/|spa}}-->
+{{-syll-}}
+*a
+{{-esnoun-|a|-}}
+{{-noun-|spa}}
+'''a''' {{f}}
+# de letter {{Q|a|nld}}
+{{raes}}
+{{-prep-|spa}}
+'''a'''
+#[[aan]]
+#[[naar]], [[in]], [[tot]]
+#[[om]], om te
+#[[op]]
+#[[indien]], [[als]]
+
+{{=tok=}}
+[[Bestand:a - sitelen pona in Sonja Lang's handwriting.svg|rechts|miniatuur|''{{pn}}'' in [[Sitelen Pona]]]]
+{{-pron-}}
+*{{sound}}: {{audio|Toki Pona - jan Lakuse - a.ogg|{{pn}}|tok}}
+*{{WikiW|IPA}}: {{IPA|/a/|tok}}
+{{-syll-}}
+*a
+{{-etym-}}
+*[[onomatopee|Onomatopee]].
+{{-interj-|tok}}
+'''{{pn}}'''
+#een generieke uitroep
+
+{{=ces=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/a/|ces}}
+* {{sound}}: {{audio|Cs-a.ogg|a|ces}}
+{{-syll-}}
+* a
+{{-letter-|ces}}
+'''a'''
+# {{Q|a|nld}}; de eerste letter van het Tsjechische alfabet.
+{{-typ-}}
+* [[od a do z]]
+{{-etym-}}
+* Afgeleid van het Proto-Slavische [[*a]].
+{{-conj-|ces}}
+'''a'''
+# [[en]]; twee woorden of twee zinnen verbindend.
+# {{wiskunde|ces}} [[plus]]; optelling.
+{{-syn-}}
+# [[i]], [[také]], [[taky]], ''(dialect: West-Boheems)'' [[ha]]
+# [[plus]]
+{{-typ-}}
+* [[tu a tam]]
+* [[a tak dále]]
+* [[a také]]
+{{refs}}
+* [http://prirucka.ujc.cas.cz/?id=a Internetová jazyková příručka - Ústav pro jazyk český AV ČR] (Tsjechisch)
+{{-prtc-|ces}}
+'''a'''
+# [[en]]; een verbondenheid uitdrukkend met de voorgaande zin.
+{{-typ-}}
+* [[a to]]
+* [[a sice]]
+{{refs}}
+* [http://prirucka.ujc.cas.cz/?id=a_1 Internetová jazyková příručka - Ústav pro jazyk český AV ČR] (Tsjechisch)
+{{-symbool-}}
+'''a'''
+# {{muziek|ces}} {{Q|a|nld}}; de naam van een toon, noot en akkoord.
+{{refs}}
+* [http://bara.ujc.cas.cz/ssjc/search.php?&heslo=a&hsubstr=no Slovník spisovného jazyka českého - Ústav pro jazyk český AV ČR] (Tsjechisch)
+
+{{=tvl=}}
+{{-art-|tvl}}
+'''a'''
+#[[de]] (meervoud, wordt niet vertaald)
+
+{{=cym=}}
+{{-conj-|cym}}
+'''a'''
+#[[en]]
+
+{{kcg-interwiki}}

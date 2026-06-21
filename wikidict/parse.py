@@ -208,6 +208,9 @@ def process(file: Path, locale: str) -> bool:
             case "ja":
                 if "{{kanji header" in body:
                     body = f"=={{{{kanji}}}}==\n{body}"
+            case "nl":
+                # `{{=nld=}}` → `=={{nld}}==`
+                body = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
             case "ru":
                 # Redirections (`#перенаправление [[REDIRECT_TO]]`
                 if body.startswith("#перенаправление"):

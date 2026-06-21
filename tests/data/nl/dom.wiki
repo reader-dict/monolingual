@@ -1,0 +1,151 @@
+{{zie-ook|dóm}}
+
+{{=nld=}}
+{{zie-ook|-dom}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|dɔm}}
+{{-syll-}}
+*dom
+{{-nlnoun-|{{pn}}|[[#Opmerkingen|''alternatief:'']]<br />([[domkerken]])|-|-|1.}}
+{{-nlnoun-|{{pn}}|[[{{pn}}men]]|{{pn}}metje|{{pn}}metjes|2.}}
+{{-etym-}}
+* In de betekenis van ‘niet wijs’ voor het eerst aangetroffen in het jaar 901 {{sijs}}
+* Leenwoord uit het Portugees, in de betekenis van ‘Portugese titel’ voor het eerst aangetroffen in het jaar 1574 {{sijs}}
+* Leenwoord uit het Frans, in de betekenis van ‘kerk’ voor het eerst aangetroffen in het jaar 1574 {{sijs}}
+{{-nlnoun-|{{pn}}|[[{{pn}}s]]|{{pn}}metje|{{pn}}metjes|3. - 4.}}
+{{-noun-|nld}}
+{{-l-|m}} {{wnt-r|M013909}}
+#{{religie|nld}} [[kathedraal]], de hoofdkerk van een [[bisdom]] {{wnt-r|M013908}}
+#{{bouwkunde|nld}} dak in de vorm van een halve bol
+#Portugese eretitel
+#{{religie|nld}} titel van een [[benedictijner]] monnik
+{{-note-}}
+*In de betekenis van kathedraal is het alleen gangbaar voor het aanduiden van een bepaald kerkgebouw, bijvoorbeeld ''"de dom van Utrecht"'' of ''"de Keulse dom"'', maar niet onbepaald (met het lidwoord ''een'') of in het meervoud {{wnt-r|M013908}}. Hiervoor kan beter (een vorm van) het woord "[[domkerk]]" worden gebruikt.
+{{-syn-}}
+#(''hoofdkerk'')
+#*[[kathedraal]]
+#(''boldak'')
+#*[[koepel]]
+{{-drv-}}
+*[1] [[domheer]], [[domkerk]], [[domstad]], [[domtoren]]
+{{-rel-}}
+#(''hoofdkerk'')
+#*[[basiliek]]
+{{-trans-}}
+{{trans-top|1. hoofdkerk van een bisdom}}
+* {{bos}}: {{trad|bs|katedrala}} {{f}}
+* {{deu}}: {{trad|de|Dom}} {{m}}
+* {{zho}}: {{trad|zh|大教堂}} (dà jiào táng)
+* {{eng}}: {{trad|en|cathedral}}
+* {{fin}}: {{trad|fi|tuomiokirkko}}, {{trad|fi|katedraali}}
+* {{fra}}: {{trad|fr|dôme}} {{m}}
+{{trans-mid}}
+* {{ita}}: {{trad|it|duomo}} {{m}}
+* {{kor}}: {{trad|ko|대성당}} (daeseongdang)
+* {{rus}}: {{trad|ru|собор}} {{m}}
+* {{srp}}: {{trad|sr|катедрала}} {{f}}
+* {{swe}}: {{trad|sv|dom}} {{c}}
+{{trans-bottom}}
+{{trans-top|2. bolvormig dak}}
+*{{eng}}: {{trad|en|dome}}
+*{{fin}}: {{trad|fi|kupu}}
+*{{fra}}: {{trad|fr|dôme}} {{m}}
+{{trans-mid}}
+*{{ita}}: {{trad|it|cupola}} {{f}}
+*{{spa}}: {{trad|es|domo}} {{m}}
+*{{swe}}: {{trad|sv|dom}} {{c}}
+{{trans-bottom}}
+{{adjcomp|p=1|{{pn}}|[[{{pn}}me]]|[[{{pn}}mer]]|[[{{pn}}mere]]|[[{{pn}}st]]|[[{{pn}}ste]]|part=[[{{pn}}s]]|partcomp=[[{{pn}}mers]]}}
+{{-adjc-|nld}}
+'''{{pn}}''' {{wnt-r|M013910}}
+#van weinig verstand getuigend
+{{bijv-1|Ik ben '''dom''' geboren en heb niets bijgeleerd.}}
+{{citeer|boek|jaar=2017|auteur=Jan Guillou (vert. Bart Kraamer)|titel=Echte Amerikaanse jeans|isbn=9789044632767|uitgever=Uitgeverij Prometheus|taal=nl| citaat= Hoe kon ze dat weten? Was je automatisch dom als je een 'Amerikaanse' naam had gekregen? Het was onbegrijpelijk maar op dit moment niet heel erg belangrijk vergeleken met alle andere dingen die ik moest proberen te begrijpen. }}
+{{citeer|artikel|datum = 16 april 2025
+|auteur = Noor de Kort |titel = Nederlanders willen geen fietshelm, maar dat gaat misschien veranderen|url = https://nos.nl/artikel/2563776-nederlanders-willen-geen-fietshelm-maar-dat-gaat-misschien-veranderen|uitgever = NOS|bezochtdatum =2025-04-16|citaat=
+Ze vindt het "een beetje" dom dat de meeste Nederlanders er niet aan willen. "Vooral als ik zie dat kinderen wel een helm dragen, maar hun ouders niet. Dan denken die kinderen: als ik ouder ben, hoeft het niet meer."
+}}
+#min of meer toevallig
+{{bijv-1|Het is '''dom''' geluk geweest dat ik mijn examen gehaald heb.}}
+{{citeer|boek|jaar=2006|auteur=Suzanne Vermeer|titel=All-inclusive|uitgever=A. W. Bruna Uitgevers B. V. , Utrecht|isbn=90-229-9182-2|taal=nl|citaat= De verhalen op www. zowelbedorvenvleesalsverrottevis. nl hadden namelijk twee dingen gemeen. Ze speelden zich af in een all-inclusive resort en op het eerste gezicht was er sprake van een ongeluk of '''domme''' pech.}}
+# routinematig, weinig geestelijke inspanning vereisend
+{{citeer|boek|jaar=2024|auteur=Govert Schilling|titel=Nieuws uit de kosmos|isbn=9789464043075|uitgever=Fontaine Uitgevers|taal=nl|citaat= Ervaring opdoen - ook als het gaat om dom onderhoud.}}
+{{-ant-}}
+*[[slim]], [[intelligent]]
+{{-hypo-}}
+{{intens|nld|1}} [[aartsdom]], [[ezelsdom]], [[indom]], [[oerdom]], [[oliedom]], [[stom]]
+{{-drv-}}
+*[[domheid]], [[domkop]], [[dommekracht]], [[dommelijk]], [[dommerik]], [[dommig]], [[domoor]], [[domweg]]
+{{-rel-}}
+*[[bot]], [[dol]], [[dwaas]], [[onbenullig]], [[onnozel]], [[onverstandig]], [[schaapachtig]], [[simpel]], [[stom]], [[stompzinnig]], [[zot]], [[zwakhoofdig]]
+{{-expr-}}
+{{expr|zich van de '''{{pn}}me''' houden|zich dommer, onkundiger houden dan men in werkelijkheid is}}
+{{expr|hij is te '''dom''' om voor de duvel te dansen|hij is heel dom}}
+{{expr|hij is zo '''dom''' als het achtereinde van een varken|hij is heel dom}}
+{{expr|hij is zo '''dom''' als het achtereinde van een koe|hij is heel dom}}
+**''zich onnozel voordoen''
+{{-trans-}}
+{{trans-top|1. van weinig verstand getuigend}}
+* {{deu}}: {{trad|de|dumm}}
+* {{eng}}: {{trad|en|dumb}}
+* {{fra}}: {{trad|fr|stupide}}
+* {{ita}}: {{trad|it|stupido}}
+*{{mri}}: {{trad|mi|hangū}}, {{trad|mi|wahangū}}
+* {{pol}}: {{trad|pl|głupi}} {{m}}, {{trad|pl|głupia}} {{f}}, {{trad|pl|głupie}} {{n}}
+{{trans-mid}}
+* {{rus}}: {{trad|ru|глупый}} {{m}}, {{trad|ru|глупая}} {{f}}
+* {{spa}}: {{trad|es|estúpido}}
+* {{ces}}: {{trad|cs|blbý}}, {{trad|cs|hloupý}}
+* {{tur}}: {{trad|tr|aptal}}, {{trad|tr|salak}}, {{trad|tr|bön}}
+* {{swe}}: {{trad|sv|dum}}, {{trad|sv|fånig}}
+{{trans-bottom}}
+{{-preval-}}
+{{wel-GB}}
+{{Leesonderzoek-2013}}
+{{-info-}}
+{{refs}}
+
+{{=pol=}}
+{{-pron-}}
+*{{WikiW|IPA}}: {{IPA|/d̪ɔm/|pol}}
+{{-syll-}}
+*dom
+{{-noun-|pol}}
+'''{{pn}}''' {{m}}
+#[[huis]]
+{{bijv-2|Ich nowy '''{{pn}}''' ma trzy łazienki.|Hun nieuw '''huis''' heeft drie badkamers.}}
+#[[thuis]]
+{{-decl-}}
+{{-plnoun-|{{pn}}|{{pn}}y|{{pn}}u|{{pn}}ów|{{pn}}owi|{{pn}}om|{{pn}}|{{pn}}y|{{pn}}em|{{pn}}ami|{{pn}}u|{{pn}}ach|{{pn}}u|{{pn}}y}}
+
+{{=ces=}}
+{{-pron-}}
+* {{WikiW|IPA}}: {{IPA|/dɔm/|ces}}
+{{-syll-}}
+* dom
+{{-adverb-|ces}}
+'''dom'''
+# [[naar]] [[huis]]
+{{bijv-2|Půjdem '''dom'''.|We gaan '''naar huis'''.}}
+{{-writ-}}
+* [[domů]] {{bw}}
+* [[dum]] {{bw}}
+{{-par-}}
+* [[dóm]] {{m}}{{i}}
+
+{{=swe=}}
+{{-pron-}}
+*{{WikiW|IPA}}: {{IPA|/duːm/|swe}}
+{{-syll-}}
+*dom
+{{-noun-|swe}}
+'''{{pn}}''' {{c}}
+#[[dom#Nederlands|dom]] (''koepel'')
+{{-decl-}}
+{{-svnoun-|{{pn}}|{{pn}}en|{{pn}}er|{{pn}}erna|{{pn}}s|{{pn}}ens|{{pn}}ers|{{pn}}ernas}}
+{{-noun-|swe}}
+'''{{pn}}''' {{c}}
+#[[vonnis]]
+{{-decl-}}
+{{-svnoun-|{{pn}}|{{pn}}en|{{pn}}ar|{{pn}}arna|{{pn}}s|{{pn}}ens|{{pn}}ars|{{pn}}arnas}}

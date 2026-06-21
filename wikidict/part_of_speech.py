@@ -67,6 +67,10 @@ PATTERNS = {
         # `daiktavardis #1` → `daiktavardis`
         re.compile(r"(.+) #\d").sub,
     ],
+    "nl": [
+        # `{{noun|nld}}` → `noun`
+        re.compile(r"\{\{([^|}]+).*").sub,
+    ],
     "no": [
         # `verb 1` → `verb`
         re.compile(r"([^\s,]+),?\s+.*").sub,
@@ -254,6 +258,23 @@ MERGE = {
     "lt": {
         "top": "daiktavardis",
         "simboliai": "simbolis",  # symbol
+    },
+    "nl": {
+        "abbr": "afkorting",
+        "adjc": "bijvoeglijk naamwoord",
+        "decl": "verbuiging",
+        "expr": "uitdrukkingen en gezegden",
+        "interj": "tussenwerpsel",
+        "name": "eigennaam",
+        "note": "opmerkingen",
+        "noun": "zelfstandig naamwoord",
+        "pref": "voorvoegsel",
+        "prep": "voorzetsel",
+        "pronom-indef": "onbepaald voornaamwoord",
+        "prov": "spreekwoorden",
+        "syn": "synoniemen",
+        "top": "zelfstandig naamwoord",
+        "verb": "werkwoord",
     },
     "no": {
         "forkortelser": "forkortelse",
