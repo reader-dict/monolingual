@@ -251,6 +251,13 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("lt", "daiktavardis #1")
     'Daiktavardis'
 
+    >>> format_pos("nl", "{{noun|nld}}")
+    'Zelfstandig Naamwoord'
+    >>> format_pos("nl", "interj2")
+    'Tussenwerpsel'
+    >>> format_pos("nl", "pronom-pos")
+    'Voornaamwoord'
+
     >>> format_pos("no", "verb 1")
     'Verb'
     >>> format_pos("no", "egennavn, toponym")

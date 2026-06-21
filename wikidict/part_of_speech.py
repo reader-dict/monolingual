@@ -70,6 +70,10 @@ PATTERNS = {
     "nl": [
         # `{{noun|nld}}` → `noun`
         re.compile(r"\{\{([^|}]+).*").sub,
+        # `interj2` → `interj`
+        re.compile(r"(.+)+\d").sub,
+        # `pronom-pos` → `pronom`
+        re.compile(r"(pronom)-\w+").sub,
     ],
     "no": [
         # `verb 1` → `verb`
@@ -270,7 +274,7 @@ MERGE = {
         "noun": "zelfstandig naamwoord",
         "pref": "voorvoegsel",
         "prep": "voorzetsel",
-        "pronom-indef": "onbepaald voornaamwoord",
+        "pronom": "voornaamwoord",
         "prov": "spreekwoorden",
         "syn": "synoniemen",
         "top": "zelfstandig naamwoord",
