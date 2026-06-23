@@ -352,15 +352,6 @@ class BaseFormat:
         log.info("[%s] Crafted %s (%s)", self.id(), checksum_file.name, checksum)
 
     def summary(self, file: Path) -> None:
-        if type(self).__name__ in {KoboFormat.__name__, DictFileFormat.__name__, DictFileFormatForMobi.__name__}:
-            log.info(
-                "[%s] Effective words + variants: %s + %s => %s",
-                self.id(),
-                f"{self.words_count:,}",
-                f"{self.variants_count:,}",
-                f"{self.words_count + self.variants_count:,}",
-            )
-
         log.info(
             "[%s] Generated %s (%s bytes) in %s",
             self.id(),
@@ -378,7 +369,21 @@ class BaseFormat:
         )
 
 
-class KoboFormat(BaseFormat):
+class Summary(BaseFormat):
+    """Display words + variants summary for primary formaters."""
+
+    def summary(self, file: Path) -> None:
+        log.info(
+            "[%s] Effective words + variants: %s + %s => %s",
+            self.id(),
+            f"{self.words_count:,}",
+            f"{self.variants_count:,}",
+            f"{self.words_count + self.variants_count:,}",
+        )
+        super().summary(file)
+
+
+class KoboFormat(Summary, BaseFormat):
     """Save the data into Kobo-specific ZIP file."""
 
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"
@@ -483,7 +488,7 @@ class KoboFormat(BaseFormat):
         super().summary(file)
 
 
-class DictFileFormat(BaseFormat):
+class DictFileFormat(Summary, BaseFormat):
     """Save the data into a *.df* DictFile."""
 
     output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df"
