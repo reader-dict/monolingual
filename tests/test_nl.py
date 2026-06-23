@@ -55,6 +55,30 @@ def setup_lua_ctx() -> None:
             ["a's", "a'tje", "a'tjes"],
         ),
         (
+            "B",
+            ["/be/"],
+            ["m"],
+            ["verkorting van bachelor, binnen de Europese Unie gestandaardiseerd"],
+            {
+                "Synoniemen": ["Bravo <i>(NAVO-spellingsalfabet)</i>"],
+                "Symbool": [
+                    "(scheikunde), (element) symbool voor het scheikundig element boor/borium met atoomnummer 5, een metalloïde",
+                    "(informatica), (afkorting) het symbool voor byte, het kleinste adresseerbare gedeelte van een computergeheugen",
+                    "(medisch) het symbool voor een bepaalde bloedgroep",
+                    "(materiaalkunde) symbool voor de zachtheid van een potlood, in toenemende zachtheid: B, 2B, 3B, 4B, 5B, 6B, 7B, 8B en 9B",
+                    "(muziek) symbool van het “B-majeurakkoord”",
+                ],
+                "Zelfstandig Naamwoord": [
+                    "(taalkunde) hoofdletter van de b, de tweede letter van het alfabet",
+                    "(muziek), (afkorting) afkorting van “B-majeur”",
+                    "als benaming binnen een reeks categorieën die met letters worden aangeduid",
+                ],
+                "Afkorting": ["bachelor <i>(academische titel)</i>"],
+            },
+            [],
+            ["B's", "B'tje", "B'tjes"],
+        ),
+        (
             "chatterbot",
             [],
             ["m"],

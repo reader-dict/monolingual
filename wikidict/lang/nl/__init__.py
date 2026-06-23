@@ -2,7 +2,8 @@
 
 import re
 
-from ... import context, utils
+from ... import context, lang, utils
+from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://nl.wiktionary.org/wiki/Speciaal:WillekeurigeUitCategorie/Woorden_in_het_Nederlands"
@@ -44,13 +45,8 @@ variant_templates = (
     "{{noun-pl",
 )
 
-reverse_variant_titles = "{{-nlnoun-"
+reverse_variant_titles = ("{{adjcomp", "{{-nlnoun-", "{{-nlverb-")
 reverse_variant_templates = ("{{rev-flexion",)
-
-templates_ignored = (
-    "{{audio",
-    "{{sound",
-)
 
 # https://nl.wiktionary.org/wiki/WikiWoordenboek:Genus#Nederlands
 GENDERS = {
@@ -115,33 +111,6 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return res
 
 
-IGNORED_VARIANTS = {"#Opmerkingen", "alternatief:"}
-
-
-def cleanup_rev_variant(matches: re.Match[str]) -> str:
-    variants = re.sub(r"<br\s*/?>", "|", matches[1])
-    return "\n".join(
-        f"# {{{{rev-flexion|{sm}}}}}"
-        for variant in variants.split("|")
-        if (
-            (
-                sm := variant.strip()
-                .split("=", 1)[-1]
-                .replace("(lang)", "")
-                .replace("(verkort)", "")
-                .split(" (", 1)[0]
-                .split(" ''(", 1)[0]
-                .split(") ", 1)[0]
-                .replace("]", "")
-                .strip(" []()'-,")
-            )
-            and (sm := re.sub(r"\s*\(?\d[).]?\s*", "", sm))
-            and len(sm) > 1
-            and sm not in IGNORED_VARIANTS
-        )
-    )
-
-
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -150,35 +119,47 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
+    >>> _ = context.reset("nl")
+
+    >>> context.new_word("pover")
     >>> adjust_wikicode("{{adjcomp|p=1|{{pn}}|[[{{pn}}e]]|[[{{pn}}der]]|[[{{pn}}dere]]|[[{{pn}}st]]|[[{{pn}}ste]]|part=[[{{pn}}s]]|partcomp=[[{{pn}}ders]]}}", "nl", word="pover")
-    '==={{adjc}}===\n# {{rev-flexion|pover}}\n# {{rev-flexion|povere}}\n# {{rev-flexion|poverder}}\n# {{rev-flexion|poverdere}}\n# {{rev-flexion|poverst}}\n# {{rev-flexion|poverste}}\n# {{rev-flexion|povers}}\n# {{rev-flexion|poverders}}'
+    '==={{noun}}===\n# {{rev-flexion|poverder}}\n# {{rev-flexion|poverdere}}\n# {{rev-flexion|poverders}}\n# {{rev-flexion|povere}}\n# {{rev-flexion|povers}}\n# {{rev-flexion|poverst}}\n# {{rev-flexion|poverste}}'
 
+    >>> context.new_word("B")
+    >>> adjust_wikicode("{{-nlnoun-|{{QZ|{{pn}}|nld}}|[[{{pn}}'s]]|[[{{pn}}'tje]]|[[{{pn}}'tjes]]}}", "nl", word="B")
+    "==={{noun}}===\n# {{rev-flexion|B's}}\n# {{rev-flexion|B'tje}}\n# {{rev-flexion|B'tjes}}"
+
+    >>> context.new_word("nikkel")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|-|[[nikkeltje]](2)|[[nikkeltjes]](2)}}", "nl", word="nikkel")
-    '==={{noun}}===\n# {{rev-flexion|nikkel}}\n# {{rev-flexion|nikkeltje}}\n# {{rev-flexion|nikkeltjes}}'
+    '==={{noun}}===\n# {{rev-flexion|nikkeltje}}\n# {{rev-flexion|nikkeltjes}}'
 
+    >>> context.new_word("canzone")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[canzones]]<br/>[[canzonen]] ''(verouderd)''<br/>[[canzone's]] ''(meer Italiaans)''|-|-}}", "nl", word="canzone")
-    "==={{noun}}===\n# {{rev-flexion|canzone}}\n# {{rev-flexion|canzones}}\n# {{rev-flexion|canzonen}}\n# {{rev-flexion|canzone's}}"
+    "==={{noun}}===\n# {{rev-flexion|canzone's}}\n# {{rev-flexion|canzonen}}\n# {{rev-flexion|canzones}}"
 
+    >>> context.new_word("get")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[gitien]] (Hebreeuws),<br />[[getten]] (Jiddisj)|-|-|2.|[A]}}", "nl", word="get")
-    '==={{noun}}===\n# {{rev-flexion|get}}\n# {{rev-flexion|gitien}}\n# {{rev-flexion|getten}}'
+    '==={{noun}}===\n# {{rev-flexion|getten}}\n# {{rev-flexion|gitien}}'
 
+    >>> context.new_word("Aborigine")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|''(lang)'' [[Aborigine's]]<br>''(verkort)'' [[Aborigines]]|||}}", "nl", word="Aborigine")
-    "==={{noun}}===\n# {{rev-flexion|Aborigine}}\n# {{rev-flexion|Aborigine's}}\n# {{rev-flexion|Aborigines}}"
+    "==={{noun}}===\n# {{rev-flexion|Aborigine's}}\n# {{rev-flexion|Aborigines}}"
 
+    >>> context.new_word("ijzer(III)fosfaat")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[ijzer(III)fosfaten]]}}", "nl", word="ijzer(III)fosfaat")
-    '==={{noun}}===\n# {{rev-flexion|ijzer(III)fosfaat}}\n# {{rev-flexion|ijzer(III)fosfaten}}'
+    '==={{noun}}===\n# {{rev-flexion|ijzer(III)fosfaten}}'
 
+    >>> context.new_word("butin")
     >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[burins]]|([[burintje]]) [[#Opmerkingen|*]]|([[burintjes]]) [[#Opmerkingen|*]]}}", "nl", word="butin")
-    '==={{noun}}===\n# {{rev-flexion|butin}}\n# {{rev-flexion|burins}}\n# {{rev-flexion|burintje}}\n# {{rev-flexion|burintjes}}'
+    '==={{noun}}===\n# {{rev-flexion|burins}}\n# {{rev-flexion|burintje}}\n# {{rev-flexion|burintjes}}'
 
-    >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[{{pn}}s]]|''([[{{pn}}tje]])''|''([[{{pn}}tjes]])''}}", "nl", word="stichter")
-    '==={{noun}}===\n# {{rev-flexion|stichter}}\n# {{rev-flexion|stichters}}\n# {{rev-flexion|stichtertje}}\n# {{rev-flexion|stichtertjes}}'
+    >>> context.new_word("stichter")
+    >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[{{pn}}s]]|\n''([[{{pn}}tje]])''|''([[{{pn}}tjes]])''}}", "nl", word="stichter")
+    '==={{noun}}===\n# {{rev-flexion|stichters}}\n# {{rev-flexion|stichtertje}}\n# {{rev-flexion|stichtertjes}}'
 
-    >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[{{pn}}s]]|\n''([[{{pn}}tje]])''|\n''([[{{pn}}tjes]])''\n}}", "nl", word="stichter")
-    '==={{noun}}===\n# {{rev-flexion|stichter}}\n# {{rev-flexion|stichters}}\n# {{rev-flexion|stichtertje}}\n# {{rev-flexion|stichtertjes}}'
-
+    >>> context.new_word("rekenmachine")
     >>> adjust_wikicode("{{-nlverb-|{{pn}}|[[{{pn}}s]]|([[{{pn}}tje]])<br/>[[rekenmachientje]]|([[{{pn}}tjes]])|vd=[[rekenmachientjes]]}}", "nl", word="rekenmachine")
-    '==={{verb}}===\n# {{rev-flexion|rekenmachine}}\n# {{rev-flexion|rekenmachines}}\n# {{rev-flexion|rekenmachinetje}}\n# {{rev-flexion|rekenmachientje}}\n# {{rev-flexion|rekenmachinetjes}}\n# {{rev-flexion|rekenmachientjes}}'
+    '==={{noun}}===\n# {{rev-flexion|rekenmachientje}}\n# {{rev-flexion|rekenmachientjes}}\n# {{rev-flexion|rekenmachines}}\n# {{rev-flexion|rekenmachinetje}}\n# {{rev-flexion|rekenmachinetjes}}'
     """
     # Special handling for genders (`{{-l-|m}}`)
     code = code.replace("{{-l-|", "::: {{-l-|")
@@ -210,19 +191,36 @@ def adjust_wikicode(
     # Reverse variants
     #
 
-    # {{adjcomp|...}}
-    if "{{adjcomp" in code:
-        code = code.replace("{{adjcomp", "==={{adjc}}===\n{{adjcomp")
-        code = re.sub(r"^\{\{adjcomp\|([^}]+)\}\}", cleanup_rev_variant, code, flags=re.MULTILINE)
+    interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
+    if any(tpl in code for tpl in interesting_reverse_variant_titles):
+        cleaned: list[str] = []
+        in_tpl = False
+        tpl_code = ""
 
-    # {{-nlnoun-|...}}
-    if f"-{locale}noun-" in code:
-        code = code.replace(f"{{{{-{locale}noun-", f"==={{{{noun}}}}===\n{{{{-{locale}noun-")
-        code = re.sub(rf"^\{{\{{-{locale}noun-\|([^}}]+)\}}\}}", cleanup_rev_variant, code, flags=re.MULTILINE)
+        for line in code.splitlines():
+            if line.startswith(interesting_reverse_variant_titles):
+                in_tpl = True
+                cleaned.append("==={{noun}}===")
 
-    # {{-nlverb-|...}}
-    if f"-{locale}verb-" in code:
-        code = code.replace(f"{{{{-{locale}verb-", f"==={{{{verb}}}}===\n{{{{-{locale}verb-")
-        code = re.sub(rf"^\{{\{{-{locale}verb-\|([^}}]+)\}}\}}", cleanup_rev_variant, code, flags=re.MULTILINE)
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
+                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
+
+                    forms = utils.process_templates(
+                        word,
+                        tpl_code,
+                        locale,
+                        templates_status=templates_status,
+                        variant_only=True,
+                    )
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
+                    tpl_code = ""
+            else:
+                cleaned.append(line)
+
+        code = "\n".join(cleaned)
 
     return code

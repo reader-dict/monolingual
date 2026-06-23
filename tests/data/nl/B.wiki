@@ -1,0 +1,154 @@
+{{zie-ook|b|Β|В}}
+
+{{=qtu=}}
+{{-letter-}}
+'''{{pn}}'''
+#de hoofdletter van de tweede letter van het Latijnse alfabet
+{{-syn-}}
+*{{Q|Bravo|qtu}} ''([[NAVO-spellingsalfabet]])''
+{{-rel-}}
+* [[b]]
+{{Latijns alfabet}}
+{{periodiek systeem der elementen}}
+{{-symbool-}}
+'''{{pn}}'''
+#{{scheikunde|qtu}}, {{element|qtu}} symbool voor het scheikundig element [[boor]]/[[borium]] met atoomnummer 5, een metalloïde
+#{{informatica|qtu}}, {{afkorting|qtu}} het symbool voor [[byte]], het kleinste adresseerbare gedeelte van een [[computergeheugen]]
+#{{medisch|qtu}} het symbool voor een bepaalde [[bloedgroep]]
+#{{materiaalkunde|qtu}} symbool voor de zachtheid van een [[potlood]], in toenemende zachtheid: B, 2B, 3B, 4B, 5B, 6B, 7B, 8B en 9B
+{{-rel-}}
+*[3] [[A]], [[AB]], [[O]]
+*[4] [[F]], [[HB]], [[H]]
+{{eenheden-byte}}
+
+{{=nld=}}
+{{-pron-}}
+*{{sound}}: {{audio|nl-{{pn}}.ogg|{{pn}}|nld}}
+*{{WikiW|IPA}}: {{IPA-nl-standaard|be}}
+{{-syll-}}
+*B
+{{-etym-}}
+*verkorting van [[bachelor]], binnen de Europese Unie gestandaardiseerd
+{{-nlnoun-|{{QZ|{{pn}}|nld}}|[[{{pn}}'s]]|[[{{pn}}'tje]]|[[{{pn}}'tjes]]}}
+{{niet-GB|als ander zelfstandig naamwoord dan de afkorting van 'Bachelor'}}
+{{-noun-|nld}}
+{{-l-|m}}
+#{{taalkunde|nld}} [[hoofdletter]] van de [[b]], de [[tweede]] [[letter]] van het [[alfabet]]
+#{{muziek|nld}}, {{afkorting|nld}} afkorting van “[[B-majeur]]”
+#als benaming binnen een reeks categorieën die met letters worden aangeduid
+{{-writ-}}
+*[2] {{pn}}, hoofdletter bij “grote terts” en “majeur”, kleine letter bij: een toonnaam, “kleine terts” en “mineur.”
+{{-homo-}}
+*[[b]]
+{{-drv-}}
+*[2] [[B grote terts]], [[B-groot]], [[B-kant]], [[B-majeur]], [[B-merk]], [[B-toonladder]]
+*[3] [[B-lid]], [[verkeersgrijs B]]
+{{-trans-}}
+{{trans-top|2. afkorting voor de toonsoort}}
+*{{deu}}: {{trad|de|H}}
+{{trans-bottom}}
+
+{{-abbr-|nld}}
+'''{{pn}}''' {{m}}
+#bachelor ''(academische titel)''
+{{-drv-}}
+* [[BA]]
+* [[BAS]]
+* [[BBA]]
+* [[BBE]]
+* [[BCom]]
+* [[BComm]]
+* [[BDA]]
+* [[BDes]]
+* [[BEc]]
+* [[BEd]]
+* [[BEng]]
+* [[BFA]]
+* [[BFT]]
+* [[BHS]]
+* [[BICT]]
+* [[BJ]]
+* [[BMA]]
+* [[BMO]]
+* [[BN]]
+* [[BSc]]
+* [[BSW]]
+* [[BTA]]
+* [[BTh]]
+* [[LLB]]
+{{-rel-}}
+*[[bacc.]]
+*[[bc.]]
+{{-symbool-|nld}}
+'''{{pn}}'''
+#{{muziek|nld}} symbool van het “B-majeurakkoord”
+{{-rel-}}
+*[[Bm]], [[B7]], [[Bdim]]
+{{-trans-}}
+{{trans-top|1. akkoordsymbool}}
+*{{eng}}: {{trad|en|H}}
+{{trans-bottom}}
+{{-preval-}}
+{{wel-GB}}
+{{-info-|W=Toonladder}} (toonladder)
+{{-info-|W=Akkoord (muziek)}}
+
+{{=xno=}}
+{{-noun-|xno}}
+'''{{pn}}'''
+*{{taalkunde|xno}} [[B#Nederlands|B]] ''(de tweede letter van het Anglo-Normandische alfabet)''
+{{-writ-}}
+*{{Q|b|xno}}
+
+{{=ace=}}
+{{-etym-}}
+* {{afkorting|ace}} van {{Q|Barat|ace}}: "westen"
+{{-abbr-|ace}}
+'''B'''
+# {{windstreek|ace}} [[W.]]: [[westen]]
+{{-ant-}}
+*{{Q|T|ace}}
+
+{{=deu=}}
+{{-abbr-|deu}}
+'''{{pn}}'''
+#{{afkorting|deu}}, {{autokenteken|deu}} het Duitse autokenteken voor de stad [[Berlijn]] (Duits: [[Berlin]]) in de Duitse deelstaat [[Berlijn]]
+{{-noun-|deu}}
+'''{{pn}}''' {{n}}
+#{{muziek|deu}}, {{afkorting|deu}}: afkorting van “[[Bes-majeur]]”
+{{bijv-2|Eine Sonate in '''{{pn}}'''.|Een sonate in Bes.}}
+{{-ant-}}
+*[[b]]
+{{-drv-}}
+*[[B-Dur]], [[B-Dur-Tonleiter]]
+{{-note-}}
+*Men schrijft "B-Dur" met een hoofdletter, "b-Moll" en de naam van een toon met een kleine letter
+*Onder meer in Duitsland noemt men de tonen: "b" en "bes", "h" resp. "b"
+
+{{=eng=}}
+{{-pron-}}
+*{{sound}}: {{audio|en-us-{{pn}}.ogg|{{pn}}(US)|eng}}
+{{-ennoun-|{{pn}}|{{pn}}s}}
+{{-noun-|eng}}
+'''{{pn}}'''
+#{{muziek|eng}} de toon “b”
+{{-drv-}}
+*[[B flat]], [[B major]], [[B minor]], [[B sharp]]
+{{-rel-}}
+*[[A]], [[C]]
+{{-symbool-|eng}}
+'''{{pn}}'''
+#{{muziek|eng}} symbool van het B-majeurakkoord
+{{-ant-}}
+*[[Bm]]
+{{-drv-}}
+*[[Bdim]], [[B7]]
+
+{{=ind=}}
+{{-etym-}}
+* {{afkorting|ind}} van {{Q|Barat|ind}}: "westen"
+{{-abbr-|ind}}
+'''B'''
+# {{windstreek|ind}} [[W.]]: [[westen]]
+{{-ant-}}
+*{{Q|T|ind}}
