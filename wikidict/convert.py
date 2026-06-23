@@ -252,12 +252,17 @@ class BaseFormat:
         details = deepcopy(chosen_word)
         current_words = {word: details}
         lang_src = self.effective_lang_src()
-        is_japanese = lang_src == "ja"
         is_russian = lang_src == "ru"
-        guess_prefix = partial(utils.guess_prefix, locale=lang_src)
-        word_group_prefix = guess_prefix(word)
+
+        if for_kobo:
+            is_japanese = lang_src == "ja"
+            guess_prefix = partial(utils.guess_prefix, locale=lang_src)
+            word_group_prefix = guess_prefix(word)
 
         if details.variants and for_kobo:
+            guess_prefix = partial(utils.guess_prefix, locale=lang_src)
+            word_group_prefix = guess_prefix(word)
+
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
             # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
@@ -358,7 +363,6 @@ class BaseFormat:
                 f"{self.variants_count:,}",
                 f"{self.words_count + self.variants_count:,}",
             )
-            log.info("[%s] utils.guess_prefix() %s", self.id(), utils.guess_prefix.cache_info())
 
         log.info(
             "[%s] Generated %s (%s bytes) in %s",
@@ -476,6 +480,10 @@ class KoboFormat(BaseFormat):
             fo.write(fi.read())
 
         return output
+
+    def summary(self, file: Path) -> None:
+        log.info("[%s] utils.guess_prefix() %s", self.id(), utils.guess_prefix.cache_info())
+        super().summary(file)
 
 
 class DictFileFormat(BaseFormat):
