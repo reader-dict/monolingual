@@ -160,6 +160,14 @@ def adjust_wikicode(
     >>> context.new_word("rekenmachine")
     >>> adjust_wikicode("{{-nlverb-|{{pn}}|[[{{pn}}s]]|([[{{pn}}tje]])<br/>[[rekenmachientje]]|([[{{pn}}tjes]])|vd=[[rekenmachientjes]]}}", "nl", word="rekenmachine")
     '==={{noun}}===\n# {{rev-flexion|rekenmachientje}}\n# {{rev-flexion|rekenmachientjes}}\n# {{rev-flexion|rekenmachines}}\n# {{rev-flexion|rekenmachinetje}}\n# {{rev-flexion|rekenmachinetjes}}'
+
+    >>> context.new_word("blad")
+    >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[{{pn}}en]]<br>[[{{pn}}eren]]<br>[[blaren]]|[[blaadje]]|[[blaadjes]], ([[{{pn}}ertjes]])|1.}}", "nl", word="blad")
+    '==={{noun}}===\n# {{rev-flexion|blaadje}}\n# {{rev-flexion|blaadjes}}\n# {{rev-flexion|bladen}}\n# {{rev-flexion|bladeren}}\n# {{rev-flexion|bladertjes}}\n# {{rev-flexion|blaren}}'
+
+    >>> context.new_word("binnenbarbecue")
+    >>> adjust_wikicode("{{-nlnoun-|{{pn}}|[[binnenbarbecues]]|([[binnenbarbecuetje]]) [1]|([[binnenbarbecuetjes]]) [1]}}", "nl", word="binnenbarbecue")
+    '==={{noun}}===\n# {{rev-flexion|binnenbarbecues}}\n# {{rev-flexion|binnenbarbecuetje}}\n# {{rev-flexion|binnenbarbecuetjes}}'
     """
     # Special handling for genders (`{{-l-|m}}`)
     code = code.replace("{{-l-|", "::: {{-l-|")

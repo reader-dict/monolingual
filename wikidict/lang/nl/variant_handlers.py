@@ -30,8 +30,11 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     for part in chain(parts, data.values()):
         if not part:
             continue
+        part = re.sub(r"\s\[\d\]", "", part)
         if "<br" in part:
             variants.update(re.sub(r"<br\s*/?>", "|", part).split("|"))
+        elif "," in part:
+            variants.update(re.sub(r",\s*", "|", part).split("|"))
         else:
             variants.add(part)
 
