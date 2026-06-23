@@ -260,9 +260,6 @@ class BaseFormat:
             word_group_prefix = guess_prefix(word)
 
         if details.variants and for_kobo:
-            guess_prefix = partial(utils.guess_prefix, locale=lang_src)
-            word_group_prefix = guess_prefix(word)
-
             # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
             # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
             # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
