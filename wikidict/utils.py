@@ -683,8 +683,8 @@ def clean(text: str) -> str:
         '<math>x \\in ]x_0 - \\epsilon, x_0[</math> och <math>f(x) > f(x_0)</math> för alla <math>x \\in ]x_0, x_0 + \\epsilon[</math>'
         >>> clean(r'<math style="vertical-align:+0%;">x \in ]x_0 - \epsilon, x_0[</math>')
         '<math>x \\in ]x_0 - \\epsilon, x_0[</math>'
-        >>> clean(r"<math> \epsilon > 0 </math>")
-        '<math> \\epsilon > 0 </math>'
+        >>> clean(r"<math> \epsilon > 0 <2</math>")
+        '<math> \\epsilon > 0 <2</math>'
         >>> clean(r"<math> d(x_k, x_m) < \epsilon </math>")
         '<math> d(x_k, x_m) < \\epsilon </math>'
 
@@ -796,6 +796,11 @@ def clean(text: str) -> str:
 
         >>> clean('(1973) :<div lang="en" style="font-style:italic">\n::Bad Leroy Brown</div>')
         '(1973) :::Bad Leroy Brown'
+
+        >>> clean("(CMI90<0,05 μg/ml)")
+        '(CMI90&lt;0,05 μg/ml)'
+        >>> clean("<i>(<1971)</i>")
+        '<i>(&lt;1971)</i>'
     """
 
     # Speed-up lookup
@@ -889,6 +894,9 @@ def clean(text: str) -> str:
     # Convert single "< ", and " >" to HTML quotes
     text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
     text = re.sub(r'(?<!")[ ]+>', " &gt;", text)
+
+    # Escape "<N"
+    text = re.sub(r"<(\d)", r"&lt;\1", text)
 
     text = restore_formulas(formulas, text)
 
