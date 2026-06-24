@@ -647,6 +647,27 @@ def guess_prefix(word: str, *, locale: str = "") -> str:
     return prefix if prefix.isalpha() else "11"
 
 
+def save_formulas(text: str) -> tuple[dict[str, str], str]:
+    """Save <chem>, <hiero>, and <math>, parts to prevent altering them."""
+    formulas: dict[str, str] = {}
+    idx = 0
+    for tag in ("chem", "hiero", "math"):
+        if new_formulas := re.findall(rf"(<{tag}>.+?</{tag}>)", text):
+            for formula in new_formulas:
+                rpl = f"##{tag}{idx}##"
+                text = text.replace(formula, rpl)
+                formulas[rpl] = formula
+                idx += 1
+    return formulas, text
+
+
+def restore_formulas(formulas: dict[str, str], text: str) -> str:
+    """Restore <chem>, <hiero>, and <math>, parts."""
+    for rpl, formula in formulas.items():
+        text = text.replace(rpl, formula)
+    return text
+
+
 def clean(text: str) -> str:
     r"""Cleans up the provided Wikicode.
     Removes templates, tables, parser hooks, magic words, HTML tags and file embeds.
@@ -784,10 +805,7 @@ def clean(text: str) -> str:
     # <math style="bla" foo=bar>formula</math> → <math>formula</math>
     text = re.sub(r"<math\s+[^>]+>(.+?)</math>", r"<math>\1</math>", text)
 
-    # Save <math> formulas to prevent altering them
-    if formulas := re.findall(r"(<math>.+?</math>)", text):
-        for idx, formula in enumerate(formulas):
-            text = text.replace(formula, f"##math{idx}##")
+    formulas, text = save_formulas(text)
 
     # Save <nowiki> parts to prevent altering them
     if nowikis := re.findall(r"(<nowiki>.+?</nowiki>)", text):
@@ -872,9 +890,7 @@ def clean(text: str) -> str:
     text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
     text = re.sub(r'(?<!")[ ]+>', " &gt;", text)
 
-    # Restore math formulas
-    for idx, formula in enumerate(formulas):
-        text = text.replace(f"##math{idx}##", formula)
+    text = restore_formulas(formulas, text)
 
     # Restore nowiki parts
     for idx, nowiki in enumerate(nowikis):
@@ -937,10 +953,7 @@ def process_templates(
     if not (text := callback(wikicode)):
         return ""
 
-    # Save <math> formulas to prevent altering them
-    if formulas := re.findall(r"(<math>.+?</math>)", text):
-        for idx, formula in enumerate(formulas):
-            text = text.replace(formula, f"##math{idx}##")
+    formulas, text = save_formulas(text)
 
     # {{foo}}
     # {{foo|bar}}
@@ -975,15 +988,12 @@ def process_templates(
 
         current_template_idx += len(templates)
 
-    sub = re.sub
-
-    # Restore math formulas
-    for idx, formula in enumerate(formulas):
-        text = text.replace(f"##math{idx}##", formula)
+    text = restore_formulas(formulas, text)
 
     # Handle <chem>, <hiero>, and <math>, HTML tags
+    text = text.replace("&#92;", "\\")
+    sub = re.sub
     for tag, func in [("chem", convert_chem), ("hiero", convert_hiero), ("math", convert_math)]:
-        text = text.replace("&#92;", "\\")
         text = sub(rf"<{tag}>(.+?)</{tag}>", partial(func, word=word), text)
         if f"<{tag}>" in text or f"</{tag}>" in text:
             raise ValueError(f"Missed <{tag}> HTML tag in {word!r}") from None
