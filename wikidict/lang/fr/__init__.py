@@ -290,3 +290,17 @@ def adjust_wikicode(
         lines.append(line)
 
     return "\n".join(lines)
+
+
+def test_regressions() -> None:
+    """
+    >>> from ... import context
+
+    >>> _ = context.reset("fr")
+
+    Issue # 2716:
+    >>> context.new_word("magnéton de Bohr")
+    >>> context.expand("{{unité|μ<sub>B</sub>}}", "fr")
+    'μ<sub>B</sub>'
+    """
+    ...
