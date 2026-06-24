@@ -669,8 +669,6 @@ def clean(text: str) -> str:
 
         >>> clean("{{Lien web|url=http://stella.atilf.fr/few/|titre=Französisches Etymologisches Wörterbuch}}")
         '{{Lien web|url=http://stella.atilf.fr/few/|titre=Französisches Etymologisches Wörterbuch}}'
-        >>> clean("d'<nowiki/>''Arvernus'', surnom ethnique, ou composé d'''are''")
-        "d'<i>Arvernus</i>, surnom ethnique, ou composé d'<i>are</i>"
 
         >>> clean("")
         ''
@@ -717,6 +715,8 @@ def clean(text: str) -> str:
         ''
         >>> clean("<nowiki>«</nowiki>")
         '«'
+        >>> clean("<nowiki>''</nowiki> <nowiki>''</nowiki>")
+        "'' ''"
         >>> clean("<noinclude>{{字源|拳}}</noinclude>")
         ''
         >>> clean("foo|anticuado por [[cerrojo]] e influido por [[fierro]] [http://books.google.es/books?id=or7_PqeALCMC&pg=PA21&dq=%22ferrojo%22]|yeah")
@@ -786,6 +786,11 @@ def clean(text: str) -> str:
         for idx, formula in enumerate(formulas):
             text = text.replace(formula, f"##math{idx}##")
 
+    # Save <nowiki> parts to prevent altering them
+    if nowikis := re.findall(r"(<nowiki>.+?</nowiki>)", text):
+        for idx, nowiki in enumerate(nowikis):
+            text = text.replace(nowiki, f"##nowiki{idx}##")
+
     # Remove line breaks
     text = text.replace("\n", "")
 
@@ -799,8 +804,6 @@ def clean(text: str) -> str:
 
     # <nowiki/> → ''
     text = text.replace("<nowiki/>", "")
-    # <nowiki>»</nowiki> → '»'
-    text = sub("<nowiki>([^<]+)</nowiki>", r"\1", text)
 
     # <noinclude>»</noinclude> → ''
     text = sub("<noinclude>[^<]+</noinclude>", "", text)
@@ -869,6 +872,10 @@ def clean(text: str) -> str:
     # Restore math formulas
     for idx, formula in enumerate(formulas):
         text = text.replace(f"##math{idx}##", formula)
+
+    # Restore nowiki parts
+    for idx, nowiki in enumerate(nowikis):
+        text = text.replace(f"##nowiki{idx}##", nowiki[8:-9])
 
     # ES - clean-up synonyms
     text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
