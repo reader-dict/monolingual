@@ -772,6 +772,9 @@ def clean(text: str) -> str:
         ''
         >>> clean("<i> </i>")
         ''
+
+        >>> clean('(1973) :<div lang="en" style="font-style:italic">\n::Bad Leroy Brown</div>')
+        '(1973) :::Bad Leroy Brown'
     """
 
     # Speed-up lookup
@@ -876,6 +879,9 @@ def clean(text: str) -> str:
     # Restore nowiki parts
     for idx, nowiki in enumerate(nowikis):
         text = text.replace(f"##nowiki{idx}##", nowiki[8:-9])
+
+    # Remove those HTML tags
+    text = re.sub(r"</?(?:div)[^>]*>", "", text)
 
     # ES - clean-up synonyms
     text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
