@@ -96,6 +96,22 @@ def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
         )
 
 
+class MatcherHasMatched(Exception): ...
+
+
+def handle_matcher(matcher: Callable[[str], Iterator[re.Match[str]]], element: str, namespace_id: int) -> None:
+    if (title := next(matcher(element), None)) and not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
+        body, redirect_to = None, None
+        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+            redirect_to = redirect[1]
+        elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
+            body = unescape(text[1], entities=constants.HTML_REPL_BODY)
+        if body or redirect_to:
+            page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
+            context.new_page(page, namespace_id, body, redirect_to)
+            raise MatcherHasMatched()
+
+
 def xml_parse_element(
     element: str,
     module_matcher: Callable[[str], Iterator[re.Match[str]]],
@@ -108,43 +124,12 @@ def xml_parse_element(
     empty = "", ""
 
     if is_monolingual:
-        # Module
-        if title := next(module_matcher(element), None):
-            if not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
-                body, redirect_to = None, None
-                if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
-                    redirect_to = redirect[1]
-                elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
-                    body = unescape(text[1], entities=constants.HTML_REPL_BODY)
-                if body or redirect_to:
-                    page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                    context.new_page(page, 828, body, redirect_to)
-                    return empty
-
-        # Template
-        elif title := next(template_matcher(element), None):
-            if not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
-                body, redirect_to = None, None
-                if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
-                    redirect_to = redirect[1]
-                elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
-                    body = unescape(text[1], entities=constants.HTML_REPL_BODY)
-                if body or redirect_to:
-                    page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                    context.new_page(page, 10, body, redirect_to)
-                    return empty
-
-        # Appendix
-        elif title := next(appendix_matcher(element), None):
-            body, redirect_to = None, None
-            if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
-                redirect_to = redirect[1]
-            elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
-                body = unescape(text[1], entities=constants.HTML_REPL_BODY)
-            if body or redirect_to:
-                page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
-                context.new_page(page, 100, body, redirect_to)
-                return empty
+        try:
+            handle_matcher(module_matcher, element, 828)
+            handle_matcher(template_matcher, element, 10)
+            handle_matcher(appendix_matcher, element, 100)
+        except MatcherHasMatched:
+            return empty
 
     # Word
     if title := next(RE_TITLE_WORD(element), None):
