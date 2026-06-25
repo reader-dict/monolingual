@@ -598,7 +598,7 @@ class ConverterFromDictFile(DictFileFormat):
         self._patch_gc()
         self._convert()
         final_file = self._compress()
-        self.summary(final_file)
+        BaseFormat.summary(self, final_file)
 
 
 class BZ2DictFileFormat(BaseFormat):

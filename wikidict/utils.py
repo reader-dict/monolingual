@@ -24,8 +24,8 @@ KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 log = logging.getLogger(__name__)
 
 
-def setup_logging(lang_src: str, lang_dst: str, file_mode: str = "a") -> Path:
-    log_dir = Path("logs") / lang_dst
+def setup_logging(lang_src: str, lang_dst: str, file_mode: str = "a", folder: Path = Path("logs")) -> Path:
+    log_dir = folder / lang_dst
     log_dir.mkdir(exist_ok=True, parents=True)
     log_file = log_dir / f"{lang_src}.log"
     logging.basicConfig(

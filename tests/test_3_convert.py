@@ -1,4 +1,3 @@
-import logging
 import os
 import shutil
 from copy import deepcopy
@@ -11,7 +10,7 @@ import mobi
 import pytest
 from marisa_trie import Trie
 
-from wikidict import constants, convert
+from wikidict import constants, convert, utils
 from wikidict.constants import ASSET_CHECKSUM_ALGO
 from wikidict.stubs import Variants, Word, Words
 
@@ -43,19 +42,32 @@ WORDS = {
 }
 
 
-def test_simple(caplog: pytest.LogCaptureFixture, tmp_path: Path) -> None:
-    with caplog.at_level(logging.DEBUG):
+def test_simple(tmp_path: Path) -> None:
+    setup_logging_original = utils.setup_logging
+
+    def setup_logging(*args: str, **kwargs: str) -> None:
+        setup_logging_original("fr", "fr", folder=tmp_path)
+
+    with patch.object(utils, "setup_logging", setup_logging):
         assert convert.main("fr") == 0
 
-        # Check Mobi warnings
-        assert all(
-            "media file not found" not in record.getMessage()
-            for record in caplog.records
-            if record.levelno < logging.WARNING
-        )
+    log_file = tmp_path / "fr" / "fr.log"
+    log_records = log_file.read_text().splitlines()
 
-        # Check PyGlossary logging filters
-        assert not [record.getMessage() for record in caplog.records if record.levelno >= logging.WARNING]
+    for record in log_records:
+        print(record)
+
+    # Ensure summaries are properly handled
+    assert (
+        len([record for record in log_records if "Effective words + variants" in record])
+        == 3 * 2  # (KoboFormat + DictFileFormat + DictFileFormatForMobi) * (etym + noetym)
+    )
+
+    # Check Mobi warnings
+    assert all("media file not found" not in record for record in log_records)
+
+    # Check PyGlossary logging filters
+    assert all("WARNING:" not in record and "ERROR:" not in record for record in log_records)
 
     # Check for all dictionaries
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
