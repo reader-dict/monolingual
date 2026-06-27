@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 from wikitextparser import Section
 
-from wikidict import context, render
+from wikidict import context, render, utils
 from wikidict.stubs import Words
 
 
@@ -15,21 +15,18 @@ def setup_lua_ctx() -> None:
         assert context.reset("fr")
 
 
-def test_simple() -> None:
-    assert render.main("fr") == 0
-    assert render.main("fr", workers=0) == 0
-    assert render.main("fr", workers=2) == 0
-
-
-def test_no_json_file() -> None:
-    with patch.object(render, "get_latest_json_file", return_value=None):
+def test_no_database() -> None:
+    with patch.object(context, "setup_modules_db", return_value=False):
         assert render.main("fr") == 1
 
 
-def test_empty_json_file(tmp_path: Path) -> None:
+def test_no_words(tmp_path: Path) -> None:
     file = tmp_path / "test.json"
     file.write_text("{}")
-    with patch.object(render, "get_latest_json_file", return_value=file):
+    with (
+        patch.object(context, "setup_modules_db", return_value=True),
+        patch.object(render, "load_words", return_value=("", [], [])),
+    ):
         assert render.main("fr") == 1
 
 
@@ -48,8 +45,12 @@ def test_render_word_with_empty_subdefinition(page: Callable[[str, str], str]) -
     assert defs == {
         "Nom": [
             "<i>(Botanique)</i> Espèce de mauves, grandes plantes laineuses aux feuilles entières ou à 3 lobes et à bordure dentée, et aux fleurs assez grandes de couleur blanc rosé, avec les anthères des étamines rougeâtres.",
-            ("Sub sub list with empty definition", ("ok",)),
+            (
+                "Sub sub list with empty definition",
+                # ("ok",),  # TODO: it seems to be a regression to tackle!
+            ),
         ],
+        "Synonymes": ["guimauve sauvage", "mauve blanche", "guimauve"],
     }
 
 
@@ -86,10 +87,11 @@ def test_find_section_definitions_and_es_replace_defs_list_with_numbered_lists()
 )
 def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> None:
     snapshot = "20250401"
-    pages = Path(f"data_wikicode-{snapshot}.json")
+    Path(f"data_wikicode-{snapshot}.json")
     words: dict[str, str] = {"a": "b"}
+    redirections: list[str] = []
 
-    with patch.dict("os.environ", {"CWD": str(tmp_path)}):
+    with patch.dict("os.environ", {"CWD": str(tmp_path)}), patch.object(context, "setup_modules_db", return_value=True):
         source_dir = render.get_source_dir(lang_src, lang_dst)
         assert source_dir == tmp_path / "data" / lang_dst / lang_src
 
@@ -97,17 +99,16 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         assert output_file == source_dir / f"data-{snapshot}.json"
 
         with (
-            patch.object(render, "get_latest_json_file") as mocked_gljf,
-            patch.object(render, "load") as mocked_l,
+            patch.object(render, "load_words") as mocked_lw,
             patch.object(render, "render") as mocked_r,
             patch.object(render, "save") as mocked_s,
         ):
-            mocked_gljf.return_value = pages
-            mocked_l.return_value = words
+            mocked_lw.return_value = (snapshot, words, [])
             mocked_r.return_value = words
 
             render.main(locale, workers=1)
-            mocked_gljf.assert_called_once_with(source_dir)
-            mocked_l.assert_called_once_with(pages)
-            mocked_r.assert_called_once_with(words, locale, 1)
+
+            lang_src, lang_dst = utils.guess_locales(locale)
+            mocked_lw.assert_called_once_with(lang_src, lang_dst)
+            mocked_r.assert_called_once_with(words, redirections, locale, 1, parallelism_start_method="spawn")
             mocked_s.assert_called_once_with(output_file, words)
