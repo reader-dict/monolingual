@@ -87,7 +87,6 @@ def test_find_section_definitions_and_es_replace_defs_list_with_numbered_lists()
 )
 def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> None:
     snapshot = "20250401"
-    Path(f"data_wikicode-{snapshot}.json")
     words: dict[str, str] = {"a": "b"}
     redirections: list[str] = []
 
