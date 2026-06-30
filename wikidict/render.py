@@ -116,6 +116,12 @@ def find_definitions(
                     if pos_def not in target_pos:
                         target_pos.append(pos_def)
 
+    # Move notes below definitions
+    if lang_src == "en" and "Usage Note" in definitions:
+        definitions["Usage Note"] = definitions.pop("Usage Note")
+    elif lang_src == "nl" and "Opmerkingen" in definitions:
+        definitions["Opmerkingen"] = definitions.pop("Opmerkingen")
+
     return dict(definitions)
 
 
