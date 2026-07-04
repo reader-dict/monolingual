@@ -26,8 +26,8 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     for table in tables:
         line = str(table).splitlines()[2]
         for form in re.findall(r"<b>\[\[([^\]#]+)", line):
-            if "<br />" in form:
-                forms.update([cleanup(f) for f in form.split("<br />")])
+            if "<br/>" in form:
+                forms.update([cleanup(f) for f in form.split("<br/>")])
             elif "/" in form:
                 forms.update([cleanup(f) for f in form.split("/")])
             else:

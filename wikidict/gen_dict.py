@@ -30,11 +30,10 @@ def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -
 
     variants: Variants = make_variants(all_words)
     snapshot = datetime.now(tz=UTC).strftime("%Y%m%d")
-    primary_formatters, secondary_formatters, mobi_run = get_formatters(format)
+    primary_formatters, secondary_formatters = get_formatters(format)
     convert(
         primary_formatters,
         secondary_formatters,
-        mobi_run,
         output_dir,
         snapshot,
         locale,
