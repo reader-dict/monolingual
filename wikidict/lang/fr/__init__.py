@@ -81,6 +81,7 @@ sections = (
     *[f"{{{{s|{section}|fr}}" for section in core_sections],
     *[f"{{{{s|{section}|num" for section in core_sections],
     "{{s|synonymes}",
+    "{{s|variantes}",
     # "{{s|caractère}",  # See #2634
 )
 

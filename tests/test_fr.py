@@ -152,7 +152,10 @@ def setup_lua_ctx() -> None:
             [
                 "Ayant dans le passé la forme « -als », au cours du XII<sup>e</sup> siècle, le « l » précédant une autre consonne se modifia en « u », comme dans « colp – coup, altre – autre ». Étant suivi d'une consonne uniquement au pluriel, la terminaison « -als » pris la forme de « aus ». Le « x » provient des manuscrits, qui étaient extrêmement chers à l'époque, il va de soi qu'on voulut y mettre le plus de texte possible. S'inspirant du latin où « us » s'écrivait « x », on obtint ainsi la forme « -ax ». Le « u » vient s'ajouter plus tard pour s'accorder à la prononciation [o]."
             ],
-            {"Suffixe": ["<i>Forme courante du pluriel de</i> -al."]},
+            {
+                "Suffixe": ["<i>Forme courante du pluriel de</i> -al."],
+                "Variantes": ["-als, <i>(Dans certains cas particuliers)</i>."],
+            },
             [],
         ),
         (
@@ -439,7 +442,8 @@ def setup_lua_ctx() -> None:
                 "Nom": [
                     "Systèmes de transcription de différentes langues, permettant de romaniser les sons des sinogrammes, et d’indiquer le ton utilisé lors de la prononciation. Le hanyu pinyin sert à la transcription du mandarin standard.",
                     "<i>(Linguistique)</i> Langue bantoïde parlée dans la Région du Nord-Ouest au Cameroun.",
-                ]
+                ],
+                "Variantes": ["pin yin"],
             },
             [],
         ),
@@ -483,7 +487,8 @@ def setup_lua_ctx() -> None:
             {
                 "Interjection": [
                     "<i>(Familier)</i> <i>(Par euphémisme)</i> <i>(Vieilli)</i> Pour marquer l’étonnement ou l'énervement."
-                ]
+                ],
+                "Variantes": ["pristi"],
             },
             [],
         ),
