@@ -976,18 +976,22 @@ def distribute_workload(
     variants: Variants,
     *,
     include_etymology: bool = True,
+    sequential: bool = False,
 ) -> None:
     """Run formatters in parallel."""
     threads = []
 
     for formatter in formatters:
-        th = threading.Thread(
-            target=run_formatter,
-            args=(formatter, locale, output_dir, words, variants, snapshot),
-            kwargs={"include_etymology": include_etymology},
-        )
-        th.start()
-        threads.append(th)
+        if sequential:
+            run_formatter(formatter, locale, output_dir, words, variants, snapshot, include_etymology=include_etymology)
+        else:
+            th = threading.Thread(
+                target=run_formatter,
+                args=(formatter, locale, output_dir, words, variants, snapshot),
+                kwargs={"include_etymology": include_etymology},
+            )
+            th.start()
+            threads.append(th)
 
     for th in threads:
         th.join()
@@ -1033,7 +1037,7 @@ def convert(
     include_etymologies = [True] if with_etym_only else [False, True]
     for include_etymology in include_etymologies:
         distribute_workload(primary_formatters, *args, include_etymology=include_etymology)
-        distribute_workload(secondary_formatters, *args, include_etymology=include_etymology)
+        distribute_workload(secondary_formatters, *args, include_etymology=include_etymology, sequential=True)
 
 
 def main(locale: str, format: str = "all", with_etym_only: bool = False) -> int:

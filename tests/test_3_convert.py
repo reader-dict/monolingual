@@ -625,7 +625,12 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
         args = (source_dir / "output", snapshot, locale, words, variants)
         for include_etymology in [False, True]:
             mocked_dw.assert_any_call(convert.get_primary_formatters(), *args, include_etymology=include_etymology)
-            mocked_dw.assert_any_call(convert.get_secondary_formatters(), *args, include_etymology=False)
+            mocked_dw.assert_any_call(
+                convert.get_secondary_formatters(),
+                *args,
+                include_etymology=False,
+                sequential=True,
+            )
         assert mocked_dw.call_count == 4
 
 
