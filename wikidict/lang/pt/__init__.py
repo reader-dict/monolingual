@@ -144,14 +144,15 @@ PATTERNS = [
     # plural de [[anão]]
     # feminino plural de [[anão]]
     # plural de '''[[úlcera#{{pt}}|úlcera]]'''
-    r"\[*(?:feminino)?\s*plural.+'*\[\[([^#\]]+).*",
+    r"\[*(?:feminino)?\s*plural.+'*\[\[([^#\]]+)",
     # {{f}} de [[objetivo]]
     r"\{\{f\}\} de \[\[([^\]]+)+\]",
     # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
     # [[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''
-    r"\[?\[?.+ (?:da|do).+do.+do \[*verbo\]* '*\[\[([^\]]+)+\]",
+    # [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''
+    r"\[?\[?.+ (?:da|do).+do.+do \[*verbo\]* '*\[*([^'#\]]+)",
     # [[particípio]] do verbo '''[[abotecar]]'''
-    r"\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^\]]+)+\]",
+    r"\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^#\]]+)",
 ]
 
 
@@ -189,6 +190,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("={{-pt-}}=\n# feminino plural de [[sardenho]]", "pt")
     '={{-pt-}}=\n# {{flexion|sardenho}}'
 
+    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''", "pt")
+    '={{-pt-}}=\n# {{flexion|amar}}'
     >>> adjust_wikicode("={{-pt-}}=\n# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|ensimesmar}}'
     >>> adjust_wikicode("={{-pt-}}=\n#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''", "pt")
@@ -197,6 +200,8 @@ def adjust_wikicode(
     '={{-pt-}}=\n# {{flexion|ensimesmar}}'
     >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da [[terceira pessoa]] do [[plural]] do verbo '''[[acarretar]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|acarretar}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[masculino]] [[singular]] do [[particípio]] [[passado]] do [[verbo]] '''[[achatar#{{pt}}|achatar]]'''.", "pt")
+    '={{-pt-}}=\n# {{flexion|achatar}}'
 
     >>> adjust_wikicode("={{-pt-}}=\n# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|abotecar}}'
