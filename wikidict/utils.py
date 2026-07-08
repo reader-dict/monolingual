@@ -906,7 +906,7 @@ def clean(text: str) -> str:
         text = text.replace(f"##nowiki{idx}##", nowiki[8:-9])
 
     # Remove those HTML tags
-    text = re.sub(r"</?(?:div)[^>]*>", "", text)
+    text = re.sub(r"</?(?:div|p)[^>]*>", "", text)
 
     # ES - clean-up synonyms
     text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
