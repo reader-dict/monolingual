@@ -143,7 +143,8 @@ PATTERNS = [
     # [[plural]] [[de]] '''[[anão]]'''
     # plural de [[anão]]
     # feminino plural de [[anão]]
-    r"\[*(?:feminino)?\s*plural.+'*\[\[([^\]]+)+\].*",
+    # plural de '''[[úlcera#{{pt}}|úlcera]]'''
+    r"\[*(?:feminino)?\s*plural.+'*\[\[([^#\]]+).*",
     # {{f}} de [[objetivo]]
     r"\{\{f\}\} de \[\[([^\]]+)+\]",
     # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
@@ -199,6 +200,9 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("={{-pt-}}=\n# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|abotecar}}'
+
+    >>> adjust_wikicode("={{-pt-}}=\n#plural de '''[[úlcera#{{pt}}|úlcera]]'''", "pt")
+    '={{-pt-}}=\n# {{flexion|úlcera}}'
 
     >>> from ... import context
     >>> _ = context.reset("pt")
