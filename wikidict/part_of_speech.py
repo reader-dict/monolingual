@@ -50,7 +50,7 @@ PATTERNS = {
     ],
     "ja": [
         # `{{noun|ja}}` → `noun`
-        re.compile(r"((?:noun|prov)).+").sub,
+        re.compile(r"((?:noun|prov|syn|Syn)).+").sub,
         # `{{verb}}（中国地方）` → `verb`
         re.compile(r"\{\{([^}]+).*").sub,
         # `動詞 見てる・縮約形` → `動詞`
