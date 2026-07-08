@@ -95,6 +95,12 @@ PATTERNS = {
         re.compile("(.+)s$").sub,
         # `símbolos derivado` → `símbolo`
         re.compile("(.+)s derivado").sub,
+        # sinónimo/variaçõe
+        # sinônimo imperfeito'
+        re.compile("(sinónimo).+").sub,
+        re.compile("(sinônimo).+").sub,
+        # topónimos/topônimo
+        re.compile("(topónimos).+").sub,
     ],
     "ro": [
         # `{{nume taxonomic|conv}}` → `nume taxonomic`
@@ -288,16 +294,16 @@ MERGE = {
         "abreviação": "abreviatura",
         "acrônimo": "acrónimo",
         "adjetivo/substantivo": "adjetivo",
+        "conjunção": "conjugação",
         "expressõe": "expressão",
         "forma verbal": "verbo",
         "locução substantiva": "substantivo",
         "pepb": "acrónimo",
         "prefixos relacionado": "prefixo",
         "sinônimo": "sinónimo",
-        "sinônimos": "sinónimo",
-        "sinónimos": "sinónimo",
         "substantivo comum": "substantivo",
         "top": "substantivo",
+        "topónimos": "topónimo",
         "verbal": "verbo",
     },
     "ro": {
