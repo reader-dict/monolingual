@@ -12,6 +12,8 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     'human'
     >>> render_variant("infl of", ["en", "foo (“bar)"], defaultdict(str), "")
     'foo'
+    >>> render_variant("infl of", ["en", "-ate#Etymology 2", "", "ed-form"], defaultdict(str), "")
+    '-ate'
 
     >>> render_variant("plural of", ["en", "woman"], defaultdict(str), "women")
     'woman'
@@ -36,6 +38,8 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
 
     if "<" in base:
         base = base.split("<", 1)[0]
+    if "#" in base:
+        base = base.split("#", 1)[0]
 
     return base
 
