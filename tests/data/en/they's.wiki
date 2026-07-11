@@ -1,0 +1,20 @@
+==English==
+
+===Alternative forms===
+* {{l|en|theys}}
+
+===Contraction===
+{{en-head|contr}}
+
+# {{lb|en|dialect}} {{contraction of|en|[[they]] {{q|third-person pronoun}} [[is]]}}.
+#: {{ux|en|'''They's''' gonna have breakfas' now.}}
+# {{lb|en|dialect}} {{contraction of|en|[[they]] ({{=}}there) [[is]]}}.
+#: {{ux|en|'''They's''' a house on the end of the street.}}
+
+===Determiner===
+{{head|en|determiner}}
+
+# {{lb|en|AAVE}} {{synonym of|en|their}}.
+
+===Anagrams===
+* {{anagrams|en|a=ehsty|hyest|sythe|ythes}}

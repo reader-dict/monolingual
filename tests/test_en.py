@@ -277,6 +277,20 @@ def setup_lua_ctx() -> None:
             [],
         ),
         (
+            "they's",  # This one is to test `{{=}}`
+            [],
+            [],
+            [],
+            {
+                "Contraction": [
+                    "(<i>dialect</i>) Contraction of <i>they (<i>third-person pronoun</i>) is</i>.",
+                    "(<i>dialect</i>) Contraction of <i>they (=there) is</i>.",
+                ],
+                "Determiner": ["(<i>African-American Vernacular</i>) Synonym of <i>their</i>."],
+            },
+            [],
+        ),
+        (
             "um",
             ["/ʌm/"],
             [],
@@ -486,3 +500,5 @@ def test_parse_word(
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
+
+    assert not context.get_errors()

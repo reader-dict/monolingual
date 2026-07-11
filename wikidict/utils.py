@@ -964,6 +964,9 @@ def process_templates(
 
     formulas, text = save_formulas(text)
 
+    # Special handling for `{{=}}` since it breaks template arguments logic
+    text = text.replace("{{=}}", "SPECIALEQ")
+
     # {{foo}}
     # {{foo|bar}}
     # {{foo|{{bar}}|123}}
@@ -998,6 +1001,8 @@ def process_templates(
         current_template_idx += len(templates)
 
     text = restore_formulas(formulas, text)
+
+    text = text.replace("SPECIALEQ", "=")
 
     # Handle <chem>, <hiero>, and <math>, HTML tags
     text = text.replace("&#92;", "\\")
