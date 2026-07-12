@@ -13,8 +13,10 @@ def cleanup(form: str) -> str:
     """
     >>> cleanup(" &#42;ультрамонтанства")
     'ультрамонтанства'
+    >>> cleanup("торосья<sup>△</sup>")
+    'торосья'
     """
-    return strip_accents(utils.cleanup_rev_variant(form, rpl={"&#42;", " ''(уст.)''", " ''(перен.)''"}))
+    return strip_accents(utils.cleanup_rev_variant(form, rpl={"&#42;", " ''(уст.)''", " ''(перен.)''", "<sup>△</sup>"}))
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -62,7 +64,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         table = "\n".join(
             line
             for raw_line in table.splitlines()
-            if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith("|-"))
+            if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith(("|-", "|}")))
         )
         table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
         table = re.sub(r"^\|\}<b>.+$", "", table, flags=re.MULTILINE)
@@ -74,7 +76,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             .replace("(по) ", "\n| ")
         )
         table = re.sub(r'^\|[ ]*bgcolor="[^|]+', "", table, flags=re.MULTILINE)
-        forms = {form[1:].strip() for form in table.splitlines() if form.startswith("|") and not form.endswith("| ")}
+        forms = {form[1:].strip() for form in table.splitlines()}
     else:
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
         forms = set(re.findall(r"<td>([^<]+)</td>", table))
