@@ -801,6 +801,8 @@ def clean(text: str) -> str:
         '(CMI90&lt;0,05 μg/ml)'
         >>> clean("<i>(<1971)</i>")
         '<i>(&lt;1971)</i>'
+        >>> clean("=<2010")
+        '=<2010'
     """
 
     # Speed-up lookup
@@ -896,8 +898,8 @@ def clean(text: str) -> str:
     text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
     text = re.sub(r'(?<!")[ ]+>', " &gt;", text)
 
-    # Escape "<N"
-    text = re.sub(r"<(\d)", r"&lt;\1", text)
+    # Escape "<N" but not "{{tpl|...|arg=<N}}"
+    text = re.sub(r"(?<!=)<(\d)", r"&lt;\1", text)
 
     text = restore_formulas(formulas, text)
 
@@ -939,7 +941,7 @@ def process_templates(
     >>> process_templates("foo", "{{fchim|OH|2|{{!}}OH|2}}", "fr")  # TODO: this is wrong, `{{!}}` should be converted to `|`
     'OH<sub>2</sub><sub>OH</sub>2'
     >>> process_templates("EPR=ER", "{{fchim|ER{{=}}EPR}}", "fr")  # TODO: this is wrong, expecting `ER=EPR`
-    ''
+    'ER=EPR'
 
     >>> process_templates("octonion", " <math>V^n</math>", "fr")  # doctest: +ELLIPSIS
     '<svg ...'
