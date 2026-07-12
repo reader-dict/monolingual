@@ -415,6 +415,8 @@ def clean_html_input(code: str, locale: str) -> str:
     ''
     >>> clean_html_input("<ref>D'après ''Dictionnaire du tapissier : critique et historique de l’ameublement français, depuis les temps anciens jusqu’à nos jours'', par J. Deville, page 32 ({{Gallica|http://gallica.bnf.fr/ark:/12148/bpt6k55042642/f71.image}})</ref>", "en")
     ''
+    >>> clean_html_input("<ref:{{R:fr:TLFi}}<<name:tlfi>>>", "en")
+    ''
     >>> clean_html_input("<ref>", "en")
     ''
     >>> clean_html_input("</ref>", "en")
@@ -463,7 +465,7 @@ def clean_html_input(code: str, locale: str) -> str:
     code = sub(r"(?=<!--)([\s\S]*?-->)", "", code)
 
     # <ref:...> → ''
-    code = sub(r"<ref:[^>]+>", "", code)
+    code = sub(r"<ref:[^>]+>+", "", code)
 
     # <ref name="CFC"/> → ''
     code = sub(r"<ref[^>]*/>", "", code)
