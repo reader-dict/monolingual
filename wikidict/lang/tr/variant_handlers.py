@@ -11,7 +11,11 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
         # `| (...) Template loop detected: [[&#x3a;Template&#x3a;SAYFAADI#Türkçe|:Template:SAYFAADI]]es` → `| [[WORDes]]`
         lines = re.sub(r"\|.+Template loop detected:.+\]\](.+)", rf"| [[{word}\1]]", lines, flags=re.MULTILINE)
 
-    lines = "\n".join(line for line in lines.splitlines() if line.startswith("| ["))
+    lines = "\n".join(
+        line
+        for raw_line in lines.splitlines()
+        if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith(("|-", "|}")))
+    )
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
     forms = set(re.findall(r"\[\[([^#\]]+)\]\]", lines))  # `[[foo]]`
