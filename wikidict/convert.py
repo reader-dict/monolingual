@@ -157,9 +157,6 @@ WORD_TPL_DICTFILE = Template(
 """
 )
 
-# Threshold before issuing a warning to catch potentially problematic variants
-MAX_VARIANTS = 255
-
 log = logging.getLogger(__name__)
 
 
@@ -308,14 +305,6 @@ class BaseFormat:
                             for variant in variants
                             if guess_prefix(variant) == current_word_group_prefix
                         }
-
-                if len(variants) > MAX_VARIANTS:
-                    log.warning(
-                        "Word %r has too many variants (%d): %r",
-                        current_word,
-                        len(variants),
-                        sorted(variants)[:10],
-                    )
 
             # On Kobo, we want to display a variant being the same word lowercased (see #2579):
             #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
