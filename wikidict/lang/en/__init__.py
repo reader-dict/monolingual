@@ -106,6 +106,7 @@ templates_ignored = (
     "{{no entry",
     "{{nonlemma",
     "{{pic",
+    "{{PIE word",
     "{{quote-",
     "{{R:",
     "{{RQ:",
