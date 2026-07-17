@@ -1,6 +1,6 @@
 -r requirements.txt
 mobi==0.4.1
-mypy==2.2.0
+mypy==2.3.0
 pytest==9.1.1
 pytest-dependency==0.6.1
 responses==0.26.2
