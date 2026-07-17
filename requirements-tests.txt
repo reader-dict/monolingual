@@ -6,4 +6,4 @@ pytest-dependency==0.6.1
 responses==0.26.2
 ruff==0.15.22
 ruff-api==0.2.1
-types-requests==2.33.0.20260518
+types-requests==2.33.0.20260712
