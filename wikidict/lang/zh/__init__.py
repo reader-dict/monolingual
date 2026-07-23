@@ -11,7 +11,7 @@ random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 float_separator = ","
 thousands_separator = ","
 
-section_patterns = ("#", ":", r"\*")
+section_patterns = ("#", ":")
 head_sections = ("漢語", "汉语", "{{漢}}")
 etyl_section = ("词源", "詞源", *[f"词源 {idx}" for idx in range(1, 20)])
 section_sublevels = (4, 3)
