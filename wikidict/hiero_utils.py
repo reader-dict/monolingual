@@ -4,29 +4,21 @@ from .hiero import wh_files, wh_hiero, wh_phonemes, wh_prefabs
 
 
 class HieroTokenizer:
-    delimiters: list[str] = []
-    tokenDelimiters: list[str] = []
-
-    singleChars: list[str] = []
-
-    text: str = ""
-    blocks: list[list[str]] = []
-
     currentBlock: list[str]
+    text: str = ""
     token: str = ""
 
-    def __init__(self, text: str):
+    def __init__(self, text: str) -> None:
         self.text = text
-        self.initStatic()
 
-    def initStatic(self) -> None:
+        self.blocks: list[list[str]] = []
         self.delimiters = [" ", "-", "\t", "\n", "\r"]
-        self.tokenDelimiters = ["*", ":", "(", ")"]
         self.singleChars = ["!"]
+        self.tokenDelimiters = ["*", ":", "(", ")"]
 
     # Split text into blocks, then split blocks into items
     def tokenize(self) -> list[list[str]]:
-        self.blocks = []
+        self.blocks.clear()
         self.currentBlock = []
         self.token = ""
 
