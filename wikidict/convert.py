@@ -989,7 +989,7 @@ def distribute_workload(
 def get_latest_json_file(source_dir: Path) -> Path | None:
     """Get the name of the last data-*.json file."""
     files = list(source_dir.glob(f"data-{'[0-9]' * 8}.json"))
-    return sorted(files)[-1] if files else None
+    return max(files) if files else None
 
 
 def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]]]:

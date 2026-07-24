@@ -156,7 +156,7 @@ def renderGlyph(glyph: str, *, height: int = -1) -> str:
 # @return int size
 def resizeGlyph(item: str, *, is_cartouche: bool = False, total: int = 0) -> int:
     item = extractCode(item)
-    glyph = wh_phonemes[item] if item in wh_phonemes else item
+    glyph = wh_phonemes.get(item, item)
 
     margin = 2 * IMAGE_MARGIN
     if is_cartouche:
@@ -257,20 +257,17 @@ def render_hiero(hiero: str, *, scale: float = 100, line: bool = False) -> str:
 
                 for t in code:
                     if t == "*":
-                        if height > line_max:
-                            line_max = height
+                        line_max = max(line_max, height)
                     elif t == ":":
-                        if height > line_max:
-                            line_max = height
+                        line_max = max(line_max, height)
                         total += line_max
                         line_max = 0
                     else:
-                        glyph = wh_phonemes[t] if t in wh_phonemes else t
+                        glyph = wh_phonemes.get(t, t)
                         if glyph in wh_files:
                             height = int(2 + wh_files[glyph][1] * ERD_FACTOR)
 
-                if height > line_max:
-                    line_max = height
+                line_max = max(line_max, height)
 
                 total += line_max
 

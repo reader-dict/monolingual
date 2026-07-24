@@ -235,13 +235,13 @@ def process(file: Path, locale: str) -> bool:
 def get_latest_dump_file(source_dir: Path) -> Path | None:
     """Get the name of the last pages-*.xml.bz2 file."""
     files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml.bz2"))
-    return sorted(files)[-1] if files else None
+    return max(files) if files else None
 
 
 def get_latest_xml_file(source_dir: Path) -> Path | None:
     """Get the name of the last pages-*.xml file."""
     files = list(source_dir.glob(f"pages-{'[0-9]' * 8}.xml"))
-    return sorted(files)[-1] if files else None
+    return max(files) if files else None
 
 
 def get_source_dir(lang_src: str) -> Path:

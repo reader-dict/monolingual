@@ -283,7 +283,7 @@ def adjust_wikicode(
     for line in code.splitlines():
         if re.match(START, line) and "Ancienne forme" not in line and "Forme courante" not in line:
             for pattern in PATTERNS:
-                line, count = re.subn(pattern, r"##\1##", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                line, count = re.subn(pattern, r"##\1##", line, count=1, flags=re.IGNORECASE)
                 if count:
                     parts = line.split("##", 2)
                     line = f"# {{{{flexion|{parts[1]}}}}}"
@@ -304,4 +304,3 @@ def test_regressions() -> None:
     >>> context.expand("{{unité|μ<sub>B</sub>}}", "fr")
     'μ<sub>B</sub>'
     """
-    ...

@@ -30,9 +30,11 @@ def setup_lua_ctx() -> None:
                     "<i>Informatik:</i> das At; Syntax-Bestandteil einiger Programmiersprachen (beispielsweise als Präfix vor Array-Variablen in der Programmiersprache Perl)",
                 ],
                 "Synonyme": [
-                    "At, At-Symbol, At-Zeichen, at sign, Ad-Zeichen, Ad, "
-                    "Affenschwanz, Affenohr, Affenschaukel, Alef, Astat, "
-                    "Klammeraffe"
+                    (
+                        "At, At-Symbol, At-Zeichen, at sign, Ad-Zeichen, Ad, "
+                        "Affenschwanz, Affenohr, Affenschaukel, Alef, Astat, "
+                        "Klammeraffe"
+                    )
                 ],
             },
             [],

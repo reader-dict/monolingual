@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import re
+import sys
 
 from . import constants, context, utils
 from .lang.da.langs import langs as langs_da
@@ -48,7 +49,7 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
             code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
     if not context.setup_modules_db(locale):
-        exit(1)
+        sys.exit(1)
 
     return parse_word(word, code, locale, force=True, templates_status=templates_status) or Word()
 
@@ -106,7 +107,7 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool
 
     if local:
         if not context.setup_modules_db(locale):
-            exit(1)
+            sys.exit(1)
 
         all_words: Words = {}
         render_word((word, context.get_word(word)), all_words, locale, templates_status=templates_status)

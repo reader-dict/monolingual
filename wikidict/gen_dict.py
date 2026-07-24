@@ -1,6 +1,7 @@
 """DEBUG: generate the dictionary for specific words."""
 
 import os
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -14,7 +15,7 @@ def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -
     """Entry point."""
 
     if not context.setup_modules_db(locale):
-        exit(1)
+        sys.exit(1)
 
     if isinstance(output, str):
         output_dir = Path(os.getenv("CWD", "")) / output

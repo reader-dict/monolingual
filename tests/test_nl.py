@@ -100,9 +100,11 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Opmerkingen": [
-                    "Het woord is oorspronkelijk als meervoud ontleend, maar "
-                    "doordat het als stofnaam wordt gebruikt, komt ook het "
-                    "gebruik als enkelvoud voor, zonder verschil in betekenis."
+                    (
+                        "Het woord is oorspronkelijk als meervoud ontleend, maar "
+                        "doordat het als stofnaam wordt gebruikt, komt ook het "
+                        "gebruik als enkelvoud voor, zonder verschil in betekenis."
+                    )
                 ],
                 "Zelfstandig Naamwoord": ["ontgaste steenkool"],
             },
@@ -162,13 +164,17 @@ def setup_lua_ctx() -> None:
                 ],
                 "Synoniemen": ["[2] Goa-Konkani", "[3] Maharashtra-Konkani"],
                 "Eigennaam": [
-                    "geen meervoud (taal) , <i>(algemeen)</i> Indische taal "
-                    "gesproken door 6 miljoen mensen in de Konkan <i>(omvat de "
-                    "beide volgende talen)</i>",
+                    (
+                        "geen meervoud (taal) , <i>(algemeen)</i> Indische taal "
+                        "gesproken door 6 miljoen mensen in de Konkan <i>(omvat de "
+                        "beide volgende talen)</i>"
+                    ),
                     "(taal), <i>(specifiek)</i> officiële taal van de deelstaat Goa in India",
-                    "(taal), <i>(specifiek)</i> taal met verschillende dialecten in "
-                    "de deelstaat Maharashtra in India, die samen een overgang "
-                    "tussen Marathi en het Goa-Konkani vormen",
+                    (
+                        "(taal), <i>(specifiek)</i> taal met verschillende dialecten in "
+                        "de deelstaat Maharashtra in India, die samen een overgang "
+                        "tussen Marathi en het Goa-Konkani vormen"
+                    ),
                 ],
             },
             [],
@@ -181,9 +187,11 @@ def setup_lua_ctx() -> None:
             ['van de merknaam "Stint", gedeponeerd door het bedrijf <i>Stint Urban Mobility</i>'],
             {
                 "Zelfstandig Naamwoord": [
-                    "(verkeer) elektrisch aangedreven karretje met een rechtop staande "
-                    "bestuurder en een bak waarin tot 10 jonge kinderen vervoerd kunnen "
-                    "worden"
+                    (
+                        "(verkeer) elektrisch aangedreven karretje met een rechtop staande "
+                        "bestuurder en een bak waarin tot 10 jonge kinderen vervoerd kunnen "
+                        "worden"
+                    )
                 ],
                 "Synoniemen": ["bso-bus"],
             },

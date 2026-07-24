@@ -300,7 +300,7 @@ def adjust_wikicode(
     for line in code.splitlines():
         if re.match(start, line):
             for pattern in patterns:
-                line, count = re.subn(rf"{start}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)  # noqa: PLW2901
+                line, count = re.subn(rf"{start}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)
                 if count:
                     break
         lines.append(line)
