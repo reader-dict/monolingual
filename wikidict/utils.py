@@ -1229,7 +1229,7 @@ def cleanup_rev_variant(form: str, *, rpl: set[str] | None = None, skip: set[str
         cleaned = cleaned.replace(replacement, "")
     cleaned = cleaned.strip(" []()/")
 
-    for sep in {" (", "#"}:
+    for sep in (" (", "#"):
         if sep in cleaned:
             cleaned = cleaned.split(sep, 1)[0]
 

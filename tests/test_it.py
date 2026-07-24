@@ -43,11 +43,15 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Sinonimi": [
-                    "aderire, appoggiare, approvare, concordare esprimere adesione, "
-                    "essere solidale, essere d’accordo, partecipare, sostenere,",
+                    (
+                        "aderire, appoggiare, approvare, concordare esprimere adesione, "
+                        "essere solidale, essere d’accordo, partecipare, sostenere,"
+                    ),
                     "avere in comune, compartecipare possedere, dividere, spartire",
-                    "<small>(<i>per estensione</i>)</small> <small>(<i>senso "
-                    "figurato</i>)</small> accettare, accogliere",
+                    (
+                        "<small>(<i>per estensione</i>)</small> <small>(<i>senso "
+                        "figurato</i>)</small> accettare, accogliere"
+                    ),
                 ],
                 "Verb": [
                     "spartire con altri",

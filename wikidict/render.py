@@ -8,6 +8,7 @@ import logging
 import multiprocessing
 import os
 import re
+import sys
 import warnings
 from collections import defaultdict
 from contextlib import suppress
@@ -595,7 +596,7 @@ def parse_word(
             not definitions
             or (
                 len(definitions) == 1
-                and any(syn in definitions for syn in {"Sinónimo", "Sinónimos", "Sinônimo", "Sinônimos"})
+                and any(syn in definitions for syn in ("Sinónimo", "Sinónimos", "Sinônimo", "Sinônimos"))
             )
         )
     ):
@@ -679,7 +680,7 @@ def render_word(
 def init_worker(locale: str) -> None:
     utils.setup_logging(*utils.guess_locales(locale, use_log=False))
     if not context.setup_modules_db(locale):
-        exit(1)
+        sys.exit(1)
 
 
 def render(

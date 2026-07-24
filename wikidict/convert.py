@@ -18,7 +18,7 @@ from datetime import UTC, datetime, timedelta
 from functools import partial
 from pathlib import Path
 from time import monotonic
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 from zipfile import ZIP_DEFLATED, ZipFile
 
 from jinja2 import Template
@@ -497,7 +497,7 @@ class ConverterFromDictFile(DictFileFormat):
     target_suffix = ""
     final_file = ""
     zip_glob_files = "dict-data.*"
-    glossary_options: dict[str, str | bool] = {}
+    glossary_options: ClassVar[dict[str, bool | str]] = {}
 
     def _patch_gc(self) -> None:
         """Bypass performances issues when calling PyGlossary from Python."""
@@ -608,7 +608,7 @@ class DictOrgFormat(ConverterFromDictFile):
     target_format = "dict.org"
     target_suffix = "index"
     final_file = "dictorg-{lang_src}-{lang_dst}{etym_suffix}.zip"
-    glossary_options = {"dictzip": True, "install": False}
+    glossary_options: ClassVar[dict[str, bool | str]] = {"dictzip": True, "install": False}
 
 
 class MobiFormat(ConverterFromDictFile):
@@ -618,7 +618,7 @@ class MobiFormat(ConverterFromDictFile):
     target_suffix = "mobi"
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.mobi.zip"
     zip_glob_files = ""  # Will be set in `_compress()`
-    glossary_options = {
+    glossary_options: ClassVar[dict[str, bool | str]] = {
         "cover_path": str(constants.COVER_FILE),
         "keep": True,
         "kindlegen_path": str(constants.MOBIPOCKET_TOOL),
@@ -638,7 +638,7 @@ class StarDictFormat(ConverterFromDictFile):
     target_format = "stardict"
     target_suffix = "ifo"
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.zip"
-    glossary_options = {"dictzip": True, "sametypesequence": "h"}
+    glossary_options: ClassVar[dict[str, bool | str]] = {"dictzip": True, "sametypesequence": "h"}
 
     def _convert(self) -> None:
         super()._convert()
@@ -989,7 +989,7 @@ def distribute_workload(
 def get_latest_json_file(source_dir: Path) -> Path | None:
     """Get the name of the last data-*.json file."""
     files = list(source_dir.glob(f"data-{'[0-9]' * 8}.json"))
-    return sorted(files)[-1] if files else None
+    return max(files) if files else None
 
 
 def get_formatters(formats: str) -> tuple[set[type[BaseFormat]], set[type[BaseFormat]]]:

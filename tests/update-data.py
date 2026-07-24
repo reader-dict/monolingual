@@ -3,7 +3,7 @@ from pathlib import Path
 
 HERE = Path(__file__).parent
 sys.path.insert(0, str(HERE.parent))
-from wikidict.constants import SESSION  # noqa: E402
+from wikidict.constants import SESSION
 
 
 def fetch_and_store_if_updated(file: Path, url: str) -> None:

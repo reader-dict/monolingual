@@ -10,9 +10,9 @@ from time import monotonic
 from ruff_api import FormatOptions, format_string
 
 FILES = {
-    "all-namespaces.py": "wikidict/namespaces.py",
-    "da-langs.py": "wikidict/lang/da/langs.py",
-    "tr-langs.py": "wikidict/lang/tr/langs.py",
+    "all_namespaces.py": "wikidict/namespaces.py",
+    "da_langs.py": "wikidict/lang/da/langs.py",
+    "tr_langs.py": "wikidict/lang/tr/langs.py",
 }
 
 # En error will be raised when the percentage of deletions from the new content
@@ -58,7 +58,7 @@ def process_script(script: str, file: str, errors: dict[str, str], idx: int, tot
     """Process one script."""
     try:
         replace(file, subprocess.check_output([sys.executable, f"scripts/{script}"], text=True))
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         errors[script] = str(exc)
     else:
         print(f"[{idx}/{total}] Processed {script} with success.", flush=True)

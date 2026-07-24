@@ -33,8 +33,10 @@ def setup_lua_ctx() -> None:
             {
                 "Expresie": ["<i><b>Joacă cum îi cântă</b> = face întocmai cum îi poruncește altul</i>"],
                 "Sinonime": [
-                    "<b>1:</b> (muz.) executa, interpreta, intona, (pop.) glăsui, "
-                    "spune, viersui, zice, (înv.) glăsi, juca, (muz.) suna"
+                    (
+                        "<b>1:</b> (muz.) executa, interpreta, intona, (pop.) glăsui, "
+                        "spune, viersui, zice, (înv.) glăsi, juca, (muz.) suna"
+                    )
                 ],
                 "Verb": [
                     "(<i>v.intranz. și tranz.</i>) a emite cu vocea sau cu un instrument un șir de sunete muzicale care se rânduiesc într-o melodie, într-un acord etc.",
@@ -123,9 +125,11 @@ def setup_lua_ctx() -> None:
             {
                 "Sinonime": ["(bot.) spinul-lui-Cristos, spinul-lui-Hristos"],
                 "Substantiv": [
-                    "(<i>bot.</i>) (<i>Paliurus spina-christi</i>) arbust spinos "
-                    "de origine mediteraneană, din al cărui lemn greu, dur și "
-                    "elastic se fac cozi de unelte."
+                    (
+                        "(<i>bot.</i>) (<i>Paliurus spina-christi</i>) arbust spinos "
+                        "de origine mediteraneană, din al cărui lemn greu, dur și "
+                        "elastic se fac cozi de unelte."
+                    )
                 ],
             },
             [],

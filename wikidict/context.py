@@ -26,9 +26,9 @@ _lock = Lock()
 DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 1
 
 # Remove greedy methods we do not need
-setattr(wikitextprocessor.Wtp, "debug", lambda *_, **__: None)
-setattr(wikitextprocessor.Wtp, "note", lambda *_, **__: None)
-setattr(wikitextprocessor.Wtp, "warning", lambda *_, **__: None)
+wikitextprocessor.Wtp.debug = lambda *_, **__: None  # type: ignore[method-assign]
+wikitextprocessor.Wtp.note = lambda *_, **__: None  # type: ignore[method-assign]
+wikitextprocessor.Wtp.warning = lambda *_, **__: None  # type: ignore[method-assign]
 
 log = logging.getLogger(__name__)
 
