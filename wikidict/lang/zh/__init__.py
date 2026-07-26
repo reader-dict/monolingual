@@ -15,7 +15,6 @@ section_patterns = ("#", ":")
 head_sections = (
     "漢語",  # Chinese trad
     "汉语",  # Chinese simp
-    "{{漢}}",  # Chinese character
     "跨語言",  # Translingual
 )
 etyl_section = ("词源", "詞源", *[f"词源 {idx}" for idx in range(1, 20)])
