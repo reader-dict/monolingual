@@ -46,7 +46,6 @@ sections = (
     "verb",
 )
 
-variant_titles = sections
 variant_templates = (
     "{{ca-forma-conj",
     "{{forma-conj",

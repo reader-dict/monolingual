@@ -169,7 +169,6 @@ def test_parse_word(
     details = parse_word(word, code, "eo", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

@@ -45,9 +45,14 @@ if TYPE_CHECKING:
 #       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
 WORD_TPL_KOBO = Template(
     """\
-<w><p><a name="{{ word }}" /><b>{{ current_word }}</b>{{ pronunciation }}{{ gender }}<br/><br/>
+<w><p><a name="{{ word }}" /><b>{{ current_word }}</b>{{ pronunciation }}<br/><br/>
 {%- for pos, pos_definitions in definitions -%}
-    <b>{{ pos }}</b><ol>
+    {%- if pos.find("|") > -1 -%}
+    <b>{{ pos.split("|", 1)[0] }}</b> <i>{{ pos.split("|", 1)[1] }}</i>
+    {%- else -%}
+    <b>{{ pos }}</b>
+    {%- endif -%}
+    <ol>
     {%- for definition in pos_definitions -%}
         {%- if definition is string -%}
             <li>{{ definition }}</li>
@@ -104,15 +109,21 @@ WORD_TPL_KOBO = Template(
 WORD_TPL_DICTFILE = Template(
     """\
 @ {{ word }}
-{%- if pronunciation or gender %}
-:{{ pronunciation }}{{ gender }}
+{%- if pronunciation %}
+:{{ pronunciation }}
 {%- endif %}
 {%- for variant in variants %}
 & {{ variant }}
 {%- endfor %}
 <html>
 {%- for pos, pos_definitions in definitions -%}
-    <p><b>{{ pos }}</b></p><ol>
+    <p>
+    {%- if pos.find("|") > -1 -%}
+    <b>{{ pos.split("|", 1)[0] }}</b> <i>{{ pos.split("|", 1)[1] }}</i>
+    {%- else -%}
+    <b>{{ pos }}</b>
+    {%- endif -%}
+    </p><ol>
     {%- for definition in pos_definitions -%}
         {%- if definition is string -%}
             <li>{{ definition }}</li>
@@ -321,7 +332,6 @@ class BaseFormat:
                 current_word=current_word,
                 definitions=current_details.definitions.items(),
                 pronunciation=utils.convert_pronunciation(current_details.pronunciations),
-                gender=utils.convert_gender(current_details.genders),
                 etymologies=current_details.etymology if self.include_etymology else [],
                 variants=sorted(variants, key=lambda s: (len(s), s)),
             )
@@ -661,7 +671,6 @@ class JSONVolumeFormat(BaseFormat):
 
     KEY_DEFINITION = "d"
     KEY_ETYMOLOGY = "e"
-    KEY_GENDER = "g"
     KEY_PRONUNCIATION = "p"
     KEY_REDIRECT = "r"
     KEY_VARIANT = "v"
@@ -716,8 +725,6 @@ class JSONVolumeFormat(BaseFormat):
             word_data[self.KEY_DEFINITION] = defs
         if etyms := self._format_etymology(details.etymology):
             word_data[self.KEY_ETYMOLOGY] = etyms
-        if genders := utils.convert_gender(details.genders):
-            word_data[self.KEY_GENDER] = genders
         if prons := utils.convert_pronunciation(details.pronunciations):
             word_data[self.KEY_PRONUNCIATION] = prons
         if variants := self.variants.get(word):

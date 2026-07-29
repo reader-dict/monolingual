@@ -38,12 +38,6 @@ sections = (
     "{{verb form}",
 )
 
-variant_titles = (
-    "{{agg form",
-    "{{sost",
-    "{{suff",
-    "{{verb form",
-)
 variant_templates = (
     "{{flexion",
     "{{Tabs",

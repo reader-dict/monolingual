@@ -84,7 +84,7 @@ def setup_lua_ctx() -> None:
                 "[4] Informàtica: afèresi de <i>robot</i>, calc de l’anglès <i>bot</i>, segle XX.",
             ],
             {
-                "Nom": [
+                "Nom|m.": [
                     "Recipient de cuir, originalment de boc per a contenir vi.",
                     "sac de gemecs",
                     "Reclam a manera d'ocell.",
@@ -112,13 +112,7 @@ def setup_lua_ctx() -> None:
                 "Del llatí vulgar <i>*capu(m)</i>, variant de l’acusatiu <i>caput</i>, segle XIII. Com a adjectiu pel sentit d’«extrem, punta». Com a preposició pel sentit de «part anterior (vers un lloc)»."
             ],
             {
-                "Adjectiu": [
-                    "(<i>negatiu</i>) Ni un.",
-                    "(interrogatiu,&#32;condicional) Algun.",
-                    "(<i>negatiu</i>) Gens de.",
-                    "(interrogatiu,&#32;condicional) Alguna mena de.",
-                ],
-                "Nom": [
+                "Nom|m.": [
                     "(<i>anatomia</i>) Part superior i anterior del cos d'un animal.",
                     "Part superior del cos de l'ésser humà, considerada com a seu del pensament, l'intel·lecte, judici, talent, seny.",
                     "Lloc de preferència, central.",
@@ -136,10 +130,11 @@ def setup_lua_ctx() -> None:
                     "(<i>golf</i>) Part final d'un bastó, que impacta en la bola en executar el colp.",
                     "(<i>pilota basca</i>) Part més ampla d'una eina.",
                     "(<i>bàdminton</i>) base",
+                ],
+                "Nom|mf.": [
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
                     "Grau militar.",
                 ],
-                "Preposició": ["cap a"],
                 "Sinònims": [
                     "(anatomia) carbassot , cervell, clepsa, closca, crani, crisma, ment, testa",
                     "(seu del pensament) cervell, discerniment, judici, juí, raonament, raó, saviesa, senderi, seny, sindèresi, talent",
@@ -148,6 +143,13 @@ def setup_lua_ctx() -> None:
                     "(extremitat, part final) extrem, fi, final, punta",
                     "amo, cabdill, cacic, capitost, patró, senyor, superior, director, encarregat, gerent, president, propietari, responsable",
                 ],
+                "Adjectiu": [
+                    "(<i>negatiu</i>) Ni un.",
+                    "(interrogatiu,&#32;condicional) Algun.",
+                    "(<i>negatiu</i>) Gens de.",
+                    "(interrogatiu,&#32;condicional) Alguna mena de.",
+                ],
+                "Preposició": ["cap a"],
             },
             ["cabre", "capar"],
         ),
@@ -157,10 +159,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["Del llatí <i>casus</i> &lrm;(‘caiguda, cas fortuït’), de <i>cadere</i> &lrm;(‘caure’), segle XIV."],
             {
-                "Contracció": [
-                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
-                ],
-                "Nom": [
+                "Nom|m.": [
                     "Situació particular que es produeix entre les diverses possibles.",
                     "Objecte d'estudi d'alguna disciplina.",
                     "(<i>lingüística</i>) Categoria gramatical que marca la funció sintàctica d’un mot.",
@@ -172,6 +171,9 @@ def setup_lua_ctx() -> None:
                     "ca s' <i>(forma apostrofada)</i>",
                     "cal",
                     "can",
+                ],
+                "Contracció": [
+                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
                 ],
             },
             ["ca", "casar"],
@@ -208,11 +210,11 @@ def setup_lua_ctx() -> None:
                 "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
             {
-                "Adjectiu": [
+                "Adjectiu|m.": [
                     "Relatiu o pertanyent a Catalunya, als seus habitants o a la llengua catalana.",
                     "Relatiu o pertanyent als Països Catalans o als seus habitants.",
                 ],
-                "Nom": [
+                "Nom|m.": [
                     "Natural de Catalunya.",
                     "Natural dels Països Catalans.",
                     "(<i>masculí singular</i>) Llengua històricament parlada a Catalunya, Andorra, País Valencià, les illes Balears, la Catalunya Nord, l'Alguer i la Franja de Ponent.",
@@ -238,13 +240,12 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["Del llatí <i>compŭtus</i>, segle XIII."],
             {
-                "Nom": [
+                "Nom|m.": [
                     "Acte de comptar.",
                     "Cura, atenció.",
                     "Suma de la quantitat a pagar.",
                     "(<i>beisbol</i>) Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
                 ],
-                "Interjecció": ["atenció"],
                 "Sinònims": [
                     "advertiment, alerta, atenció, cura, ei, ep, precaució",
                     "atenció, consideració, cura, esment",
@@ -253,6 +254,7 @@ def setup_lua_ctx() -> None:
                     "explicació, report",
                     "factura, nota",
                 ],
+                "Interjecció": ["atenció"],
             },
             ["comptar"],
         ),
@@ -268,8 +270,9 @@ def setup_lua_ctx() -> None:
                     "(<i>cardinal</i>) Nombre enter situat entre el setze i el divuit.",
                     "(<i>valor ordinal</i>) dissetè, dissetena.",
                 ],
-                "Nom": ["Xifra i nombre 17.", "Dissetena hora."],
                 "Sinònims": ["desset, en balear i alguerès", "dèsset, en valencià", "desasset, en septentrional"],
+                "Nom|m.": ["Xifra i nombre 17."],
+                "Nom|f.": ["Dissetena hora."],
             },
             [],
         ),
@@ -285,11 +288,6 @@ def setup_lua_ctx() -> None:
                 "Article": [
                     "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya."
                 ],
-                "Pronom": [
-                    'Acusatiu del masculí singular del pronom personal "ell".',
-                    'Substitueix el complement directe quan aquest porta l\'article "el".',
-                ],
-                "Nom": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
                 "Sinònims": [
                     "l' (forma apostrofada)",
                     "lo, l' (dialectal)",
@@ -297,6 +295,11 @@ def setup_lua_ctx() -> None:
                     "so, s' (mallorquí i eivissenc en certs contextos)",
                     "en, n' (davant noms o sobrenoms de persona)",
                 ],
+                "Pronom": [
+                    'Acusatiu del masculí singular del pronom personal "ell".',
+                    'Substitueix el complement directe quan aquest porta l\'article "el".',
+                ],
+                "Nom|f.": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
             },
             [],
         ),
@@ -314,7 +317,7 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(‘hivernar’)."],
-            {"Nom": ["Cobert per a protegir plantes del vent o del fred extrem."]},
+            {"Nom|m.": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
         ("Mn.", [], [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),
@@ -339,13 +342,13 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],
-                "Sinònims": ["bust, pit, sina, tòrax", "mare, matriu"],
                 "Conjunció": ["Nexe condicional que introdueix un supòsit, una premissa."],
-                "Nom": [
+                "Nom|m.": [
                     "Cavitat interna del cos.",
                     "(<i>per extensió</i>) Part interna d'una cosa.",
                     "Setena nota musical de l'escala.",
                 ],
+                "Sinònims": ["bust, pit, sina, tòrax", "mare, matriu"],
                 "Pronom": ["Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions."],
             },
             [],
@@ -366,7 +369,6 @@ def test_parse_word(
     details = parse_word(word, code, "ca", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert definitions == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants

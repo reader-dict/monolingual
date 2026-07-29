@@ -44,7 +44,6 @@ sections = (
     "forma verbal",
 )
 
-variant_titles = sections
 variant_templates = (
     "{{enclítico",
     "{{forma ",

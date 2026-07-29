@@ -88,7 +88,6 @@ sections = (
     "{{vortospeco|vortgrupo|eo}",
 )
 
-variant_titles = sections
 variant_templates = ("{{form-eo}}",)
 
 reverse_variant_titles = ("{{Deklinacio-eo}}", "{{Esperanta verbo}}")

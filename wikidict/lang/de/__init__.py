@@ -25,10 +25,6 @@ sections = (
     "{{variant}",
 )
 
-variant_titles = (
-    "",  # Empty for simple redirection words (ex: https://de.wiktionary.org/wiki/daß) # TODO remove with #2534?
-    "konjugierte form",
-)
 variant_templates = ("{{flexion",)
 
 reverse_variant_templates = ("{{rev-flexion",)

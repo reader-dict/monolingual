@@ -34,7 +34,7 @@ def setup_lua_ctx() -> None:
                     "(natuurkunde) het symbool voor versnelling.",
                     "(kristallografie) het symbool voor een glijspiegelvlak waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.",
                 ],
-                "Zelfstandig Naamwoord": [
+                "Zelfstandig Naamwoord|m., v.": [
                     "(taalkunde) de eerste letter van het alfabet",
                     "het op de eerste plaats genoemde",
                     "(muziek) de standaardmuziektoon van 440 Hz",
@@ -68,7 +68,7 @@ def setup_lua_ctx() -> None:
                     "(materiaalkunde) symbool voor de zachtheid van een potlood, in toenemende zachtheid: B, 2B, 3B, 4B, 5B, 6B, 7B, 8B en 9B",
                     "(muziek) symbool van het “B-majeurakkoord”",
                 ],
-                "Zelfstandig Naamwoord": [
+                "Zelfstandig Naamwoord|m.": [
                     "(taalkunde) hoofdletter van de b, de tweede letter van het alfabet",
                     "(muziek), (afkorting) afkorting van “B-majeur”",
                     "als benaming binnen een reeks categorieën die met letters worden aangeduid",
@@ -84,7 +84,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["samenstelling&#32;van&#32;&#160;chat&#32;zn&#160;&#32;en&#32;&#160;robot&#32;zn&#160;"],
             {
-                "Zelfstandig Naamwoord": ["(internet) een geautomatiseerde gesprekspartner via het internet"],
+                "Zelfstandig Naamwoord|m.": ["(internet) een geautomatiseerde gesprekspartner via het internet"],
                 "Synoniemen": ["chatbot"],
             },
             [],
@@ -106,7 +106,7 @@ def setup_lua_ctx() -> None:
                         "gebruik als enkelvoud voor, zonder verschil in betekenis."
                     )
                 ],
-                "Zelfstandig Naamwoord": ["ontgaste steenkool"],
+                "Zelfstandig Naamwoord|mv.": ["ontgaste steenkool"],
             },
             [],
             [],
@@ -121,7 +121,7 @@ def setup_lua_ctx() -> None:
                 "Leenwoord uit het Frans, in de betekenis van ‘kerk’ voor het eerst aangetroffen in het jaar 1574",
             ],
             {
-                "Zelfstandig Naamwoord": [
+                "Zelfstandig Naamwoord|m.": [
                     "(religie) kathedraal, de hoofdkerk van een bisdom",
                     "(bouwkunde) dak in de vorm van een halve bol",
                     "Portugese eretitel",
@@ -158,12 +158,13 @@ def setup_lua_ctx() -> None:
             ["m", "v"],
             [],
             {
-                "Zelfstandig Naamwoord": [
+                "Zelfstandig Naamwoord|m., v.": [
                     "(demoniem) iemand afkomstig van de Konkan, het westelijk kustgebied van India",
+                ],
+                "Zelfstandig Naamwoord|mv.": [
                     "(demoniem) de oorspronkelijke bevolking van de Konkan",
                 ],
-                "Synoniemen": ["[2] Goa-Konkani", "[3] Maharashtra-Konkani"],
-                "Eigennaam": [
+                "Eigennaam|o.": [
                     (
                         "geen meervoud (taal) , <i>(algemeen)</i> Indische taal "
                         "gesproken door 6 miljoen mensen in de Konkan <i>(omvat de "
@@ -176,6 +177,7 @@ def setup_lua_ctx() -> None:
                         "tussen Marathi en het Goa-Konkani vormen"
                     ),
                 ],
+                "Synoniemen": ["[2] Goa-Konkani", "[3] Maharashtra-Konkani"],
             },
             [],
             [],
@@ -186,7 +188,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ['van de merknaam "Stint", gedeponeerd door het bedrijf <i>Stint Urban Mobility</i>'],
             {
-                "Zelfstandig Naamwoord": [
+                "Zelfstandig Naamwoord|m.": [
                     (
                         "(verkeer) elektrisch aangedreven karretje met een rechtop staande "
                         "bestuurder en een bak waarin tot 10 jonge kinderen vervoerd kunnen "
@@ -229,7 +231,6 @@ def test_parse_word(
     details = parse_word(word, code, "nl", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

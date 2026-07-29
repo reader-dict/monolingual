@@ -344,7 +344,9 @@
                 try {
                     const filename = `vol-${volumeName}.json.gz`;
                     const response = await fetch(`${this.basePath}${filename}`);
-                    const volume = await response.json();
+                    const decompressionStream = new DecompressionStream('gzip');
+                    const decompressedStream = response.body.pipeThrough(decompressionStream);
+                    const volume = await new Response(decompressedStream).json();
 
                     this.volumeCache.set(cacheKey, volume);
                     console.log(`Loaded volume ${volumeName}`);
@@ -740,11 +742,6 @@
                     html += `<div class="word-pronunciation">${data.p}</div>`;
                 }
 
-                // Add gender if available
-                if (data.g) {
-                    html += `<span class="word-gender">${data.g}</span>`;
-                }
-
                 html += `</div></div>`;
 
                 // Add etymology if available
@@ -762,9 +759,14 @@
                 // Add definitions grouped by part of speech
                 if (data.d && typeof data.d === 'object') {
                     for (const [partOfSpeech, definitions] of Object.entries(data.d)) {
-                        html += `<div class="part-of-speech-section">
-                <h2 class="part-of-speech">${partOfSpeech}</h2>`;
-
+                        html += `<div class="part-of-speech-section"><h2 class="part-of-speech">`;
+                        if (partOfSpeech.includes("|")) {
+                            const [partOfSpeechSingle, gender] = partOfSpeech.split("|", 2);
+                            html += `${partOfSpeechSingle} <span class="word-gender">${gender}</span>`;
+                        } else {
+                            html += partOfSpeech;
+                        }
+                        html += `</h2>`;
                         html += renderDefinition(definitions)
                         html += `</div>`;
                     }  

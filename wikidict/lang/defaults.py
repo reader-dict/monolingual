@@ -21,7 +21,6 @@ section_sublevels = (3,)
 head_sections = ("",)
 etyl_section = ("",)
 
-variant_titles: tuple[str, ...] = ()
 variant_templates: tuple[str, ...] = ()
 reverse_variant_titles: tuple[str, ...] = ()
 reverse_variant_templates: tuple[str, ...] = ()

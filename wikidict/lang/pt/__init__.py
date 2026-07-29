@@ -94,7 +94,6 @@ _sections.extend(f"{{{{{s}" for s in _sections.copy())
 _sections.extend(etyl_section)
 sections = tuple(_sections)
 
-variant_titles = sections
 variant_templates = ("{{flexion",)
 
 reverse_variant_titles = (

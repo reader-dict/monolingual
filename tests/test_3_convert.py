@@ -16,16 +16,16 @@ from wikidict.stubs import Variants, Word, Words
 
 WORDS = {
     "empty": Word(),
-    "foo": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}),
-    "foos": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"]),
-    "baz": Word(["pron"], ["gender"], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"]),
+    "foo": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}),
+    "foos": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"]),
+    "baz": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"]),
     "empty1": Word(variants=["foo"]),
     "empty2": Word(variants=["empty1"]),
-    "Multiple Etymologies": Word(["pron"], ["gender"], ["etyl 1", ("setyl 1",)], {"Noun": ["def 1", ("sdef 1",)]}),
-    "Multiple Etymology": Word(["pron0"], ["gender0"], ["etyl0"], {"Noun": ["def 0"]}, ["Multiple Etymologies"]),
+    "Multiple Etymologies": Word(["pron"], [], ["etyl 1", ("setyl 1",)], {"Noun|m": ["def 1", ("sdef 1",)]}),
+    "Multiple Etymology": Word(["pron0"], [], ["etyl0"], {"Noun": ["def 0"]}, ["Multiple Etymologies"]),
     "GIF": Word(
         ["pron"],
-        ["gender"],
+        [],
         ["etyl"],
         {
             "Noun": [
@@ -299,24 +299,24 @@ def test_generate_secondary_dict(formatter: type[convert.BaseFormat], filename: 
 
 
 FORMATTED_WORD_KOBO = """\
-<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></p><var><variant name="multiple etymology"/></var></w>
+<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron<br/><br/><b>Noun</b> <i>m</i><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/></p><var><variant name="multiple etymology"/></var></w>
 """
 FORMATTED_WORD_KOBO_NO_ETYMOLOGY = """\
-<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron <i>gender</i>.<br/><br/><b>Noun</b><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></p><var><variant name="multiple etymology"/></var></w>
+<w><p><a name="Multiple Etymologies" /><b>Multiple Etymologies</b> pron<br/><br/><b>Noun</b> <i>m</i><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol></p><var><variant name="multiple etymology"/></var></w>
 """
 FORMATTED_WORD_DICTFILE = """\
 @ Multiple Etymologies
-: pron <i>gender</i>.
+: pron
 & Multiple Etymology
-<html><p><b>Noun</b></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/>\
+<html><p><b>Noun</b> <i>m</i></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol><p>etyl 1</p><ol><li>setyl 1</li></ol><br/>\
 
 
 """
 FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY = """\
 @ Multiple Etymologies
-: pron <i>gender</i>.
+: pron
 & Multiple Etymology
-<html><p><b>Noun</b></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol>\
+<html><p><b>Noun</b> <i>m</i></p><ol><li>def 1</li><ol style="list-style-type:lower-alpha"><li>sdef 1</li></ol></ol>\
 
 
 """
@@ -354,7 +354,7 @@ def test_word_rendering(
 
 WORDS_VARIANTS_FR = {
     "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'estre'."]}),
-    "être": Word(pronunciations=["\\ɛtʁ\\"], genders=["m"], definitions={"Verbe": ["Définition de 'être'."]}),
+    "être": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'être'."]}),
     "suis": Word(pronunciations=["\\sɥi\\"], variants=["suivre", "être", "estre"]),
     "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions={"Verbe": ["Définition de 'suivre'."]}),
 }
@@ -522,7 +522,7 @@ def test_df_format(tmp_path: Path) -> None:
 <html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol>
 
 @ être
-: \ɛtʁ\ <i>m</i>.
+: \ɛtʁ\
 & suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol>
 

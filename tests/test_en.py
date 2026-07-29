@@ -47,7 +47,7 @@ def setup_lua_ctx() -> None:
             ["f"],
             ["See <b>Acanthis (mythology)</b> on Wikipedia."],
             {
-                "Proper Noun": [
+                "Proper Noun|f.": [
                     "A taxonomic genus within the family Fringillidae&nbsp;– redpolls, of northern woodlands, formerly included in <i>Carduelis</i>."
                 ]
             },
@@ -496,7 +496,6 @@ def test_parse_word(
     details = parse_word(word, code, "en", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

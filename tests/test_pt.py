@@ -151,7 +151,7 @@ def setup_lua_ctx() -> None:
             ["mf"],
             ["Do latim <i>caprunu</i>&nbsp;“cabra”."],
             {
-                "Adjetivo": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
+                "Adjetivo|mf.": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
                 "Interjeição": ["indica estrondo"],
                 "Sinónimo": ["caprídeo", "caprino"],
             },
@@ -164,7 +164,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             [],
             {
-                "Acrónimo": [
+                "Acrónimo|m.": [
                     "<b>C</b>entro de <b>O</b>perações da <b>Po</b>lícia <b>M</b>ilitar",
                     "(Brasil, governo) <b>Co</b>mitê de <b>Po</b>lítica <b>M</b>onetária",
                 ]
@@ -343,7 +343,7 @@ def setup_lua_ctx() -> None:
             ["f"],
             [],
             {
-                "Substantivo": [
+                "Substantivo|f.": [
                     "lente ou sistema de lentes de uma máquina fotográfica",
                     "lente que está voltada para o objeto que se quer ver ou examinar",
                 ],
@@ -451,7 +451,6 @@ def test_parse_word(
     details = parse_word(word, code, "pt", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

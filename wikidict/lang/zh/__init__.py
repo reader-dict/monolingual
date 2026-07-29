@@ -132,8 +132,6 @@ sections = (
     "釋義",  # explanation
 )
 
-variant_titles = sections
-
 templates_ignored = (
     "{{attention",
     "{{attn",

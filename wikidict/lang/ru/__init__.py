@@ -31,7 +31,6 @@ sections = (
     "синонимы",  # Synonyms
 )
 
-variant_titles = ("значение", "морфологические и синтаксические свойства")
 variant_templates = ("{{прич.", "{{Форма-")
 
 reverse_variant_templates = ("{{rev-flexion",)

@@ -45,7 +45,7 @@ def setup_lua_ctx() -> None:
             ["[siːaɪ̯ˈɛɪ̯]"],
             ["mf"],
             ["Abkürzung von Central Intelligence Agency"],
-            {"Abkürzung": ["US-amerikanischer Auslandsnachrichtendienst"]},
+            {"Abkürzung|mf.": ["US-amerikanischer Auslandsnachrichtendienst"]},
             [],
             [],
         ),
@@ -106,7 +106,6 @@ def test_parse_word(
     details = parse_word(word, code, "de", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

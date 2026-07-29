@@ -1,7 +1,6 @@
 """French language."""
 
 import re
-from itertools import product
 
 from ... import utils
 from .template_adapters import adapters as template_adapters  # noqa: F401
@@ -85,11 +84,6 @@ sections = (
     # "{{s|caractère}",  # See #2634
 )
 
-variant_titles = (
-    *[f"{{{{s|{section}|fr}}" for section in core_sections],
-    *[f"{{{{s|{section}|fr|flexion" for section in core_sections],
-    *[f"{{{{s|{section}|fr|num={idx}|flexion" for section, idx in product(["adjectif", "nom"], range(1, 4))],
-)
 variant_templates = (
     "{{fr-accord-",
     "{{fr-rég",
@@ -131,10 +125,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     []
     >>> find_genders("'''-eresse''' {{pron|(ə).ʁɛs|fr}} {{f}}", "fr")
     ['f']
-    >>> find_genders("'''42''' {{msing}}", "fr")
-    ['msing']
+    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{invar}}", "fr")
+    ['invar']
     """
-    pattern = re.compile(rf"\{{([fmsingp]+)(?: \?\|{locale})*}}")
+    pattern = re.compile(rf"\{{([fmpinvar]+)(?: \?\|{locale})*}}")
     return utils.unique(utils.flatten(pattern.findall(code)))
 
 
@@ -274,6 +268,9 @@ def adjust_wikicode(
 
     # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
     code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)
+
+    # Simplify genders
+    code = code.replace("{{msing}}", "{{m}}")
 
     #
     # Variants

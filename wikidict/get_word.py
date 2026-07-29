@@ -115,14 +115,16 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool
     else:
         details = get_word(word, locale, templates_status=templates_status)
 
-    print(
-        word,
-        utils.convert_pronunciation(details.pronunciations).lstrip(),
-        strip_html(utils.convert_gender(details.genders).lstrip()),
-    )
+    print(word, utils.convert_pronunciation(details.pronunciations).lstrip())
 
     for pos, definitions in details.definitions.items():
-        print("\n", bold(pos))
+        print()
+        if "|" in pos:
+            pos, gender = pos.split("|", 1)
+            print(bold(pos), italic(gender))
+        else:
+            print(bold(pos))
+
         index = 1
         for definition in definitions:
             if not isinstance(definition, tuple):

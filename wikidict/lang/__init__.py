@@ -57,8 +57,6 @@ etyl_section: dict[str, tuple[str]] = _populate("etyl_section")
 sections: dict[str, tuple[str, ...]] = _populate("sections")
 
 # Variants
-# Section titles considered interesting to look variants into
-variant_titles: dict[str, tuple[str, ...]] = _populate("variant_titles")
 reverse_variant_titles: dict[str, tuple[str, ...]] = _populate("reverse_variant_titles")
 
 # Template names considered interesting to look variants into

@@ -58,7 +58,6 @@ sections = (
     *[f"{{{{{section}|" for section in core_sections],
 )
 
-variant_titles = tuple(section for section in sections if section not in etyl_section)
 variant_templates = (
     "{{adj form of",
     "{{flexion",
