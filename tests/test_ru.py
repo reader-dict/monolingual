@@ -19,6 +19,7 @@ def setup_lua_ctx() -> None:
 @pytest.mark.parametrize(
     "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
     [
+        ("-", [], [], [], {"Значение": ["дефис"]}, [], []),
         (
             "страница",
             ["[strɐˈnʲit͡sə]", "[strɐˈnʲit͡sɨ]"],
