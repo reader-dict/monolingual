@@ -188,7 +188,7 @@ def adjust_wikicode(
     )
 
     # Delete empty synonyms
-    code = code.replace("# —\n", "").replace("# -\n", "").replace("# ?\n", "")
+    code = re.sub(r"^#[ ]*(?:—|-|\?)[ ]*$", "", code, flags=re.MULTILINE)
 
     # Remove `{{etym-lang|...}}`
     code = re.sub(r"\{\{etym-lang\|.+}$", "", code, flags=re.MULTILINE)
