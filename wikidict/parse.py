@@ -202,6 +202,9 @@ def process(file: Path, locale: str) -> bool:
                     redirect_to = re.findall(r"#перенаправление \[\[([^\]]+)\]\]", body)[0]
                     context.new_page(title, 0, None, redirect_to)
                     continue
+
+                # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
+                body = re.sub(r"^=[ ]*\{\{-(\w+)-\|[^}]+\}\}[ ]*=", r"={{-\1-}}=", body, flags=re.MULTILINE)
             case "tr":
                 # Lower all section titles to workaround regexp with unicode diacritics being lost.
                 # See https://stackoverflow.com/q/79169550/1117028 for more details.

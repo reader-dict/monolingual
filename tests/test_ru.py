@@ -1,3 +1,4 @@
+import re
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -170,6 +171,11 @@ def test_parse_word(
 ) -> None:
     """Test the sections finder and definitions getter."""
     code = page(word, "ru")
+
+    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
+    # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
+    code = re.sub(r"^=[ ]*\{\{-(\w+)-\|[^}]+\}\}[ ]*=", r"={{-\1-}}=", code, flags=re.MULTILINE)
+
     details = parse_word(word, code, "ru", force=True)
     assert details
     assert pronunciations == details.pronunciations

@@ -47,6 +47,9 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
         case "nl":
             # `{{=nld=}}` → `=={{nld}}==`
             code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
+        case "ru":
+            # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
+            code = re.sub(r"^=[ ]*\{\{-(\w+)-\|[^}]+\}\}[ ]*=", r"={{-\1-}}=", code, flags=re.MULTILINE)
 
     if not context.setup_modules_db(locale):
         sys.exit(1)
