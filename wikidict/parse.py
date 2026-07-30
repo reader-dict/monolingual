@@ -204,7 +204,7 @@ def process(file: Path, locale: str) -> bool:
                     continue
 
                 # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
-                body = re.sub(r"^=[ ]*\{\{-(\w+)-\|[^}]+\}\}[ ]*=", r"={{-\1-}}=", body, flags=re.MULTILINE)
+                body = re.sub(r"^=[ ]*\{\{(-\w+-)\|[^}]+\}\}[ ]*=", r"={{\1}}=", body, flags=re.MULTILINE)
             case "tr":
                 # Lower all section titles to workaround regexp with unicode diacritics being lost.
                 # See https://stackoverflow.com/q/79169550/1117028 for more details.
