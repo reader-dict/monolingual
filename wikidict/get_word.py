@@ -28,8 +28,8 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
         code = req.text
 
     # Header section adjustments may be required to search for specific locale
-    _, lang_dst = utils.guess_locales(locale, use_log=False)
-    match lang_dst:
+    lang_src, _ = utils.guess_locales(locale, use_log=False)
+    match lang_src:
         case "da":
             # `{{=da=}}` → `=={{da}}==`
             code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
@@ -175,10 +175,10 @@ def set_output(locale: str, word: str) -> None:
 def main(locale: str, word: str, *, raw: bool = False, local: bool = False) -> int:
     """Entry point."""
 
-    _, lang_dst = utils.guess_locales(locale, use_log=False)
+    lang_src, _ = utils.guess_locales(locale, use_log=False)
 
     # If *word* is empty, get a random word
-    word = word or utils.get_random_word(lang_dst)
+    word = word or utils.get_random_word(lang_src)
 
     set_output(locale, word)
     get_and_parse_word(word, locale, raw=raw, local=local)
