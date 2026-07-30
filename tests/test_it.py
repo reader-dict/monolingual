@@ -27,7 +27,7 @@ def setup_lua_ctx() -> None:
                 "vedi brillantare",
             ],
             {
-                "Sostantivo": [
+                "Sostantivo|m.": [
                     "piccolo foglietto di materiale lucido e riflettente usato come ornamento per abiti",
                     "<small>(<i>per estensione</i>)</small> glitter",
                 ]
@@ -81,7 +81,7 @@ def setup_lua_ctx() -> None:
             ['dal latino <i>lector</i>, derivazione di <i>legĕre</i> ossia "leggere"'],
             {
                 "Sinonimi": ["riproduttore", "<i>(in informatica)</i> decodificatore, interprete"],
-                "Sostantivo": [
+                "Sostantivo|m.": [
                     "chi legge un libro, un giornale o una rivista",
                     "<small>(<i>religione</i>)</small> persona che in alcune chiese cristiane, come la Chiesa cattolica, la Chiesa anglicana e quella ortodossa, è incaricata di proclamare la parola di Dio e altri testi nelle celebrazioni liturgiche e di esercitare altri compiti in campo pastorale",
                     "<small>(<i>elettronica</i>)</small> <small>(<i>informatica</i>)</small> <small>(<i>tecnologia</i>)</small> <small>(<i>ingegneria</i>)</small> dispositivo elettronico che decodifica e riceve informazioni da un supporto",
@@ -95,7 +95,7 @@ def setup_lua_ctx() -> None:
             ["f"],
             [],
             {
-                "Nome": [
+                "Nome|f.": [
                     "modalità Goblin, oppure in modalità Goblin è un tipo di comportamento autoindulgente, pigro, sciatto o avido, che rifiuta le norme o le aspettative sociali. Questo comportamento si deve anche all'influsso del covid nell'ambiente fisico sulla mente e la socialità delle persone"
                 ]
             },
@@ -138,7 +138,6 @@ def test_parse_word(
     details = parse_word(word, code, "it", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

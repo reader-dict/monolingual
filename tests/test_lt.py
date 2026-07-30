@@ -23,7 +23,7 @@ def setup_lua_ctx() -> None:
             [],
             ["f"],
             ["(<i>lot.</i>&#32;abalienatio)"],
-            {"Daiktavardis": ["(<i>Ekonomika</i>) - turto nusavinimas arba perleidimas."]},
+            {"Daiktavardis|f.": ["(<i>Ekonomika</i>) - turto nusavinimas arba perleidimas."]},
             [],
             [
                 "abalienacijai",
@@ -43,7 +43,7 @@ def setup_lua_ctx() -> None:
             ["f"],
             [],
             {
-                "Daiktavardis": [
+                "Daiktavardis|f.": [
                     "(<i>Valstybės</i>)&#32;- salų valstybė rytinėje Karibų jūros dalyje, Mažųjų Antilų salyne, šalia Atlanto vandenyno."
                 ]
             },
@@ -154,7 +154,7 @@ def setup_lua_ctx() -> None:
             [],
             ["m"],
             ["informuoti + -atyv"],
-            {"Būdvardis": ["teikiantis daug informacijos"]},
+            {"Būdvardis|m.": ["teikiantis daug informacijos"]},
             [],
             [
                 "informatyvaus",
@@ -303,7 +303,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             [],
             {
-                "Daiktavardis": ["visa žemė; Žemės rutulys", "visi žmonės; aplinkiniai žmonės", "visata"],
+                "Daiktavardis|m.": ["visa žemė; Žemės rutulys", "visi žmonės; aplinkiniai žmonės", "visata"],
                 "Simbolis": ["🜨, ♁"],
             },
             [],
@@ -330,7 +330,7 @@ def setup_lua_ctx() -> None:
                 "Iš Iš indoeuropiečių prokalbės *sénos. Plg. senovės graikų k. <i>ἕνος</i> (henos), sanskrito सन (sána) ir gotų k. 𐍃𐌹𐌽𐌴𐌹𐌲𐍃 (sineigs)."
             ],
             {
-                "Būdvardis": [
+                "Būdvardis|f., m.": [
                     "jau kuris laikas esantis",
                     "ilgai vartotas, palaikis",
                     "anksčiau buvęs, nedabartinis, pasenęs",
@@ -494,7 +494,6 @@ def test_parse_word(
     details = parse_word(word, code, "lt", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

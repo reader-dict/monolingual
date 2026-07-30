@@ -38,12 +38,6 @@ sections = (
     "verbpartikel",
 )
 
-variant_titles = (
-    "adjektiv",
-    "adverb",
-    "substantiv",
-    "verb",
-)
 variant_templates = (
     "{{avledning",
     "{{böjning",

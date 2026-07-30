@@ -43,7 +43,6 @@ sections = (
     "verb",
 )
 
-variant_titles = tuple(section for section in sections if section not in etyl_section)
 variant_templates = (
     "{{bøyingsform",
     "{{bøyningsform",
@@ -80,9 +79,16 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['f']
     >>> find_genders("{{nb-sub|m}}", "no")
     ['m']
+    >>> find_genders("{{no-sub|nb=f|nn=f}}", "no")
+    ['f']
     """
-    pattern = re.compile(r"{{n[bon]-sub\|(\w+)}}")
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    for pattern in [
+        re.compile(r"{{n[bon]-sub\|(\w+)}}"),
+        re.compile(r"{{n[bon]-sub\|\w+=(\w+)"),
+    ]:
+        if genders := pattern.findall(code):
+            return utils.unique(utils.flatten(genders))
+    return []
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:

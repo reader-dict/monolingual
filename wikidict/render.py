@@ -96,23 +96,7 @@ def find_definitions(
             if pos_defs := find_section_definitions(
                 word, section, lang_src, lang_dst, templates_status=templates_status
             ):
-                section_pos = pos
-                if lang_src == "de":
-                    if not section_pos:
-                        section_pos = "substantiv"
-                    elif "synonyme" in section.title.lower():
-                        section_pos = "synonyme"
-                elif lang_src == "en" and section_pos.startswith("etymology"):
-                    # Most of the time, definitions are symbols outside a subsection, like in the "wa" word
-                    section_pos = "symbol"
-                elif lang_src == "es" and section_pos.startswith("etimología"):
-                    # Well, lets just put those elsewhere
-                    section_pos = "sustantivo"
-                elif lang_src == "pt" and "etimologia" in section_pos:
-                    # Well, lets just put those elsewhere
-                    section_pos = "substantivo"
-
-                target_pos = definitions[utils.format_pos(lang_src, section_pos)]
+                target_pos = definitions[pos]
                 for pos_def in pos_defs:
                     if pos_def not in target_pos:
                         target_pos.append(pos_def)
@@ -380,15 +364,6 @@ def find_etymology(
     return etyms  # type: ignore[return-value]
 
 
-def _find_genders(top_sections: list[wtp.Section], lang_src: str, lang_dst: str) -> list[str]:
-    """Find the genders."""
-    func = lang.find_genders[lang_src]
-    for top_section in top_sections:
-        if result := func(top_section.contents, lang_dst):
-            return result
-    return []
-
-
 def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_dst: str) -> list[str]:
     """Find pronunciations."""
     results = []
@@ -443,30 +418,79 @@ def find_all_sections(
     return top_sections, all_sections
 
 
+def prettify_pos(section: wtp.Section, lang_src: str, lang_dst: str) -> str:
+    section_pos = str(section.title).strip().lower()
+
+    if lang_src == "en" and section_pos.startswith("etymology"):
+        # Most of the time, definitions are symbols outside a subsection, like in the "wa" word
+        section_pos = "symbol"
+    elif lang_src == "es" and section_pos.startswith("etimología"):
+        # Well, lets just put those elsewhere
+        section_pos = "sustantivo"
+    elif lang_src == "lt":
+        section_pos = section_pos.strip("'")
+    elif lang_src == "pt" and "etimologia" in section_pos:
+        # Well, lets just put those elsewhere
+        section_pos = "substantivo"
+
+    pretty_pos = utils.format_pos(lang_src, section_pos)
+
+    # A potential gender, specified in the section content, is merged into the current POS ("Noun" becomes "Noun f.")
+    if genders := lang.find_genders[lang_src](section.contents, lang_dst):
+        pretty_pos += f"|{', '.join(f'{g}.' for g in genders)}"
+
+    return pretty_pos
+
+
 def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[list[wtp.Section], Sections]:
     """Find the correct section(s) holding the current locale definition(s)."""
     ret = defaultdict(list)
     wanted = lang.sections[lang_dst]
     etyl_section = lang.etyl_section[lang_dst]
     top_sections, all_sections = find_all_sections(code, lang_src, lang_dst)
+    current_genders: list[str] = []
     current_pos = ""
+
+    if lang_src == "de":
+        # DE sets the eventual gender in the top-level section
+        current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
+    elif lang_src == "ru":
+        # RU genders are found in inflections
+        current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
+
     for title, section in all_sections:
         title = title.lower()
-
-        if lang_src == "de":
-            if section.level == 3:
-                current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
-                continue
-        elif lang_src == "lt":
+        if lang_src == "lt":
             title = title.strip("'")
+
+        if lang_src == "de" and section.level == 3:
+            current_pos = "/".join(re.findall(r"\{\{\w+\|([^|]+)\|\w+\}\}", title))
+            continue
 
         # Filter on interesting sections
         if title.startswith(wanted):
-            ret[current_pos if lang_src == "de" and title not in etyl_section else title].append(section)
+            if lang_src == "de":
+                if title in etyl_section:
+                    pos = title
+                else:
+                    current_pos = current_pos or title
+                    if "synonyme" in title:
+                        current_pos = "synonyme"
+                    pos = utils.format_pos("de", current_pos)
+                    if current_genders:
+                        pos += f"|{', '.join(f'{g}.' for g in current_genders)}"
+            elif title in etyl_section:
+                pos = title
+            else:
+                pos = prettify_pos(section, lang_src, lang_dst)
+                if lang_src == "ru" and current_genders and "|" not in pos:
+                    pos += f"|{', '.join(f'{g}.' for g in current_genders)}"
+            ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
         elif DEBUG_SECTIONS == title:
             assert 0  # Break the rendering to report the word as an error and be able to look into it
+
     return top_sections, ret
 
 
@@ -553,7 +577,7 @@ def parse_word(
     templates_status: list[tuple[str, str]] | None = None,
 ) -> Word | None:
     """Parse *code* Wikicode to find word details.
-    *force* can be set to True to force the pronunciation and gender guessing.
+    *force* can be set to True to force the pronunciation guessing.
     It is disabled by default to speed-up the overall process, but enabled when
     called from `get_word.get_and_parse_word()`.
     """
@@ -570,7 +594,6 @@ def parse_word(
 
     top_sections, parsed_sections = find_sections(word, code, lang_src, lang_dst)
     prons = []
-    genders = []
     etymology = []
     etymology_sections: list[wtp.Section] = []
     definitions: Definitions = {}
@@ -606,13 +629,16 @@ def parse_word(
             end = contents.find(marker)
             if end > 0:
                 top.contents = contents[:end]
+
+        top_section = top_sections[0]
+        top_section.title = "top"
+        section_pos = prettify_pos(top_section, lang_src, lang_dst)
         definitions |= find_definitions(
-            word, {"top": top_sections}, lang_src, lang_dst, templates_status=templates_status
+            word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
         )
 
     if definitions or force:
         prons = _find_pronunciations(top_sections, lang_src, lang_dst)
-        genders = _find_genders(top_sections, lang_src, lang_dst)
 
     # Etymology
     if definitions:
@@ -629,12 +655,10 @@ def parse_word(
             etymology = [e for e in etymology if not (e in seen or seen.add(e))]  # type: ignore[func-returns-value]
 
     # Variants
-    if parsed_sections and (interesting_titles := lang.variant_titles[lang_dst]):
+    if parsed_sections:
         interesting_templates = lang.variant_templates[lang_dst]
         interesting_templates_reverse = lang.reverse_variant_templates[lang_dst]
-        for title, parsed_section in parsed_sections.items():
-            if not title.startswith(interesting_titles):
-                continue
+        for parsed_section in parsed_sections.values():
             for parsed in parsed_section:
                 parsed_title = (parsed.title or "").strip()
                 for tpl in parsed.templates:
@@ -651,7 +675,7 @@ def parse_word(
         if reverse_variants:
             reverse_variants = sorted(set(reverse_variants))
 
-    return Word(prons, genders, etymology, definitions, variants, reverse_variants)
+    return Word(prons, [], etymology, definitions, variants, reverse_variants)
 
 
 def render_word(

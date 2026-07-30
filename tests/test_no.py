@@ -27,7 +27,7 @@ def setup_lua_ctx() -> None:
                 "Se aberrate.",
             ],
             {
-                "Substantiv": [
+                "Substantiv|m.": [
                     "avvik, avvikelse",
                     "(<i>astronomi</i>) avvik i en stjernes avbildede posisjon relativ til dens sanne posisjon.",
                     "(<i>optikk</i>) avbildningsfeil i linser og speil.",
@@ -109,15 +109,15 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Substantiv": [
-                    "(<i>anatomi</i>) kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
-                    "side",
-                    "(<i>kortspill</i>) kortene en spiller sitter med",
-                ],
                 "Synonymer": [
                     "<i>(kropsdel)</i> neve",
                     "<i>(retningsangivelse)</i> side",
                     "<i>(spillkortterm)</i> kort på hånden",
+                ],
+                "Substantiv|f.": [
+                    "(<i>anatomi</i>) kroppsdel ved enden av underarmen som gjør mennesker og aper i stand til å gripe",
+                    "side",
+                    "(<i>kortspill</i>) kortene en spiller sitter med",
                 ],
             },
             [],
@@ -136,7 +136,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["Fra <i>konsentrere</i> + <i>-sjon</i>"],
             {
-                "Substantiv": [
+                "Substantiv|m.": [
                     "Det å konsentrere seg; ha stort fokus på noe.",
                     "(<i>kjemi</i>) Andelen stoff i noe; mengde stoff løst pr. enhet.",
                 ]
@@ -150,7 +150,7 @@ def setup_lua_ctx() -> None:
             [
                 "Fra middelalderlatin <i>cocodrillus</i>&nbsp;(«krokodille»), fra gammelgresk κροκόδειλος&nbsp;(<i>krokodeilos</i>)"
             ],
-            {"Substantiv": ["stort reptil, lever i og nær vann. <i>(lat. Crocodylia)</i>"]},
+            {"Substantiv|m.": ["stort reptil, lever i og nær vann. <i>(lat. Crocodylia)</i>"]},
             [],
         ),
         (
@@ -189,7 +189,7 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Interjeksjon": ["<i>(brukt som skjellsord)</i> utropsord med samme betydning som substantivet"],
-                "Substantiv": ["anus; brukt som skjellsord"],
+                "Substantiv|n.": ["anus; brukt som skjellsord"],
             },
             [],
         ),
@@ -281,7 +281,6 @@ def test_parse_word(
     details = parse_word(word, code, "no", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

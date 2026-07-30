@@ -50,14 +50,6 @@ def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
     return bool(skipped)
 
 
-def convert_gender(genders: list[str]) -> str:
-    """Return the HTML code to include for gender(s) of a word."""
-    if not genders:
-        return ""
-    genders = [f"<i>{gender}</i>" for gender in genders]
-    return f" {', '.join(genders)}."
-
-
 def convert_pronunciation(pronunciations: list[str]) -> str:
     """Return the HTML code to include for pronunciation(s) of a word."""
     return f" {', '.join(pronunciations)}" if pronunciations else ""

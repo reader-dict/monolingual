@@ -24,12 +24,12 @@ def setup_lua_ctx() -> None:
             ["m", "s"],
             [],
             {
-                "Nom": [
+                "Nom|invar.": [
                     "Quarante-deux.",
                     "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
                     "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
                 ],
-                "Nom Propre": ["<i>(France)</i> Département de la Loire."],
+                "Nom Propre|m.": ["<i>(France)</i> Département de la Loire."],
                 "Numéral": [
                     "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
                     "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
@@ -61,7 +61,7 @@ def setup_lua_ctx() -> None:
                 "<b>-eresse</b> a été très productif au Moyen Âge mais il subit depuis le XVI<sup>e</sup> siècle la concurrence du suffixe <i>-euse</i> qui l’a presque entièrement remplacé.",
             ],
             {
-                "Suffixe": [
+                "Suffixe|f.": [
                     "Suffixe servant à former des mots féminins.<br/><b>Note : </b> Voir aussi au suffixe <i>-esse</i>."
                 ]
             },
@@ -113,7 +113,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["<i>(<small>XII</small><sup>e</sup> siècle)</i> Déverbal de <i>accueillir</i>."],
             {
-                "Nom": [
+                "Nom|m.": [
                     "Cérémonie ou prestation réservée à un nouvel arrivant, consistant généralement à lui souhaiter la bienvenue et à l’aider dans son intégration ou ses démarches.",
                     "Lieu où sont accueillies les personnes.",
                     "<i>(Vieilli)</i> Fait d’accueillir ou héberger.",
@@ -136,7 +136,7 @@ def setup_lua_ctx() -> None:
                 "Du grec ancien ἄκρος, <i>akros</i> («&nbsp;extrémité&nbsp;»), voir <i>acro-</i>, avec le suffixe <i>-logie</i>."
             ],
             {
-                "Nom": [
+                "Nom|f.": [
                     "<i>(Linguistique)</i> <i>(Rare)</i> Système graphique qui consiste à peindre, pour représenter les idées, l’image des objets dont le nom commence par la même lettre que celui par lequel ces idées sont exprimées dans le langage ordinaire.",
                     "<i>(Linguistique)</i> <i>(Par extension)</i> <i>(Rare)</i> Se dit lorsque deux termes commencent par la même lettre et qu’ils sont apparentés par le sens.",
                     "<i>(Philosophie)</i> <i>(Très rare)</i> Recherche ou exposition des principes suprêmes, ou du mieux absolu.",
@@ -164,7 +164,7 @@ def setup_lua_ctx() -> None:
             ["f"],
             ["Du latin <i>basis</i> («&nbsp;id.&nbsp;»), du grec ancien βάσις, <i>básis</i> («&nbsp;marche&nbsp;»)."],
             {
-                "Nom": [
+                "Nom|f.": [
                     "Partie inférieure d’un corps quelconque qui lui sert de soutien.",
                     "<i>(En particulier)</i> <i>(Architecture)</i> Ce qui soutient le fût de la colonne.",
                     "<i>(Héraldique)</i> Désigne le piédestal d’une colonne surtout quand il est d’un émail différent de la colonne.",
@@ -218,7 +218,7 @@ def setup_lua_ctx() -> None:
             ],
             {
                 "Adjectif": ["<i>(Argot)</i> <i>(Désuet)</i> Super ; bon ; agréable."],
-                "Nom": [
+                "Nom|m.": [
                     "Papier à lettre de provenance anglaise, de belle qualité, qui a joui d’une grande vogue au XIX<sup>e</sup> siècle.",
                     "Mesure des liquides chez les Hébreux, valant 18,08 litres puis plus tard environ 38,88 litres.",
                 ],
@@ -231,7 +231,9 @@ def setup_lua_ctx() -> None:
             ["\\bɔ.ɡɔ.ta.nɛ\\"],
             ["m", "sp"],
             ["Du nom Bogota avec le préfixe -ais."],
-            {"Nom": ["Habitant de Bogota."]},
+            {
+                "Nom|m.": ["Habitant de Bogota."],
+            },
             [],
         ),
         (
@@ -256,7 +258,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["Locution composée de <i>corps</i>&#32;et de <i>portant</i>."],
             {
-                "Nom": [
+                "Nom|m.": [
                     "<i>(Astronautique)</i> Aéronef à fuselage porteur, sur lequel la portance est produite par le fuselage, destiné aux usages spatiaux ou hypersoniques, afin de limiter l'effet de traînée ou la surface de friction.",
                     "<i>(Astronautique)</i> <i>(Aérodynamique)</i> Engin aérospatial possédant, à vitesse hypersonique, une portance qui lui assure une bonne manœuvrabilité lors de la rentrée atmosphérique.",
                 ]
@@ -273,10 +275,11 @@ def setup_lua_ctx() -> None:
                 "<i>(Nom commun 2)</i> Sigle.",
             ],
             {
+                "Symbole": ["<i>(Aviation)</i> Code AITA de l’aéroport de Desroches, aux Seychelles."],
                 "Adverbe": [
                     "<i>(Commerce international)</i> Incoterm qui signifie que le vendeur a dûment livré sa marchandise dès lors que celle-ci, dédouanée à l’exportation et non à l’importation, est mise à disposition de l’acheteur à bord du navire, au port de destination convenu. Les frais de déchargement sont à la charge de l’acheteur."
                 ],
-                "Nom": [
+                "Nom|m.": [
                     "<i>(Biochimie)</i> Diéthylstilbestrol, un œstrogène de synthèse, source de graves complications chez les filles de ses utilisatrices.",
                     "<i>(Québec)</i> Diplôme d’études secondaires, un diplôme obtenu après cinq années d’études secondaires au Québec ; anciennement <i>Certificat d’études secondaires</i> (CES ou CÉS).",
                     "<i>(France)</i> Diplôme d’études spécialisées, un diplôme de troisième cycle médical, pharmaceutique, vétérinaire ou odontologique en France, d’une durée de 3 à 5 ans correspondant à l’Internat.",
@@ -284,7 +287,6 @@ def setup_lua_ctx() -> None:
                     "<i>(France)</i> Diplôme d’études supérieures, un diplôme français.",
                     "<i>(Mathématiques)</i> Décomposition en éléments simples, une méthode de calcul mathématique.",
                 ],
-                "Symbole": ["<i>(Aviation)</i> Code AITA de l’aéroport de Desroches, aux Seychelles."],
             },
             [],
         ),
@@ -304,7 +306,7 @@ def setup_lua_ctx() -> None:
                 "Du latin <i>effluvium</i>, du préfixe <i>ex-</i> indiquant la séparation et de <i>fluxus</i> (« écoulement »)."
             ],
             {
-                "Nom": [
+                "Nom|mf.": [
                     "<i>(Médecine)</i> <i>(Vieilli)</i> Substances organiques altérées, tenues en suspension dans l’air, principalement aux endroits marécageux, et donnant particulièrement lieu à des fièvres intermittentes, rémittentes et continues.",
                     "Émanation qui se dégage d’un corps quelconque.",
                     "<i>(Physique)</i> Décharge électrique à faible dégagement de chaleur ayant lieu entre deux conducteurs dont la différence de potentiel n’est pas assez élevée pour engendrer un arc électrique. → voir <i>effluveur</i>",
@@ -331,7 +333,9 @@ def setup_lua_ctx() -> None:
             ["\\ɑ̃.si.klɔ.pe.di\\"],
             ["f"],
             ["→ voir <i>encyclopédie</i>"],
-            {"Nom": ["<i>(Archaïsme)</i> <i>Variante orthographique&#32;de</i>&nbsp;encyclopédie."]},
+            {
+                "Nom|f.": ["<i>(Archaïsme)</i> <i>Variante orthographique&#32;de</i>&nbsp;encyclopédie."],
+            },
             [],
         ),
         (
@@ -342,7 +346,7 @@ def setup_lua_ctx() -> None:
                 "De l’ancien français <i>esperon</i>, du vieux-francique <i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
             ],
             {
-                "Nom": [
+                "Nom|m.": [
                     "<i>(Équitation)</i> Pièce de métal à deux branches, qui s’adapte au talon du cavalier et dont l’extrémité pointue ou portant une molette sert à piquer les flancs du cheval pour le stimuler.",
                     "<i>(Botanique)</i> Prolongement en forme de tube de la corolle ou du calice (ne concerne parfois qu’un pétale ou sépale particulier).",
                     "<i>(Marine)</i> Partie de la proue d’un bâtiment qui se termine en pointe et qui a plus ou moins de saillie en avant.",
@@ -367,13 +371,15 @@ def setup_lua_ctx() -> None:
                 "(<i>Nom commun 2</i>) Sans doute par jeu de mot avec <i>griffes</i> → voir <i>chat-fourré</i>.",
             ],
             {
-                "Nom": [
+                "Nom|m.": [
                     "<i>(Droit)</i> Officier public préposé au greffe.",
                     "<i>(Sens figuré)</i> Celui qui prend note et tient le registre de ses notes.",
+                ],
+                "Nom": [
                     "<i>(Populaire)</i> Chat.",
                     "Sexe de la femme, minou, chatte, etc.",
                     "Poisson-chat commun (poisson).",
-                ]
+                ],
             },
             [],
         ),
@@ -391,7 +397,7 @@ def setup_lua_ctx() -> None:
             ["m"],
             [],
             {
-                "Nom": [
+                "Nom|m.": [
                     "Langue tibéto-birmane parlée dans l’Arunachal Pradesh (Inde)",
                     "Langue malayo-polynésienne parlée dans les îles de l'Amirauté (Papouasie-Nouvelle-Guinée)",
                     "Forme d'hystérie de nature sexuelle propre aux humains mâles.",
@@ -439,8 +445,10 @@ def setup_lua_ctx() -> None:
                 "<i>(Nom 2)</i> De l’anglais <i>Pinyin</i>.",
             ],
             {
-                "Nom": [
+                "Nom|m., invar.": [
                     "Systèmes de transcription de différentes langues, permettant de romaniser les sons des sinogrammes, et d’indiquer le ton utilisé lors de la prononciation. Le hanyu pinyin sert à la transcription du mandarin standard.",
+                ],
+                "Nom|m.": [
                     "<i>(Linguistique)</i> Langue bantoïde parlée dans la Région du Nord-Ouest au Cameroun.",
                 ],
                 "Variantes": ["pin yin"],
@@ -455,7 +463,7 @@ def setup_lua_ctx() -> None:
                 "Emprunté au latin <i>praeceptum</i> («&nbsp;précepte, leçon, règle&nbsp;»), dérivé de <i>praecipere</i> signifiant « prendre avant, prendre le premier » ou encore « recommander », « conseiller », « prescrire »."
             ],
             {
-                "Nom": [
+                "Nom|m.": [
                     "Règle ; leçon ; enseignement.",
                     "Règle morale ou religieuse.",
                     "<i>(Philosophie)</i> Ce qui ne peut pas ne pas être autrement.",
@@ -470,12 +478,15 @@ def setup_lua_ctx() -> None:
             ["mf", "m"],
             ["Du latin <i>rancidus</i> par l’intermédiaire de l’ancien occitan."],
             {
-                "Adjectif": [
+                "Adjectif|mf.": [
                     "Se dit des corps gras qui, laissés au contact de l’air, ont pris une odeur forte et un goût désagréable.",
                     "<i>(Sens figuré)</i> Qui s’est encore envenimé.",
                     "<i>(Sens figuré)</i> <i>(Péjoratif)</i> Méprisable.",
                 ],
-                "Nom": ["Goût et odeur désagréable, en parlant de corps gras.", "<i>Variante&#32;de</i>&nbsp;ranche."],
+                "Nom|m.": [
+                    "Goût et odeur désagréable, en parlant de corps gras.",
+                    "<i>Variante&#32;de</i>&nbsp;ranche.",
+                ],
             },
             ["rancer"],
         ),
@@ -485,7 +496,7 @@ def setup_lua_ctx() -> None:
             [],
             ["Déformation de <i>sacristi</i>, afin de ne pas blasphémer ouvertement."],
             {
-                "Interjection": [
+                "Interjection|invar.": [
                     "<i>(Familier)</i> <i>(Par euphémisme)</i> <i>(Vieilli)</i> Pour marquer l’étonnement ou l'énervement."
                 ],
                 "Variantes": ["pristi"],
@@ -500,7 +511,7 @@ def setup_lua_ctx() -> None:
                 "<i>(1863)</i> De l’allemand <i>Silikon</i>, mot créé par Friedrich Wöhler et, pour les équivalents français du mot allemand, dérivé de <i>silicium</i>, avec le suffixe <i>-one</i>."
             ],
             {
-                "Nom": [
+                "Nom|f., m.": [
                     "<i>(Chimie)</i> Composé inorganique formés d’une chaine silicium-oxygène (ou siloxane) […-Si-O-Si-O-Si-O-…] dans laquelle des groupes [R] se fixent, sur les atomes de silicium.",
                     "<i>(Par extension)</i> Mastic à base de ce composé et vendu généralement en cartouche.",
                     (
@@ -547,7 +558,6 @@ def test_parse_word(
     details = parse_word(word, code, "fr", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants

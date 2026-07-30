@@ -37,7 +37,6 @@ sections = (
     "{{verb",
 )
 
-variant_titles = sections
 variant_templates = (
     "{{flexion",
     "{{noun-dim",

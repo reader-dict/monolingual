@@ -46,7 +46,6 @@ sections = (
     "žodžių junginys",  # phrase
 )
 
-variant_titles = sections
 variant_templates = ("{{flexion",)
 
 reverse_variant_titles = (

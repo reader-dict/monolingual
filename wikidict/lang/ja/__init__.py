@@ -61,7 +61,6 @@ sections = (
     "動詞",  # verb
 )
 
-variant_titles = sections
 reverse_variant_titles = ("{{日本語",)
 reverse_variant_templates = ("{{rev-flexion",)
 

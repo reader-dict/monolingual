@@ -42,7 +42,6 @@ sections = (
     "verb",
 )
 
-variant_titles = sections
 variant_templates = (
     "{{active participle of",
     "{{adj form of",

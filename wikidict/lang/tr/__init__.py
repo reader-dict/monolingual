@@ -34,7 +34,6 @@ sections = (
     "yazılışlar",  # spellings
 )
 
-variant_titles = sections
 variant_templates = (
     "{{ad-hâl",
     "{{çekim",

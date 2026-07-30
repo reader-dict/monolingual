@@ -96,7 +96,6 @@ sections = (
     "{{verb}",
 )
 
-variant_titles = sections
 variant_templates = ("{{alternativ stavemåde af", "{{form of", "{{flexion", "{{imperativ af", "{{imperativ form af")
 
 reverse_variant_titles = (
