@@ -314,6 +314,8 @@ def find_etymology(
             items = get_items((r"\*",))
         case "no":
             items = get_items(("#", ":", r"\*"))
+        case "pl":
+            items = get_items((r":[ ]*\(\d+\.\d+\)", r":[ ]*\(\d+\.\d+-\d+\)", ":"))
         case "pt":
             items = get_items((r"[:]", r"\*"))
         case "ro":

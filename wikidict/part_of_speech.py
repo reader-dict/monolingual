@@ -79,6 +79,10 @@ PATTERNS = {
         # `verb 1` → `verb`
         re.compile(r"([^\s,]+),?\s+.*").sub,
     ],
+    "pl": [
+        # `czasownik, forma fleksyjna` → `czasownik`
+        re.compile(r"([^ ,]+).*").sub,
+    ],
     "pt": [
         # `{{forma de locução substantiva 1|pt}}` → `forma de locução substantiva 1`
         re.compile(r"\{\{([^|}]+).*").sub,
@@ -289,6 +293,9 @@ MERGE = {
     "no": {
         "forkortelser": "forkortelse",
         "top": "substantiv",
+    },
+    "pl": {
+        "top": "rzeczownik",
     },
     "pt": {
         "abreviação": "abreviatura",

@@ -21,6 +21,7 @@ locales = (
     "lt",
     "nl",
     "no",
+    "pl",
     "pt",
     "ro",
     "ru",

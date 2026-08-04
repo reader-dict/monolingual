@@ -39,14 +39,14 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           mkdir -p ~/.local/bin
-          wget https://github.com/ciscoriordan/kindling/releases/download/0.22.1/kindling-cli-linux -O ~/.local/bin/kindling
+          wget https://github.com/ciscoriordan/kindling/releases/download/0.29.3/kindling-cli-linux -O ~/.local/bin/kindling
           chmod a+x ~/.local/bin/kindling
 
       - name: Install Kindling (macOS)
         if: ${{ matrix.os == 'macos-latest' }}
         run: |
           mkdir -p ~/.local/bin
-          wget https://github.com/ciscoriordan/kindling/releases/download/v0.22.1/kindling-cli-mac-apple-silicon -O ~/.local/bin/kindling
+          wget https://github.com/ciscoriordan/kindling/releases/download/v0.29.3/kindling-cli-mac-apple-silicon -O ~/.local/bin/kindling
           chmod a+x ~/.local/bin/kindling
 
       - name: Unit tests

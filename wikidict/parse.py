@@ -190,6 +190,11 @@ def process(file: Path, locale: str) -> bool:
             case "de":
                 # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
                 body = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
+            case "pl":
+                # `== piękny ({{język polski}}) ==` → `==polski==`
+                body = re.sub(r"^==[ ]*.*\(\{\{język ([^}]+)\}\}\)[ ]*==", r"==\1==", body, flags=re.MULTILINE)
+                # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
+                body = re.sub(r"^==[ ]*.*\(\{\{użycie ([^}]+)\}\}\)[ ]*==", r"==\1==", body, flags=re.MULTILINE)
             case "ja":
                 if "{{kanji header" in body:
                     body = f"=={{{{kanji}}}}==\n{body}"

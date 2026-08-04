@@ -1,0 +1,159 @@
+== książka ({{język polski}}) ==
+[[Plik:Pieni2.jpg|thumb|książka (1.1)]]
+[[Plik:Haushaltsbuch 1933.jpg|thumb|książka (1.3)]]
+{{wymowa}}
+: {{audio|Pl-książka.ogg}}, {{IPA3|ˈcɕɔ̃w̃ʃka}}, {{AS3|ḱś'''õ'''ũ̯ška}}, {{objaśnienie wymowy|ZM|BDŹW|NAZAL|AS-Ą}}
+: {{audio|LL-Q809 (pol)-Olaf-książka.wav}} {{audio|LL-Q809 (pol)-Gower-książka.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{bibliot}} [[dokument]] [[piśmienniczy]] [[w postaci]] [[publikacja|publikacji]] [[wielostronicowy|wielostronicowej]] [[o]] [[określony|określonej]] [[liczba|liczbie]] [[strona|stron]], [[o]] [[charakter]]ze [[trwały]]m; {{wikipedia}}
+: (1.2) [[treść]] książki (1.1) ([[np.]] [[powieść]])
+: (1.3) [[oprawić|oprawiony]] [[plik]] [[arkusz]]y [[papier]]u [[przeznaczyć|przeznaczony]] [[do]] [[zapisek|zapisków]]
+: (1.4) {{karc}} ''brydż'' [[sytuacja]] [[kiedy]] [[rozgrywać|rozgrywający]] [[oddać|oddali]] [[już]] [[maksymalny|maksymalną]] [[dopuszczalny|dopuszczalną]] [[liczba|liczbę]] [[lewa|lew]] [[i]] [[oddanie]] [[kolejny|kolejnej]] [[spowodować|spowodowałoby]] [[nieugranie]] [[kontrakt]]u
+{{odmiana}}
+: (1.1-3) {{odmiana-rzeczownik-polski
+|Mianownik lp = książka
+|Dopełniacz lp = książki
+|Celownik lp = książce
+|Biernik lp = książkę
+|Narzędnik lp = książką
+|Miejscownik lp = książce
+|Wołacz lp = książko
+|Mianownik lm = książki
+|Dopełniacz lm = książek
+|Celownik lm = książkom
+|Biernik lm = książki
+|Narzędnik lm = książkami
+|Miejscownik lm = książkach
+|Wołacz lm = książki
+}}
+: (1.4) {{blm}}; {{odmiana-rzeczownik-polski
+|Mianownik lp = książka
+|Dopełniacz lp = książki
+|Celownik lp = książce
+|Biernik lp = książkę
+|Narzędnik lp = książką
+|Miejscownik lp = książce
+|Wołacz lp = książko
+}}
+{{przykłady}}
+: (1.1) ''[[Ewelina]] [[dostawać|dostała]] [[na]] [[urodziny]] [[książka|książkę]].''
+: (1.2) ''[[ta|Tę]] [[książka|książkę]] [[napisać|napisał]] [[mój]] [[przyjaciel]].''
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[książka kucharska]], [[książka telefoniczna]] • [[czytać]] / [[wertować]] książkę • [[drukować]] / [[wydawać]] książki
+: (1.2) [[pisać]] książkę
+: (1.3) książka [[meldunkowy|meldunkowa]] / [[rachunkowy|rachunkowa]]
+: (1.4) [[mieć]] książkę • [[być|jest]] książka
+{{synonimy}}
+: (1.1) [[wolumin]], [[pozycja]], [[księga]]
+: (1.2) [[pozycja]], [[księga]]
+{{antonimy}}
+{{hiperonimy}}
+: (1.1) [[publikacja]]
+{{hiponimy}}
+: (1.1) [[słownik]], [[encyklopedia]], [[leksykon]], [[atlas]], [[podręcznik]], [[lektura]], [[album]], [[almanach]], [[tomik]], [[tom]], [[antologia]], [[przewodnik]], [[broszura]]
+: (1.2) [[powieść]], [[opowiadanie]], [[esej]], [[reportaż]]
+{{holonimy}}
+: (1.1) [[księgozbiór]], [[seria wydawnicza]]
+{{meronimy}}
+: (1.1) [[okładka]], [[grzbiet]], [[kartka]], [[rozdział]]
+{{pokrewne}}
+: {{rzecz}} [[księga]] {{ż}}, [[książnica]] {{ż}}
+:: {{zdrobn}} [[książeczka]] {{ż}}
+: {{przym}} [[książkowy]]
+: {{przysł}} [[książkowo]]
+{{frazeologia}}
+: [[książka do poduszki]] • [[lepsza żadna jak zła książka]] • [[nie oceniaj książki po okładce]] • [[pochłaniać książki]] • [[połykać książki]] • [[pożerać książki]]
+{{etymologia}}
+: {{etym|prasł|*kъnigy}}, zdrobnienie od {{etym|prasł|*kъnъ}} – kloc drewna; {{por|knieja}}; do XVI wieku tylko w liczbie mnogiej<ref>{{PoradniaUŚ|hasło=Jakie jest pochodzenie słowa książka?|hasło_url=ksi%B1%BFka}}</ref>
+{{uwagi}}
+: {{wikicytaty}}
+{{tłumaczenia}}
+* afrykanerski: (1.1) [[boek]]
+* ajmara: (1.1) [[panka]]
+* ajnoski: (1.1) [[カㇺビソㇱ]] (kambisosh)
+* albański: (1.1) [[libër]]
+* amharski: (1.1) [[መጽሃፍ]]
+* angielski: (1.1) [[book]]; (1.2) [[book]]
+* arabski: (1.1) [[كتاب]] {{m}} (kitāb)
+* aramejski: (1.1) [[ܟܬܒܐ]] {{m}}
+* atikamek: (1.1) [[masinahikan]]
+* azerski: (1.1) [[kitab]]
+* balijski: (1.1) [[buku]]
+* baskijski: (1.1) [[liburu]]
+* białoruski: (1.1) [[кніга]] {{ż}} (kniha)
+* bułgarski: (1.1) [[книга]] {{ż}}; (1.2) [[книга]] {{ż}}; (1.3) [[книга]] {{ż}}
+* chiński standardowy: (1.1) [[书]] (shū), [[本子]] (běnzi), [[本]] (běn); (1.3) [[本子]] (běnzi)
+* chorwacki: (1.1) [[knjiga]] {{ż}}
+* czeski: (1.1) [[kniha]] {{ż}}
+* dolnołużycki: (1.1) [[knigły]] {{lm}}, {{przest}} [[knigła]] {{ż}}
+* duński: (1.1) [[bog]] {{w}}; (1.2) [[bog]] {{w}}
+* dzongkha: (1.1) [[ཀི་དེབ]]
+* esperanto: (1.1) [[libro]]
+* estoński: (1.1) [[raamat]]
+* ewe: (1.1) [[agbalẽ]]
+* farerski: (1.1) [[bók]] {{ż}}
+* fiński: (1.1) [[kirja]]
+* francuski: (1.1) [[livre]] {{m}}
+* górnołużycki: (1.1) [[kniha]] {{ż}}
+* grenlandzki: (1.1) [[atuagaq]]
+* gudźarati: (1.1) [[ગ્રંથ]] {{m}} (grantha)
+* hausa: (1.1) [[littafi]]
+* hebrajski: (1.1) [[ספר]] {{m}} (sefer)
+* hindi: (1.1) [[पुस्तक]] (pustaka)
+* hiszpański: (1.1) [[libro]] {{m}}
+* ido: (1.1) [[libro]]
+* inari: (1.1) [[kirje]]
+* indonezyjski: (1.1) [[buku]]
+* inuktitut: (1.1) [[ᕿᒥᕐᕈᐊᑦ]] (qimirruat)
+* irlandzki: (1.1) [[leabhar]] {{m}}
+* islandzki: (1.1) [[bók]] {{ż}}
+* japoński: (1.1) [[本]] ([[ほん]], hon)
+* jidysz: (1.1) [[בוך]] {{n}} (buch)
+* kabardyjski: (1.1) [[тхылъ]]
+* kabylski: (1.1) [[adlis]]
+* kaszubski: (1.1) [[ksążka]] {{ż}}, [[knéga]] {{ż}}, [[knéżka]]
+* kataloński: (1.1) [[llibre]] {{m}}
+* khmerski: (1.1) [[សៀវភៅ]]
+* kikuju: (1.1) [[ibuku]], [[mbuku]]
+* koreański: (1.1) [[책]] (chaek)
+* litewski: (1.1) [[knyga]] {{ż}}
+* luksemburski: (1.1) [[Buch]] {{n}}; (1.2) [[Buch]] {{n}}; (1.3) [[Buch]] {{n}}
+* łaciński: (1.1) [[liber]] {{m}}
+* łotewski: (1.1) [[grāmata]] {{ż}}
+* macedoński: (1.1) [[книга]] {{ż}}
+* marathi: (1.1) [[पुस्तक]]
+* mongolski: (1.1) [[ном]]
+* nepalski: (1.1) [[पुस्तक]] (pustaka)
+* niderlandzki: (1.1) [[boek]]
+* niemiecki: (1.1) [[Buch]] {{n}}
+* norweski (bokmål): (1.1) [[bok]] {{m}}/{{ż}}
+* norweski (nynorsk): (1.1) [[bok]] {{ż}}
+* nowogrecki: (1.1) [[βιβλίο]] {{n}}
+* nowopruski: (1.1) [[lāiskas]] {{m}}
+* ormiański: (1.1) [[գիրք]] (girkʿ)
+* pendżabski: (1.1) [[ਕਿਤਾਬ]] {{ż}} (kitāba)
+* perski: (1.1) [[کتاب]] (ketâb)
+* polski język migowy: {{PJM-ukryj| (1.1) {{PJM|książka}}}}
+* rosyjski: (1.1) [[книга|кни́га]] {{ż}}
+* rumuński: (1.1) [[carte]] {{ż}}
+* shona: (1.1) [[bhuku]]
+* słowacki: (1.1) [[kniha]] {{ż}}
+* słoweński: (1.1) [[knjiga]] {{ż}}
+* staroangielski: (1.1) [[boc]]
+* suahili: (1.1) [[kitabu]]
+* szkocki gaelicki: (1.1) [[leabhar]] {{m}}
+* szwedzki: (1.1) [[bok]]
+* tahitański: (1.1) [[puta]]
+* tok pisin: (1.1) [[buk]]
+* turecki: (1.1) [[kitap]]
+* tybetański: (1.1) [[དཔེ་ཆ]], [[དེབ]]
+* ukraiński: (1.1) [[книжка]] {{ż}}, [[книга]] {{ż}}
+* umbundu: (1.1) [[elivulu]]
+* węgierski: (1.1) [[könyv]]
+* wilamowski: (1.1) [[buh]] {{n}}, [[bu̇h]] {{n}}, [[büch]] {{n}}
+* włoski: (1.1) [[libro]] {{m}}
+* wolof: (1.1) [[teere]]
+{{źródła}}
+<references />

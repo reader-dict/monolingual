@@ -1,0 +1,35 @@
+== rozpowszechniony ({{język polski}}) ==
+{{wymowa}}
+: {{audio|LL-Q809 (pol)-Poemat-rozpowszechniony.wav}}
+{{znaczenia}}
+''przymiotnik jakościowy''
+: (1.1) [[występować|występujący]] [[powszechnie]], [[często]], [[na]] [[duży|dużą]] [[skala|skalę]]
+''{{forma czasownika|pl}}''
+: (2.1) ''{{ims}} przymiotnikowy bierny od:'' [[rozpowszechnić]]
+{{odmiana}}
+: (1.1) {{odmiana-przymiotnik-polski|bardziej rozpowszechniony}}
+: (2.1) {{zob|rozpowszechnić}}
+{{przykłady}}
+: (1.1) ''[[burak|Burak]] [[być|jest]] [[szeroko]] [[rozpowszechniony]] [[w]] [[kuchnia|kuchni]] [[słowiański]]ej ([[np.]] [[w]] [[zupa]]ch [[taki]]ch [[jak]] [[barszcz]] [[i]] [[botwinka]]).''
+: (1.1) ''[[imię|Imię]] [[Astryda]] [[być|jest]] [[bardzo|najbardziej]] [[rozpowszechniony|rozpowszechnione]] [[w]] [[kraj]]ach [[nordycki]]ch, [[ale]] [[on|jego]] [[użycie]] [[widywać się|widuje się]] [[wskutek]] [[emigracja|emigracji]] [[także]] [[na przykład|na przykład]] [[we]] [[Francja|Francji]] [[czy]] [[w]] [[USA]].''
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[rozpowszechnianie]] {{n}}, [[rozpowszechnienie]] {{n}}
+: {{czas}} [[rozpowszechniać]] {{ndk}}, [[rozpowszechnić]] {{dk}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{tłumaczenia}}
+* albański: (1.1) [[zgjeruar]]
+* angielski: (1.1) [[widespread]], [[prevalent]], [[rife]]; (2.1) [[spread]]
+* chiński standardowy: (1.1) [[流行]] (liúxíng)
+* duński: (1.1) [[udbredt]]; (2.1) [[udbrede|udbredt]]
+* rosyjski: (1.1) [[распространённый]]
+{{źródła}}

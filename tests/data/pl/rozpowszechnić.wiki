@@ -1,0 +1,67 @@
+== rozpowszechnić ({{język polski}}) ==
+{{wymowa}}
+: {{audio|LL-Q809 (pol)-Poemat-rozpowszechnić.wav}}
+{{znaczenia}}
+''czasownik przechodni dokonany'' ({{ndk}} [[rozpowszechniać]])
+: (1.1) [[uczynić]] [[coś]] [[powszechnie]] [[znany]]m
+''czasownik zwrotny dokonany '''rozpowszechnić się''''' ({{ndk}} [[rozpowszechniać się]])
+: (2.1) [[stać się]] [[znany]]m [[lub]] [[używany]]m [[powszechnie]]
+: (2.2) [[wystąpić]] [[często]] [[lub]] [[w]] [[duży|dużej]] [[liczba|liczbie]]
+{{odmiana}}
+: (1.1) {{odmiana-czasownik-polski
+|dokonany = tak
+|koniugacja = VIa
+|zrobić = rozpowszechnić
+|zrobię = rozpowszechnię
+|zrobi = rozpowszechni
+|zrobią = rozpowszechnią
+|zrobiłem = rozpowszechniłem
+|zrobił = rozpowszechnił
+|zrobiła = rozpowszechniła
+|zrobili = rozpowszechnili
+|zrobiono = rozpowszechniono
+|zrób = rozpowszechnij
+|zrobiwszy = rozpowszechniwszy
+|zrobiony = rozpowszechniony
+|zrobieni = rozpowszechnieni
+|zrobienie = rozpowszechnienie
+|się =
+}}
+: (2.1-2) {{odmiana-czasownik-polski
+|dokonany = tak
+|koniugacja = VIa
+|zrobić = rozpowszechnić
+|zrobię = rozpowszechnię
+|zrobi = rozpowszechni
+|zrobią = rozpowszechnią
+|zrobiłem = rozpowszechniłem
+|zrobił = rozpowszechnił
+|zrobiła = rozpowszechniła
+|zrobili = rozpowszechnili
+|zrobiono = rozpowszechniono
+|zrób = rozpowszechnij
+|zrobiwszy = rozpowszechniwszy
+|zrobiony = rozpowszechniony
+|zrobieni = rozpowszechnieni
+|zrobienie = rozpowszechnienie
+|się = się
+}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[rozpowszechnianie]] {{n}}, [[rozpowszechnienie]] {{n}}
+: {{czas}} [[rozpowszechniać]] {{ndk}}
+: {{przym}} [[rozpowszechniony]]
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{tłumaczenia}}
+* angielski: (1.1) [[spread]]
+{{źródła}}

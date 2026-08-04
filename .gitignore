@@ -12,8 +12,8 @@
 dict-data.*
 sections.txt
 templates.txt
-/data/
-tests/data/fr/fr/data_wikicode-*.json
+data
+!tests/data
 tests/data/fr/fr/output/
 tests/data/fr/fr/tmp/
 
