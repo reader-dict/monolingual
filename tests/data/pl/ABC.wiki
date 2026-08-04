@@ -1,0 +1,108 @@
+{{podobne|Abc|abc|ȧbc}}
+__TOC__
+== ABC ({{język polski}}) ==
+{{wymowa}} {{ortograficzny|a-be-ce}}, {{IPA3|a‿bɛ‿ˈt͡sɛ}}, {{AS3|a‿be‿c'''e'''}}, {{objaśnienie wymowy|AKC1}} {{audio|Pl-ABC.ogg}}
+{{znaczenia}}
+''rzeczownik, rodzaj nijaki''
+: (1.1) [[podstawa|podstawy]] [[coś|czegoś]], [[podstawa|podstawy]] [[wiedza|wiedzy]] [[na]] [[jakiś]] [[temat]]
+: (1.2) [[podręcznik]], [[w]] [[który]]m [[móc|można]] [[znaleźć]] [[podstawa|podstawy]] [[coś|czegoś]], [[ważny|najważniejsze]] [[informacja|informacje]] [[z]] [[dany|danej]] [[dziedzina|dziedziny]]
+: (1.3) [[zestaw]] [[podstawowy]]ch [[narzędzie|narzędzi]], [[akcesorium|akcesoriów]] [[do]] [[jakiś|jakiejś]] [[praca|pracy]] [[lub]] [[dziedzina|dziedziny]] [[aktywność|aktywności]]
+''skrótowiec, rzeczownik, rodzaj nijaki''
+: (2.1) {{geogr}} {{pot}} [[Aruba]], [[Bonaire]] [[i]] [[Curaçao]], [[grupa]] [[wyspa|wysp]] [[na]] [[Morze Karaibskie|Morzu Karaibskim]]; {{wikipedia|wyspy ABC}}
+{{odmiana}}
+: (1.1-3) (2.1) {{nieodm-rzeczownik-polski}}
+{{przykłady}}
+: (1.2) ''„[[ABC]] [[fizyka|fizyki]]” [[to]] [[podręcznik]] [[wprowadzać|wprowadzający]] [[w]] [[ta|tę]] [[dziedzina|dziedzinę]].''
+{{składnia}}
+{{kolokacje}}
+: (1.1) ABC [[moda|mody]] / [[polityka|polityki]] • [[poznawać]] / [[znać]] ABC
+: (1.2) ABC [[fizyka|fizyki]] / [[Internet]]u / [[geografia|geografii]] / [[gramatyka|gramatyki]] / [[matematyka|matematyki]] • [[paryski]]e ABC
+: (1.3) [[zestaw]] ABC
+: (2.1) [[wyspa|wyspy]] ABC
+{{synonimy}}
+: (1.1) [[abc]], [[a b c]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+: (2.1) [[Małe Antyle]]
+{{meronimy}}
+: (2.1) [[Aruba]], [[Bonaire]], [[Curaçao]]
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+: {{etymn|pol|A|B|C}}; od pierwszych liter alfabetu
+{{uwagi}}
+: {{wikipedia}}
+{{tłumaczenia}}
+* duński: (1.1) [[ABC]] / [[abc]] {{w}}
+* esperanto: (1.1) [[aboco]]
+* fiński: (1.1) [[aakkoset]]
+* francuski: (1.1) [[abc]] {{m}}
+* niemiecki: (1.1) [[Abc]] {{n}}
+* rosyjski: (1.1) [[азы]] {{lm}}, [[основа|основы]] {{lm}}
+* wilamowski: (1.1) [[ȧbc]] {{n}}
+{{źródła}}
+
+== ABC ({{język angielski}}) ==
+{{ilustracja-alfabetu|[[A]] [[B]] [[C]] [[D]] [[E]] [[F]] [[G]] [[H]] [[I]] [[J]] [[K]] [[L]] [[M]] [[N]] [[O]] [[P]] [[Q]] [[R]] [[S]] [[T]] [[U]] [[V]] [[W]] [[X]] [[Y]] [[Z]]|ABC (1.1)}}
+{{wymowa}} {{audioUS|En-us-ABC.ogg}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) [[alfabet]], [[abecadło]]
+: (1.2) {{przen}} [[ABC]] ([[podstawa|podstawy]] [[wiedza|wiedzy]])
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) [[alphabet]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== ABC ({{język niemiecki}}) ==
+{{wymowa}}
+: {{lp}} {{IPA3|aːbeːˈt͡seː}}
+: {{audio|De-ABC.ogg}}
+{{znaczenia}}
+''rzeczownik, rodzaj nijaki, skrótowiec''
+: (1.1) = ''[[Alphabet]]'' → [[alfabet]], [[abecadło]], [[ABC#pl|ABC]]
+: (1.2) {{przen}} [[ABC]] ([[podstawa|podstawy]] [[wiedza|wiedzy]])
+{{odmiana}}
+: (1.1-2)<ref>[[Aneks:Język niemiecki - Deklinacja rzeczowników#S4S|Deklinacja rzeczowników w jęz. niemieckim]]</ref> {{odmiana-rzeczownik-niemiecki
+|rodzaj=n
+|Mianownik lp = ABC
+|Dopełniacz lp = ABC<br>des ABCs
+|Celownik lp = ABC
+|Biernik lp = ABC
+|Mianownik lm = ABC<br>des ABCs
+|Dopełniacz lm = ABC<br>der ABCs
+|Celownik lm = ABC<br>den ABCs
+|Biernik lm = ABC<br>die ABCs
+}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[das]] ABC [[lernen]] / [[aufsagen]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[Abc]] {{n}}, [[Abece]] {{n}}
+{{frazeologia}}
+{{etymologia}}
+: {{etymn|niem|A|B|C}}
+{{uwagi}}
+{{źródła}}
+<references />

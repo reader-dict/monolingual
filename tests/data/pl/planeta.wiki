@@ -1,0 +1,469 @@
+{{podobne|planeetta|planetă|planéta|planēta|planėta|pláneta|płaneta}}
+== planeta ({{język polski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1) [[Ziemia]]]]
+{{wymowa}} {{IPA3|plãˈnɛta}}, {{AS3|plãn'''e'''ta}}, {{objaśnienie wymowy|NAZAL}} {{audio|Pl-planeta.ogg}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[ciało niebieskie]] [[o]] [[znaczny|znacznej]] [[masa|masie]] [[nie]] [[emitować|emitujące]] [[światło|światła]] [[i]] [[zazwyczaj]] [[okrążać|okrążające]] [[macierzysty|macierzystą]] [[gwiazda|gwiazdę]]; {{wikipedia}}
+: (1.2) {{więz}} [[dziewczyna]]
+{{odmiana}}
+: (1.1-2) {{odmiana-rzeczownik-polski
+|Mianownik lp = planeta
+|Dopełniacz lp = planety
+|Celownik lp = planecie
+|Biernik lp = planetę
+|Narzędnik lp = planetą
+|Miejscownik lp = planecie
+|Wołacz lp = planeto
+|Mianownik lm = planety
+|Dopełniacz lm = planet
+|Celownik lm = planetom
+|Biernik lm = planety
+|Narzędnik lm = planetami
+|Miejscownik lm = planetach
+|Wołacz lm = planety
+}}
+{{przykłady}}
+: (1.1) ''[[Ziemia]] [[być|jest]] [[trzeci]]ą [[planeta|planetą]] [[od]] [[Słońce|Słońca]] [[w]] [[nasz]]ym [[układ planetarny|układzie planetarnym]].''
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[planeta jowiszowa]] • [[planeta ziemiopodobna]] • planeta [[pozasłoneczny|pozasłoneczna]] / [[egzoplaneta]] • planeta [[Układ Słoneczny|Układu Słonecznego]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+: (1.1) [[ciało niebieskie]]
+{{hiponimy}}
+: (1.1) [[Jowisz]], [[Mars]], [[Merkury]], [[Neptun]], [[Saturn]], [[Uran]], [[Wenus]], [[Ziemia]]
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[planetarium]] {{n}}, [[planetoida]] {{ż}}
+:: {{zdrobn}} [[planetka]] {{ż}}
+: {{przym}} [[planetarny]], [[wewnątrzplanetarny]]
+{{frazeologia}}
+{{etymologia}}
+: (1.1) {{etym|łac|planeta}} < {{etym|gr|πλανάω}} (planáō) → [[wędrować|wędruję]]<ref>Jan Flis, ''Szkolny słownik geograficzny'', Wydawnictwa Szkolne i Pedagogiczne, Warszawa 1982, s. 24.</ref>
+{{uwagi}}
+: (1.1) {{zoblistę|planeta karłowata|planetoida}}
+: (1.1) {{zoblistę|Indeks:Polski - Astronomia|Indeks:Polski - Indeks terminów astronomicznych}}
+{{tłumaczenia}}
+* afrykanerski: (1.1) [[planeet]]
+* angielski: (1.1) [[planet]]
+* arabski: (1.1) [[كوكب]] {{m}}, [[كوكب سيار]] {{m}}
+* baskijski: (1.1) [[planeta]]
+* białoruski: (1.1) [[планета]] {{ż}}
+* białoruski (taraszkiewica): (1.1) [[плянэта]] {{ż}}
+* bułgarski: (1.1) [[планета]]
+* chiński standardowy: (1.1) [[行星]] (xíngxīng)
+* chorwacki: (1.1) [[planet]]
+* czeski: (1.1) [[planeta]] {{ż}}
+* duński: (1.1) [[planet]] {{w}}
+* esperanto: (1.1) [[planedo]]
+* fiński: (1.1) [[planeetta]]
+* francuski: (1.1) [[planète]] {{ż}}
+* grenlandzki: (1.1) [[ulloriaq angalasoq]]
+* gudźarati: (1.1) [[ગ્રહ]] {{m}} (graha)
+* hebrajski: (1.1) [[פלנטה]] {{ż}} (planeta)
+* hindi: (1.1) [[ग्रह]]
+* hiszpański: (1.1) [[planeta]] {{m}}
+* islandzki: (1.1) [[reikistjarna]] {{ż}}
+* japoński: (1.1) [[惑星]]
+* jidysz: (1.1) [[פּלאַנעט]] {{m}} (planet)
+* kaszubski: (1.1) [[planéta]] {{ż}}
+* kataloński: (1.1) [[planeta]] {{m}}
+* koreański: (1.1) [[행성]]
+* litewski: (1.1) [[planeta]] {{ż}}
+* łaciński: (1.1) [[planeta]] {{ż}}
+* łotewski: (1.1) [[planēta]]
+* macedoński: (1.1) [[планета]]
+* malajski: (1.1) [[planet]]
+* niderlandzki: (1.1) [[planeet]]
+* niemiecki: (1.1) [[Planet]] {{m}}
+* norweski (bokmål): (1.1) [[planet]]
+* nowogrecki: (1.1) [[πλανήτης]] {{m}}
+* portugalski: (1.1) [[planeta]]
+* rosyjski: (1.1) [[планета]] {{ż}}
+* rumuński: (1.1) [[planetă]] {{ż}}
+* sanskryt: (1.1) [[ग्रह]]
+* serbski: (1.1) [[планета]]
+* słowacki: (1.1) [[planéta]] {{ż}}
+* słoweński: (1.1) [[planet]]
+* staroangielski: (1.1) [[planet]]
+* szwedzki: (1.1) [[planet]] {{w}}
+* tajski: (1.1) [[ดาวเคราะห์]]
+* turecki: (1.1) [[gezegen]]
+* tybetański: (1.1) [[གཟའ]]
+* ukraiński: (1.1) [[планета]] {{ż}}
+* węgierski: (1.1) [[bolygó]]
+* wilamowski: (1.1) [[plaonet]] {{ż}}, [[planet]] {{ż}}
+* włoski: (1.1) [[pianeta]] {{m}}
+{{źródła}}
+<references />
+
+== planeta ({{język asturyjski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== planeta ({{język baskijski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{audio|LL-Q8752 (eus)-Xabier Cañas-planeta.wav}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[planetario]]
+: {{przym}} [[planetario]]
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== planeta ({{język chorwacki}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{ortografie}}
+{{wymowa}}
+: {{IPA|planěːta}}
+: {{dzielenie|pla|ne|ta}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|chorwacki}}
+
+== planeta ({{język czeski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{audio|LL-Q9056 (ces)-HondaCivic175-planeta.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+: (1.1) {{odmiana-rzeczownik-czeski
+|Mianownik lp = planeta
+|Mianownik lm = planety
+|Dopełniacz lp = planety
+|Dopełniacz lm = planet
+|Celownik lp = planetě
+|Celownik lm = planetám
+|Biernik lp = planetu
+|Biernik lm = planety
+|Wołacz lp = planeto
+|Wołacz lm = planety
+|Miejscownik lp = planetě
+|Miejscownik lm = planetách
+|Narzędnik lp = planetou
+|Narzędnik lm = planetami
+}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) zobacz też: [[Indeks:Czeski - Astronomia]]
+{{źródła}}
+
+== planeta ({{język galicyjski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{IPA|plaˈne.ta}}
+: {{audio|Gl-planeta.ogg}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|galicyjski}}
+
+== planeta ({{język hiszpański}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{IPA3|pla.'ne.ta}}
+: {{audio|LL-Q1321 (spa)-AdrianAbdulBaha-planeta.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+: (1.1) {{lm}} planetas
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) [[asteroide]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{przym}} [[planetario]], [[planetoide]]
+: {{rzecz}} [[planetario]] {{m}}, [[planetoide]] {{m}}
+{{frazeologia}}
+{{etymologia}}
+: {{etym2|łac|planeta|planēta}} < {{etym|gr|πλανήτης}} (planḗtēs) → [[włóczęga]]
+{{uwagi}}
+: (1.1) zobacz też: [[Indeks:Hiszpański - Astronomia]]
+{{źródła}}
+
+== planeta ({{interlingua}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} [[planetario]]
+: {{przym}} [[planetari]]
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== planeta ({{język kataloński}}) ==
+[[Plik:The Blue Marble.jpg|thumb|[[un]] planeta (1.1)]]
+{{wymowa}}
+: {{audio|LL-Q7026 (cat)-Toniher-planeta.wav}}
+: {{centr}} {{IPA3|pɫəˈnɛtə}}
+: {{bal}} {{IPA3|pɫəˈnətə}}, {{IPA3|pɫəˈnɛtə}}
+: {{occ}} {{IPA3|pɫaˈneta}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+: (1.1) {{lp}} planeta; {{lm}} planetes
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+: (1.1) [[cos celeste]] {{m}}
+{{hiponimy}}
+: (1.1) [[Mercuri]] {{m}}, [[Venus]] {{m}}, [[Terra]] {{ż}}, [[Mart]] {{m}}, [[Júpiter]] {{m}}, [[Saturn]] {{m}}, [[Urà]] {{m}}, [[Neptú]] {{m}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{przym}} [[planetari]]
+: {{rzecz}} [[planetari]] {{m}}, [[planetoide]] {{m}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) zobacz też: [[Indeks:Kataloński - Astronomia]]
+{{źródła}}
+
+== planeta ({{język litewski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== planeta ({{język łaciński}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[planeta]]<ref name="J1958">{{Jougan1958|hasło=planeta|strony=512}}</ref>
+: (1.2) {{rel}} [[ornat]]<ref>{{Jougan1938|strony=401|hasło=planeta}}</ref>
+{{odmiana}}
+: (1.1-2) planeta, planetae {{DeklinacjaLA|I}} {{odmiana-rzeczownik-łaciński-I|planet}}
+{{przykłady}}
+: (1.1) ''[[Iuppiter]] [[magnus|maxima]] [[planeta]] [[noster|nostrae]] [[systema solare|systematis solaris]] [[sum|est]].'' → [[Jowisz]] [[być|jest]] [[duży|największą]] '''[[planeta|planetą]]''' [[nasz]]ego [[Układ Słoneczny|Układu Słonecznego]].
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) [[planetes]] {{m}}, [[planes]] {{m}}
+: (1.2) [[casula]] {{ż}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+: {{etym|gr|πλανήτης}} (planḗtēs) → „[[wędrować|wędrujący]]” < {{etym|gr|πλάνης}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== planeta ({{papiamento}}) ==
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== planeta ({{język portugalski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{audio|LL-Q5146 (por)-Santamarcanda-planeta.wav}} {{audio|LL-Q5146 (por)-Nelson Ricardo 2500-planeta.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) zobacz też: [[Indeks:Portugalski - Astronomia]]
+{{źródła}}
+
+== planeta ({{język prowansalski}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{wymowa}}
+: {{audio|LL-Q14185 (oci)-Davidgrosclaude-planeta.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj żeński''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|prowansalski}}
+
+== planeta ({{język turkmeński}}) ==
+[[Plik:The Blue Marble.jpg|thumb|planeta (1.1)]]
+{{ortografie}}
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) {{astr}} [[planeta]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę| Indeks:Turkmeński - Astronomia}}
+{{źródła}}

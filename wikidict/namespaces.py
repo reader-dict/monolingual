@@ -18,6 +18,7 @@ namespaces = {
     "lt": ["Image", "Kategorija", "Vaizdas"],
     "nl": ["Afbeelding", "Bestand", "Categorie", "Image"],
     "no": ["Bilde", "Fil", "Image", "Kategori"],
+    "pl": ["Grafika", "Image", "Kategoria", "Plik"],
     "pt": ["Arquivo", "Categoria", "Ficheiro", "Image", "Imagem"],
     "ro": ["Categorie", "Fişier", "Fișier", "Image", "Imagine"],
     "ru": ["Image", "Изображение", "К", "Категория", "Файл"],

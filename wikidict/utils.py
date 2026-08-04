@@ -257,6 +257,13 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("no", "verb")
     'Verb'
 
+    >>> format_pos("pl", "czasownik, forma fleksyjna")
+    'Czasownik'
+    >>> format_pos("pl", "czasownik przechodni dokonany")
+    'Czasownik'
+    >>> format_pos("pl", "przymiotnik jakościowy")
+    'Przymiotnik'
+
     >>> format_pos("pt", "substantivo1")
     'Substantivo'
     >>> format_pos("pt", "substantivo 1")

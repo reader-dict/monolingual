@@ -1,0 +1,1506 @@
+{{podobne|-a|@|A|a'|a'aa|a-|a-a|a-a-a|A.|a.|AA|Aa|aa|AAA|aaa|Aʹ|aʻa|ª|À|à|àâ|Á|á|á'à|Â|â|Ã|ã|Ä|ä|äa|Å|å|Æ|Ā|ā|Ă|ă|Ą|ą|Ǎ|ǎ|Ǟ|ǟ|Ǡ|ǡ|Ǻ|ǻ|Ȁ|ȁ|Ȃ|ȃ|Ȧ|ȧ|Ɐ|Ɑ|Ə|ə|ɚ|ʻa-|Ά|ά|α|ӑ|Ә|ә|ձ|א|ᶏ|Ḁ|ḁ|Ạ|ạ|Ả|ả|Ấ|ấ|Ầ|ầ|Ẩ|ẩ|Ẫ|ẫ|Ậ|ậ|Ắ|ắ|Ằ|ằ|Ẳ|ẳ|Ẵ|ẵ|Ặ|ặ|ἀ|Ἀ|ἁ|Ἁ|ἂ|Ἂ|ἃ|Ἃ|ἄ|Ἄ|ἅ|Ἅ|ἆ|Ἆ|ἇ|Ἇ|ὰ|Ὰ|ᾀ|ᾈ|ᾁ|ᾉ|ᾂ|ᾊ|ᾃ|ᾋ|ᾄ|ᾌ|ᾅ|ᾍ|ᾆ|ᾎ|ᾇ|ᾏ|ᾰ|Ᾰ|ᾱ|Ᾱ|ᾲ|ᾳ|ᾼ|ᾴ|ᾶ|ᾷ|’a|₳|⒜|ⓐ|Ⱥ|ⱥ|Ꜷ|ꜷ|Ꜹ|ꜹ|Ꜻ|ꜻ|Ꜽ|ꜽ|ꬰ|ꭤ}}
+{{podobne2|Α|Α (alfabet grecki)|А|А (cyrylica)|а|а (cyrylica)}}
+== a ({{użycie międzynarodowe}}) ==
+{{wymowa}}
+{{znaczenia}}
+''litera'' (''majuskuła:'' [[A]])
+: (1.1) [[pierwszy|pierwsza]] [[litera]] [[podstawowy|podstawowego]] [[współczesny|współczesnego]] [[alfabet]]u [[łaciński]]ego; {{wikipedia|A|a}}
+''symbol''
+: (2.1) {{fonet}} (''w [[IPA]]'') [[samogłoska]] [[otwarty|otwarta]] [[przedni]]a [[nie-|nie]][[zaokrąglony|zaokrąglona]]
+: (2.2) {{fiz}} {{miar}} [[symbol]] [[jednostka|jednostki]] [[powierzchnia|powierzchni]], [[ar]]a, [[równy|równego]] [[100]] [[m²]], [[czyli]] [[setna|setnej]] [[część|części]] [[hektar]]a
+: (2.3) <math>\vec a</math> {{fiz}} [[symbol]] [[oznaczać|oznaczający]] [[wektor]] [[przyspieszenie|przyspieszenia]]
+: (2.4) {{muz}} [[szósty]] [[dźwięk]] [[w]] [[podstawowy|podstawowej]] [[skala diatoniczna|skali diatonicznej]]; {{wikipedia|a (dźwięk)}}
+''przedrostek''
+: (3.1) {{fiz}} {{miar}} ''[[przed]] [[symbol]]em [[jednostka|jednostki]]:'' [[atto]], [[10]]<sup>-[[18]]</sup>
+{{odmiana}}
+{{przykłady}}
+: (1.1) {{ang}} [[animal|'''a'''nim'''a'''l]] • {{niem}} [[abwesend|'''a'''bwesend]] • {{pol}} [[agresja|'''a'''gresj'''a''']] • {{hiszp}} [[parada|p'''a'''r'''a'''d'''a''']]
+: (2.1) {{IPA3|ˈ[[a]][[d]][[r]][[ɛ]][[s]]}}
+: (2.2) ''[[h]][[a]]'' → [[hektar]]
+: (2.3) <math>\vec a = \frac {d \vec v}{dt} = \frac {d^2 \vec r}{dt^2} </math> → [[wektor]] [[przyspieszenie|przyspieszenia]] [[równać się|równa się]] [[pochodna|pochodnej]] [[prędkość|prędkości]] [[po]] [[czas]]ie, [[co]] [[równać się|równa się]] [[drugi]]ej [[pochodna|pochodnej]] [[przemieszczenie|przemieszczenia]] [[po]] [[czas]]ie
+: (2.3) <math>\left[ \vec a \right] = \frac m {s^2}</math> → [[jednostka]] [[przyspieszenie|przyspieszenia]] [[równać się|równa się]] [[metr]] [[na]] [[sekunda|sekundę]] [[kwadrat]]
+: (2.4) ''[[a]][[m]]'' → [[akord]] [[a-moll]]
+: (3.1) ''[[a]][[m]]'' → [[attometr]]
+{{składnia}}
+{{kolokacje}}
+: (2.4) [[a-moll]] • [[A-dur]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: (3.1) [[as]]
+{{frazeologia}}
+{{etymologia}}
+: (1.1) ''majuskuła:'' [[A]] < {{etym|łac}} [[Plik:RomanA-01.svg|16px]] < {{etym|etruski}} [[Plik:EtruscanA.svg|16px]] < {{etym|gr}} [[Α]], [[α]] < {{etym|fenicki}} [[Plik:Phoenician aleph.svg|16px]] < {{etym|protosynajski}} [[Plik:Proto-semiticA-01.svg|16px]] < {{etym|egipski}} [[Plik:EgyptianA-01.svg|16px]]
+: (2.2) {{etym|franc|are}} z {{etym|łac|area}}
+{{uwagi}}
+: (1.1) {{zoblistę|a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z}}
+: (2.4) {{zoblistę|c|d|e|f|g|a|b|h}}
+: (2.4) {{zoblistę|asas|as|a|ais|aisis}}
+: (2.4) {{por|gisis|heses}}
+{{źródła}}
+
+== a ({{język polski}}) ==
+{{litera|Aa|[[wielki|wielka]] [[i]] [[mały|mała]] [[litera]] a (4.1)}}
+{{wymowa}}
+: {{IPA3|a}}, {{AS3|a}}, {{audio|Pl-a.ogg}}
+: {{audio|LL-Q809 (pol)-Krokus-a.wav}} {{audio|LL-Q809 (pol)-Olaf-a.wav}}
+{{znaczenia}}
+''spójnik używany przy wprowadzaniu''
+: (1.1) ''…uzupełniania''
+: (1.2) ''…przeciwstawności''
+: (1.3) ''…wynikania''
+: (1.4) ''…objaśnień''
+''partykuła''
+: (2.1) ''…wzmacniająca''
+''wykrzyknik''
+: (3.1) ''wyraz zaskoczenia, zdziwienia''
+''rzeczownik, rodzaj nijaki''
+: (4.1) {{jęz}} [[pierwszy|pierwsza]] [[litera]] [[polski]]ego [[alfabet]]u; {{wikipedia}}
+{{odmiana}}
+: (1.1-4, 2.1, 3.1, 4.1) {{nieodm-rzeczownik-polski}}
+{{przykłady}}
+: (1.1) ''[[Ala]] [[mieć|ma]] [[As]]a ([[pies|psa]] [[o]] [[imię|imieniu]] [[As]]), [[a]] As [[mieć|ma]] [[kość]].''
+: (1.2) ''[[jego|Jego]] „[[prawa ręka]]”, Wołodymyr Horbulin, [[ukuć|ukuł]] [[wtedy]] [[hasło]], [[że]] [[w]] [[polityka|polityce]] [[zagraniczny|zagranicznej]] Kuczma [[być|jest]] [[nacjonalista|nacjonalistą]], [[w]] [[wewnętrzny|wewnętrznej]] — [[liberał]]em, [[a]] [[w]] [[społeczny|społecznej]] — [[socjaldemokrata|socjaldemokratą]]<ref>{{NKJP|autorzy=Marcin Wojciechowski|tytuł_pub=Pomarańczowy majdan|data=2006|hash=d82cad4b7fd199fdadf646e7edbe9369|match_start=355|match_end=356}}</ref>.''
+: (1.2) ''[[Ala]] [[lubić|lubi]] Asa, [[a]] [[ja]] ([[on|go]]) [[nie]] ([[lubić|lubię]]).''
+: (1.3) ''As [[pogryźć|pogryzł]] [[Ala|Alę]], [[a]] [[to]] [[oznaczać|oznacza]] [[wścieklizna|wściekliznę]].''
+: (1.4) ''[[Ala]] [[mieć|ma]] Asa, [[a]] [[być|jest]] [[to]] [[mądry]] [[pies]].''
+: (2.1) ''[[a|A]] [[nie]] [[mówić|mówiłem]]!''
+: (3.1) ''[[a|A]], [[to]] [[znowu]] [[on]]!''
+: (4.1) ''[[to|To]] [[mały|małe]] [[a]] [[napisać|napisałeś]] [[okropnie]] [[koślawo]].''
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) [[i]], [[oraz]]
+: (1.2) [[ale]], [[natomiast]], [[zaś]]
+: (1.3) [[więc]]
+: (1.4) [[przy czym]]
+: (3.1) [[o]]!
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+: [[od A do Z]] • [[od a do zet]] • [[ABC]]
+{{etymologia}}
+: (1.1-2) W polszczyźnie od XIII wieku; {{ogsłow}} (por. {{czes}} [[a#cs|a]] 'i', rzadziej 'a', {{ros}} [[а#ru|а]] 'a, ale, lecz, i', {{serb}}-{{chorw}} [[а#sr|a]] 'a, i', {{scs}} [[а#cu|a]] 'a, ale, i, chociaż, jakkolwiek') z {{etym|prasłow|*a}} – partykuła wzmacniająca i nawiązująca, prapokrewne z {{litew}} [[õ#lt|õ]] 'i, a' oraz {{staroind}} [[ât]] 'potem, i, tak'<ref name="malmor"/>.
+: (3.1) W polszczyźnie od XV wieku<ref name="malmor">{{Malmor2009|hasło=aby|strony=33}}</ref>.
+{{uwagi}}
+: (4.1) {{alfabet polski}}
+{{tłumaczenia}}
+* amerykański język migowy: (4.1) [[Plik:Sign language A.svg|30px]]
+* angielski: (1.1) [[and]]; (1.2) [[but]]; (1.3) [[which]]; (1.4) [[that]]
+* chakaski: (1.1) [[чи]]
+* chiński standardowy: (1.1) [[然后]] (ránhòu)
+* czeski: (1.1) [[a]], [[ale]]
+* duński: (1.1) [[og]]; (1.2) [[men]], [[og]]; (1.3) [[og]]
+* esperanto: (1.1) [[kaj]], [[sed]]; (4.1) [[a]]
+* estoński: (2.1) [[aga]]
+* francuski: (1.1) [[et]]; (1.2) [[et]]; (1.3) [[et]]; (1.4) [[et]]; (3.1) [[ah]]!; (4.1) [[a]]
+* górnołużycki: (1.1) [[a]]
+* hiszpański: (1.1) [[y]]; (1.2) [[y]]; (1.3) [[y]]; (1.4) [[y]]; (4.1) [[a]] {{ż}}
+* islandzki: (1.1) [[og]]; (1.2) [[en]], [[og]]; (1.3) [[og]]
+* kaszubski: (1.1) [[ë]]; (1.2) [[a]]
+* koreański: (3.1) [[아이구]]
+* łaciński: (3.1) [[a]]; (4.1) [[a]]
+* łotewski: (1.1) [[un]]; (1.2) [[bet]]
+* niderlandzki: (1.1) [[en]]
+* niemiecki: (1.1) [[und]]; (1.2) [[aber]], [[und]]; (1.3) [[und]]; (4.1) [[A]] {{n}}
+* nowogrecki: (1.1) [[και]]; (1.2) [[και]]; (1.3) [[και]]; (1.4) [[και]]
+* polski język migowy: {{PJM-ukryj| (4.1) [[Plik:Sign language A.svg|50px]], ''w zapisie SignWriting:'' {{PJM|A}}}}
+* rosyjski: (1.1) [[а]]; (1.2) [[а]]; (1.3) [[а]]; (1.4) [[а]]; (2.1) [[а]]
+* szwedzki: (1.1) [[och]]; (1.2) [[men]], [[och]]; (1.3) [[och]]
+* ukraiński: (1.1) [[а]]; (1.2) [[а]]; (1.3) [[а]]; (1.4) [[а]]; (2.1) [[а]]
+{{źródła}}
+<references />
+
+== a ({{język afar}}) ==
+{{wymowa}}
+: {{IPA|ʌ}}
+{{znaczenia}}
+''litera''
+: (1.1) a, ''minuskuła pierwszej litery alfabetu afarskiego''
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) ''majuskuła:'' [[A]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język afrykanerski}}) ==
+{{ortografie}}
+: ''odpowiednik arabski:'' ـَ
+{{wymowa}}
+: ''w sylabach zamkniętych:''{{IPA|a}}, {{IPA|ɐ}}
+: ''w sylabach otwartych:'' {{IPA|ɑː}}
+{{znaczenia}}
+''litera''
+: (1.1) a, ''minuskuła pierwszej litery alfabetu afrykanerskiego''
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) {{war}} [[á]] (funkcja emfazy), [[ä]] (funkcja dierezy); ''majuskuła:'' [[A]]; ''nazwa litery:'' [[ah]] ''lub'' [[aa]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) formy ze znakami diakrytycznymi nie są formalnie częścią alfabetu
+: (1.1) {{zoblistę| a | A | b | B | c | C | d | D | e | E | f | F | g | G | h | H | i | I | j | J | k | K | l | L | m | M | n | N | o | O | p | P | q | Q | r | R | s | S | t | T | u | U | v | V | w | W | x | X | y | Y | z | Z }}
+{{źródła}}
+
+== a ({{język albański}}) ==
+{{wymowa}}
+: {{IPA|a}}
+{{znaczenia}}
+''litera''
+: (1.1) ''pierwsza litera alfabetu albańskiego'', [[minuskuła]] [[A]]<ref name=JW>{{JeziorskiWiśniewski1992}}</ref>
+''spójnik''
+: (2.1) [[albo]], [[czy]], [[lub]]<ref name=JW/>
+''partykuła''
+: (3.1) [[czy]]<ref name=JW/>
+{{odmiana}}
+{{przykłady}}
+: (2.1) ''[[a]] [[sot]] [[a]] [[kurrë]]'' → ('''[[albo]]''') [[dziś]] '''[[albo]]''' [[nigdy]]
+: (2.1) ''[[shpejt]] [[a]] [[vonë]]'' → [[wcześnie]]j '''[[czy]]''' [[późno|później]]
+: (3.1) ''[[a|A]] [[më]] [[dëgjoj|dëgjon]]?'' → '''[[czy|Czy]]''' [[mnie]] [[słuchać|słuchasz]]?
+{{składnia}}
+{{kolokacje}}
+: (2.1) [[pak a shumë]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język alemański}}) ==
+{{wymowa}}
+: {{audio|LL-Q131339 (gsw)-Mathieu Kappler-a.wav}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[na]], [[nad]], [[przy]]
+: (1.2) [[o]]
+: (1.3) [[do]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język ama}}) ==
+[[Plik:Linde von linn.jpg|thumb|a (1.1)]]
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) [[drzewo]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|ama}}
+
+== a ({{język angielski}}) ==
+{{wymowa}}
+: (1) ''forma słaba''
+:: {{IPA|ə}}<ref name="CD">{{CambridgeDictionary}}</ref>
+:: {{audioUS|En-us-a-unstressed.ogg}}
+: (1) ''forma mocna''
+:: {{IPA|eɪ}}<ref name="CD" />
+:: {{audioUS|En-us-a-stressed.ogg}}
+: (2)
+:: {{IPA|eɪ}}<ref name="CD" />
+:: {{austral}} {{IPA|æɪ}}
+:: {{audioUK|En-uk-a.ogg}}
+:: {{audioUS|En-us-a.ogg}}
+:: {{audioUS|En-us-a2.ogg}}
+:: {{audio|LL-Q1860 (eng)-Back ache-a.wav}}
+{{znaczenia}}
+''przedimek nieokreślony''
+: (1.1) ''używany przed spółgłoską i rzeczownikiem policzalnym w lp wspomnianym po raz pierwszy''
+: (1.2) ''używany przed spółgłoską i rzeczownikiem policzalnym w lp będącym członkiem grupy''
+: (1.3) ''używany przed spółgłoską i rzeczownikiem policzalnym w lp w znaczeniu każdy''
+: (1.4) ''używany przed spółgłoską i rzeczownikiem niepoliczalnym mającym ograniczone znaczenie''
+: (1.5) ''używany przed spółgłoską i rzeczownikiem policzalnym w lp oznaczającym jednorazowe wykonanie czynności''
+''litera''
+: (2.1) ''pierwsza litera angielskiego alfabetu, nazywana [[ei#en|ei]] lub [[a#en|a]]''
+''rzeczownik''
+: (3.1) ''nazwa pierwszej litery angielskiego alfabetu''
+{{odmiana}}
+: (1) Przed wyrazem rozpoczynającym się w mowie na samogłoskę (np. [[hour]]) przyjmuje formę [[an]]
+: (2.1) {{lp}} a; {{lm}} a's
+{{przykłady}}
+: (1.1) ''[[there be|There is]] [[a]] [[spider]] [[in]] [[my]] [[room]].'' → [[w|W]] [[mój|moim]] [[pokój|pokoju]] [[być|jest]] [[pająk]].
+: (1.1) ''[[I]] [[would]] [[like]] [[to]] [[have]] [[a]] [[cat]].'' → [[chcieć|Chciałbym]] [[mieć]] [[kot]]a.
+: (1.2) ''[[my|My]] [[father]] [[be|is]] [[a]] [[doctor]].'' → [[mój|Mój]] [[ojciec]] [[być|jest]] [[lekarz|lekarzem]].
+: (1.3) ''[[a|A]] [[cat]] [[go]]es [[its]] [[own]] [[way]].'' → [[kot|Kot]] [[chodzić|chodzi]] [[własny|własną]] [[droga|drogą]].
+: (1.4) ''[[a|A]] [[good]] [[knowledge]] [[of]] [[Chinese]] [[be|is]] [[required]] [[to]] [[enroll]] [[in]] [[this]] [[course]].'' → [[aby|Aby]] [[zapisać się]] [[na]] [[ten]] [[kurs]] [[wymagany|wymagana]] [[być|jest]] [[dobry|dobra]] [[znajomość]] [[chiński]]ego.
+: (1.5) ''[[could|Could]] [[you]] [[take]] [[a]] [[look]] [[at]] [[this]]?'' → [[czy|Czy]] [[móc|mógłbyś]] [[na]] [[to]] [[spojrzeć]]?
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+: (1) [[the]]
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (2.1) {{zoblistę|a|A|b|B|c|C|d|D|e|E|f|F|g|G|h|H|i|I|j|J|k|K|l|L|m|M|n|N|o|O|p|P|q|Q|r|R|s|S|t|T|u|U|v|V|w|W|x|X|y|Y|z|Z}}
+: (3.1) {{zoblistę| [[ei]]/[[a]] | bee | cee | dee | e | ef | gee | aitch | i | jay | kay | el | em | en | o | pee | cue | ar | ess | tee | u | vee | double U | ex | wye | [[zee]]/[[zed]]}}
+{{źródła}}
+<references />
+
+== a ({{język aragoński}}) ==
+{{wymowa}}
+{{znaczenia}}
+''rodzajnik określony''
+: (1.1) {{gram}} ''rodzajnik określony dla liczby pojedynczej rodzaju żeńskiego, używany w niektórych dialektach zachodnich i środkowych''
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język asturyjski}}) ==
+{{wymowa}}
+: {{audio|LL-Q29507 (ast)-Limotecariu-a.wav}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[ku]], [[w kierunku]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|asturyjski}}
+
+== a ({{język baskijski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) ''nazwa litery'' [[a]]/[[A]]<ref name=Euskaltzaindia>{{Euskaltzaindia}}</ref>
+''wykrzyknik''
+: (2.1) [[ach]]<ref name=Euskaltzaindia />
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język bośniacki}}) ==
+{{ortografie}}
+{{wymowa}}
+{{znaczenia}}
+''spójnik''
+: (1.1) [[a]]
+: (1.2) [[ale]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{brithenig}}) ==
+{{wymowa}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[do]], [[w]]
+''wykrzyknik''
+: (2.1) [[ach]], [[a]]!
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język chorwacki}}) ==
+{{ortografie}}
+{{wymowa}}
+{{znaczenia}}
+''spójnik''
+: (1.1) [[a]]
+: (1.2) [[ale]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język czeski}}) ==
+{{litera|Aa|A (3.1)}}
+{{wymowa}}
+: {{audio|Cs-a.ogg}}, {{IPA3|a}}
+: {{audio|LL-Q9056 (ces)-HondaCivic175-a.wav}} {{audio|LL-Q9056 (ces)-Akronos123-a.wav}}
+{{znaczenia}}
+''spójnik''
+: (1.1) [[a]]
+: (1.2) [[i]]
+: (1.3) {{mat}} [[plus]], [[dodać]]
+: (1.4) [[więc]]
+''partykuła''
+: (2.1) [[a]], [[i]]
+''rzeczownik, rodzaj nijaki''
+: (3.1) [[a]]
+{{odmiana}} {{nieodm}}
+{{przykłady}}
+: (1.1) ''[[pršet|Pršelo]], [[a]] [[on]] [[ne]][[mít|měl]] [[bunda|bundu]].'' → [[padać|Padało]], '''[[a]]''' [[on]] [[nie]] [[mieć|miał]] [[kurtka|kurtki]].
+: (1.2) ''[[koupit|Koupím]] [[chléb]] [[a]] [[čaj]].'' → [[kupić|Kupię]] [[chleb]] '''[[i]]''' [[herbata|herbatę]].
+: (1.3) ''[[dvě|Dvě]] [[a]] [[dvě]] [[být|jsou]] [[čtyři]].'' → [[dwa|Dwa]] '''[[plus]]''' [[dwa]] [[być|jest]] [[cztery]].
+: (1.4) ''[[být|Bylo]] [[on|mu]] [[horko]], [[a]] [[otevřít|otevřel]] [[okno]].'' → [[być|Było]] [[on|mu]] [[gorąco]], '''[[więc]]''' [[otworzyć|otworzył]] [[okno]].
+: (2.1) ''[[a|A]] [[co]] [[teď]] [[udělat|uděláme]]?'' → '''[[a|A]]''' [[co]] [[teraz]] [[zrobić|zrobimy]]?
+: (3.1) ''[[a|A]] [[být|je]] [[první]] [[písmeno]] [[latinský|latinské]] [[abeceda|abecedy]].'' → '''[[a|A]]''' [[być|jest]] [[pierwszy|pierwszą]] [[litera|literą]] [[łaciński]]ego [[alfabet]]u.
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[a to]] • [[a sice]] • [[a také]]
+: (1.2) [[a tak dále]]
+{{synonimy}}
+: (1.1) [[ale]], [[však]]
+: (1.2) [[i]], [[a také]]
+: (1.3) [[plus]]
+: (1.4) [[tedy]], [[tak]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+: {{rzecz}} {{zdrobn}} [[ačko]] {{n}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język dolnołużycki}}) ==
+{{wymowa}}
+{{znaczenia}}
+''spójnik''
+: (1.1) [[i]]
+{{odmiana}}
+: (1.1) {{nieodm}}
+{{przykłady}}
+: (1.1) ''[[wjacork|Wjacork]] [[serbski|serbskeje]] [[literatura|literatury]], [[muzika|muziki]] [[a]] [[źiwadło|źiwadła]] [[w]] [[Praga|Praze]].'' → [[wieczorek|Wieczorek]] [[łużycki]]ej [[literatura|literatury]], [[muzyka|muzyki]] '''[[i]]''' [[teatr]]u [[w]] [[Praga|Pradze]].
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{esperanto}}) ==
+{{morfologia}} {{morfeo|a}}
+{{wymowa}}
+: {{audio|LL-Q143 (epo)-Lepticed7-a.wav}} {{audio|LL-Q143 (epo)-Robin van der Vliet-a.wav}} {{audio|Eo-a.ogg}}
+{{znaczenia}}
+''rzeczownik''
+: (1.1) {{jęz}} [[litera]] [[a]], [[A]]
+{{odmiana}}
+: (1.1) {{nieodm}} lub {{odmiana-rzeczownik-esperanto|k
+| nominativo_un = a
+| akuzativo_un = a-on<ref name=pmeg>{{PMEGonline|rozdział=[https://bertilow.com/pmeg/gramatiko/oa-vortecaj_vortetoj/liternomoj.html 15.6. Liternomoj]}}</ref> / aon
+| nominativo_mn = a-oj<ref name=pmeg/> / aoj
+| akuzativo_mn = a-ojn<ref name=pmeg/> / aojn
+}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{literyEO}}
+{{źródła}}
+<references />
+
+== a ({{esperanto (morfem)}}) ==
+{{wymowa}}
+: {{audio|Eo-a.ogg}} {{audio|LL-Q143 (epo)-Lepticed7-a.wav}} {{audio|LL-Q143 (epo)-Robin van der Vliet-a.wav}}
+{{znaczenia}}
+''{{morfem|eo|gramatyczny}}''
+: (1.1) ''oznacza przymiotnik''
+: (1.2) ''oznacza liczebnik porządkowy''
+: (1.3) ''końcówka niektórych imion żeńskich''
+''{{morfem|eo}}''
+: (2.1) [[a]], [[a|A]] (litera)
+{{odmiana}}
+{{przykłady}}
+: (1.1) ''morfem'' [[bon]] — ''przymiotnik'' [[bona#eo|bon'''a''']] → [[dobry]]
+: (1.2) ''[[unu#eo|unu]]'' — [[unua#eo|unu'''a''']] → [[jeden]] — [[pierwszy]]
+: (1.3) '''[[Johano#eo|Johano]] — [[Johana#eo|Johan'''a''']]''' → [[Jan]] — [[Janina]]
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pochodne}}
+: (1.1) {{rzecz}} [[a-vorto]]
+: (2.1) {{rzecz}} [[adiro]]
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{morfem oficjalny|fundamenta|BRO=1}}
+: (1.3) Zakończenie stosowane głównie gdy bazowa lub też zapożyczona forma imienia kończy się literą „a” (jest wtedy ona częścią wyrazu niezesperantyzowanego, który mimo to może być odmieniany<ref>{{PMEGonline|rozdział=[https://bertilow.com/pmeg/gramatiko/propraj_nomoj/ne-esperantigitaj.html 35.2. Ne-esperantigitaj nomoj]}}</ref>). W innych przypadkach ma charakter potoczny, zasadniczo niezalecany w stosowaniu regularnym, lecz zazwyczaj dopuszczany.<ref>{{PMEGonline|rozdział=[https://bertilow.com/pmeg/gramatiko/propraj_nomoj/esperantigitaj.html 35.3. Esperantigitaj nomoj]}}</ref>
+: (2.1) {{morfem oficjalny|fundamenta}}
+{{źródła}}
+<references />
+
+== a ({{język farerski}}) ==
+{{wymowa}}
+: {{homofony|Æ}}
+{{znaczenia}}
+''litera''
+: (1.1) [[minuskuła]] [[pierwszy|pierwszej]] [[litera|litery]] [[alfabet]]u [[farerski]]ego<ref>{{sprotin|hasło=A, a}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+: [[frá a til z]] • [[hevur tú sagt a, mást tú eisini siga b]]
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę|a|á|b|d|ð|e|f|g|h|i|í|j|k|l|m|n|o|ó|p|r|s|t|u|ú|v|y|ý|æ|ø}}
+{{źródła}}
+<references />
+
+== a ({{język francuski}}) ==
+{{wymowa}}
+: {{IPA3|ɑ}}
+: {{audio|LL-Q150 (fra)-Guilhelma-a.wav}} {{audio|LL-Q150 (fra)-Jules78120-a.wav}} {{audio|LL-Q150 (fra)-Kiminou1-a.wav}} {{audio|LL-Q150 (fra)-Lepticed7-a.wav}} {{audio|LL-Q150 (fra)-LoquaxFR-a.wav}} {{audio|LL-Q150 (fra)-Ltrlg-a.wav}} {{audio|LL-Q150 (fra)-Lyokoï-a.wav}} {{audio|LL-Q150 (fra)-Pamputt-a.wav}} {{audio|LL-Q150 (fra)-DenisdeShawi-a.wav}} {{audio|LL-Q150 (fra)-DSwissK-a.wav}} {{audio|LL-Q150 (fra)-Poslovitch-a.wav}} {{audio|LL-Q150 (fra)-Mecanautes-a.wav}} {{audio|LL-Q150 (fra)-Estrie-a.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski''
+: (1.1) [[a]] ([[pierwszy|pierwsza]] [[litera]] [[francuski]]ego [[alfabet]]u)
+''{{forma czasownika|fr}}''
+: (2.1) ''3. {{os}} {{lp}} {{ter}} trybu oznajmującego czasownika'' [[avoir#fr|avoir]]
+{{odmiana}}
+: (1.1) {{nieodm}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język górnołużycki}}) ==
+{{wymowa}} {{IPA3|a}}
+{{znaczenia}}
+''spójnik''
+: (1.1) [[i]], [[a]]<ref>{{Leszczyński2002|strony=137}}</ref>
+{{odmiana}}
+: (1.1) {{nieodm}}
+{{przykłady}}
+: (1.1) ''[[Budyšin]] [[być|je]] [[stolica]] [[Hornja Łužica|Hornjeje Łužicy]] [[a]] [[kulturelny|kulturelne]] [[srjedźišćo]] [[Serb]]ow.'' → [[Budziszyn]] [[być|jest]] [[stolica|stolicą]] [[Górne Łużyce|Górnych Łużyc]] '''[[i]]''' [[kulturalny]]m [[centrum]] [[Łużyczanin|Łużyczan]].
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język haitański}}) ==
+{{wymowa}}
+{{znaczenia}}
+''czasownik posiłkowy''
+: (1.1) ''wskazuje na czas przyszły''
+''rodzajnik określony''
+: (2.1) ''rodzajnik postpozycyjny (poimek) stosowany po rzeczownikach kończących się samogłoską nienosową''
+''przyimek''
+: (3.1) [[do]], [[na]], [[w]]
+: (3.2) ''…tworzący formę dopełniacza i wskazujący pochodzenie'', [[od]], [[z]], [[ze]]
+''spójnik''
+: (4.1) [[i]], [[wraz z]], [[z]]
+''wykrzyknik''
+: (5.1) [[ach]]!, [[och]]!
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) użycie tej formy lub jej wariantów ''[[ava]], [[av]], [[va]], [[v]]'' jest dostosowywane do kontekstu fonetycznego
+{{źródła}}
+: https://www.hopeforhaitischildren.org/hfhcmedia/Haitian_Creole_English_Dictionary_2nd_printing.pdf
+
+== a ({{język hawajski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''przyimek''
+: (1.1) ''…tworzący konstrukcję, w której wyrażenie przed przyimkiem jest własnością, cechą itp. wyrażenia po przyimku''<ref name='h'>{{Pukui1986}}</ref>
+''skrót''
+: (2.1) = [[ʻākau]] ''(północ)''<ref name='h'/>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[keiki a ka pueo]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język hiszpański}}) ==
+{{wymowa}}
+: {{IPA3|a}}
+: {{homofony|ah|ha}}
+: {{audio|LL-Q1321 (spa)-Anonymât (Kvardek du)-a.wav}} {{audio|LL-Q1321 (spa)-Eavqwiki-a.wav}} {{audio|LL-Q1321 (spa)-Rodelar-a.wav}} {{audio|LL-Q1321 (spa)-Guergana-a.wav}} {{audio|LL-Q1321 (spa)-Rodrigo5260-a.wav}}
+{{znaczenia}}
+''przyimek''
+: (1.1) ''…wyrażający kierunek'' → [[do]], [[na]]
+: (1.2) ''…wyrażający odległość'' → [[o]]
+: (1.3) ''…wyrażający miejsce'' → [[przy]], [[w]], [[na]], [[nad]]
+: (1.4) ''…wyrażający czas'' → [[o]], [[w]], [[po]]
+: (1.5) ''…wyrażający sposób wykonania'' → [[po]]
+: (1.6) ''…wyrażający tryb rozkazujący''
+: (1.7) ''…wyrażający stosunek ilościowy''
+: (1.8) ''w funkcji dopełnienia dalszego (celownika)''
+: (1.9) ''w funkcji dopełnienia bliższego (biernika), gdy chodzi o:''
+:: (1.9.1) ''osobę lub osoby (z pewnymi wyjątkami);''
+:: (1.9.2) ''zwierzęta, w stosunku do których istnieje pewne uczucie lub przywiązanie; dlatego częściej stosuje się względem zwierząt domowych, żyjących między nami;''
+:: (1.9.3) ''rzeczy personifikowane''
+''rzeczownik, rodzaj żeński''
+: (2.1) [[a]] ([[nazwa]] [[litera|litery]] [[a]])
+{{odmiana}}
+: (1) {{nieodm}}
+: (2) {{lm}} as
+{{przykłady}}
+: (1.1) ''[[ir|Vamos]] [[a]] [[casa]].'' → 1. [[iść|Idziemy]] '''[[do]]''' [[dom]]u; 2. [[chodzić|Chodźmy]] '''[[do]]''' [[dom]]u.
+: (1.2) ''[[el|La]] [[estación]] [[estar|está]] [[a]] [[dos]] [[kilómetro]]s [[de]] [[aquí]].'' → [[stacja|Stacja]] [[być|jest]] '''[[o]]''' [[dwa]] [[kilometr]]y [[stąd]].
+: (1.3) ''[[estar|Estamos]] [[sentarse|sentados]] [[a]] [[el|la]] [[mesa]] [[y]] [[beber|bebiendo]] [[vino]].'' → [[siedzieć|Siedzimy]] '''[[przy]]''' [[stół|stole]] [[i]] [[pić|pijemy]] [[wino]].
+: (1.4) ''[[el|El]] [[tren]] [[de]] [[Madrid]] [[llegar|llega]] [[a]] [[el|las]] [[cinco]] [[de]] [[el|la]] [[tarde]].'' → [[pociąg|Pociąg]] [[z]] [[Madryt]]u [[przyjeżdżać|przyjeżdża]] '''[[o]]''' [[piąty|piątej]] [[po południu]].
+: (1.5) ''[[hoy|Hoy]] [[comer|comemos]] [[langosta]] [[a]] [[el|la]] [[americano|americana]].'' → [[dziś|Dziś]] [[jeść|jemy]] [[langusta|langustę]] '''[[po]]''' [[amerykański|amerykańsku]].
+: (1.6) ''¡[[a|A]] [[trabajar]]!'' → [[do|Do]] [[robota|roboty]]!
+: (1.7) ''[[barrer|Barro]] [[el]] [[suelo]] [[tres]] [[vez|veces]] [[a]] [[el|la]] [[semana]].'' → [[zamiatać|Zamiatam]] [[podłoga|podłogę]] [[trzy]] [[raz]]y [[w]] [[tydzień|tygodniu]].
+: (1.8) ''[[él|Se]] [[ello|lo]] [[decir|dije]] [[a]] [[mi]] [[padre]].'' → [[powiedzieć|Powiedziałem/am]] [[to]] [[swój|swemu]] [[ojciec|ojcu]].
+: (1.9.1) ''[[ver|He visto]] [[a]] [[tu]] [[mujer]] [[en]] [[un]]a [[tienda]] [[de]] [[ropa]].'' → [[widzieć|Widziałem]] [[twój|twoją]] [[żona|żonę]] [[w]] [[sklep]]ie [[odzieżowy]]m.
+: (1.9.2) ''[[dejar|Déja]][[él|le]] [[al|'''a'''l]] [[perro]] [[que]] [[correr|corra]] [[un]] [[poco]].'' → [[pozwolić|Pozwól]] [[pies|psu]] [[trochę]] [[pobiegać]].
+: (1.9.3) ''[[el|El]] [[anciano]] [[esperar|esperaba]] ([[a]]) [[el|la]] [[muerte]] [[con]] [[resignación]].'' → [[starzec|Starzec]] [[oczekiwać|oczekiwał]] [[śmierć|śmierci]] [[z]] [[rezygnacja|rezygnacją]].
+{{składnia}}
+: (1) zbitka przyimka „a” i rodzajnika określonego rodzaju męskiego i liczby pojedynczej [[el]]: '''[[al]]'''
+: (1.6) a + {{bezok}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+: ''[[a pesar de]]'' • ''[[a pesar de que]]'' • ''[[a veces]]''
+{{etymologia}}
+: (1) {{etym|łac|ad}}
+{{uwagi}}
+: (2.1) {{zoblistę|a|be|ce|([[che]])|de|e|efe|ge|hache|i|jota|ka|ele|([[elle]])|eme|ene|eñe|o|pe|cu|[[erre]] / [[ere]]|ese|te|u|[[uve]] / [[ve]]|[[uve doble]] / [[ve doble]]|equis|[[i griega]] / [[ye]]|[[zeta]]}}
+{{źródła}}
+
+== a ({{interlingua}}) ==
+{{wymowa}}
+{{znaczenia}}
+''przyimek''
+: (1.1) ''…wyrażający kierunek'' → [[do]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język karelski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''litera''
+: (1.1) [[minuskuła]] [[A]], [[pierwszy|pierwszej]] [[litera|litery]] [[alfabet]]u [[karelski]]ego; {{wikipedia}}
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: nazwa litery: [[aa]]
+{{źródła}}
+
+== a ({{język kaszubski}}) ==
+{{wymowa}}
+: {{IPA|a}}
+{{znaczenia}}
+''litera, opcjonalnie w funkcji rzeczownika rodzaju nijakiego''
+: (1.1) a, ''minuskuła pierwszej litery alfabetu kaszubskiego''
+''spójnik''
+: (2.1) [[a]]<ref>{{ZP2023}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) ''majuskuła:'' [[A]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język kataloński}}) ==
+{{wymowa}}
+: {{IPA3|a}}
+: {{audio|LL-Q7026 (cat)-Unjoanqualsevol-a.wav}}
+{{znaczenia}}
+''przyimek''
+: (1.1) ''…wyrażający kierunek'' → [[do]], [[na]]
+: (1.2) ''…wyrażający czas'' → [[o]], [[na]]
+: (1.3) ''…wyrażający miejsce'' → [[w]], [[na]], [[we]]
+''rzeczownik, rodzaj żeński''
+: (2.1) [[a]] ([[nazwa]] [[litera|litery]] [[a]])
+{{odmiana}}
+: (1) {{nieodm}}
+: (2) {{lm}} as
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) ''a [[l']][[aeroport]]'' → [[na]] [[lotnisko]]
+: (1.2) ''a [[les]] [[tres]]'' → [[o]] [[trzeci]]ej ([[godzina|godzinie]])
+: (1.3) ''a [[l']][[escola]]'' → [[w]] [[szkoła|szkole]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język kornijski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''litera''
+: (1.1) ''pierwsza litera alfabetu kornijskiego'', [[minuskuła]] [[A]]
+''partykuła''
+: (2.1) ''wyznacza czasownik następujący po poprzedzającym podmiocie''
+''przyimek''
+: (3.1) [[od]], [[z]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język litewski}}) ==
+{{litera|Aa|[[didžioji raidė|didžioji]] [[ir]] [[mažoji raidė]] a (1.1)}}
+{{wymowa}}
+{{znaczenia}}
+''litera''
+: (1.1) {{jęz}} [[minuskuła]] [[pierwszy|pierwszej]] [[litera|litery]] [[alfabet]]u [[litewski]]ego<ref>{{ekalba.lt|słownik=bendrinės|hasło=a|id=7d7503e5-6819-4634-a8e8-3ab7f0975dda}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) ''majuskuła'' [[A]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+: [[nuo a iki zet]] / [[nuo a iki ž]]
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę| a | ą | b | c | č | d | e | ę | ė | f | g | h | i | į | y | j | k | l | m | n | o | p | r | s | š | t | u | ų | ū | v | z | ž }}
+{{źródła}}
+<references />
+
+== a ({{język łaciński}}) ==
+{{wymowa}}
+: {{audio|La-ecc-A.ogg}} {{audio|La-cls-a.ogg}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[od]], [[z]] ([[kierunek]]; [[czas]])
+: (1.2) [[przez]] ([[strona bierna]])
+''skrót''
+: (2.1) = [[annus]] → [[rok]] ([[r.]])
+: (2.2) = [[ante]] → [[przed]]
+''wykrzyknik''
+: (3.1) [[ach]]<ref>{{Jougan2013|strony=1}}</ref>
+{{odmiana}}
+: (1-2) {{nieodm}}
+{{przykłady}}
+{{składnia}}
+: (1.1) a + {{abl}}
+{{kolokacje}}
+: (2.1) [[AD]]
+: (2.2) [[a.d.]]
+{{synonimy}}
+: (1.1) [[ab]], [[abs]]
+: (3.1) [[ah]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język nauruański}}) ==
+{{wymowa}}
+{{znaczenia}}
+: (1.1) [[ja]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język niemiecki}}) ==
+{{wymowa}}
+: {{audio|De-a.ogg}}
+: {{lp}} {{IPA3|aː}}
+: {{audio|LL-Q188 (deu)-Mukeber-a.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj nijaki''
+: (1.1) {{jęz}} [[a]], [[litera]] [[alfabet]]u
+{{odmiana}}
+: (1.1) {{odmiana-rzeczownik-niemiecki
+|rodzaj =n
+|Mianownik lp = a
+|Dopełniacz lp = a<br />{{pot}} des as
+|Celownik lp = a
+|Biernik lp = a
+|Mianownik lm = a<br />{{pot}} die as
+|Dopełniacz lm = a<br />{{pot}} der as
+|Celownik lm = a<br />{{pot}} den as
+|Biernik lm = a<br />{{pot}} die as
+}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+: (1.1) [[Buchstabe]]
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{novial}}) ==
+{{wymowa}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[w]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język portugalski}}) ==
+{{wymowa}}
+: {{eurport|{{audio|LL-Q5146 (por)-Santamarcanda-a.wav}}}}
+: {{brazport|{{audio|Pt-br-a.ogg}}}}
+: {{audio|LL-Q5146 (por)-Nelson Ricardo 2500-a.wav}} {{audio|LL-Q5146 (por)-Juliano P. Junho (Jjunho)-a.wav}} {{audio|LL-Q5146 (por)-Sillim-a.wav}}
+{{znaczenia}}
+''rodzajnik''
+: (1.1) [[przedimek określony]]
+''przyimek''
+: (2.1) [[do]], [[o]], [[za]], [[na]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{quenya}}) ==
+{{wymowa}} {{IPA|a}}
+{{znaczenia}}
+''wykrzyknik''
+: (1.1) ''…wstęp do podniosłej apostrofy tam, gdzie w polszczyźnie po o występuje wołacz, tłumaczona jako „[[o]]”''
+{{odmiana}}
+: (1.1) {{nieodm}}
+{{przykłady}}
+: (1.1) ''[[a]] Túrin Turambar [[tur-|turún’]] [[ambar|ambartanen]]'' → [[o]] Túrinie, [[pan|Panie]] [[los|Losu]], [[nad]] [[który]]m [[los]] [[zapanować|zapanował]]
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: Hasło [https://eldamo.org/content/words/word-3204020863.html?neo a] w: [https://eldamo.org/index.html Eldamo]
+
+== a ({{romániço}}) ==
+{{wymowa}}
+: {{IPA|a}}
+{{znaczenia}}
+''litera''
+: (1.1) [[a]], ''minuskuła pierwszej litery alfabetu romániço''<ref>{{RomániçoDictionary}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) ''majuskuła:'' [[A]]; ''nazwa litery:'' a
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+: {{etym|etruski|𐌀}} < {{etym|gr|α}} < {{etym|fen|𐤀}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język rumuński}}) ==
+{{wymowa}}
+: {{audio|LL-Q7913 (ron)-Papaeta-a.wav}} {{audio|LL-Q7913 (ron)-Debil03311-a.wav}}
+{{znaczenia}}
+''przyimek''
+: (1.1) [[do]]
+''spójnik''
+: (2.1) [[i]]
+: (2.2) [[ale]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język słowacki}}) ==
+{{litera|Aa|[[veľký|veľké]] A, [[malý|malé]] a (1.1)}}
+{{wymowa}}
+: {{IPA3|a}}
+: {{audio|LL-Q9058 (slk)-TomášPolonec-a.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj nijaki''
+: (1.1) [[a]]<ref name="Ss-p">{{Słownik słowacko-polski 2005|tom=1|strony=1}}</ref> ''([[pierwszy|pierwsza]] [[litera]] [[alfabet]]u [[słowacki]]ego)''
+''spójnik współrzędny''
+: (2.1) [[a]]<ref name="Ss-p"/>
+: (2.2) [[i]]<ref name="Ss-p"/>
+''partykuła''
+: (3.1) [[a]]<ref name="Ss-p"/>
+''wykrzyknik''
+: (4.1) [[a]]<ref name="Ss-p"/>
+{{odmiana}}
+: (1.1) {{nieodm}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) ''[[malý|malé]] a'' → [[mały|małe]] a
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę| a | á | ä | b | c | č | d | ď | dz | dž | e | é | f | g | h | ch | i | í | j | k | l | ĺ | ľ | m | n | ň | o | ó | ô | p | q | r | ŕ | s | š | t | ť | u | ú | v | w | x | y | ý | z | ž}}
+{{źródła}}
+<references />
+
+== a ({{język słoweński}}) ==
+{{litera|Aa|[[velik]]i A, [[mali]] a (1.1)}}
+{{wymowa}}
+{{znaczenia}}
+''rzeczownik, rodzaj nijaki''
+: (1.1) [[a]] ''([[pierwszy|pierwsza]] [[litera]] [[alfabet]]u [[słoweński]]ego)''<ref>{{ZRCSAZU}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język staroangielski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''przysłówek''
+: (1.1) [[zawsze]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język susu}}) ==
+{{wymowa}} {{IPA3|a}}
+{{znaczenia}}
+''zaimek osobowy''
+: (1.1) [[on]], [[ona]], [[ono]]
+''zaimek dzierżawczy''
+: (2.1) [[jego]], [[jej]]
+{{odmiana}}
+{{przykłady}}
+: (1.1) ''[[a|A]] [[xili]] [[Jan#pl|Jan]].'' → '''[[on|On]]''' [[mieć na imię|ma na imię]] [[Jan]].
+: (2.1) ''[[a|A]] [[bore]].'' → '''[[jego|Jego]]''' [[przyjaciel]].
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język szkocki gaelicki}}) ==
+{{wymowa}}
+: {{IPA|ə}}
+{{znaczenia}}
+''litera''
+: (1.1) ''pierwsza litera alfabetu gaelickiego'', [[minuskuła]] [[A]]
+''przyimek''
+: (2.1) [[do]]
+''zaimek względny''
+: (3.1) [[który]]
+''zaimek dzierżawczy''
+: (4.1) [[jego]]
+: (4.2) [[jej]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język średnioangielski}}) ==
+{{wymowa}}
+{{znaczenia}}
+''litera''
+: (1.1) ''pierwsza litera alfabetu średnioangielskiego'', [[minuskuła]] [[A]]
+''przysłówek''
+: (2.1) [[zawsze]]
+''przyimek''
+: (3.1) [[w]]
+: (3.2) [[przy]], [[u]]
+: (3.3) [[od]], [[z]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język turecki}}) ==
+{{wymowa}}
+: {{IPA3|ɑː}}, {{IPA3|a}}
+: {{audio|LL-Q256 (tur)-UsuYus-a.wav}}
+{{znaczenia}}
+''litera''
+: (1.1) ''minuskuła pierwszej litery alfabetu tureckiego'' [[a]]
+''wykrzyknik''
+: (2.1) [[a]]!<ref>{{PodolakNykiel2008}}</ref>
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) [[adan zeye]]
+{{synonimy}}
+: (1.1) ''majuskuła:'' [[A]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+<references />
+
+== a ({{język walijski}}) ==
+{{wymowa}}
+: {{audio|LL-Q9309 (cym)-Jason.nlw-a.wav}} {{audio|LL-Q9309 (cym)-OwenBlacker-a.wav}}
+{{znaczenia}}
+''litera''
+: (1.1) ''pierwsza litera alfabetu walijskiego'', [[minuskuła]] [[A]]
+''spójnik''
+: (2.1) [[i]]
+''przyimek''
+: (3.1) [[z]], [[wraz z]]
+''partykuła''
+: (4.1) ''przed czasownikiem, w pytaniach'' [[czy]]
+''zaimek względny''
+: (5.1) [[który]]
+{{odmiana}}
+{{przykłady}}
+: (2.1) ''[[pensil|Pensil]] [[a]] [[papur|phapur]].'' → [[ołówek|Ołówek]] '''[[i]]''' [[papier]].
+: (3.1) ''[[fi|Fi]] [[jyst]] [[eisiau]] [[bara]] [[a]] [[menyn]]!'' → [[ja|Ja]] [[chcieć|chcę]] [[tylko]] [[chleb]] '''[[z]]''' [[masło|masłem]]!
+: (4.1) ''[[a|A]] [[oes]] [[heddwch]]?'' → '''[[czy|Czy]]''' [[być|jest]] [[tam]] [[pokój]] ([[nie]] [[mieć|ma]] [[wojna|wojny]])?
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (2.1) {{war}} ''przed samogłoską'' [[ac]]
+: (3.1) {{war}} [[â]], ''przed samogłoską'' [[ag]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język węgierski}}) ==
+{{litera|Aa|[[nagy]] [[A]] [[és]] [[kis]] a (2.1)}}
+{{wymowa}}
+: {{audio|Hu-a.ogg}}
+{{znaczenia}}
+''przedimek określony''
+: (1.1) ''stosowany przed wyrazami zaczynającymi się na spółgłoskę''
+''rzeczownik''
+: (2.1) {{jęz}} ''minuskuła pierwszej litery alfabetu węgierskiego''
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+: (1.1) ''a [[fiú]] [[ruha|ruhája]]'' → [[ubranie]] [[chłopiec|chłopca]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę|az}}
+: (2.1) {{zoblistę|a|á|b|c|cs|d|dz|dzs|e|é|f|g|gy|h|i|í|j|k|l|ly|m|n|ny|o|ó|ö|ő|p|r|s|sz|t|ty|u|ú|ü|ű|v|z|zs}}
+{{źródła}}
+
+== a ({{język wilamowski}}) ==
+{{ortografie}}
+: [[ǡ]] • [[ȧ]] • [[ae]]
+{{wymowa}}
+{{znaczenia}}
+''rodzajnik nieokreślony''
+: (1.1) ''rodzaj męski''
+: (1.2) ''rodzaj nijaki''
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+
+== a ({{język włoski}}) ==
+{{wymowa}}
+: {{IPA|a}}, {{audio|It-a.ogg}}
+: {{audio|LL-Q652 (ita)-XANA000-a.wav}}
+{{znaczenia}}
+''rzeczownik, rodzaj męski lub żeński''
+: (1.1) {{jęz}} ''[[pierwszy|pierwsza]] [[litera]] [[włoski]]ego [[alfabet]]u''
+: (1.2) {{jęz}} [[a]] (''[[nazwa]] [[litera|litery]] [[a]]'')
+''przyimek''
+: (2.1) ''… służący do określenia…''
+:: (2.1.1) ''… miejsca:'' [[w]]; [[przy]]; [[na]]; [[nad]]
+:: (2.1.2) ''… kierunku, celu:'' [[do]]
+:: (2.1.3) ''… czasu:'' [[o]]; [[do]]; [[na]]; [[w]]
+:: (2.1.4) ''… sposobu:'' [[na]]; [[po]]; [[w]]; [[z]]
+:: (2.1.5) ''… przyczyny, powodu''
+:: (2.1.6) ''… wieku''
+:: (2.1.7) ''… ceny:'' [[po]]; [[za]]
+: (2.2) ''… wprowadzający celownik''
+: (2.3) ''… w połączeniu z bezokolicznikiem zaczynający zdanie…''
+:: (2.3.1) ''… celowe''
+:: (2.3.2) ''… przyczynowe''
+:: (2.3.3) ''… warunkowe''
+:: (2.3.4) ''… czasownikowe''
+: (2.4) ''… używany do tworzenia wyrażeń…''
+:: (2.4.1) ''… przyimkowych''
+:: (2.4.2) ''… przysłówkowych''
+{{odmiana}}
+: (1.1-2) {{nieodm}}
+{{przykłady}}
+: (2.1.1) ''[[essere|Sei stato]] [[a]] [[scuola]] [[oggi]]?'' → [[być|Byłeś]] [[dziś]] '''[[w]]''' [[szkoła|szkole]]?
+: (2.1.2) ''[[domani|Domani]] [[andare|vado]] [[a]] [[Varsavia]].'' → [[jutro|Jutro]] [[jechać|jadę]] '''[[do]]''' [[Warszawa|Warszawy]].
+: (2.1.3) ''[[svegliarsi|Mi sveglio]] [[sempre]] '''[[alle]]''' [[sei]].'' → [[budzić się|Budzę się]] [[zawsze]] '''[[o]]''' [[szósty|szóstej]].
+: (2.1.4) ''[[scrivere|Scrivo]] [[la]] [[lettera]] [[a]] [[macchina]].'' → [[pisać|Piszę]] [[list]] '''[[na]]''' [[maszyna|maszynie]].
+: (2.1.5) ''[[svegliarsi|Mi sono svegliata]] [[a]] [[un]] [[forte]] [[rumore]].'' → [[obudzić się|Obudziłam się]] '''[[z powodu]]''' [[silny|silnego]] [[hałas]]u.
+: (2.1.6) ''[[a|A]] [[venti|vent]]'[[anno|anni]] [[comprare|ho comprato]] [[questo|questa]] [[macchina]].'' → '''[[w|W]] [[wiek]]u''' [[dwadzieścia|dwudziestu]] [[lat]] [[kupić|kupiłem]] [[ten]] [[samochód]].
+: (2.1.7) ''[[comprare|Ho comprato]] [[a]] [[poco]] [[prezzo]] [[una]] [[borsa]] [[di]] [[marca]].'' → [[kupić|Kupiłam]] '''[[za]]''' [[niski|niską]] [[cena|cenę]] [[markowy|markową]] [[torebka|torebkę]].
+: (2.2) ''[[dovere|Devo]] [[comprare]] [[un]] [[regalo]] [[a]] [[Marco]].'' → [[musieć|Muszę]] [[kupić]] [[Marek|Markowi]] [[prezent]].
+: (2.3.1) ''[[andare|Andiamo]] [[a]] [[fare]] [[la]] [[spesa]].'' → [[iść|Idziemy]] [[zrobić]] [[zakup]]y.
+: (2.3.2) ''[[fare|Ho fatto]] [[male]] [[a]]d [[accettare]] [[la]] [[tuo|tua]] [[proposta]].'' → [[źle|Źle]] [[zrobić|zrobiłem]], [[że]] [[przyjąć|przyjąłem]] [[twój|twoją]] [[propozycja|propozycję]].
+: (2.3.3) ''[[a|A]] [[dire]] [[la]] [[verità]] [[non]] [[ci]] [[credere|credo]].'' → [[prawda|Prawdę]] [[mówić|mówiąc]], [[nie]] [[wierzyć|wierzę]] [[w]] [[to]].
+: (2.3.4) ''[[al|'''Al''']] [[sentire]] [[i]] [[gemito|gemiti]], [[uscire|siamo usciti]] [[da]] [[casa]].'' → [[słyszeć|Słysząc]] [[jęk]]i, [[wyjść|wyszliśmy]] [[z]] [[dom]]u.
+{{składnia}}
+{{kolokacje}}
+: (2.4.1) ''[[accanto a]]'' → [[obok]] / [[koło]] • ''[[davanti a]]'' → [[przed]] • ''[[dentro a]]'' → [[w]] • ''[[dietro a]]'' → [[za]] ''(przestrzeń)'' • ''[[di fronte a]]'' → [[naprzeciw]] • ''[[in mezzo a]]'' → [[na]] [[środek|środku]] • ''[[intorno a]]'' → [[wokół]] / [[dokoła]] • ''[[vicino a]]'' → [[blisko]]
+: (2.4.2) ''[[a brano a brano]]'' → [[kawałek po kawałku]] • ''[[a faccia a faccia]]'' → [[twarzą w twarz]] • ''[[a goccia a goccia]]'' / ''[[a mano a mano]]'' / ''[[a poco a poco]]'' → [[stopniowo]], [[powoli]]
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+: (1.2) ''[[dalla a alla zeta]]'' → [[od a do zet]]
+{{etymologia}}
+{{uwagi}}
+: (1.1) {{zoblistę|a|b|c|d|e|f|g|h|i|l|m|n|o|p|q|r|s|t|u|v|z}}
+: (1.2) {{zoblistę|a|bi|ci|di|e|effe|gi|acca|i|elle|emme|enne|o|pi|cu|erre|esse|ti|u|vi|zeta}}
+: (2.1-4) w połączeniu z rodzajnikami określonymi tworzy przyimki ściągnięte: [[al]], [[allo]], [[alla]], [[ai]], [[agli]], [[alle]]
+: (2.1-4) przed samogłoską, głównie przed [[a]], przyjmuje formę [[ad]]
+{{źródła}}
+
+== a ({{język zazaki}}) ==
+{{wymowa}}
+: {{audio|LL-Q10199 (zza)-Mirzali-a.wav}}
+{{znaczenia}}
+''zaimek osobowy''
+: (1.1) [[ona]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}
+: {{importEnWikt|zazaki|3}}
+
+== a ({{język zulu}}) ==
+{{wymowa}} {{IPA3|ɑː}}, {{IPA3|a}}
+{{znaczenia}}
+''litera''
+: (1.1) ''minuskuła pierwszej litery alfabetu'' [[A]]
+{{odmiana}}
+{{przykłady}}
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+: (1.1) ''majuskuła'' [[A]]
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+{{źródła}}

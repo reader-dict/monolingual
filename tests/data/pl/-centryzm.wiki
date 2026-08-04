@@ -1,0 +1,31 @@
+{{podobne|centryzm}}
+== -centryzm ({{język polski}}) ==
+{{wymowa}}
+: {{IPA3|ˈt͡sɛ̃ntrɨsm̥}}, {{AS3|c'''ẽ'''ntrysm̦}}, {{objaśnienie wymowy|WYG|NAZAL}}
+: {{audio|LL-Q809 (pol)-Jest Spoczko--centryzm.wav}}
+{{znaczenia}}
+''przyrostek''
+: (1.1) ''przyrostek tworzący wyrazy wskazujące, że to, co nazywa pierwszy człon złożenia, jest centrum jakiegoś systemu poglądów''
+{{odmiana}}
+: (1.1) {{alternatywna wymowa -izmów3}}
+{{przykłady}}
+: (1.1) ''[[ego]] + [[-centryzm]] = [[egocentryzm]]''
+: (1.1) ''[[antropo-]] + [[-centryzm]] = [[antropocentryzm]]''
+: (1.1) ''[[etno-]] + [[-centryzm]] = [[etnocentryzm]]''
+{{składnia}}
+{{kolokacje}}
+{{synonimy}}
+{{antonimy}}
+{{hiperonimy}}
+{{hiponimy}}
+{{holonimy}}
+{{meronimy}}
+{{pokrewne}}
+{{frazeologia}}
+{{etymologia}}
+{{uwagi}}
+: {{kończące się na|polski}}
+{{tłumaczenia}}
+* angielski: (1.1) [[-centrism]]
+{{źródła}}
+<references />
