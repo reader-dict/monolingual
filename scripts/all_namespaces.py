@@ -19,6 +19,7 @@ locales = (
     "it",
     "ja",
     "jbo",
+    "ko",
     "lt",
     "nl",
     "no",

@@ -243,6 +243,11 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("jbo", "cmavo")
     'cmavo'
 
+    >>> format_pos("ko", "동사 8")
+    '동사'
+    >>> format_pos("ko", "명사 10")
+    '명사'
+
     >>> format_pos("lt", "daiktavardis #1")
     'Daiktavardis'
 

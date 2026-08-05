@@ -63,6 +63,12 @@ PATTERNS = {
         # `名詞･田の実` → `名詞`
         re.compile(r"([^\d（:：・･]+).*").sub,
     ],
+    "ko": [
+        # `동사 8` → `동사`
+        re.compile(r"(.+)\s*\d+").sub,
+        # `명사 1` → `명사`
+        re.compile(r"(.+)\s*1").sub,
+    ],
     "lt": [
         # `daiktavardis #1` → `daiktavardis`
         re.compile(r"(.+) #\d").sub,
@@ -268,6 +274,10 @@ MERGE = {
         "活用形": "活用",  # conjugation form
         "慣用句": "成句",  # idiom
         "名詞形": "名詞",  # noun form
+    },
+    "ko": {
+        "타동사": "동사",  # transitive verb → verb
+        "top": "명사",  # noun
     },
     "lt": {
         "top": "daiktavardis",
