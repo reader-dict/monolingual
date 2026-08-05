@@ -12,7 +12,7 @@ template_trans = "termo'a"
 float_separator = ","
 thousands_separator = " "
 
-head_sections = ("lojbo", "{{jbo}}", "{{bau|jbo}}", "sorbau", "{{mul}}", "{{bau|mul}}")
+head_sections = ("lojban.", "{{jbo}}", "{{bau|jbo}}", "sorbau", "{{mul}}", "{{bau|mul}}")
 etyl_section = ("vlakra",)
 sections = (
     *etyl_section,
