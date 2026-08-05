@@ -240,6 +240,9 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("ja", "名詞･田の実")
     '名詞'
 
+    >>> format_pos("jbo", "cmavo")
+    'cmavo'
+
     >>> format_pos("lt", "daiktavardis #1")
     'Daiktavardis'
 
@@ -302,8 +305,8 @@ def format_pos(locale: str, value: str) -> str:
     """
     for pattern in part_of_speech.PATTERNS.get(locale, []):
         value = pattern(r"\1", value)
-    value = part_of_speech.MERGE.get(locale, {}).get(value, value)
-    return value.strip().title()
+    value = part_of_speech.MERGE.get(locale, {}).get(value, value).strip()
+    return value if locale == "jbo" else value.title()
 
 
 @cache

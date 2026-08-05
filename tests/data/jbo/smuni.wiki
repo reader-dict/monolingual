@@ -1,0 +1,10 @@
+== {{jbo}} ==
+
+=== gismu ===
+{{jbo-gismu|mun|smu}}
+
+# ko'i pe'a [[fanva]] ko'e lo ko'i [[menli]] [[bangu]] lo ka [[zasti]] ku ko'a
+
+==== xelfanva ====
+* {{en}} : [[meaning]]
+* {{es}} : [[significado]]

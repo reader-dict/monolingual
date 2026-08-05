@@ -1,0 +1,33 @@
+== {{bau|jbo}} ==
+
+=== ba'urtadji ===
+* {{gykyvysym.|/ˈfor.ʃa/|bau=jbo}}
+
+=== gismu ===
+{{jbo-gismu|for}}
+
+# {{x|1}} tutci {{x|2}} noi ka ralte ja lafti ku'o gi'e se pagbu lo grana noi se jimca lo su'o re kinli
+
+==== xelfanva ====
+{{xelfanva
+|ar=[[شَوْكَة#ar|شَوْكَة]]
+|avk=[[irigot#avk|irigot]]
+|cmn=[[叉子#cmn|叉子]]
+|da=[[gaffel#da|gaffel]]
+|de=[[Gabel#de|Gabel]]
+|en=[[fork#en|fork]]
+|eo=[[forko#eo|forko]]
+|es=[[tenedor#es|tenedor]]
+|fr=[[fourchette#fr|fourchette]]
+|it=[[forchetta#it|forchetta]]
+|ja=[[フォーク#ja|フォーク]]
+|la=[[furcula#la|furcula]]
+|lt=[[šakutė#lt|šakutė]]
+|nl=[[vork#nl|vork]]
+|ro=[[furculiță#ro|furculiță]]
+|ru=[[вилка#ru|вилка]]
+|sv=[[gaffel#sv|gaffel]]
+|vi=[[nĩa#vi|nĩa]]
+}}
+=== selsitna ===
+* {{jbovlaste}}
