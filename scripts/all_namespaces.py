@@ -18,6 +18,7 @@ locales = (
     "fr",
     "it",
     "ja",
+    "jbo",
     "lt",
     "nl",
     "no",

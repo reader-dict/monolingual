@@ -15,6 +15,7 @@ namespaces = {
     "fr": ["Catégorie", "Fichier", "Image"],
     "it": ["Categoria", "File", "Image", "Immagine"],
     "ja": ["Image", "カテゴリ", "ファイル", "画像"],
+    "jbo": ["Image", "datnyvei", "klesi"],
     "lt": ["Image", "Kategorija", "Vaizdas"],
     "nl": ["Afbeelding", "Bestand", "Categorie", "Image"],
     "no": ["Bilde", "Fil", "Image", "Kategori"],

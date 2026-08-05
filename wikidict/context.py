@@ -212,6 +212,22 @@ class Context:
         self.ctx.db_conn.execute(query, (search, replace, like))
         self.ctx.db_conn.commit()
 
+    def cleanup_templates_lojban(self) -> None:
+        """Clean-up template names, and redirections."""
+        # Remove soon-to-be-duplicate
+        self.ctx.db_conn.execute("""
+            DELETE FROM pages
+             WHERE namespace_id = 10
+               AND title = "Template:termo'a:="
+        """)
+        self.ctx.db_conn.execute("""
+            UPDATE pages
+               SET title = REPLACE(title, "termo'a:", ""),
+                   redirect_to = REPLACE(redirect_to, "termo&#039;a:", "Template:")
+             WHERE namespace_id = 10
+        """)
+        self.ctx.db_conn.commit()
+
     def fetch_words(self) -> Generator[tuple[str, str]]:
         query = "SELECT title, body FROM pages WHERE namespace_id = 0 AND redirect_to IS NULL"
         yield from self.ctx.db_conn.execute(query)
@@ -349,6 +365,8 @@ def adapt_templates(locale: str) -> None:
 
     if locale == "ja":
         this_ctx.translate_requires("Module", "モジュール")
+    elif locale == "jbo":
+        this_ctx.cleanup_templates_lojban()
 
     this_ctx.set_cache_exclusions()
 

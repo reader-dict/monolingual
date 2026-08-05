@@ -310,6 +310,8 @@ def find_etymology(
             items = get_items(("",), skip=("=== {{etim",))
         case "ja":
             items = get_items(("#", r"\*"))
+        case "jbo":
+            items = get_items(("",), skip=("===vlakra", "=== vlakra"))
         case "nl":
             items = get_items((r"\*",))
         case "no":
@@ -339,7 +341,7 @@ def find_etymology(
             items = [parsed_section.contents]
 
     etyms = [
-        etyl
+        etyl.replace("<br/>", "") if lang_src == "jbo" else etyl
         for item in items
         if (etyl := utils.process_templates(word, item, lang_dst, templates_status=templates_status)) and len(etyl) > 1
     ]
