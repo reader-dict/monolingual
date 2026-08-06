@@ -222,7 +222,7 @@ def test_simple(tmp_path: Path) -> None:
         "HDImages",
         "mobi7",
         "mobi7/Images",
-        "mobi7/Images/cover00009.png",
+        "mobi7/Images/cover00009.jpeg",
         "mobi7/Images/image00010.gif",
         "mobi7/book.html",
         "mobi7/content.opf",
@@ -280,8 +280,8 @@ def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: st
 )
 @pytest.mark.dependency(
     depends=[
-        "test_generate_primary_dict[DictFileFormat-dict-fr-fr.df]",
-        "test_generate_primary_dict[DictFileFormat-dict-fr-fr-noetym.df]",
+        "test_generate_primary_dict[DictFileFormat-dict-fr-fr.df-True]",
+        "test_generate_primary_dict[DictFileFormat-dict-fr-fr-noetym.df-False]",
     ]
 )
 def test_generate_secondary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -326,11 +326,11 @@ FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY = """"""
 @pytest.mark.parametrize(
     "formatter, include_etymology, expected",
     [
-        (convert.KoboFormat, True, FORMATTED_WORD_KOBO),
-        (convert.KoboFormat, False, FORMATTED_WORD_KOBO_NO_ETYMOLOGY),
-        (convert.DictFileFormat, True, FORMATTED_WORD_DICTFILE),
-        (convert.DictFileFormat, False, FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY),
-        (convert.JSONVolumeFormat, True, FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY),
+        pytest.param(convert.KoboFormat, True, FORMATTED_WORD_KOBO, id="kobo"),
+        pytest.param(convert.KoboFormat, False, FORMATTED_WORD_KOBO_NO_ETYMOLOGY, id="kobo-noetym"),
+        pytest.param(convert.DictFileFormat, True, FORMATTED_WORD_DICTFILE, id="df"),
+        pytest.param(convert.DictFileFormat, False, FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY, id="df-noetym"),
+        pytest.param(convert.JSONVolumeFormat, True, FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY, id="jsonvolume"),
     ],
 )
 def test_word_rendering(
@@ -352,243 +352,245 @@ def test_word_rendering(
     assert content == expected
 
 
-WORDS_VARIANTS_FR = {
+VARIANTS_FR = {
     "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'estre'."]}),
     "être": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'être'."]}),
     "suis": Word(pronunciations=["\\sɥi\\"], variants=["suivre", "être", "estre"]),
     "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions={"Verbe": ["Définition de 'suivre'."]}),
 }
-WORDS_VARIANTS_FR_2 = {
+VARIANTS_FR_2 = deepcopy(VARIANTS_FR)
+VARIANTS_FR_2["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+VARIANTS_FR_3 = {
     "loches": Word(variants=["loche", "locher"]),
     "loche": Word(definitions={"Nom": ["Définitions de 'loche'."]}, variants=["locher"]),
     "locher": Word(definitions={"Verbe": ["Définitions de 'locher'."]}),
     "Loches": Word(definitions={"Nom Propre": ["Définitions de 'Loches'."]}),
 }
-WORDS_VARIANTS_ES = {
+VARIANTS_ES = {
     "gastadan": Word(variants=["gastada"]),
     "gastada": Word(variants=["gastado"]),
     "gastado": Word(variants=["gastar"]),
     "gastar": Word(definitions={"Verb": ["Definition of 'gastar'."]}),
 }
-WORDS_VARIANTS_ES_2 = {
+VARIANTS_ES_2 = {
     "-foba": Word(variants=["-fobo"]),
     "-fobas": Word(variants=["-foba", "-fobo"]),
     "-fobo": Word(definitions={"Suffix": ["-phobe", "-phobic"]}),
 }
-WORDS_VARIANTS_RU = {
+VARIANTS_RU = {
     "ФСБ": Word(definitions={"Значение": ["Definition of 'ФСБ'."]}),
 }
 
 
-def test_make_variants() -> None:
-    assert convert.make_variants(WORDS_VARIANTS_FR) == {"suivre": {"suis"}, "estre": {"suis"}, "être": {"suis"}}
-    assert convert.make_variants(WORDS_VARIANTS_ES) == {
-        "gastada": {"gastadan"},
-        "gastado": {"gastada"},
-        "gastar": {"gastado"},
-    }
+@pytest.mark.parametrize(
+    "words, expected",
+    [
+        pytest.param(VARIANTS_FR, {"suivre": {"suis"}, "estre": {"suis"}, "être": {"suis"}}, id="FR"),
+        pytest.param(VARIANTS_FR_2, {"suivre": {"suis"}, "être": {"suis"}, "estre": {"suis"}}, id="FR-2"),
+        pytest.param(VARIANTS_FR_3, {"loche": {"loches"}, "locher": {"loche", "loches"}}, id="FR-3"),
+        pytest.param(VARIANTS_ES, {"gastada": {"gastadan"}, "gastado": {"gastada"}, "gastar": {"gastado"}}, id="ES"),
+        pytest.param(VARIANTS_ES_2, {"-foba": {"-fobas"}, "-fobo": {"-foba", "-fobas"}}, id="ES-2"),
+        pytest.param(VARIANTS_RU, {}, id="RU"),
+    ],
+)
+def test_make_variants(words: Words, expected: dict[str, set[str]]) -> None:
+    assert convert.make_variants(words) == expected
 
 
-def test_kobo_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
-    words = deepcopy(WORDS_VARIANTS_FR)
-    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
-    variants = convert.make_variants(words)
-    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
+@pytest.mark.parametrize(
+    "locale, words, word, expected",
+    [
+        pytest.param(
+            "es",
+            VARIANTS_ES,
+            "gastadan|gastada|gastado|gastar",
+            """\
+@ gastar
+& gastada
+& gastado
+<html><p><b>Verb</b></p><ol><li>Definition of 'gastar'.</li></ol>
 
-    assert formatter.make_groups(words) == {
-        "es": {"estre": words["estre"]},
-        "êt": {"être": words["être"]},
-        "su": {"suis": words["suis"], "suivre": words["suivre"]},
-    }
+""",
+            id="variants with empty variant level 1",
+        ),
+        pytest.param(
+            "es",
+            VARIANTS_ES_2,
+            "-foba|-fobas|-fobo",
+            """\
+@ -fobo
+& -foba
+& -fobas
+<html><p><b>Suffix</b></p><ol><li>-phobe</li><li>-phobic</li></ol>
 
-    estre = "".join(formatter.handle_word("estre", words))
-    être = "".join(formatter.handle_word("être", words))
-    suis = "".join(formatter.handle_word("suis", words))
-    suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count('<a name="suis" />') == 3
-    assert "<b>estre</b>" in suis
-    assert "<b>suivre</b>" not in suis
-    assert "<b>suis</b>" in suis
-    assert "<b>être</b>" in suis
-    assert "variant" not in estre  # Because group prefixes are differents
-    assert "variant" not in suis  # Because variant == word
-    assert "variant" not in être  # Because group prefixes are differents
-    assert '<var><variant name="suis"/></var>' in suivre  # Because group prefixes are the same
-
-
-def test_kobo_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_FR
-    variants = convert.make_variants(words)
-    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20250322")
-
-    assert formatter.make_groups(words) == {
-        "es": {"estre": words["estre"]},
-        "êt": {"être": words["être"]},
-        "su": {"suis": words["suis"], "suivre": words["suivre"]},
-    }
-
-    estre = "".join(formatter.handle_word("estre", words))
-    être = "".join(formatter.handle_word("être", words))
-    suis = "".join(formatter.handle_word("suis", words))
-    suivre = "".join(formatter.handle_word("suivre", words))
-    assert suis.count('<a name="suis" />') == 2
-    assert "<b>estre</b>" in suis
-    assert "<b>suivre</b>" not in suis
-    assert "<b>être</b>" in suis
-    assert "variant" not in estre  # Because group prefixes are differents
-    assert "variant" not in suis  # Because variant == word
-    assert "variant" not in être  # Because group prefixes are differents
-    assert '<var><variant name="suis"/></var>' in suivre  # Because group prefixes are the same
-
-
-def test_kobo_format_variants_from_lowercased_word(tmp_path: Path) -> None:
-    """See issue #2579."""
-    words = WORDS_VARIANTS_FR_2
-    variants = convert.make_variants(words)
-    formatter = convert.KoboFormat("fr", tmp_path, words, variants, "20260121")
-
-    Loches = "".join(formatter.handle_word("Loches", words))
-    assert '<var><variant name="loches"/></var>' in Loches
-
-
-def test_kobo_format_variants_empty_variant_level_1(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_ES
-    variants = convert.make_variants(words)
-    formatter = convert.KoboFormat("es", tmp_path, words, variants, "20250322")
-
-    assert formatter.make_groups(words) == {
-        "ga": {
-            "gastada": words["gastada"],
-            "gastadan": words["gastadan"],
-            "gastado": words["gastado"],
-            "gastar": words["gastar"],
-        }
-    }
-
-    gastadan = "".join(formatter.handle_word("gastadan", words))
-    gastada = "".join(formatter.handle_word("gastada", words))
-    gastado = "".join(formatter.handle_word("gastado", words))
-    gastar = "".join(formatter.handle_word("gastar", words))
-    assert not gastadan
-    assert not gastada
-    assert not gastado
-    assert '<var><variant name="gastada"/><variant name="gastado"/></var>' in gastar
-
-
-def test_kobo_format_variants_duplicates(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_ES_2
-    variants = convert.make_variants(words)
-    formatter = convert.KoboFormat("es", tmp_path, words, variants, "20250702")
-
-    assert formatter.make_groups(words) == {
-        "11": {
-            "-foba": words["-foba"],
-            "-fobas": words["-fobas"],
-            "-fobo": words["-fobo"],
-        }
-    }
-
-    foba = "".join(formatter.handle_word("-foba", words))
-    fobas = "".join(formatter.handle_word("-fobas", words))
-    fobo = "".join(formatter.handle_word("-fobo", words))
-    assert not foba
-    assert not fobas
-    assert '<var><variant name="-foba"/><variant name="-fobas"/></var>' in fobo
-
-
-def test_kindle_format_variants_from_uppercase_only_word(tmp_path: Path) -> None:
-    """See issue #2623."""
-    words = WORDS_VARIANTS_RU
-    variants = convert.make_variants(words)
-    formatter = convert.MobiFormat("ru", tmp_path, words, variants, "20260122")
-
-    ФСБ = "".join(formatter.handle_word("ФСБ", words))
-    assert "@ ФСБ" in ФСБ
-    assert "& фсб" in ФСБ
-
-
-def test_df_format(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_FR
-    variants = convert.make_variants(words)
-    formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
-    formatter.process()
-    output = formatter.dictionary_file(formatter.output_file)
-
-    assert (
-        output.read_text(encoding="utf-8")
-        == r"""@ estre
-: \ɛtʁ\
+""",
+            id="variants duplicates",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR,
+            "estre|être|suis|suivre",
+            """\
+@ estre
+: \\ɛtʁ\\
 & suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol>
 
+
 @ être
-: \ɛtʁ\
+: \\ɛtʁ\\
 & suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol>
 
+
+
 @ suivre
-: \sɥivʁ\
+: \\sɥivʁ\\
 & suis
 <html><p><b>Verbe</b></p><ol><li>Définition de 'suivre'.</li></ol>
 
-"""
-    )
+""",
+            id="variants with different prefix without definition",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR_2,
+            "estre|être|suis|suivre",
+            """\
+@ estre
+: \\ɛtʁ\\
+& suis
+<html><p><b>Verbe</b></p><ol><li>Définition de 'estre'.</li></ol>
 
 
-def test_df_format_variants_different_prefix_with_definition(tmp_path: Path) -> None:
-    words = deepcopy(WORDS_VARIANTS_FR)
-    words["suis"].definitions["Nom"] = ["Définition de 'suis'."]
+@ être
+: \\ɛtʁ\\
+& suis
+<html><p><b>Verbe</b></p><ol><li>Définition de 'être'.</li></ol>
+
+
+@ suis
+: \\sɥi\\
+<html><p><b>Nom</b></p><ol><li>Définition de 'suis'.</li></ol>
+
+
+@ suivre
+: \\sɥivʁ\\
+& suis
+<html><p><b>Verbe</b></p><ol><li>Définition de 'suivre'.</li></ol>
+
+""",
+            id="variants with different prefix with definition",
+        ),
+    ],
+)
+def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path: Path) -> None:
     variants = convert.make_variants(words)
-    formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
+    formatter = convert.DictFileFormat(locale, tmp_path, words, variants, "20250323")
 
-    estre = "".join(formatter.handle_word("estre", words))
-    être = "".join(formatter.handle_word("être", words))
-    suis = "".join(formatter.handle_word("suis", words))
-    suivre = "".join(formatter.handle_word("suivre", words))
-    assert "@ suis" in suis
-    assert ": <b>estre</b>" not in suis
-    assert ": <b>suivre</b>" not in suis
-    assert ": <b>suis</b>" not in suis
-    assert ": <b>être</b>" not in suis
-    assert estre.count("&") == 1 and "& suis" in estre
-    assert "&" not in suis  # Because variant == word
-    assert être.count("&") == 1 and "& suis" in être
-    assert "& suis" in suivre
+    output = ["\n".join(formatter.handle_word(w, words)) for w in word.split("|")]
+    assert "\n".join(output).lstrip() == expected
 
 
-def test_df_format_variants_different_prefix_without_definition(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_FR
+@pytest.mark.parametrize(
+    "locale, words, word, expected",
+    [
+        pytest.param(
+            "es",
+            VARIANTS_ES,
+            "gastadan|gastada|gastado|gastar",
+            """\
+<w><p><a name="gastar" /><b>gastar</b><br/><br/><b>Verb</b><ol><li>Definition of 'gastar'.</li></ol></p><var><variant name="gastada"/><variant name="gastado"/></var></w>
+""",
+            id="variants with empty variant level 1",
+        ),
+        pytest.param(
+            "es",
+            VARIANTS_ES_2,
+            "-foba|-fobas|-fobo",
+            """\
+<w><p><a name="-fobo" /><b>-fobo</b><br/><br/><b>Suffix</b><ol><li>-phobe</li><li>-phobic</li></ol></p><var><variant name="-foba"/><variant name="-fobas"/></var></w>
+""",
+            id="variants duplicates",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR,
+            "estre|être|suis|suivre",
+            """\
+<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+
+<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
+
+<w><p><a name="suis" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+
+<w><p><a name="suis" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
+
+<w><p><a name="suivre" /><b>suivre</b> \\sɥivʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></p><var><variant name="suis"/></var></w>
+""",
+            id="variants with different prefix without definition",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR_2,
+            "estre|être|suis|suivre",
+            """\
+<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+
+<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
+
+<w><p><a name="suis" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+
+<w><p><a name="suis" /><b>suis</b> \\sɥi\\<br/><br/><b>Nom</b><ol><li>Définition de 'suis'.</li></ol></p></w>
+
+<w><p><a name="suis" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
+
+<w><p><a name="suivre" /><b>suivre</b> \\sɥivʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></p><var><variant name="suis"/></var></w>
+""",
+            id="variants with different prefix with definition",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR_3,
+            "Loches",
+            """\
+<w><p><a name="Loches" /><b>Loches</b><br/><br/><b>Nom Propre</b><ol><li>Définitions de 'Loches'.</li></ol></p><var><variant name="loches"/></var></w>
+""",
+            id="variants from lowercased word (issue #2579)",
+        ),
+    ],
+)
+def test_kobo_format(locale: str, words: Words, word: str, expected: str, tmp_path: Path) -> None:
     variants = convert.make_variants(words)
-    formatter = convert.DictFileFormat("fr", tmp_path, words, variants, "20250323")
+    formatter = convert.KoboFormat(locale, tmp_path, words, variants, "20250322")
 
-    estre = "".join(formatter.handle_word("estre", words))
-    être = "".join(formatter.handle_word("être", words))
-    suis = "".join(formatter.handle_word("suis", words))
-    suivre = "".join(formatter.handle_word("suivre", words))
-    assert "@ suis" not in suis
-    assert ": <b>estre</b>" not in suis
-    assert ": <b>suivre</b>" not in suis
-    assert ": <b>être</b>" not in suis
-    assert estre.count("&") == 1 and "& suis" in estre
-    assert "&" not in suis  # Because variant == word
-    assert être.count("&") == 1 and "& suis" in être
-    assert "& suis" in suivre
+    output = ["\n".join(formatter.handle_word(w, words)) for w in word.split("|")]
+    assert "\n".join(output).lstrip() == expected
 
 
-def test_df_format_variants_empty_variant_level_1(tmp_path: Path) -> None:
-    words = WORDS_VARIANTS_ES
+@pytest.mark.parametrize(
+    "locale, words, word, expected",
+    [
+        pytest.param(
+            "ru",
+            VARIANTS_RU,
+            "ФСБ",
+            """\
+@ ФСБ
+& фсб
+<html><p><b>Значение</b></p><ol><li>Definition of 'ФСБ'.</li></ol>
+
+""",
+            id="RU: variants from uppercase-only word (issue #2623)",
+        ),
+    ],
+)
+def test_kindle_format(locale: str, words: Words, word: str, expected: str, tmp_path: Path) -> None:
     variants = convert.make_variants(words)
-    formatter = convert.DictFileFormat("es", tmp_path, words, variants, "20250323")
+    formatter = convert.MobiFormat(locale, tmp_path, words, variants, "20260122")
 
-    gastadan = "".join(formatter.handle_word("gastadan", words))
-    gastada = "".join(formatter.handle_word("gastada", words))
-    gastado = "".join(formatter.handle_word("gastado", words))
-    gastar = "".join(formatter.handle_word("gastar", words))
-    assert not gastadan
-    assert not gastada
-    assert not gastado
-    assert "& gastada" in gastar
-    assert "& gastado" in gastar
+    output = ["\n".join(formatter.handle_word(w, words)) for w in word.split("|")]
+    assert "\n".join(output).lstrip() == expected
 
 
 @pytest.mark.parametrize(
