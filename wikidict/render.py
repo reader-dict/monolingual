@@ -772,7 +772,7 @@ def render(
         redirection_count = 0
         for word, redirect_to in redirections:
             with suppress(KeyError):
-                results_final[redirect_to].variants.append(word)
+                results_final[redirect_to].reverse_variants.append(word)
                 redirection_count += 1
                 progress.update(redirection_task, completed=redirection_count)
         progress.update(

@@ -676,10 +676,10 @@ class JSONVolumeFormat(BaseFormat):
     KEY_VARIANT = "v"
 
     def process(self) -> None:
+        """Generate the JSON volumes."""
         if not self.include_etymology:
             return
 
-        """Generate the JSON volumes."""
         output_base = self.dictionary_file(self.output_file)
         output_base.mkdir(exist_ok=True, parents=True)
 

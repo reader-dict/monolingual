@@ -366,6 +366,9 @@ VARIANTS_FR_3 = {
     "locher": Word(definitions={"Verbe": ["Définitions de 'locher'."]}),
     "Loches": Word(definitions={"Nom Propre": ["Définitions de 'Loches'."]}),
 }
+VARIANTS_FR_4 = {
+    "devoir": Word(definitions={"Verbe": ["Définition de 'devoir'."]}, reverse_variants=["se devoir à"]),
+}
 VARIANTS_ES = {
     "gastadan": Word(variants=["gastada"]),
     "gastada": Word(variants=["gastado"]),
@@ -388,6 +391,7 @@ VARIANTS_RU = {
         pytest.param(VARIANTS_FR, {"suivre": {"suis"}, "estre": {"suis"}, "être": {"suis"}}, id="FR"),
         pytest.param(VARIANTS_FR_2, {"suivre": {"suis"}, "être": {"suis"}, "estre": {"suis"}}, id="FR-2"),
         pytest.param(VARIANTS_FR_3, {"loche": {"loches"}, "locher": {"loche", "loches"}}, id="FR-3"),
+        pytest.param(VARIANTS_FR_4, {'devoir': {'se devoir à'}}, id="FR-4"),
         pytest.param(VARIANTS_ES, {"gastada": {"gastadan"}, "gastado": {"gastada"}, "gastar": {"gastado"}}, id="ES"),
         pytest.param(VARIANTS_ES_2, {"-foba": {"-fobas"}, "-fobo": {"-foba", "-fobas"}}, id="ES-2"),
         pytest.param(VARIANTS_RU, {}, id="RU"),
@@ -482,6 +486,18 @@ def test_make_variants(words: Words, expected: dict[str, set[str]]) -> None:
 """,
             id="variants with different prefix with definition",
         ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR_4,
+            "devoir",
+            """\
+@ devoir
+& se devoir à
+<html><p><b>Verbe</b></p><ol><li>Définition de 'devoir'.</li></ol>
+
+""",
+            id="variants from inexistant reverse variants",
+        ),
     ],
 )
 def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path: Path) -> None:
@@ -557,6 +573,15 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
 <w><p><a name="Loches" /><b>Loches</b><br/><br/><b>Nom Propre</b><ol><li>Définitions de 'Loches'.</li></ol></p><var><variant name="loches"/></var></w>
 """,
             id="variants from lowercased word (issue #2579)",
+        ),
+        pytest.param(
+            "fr",
+            VARIANTS_FR_4,
+            "devoir",
+            """\
+<w><p><a name="devoir" /><b>devoir</b><br/><br/><b>Verbe</b><ol><li>Définition de 'devoir'.</li></ol></p></w>
+""",
+            id="variants from inexistant reverse variants",
         ),
     ],
 )
