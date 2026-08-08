@@ -1,11 +1,3 @@
-def cd(args: tuple[str, ...]) -> str:
-    """
-    >>> cd(("cd", "soc.history.what-if"))
-    '<code>soc.history.what-if</code>'
-    """
-    return f"<code>{args[-1]}</code>"
-
-
 def code(kind: str, value: str | None) -> str:
     """
     >>> code("a", None)
@@ -38,6 +30,5 @@ def code(kind: str, value: str | None) -> str:
 
 
 overrides = {
-    "cd": cd,
-    "code": lambda args: code(args[1], args[2] if len(args) > 2 else None),
+    **dict.fromkeys({"cd", "code"}, lambda args: code(args[1], args[2] if len(args) > 2 else None)),
 }
