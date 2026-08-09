@@ -92,10 +92,10 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 ## Stars ✨
 
-<a href="https://star-history.com/#reader-dict/monolingual&Date">
+<a href="https://star-history.dera.page/#reader-dict/monolingual&Date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=reader-dict/monolingual&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=reader-dict/monolingual&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=reader-dict/monolingual&type=Date" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date" />
+    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date" />
   </picture>
 </a>
