@@ -793,6 +793,8 @@ def render(
                     continue
 
                 for form in details.reverse_variants:
+                    if form.startswith("trad:"):
+                        continue
                     try:
                         results_final[form].variants = sorted({*results_final[form].variants, word})
                     except KeyError:

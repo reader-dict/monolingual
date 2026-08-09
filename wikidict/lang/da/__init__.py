@@ -175,12 +175,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== Dansk ==\n=== Alternativ form ===\n* {{l|da|vørme}}", "da")
     '== Dansk ==\n=== Alternativ form ===\n* {{flexion|vørme}}'
 
-    >>> adjust_wikicode("=={{da}}==\n{{(}}\n* {{en}}: {{trad|en|limnology}}\n{{)}}", "da")
-    '=={{da}}=='
-
-    >>> adjust_wikicode("=={{da}}==\n{{trans-top|en kødbolle lavet af hakket fars}}\n*{{en}}: {{t|en|meatball}}\n*{{fi}}: {{t|fi|lihapulla}}f}}\n*{{el}}: {{t|el|κεφτές|m|sc=Grek}}\n**{{grc}}: {{t|grc|ἰσίκιον|n}}\n{{trans-mid}}\n*{{it}}: {{t|it|polpetta}}\n*{{es}}: {{t|es|albóndigas}}\n*{{sv}}: {{t|sv|frikadell|c}}\n*{{de}}: {{t|de|Frikadelle|f}}\n{{trans-bottom}}", "da")
-    '=={{da}}=='
-
     >>> adjust_wikicode("=={{da}}==\n{{-avv-|da}}", "da")
     '=={{da}}==\n=== {{avv}} ==='
 
@@ -273,12 +267,6 @@ def adjust_wikicode(
 
     # {{-avv-}} → === {{avv}} ===
     code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # {{(}} .* {{)}}
-    code = re.sub(r"\{\{\(\}\}(.+)\{\{\)\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
-
-    # {{trans-top|...}}...{{trans-bottom}}
-    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     #
     # Variants
