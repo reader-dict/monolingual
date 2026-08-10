@@ -131,9 +131,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n'''Žodžių junginį sudaro žodžiai:'''\n* {{t+|lt|būtasis}}\n* {{t+|lt|laikas}}", "lt", word="foo")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ==="
 
-    >>> adjust_wikicode("== {{ltv}} ==\n==== Etimologija ====\n==== Vertimai ====\n<br clear=all />\n{{trans-top|prietaisas}}\n{{sqv1}} {{t+|sq|lesë|f}}\n{{trans-bottom}}", "lt", word="akėčios")
-    '== {{ltv}} ==\n==== Etimologija ====\n'
-
     >>> from ... import context
     >>> _ = context.reset("lt")
 
@@ -141,10 +138,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n{{ltdkt|forma=f-{{{forma|vyr-1l-as}}}|tikr=tikr|šakn=Kvietkausk|šakn2={{{sakn2}}}}}", "lt", word="Kvietkauskas")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ===\n# {{rev-flexion|Kvietkauskai}}\n# {{rev-flexion|Kvietkauskais}}\n# {{rev-flexion|Kvietkauskams}}\n# {{rev-flexion|Kvietkauske}}\n# {{rev-flexion|Kvietkausko}}\n# {{rev-flexion|Kvietkausku}}\n# {{rev-flexion|Kvietkauskui}}\n# {{rev-flexion|Kvietkauskuose}}\n# {{rev-flexion|Kvietkauskus}}\n# {{rev-flexion|Kvietkauską}}\n# {{rev-flexion|Kvietkauskų}}\n{{m}}"
     """
-
-    # {{trans-top|...}}...{{trans-bottom}}
-    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
-
     # Drop "see also" inline text
     lines: list[str] = []
     in_section = False
@@ -164,7 +157,7 @@ def adjust_wikicode(
     in_section = False
     for line in code.splitlines():
         if line.startswith("==== "):
-            in_section = "Vertimai" in line or "Išraiškos" in line or "Antonimai" in line
+            in_section = "Išraiškos" in line or "Antonimai" in line
         elif line.startswith("<br clear"):
             in_section = False
         if not in_section:
