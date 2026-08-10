@@ -189,9 +189,7 @@ def adjust_wikicode(
         r"\{\{Derivaĵoj",
         r"\{\{Referencoj",
         r"\{\{Similaĵoj",
-        r"\{\{Tradukoj",
         r"\{\{Vortfaradoj",
-        r"\{\{trad-",
     )
     for line in code.splitlines():
         if line.startswith(("{{", "=")):
