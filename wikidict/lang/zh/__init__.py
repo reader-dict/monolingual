@@ -184,9 +184,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("==漢語==\n{{zh-pron\n|m=huángmǎguà,er=y\n|c=wong4 maa5 kwaa3-2\n|cat=n\n}}", "zh")
     '==漢語==\n# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
 
-    >>> adjust_wikicode("==漢語==\n{{trans-top|...}}\n...\n{{trans-bottom}}", "zh")
-    '==漢語==\n'
-
     >>> adjust_wikicode("興{xīng}", "zh")
     '興'
     >>> adjust_wikicode("[群]{Qún}", "zh")
@@ -210,9 +207,6 @@ def adjust_wikicode(
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
     # `# {{zh-pron\n|...` → `# {{zh-pron|...`
     code = re.sub(r"^(# \{\{zh-pron.*?\}\})", lambda m: m[0].replace("\n", ""), code, flags=re.DOTALL | re.MULTILINE)
-
-    # Wipe out `{{trans-top|...}}...{{trans-bottom}}`
-    code = re.sub(r"\{\{trans-top(.+)\{\{trans-bottom\}\}", "", code, flags=re.DOTALL | re.MULTILINE)
 
     # `; '''限定代詞'''` → `:: 限定代詞`
     # `;限定代詞` → `:: 限定代詞`
