@@ -1,0 +1,30 @@
+{{wikipediaartikkel}}
+==Norsk==
+{{no-sub|m}}
+#{{lingvistikk||no}} en linje på et kart som viser grensen for et dialektfenomen
+
+====Etymologi====
+Fra {{etyl|el|no}} {{term|sc=Grek|ίσος|tr=isos||lik|språk=el}} og {{term|sc=Grek|γλώσσα|tr=glossa||språk|språk=el}}.
+
+====Uttale====
+{{uttale mangler|språk=no}}
+{{lydfil mangler|språk=no}}
+
+====Grammatikk====
+{{ordbank|NY}}
+{{no-sub-m1|isogloss}}
+
+====Oversettelser====
+{{overs-topp}}
+* {{overs-mangler|da}}
+* {{overs|en|isogloss}}
+* {{overs|fi|isoglossi}}
+* {{overs|fr|isoglosse|f}}
+* {{overs-mangler|it}}
+{{overs-midt}}
+* {{overs-mangler|nl}}
+* {{overs-mangler|ru}}
+* {{overs-mangler|es}}
+* {{overs|sv|isogloss|c}}
+* {{overs|de|Isoglosse|f}}
+{{overs-bunn}}

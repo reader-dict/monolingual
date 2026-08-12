@@ -54,7 +54,18 @@ variant_templates = (
     "{{no-verb-bøyningsform",
 )
 
-reverse_variant_titles = ("{{nb-sub-", "{{nn-sub-", "{{no-sub-", "{{nb-verb-", "{{nn-verb-", "{{no-verb-")
+reverse_variant_titles = (
+    "{{Adj-",
+    "{{nb-adj-",
+    "{{nn-adj-",
+    "{{no-adj-",
+    "{{nb-sub-",
+    "{{nn-sub-",
+    "{{no-sub-",
+    "{{nb-verb-",
+    "{{nn-verb-",
+    "{{no-verb-",
+)
 reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
@@ -147,7 +158,19 @@ def adjust_wikicode(
 
     >>> context.new_word("smøre")
     >>> adjust_wikicode("{{nb-verb-rad||smører|smurte|smurt|imperativ=smør|presp=smørende|passiv=smøres}}", "no", word="smøre")
-    '# {{rev-flexion|smurte}}\n# {{rev-flexion|smør}}\n# {{rev-flexion|smørende}}\n# {{rev-flexion|smører}}\n# {{rev-flexion|smøres}}'
+    '# {{rev-flexion|smurt}}\n# {{rev-flexion|smurte}}\n# {{rev-flexion|smør}}\n# {{rev-flexion|smørende}}\n# {{rev-flexion|smører}}\n# {{rev-flexion|smøres}}'
+
+    >>> context.new_word("daud")
+    >>> adjust_wikicode("{{Adj-rad-generisk|daud|daud|daudt|daude|daude|kontekst=nynorsk}}", "no", word="daud")
+    '# {{rev-flexion|daude}}\n# {{rev-flexion|daudt}}'
+
+    >>> context.new_word("daud")
+    >>> adjust_wikicode("{{nn-adj-grad-normal}}", "no", word="daud")
+    '# {{rev-flexion|daudare}}\n# {{rev-flexion|daudast}}'
+
+    >>> context.new_word("ete")
+    >>> adjust_wikicode("{{nn-verb-rad|infinitiv=eta|presens=et|perfektum=ete}}", "no", word="ete")
+    '# {{rev-flexion|et}}\n# {{rev-flexion|eta}}'
     """
     code = code.replace("----", "")
 

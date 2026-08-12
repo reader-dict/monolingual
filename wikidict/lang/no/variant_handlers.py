@@ -13,9 +13,11 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return parts[0]
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "no")
-
+    lines = [
+        line for line in table.splitlines() if re.match(r"^\|[ ]*(?:å |eit |har |'*)?\[+", line, flags=re.MULTILINE)
+    ]
     forms: set[str] = set()
-    for line in [line for line in table.splitlines() if line.startswith(("|[[", "|'''[["))]:
+    for line in lines:
         forms.update(re.findall(r"\[\[([^#\]]+)", line))
 
     forms.discard(word)

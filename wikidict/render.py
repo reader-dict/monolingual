@@ -627,13 +627,6 @@ def parse_word(
             )
         )
     ):
-        marker = "===" if lang_src == "no" else "=="
-        for top in top_sections:
-            contents = top.contents
-            end = contents.find(marker)
-            if end > 0:
-                top.contents = contents[:end]
-
         top_section = top_sections[0]
         top_section.title = "top"
         section_pos = prettify_pos(top_section, lang_src, lang_dst)
