@@ -4,10 +4,6 @@ from collections import defaultdict
 from ... import context, utils
 
 
-def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form)
-
-
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
