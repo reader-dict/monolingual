@@ -2,7 +2,8 @@
 
 import re
 
-from ... import utils
+from ... import lang, utils
+from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://no.wiktionary.org/wiki/Spesial:Tilfeldig_rotside"
@@ -25,6 +26,7 @@ sections = (
     "forklaring",
     "forkortelse",
     "frase",
+    "grammatikk",
     "idiom",
     "initialord",
     "interjeksjon",
@@ -51,6 +53,9 @@ variant_templates = (
     "{{no-verbform av",
     "{{no-verb-bøyningsform",
 )
+
+reverse_variant_titles = ("{{nb-sub-", "{{nn-sub-", "{{no-sub-", "{{nb-verb-", "{{nn-verb-", "{{no-verb-")
+reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
     "{{?",
@@ -128,6 +133,21 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("==Norsk==\n<includeonly>\n{{rfscript|und|sc=Deva}}, <br /></includeonly>", "no")
     '==Norsk==\n'
+
+    >>> from ... import context
+    >>> _ = context.reset("no")
+
+    >>> context.new_word("sinn")
+    >>> adjust_wikicode("{{no-sub-n1}}", "no", word="sinn")
+    '# {{rev-flexion|sinna}}\n# {{rev-flexion|sinnene}}\n# {{rev-flexion|sinnet}}'
+
+    >>> context.new_word("økning")
+    >>> adjust_wikicode("{{nb-sub-f1}}", "no", word="økning")
+    '# {{rev-flexion|økninga}}\n# {{rev-flexion|økningen}}\n# {{rev-flexion|økningene}}\n# {{rev-flexion|økninger}}'
+
+    >>> context.new_word("smøre")
+    >>> adjust_wikicode("{{nb-verb-rad||smører|smurte|smurt|imperativ=smør|presp=smørende|passiv=smøres}}", "no", word="smøre")
+    '# {{rev-flexion|smurte}}\n# {{rev-flexion|smør}}\n# {{rev-flexion|smørende}}\n# {{rev-flexion|smører}}\n# {{rev-flexion|smøres}}'
     """
     code = code.replace("----", "")
 
@@ -148,5 +168,41 @@ def adjust_wikicode(
                     in_section = False
             lines.append(line)
         code = "\n".join(lines)
+
+    #
+    # Reverse variants
+    #
+
+    interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
+    if any(tpl in code for tpl in interesting_reverse_variant_titles):
+        cleaned: list[str] = []
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            if line.startswith(interesting_reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    tpl_code = tpl_code.rsplit("}}", 1)[0]
+                    tpl_code += "}}"
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
+                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                    forms = utils.process_templates(
+                        word,
+                        tpl_code,
+                        locale,
+                        templates_status=templates_status,
+                        variant_only=True,
+                    )
+                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
+                    tpl_code = ""
+            else:
+                cleaned.append(line)
+
+        code = "\n".join(cleaned)
 
     return code
