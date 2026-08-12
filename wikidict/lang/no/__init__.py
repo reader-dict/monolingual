@@ -187,6 +187,8 @@ def adjust_wikicode(
             elif in_section:
                 if line.startswith("{{"):
                     line = f"# {line}".rstrip("<br>")
+                elif line.startswith("*"):
+                    line = line.replace("*", "#", count=1)
                 else:
                     in_section = False
             lines.append(line)

@@ -72,7 +72,8 @@ def setup_lua_ctx() -> None:
                     "Gir dempende effekt",
                     "Gir forsterkende effekt",
                     "Gir en sitatfunksjon, særlig i muntlig språk.",
-                ]
+                ],
+                "Synonymer": ["blott (bokmål/riksmål/nynorsk)", "kun (bokmål/riksmål)"],
             },
             ["bar"],
             [],
