@@ -44,7 +44,7 @@ SESSION = requests.Session()
 SESSION.headers.update(WIKIMEDIA_HEADERS)
 
 # --parse: modules & templates "end patterns" to ignore when saving them in the database
-MODULES_TO_IGNORE = ("/doc", "/documentation", "/sandbox", "/testcases")
+MODULES_TO_IGNORE = ("/doc", "/documentation", "/testcases")
 
 # --render: Lua modules aliases
 PARSER_FUNCTIONS_ALIASES = {
