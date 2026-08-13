@@ -367,6 +367,8 @@ def adapt_templates(locale: str) -> None:
         this_ctx.translate_requires("Module", "モジュール")
     elif locale == "jbo":
         this_ctx.cleanup_templates_lojban()
+    elif locale == "ko":
+        this_ctx.translate_requires("Module", "모듈")
 
     this_ctx.set_cache_exclusions()
 
