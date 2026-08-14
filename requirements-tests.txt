@@ -4,6 +4,6 @@ mypy==2.3.0
 pytest==9.1.1
 pytest-dependency==0.6.1
 responses==0.26.2
-ruff==0.16.1
+ruff==0.16.2
 ruff-api==0.2.1
 types-requests==2.33.0.20260712
