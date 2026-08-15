@@ -104,7 +104,6 @@ def test_simple(tmp_path: Path) -> None:
         "en.html",
         "ge.html",
         "gr.html",
-        "gè.html",
         "ic.html",
         "ko.html",
         "mi.html",
@@ -112,6 +111,7 @@ def test_simple(tmp_path: Path) -> None:
         "na.html",
         "pi.html",
         "pr.html",
+        "prefix_exceptions",
         "ra.html",
         "sa.html",
         "si.html",
@@ -170,7 +170,15 @@ def test_simple(tmp_path: Path) -> None:
         "œcuménique",
         "π",
     ]
+    expected_prefix_exceptions = [
+        "a\tav",
+        "gèlent\tge",
+        "suis\têt",
+    ]
+
     with ZipFile(dicthtml) as fh:
+        assert fh.comment.decode(encoding="utf-8") == "© reader.dict 2026"
+
         assert sorted(fh.namelist()) == expected_files
 
         # testfile returns the name of the first corrupt file, or None
@@ -181,6 +189,11 @@ def test_simple(tmp_path: Path) -> None:
         trie = Trie()
         trie.map(fh.read("words"))
         assert sorted(trie.keys()) == expected_trie_keys
+
+        # Check prefix_exceptions
+        trie = Trie()
+        trie.map(fh.read("prefix_exceptions"))
+        assert sorted(trie.keys()) == expected_prefix_exceptions
 
     # Check the StarDict ZIP content
     expected_files = [
@@ -534,13 +547,10 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
             VARIANTS_FR,
             "estre|être|suis|suivre",
             """\
-<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p><var><variant name="suis"/></var></w>
 
-<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
+<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p><var><variant name="suis"/></var></w>
 
-<w><p><a name="suis" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
-
-<w><p><a name="suis" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
 
 <w><p><a name="suivre" /><b>suivre</b> \\sɥivʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></p><var><variant name="suis"/></var></w>
 """,
@@ -551,15 +561,11 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
             VARIANTS_FR_2,
             "estre|être|suis|suivre",
             """\
-<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+<w><p><a name="estre" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p><var><variant name="suis"/></var></w>
 
-<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
-
-<w><p><a name="suis" /><b>estre</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'estre'.</li></ol></p></w>
+<w><p><a name="être" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p><var><variant name="suis"/></var></w>
 
 <w><p><a name="suis" /><b>suis</b> \\sɥi\\<br/><br/><b>Nom</b><ol><li>Définition de 'suis'.</li></ol></p></w>
-
-<w><p><a name="suis" /><b>être</b> \\ɛtʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'être'.</li></ol></p></w>
 
 <w><p><a name="suivre" /><b>suivre</b> \\sɥivʁ\\<br/><br/><b>Verbe</b><ol><li>Définition de 'suivre'.</li></ol></p><var><variant name="suis"/></var></w>
 """,
@@ -579,7 +585,7 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
             VARIANTS_FR_4,
             "devoir",
             """\
-<w><p><a name="devoir" /><b>devoir</b><br/><br/><b>Verbe</b><ol><li>Définition de 'devoir'.</li></ol></p></w>
+<w><p><a name="devoir" /><b>devoir</b><br/><br/><b>Verbe</b><ol><li>Définition de 'devoir'.</li></ol></p><var><variant name="se devoir à"/></var></w>
 """,
             id="variants from inexistant reverse variants",
         ),
