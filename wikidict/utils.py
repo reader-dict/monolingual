@@ -10,9 +10,9 @@ from functools import cache, partial
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+import jaconv
 import regex
 import wikitextparser
-import jaconv
 
 from . import constants, context, lang, part_of_speech, svg
 from .hiero_utils import render_hiero
@@ -333,8 +333,8 @@ def is_japanese_kana(char: str) -> bool:
 
 
 @cache
-def to_katakana(s):
-    return jaconv.hira2kata(s)
+def to_katakana(text: str) -> str:
+    return jaconv.hira2kata(text)
 
 
 @cache
@@ -614,15 +614,15 @@ def guess_prefix(word: str, *, locale: str = "") -> str:
         >>> guess_prefix("長すぎる", locale="ja")
         '長'
         >>> guess_prefix("の人気が高いことはもちろん若い女性からも「", locale="ja")
-        'の人'
+        'ノ人'
         >>> guess_prefix(" 】", locale="ja")
         '11'
         >>> guess_prefix("あ", locale="ja")
-        'あ'
+        'ア'
         >>> guess_prefix("あかつき", locale="ja")
-        'あか'
+        'アカ'
         >>> guess_prefix("は", locale="ja")
-        'は'
+        'ハ'
         >>> guess_prefix("ア", locale="ja")
         'ア'
         >>> guess_prefix("アカツキ", locale="ja")

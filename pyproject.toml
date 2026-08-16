@@ -5,9 +5,6 @@ build-backend = "hatchling.build"
 [project]
 name = "wikidict"
 dynamic = ["version"]
-dependencies = [
-    "jaconv>=0.5.0",
-]
 
 [tool.hatch.version]
 path = "wikidict/__init__.py"
