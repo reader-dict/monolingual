@@ -378,6 +378,7 @@ class KoboFormat(Summary, BaseFormat):
 
     def craft_prefix_exceptions(self, output_dir: Path) -> Path:
         r"""Generate the special file "prefix_exceptions" that is a list of group word redirections in the format "INFLECTION\tGROUP_PREFIX."""
+        log.info("[%s] prefix_exceptions: %s", self.id(), f"{len(self.prefix_exceptions):,}")
         output = output_dir / "prefix_exceptions"
         trie = Trie(self.prefix_exceptions)
         trie.save(output)
