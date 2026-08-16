@@ -166,8 +166,8 @@
     }
   ],
   "contributorsPerLine": 6,
-  "projectName": "ebook-reader-dict",
-  "projectOwner": "BoboTiG",
+  "projectName": "monolingual",
+  "projectOwner": "reader-dict",
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": true,
