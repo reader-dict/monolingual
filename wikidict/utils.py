@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 
 import regex
 import wikitextparser
+import jaconv
 
 from . import constants, context, lang, part_of_speech, svg
 from .hiero_utils import render_hiero
@@ -326,8 +327,14 @@ def is_cyrillic(char: str) -> bool:
 
 
 @cache
-def is_japanese_hiragana(char: str) -> bool:
+def is_japanese_kana(char: str) -> bool:
+    # hiragana is U+3040 - U+309F, katakana is U+30A0 - U+30FF
     return "\u3040" <= char <= "\u30ff"
+
+
+@cache
+def to_katakana(s):
+    return jaconv.hira2kata(s)
 
 
 @cache
@@ -642,8 +649,8 @@ def guess_prefix(word: str, *, locale: str = "") -> str:
         return "" if prefix[-1] == "/" else prefix
 
     if locale == "ja":
-        if is_japanese_hiragana(prefix[0]):
-            return prefix
+        if is_japanese_kana(prefix[0]):
+            return to_katakana(prefix)
 
         if is_japanese_or_chinese(prefix[0]):
             return prefix[0]

@@ -27,6 +27,7 @@ from pyglossary.glossary_v2 import ConvertArgs, Glossary
 
 from . import constants, render, utils
 from .stubs import Variants, Word, Words
+from .utils import to_katakana
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -45,7 +46,7 @@ if TYPE_CHECKING:
 #       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
 WORD_TPL_KOBO = Template(
     """\
-<w><p><a name="{{ word }}" /><b>{{ word }}</b>{{ pronunciation }}<br/><br/>
+<w><p><a name="{{ headword }}" /><b>{{ word }}</b>{{ pronunciation }}<br/><br/>
 {%- for pos, pos_definitions in definitions -%}
     {%- if pos.find("|") > -1 -%}
     <b>{{ pos.split("|", 1)[0] }}</b> <i>{{ pos.split("|", 1)[1] }}</i>
@@ -299,8 +300,22 @@ class BaseFormat:
         elif lang_src == "ru" and isinstance(self, MobiFormat) and word.isupper():
             variants.add(word.lower())
 
+        # For Japanese hiragana words, the <a name="..."> needs to be the katakana version
+        # because Kobo normalizes hiragana to katakana when looking up words.
+        # Leaving this out causes the Kobo to completely fail to find entries for hiragana words
+        # (see #2750)
+        # Inspiration: https://github.com/cessen/kobo_jp_dict/blob/2f14c08dbd6e5dfb7f3bc95bace6ecead3a8ddb5/src/generic_dict.rs#L334-L337
+        # e.g. for the hiragana entry "あい", we have to generate
+        # <a name="アイ"> with the katakana version, but still display the text as あい
+        # アイ.html: <w><p><a name="アイ" /><b>あい</b>...</p></w>
+        if lang_src == "ja":
+            headword = to_katakana(word)
+        else:
+            headword = word
+
         yield self.render_word(
             self.template,
+            headword=headword,
             word=word,
             definitions=details.definitions.items(),
             pronunciation=utils.convert_pronunciation(details.pronunciations),
