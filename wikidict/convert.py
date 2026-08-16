@@ -26,7 +26,7 @@ from marisa_trie import Trie
 from pyglossary.glossary_v2 import ConvertArgs, Glossary
 
 from . import constants, render, utils
-from .stubs import Word
+from .stubs import Variants, Word, Words
 
 if TYPE_CHECKING:
     from collections.abc import Generator
@@ -45,7 +45,7 @@ if TYPE_CHECKING:
 #       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
 WORD_TPL_KOBO = Template(
     """\
-<w><p><a name="{{ word }}" /><b>{{ current_word }}</b>{{ pronunciation }}<br/><br/>
+<w><p><a name="{{ word }}" /><b>{{ word }}</b>{{ pronunciation }}<br/><br/>
 {%- for pos, pos_definitions in definitions -%}
     {%- if pos.find("|") > -1 -%}
     <b>{{ pos.split("|", 1)[0] }}</b> <i>{{ pos.split("|", 1)[1] }}</i>
@@ -247,94 +247,66 @@ class BaseFormat:
         )
 
     def handle_word(self, word: str, words: Words) -> Generator[str]:
-        """
-        Special handling for Japanese on Kobo: variants are not supported as other locales, so we duplicate entries as normal words.
-        """
-
         for_kobo = isinstance(self, KoboFormat)
 
         # Prevent storing variants definitions in DictFile & co
-        if (chosen_word := words[word]).is_variant and not chosen_word.definitions and not for_kobo:
+        if (details := words[word]).is_variant and not details.definitions and not for_kobo:
             return
 
-        details = deepcopy(chosen_word)
-        current_words = {word: details}
         lang_src = self.effective_lang_src()
-        is_russian = lang_src == "ru"
 
-        if for_kobo:
-            is_japanese = lang_src == "ja"
+        if for_kobo and details.variants:
+            # On Kobo, there is a special file used to handle variants that have a different group prefix: prefix_exceptions.
+            # It will be populated with the content of `self.prefix_exceptions` later.
             guess_prefix = partial(utils.guess_prefix, locale=lang_src)
             word_group_prefix = guess_prefix(word)
-
-        if details.variants and for_kobo:
-            # [***] Variants are more like typos, or misses, and so devices expect word & variants to start with same letters, at least.
-            # An example in FR, where "suis" (verb flexion) is a variant of both "être" & "suivre": "suis" & "être" are quite differents.
-            # As a workaround, we yield as many words as there are variants but under the word "suis": at the end, we will have 3 words:
-            #   - "suis" with the content "suis" (itself)
-            #   - "suis" with the content "être"
-            #   - "suis" with the content "suivre"
             for variant in details.variants:
-                if (is_japanese or guess_prefix(variant) != word_group_prefix) and (root := self.words.get(variant)):
-                    current_words[variant] = root
+                if lang_src == "ja":
+                    self.prefix_exceptions.append(f"{word}\t{guess_prefix(variant)}")  # type: ignore[attr-defined]
+                elif (variant_group_prefix := guess_prefix(variant)) != word_group_prefix:
+                    self.prefix_exceptions.append(f"{word}\t{variant_group_prefix}")  # type: ignore[attr-defined]
 
-        for current_word, current_details in sorted(current_words.items()):
-            if not current_details.definitions:
-                continue
+        if not details.definitions:
+            return
 
-            all_variants = self.variants
-            if variants := deepcopy(all_variants.get(current_word, set())):
-                # Add variants of empty* variant, only 1 redirection:
-                #   [ES] gastada* -> gastado* -> gastar --> (gastada, gastado) -> gastar
-                # Note: the process works backward: from gastar up to gastado up to gastada.
-                for variant in [*variants]:
-                    if (
-                        (wv := words.get(variant))
-                        and not wv.definitions
-                        and (new_variants := all_variants.get(variant))
-                    ):
-                        variants.update(new_variants)
+        all_variants = self.variants
+        if variants := deepcopy(all_variants.get(word, set())):
+            # Add variants of empty* variant, only 1 redirection:
+            #   [ES] gastada* -> gastado* -> gastar --> (gastada, gastado) -> gastar
+            # Note: the process works backward: from gastar up to gastado up to gastada.
+            for variant in [*variants]:
+                if (wv := words.get(variant)) and not wv.definitions and (new_variants := all_variants.get(variant)):
+                    variants.update(new_variants)
 
-                # Filter out variants being identical to the word (it happens when altering `current_words`, cf [***])
-                variants.discard(word)
-                variants.discard(current_word)
+            # Filter out variants being identical to the word
+            variants.discard(word)
 
-                # Nullify variant words to prevent polluting the dictionary with duplicates
-                for variant in variants:
-                    with suppress(KeyError):
-                        words[variant].is_variant = True
+            # Nullify variant words to prevent polluting the dictionary with duplicates
+            for variant in variants:
+                with suppress(KeyError):
+                    words[variant].is_variant = True
 
-                if for_kobo:
-                    if is_japanese:
-                        variants.clear()
-                    else:
-                        # Filter out variants with a different prefix than their word.
-                        # Plus, variants must be normalized by trimming whitespaces, and lowercasing it.
-                        current_word_group_prefix = guess_prefix(current_word)
-                        variants = {
-                            variant.lower().strip()
-                            for variant in variants
-                            if guess_prefix(variant) == current_word_group_prefix
-                        }
+            if for_kobo:
+                # Variants must be normalized by trimming whitespaces, and lowercasing it.
+                variants = {variant.lower().strip() for variant in variants}
 
-            # On Kobo, we want to display a variant being the same word lowercased (see #2579):
-            #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
-            elif for_kobo and current_word[0].isupper() and (lowercase_word := current_word.lower()) in words:
-                variants.add(lowercase_word)
+        # On Kobo, we want to display a variant being the same word lowercased (see #2579):
+        #   - [FR] Loches (proper noun) should also take into account "loches" in its variants
+        elif for_kobo and word[0].isupper() and (lowercase_word := word.lower()) in words:
+            variants.add(lowercase_word)
 
-            # Russian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
-            elif is_russian and isinstance(self, MobiFormat) and current_word.isupper():
-                variants.add(current_word.lower())
+        # Russian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
+        elif lang_src == "ru" and isinstance(self, MobiFormat) and word.isupper():
+            variants.add(word.lower())
 
-            yield self.render_word(
-                self.template,
-                word=word,
-                current_word=current_word,
-                definitions=current_details.definitions.items(),
-                pronunciation=utils.convert_pronunciation(current_details.pronunciations),
-                etymologies=current_details.etymology if self.include_etymology else [],
-                variants=sorted(variants, key=lambda s: (len(s), s)),
-            )
+        yield self.render_word(
+            self.template,
+            word=word,
+            definitions=details.definitions.items(),
+            pronunciation=utils.convert_pronunciation(details.pronunciations),
+            etymologies=details.etymology if self.include_etymology else [],
+            variants=sorted(variants, key=lambda s: (len(s), s)),
+        )
 
     def process(self) -> None:
         raise NotImplementedError()
@@ -388,6 +360,10 @@ class KoboFormat(Summary, BaseFormat):
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"
     template = WORD_TPL_KOBO
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.prefix_exceptions: list[str] = []
+
     def process(self) -> None:
         self.groups = self.make_groups(self.words)
         self.save()
@@ -397,6 +373,14 @@ class KoboFormat(Summary, BaseFormat):
         """Generate the special file "words" that is an index of all words."""
         output = output_dir / "words"
         trie = Trie(wordlist)
+        trie.save(output)
+        return output
+
+    def craft_prefix_exceptions(self, output_dir: Path) -> Path:
+        r"""Generate the special file "prefix_exceptions" that is a list of group word redirections in the format "INFLECTION\tGROUP_PREFIX."""
+        log.info("[%s] prefix_exceptions: %s", self.id(), f"{len(self.prefix_exceptions):,}")
+        output = output_dir / "prefix_exceptions"
+        trie = Trie(self.prefix_exceptions)
         trie.save(output)
         return output
 
@@ -438,11 +422,15 @@ class KoboFormat(Summary, BaseFormat):
         # Then create the special "words" file
         to_compress.append(self.craft_index(wordlist, tmp_dir))
 
+        # Also create the special "prefix_exceptions" file
+        if self.prefix_exceptions:
+            to_compress.append(self.craft_prefix_exceptions(tmp_dir))
+
         # Finally, create the ZIP
         final_file = self.dictionary_file(self.output_file)
         with ZipFile(final_file, mode="w", compression=ZIP_DEFLATED) as fh:
             # The ZIP's comment will serve as the dictionary signature
-            fh.comment = bytes(self.description, "utf-8")
+            fh.comment = self.description.encode(encoding="utf-8")
 
             # Unrelated files, just for history
             fh.writestr(constants.ZIP_WORDS_COUNT, str(self.words_count + self.variants_count))
