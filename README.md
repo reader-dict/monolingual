@@ -46,9 +46,7 @@ Run linters, and quality checkers, before submitting a pull-request:
 
 ## Contributors 💖
 
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+[![All Contributors](https://img.shields.io/github/all-contributors/reader-dict/monolingual?color=ee8449&style=flat-square)](#contributors)
 
 Thanks go to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
