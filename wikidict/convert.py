@@ -279,7 +279,7 @@ class BaseFormat:
                     variants.update(new_variants)
 
             # Filter out variants being identical to the word
-            assert word not in variants
+            variants.discard(word)
 
             # Nullify variant words to prevent polluting the dictionary with duplicates
             for variant in variants:
