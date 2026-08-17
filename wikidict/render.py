@@ -440,7 +440,7 @@ def prettify_pos(section: wtp.Section, lang_src: str, lang_dst: str) -> str:
     pretty_pos = utils.format_pos(lang_src, section_pos)
 
     # A potential gender, specified in the section content, is merged into the current POS ("Noun" becomes "Noun f.")
-    if genders := lang.find_genders[lang_src](section.contents, lang_dst):
+    if pretty_pos != "Trans" and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
         pretty_pos += f"|{', '.join(f'{g}.' for g in genders)}"
 
     return pretty_pos
