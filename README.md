@@ -79,6 +79,9 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
       <td align="center" valign="top" width="16.66%"><a href="https://github.com/StillerHarpo"><img src="https://avatars.githubusercontent.com/u/25526706?v=4?s=100" width="100px;" alt="Florian Engel"/><br /><sub><b>Florian Engel</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=StillerHarpo" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="16.66%"><a href="https://kylefeng28.github.io/"><img src="https://avatars.githubusercontent.com/u/4147382?v=4?s=100" width="100px;" alt="Kyle Feng"/><br /><sub><b>Kyle Feng</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=kylefeng28" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="16.66%"><a href="https://dera.page"><img src="https://avatars.githubusercontent.com/u/42696684?v=4?s=100" width="100px;" alt="Mubelotix"/><br /><sub><b>Mubelotix</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=Mubelotix" title="Documentation">📖</a></td>
+    </tr>
   </tbody>
 </table>
 
