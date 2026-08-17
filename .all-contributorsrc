@@ -172,6 +172,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Mubelotix",
+      "name": "Mubelotix",
+      "avatar_url": "https://avatars.githubusercontent.com/u/42696684?v=4",
+      "profile": "https://dera.page",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 6,
