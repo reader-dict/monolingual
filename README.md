@@ -77,6 +77,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
       <td align="center" valign="top" width="16.66%"><a href="https://github.com/kyxap"><img src="https://avatars.githubusercontent.com/u/3080529?v=4?s=100" width="100px;" alt="kyxap"/><br /><sub><b>kyxap</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=kyxap" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="16.66%"><a href="https://github.com/Baitur5"><img src="https://avatars.githubusercontent.com/u/73650784?v=4?s=100" width="100px;" alt="Baitur Ulukbekov"/><br /><sub><b>Baitur Ulukbekov</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=Baitur5" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="16.66%"><a href="https://github.com/StillerHarpo"><img src="https://avatars.githubusercontent.com/u/25526706?v=4?s=100" width="100px;" alt="Florian Engel"/><br /><sub><b>Florian Engel</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=StillerHarpo" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="16.66%"><a href="https://kylefeng28.github.io/"><img src="https://avatars.githubusercontent.com/u/4147382?v=4?s=100" width="100px;" alt="Kyle Feng"/><br /><sub><b>Kyle Feng</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=kylefeng28" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
