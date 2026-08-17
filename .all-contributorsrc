@@ -163,6 +163,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "kylefeng28",
+      "name": "Kyle Feng",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4147382?v=4",
+      "profile": "https://kylefeng28.github.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 6,
