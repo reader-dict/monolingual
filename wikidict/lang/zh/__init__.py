@@ -46,6 +46,8 @@ sections = (
     # conjunction
     "連詞",
     "连词",
+    # definitions
+    "释义",
     # determiners
     "限定詞",
     "限定词",
