@@ -393,6 +393,9 @@ VARIANTS_ES_2 = {
     "-fobas": Word(variants=["-foba", "-fobo"]),
     "-fobo": Word(definitions={"Suffix": ["-phobe", "-phobic"]}),
 }
+VARIANTS_JA = {
+    "あい": Word(definitions={"動詞": ["「あう」の連用形。"]}),
+}
 VARIANTS_RU = {
     "ФСБ": Word(definitions={"Значение": ["Definition of 'ФСБ'."]}),
 }
@@ -588,6 +591,15 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
 <w><p><a name="devoir" /><b>devoir</b><br/><br/><b>Verbe</b><ol><li>Définition de 'devoir'.</li></ol></p><var><variant name="se devoir à"/></var></w>
 """,
             id="variants from inexistant reverse variants",
+        ),
+        pytest.param(
+            "ja",
+            VARIANTS_JA,
+            "あい",
+            """\
+<w><p><a name="アイ" /><b>あい</b><br/><br/><b>動詞</b><ol><li>「あう」の連用形。</li></ol></p></w>
+""",
+            id="Japanese hiragana",
         ),
     ],
 )
