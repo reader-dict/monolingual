@@ -126,6 +126,9 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool
     print(word, utils.convert_pronunciation(details.pronunciations).lstrip())
 
     for pos, definitions in details.definitions.items():
+        if pos == "Trans":
+            continue
+
         print()
         if "|" in pos:
             pos, gender = pos.split("|", 1)
