@@ -2,6 +2,7 @@
 
 import os
 import sys
+from contextlib import suppress
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -28,6 +29,10 @@ def main(locale: str, words: str, output: Path | str, *, format: str = "kobo") -
         if not (word_stripped := word.strip()):
             continue
         render_word((word_stripped, context.get_word(word_stripped)), all_words, locale)
+
+    for word, redirect_to in context.get_ctx().fetch_redirections():
+        with suppress(KeyError):
+            all_words[redirect_to].reverse_variants.append(word)
 
     variants: Variants = make_variants(all_words)
     snapshot = datetime.now(tz=UTC).strftime("%Y%m%d")
