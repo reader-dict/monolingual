@@ -672,6 +672,9 @@ def parse_word(
         if reverse_variants:
             reverse_variants = sorted(set(reverse_variants))
 
+    if definitions:
+        definitions.pop("Trans", None)
+
     return Word(prons, [], etymology, definitions, variants, reverse_variants)
 
 

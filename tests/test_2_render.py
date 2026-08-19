@@ -43,7 +43,7 @@ def test_render_word_with_empty_subdefinition(page: Callable[[str, str], str]) -
 
     defs = results["test"].definitions
     assert defs == {
-        "Nom": [
+        "Nom|f.": [
             "<i>(Botanique)</i> Espèce de mauves, grandes plantes laineuses aux feuilles entières ou à 3 lobes et à bordure dentée, et aux fleurs assez grandes de couleur blanc rosé, avec les anthères des étamines rougeâtres.",
             (
                 "Sub sub list with empty definition",
