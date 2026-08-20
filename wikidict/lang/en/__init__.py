@@ -1,6 +1,7 @@
 """English language."""
 
 import re
+from collections import defaultdict
 
 from ... import utils
 from .template_adapters import adapters as template_adapters  # noqa: F401
@@ -132,22 +133,127 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
-    """
+    r"""
+    We only keep Received Pronunciation (RP), and General American (GA).
+
     >>> find_pronunciations("", "en")
     []
-    >>> find_pronunciations("{{IPA|en|/ʌs/}}", "en")
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/əs/|a=weak form}}", "en")
+    []
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/ʌs/}}", "en")
     ['/ʌs/']
-    >>> find_pronunciations("{{IPA|en|/ʌs/|/ʌs/}}", "en")
+    >>> find_pronunciations("====Pronunciation====\n* {{IPA|en|/kʌm/|/kʊm/}}", "en")
+    ['/kʌm/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/wɜːd/|a=RP}}", "en")
+    ['UK: /wɜːd/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/ˈmɑɹz/|a=GA}}", "en")
+    ['US: /ˈmɑɹz/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/ˈsʌmwʌn/|a=RP,GA}}", "en")
+    ['/ˈsʌmwʌn/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/skɜɹd͡ʒ/|[skɔɹd͡ʒ]|a=GA}}", "en")
+    ['US: /skɜɹd͡ʒ/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/ˈmɑɹz/|a=GA}} {{IPA|en|/wɜːd/|a=RP}}", "en")
+    ['UK: /wɜːd/', 'US: /ˈmɑɹz/']
+    >>> find_pronunciations("====Pronunciation====\n{{IPA|en|/ˈmɑɹz/|a=GA}} {{IPA|en|/ˈmɑɹz/|a=RP}}", "en")
+    ['/ˈmɑɹz/']
+    >>> find_pronunciations("====Pronunciation====\n* {{a|en|RP}}\n** {{IPA|en|/əs/|/əz/|a=weak form}}\n** {{IPA|en|/ʌs/|a=strong form}}", "en")
+    ['UK: /ʌs/']
+    >>> find_pronunciations("====Pronunciation====\n* {{a|en|GA}}\n** {{IPA|en|/əs/|a=weak form}}\n** {{IPA|en|/ʌs/|a=strong form}}", "en")
+    ['US: /ʌs/']
+    >>> find_pronunciations("====Pronunciation====\n* {{a|en|RP}}\n** {{IPA|en|/əs/|/əz/|a=weak form}}\n** {{IPA|en|/ʌs/|a=strong form}}\n* {{a|en|GA}}\n** {{IPA|en|/əs/|a=weak form}}\n** {{IPA|en|/ʌs/|a=strong form}}\n* {{a|en|Northern England,Local Dublin}}\n** {{IPA|en|/ʊz/|a=strong form}}", "en")
     ['/ʌs/']
-    >>> find_pronunciations("{{IPA|en|/ʌs/}} {{IPA|en|/ʌs/}}", "en")
-    ['/ʌs/']
-    >>> find_pronunciations("{{IPA|en|/ʌs/}}, {{IPA|en|/ʌz/}}", "en")
-    ['/ʌs/', '/ʌz/']
-    >>> find_pronunciations("{{IPA|en|/ʌs/|/ʌz/}}", "en")
-    ['/ʌs/', '/ʌz/']
+    >>> find_pronunciations("====Pronunciation====\n* {{a|en|weak form, before consonants}}\n** {{enPR|''th''ə}}, {{IPA|en|/ðə/}}\n* {{a|en|weak form, before vowels, see notes below}}\n** {{enPR|''th''ē|''th''ə}}, {{IPA|en|/ði/ [ðɪj]|/ðə/}}\n* {{a|en|strong form}}\n** {{enPR|''th''ē}}, {{IPA|en|/ðiː/}}", "en")
+    ['/ðiː/']
     """
-    pattern = re.compile(rf"\{{IPA\|{locale}\|(/[^/]+/)(?:\|(/[^/]+/))*")
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    lines: list[str] = []
+    in_section = False
+    was_in_section = False
+    for line in code.splitlines():
+        if line.startswith("="):
+            in_section = "Pronunciation" in line
+        elif in_section:
+            was_in_section = True
+            lines.append(line.strip())
+        elif was_in_section:
+            break
+
+    pattern = re.compile(r"\{\{IPA\|en\|([^}]+)\}\}")
+    if not lines or not (matches := re.findall(pattern, code)):
+        return []
+
+    pronunciations = defaultdict(list)
+
+    # The pronuciation system is clearly defined
+    for match in matches:
+        if "|a=RP,GA" in match or "|a=GA,RP" in match:
+            kind = ""
+        elif "|a=RP" in match:
+            kind = "UK"
+        elif "|a=GA" in match:
+            kind = "US"
+        else:
+            continue
+        if not (pron := next((p for p in match.split("|") if p.startswith("/") and p.endswith("/")), "")):
+            continue
+        pronunciations[pron].append(kind)
+
+    # No pronunciation system found via template arguments, maybe it is defined at a highler level
+    if not pronunciations:
+        kind = ""
+        for line in lines:
+            if "{{a|en|RP}}" in line:
+                kind = "UK"
+            elif "{{a|en|GA}}" in line:
+                kind = "US"
+            elif "{{a|en|" in line:
+                kind = ""
+
+            if (
+                kind
+                and "a=strong form" in line
+                and (matches := re.findall(pattern, line))
+                and (pron := next((p for p in matches[0].split("|") if p.startswith("/") and p.endswith("/")), ""))
+            ):
+                pronunciations[pron].append(kind)
+
+    # No pronunciation system found at all, ensure to pick only strong forms
+    if not pronunciations:
+        inteteresting = False
+        for line in lines:
+            if "{{a|en|strong form" in line:
+                inteteresting = True
+                continue
+
+            if " {{a|en|weak form" in line:
+                inteteresting = False
+                continue
+
+            if (
+                inteteresting
+                and (matches := re.findall(pattern, line))
+                and (pron := next((p for p in matches[0].split("|") if p.startswith("/") and p.endswith("/")), ""))
+            ):
+                pronunciations[pron].append("")
+
+    # No specific form found, take the first one as it should be the general one
+    if not pronunciations:
+        for match in matches:
+            if "a=weak form" in match:
+                continue
+            if pron := next((p for p in matches[0].split("|") if p.startswith("/") and p.endswith("/")), ""):
+                pronunciations[pron].append("")
+
+    # If all pronunciations are the same, merge them without the system prefix
+    final: list[str] = []
+    for pron, kinds in pronunciations.items():
+        if len(kinds) > 1:
+            final.append(pron)
+        elif kinds[0]:
+            final.append(f"{kinds[0]}: {pron}")
+        else:
+            final.append(pron)
+
+    return utils.unique(utils.flatten(sorted(final)))
 
 
 def adjust_wikicode(

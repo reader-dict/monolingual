@@ -53,7 +53,7 @@ def check_for_templates_status(templates_status: list[tuple[str, str]]) -> bool:
 
 def convert_pronunciation(pronunciations: list[str]) -> str:
     """Return the HTML code to include for pronunciation(s) of a word."""
-    return f" {', '.join(pronunciations)}" if pronunciations else ""
+    return f" {' · '.join(pronunciations)}" if pronunciations else ""
 
 
 def flatten(seq: list[str]) -> list[str]:

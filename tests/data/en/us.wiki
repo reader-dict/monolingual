@@ -18,8 +18,14 @@ From {{af|mul|u-<t:micro->|s<id:Q11574><t:second>}}.
 From {{inh|en|enm|us}}, from {{inh|en|ang|ūs||pos=dative personal pronoun|us}}, from {{inh|en|gmw-pro|*uns}}, from {{inh|en|gem-pro|*uns||us}}, from {{der|en|ine-pro||*n̥swé}}, alteration of {{m|ine-pro|*n̥smé||us}}. The compensatory lengthening was lost in Middle English due to the word being unstressed when used. Cognate with {{cog|stq|uus|t=us}}, {{cog|fy|us}}, {{m|fy|us|ús|us}}, {{cog|nds|uns}}, {{m|nds|us||us}}, {{cog|nl|ons||us}}, {{cog|de|uns||us}}, {{cog|da|os||us}}, {{cog|la|nōs||we, us}}.
 
 ====Pronunciation====
-* {{qualifier|stressed}} {{enPR|ŭs}}, {{IPA|en|/ʌs/|/ʌz/}}, {{IPA|en|/ʊs/|a=Local Dublin}}
-* {{qualifier|unstressed}} {{IPA|en|/əs/|a=US}}, {{IPA|en|/əs/|/əz/|a=UK}}
+* {{a|en|GA}}
+** {{IPA|en|/əs/|a=weak form}}
+** {{IPA|en|/ʌs/|a=strong form}}, {{enPR|ŭs}}
+* {{a|en|RP}}
+** {{IPA|en|/əs/|/əz/|a=weak form}}
+** {{IPA|en|/ʌs/|a=strong form}}, {{enPR|ŭs}}
+* {{a|en|Northern England,Local Dublin}}
+** {{IPA|en|/ʊz/|a=strong form}}, {{enPR|ŭs}}
 * {{IPA|en|/ɪz/|a=Northumbrian}}
 * {{audio|en|en-us-us.ogg|a=US}}
 * {{rhymes|en|ʌs|s=1}}

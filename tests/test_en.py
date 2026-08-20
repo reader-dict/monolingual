@@ -55,7 +55,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "cum",
-            ["/kʊm/", "/kʌm/"],
+            ["/kʌm/"],
             [],
             [
                 "Clipping of English <i><b>Cum</b>eral</i>.",
@@ -89,7 +89,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "efficient",
-            ["/əˈfɪʃənt/", "/ɪˈfɪʃənt/"],
+            ["UK: /ɪˈfɪʃənt/"],
             [],
             [
                 "1398, “making,” from Old French, from Latin <i>efficientem</i>, nominative <i>efficiēns</i>, participle of <i>efficere</i> (“work out, accomplish”) (see <i>effect</i>). Meaning “productive, skilled” is from 1787. <i>Efficiency apartment</i> is first recorded 1930, American English."
@@ -134,7 +134,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Mars",
-            ["/maɹs/", "/mɑ˞s/", "/ˈmɑɹz/", "/ˈmɑːz/"],
+            ["UK: /ˈmɑːz/", "US: /ˈmɑɹz/"],
             [],
             [
                 "From Middle English&#32;<i>Mars</i>, from Latin&#32;<i>Mārs</i>&#32;(“god of war”), from older Latin (older than 75 <small>BCE</small>) <i>Māvors</i>.",
@@ -163,7 +163,7 @@ def setup_lua_ctx() -> None:
         ("memoized", [], [], [], {}, ["memoize"]),
         (
             "portmanteau",
-            ["/pɔːtˈmæn.təʊ/", "/pɔːɹtˈmæntoʊ/", "/ˌpɔːɹtmænˈtoʊ/"],
+            ["UK: /pɔːtˈmæn.təʊ/"],
             [],
             [
                 "From Middle French <i>portemanteau</i> (“coat stand”), from <i>porte</i> (“carries”, third-person singular present indicative of <i>porter</i> (“to carry”)) +&lrm; <i>manteau</i> (“coat”), literally “[that which] carries coat”.",
@@ -201,7 +201,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "scourge",
-            ["/skɜɹd͡ʒ/", "/skɜːd͡ʒ/"],
+            ["UK: /skɜːd͡ʒ/", "US: /skɜɹd͡ʒ/"],
             [],
             [
                 "From Middle English <i>scourge</i> (“a lash, whip, scourge; affliction, calamity; person who causes affliction or calamity; shoot of a vine”), and then either:",
@@ -233,7 +233,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "the",
-            ["/ði/", "/ðiː/", "/ðə/"],
+            ["/ðiː/"],
             [],
             [
                 "From Middle English <i>þe</i>, from Old English <i>þē</i>&nbsp;m (“the, that”, demonstrative pronoun), a late variant of <i>sē</i>, the <i>s-</i> (which occurred in the masculine and feminine nominative singular only) having been replaced by the <i>þ-</i> from the oblique stem.",
@@ -318,7 +318,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "us",
-            ["/əs/", "/əz/", "/ɪz/", "/ʊs/", "/ʌs/", "/ʌz/"],
+            ["/ʌs/"],
             [],
             [
                 "From <i>u-</i> (“micro-”) +&lrm; <i>s</i> (“second”).",
@@ -353,21 +353,8 @@ def setup_lua_ctx() -> None:
         (
             "water",
             [
-                "/-ɑ/",
-                "/wʊʔə/",
-                "/ˈwoː.tə/",
-                "/ˈwæ.tə/",
-                "/ˈwɐː.t̪əɹ/",
-                "/ˈwɑ.təɹ/",
-                "/ˈwɒ.tə/",
-                "/ˈwɒ.təɹ/",
-                "/ˈwɔ.tə/",
-                "/ˈwɔ.tər/",
-                "/ˈwɔ.təɹ/",
-                "/ˈwɔɹ.təɹ/",
-                "/ˈwɔː.tə/",
-                "/ˈwɔː.təɹ/",
-                "/ˈwʊ.təɹ/",
+                "UK: /ˈwɔː.tə/",
+                "US: /ˈwɔ.təɹ/",
             ],
             [],
             [
@@ -425,7 +412,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "word",
-            ["/weːd/", "/wøːd/", "/wəɹd/", "/wɛːd/", "/wɜɹd/", "/wɜːd/", "/wʌrd/"],
+            ["UK: /wɜːd/", "US: /wɜɹd/"],
             [],
             [
                 "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>&#42;word</i>, from Proto-Germanic <i>&#42;wurdą</i>, from Proto-Indo-European <i>&#42;wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <i>vrata</i>.",
