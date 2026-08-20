@@ -183,7 +183,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
     pronunciations = defaultdict(list)
 
-    # The pronuciation system is clearly defined
+    # The pronunciation system is clearly defined
     for match in matches:
         if "|a=RP,GA" in match or "|a=GA,RP" in match:
             kind = ""
@@ -193,9 +193,9 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             kind = "US"
         else:
             continue
-        if not (pron := next((p for p in match.split("|") if p.startswith("/") and p.endswith("/")), "")):
-            continue
-        pronunciations[pron].append(kind)
+
+        if pron := next((p for p in match.split("|") if p.startswith("/") and p.endswith("/")), ""):
+            pronunciations[pron].append(kind)
 
     # No pronunciation system found via template arguments, maybe it is defined at a highler level
     if not pronunciations:
@@ -222,11 +222,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         for line in lines:
             if "{{a|en|strong form" in line:
                 inteteresting = True
-                continue
-
-            if " {{a|en|weak form" in line:
+            elif " {{a|en|weak form" in line:
                 inteteresting = False
-                continue
 
             if (
                 inteteresting
@@ -240,6 +237,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         for match in matches:
             if "a=weak form" in match:
                 continue
+
             if pron := next((p for p in matches[0].split("|") if p.startswith("/") and p.endswith("/")), ""):
                 pronunciations[pron].append("")
 
