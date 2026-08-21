@@ -329,6 +329,10 @@ def find_etymology(
             ]
         case "tr":
             items = get_items(("#", ":"))
+        case "uk":
+            items = []
+            for line in parsed_section.contents.splitlines():
+                items.append(line.lstrip(":;#*"))
         case "zh":
             items = []
             for line_ in parsed_section.contents.splitlines():
@@ -347,7 +351,7 @@ def find_etymology(
     ]
 
     # Do not keep incomplete etymologies
-    if lang_src in {"el", "en", "es", "ru"}:
+    if lang_src in {"el", "en", "es", "ru", "uk"}:
         useless = {
             "el": {f"<b>{word}</b> &lt;"},
             "en": {
@@ -362,6 +366,7 @@ def find_etymology(
                 "<i>Si puedes, incorpórala: ver cómo</i>.",
             },
             "ru": {"??", "Из ??", "От", "От ??", "Происходит от", "Происходит от ??", "Происходит от&nbsp;??"},
+            "uk": {"Від ?", "Від ??"},
         }.get(lang_src, set())
         etyms = [etym for etym in etyms if etym not in useless]
 
@@ -458,8 +463,8 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     if lang_src == "de":
         # DE sets the eventual gender in the top-level section
         current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
-    elif lang_src == "ru":
-        # RU genders are found in inflections
+    elif lang_src in {"ru", "uk"}:
+        # Genders are found in inflections
         current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
 
     for title, section in all_sections:
@@ -487,7 +492,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
                 pos = title
             else:
                 pos = prettify_pos(section, lang_src, lang_dst)
-                if lang_src == "ru" and current_genders and "|" not in pos:
+                if lang_src in {"ru", "uk"} and current_genders and "|" not in pos:
                     pos += f"|{', '.join(f'{g}.' for g in current_genders)}"
             ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
