@@ -142,7 +142,7 @@ langs = {
     "ps": "peştuca",
     "pt": "portekizce",
     "qu": "keçuva dili",
-    "rm": "reto romanca",
+    "rm": "romanşça",
     "rn": "kirundi dili",
     "ro": "rumence",
     "ru": "rusça",
