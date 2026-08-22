@@ -214,6 +214,12 @@ def process(file: Path, locale: str) -> bool:
                 # Lower all section titles to workaround regexp with unicode diacritics being lost.
                 # See https://stackoverflow.com/q/79169550/1117028 for more details.
                 body = re.sub(r"^==[ {]*(\w+)[} ]*==", lambda m: f"=={m[1].lower()}==", body, flags=re.MULTILINE)
+            case "uk":
+                # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
+                body = re.sub(r"^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}", r"=\1=", body, flags=re.MULTILINE)
+
+                # `{{=uk=}}` → `=uk=`
+                body = re.sub(r"^\{\{=(\w+)=\}\}", r"=\1=", body, flags=re.MULTILINE)
 
         context.new_page(title, 0, body, None)
 

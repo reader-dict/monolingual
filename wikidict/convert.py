@@ -296,8 +296,8 @@ class BaseFormat:
         elif for_kobo and word[0].isupper() and (lowercase_word := word.lower()) in words:
             variants.add(lowercase_word)
 
-        # Russian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
-        elif lang_src == "ru" and isinstance(self, MobiFormat) and word.isupper():
+        # Russian/Ukranian on Kindle must provide a lowercase variant for uppercase-only words (see #2623)
+        elif lang_src in {"ru", "uk"} and isinstance(self, MobiFormat) and word.isupper():
             variants.add(word.lower())
 
         # For Japanese hiragana words, the <a name="..."> needs to be the katakana version
