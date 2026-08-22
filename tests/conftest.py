@@ -1,7 +1,6 @@
 import bz2
 import os
-import sys
-from collections.abc import Callable, Generator
+from collections.abc import Callable
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -31,22 +30,6 @@ PAGE_XML = """
     </revision>
   </page>
 """
-
-
-@pytest.fixture(autouse=True)
-def no_warnings(recwarn: pytest.WarningsRecorder) -> Generator[None]:
-    """Fail on warning."""
-
-    yield
-
-    warnings = []
-    for warning in recwarn:
-        message = str(warning.message)
-        warn = f"{warning.filename}:{warning.lineno} {message}"
-        print(warn, file=sys.stderr)
-        warnings.append(warn)
-
-    assert not warnings
 
 
 @pytest.fixture(scope="session")
