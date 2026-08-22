@@ -505,6 +505,7 @@ def add_potential_variant(
     variants: list[str],
     *,
     repl: Callable[[str, str], str] = re.compile(r"(</?[^>]+>)").sub,
+    is_reverse_variant: bool = False,
 ) -> None:
     """
     >>> _ = context.reset("fr")
@@ -552,7 +553,10 @@ def add_potential_variant(
             and all(char not in word for char in "()")
             and not (locale == "nl" and re.findall(r"\b\(I*\)\b", variant_cleaned))
         ):
-            log.warning(f"Potential variant issue: {variant=} → {variant_cleaned=} for {word=}")
+            kind = "variant"
+            if is_reverse_variant:
+                kind = f"reverse {kind}"
+            log.warning("Potential %s issue: %r → %r for word=%r", kind, variant, variant_cleaned, word)
             return
         variants.append(variant_cleaned)
 
@@ -666,7 +670,7 @@ def parse_word(
                     if tpl.startswith(interesting_templates):
                         add_potential_variant(word, tpl, lang_dst, variants)
                     elif tpl.startswith(interesting_templates_reverse):
-                        add_potential_variant(word, tpl, lang_dst, reverse_variants)
+                        add_potential_variant(word, tpl, lang_dst, reverse_variants, is_reverse_variant=True)
         if variants:
             variants = sorted(set(variants))
         if reverse_variants:
