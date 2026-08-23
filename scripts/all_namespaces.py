@@ -9,6 +9,7 @@ results: dict[str, list[str]] = {}
 # XXX_LOCALES
 locales = (
     "ca",
+    "cs",
     "da",
     "de",
     "el",

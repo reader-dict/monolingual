@@ -1,0 +1,64 @@
+== čeština ==
+
+=== výslovnost ===
+* {{IPA|ɛgzɛmplaːrɲiː}}
+
+=== dělení ===
+* exem-plár-ní
+
+=== přídavné jméno ===
+* ''měkké''
+
+==== skloňování ====
+{{Adjektivum (cs)
+  | snomm = exemplární
+  | snomf = exemplární
+  | snomn = exemplární
+  | pnomma = exemplární
+  | pnomm = exemplární
+  | pnomf = exemplární
+  | pnomn = exemplární
+  | sgenm = exemplárního
+  | sgenf = exemplární
+  | sgenn = exemplárního
+  | pgenm = exemplárních
+  | pgenf = exemplárních
+  | pgenn = exemplárních
+  | sdatm = exemplárnímu
+  | sdatf = exemplární
+  | sdatn = exemplárnímu
+  | pdatm = exemplárním
+  | pdatf = exemplárním
+  | pdatn = exemplárním
+  | saccma = exemplárního
+  | saccm = exemplární
+  | saccf = exemplární
+  | saccn = exemplární
+  | paccm = exemplární
+  | paccf = exemplární
+  | paccn = exemplární
+  | slocm = exemplárním
+  | slocf = exemplární
+  | slocn = exemplárním
+  | plocm = exemplárních
+  | plocf = exemplárních
+  | plocn = exemplárních
+  | sinsm = exemplárním
+  | sinsf = exemplární
+  | sinsn = exemplárním
+  | pinsm = exemplárními
+  | pinsf = exemplárními
+  | pinsn = exemplárními
+}}
+
+==== stupňování ====
+{{Stupňování (cs)
+  | poz = exemplární
+  | komp = exemplárnější
+  | sup = nejexemplárnější
+}}
+
+==== význam ====
+# [[příkladný]]
+
+[[Kategorie:Česká adjektiva]]

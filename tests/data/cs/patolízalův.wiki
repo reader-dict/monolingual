@@ -1,0 +1,70 @@
+== čeština ==
+
+=== výslovnost ===
+* {{IPA|patɔliːzaluːf}}
+
+=== dělení ===
+* pa-to-lí-za-lův
+
+=== etymologie ===
+Odvozeno od podstatného jména [[patolízal]] příponou [[-ův]].
+
+=== přídavné jméno ===
+* ''přivlastňovací''
+
+==== skloňování ====
+{{Adjektivum (cs)
+  | snomma = patolízalův
+  | snomm = patolízalův
+  | snomf = [[patolízalova]]
+  | snomn = [[patolízalovo]]
+  | pnomma = [[patolízalovi]]
+  | pnomm = [[patolízalovy]]
+  | pnomf = [[patolízalovy]]
+  | pnomn = [[patolízalova]]
+  | sgenma = [[patolízalova]]
+  | sgenm = [[patolízalova]]
+  | sgenf = [[patolízalovy]]
+  | sgenn = [[patolízalova]]
+  | pgenma = [[patolízalových]]
+  | pgenm = [[patolízalových]]
+  | pgenf = [[patolízalových]]
+  | pgenn = [[patolízalových]]
+  | sdatma = [[patolízalovu]]
+  | sdatm = [[patolízalovu]]
+  | sdatf = [[patolízalově]]
+  | sdatn = [[patolízalovu]]
+  | pdatma = [[patolízalovým]]
+  | pdatm = [[patolízalovým]]
+  | pdatf = [[patolízalovým]]
+  | pdatn = [[patolízalovým]]
+  | saccma = [[patolízalova]]
+  | saccm = patolízalův
+  | saccf = [[patolízalovu]]
+  | saccn = [[patolízalovo]]
+  | paccma = [[patolízalovy]]
+  | paccm = [[patolízalovy]]
+  | paccf = [[patolízalovy]]
+  | paccn = [[patolízalova]]
+  | slocma = [[patolízalově]] / [[patolízalovu]]
+  | slocm = [[patolízalově]] / [[patolízalovu]]
+  | slocf = [[patolízalově]]
+  | slocn = [[patolízalově]] / [[patolízalovu]]
+  | plocma = [[patolízalových]]
+  | plocm = [[patolízalových]]
+  | plocf = [[patolízalových]]
+  | plocn = [[patolízalových]]
+  | sinsma = [[patolízalovým]]
+  | sinsm = [[patolízalovým]]
+  | sinsf = [[patolízalovou]]
+  | sinsn = [[patolízalovým]]
+  | pinsma = [[patolízalovými]]
+  | pinsm = [[patolízalovými]]
+  | pinsf = [[patolízalovými]]
+  | pinsn = [[patolízalovými]]
+}}
+
+==== význam ====
+# [[náležící]] [[patolízal]]ovi
+
+[[Kategorie:Česká adjektiva]]

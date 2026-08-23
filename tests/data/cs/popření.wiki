@@ -1,0 +1,64 @@
+{{Viz|popřeni}}
+
+== čeština ==
+
+=== výslovnost ===
+{{IPA|pɔpr̝̊ɛɲiː}}
+
+=== dělení ===
+* po-pře-ní
+
+=== etymologie ===
+Ze slovesa [[popřít]].
+
+=== podstatné jméno ===
+* ''rod střední''
+* ''podstatné jméno slovesné''
+
+==== podstatné jméno ====
+
+==== skloňování ====
+{{Substantivum (cs)
+  | snom = popření
+  | sgen = popření
+  | sdat = popření
+  | sacc = popření
+  | svoc = popření
+  | sloc = popření
+  | sins = popřením
+  | pnom = popření
+  | pgen = popření
+  | pdat = popřením
+  | pacc = popření
+  | pvoc = popření
+  | ploc = popřeních
+  | pins = popřeními
+}}
+
+==== význam ====
+# [[výrok]] [[resp.]] [[akce]], [[představující]] [[nesouhlas]] [[s]] [[existence|existencí]] [[nebo]] [[pravdivost]]í ([[také]] [[účelově]], [[kvůli]] [[vlastní]]mu [[prospěch]]u) [[něčeho]]; [[prohlášení]] něčeho [[za]] [[neplatný|neplatné]], [[vyvrácení]]
+
+# {{Překlady
+  | význam = vyvrácení něčeho
+  | en = {{P|en|negation}}
+  | ja = {{P|ja|否定}}
+}}
+
+==== synonyma ====
+# [[negace]], [[vyvrácení]]; ~[[zapření]], ~[[zamítnutí]]
+
+==== antonyma ====
+# [[potvrzení]]
+
+==== související ====
+* [[popřít]]
+* [[popření otcovství]]
+
+=== přídavné jméno ===
+
+==== význam ====
+# ''nominativ množného čísla rodu mužského životného přídavného jména [[popřený]]''
+# ''vokativ množného čísla rodu mužského životného přídavného jména [[popřený]]''
+
+[[Kategorie:Česká substantiva]]
+[[Kategorie:Tvary českých adjektiv]]
