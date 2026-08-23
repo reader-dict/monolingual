@@ -1,0 +1,81 @@
+{{Viz|měla}}
+
+== čeština ==
+
+=== výslovnost ===
+* {{IPA|mɛla}}
+
+=== dělení ===
+* me-la
+
+=== podstatné jméno ===
+* ''rod ženský''
+
+==== skloňování ====
+{{Substantivum (cs)
+  | snom = mela
+  | sgen = [[mely]]
+  | sdat = [[mele]]
+  | sacc = [[melu]]
+  | svoc = [[melo]]
+  | sloc = [[mele]]
+  | sins = [[melou]]
+  | pnom = [[mely]]
+  | pgen = [[mel]]
+  | pdat = [[melám]]
+  | pacc = [[mely]]
+  | pvoc = [[mely]]
+  | ploc = [[melách]]
+  | pins = [[melami]]
+}}
+
+==== význam ====
+# [[zmatek]], [[vřava]], [[nepřehledný|nepřehledná]] [[rvačka]]
+#* {{Příklad|cs|Nastala hrozná mela – všichni se bili hlava nehlava, vším, co jim přišlo pod ruku.}}
+
+==== překlady ====
+# {{Překlady
+  | význam = vřava
+  | en = {{P|en|melee}}, {{P|en|rumpus}}, {{P|en|mayhem}}
+}}
+
+=== sloveso ===
+
+==== význam ====
+# ''přechodník přítomný jednotného čísla rodu mužského slovesa [[mlít]]''
+
+== italština ==
+
+=== výslovnost ===
+* {{IPA|mɛla}}
+
+=== podstatné jméno ===
+* ''rod ženský''
+
+==== skloňování ====
+{{Substantivum (it)
+  | snom = mela
+  | pnom = [[mele]]
+}}
+
+==== význam ====
+# [[jablko]]
+
+==== synonyma ====
+# [[pomo]]
+
+==== související ====
+* [[melo]]
+
+== volapük ==
+{{Doplnit|výslovnost|vo}}
+
+=== podstatné jméno ===
+
+==== význam ====
+# ''genitiv singuláru substantiva [[mel]]''
+
+[[Kategorie:Česká substantiva]]
+[[Kategorie:Tvary českých sloves]]
+[[Kategorie:Italská substantiva]]
+[[Kategorie:Tvary substantiv volapüku]]

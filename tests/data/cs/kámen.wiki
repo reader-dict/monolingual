@@ -1,0 +1,181 @@
+{{Viz}}
+
+== čeština ==
+[[Soubor:Adu Kepelan Tangan.jpg|náhled|kámen (6)]]
+=== výslovnost ===
+* {{IPA|ˈkaː.mɛn}}, {{Audio|Cs-kámen.ogg|kámen}}
+
+=== dělení ===
+* ká-men
+
+=== varianty ===
+* {{Příznak2|nář.}} [[kamen]], [[kameň]] <ref>{{ČJA|díl=4|heslo=kámen|strany=48-49}}</ref>
+
+=== podstatné jméno ===
+* ''rod mužský neživotný''
+
+==== skloňování ====
+{{Substantivum (cs)
+  | snom = kámen
+  | sgen = [[kamene]] / [[kamenu]]
+  | sdat = [[kameni]] / [[kamenu]]
+  | sacc = kámen
+  | svoc = [[kameni]]
+  | sloc = [[kameni]] / [[kamenu]] / [[kameně]]
+  | sins = [[kamenem]]
+  | pnom = [[kameny]]
+  | pgen = [[kamenů]]
+  | pdat = [[kamenům]]
+  | pacc = [[kameny]]
+  | pvoc = [[kameny]]
+  | ploc = [[kamenech]]
+  | pins = [[kameny]]
+}}
+
+==== význam ====
+# [[kus]] [[hornina|horniny]]
+#* {{Příklad|cs|Madla našla u&nbsp;potoka hladký lesklý '''kámen'''.}}
+# (''hromadné, jen singulár'') [[materiál]] [[tvořený]] kameny (1)
+#* {{Příklad|cs|Na svazích hory se kdysi těžil '''kámen'''.}}
+# [[vzácný]] [[nebo]] [[dekorativní]] [[minerál]]
+#* {{Příklad|cs|Nejdůležitějším '''kamenem''' královské koruny je ústřední '''kámen''' čelní strany.}}
+# [[herní]] [[figura]] [[v]] [[deskový]]ch [[hra|hrách]], [[curling]]u [[apod.]]
+#* {{Příklad|cs|Na konci hry mu nezbyl jediný '''kámen'''.}}
+# {{Příznaky|cs|dř.}} [[starý|stará]] [[jednotka]] [[hmotnost]]i
+#* {{Příklad|cs|Náklad vážil dvacet '''kamenů'''.}}
+# [[druh]] [[pozdrav]]u, [[kdy]] [[se]] [[dva]] [[zdravící]] [[člověk|lidé]] [[navzájem]] [[dotknout|dotknou]] [[čelní]] [[strana|stranou]] [[svůj|své]] [[sevřený|sevřené]] [[pěst]]i
+#* {{Příklad|cs|Dáme '''kámen'''?}}
+
+==== překlady ====
+# {{Překlady
+  | význam = kus horniny
+  | be = {{P|be|камень|m}}
+  | bg = {{P|bg|камък|m}}
+  | ca = {{P|ca|pedra|f}}
+  | cu = {{P|cu|камъі|m}}, {{P|cu|камъікъ|m}}
+  | da = {{P|da|sten|m}}
+  | de = {{P|de|Stein|m}}
+  | dsb = {{P|dsb|kamjeń|m}}
+  | el = {{P|el|πέτρα|f}}
+  | en = {{P|en|stone}}
+  | eo = {{P|eo|ŝtono}}
+  | es = {{P|es|piedra|f}}
+  | et = {{P|et|kivi}}
+  | fi = {{P|fi|kivi}}
+  | fr = {{P|fr|pierre|f}}, {{P|fr|caillou|m}}
+  | grc = {{P|grc|λίθος|m}}
+  | he = {{P|he|אֶבֶן|f}}
+  | hr = {{P|hr|kamen|m}}
+  | hu = {{P|hu|kő}}
+  | it = {{P|it|pietra|f}}
+  | ja = {{P|ja|石}}
+  | ko = {{P|ko|돌}}
+  | la = {{P|la|lapis|m}}, {{P|la|saxum|n}}
+  | lt = {{P|lt|akmuo|m}}
+  | lv = {{P|lv|akmens|m}}
+  | nl = {{P|nl|steen|m}}
+  | no = {{P|no|stein|m}}
+  | pl = {{P|pl|kamień|m}}
+  | pt = {{P|pt|pedra|f}}
+  | ru = {{P|ru|камень|m}}
+  | sgs = {{P|sgs|akmou|m}}
+  | sk = {{P|sk|kameň|m}}
+  | sv = {{P|sv|sten|c}}
+  | syr = {{P|syr|ܐܰܒܢܳܐ}}
+  | tmr = {{P|tmr|אַבְנָא}}
+  | uk = {{P|uk|камінь|m}}
+  | yi = {{P|yi|שטײן|m}}
+  | zh = {{P|zh|石}}
+}}
+# {{Překlady
+  | význam = kamení
+  | de = {{P|de|Stein|m}}, {{P|de|Gestein|n}}
+  | en = {{P|en|stone}}
+  | fr = {{P|fr|pierre|f}}
+  | sk = {{P|sk|kameň|m}}
+  | uk = {{P|uk|камінь|m}}
+}}
+# {{Překlady
+  | význam = drahokam
+  | de = {{P|de|Edelstein|m}}
+  | el = {{P|el|πολύτιμος λίθος|m}}
+  | en = {{P|en|gem}}
+  | fr = {{P|fr|pierre précieuse|f}}
+  | la = {{P|la|gemma|f}}
+  | sv = {{P|sv|ädelsten|c}}
+  | syr = {{P|syr|ܐܰܒܢܳܐ}}
+  | uk = {{P|uk|камінь|m}}
+}}
+# {{Překlady
+  | význam = herní figura
+  | el = {{P|el|πούλι|n}}
+  | en = {{P|en|tile}}, {{P|en|stone}}
+  | ja = {{P|ja|碁石}}, {{P|ja|石}} {{Upřesnění|v deskové hře go}}
+}}
+# {{Překlady
+}}
+# {{Překlady
+  | význam = pozdrav dotykem předních části sevřených pěsti
+  | en = {{P|en|fist bump}}
+}}
+
+==== synonyma ====
+# {{Příznak2|ob.}} [[šutr]], {{Upřesnění|velký:}} [[balvan]], {{Příznak2|zdrob.}} [[kamínek]]
+# [[kamení]], [[skála]], [[kamenivo]]
+# [[drahokam]], [[polodrahokam]]
+# —
+# —
+# —
+
+==== související ====
+* [[kamínek]]
+* [[kamenný]]
+* [[kameník]]
+* [[kamení]]
+* [[kamenina]]
+* [[kamenice]]
+* [[kameňák]]
+* [[kameníček]]
+* [[kamenec]]
+* [[drahokam]]
+* [[Kamenice]]
+* [[kamenět]]
+* [[kamenovat]]
+
+==== slovní spojení ====
+* [[hraniční kámen]]
+* [[ledvinový kámen]]
+* [[litografický kámen]]
+* [[mlýnský kámen]]
+* [[nárožní kámen]]
+* [[prubířský kámen]]
+* [[uhelný kámen]]
+* [[vodní kámen]]
+* [[základní kámen]]
+* [[zubní kámen]]
+* [[žlučový kámen]]
+* [[kámen mudrců]]
+
+==== fráze a idiomy ====
+* [[kámen úrazu]]
+* [[co by kamenem dohodil]]
+* [[nezůstat kámen na kameni]]
+* [[tesat do kamene]]
+* [[mít srdce z kamene]]
+* [[spadnout kámen ze srdce]]
+
+==== přísloví, úsloví a pořekadla ====
+* [[kdo po tobě kamenem, ty po něm chlebem]]
+* [[hoď kamenem, kdož jsi bez viny]]
+
+=== poznámky ===
+<references />
+
+=== externí odkazy ===
+* {{PSJČ}}
+* {{SSJČ}}
+* {{IJP}}
+* {{Wikipedie|rozcestník=Kámen}}
+* {{Wikicitáty|téma=Kámen}}
+
+[[Kategorie:Česká substantiva]]

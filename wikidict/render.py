@@ -263,6 +263,11 @@ def find_etymology(
         return items
 
     match lang_src:
+        case "cs":
+            items = []
+            for line in parsed_section.contents.splitlines():
+                if not line.startswith(("{{", "}}")):
+                    items.append(line.lstrip(":;#*"))
         case "da":
             items = get_items(("#", ":"))
         case "de":
