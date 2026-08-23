@@ -6,6 +6,10 @@ import re
 
 # Clean-up POS using regexp(s), they are executed in order
 PATTERNS = {
+    "cs": [
+        # `význam (1)` → `význam`
+        re.compile(r"(.+) \(\d\)").sub,
+    ],
     "da": [
         # `{{verbum}}` → `verbum`
         re.compile(r"\{\{([^|}]+).*").sub,

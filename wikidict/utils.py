@@ -164,6 +164,9 @@ def guess_locales(locale: str, *, use_log: bool = True) -> tuple[str, str]:
 def format_pos(locale: str, value: str) -> str:
     """Properly format the part of speech (POS).
 
+    >>> format_pos("cs", "význam (1)")
+    'Význam'
+
     >>> format_pos("da", "{{pers-pronom 1}}")
     'Pronomen'
     >>> format_pos("da", "formelt subjekt")
