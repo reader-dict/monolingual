@@ -17,7 +17,6 @@ from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 from functools import partial
 from pathlib import Path
-from subprocess import check_output
 from time import monotonic
 from typing import TYPE_CHECKING, ClassVar
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -637,11 +636,6 @@ class MobiFormat(ConverterFromDictFile):
         "keep": True,
         "kindlegen_path": str(constants.MOBIPOCKET_TOOL),
     }
-
-    def process(self) -> None:
-        mobipocket_tool_version = check_output([constants.MOBIPOCKET_TOOL, "--version"], text=True).strip()
-        log.info("[%s] Using %s", self.id(), mobipocket_tool_version)
-        super().process()
 
     def _compress(self) -> Path:
         # Move the relevant file at the top-level data folder, and rename it for more accuracy
