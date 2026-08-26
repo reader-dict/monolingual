@@ -145,6 +145,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("==Norsk==\n<includeonly>\n{{rfscript|und|sc=Deva}}, <br /></includeonly>", "no")
     '==Norsk==\n'
 
+    >>> adjust_wikicode("====Synonymer====\n{{topp|Synonymer}}\n*[[utgave]]\n*[[tapning]]\n*[[variant]] (særlig språk)\n{{midt}}\n*[[type]]\n*[[tolkning]]\n{{bunn}}", "no", word="versjon")
+    '====Synonymer====\n#[[utgave]]\n#[[tapning]]\n#[[variant]] (særlig språk)\n#[[type]]\n#[[tolkning]]'
+
     >>> from ... import context
     >>> _ = context.reset("no")
 
@@ -181,7 +184,10 @@ def adjust_wikicode(
     if "Synonymer" in code:
         lines: list[str] = []
         in_section = False
-        for line in code.splitlines():
+        code = code.replace("{{topp|Synonymer}}", "").replace("{{midt}}", "").replace("{{bunn}}", "")
+        for raw_line in code.splitlines():
+            if not (line := raw_line.strip()):
+                continue
             if line.startswith("===") and "Synonymer" in line:
                 in_section = True
             elif in_section:
