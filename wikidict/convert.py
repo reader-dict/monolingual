@@ -195,6 +195,7 @@ class BaseFormat:
         *,
         include_etymology: bool = True,
     ) -> None:
+        self.locale = locale
         self._lang_src, self._lang_dst = utils.guess_locales(locale)
         self.output_dir = output_dir
         self.words = words
