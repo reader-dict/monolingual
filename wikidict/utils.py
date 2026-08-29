@@ -300,6 +300,9 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("ro", "verb")
     'Verb'
 
+    >>> format_pos("th", "คำนาม 1")
+    'คำนาม'
+
     >>> format_pos("tr", "ad 2")
     'Ad'
     >>> format_pos("tr", "eylem oranlı")

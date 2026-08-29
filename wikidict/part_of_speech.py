@@ -122,6 +122,10 @@ PATTERNS = {
         # `verb auxiliar` → `verb`
         re.compile(r"(locuțiune|numeral|verb)\s+.*").sub,
     ],
+    "th": [
+        # `คำนาม 1` → `คำนาม`
+        re.compile(r"(.+) +\d").sub,
+    ],
     "tr": [
         # `ad 2` → `ad`
         re.compile(r"(.+) +\d").sub,
