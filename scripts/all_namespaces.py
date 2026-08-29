@@ -29,6 +29,7 @@ locales = (
     "ro",
     "ru",
     "sv",
+    "th",
     "tr",
     "uk",
     "zh",

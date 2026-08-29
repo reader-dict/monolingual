@@ -1,4 +1,4 @@
-"""Czesh language."""
+"""Czech language."""
 
 import re
 
