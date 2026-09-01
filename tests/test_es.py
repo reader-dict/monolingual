@@ -28,7 +28,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "bicicleta",
-            ["[bisiˈklet̪a]", "[biθiˈklet̪a]"],
+            ["Esp.: [biθiˈklet̪a]", "Am.: [bisiˈklet̪a]"],
             [
                 "Del francés <i>bicyclette</i> y este diminutivo del francés <i>bicycle</i>, formado sobre el modelo del francés <i>tricycle</i>, del latín <i>bis</i>) y <i>-cycle</i> ( del latín <i>cyclus</i>, del griego <i>κύκλος</i>&nbsp;(<i>kýklos</i>,&nbsp;'círculo; rueda'))."
             ],
@@ -230,7 +230,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "gracias",
-            ["[ˈgɾasjas]", "[ˈgɾaθjas]"],
+            ["Esp.: [ˈgɾaθjas]", "Am.: [ˈgɾasjas]"],
             [],
             {
                 "Interjección": [
@@ -243,7 +243,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Guyana",
-            ["[guˈʃana]", "[guˈʒana]", "[guˈʝana]"],
+            ["[guˈʝana]"],
             [],
             {
                 "Sustantivo": [
@@ -288,7 +288,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "hocico",
-            ["[oˈsiko]", "[oˈθiko]"],
+            ["Esp.: [oˈθiko]", "Am.: [oˈsiko]"],
             ["De <i>hocicar</i>."],
             {
                 "Sustantivo": [

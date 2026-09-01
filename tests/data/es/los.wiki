@@ -2,7 +2,7 @@
 {{pron-graf}}
 
 === Etimología 1 ===
-{{etimología|la|illos|diacrítico=illōs|sig=no}}, acusativo masculino plural  {{etim|la|ille}}.
+{{etimología|la|illos|diacrítico=illōs}}, acusativo masculino plural  {{etim|la|ille}}.
 
 ==== {{artículo determinado|es}} ====
 {{es.adj|p}}

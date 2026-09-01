@@ -1,8 +1,10 @@
 """Spanish language."""
 
+import itertools
 import re
+from collections import defaultdict
 
-from ... import lang, utils
+from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -92,8 +94,7 @@ def find_pronunciations(
     pattern: re.Pattern[str] = re.compile(r"(\{\{pron-graf[^\}]*\}\})"),
     find_prons: re.Pattern[str] = re.compile(r"^\|(\[[^\[\]]+])", flags=re.MULTILINE),
 ) -> list[str]:
-    """
-    >>> from ... import context
+    r"""
     >>> _ = context.reset("es")
 
     >>> find_pronunciations("", "es")
@@ -104,16 +105,47 @@ def find_pronunciations(
     ['[t̪ãmˈbjẽn]']
 
     >>> context.new_word("hala")
-    >>> find_pronunciations("{{pron-graf|acentuación=grave|audio=LL-Q1321_(spa)-Rodelar-ala.wav|división=ha - la|fone=ˈa.la|homófono=ala|longitud_silábica=2|número_letras=4}}", "es")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321_(spa)-Rodelar-ala.wav|h1=ala}}", "es")
     ['[ˈala]']
-    """
-    from ... import context
 
-    res: set[str] = set()
+    >>> context.new_word("bicicleta")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-AdrianAbdulBaha-bicicleta.wav|1aunota1=Colombia}}", "es")
+    ['Esp.: [biθiˈklet̪a]', 'Am.: [bisiˈklet̪a]']
+
+    >>> context.new_word("Guyana")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-Rodelar-Guyana.wav|v1=Guayana|p1=Guyena}}", "es")
+    ['[guˈʝana]']
+    """
+    pronunciations = defaultdict(set)
+
     for tpl in pattern.findall(code):
-        table = context.expand(tpl, "es")
-        res.update(find_prons.findall(table))
-    return sorted(res)
+        expanded = context.expand(tpl, "es").splitlines()
+        for line1, line2 in itertools.pairwise(expanded):
+            if not (prons := re.findall(r"\|(\[[^\[\]]+\])", line2)):
+                continue
+
+            if "seseante'''" not in line1 or "'''no sheísta'''" in line1:  # No system
+                pronunciations[prons[0]].add("")
+                break
+
+            if "'''seseante'''" in line1:  # Latin America
+                pronunciations[prons[0]].add("Am.")
+            elif "'''no seseante'''" in line1:  # Spanish
+                pronunciations[prons[0]].add("Esp.")
+
+    # If all pronunciations are the same, merge them without the system prefix
+    final: list[str] = []
+    for pron, kinds in pronunciations.items():
+        kinds.discard("")
+        if len(kinds) > 1:
+            final.append(pron)
+        elif len(kinds) == 1:
+            final.append(f"{next(iter(kinds))}: {pron}")
+        else:
+            final.append(pron)
+
+    # `reverse=True` becasue we want "Esp." first, then "Am."
+    return sorted(final, reverse=True)
 
 
 def adjust_wikicode(
