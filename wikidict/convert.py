@@ -241,8 +241,8 @@ class BaseFormat:
     def effective_lang_dst(self) -> str:
         return self._lang_dst
 
-    def dictionary_file(self, output_file: str) -> Path:
-        return self.output_dir / output_file.format(
+    def dictionary_file(self, output_file: str, *, output_dir: Path | None = None) -> Path:
+        return (output_dir or self.output_dir) / output_file.format(
             lang_src=self.effective_lang_src(),
             lang_dst=self.effective_lang_dst(),
             etym_suffix="" if self.include_etymology else constants.NO_ETYMOLOGY_SUFFIX,
@@ -342,7 +342,7 @@ class BaseFormat:
         log.info(
             "[%s] Generated %s (%s bytes) in %s",
             self.id(),
-            file.name,
+            file,
             f"{file.stat().st_size:,}",
             timedelta(seconds=monotonic() - self.start),
         )
@@ -528,6 +528,14 @@ class ConverterFromDictFile(DictFileFormat):
     def output_dir_tmp(self) -> Path:
         return self.output_dir / self.target_format
 
+    @property
+    def glos_input_fname(self) -> Path:
+        return self.dictionary_file(DictFileFormat.output_file)
+
+    @property
+    def glos_output_fname(self) -> Path:
+        return self.output_dir_tmp / f"dict-data.{self.target_suffix}"
+
     def _convert(self) -> None:
         """Convert the DictFile to the target format."""
         if pyglossary_logger := logging.getLogger("pyglossary"):
@@ -579,8 +587,8 @@ class ConverterFromDictFile(DictFileFormat):
         self.output_dir_tmp.mkdir()
         glos.convert(
             ConvertArgs(
-                inputFilename=str(self.dictionary_file(DictFileFormat.output_file)),
-                outputFilename=str(self.output_dir_tmp / f"dict-data.{self.target_suffix}"),
+                inputFilename=str(self.glos_input_fname),
+                outputFilename=str(self.glos_output_fname),
                 writeOptions=self.glossary_options,
             )
         )
