@@ -391,7 +391,7 @@ def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_ds
     for top_section in top_sections:
         if result := func(top_section.contents, lang_dst):
             results.extend(result)
-    return sorted(utils.unique(results))
+    return utils.unique(results)
 
 
 def section_title(section: wtp.Section) -> str:

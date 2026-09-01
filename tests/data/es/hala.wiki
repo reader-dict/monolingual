@@ -1,12 +1,45 @@
+{{desambiguación|hála|halá|hâla|hâlâ|håla}}
+
 == {{lengua|es}} ==
+{{pron-graf|1audio1=LL-Q1321_(spa)-Rodelar-ala.wav|h1=ala}}
 === Etimología ===
 {{etimología|incierta}}. {{etimología|expresiva}}.
-{{pron-graf|acentuación=grave|audio=LL-Q1321_(spa)-Rodelar-ala.wav|división=ha - la|fone=ˈa.la|homófono=ala|longitud_silábica=2|número_letras=4}}
 
 === Forma verbal ===
 ;1: {{forma verbo|halar|m=indicativo|p=3s|t=presente}}.
-;2: {{forma verbo|halar|afirmativo=sí|p=2s|t=imperativo}}.
+;2: {{forma verbo|halar|p=2s|t=imperativo}}.
 
 === {{interjección|es}} ===
 ;1: Expresión para demandar prisa o sorpresa.
 {{sinónimo|ala|alá}}
+
+== {{lengua|mg}} ==
+{{pron-graf|leng=mg}}
+
+=== Etimología ===
+{{etimología|leng=mg}}
+
+=== {{adjetivo|mg}} ===
+;1: {{plm|odiado}}, [[detestado]]
+
+=== {{sustantivo|mg}} ===
+;2 {{csem|leng=mg|arácnidos}}: {{plm|araña}}.
+;3 {{csem|leng=mg|arácnidos}}: {{plm|escorpión}}.
+
+=== Véase también ===
+{{W|leng=mg}}
+
+== {{lengua|yag}} ==
+{{pron-graf|leng=yag|fone=ˈhala}}
+
+=== Etimología ===
+{{etimología|leng=yag}}.
+
+=== {{pronombre|yag}} ===
+;1: {{plm|yo}} [[también]].
+
+=== {{interjección|yag}} ===
+;2: ¡{{plm|ah}}!, ¡oh!
+
+== Referencias y notas ==
+<references />
