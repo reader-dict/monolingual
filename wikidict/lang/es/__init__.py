@@ -144,7 +144,7 @@ def find_pronunciations(
         else:
             final.append(pron)
 
-    # `reverse=True` becasue we want "Esp." first, then "Am."
+    # `reverse=True` because we want "Esp." first, then "Am."
     return sorted(final, reverse=True)
 
 
