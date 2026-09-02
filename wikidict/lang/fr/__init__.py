@@ -139,17 +139,17 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}", "fr")
     ['\\ɑ\\']
     >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}, {{pron|a|fr}}", "fr")
-    ['\\a\\', '\\ɑ\\']
+    ['\\ɑ\\']
     >>> find_pronunciations("{{pron|un|fr} {{pron|ɔ̃|fr}}\n'''fongus''' {{pron|fɔ̃.ɡys|fr}} {{m}}", "fr")
     ['\\fɔ̃.ɡys\\']
     """
     pattern = re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]+)")
-    res: set[str] = set()
     for line in code.splitlines():
         if not line.startswith("'''"):
             continue
-        res.update(f"\\{p}\\" for p in pattern.findall(line) if p)
-    return sorted(res)
+        for pron in pattern.findall(line):
+            return [f"\\{pron.replace('ˈ', '')}\\"]
+    return []
 
 
 ALL_FORMS = [
@@ -296,7 +296,7 @@ def test_regressions() -> None:
 
     >>> _ = context.reset("fr")
 
-    Issue # 2716:
+    Issue #2716:
     >>> context.new_word("magnéton de Bohr")
     >>> context.expand("{{unité|μ<sub>B</sub>}}", "fr")
     'μ<sub>B</sub>'

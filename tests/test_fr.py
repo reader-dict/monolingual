@@ -69,7 +69,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "a",
-            ["\\a\\", "\\ɑ\\"],
+            ["\\ɑ\\"],
             ["m"],
             [
                 "<i>(Symbole 2)</i> Abréviation de <i><b>a</b>tto-</i>.",
@@ -364,7 +364,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "greffier",
-            ["\\ɡʁe.fje\\", "\\ɡʁɛ.fje\\"],
+            ["\\ɡʁɛ.fje\\"],
             ["m"],
             [
                 "(<i>Nom commun 1</i>) Du latin <i>graphiarius</i> («&nbsp;d’écriture, de style, de poinçon&nbsp;») ou dérivé de <i>greffe</i>, avec le suffixe <i>-ier</i>.",
