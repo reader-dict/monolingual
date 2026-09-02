@@ -53,7 +53,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "ababalhar",
-            [],
+            ["BR: /a.ba.ba.ˈʎaɾ/"],
             [],
             ["De baba."],
             {"Verbo": ["(popular) babar; conspurcar"]},
@@ -112,7 +112,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "alguém",
-            ["/aɫ.ˈɡɐ̃j̃/"],
+            ["PT: /aɫ.ˈɡɐ̃j̃/", "BR: /aw.ˈgẽj/"],
             [],
             ["Do latim <i>alĭquem</i>."],
             {"Acrónimo": ["De <b>1</b>: ninguém"], "Pronome": ["pessoa não identificada"]},
@@ -121,7 +121,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "algo",
-            ["/ˈaɫ.ɡu/"],
+            ["PT: /ˈaɫ.ɡu/", "BR: /ˈaw.gu/"],
             [],
             [],
             {"Advérbio": ["um pouco, de certo modo"], "Pronome": ["objeto (não-identificado) de que se fala"]},
@@ -131,7 +131,7 @@ def setup_lua_ctx() -> None:
         ("anões", [], [], [], {}, ["anão"], []),
         (
             "baiano",
-            [],
+            ["BR: /baj.ˈjã.nu/"],
             [],
             ["Derivado de Bahia, mais o sufixo ano, com perda do H."],
             {
@@ -160,7 +160,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "COPOM",
-            ["/ko.ˈpõ/"],
+            ["BR: /ko.ˈpõ/"],
             ["m"],
             [],
             {
@@ -174,7 +174,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "dezassete",
-            ["/dɨ.zɐ.ˈsɛ.tɨ/"],
+            ["PT: /dɨ.zɐ.ˈsɛ.tɨ/"],
             [],
             ["Contração do latim vulgar <i>decem</i> + <i>ac</i> + <i>septem</i>."],
             {
@@ -353,7 +353,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "para",
-            ["/ˈpɐ.ɾɐ/"],
+            ["PT: /ˈpɐ.ɾɐ/"],
             [],
             ["Do latim <i>per</i> <i>ad</i>."],
             {
@@ -364,7 +364,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "paulista",
-            [],
+            ["BR: /paw.ˈlis.tə/"],
             [],
             [],
             {

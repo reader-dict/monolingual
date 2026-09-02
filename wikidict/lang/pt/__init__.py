@@ -125,16 +125,57 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
-    """
+    r"""
     >>> find_pronunciations("", "pt")
     []
-    >>> find_pronunciations("{{AFI|/pɾe.ˈno.me̝/}}", "pt")
-    ['/pɾe.ˈno.me̝/']
-    >>> find_pronunciations("{{AFI|/pɾe.ˈno.me̝/|lang=pt}}", "pt")
-    ['/pɾe.ˈno.me̝/']
+
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: {{AFI|/bu.'se.ta/}}", "pt")
+    ["BR: /bu.'se.ta/"]
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: /bu.'se.ta/", "pt")
+    ["BR: /bu.'se.ta/"]
+
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Portugal===\n* AFI: {{AFI|/bɐ.ˈteɾ/}}", "pt")
+    ['PT: /bɐ.ˈteɾ/']
+
+    >>> find_pronunciations("=={{Pronúncia|pt}}==\n===Brasil===\n====Paulistana e Caipira====\n* [[AFI]]: {{AFI|[aw.ˈgẽj]}}\n* [[X-SAMPA]]: /aw.\"ge~j/\n===Portugal===\n* AFI: {{AFI|/aɫ.ˈɡɐ̃j̃/}}", "pt")
+    ['PT: /aɫ.ˈɡɐ̃j̃/', 'BR: /aw.ˈgẽj/']
     """
-    pattern = re.compile(r"{AFI\|(/[^/]+/)")
-    return utils.unique(pattern.findall(code))
+    lines: list[str] = []
+    in_section = False
+    was_in_section = False
+    for line in code.splitlines():
+        if line.startswith(("=={", "== {")):
+            in_section = "pronúncia" in line.lower()
+        elif in_section:
+            was_in_section = True
+            if (line.startswith("=") and not line.startswith("====")) or "AFI" in line:
+                lines.append(line.strip())
+        elif was_in_section:
+            break
+
+    if not lines:
+        return []
+
+    pronunciations = {"PT": "", "BR": ""}
+    kind = ""
+    for line in lines:
+        if "=Portugal=" in line:
+            kind = "PT"
+            continue
+        elif "=Brasil=" in line:
+            kind = "BR"
+            continue
+
+        if (
+            kind
+            and not pronunciations[kind]
+            and (prons := re.findall(r"/([^/]+)/", line) or re.findall(r"\{AFI\|\[([^\]]+)\]", line))
+        ):
+            pron = prons[0].replace("''", "")
+            pronunciations[kind] = f"/{pron}/"
+
+    # `reverse=True` because we want "PT" first, then "BR"
+    return sorted((f"{kind}: {pron}" for kind, pron in pronunciations.items() if pron), reverse=True)
 
 
 START = rf"^(?:{'|'.join(section_patterns)})\s*"
