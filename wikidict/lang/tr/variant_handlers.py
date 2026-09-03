@@ -37,6 +37,8 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
 
     >>> render_variant("hâl", ["Avusturyalılık", "ğın"], defaultdict(str), "Avusturyalılık'ın")
     'Avusturyalılık'
+    >>> render_variant("hâl", [], defaultdict(str), "Avusturyalılık'ın")
+    'Avusturyalılık'
 
     >>> render_variant("mastarı", ["payandalamak"], defaultdict(str, {"dil": "tr"}), "payandalama")
     'payandalamak'
@@ -51,7 +53,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         return parts[0].strip()
 
     if tpl != "fiil":
-        return parts[0]
+        return parts[0] if parts else word.split("'", 1)[0]
 
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "tr")
     return str(re.findall(r"<i>\[\[[^\|]+\|([^\]]+)\]\]</i>", expanded)[0])
