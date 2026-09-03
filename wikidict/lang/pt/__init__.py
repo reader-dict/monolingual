@@ -70,7 +70,6 @@ _sections = [
     "locução verbal",
     "numeral",
     "onomatopeia",
-    "pepb|",
     "plural",
     "pospositivo",
     "prefixo",
@@ -90,6 +89,7 @@ _sections = [
     "verbal",
     "verbo",
 ]
+_sections.extend(f"pepb|{s}" for s in _sections.copy())
 _sections.extend(f"{{{{{s}" for s in _sections.copy())
 _sections.extend(etyl_section)
 sections = tuple(_sections)

@@ -94,6 +94,8 @@ PATTERNS = {
         re.compile(r"([^ ,]+).*").sub,
     ],
     "pt": [
+        # `{{pepb|sinónimo` → `sinónimo`
+        re.compile(r"\{\{pepb\|(.+)").sub,
         # `{{forma de locução substantiva 1|pt}}` → `forma de locução substantiva 1`
         re.compile(r"\{\{([^|}]+).*").sub,
         # `forma de locução substantiva 1` → `locução substantiva 1`
@@ -323,7 +325,6 @@ MERGE = {
         "expressõe": "expressão",
         "forma verbal": "verbo",
         "locução substantiva": "substantivo",
-        "pepb": "acrónimo",
         "prefixos relacionado": "prefixo",
         "sinônimo": "sinónimo",
         "substantivo comum": "substantivo",

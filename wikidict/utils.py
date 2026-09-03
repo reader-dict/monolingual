@@ -276,6 +276,8 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("pl", "przymiotnik jakościowy")
     'Przymiotnik'
 
+    >>> format_pos("pt", "{{pepb|sinónimo")
+    'Sinónimo'
     >>> format_pos("pt", "substantivo1")
     'Substantivo'
     >>> format_pos("pt", "substantivo 1")
