@@ -350,11 +350,11 @@ def setup_lua_ctx() -> None:
             ["BR: /paw.ˈlis.tə/"],
             [],
             {
-                "Adjetivo": [
+                "Adjetivo|mf.": [
                     "diz-se de pessoa de origem do Estado de São Paulo, Brasil",
                     "diz-se de artigo ou objeto do Estado de São Paulo",
                 ],
-                "Substantivo": [
+                "Substantivo|mf.": [
                     "pessoa de origem do Estado de São Paulo, Brasil",
                     "artigo ou objeto do Estado de São Paulo",
                 ],

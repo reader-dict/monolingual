@@ -3,6 +3,7 @@
 import re
 
 from ... import lang, utils
+from ..pl import extract_templates
 from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -121,9 +122,14 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['m']
     >>> find_genders("{{oxítona|ta|tu}}, {{gramática|f}}", "pt")
     ['f']
+    >>> find_genders("{{oxítona|ta|tu}}, {{g|f}}", "pt")
+    ['f']
+    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{c2g}}", "pt")
+    ['mf']
     """
-    pattern = re.compile(r"\{\{(?:gramática\|)?([fm]+)\}")
-    return utils.unique(pattern.findall(code))
+    pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?([fmc2g]+)\}")
+    genders = {"c2g": "mf"}
+    return utils.unique([genders.get(g) or g for g in pattern.findall(code)])
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -255,6 +261,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("={{-pt-}}=\n#plural de '''[[úlcera#{{pt}}|úlcera]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|úlcera}}'
 
+    >>> adjust_wikicode("={{-pt-}}=\n'''anões''' ''masculino ''", "pt")
+    "={{-pt-}}=\n'''anões''' '{{m}}"
+
     >>> from ... import context
     >>> _ = context.reset("pt")
 
@@ -276,7 +285,7 @@ def adjust_wikicode(
 
     >>> context.new_word("abaixador")
     >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", "pt")
-    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}'
+    '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}\n{{oxítona|a|bai|xa|dor}}\n{{datação|século XIV|pt}}'
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
     code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
@@ -289,6 +298,15 @@ def adjust_wikicode(
 
     # `={{-pt-}}=\n{{flex.}}` → `={{-pt-}}=\n==Substantivo==\n{{flex.}}`
     code = re.sub(r"=\s*{{-pt-}}\s*=\n{{flex", r"={{-pt-}}=\n==Substantivo==\n{{flex", code)
+
+    # Try to find more genders
+    # `'''anões''' ''masculino ''` → `'''anões''' {{m}}`
+    code = re.sub(
+        r"^([{']+.*)[ ']+(feminino|masculino)[ ']+",
+        lambda m: f"{m[1]}{{{{{m[2][0]}}}}}",
+        code,
+        flags=re.MULTILINE,
+    )
 
     #
     # Variants
@@ -310,7 +328,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        cleaned: list[str] = []
+        lines.clear()
         in_tpl = False
         tpl_code = ""
 
@@ -321,41 +339,37 @@ def adjust_wikicode(
             if in_tpl:
                 tpl_code += line
                 if tpl_code.count("{") == tpl_code.count("}"):
-                    in_tpl = False
-                    tpl_code = tpl_code.rsplit("}}", 1)[0]
-                    tpl_code += "}}"
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
-                    variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                    for tpl_sub in extract_templates(tpl_code):
+                        # Apply some clean-up to prevent breaking everything
+                        if "#if:" in tpl_sub:
+                            # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
+                            tpl_sub = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_sub)
+                        if tpl_sub.count("{{") > 1:
+                            # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
+                            tpl_sub = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_sub)
+                        if "-div" in tpl_sub and tpl_sub.count("{{") == 1:
+                            tpl_sub = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_sub)
 
-                    # Remove unrelated templates after a reverse variant one
-                    # `{{flex.pt|...}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}` → `{{flex.pt|...}}`
-                    # but not `{{flex.pt|fs=caceta|fp=cacetas|fs-div=ca.{{grifar|ce}}.ta|fp-div=ca.{{grifar|ce}}.tas}}`
-                    tpl_code = re.split(r"}}\s*\{\{", tpl_code, maxsplit=1)[0]
-                    if not tpl_code.endswith("}}"):
-                        tpl_code += "}}"
+                        if not tpl_sub.startswith(reverse_variant_titles):
+                            lines.append(tpl_sub)
+                            continue
 
-                    # Apply some clean-up to prevent breaking everything
-                    if "#if:" in tpl_code:
-                        # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
-                        tpl_code = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_code)
-                    if tpl_code.count("{{") > 1:
-                        # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
-                        tpl_code = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_code)
-                    if "-div" in tpl_code and tpl_code.count("{{") == 1:
-                        tpl_code = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_code)
+                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip()
+                        variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                        forms = utils.process_templates(
+                            word,
+                            tpl_sub,
+                            locale,
+                            templates_status=templates_status,
+                            variant_only=True,
+                        )
+                        lines.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
 
-                    forms = utils.process_templates(
-                        word,
-                        tpl_code,
-                        locale,
-                        templates_status=templates_status,
-                        variant_only=True,
-                    )
-                    cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
                     tpl_code = ""
+                    in_tpl = False
             else:
-                cleaned.append(line)
+                lines.append(line)
 
-        code = "\n".join(cleaned)
+        code = "\n".join(lines)
 
     return code
