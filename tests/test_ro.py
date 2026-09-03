@@ -99,7 +99,7 @@ def setup_lua_ctx() -> None:
             "paronim",
             ["/pa.ro'nim/"],
             [
-                "Din franceză <i>paronyme</i>, latină <i>paronymon</i>, originar format din greacă παρα <small>(greacă)</small> + <b>ονομα <small>(greacă)</small></b> -onym <small>(greacă)</small>"
+                "Din franceză <i>paronyme</i>, latină <i>paronymon</i>, originar format din greacă παρα + <b>ονομα</b> -onym"
             ],
             {
                 "Substantiv": [

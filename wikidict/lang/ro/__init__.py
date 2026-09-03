@@ -3,6 +3,7 @@
 import re
 
 from ... import lang, utils
+from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
