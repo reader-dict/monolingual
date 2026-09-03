@@ -1,0 +1,264 @@
+[[Ficheiro:Cingulata range.jpg|miniaturadaimagem|230px|Área de ocorrência das famílias de tatu (clamiforídeos em violeta, pichiegos em laranja e dasipodídeos em azul).<br><small><center>Veja ao lado algumas espécies<br> (passe o mouse/rato para o nome).</center></small>]]
+{| style="float:right; "
+|-
+|[[Imagem:Armadillo en Montemorelos.jpg|90px|tatu-galinha]]
+|[[Imagem:Tatou Safari de Peaugres 07082017 3.jpg|130px|tatupeba]]</center>
+|-
+|[[Imagem:El armadillo mas raro del mundo COSEBERÜ.jpg|90px|pichiego-maior]]
+|[[Imagem:Giant armadillo.jpg|130px|tatu-canastra]]
+|-
+|[[Imagem:Tolypeutes matacus 145032961.jpg|90px|tatu-bola]]
+|[[Imagem:Piche (Zaedyus pichiy) in laguna Las Coloradas Chubut.JPG|130px|pichiego patagão]]
+|}
+={{-pt-}}=
+=={{Substantivo|pt}}<sup>1</sup>==
+{{flex.pt|ms=tatu|mp=tatus}}
+{{oxítona|ta|tu}}, {{gramática|m}}
+# {{escopo|pt|Mamífero}} (''[[epiceno]]'') nome comum aos animais da ordem dos cingulados oriunda da América do Sul e desta tendo se espalhado até o sudeste da América do Norte, caracterizado por contar com uma carapaça dorsal articulada (que por vezes se estende até a parte superior do crânio) formada por placas justapostas, geralmente dispostas em fileiras transversais, com cauda comprida, membros curtos e garras longas e afiadas para cavar as tocas onde habita
+#* ''É o menor '''tatu''' do mundo, se alimenta de invertebrados e plantas, é e visto raramente na superfície.'' {{BBC-B|2014|janeiro|22|url=https://www.bbc.com/portuguese/noticias/2014/01/140122_tatu_rosa_an}}
+# {{escopo|pt|Brasil|Culinária}} por extensão, prato feito com a carne desse animal
+# {{escopo|pt|Brasil|Folclore}} tipo de dança folclórica de São Paulo e Rio Grande do Sul, modalidade de [[fandango]], composta de apresentação curta mas onde o sapateado masculino, com o tilintar das esporas, contrasta com o bailado delicado feminino,<ref name=casc>Câmara Cascudo. Dicionário do Folclore Brasileiro. 10ª ed. s/d. Rio de Janeiro: Ediouro. p. 857-858. ISBN 8500800070</ref> com versos ligeiros à moda de uma caça ao tatu, tamanho variando de 13-15 centímetros de comprimento na menor espécie até cerca de 1,5 m na espécie canastra
+# {{escopo|pt|Brasil|Folclore}} tipo de dança que existia no antigo estado de Mato Grosso<ref name=casc/>
+# {{escopo|pt|Brasil|Pecuária}} variedade do porco doméstico
+# {{escopo|pt|Amazonas}} tipo de abrigo temporário feito com galhos e folhas durante as chuvas
+# {{escopo|pt|Rio Grande do Sul}} cobertura usada para a secagem da erva-mate
+# {{escopo|pt|Brasil|Árvore}} árvore de pequeno porte nativa do Brasil onde habita vários biomas (da amazônia ao cerrado), da família das opiliáceas (''Agonandra brasiliensis''), com madeira frequentemente usada para pisos e móveis, reflorestamento e até uso da casca para cortiça
+# {{escopo|pt|Brasil|Coloquial}} [[muco]] nasal
+
+==={{PEPB|Co-hipónimos|Co-hipônimos|inline=1}}===
+De '''1''' (mamífero):
+* [[clamiforídeo]]
+* [[gliptodonte]]
+
+===Expressões===
+* '''[[arrancar um tatu]]''': atolar-se
+* '''[[levar um tatu]]''': levar queda
+* '''[[pegar um tatu]]''': levar queda
+Outras:
+* '''mais ligeiro que tatu de kichute''': alguém que age ou foge de forma rápida {{escopo2|Rio Grande do Sul}}
+
+==={{PEPB|Hiperónimos|Hiperônimos|inline=1}}===
+De '''1''' (mamífero):
+{{dividir em colunas|3}}
+* [[animal]]
+* [[cingulado]]
+* [[cordato]]
+* [[mamífero]]
+* [[placentário]]
+* [[xenartro]]
+{{dividir em colunas/fim}}
+De '''2''' (dança sulista):
+* [[bambaquerê]]
+De '''8''' (árvore):
+* [[opiliácea]]
+
+==={{PEPB|Hipónimos|Hipônimos|inline=1}}===
+De '''1''' (mamífero):
+{{dividir em colunas|3}}
+* [[clamiforídeo]]
+* [[dasipodídeo]]
+* [[pichiego]]
+{{dividir em colunas/fim}}
+
+==={{PEPB|Sinónimos|Sinônimos|inline=1}}===
+De '''8''' (árvore):
+* [[pau-marfim]]
+
+===Termos derivados===
+{{verTambém.Ini}}
+* [[fruta-de-tatu]]
+* [[lagarto-tatu]]
+* [[marimbondo-tatu]]
+* [[tatuaçu]]
+* [[tatuaíva]]
+* [[tatu-bola]]
+* [[tatu-bola-do-nordeste]]
+* [[tatu-canastra]]
+* [[tatu-cascudo]]
+* [[tatu-de-folha]]
+{{verTambém.NovaColuna}}
+* [[tatu-de-jardim]]
+* [[tatu-de-mão-amarela]]
+* [[tatu-de-rabo-de-porco]]
+* [[tatu-de-rabo-mole]]
+* [[tatuetê]]
+* [[tatu-galinha]]
+* [[tatuíra]]
+* [[tatu-mirim]]
+* [[tatu-mulita]]
+{{verTambém.NovaColuna}}
+* [[tatupeba]] / [[tatupeva]]
+* [[tatupoiú]]
+* [[tatu-peludo]]
+* [[tatu-veado]]
+* [[tatu-verdadeiro]]
+* [[tatuxima]]
+* [[tatuzão]]
+* [[tatuzeiro]]
+* [[tatuzinho]]
+{{verTambém.Fim}}
+
+===Tradução===
+{{tradini|De 1 (mamífero)}}
+* {{trad|af|gordeldier}}
+* {{trad|de|Gürteltier}}
+* {{trad|hy|զրահակիր|t=zrahakir}}
+* {{trad|ast|armadillu}}
+* {{trad|bg|бронено́сец|t=bronenósec}}
+* {{trad|kgp|fãfãn}}
+* {{trad|ca|armadillo}}
+* {{trad|cs|pásovec}}
+* {{trad|zh|犰狳|t=qiúyú}}
+* {{trad|ko|아르마딜로|t=areumadillo}}
+* {{trad|da|bæltedyr}}
+* {{trad|es|armadillo|armado|cachicamo|carachupa|cusuco|gurre|jerrejerre|mulita|pitero|quirquincho|tatú|toche|tumulle}|tatuejo|run|timbo}}
+* {{trad|et|vöölane}}
+* {{trad|fi|vyötiäinen}}
+* {{trad|fr|tatou}}
+* {{trad|gl|armadillo}}
+* {{trad|el|αρμαντίλλο|t=armantíllo}}
+* {{trad|he|אַרְמָדִיל|t=armadíl}}
+* {{trad|nl|armadillo|gordeldier}}
+* {{trad|hu|tatu|övesállat|armadilló}}
+{{tradmeio}}
+* {{trad|hrx|Tattu}}
+* {{trad|io|armadilo}}
+* {{trad|id|trenggiling}}
+* {{trad|en|armadillo}}
+* {{trad|it|armadillo}}
+* {{trad|yua|weech}}
+* {{trad|ja|犰狳|アルマジロ|t=kyūyo, arumajiro}}
+* {{trad|nch|ayitochij}}
+* {{trad|nhw|aitochi}}
+* {{trad|cag|c’acjo}}
+* {{trad|fa|آرمادیلو|t=ârmâdilo}}
+* {{trad|pl|pancernik}}
+* {{trad|ro|tatu}}
+* {{trad|ru|бронено́сец|t=bronenósec}}
+* {{trad|sw|kakakuona}}
+* {{trad|sv|bälta}}
+* {{trad|sv|th|นิ่ม|t=nîm}}
+* {{trad|tr|armadillo}}
+* {{trad|uk|бронено́сець|t=bronenósecʹ}}
+* {{trad|uz|bronenosets}}
+{{tradfim}}
+
+==Substantivo<sup>2</sup>==
+{{flex.pt|fs=tatu|fp=tatus}}
+{{oxítona|ta|tu}}, {{gramática|f}}
+# o mesmo que [[tatuagem]] (desenho visível na pele humana resultado da aplicação subcutânea de pigmento]s introduzidos através de perfurações com agulhas)
+#* ''Muitas pessoas tatuam mantras e palavras em tibetano não só pela parte estética, mas por acreditarem que a '''tatu''' pode trazer benefícios espirituais.'' {{UOL|2010|fevereiro|11|url=https://revistatrip.uol.com.br/tpm/tatuagem-tibetana}}
+
+==={{PEPB|Sinónimos|Sinônimos|inline=1}}===
+{{verTambém.Ini}}
+* {{escopo2|estrangeirismo}} ''[[tattoo]]''
+{{verTambém.NovaColuna}}
+* [[tatuagem]]
+{{verTambém.Fim}}
+
+=={{etimologia|pt}}==
+De substantivo¹ (animal):
+{{etimo2|tu|tatu|pt}}
+
+=={{pronúncia|pt}}==
+===Brasil===
+* [[AFI]]: /taˈtu/
+
+===Portugal===
+* AFI: {{AFI|/ta.ˈtu/}}
+
+==Ver também==
+===No Wikcionário===
+{{verTambém.Ini}}
+* [[cabaçu]]
+* [[cabuçu]]
+* [[desdentado]]
+{{verTambém.NovaColuna}}
+* [[mataco]]
+* [[papa-defunto]]
+* [[peba]]
+{{verTambém.NovaColuna}}
+* [[peludo]]
+* [[megafauna]]
+* [[volta-no-meio]]
+{{verTambém.Fim}}
+
+===Na Wikipédia===
+* {{interwiki|w|pt}} {{escopo2|página de desambiguação}}
+** {{interwiki|w|pt|Cingulata}}
+** {{interwiki|w|pt|Tatuagem}}
+* {{interwiki|w|pt|Agonandra brasiliensis}}
+* {{interwiki|w|pt|Muco}}
+
+===No Commons===
+Veja imagens em:
+* {{interwiki|c|Category:Cingulata}}
+* {{interwiki|c|Category:Agonandra brasiliensis}}
+
+===No Wikispecies===
+* {{interwiki|species|Cingulata}}
+* {{interwiki|species|Agonandra brasiliensis}}
+
+==Ligações externas==
+* {{Aulete}}
+* {{Michaelis}}
+* {{Dicio}}
+* {{DicioAberto}}
+* {{DLPO}}
+* {{Infopédia}}
+* {{PLP}}
+* {{DLPACL}}
+* {{VOLPABL}}
+* {{Forvo|tatu|pt}}
+
+{{Referências}}
+
+[[Categoria:Entrada com imagem (Português)]]
+
+={{-sn-}}=
+==Numeral==
+'''tatu''', {{gramática|card}}
+# {{escopo|sn|Numeral cardinal}} [[três]] (3, III)
+==Ver também==
+===No Wikcionário===
+* [[Apêndice:Números|Apêndice: Números]]
+{{números/sn}}
+===Na Wikipédia===
+* {{interwiki|w|sn}}
+[[Categoria:Falso cognato (Chona)]]
+
+
+={{-gn-}}=
+=={{Substantivo|gn}}==
+'''tatu'''
+# {{escopo|gn|Mamífero}} [[tatu#Português|tatu]]
+==Ver também==
+===Na Wikipédia===
+* {{interwiki|w|gn}}
+[[Categoria:Entrada com imagem (Guarani)]]
+
+
+={{-ro-}}=
+=={{Substantivo|ro}}==
+'''tatu'''
+# {{escopo|ro|Mamífero}} [[tatu#Português|tatu]]
+==Ver também==
+===Na Wikipédia===
+* {{interwiki|w|ro}}
+[[Categoria:Entrada com imagem (Romeno)]]
+
+
+={{-sw-}}=
+==Numeral==
+'''tatu''', {{gramática|card}}
+# {{escopo|sw|Numeral cardinal}} [[três]] (3, III)
+
+==Ver também==
+===No Wikcionário===
+{{verTambém.Ini}}
+* [[Apêndice:Números|Apêndice: Números]]
+{{verTambém.Fim}}
+{{números/sw}}
+===Na Wikipédia===
+* {{interwiki|w|sw}}
+[[Categoria:Falso cognato (Suaíli)]]

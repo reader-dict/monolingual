@@ -119,8 +119,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['mf']
     >>> find_genders("'''COPOM''', {{m}}", "pt")
     ['m']
+    >>> find_genders("{{oxítona|ta|tu}}, {{gramática|f}}", "pt")
+    ['f']
     """
-    pattern = re.compile(r"{([fm]+)}")
+    pattern = re.compile(r"\{\{(?:gramática\|)?([fm]+)\}")
     return utils.unique(pattern.findall(code))
 
 

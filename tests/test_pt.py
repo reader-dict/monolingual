@@ -8,19 +8,20 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = "pt"
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("pt")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "6",
-            [],
             [],
             [],
             {
@@ -32,7 +33,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "-a",
-            [],
             [],
             [
                 "De <b>1</b>: desinência nominal feminina acrescentada no português moderno a palavras anteriormente comuns-de-dois, como portuguesa (e praticamente o padrão <i>-ês</i> [masculino]:-esa [feminino]), espanhol(a), senhor(a).",
@@ -54,7 +54,6 @@ def setup_lua_ctx() -> None:
         (
             "ababalhar",
             ["BR: /a.ba.ba.ˈʎaɾ/"],
-            [],
             ["De baba."],
             {"Verbo": ["(popular) babar; conspurcar"]},
             [],
@@ -113,7 +112,6 @@ def setup_lua_ctx() -> None:
         (
             "alguém",
             ["PT: /aɫ.ˈɡɐ̃j̃/", "BR: /aw.ˈgẽj/"],
-            [],
             ["Do latim <i>alĭquem</i>."],
             {"Acrónimo": ["De <b>1</b>: ninguém"], "Pronome": ["pessoa não identificada"]},
             [],
@@ -123,16 +121,14 @@ def setup_lua_ctx() -> None:
             "algo",
             ["PT: /ˈaɫ.ɡu/", "BR: /ˈaw.gu/"],
             [],
-            [],
             {"Advérbio": ["um pouco, de certo modo"], "Pronome": ["objeto (não-identificado) de que se fala"]},
             [],
             [],
         ),
-        ("anões", [], [], [], {}, ["anão"], []),
+        ("anões", [], [], {}, ["anão"], []),
         (
             "baiano",
             ["BR: /baj.ˈjã.nu/"],
-            [],
             ["Derivado de Bahia, mais o sufixo ano, com perda do H."],
             {
                 "Adjetivo": ["do Estado da Bahia, Brasil"],
@@ -148,7 +144,6 @@ def setup_lua_ctx() -> None:
         (
             "cabrum",
             [],
-            ["mf"],
             ["Do latim <i>caprunu</i>&nbsp;“cabra”."],
             {
                 "Adjetivo|mf.": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
@@ -161,7 +156,6 @@ def setup_lua_ctx() -> None:
         (
             "COPOM",
             ["BR: /ko.ˈpõ/"],
-            ["m"],
             [],
             {
                 "Acrónimo|m.": [
@@ -175,11 +169,10 @@ def setup_lua_ctx() -> None:
         (
             "dezassete",
             ["PT: /dɨ.zɐ.ˈsɛ.tɨ/"],
-            [],
             ["Contração do latim vulgar <i>decem</i> + <i>ac</i> + <i>septem</i>."],
             {
                 "Numeral": ["vide dezessete"],
-                "Substantivo": [
+                "Substantivo|m.": [
                     "o número dezassete (17, XVII)",
                     "nota correspondente a dezassete valores",
                     "pessoa ou coisa que apresenta o número dezassete numa ordenação",
@@ -188,10 +181,9 @@ def setup_lua_ctx() -> None:
             [],
             ["dezassetes"],
         ),
-        ("ensimesmariam", [], [], [], {}, ["ensimesmar"], []),
+        ("ensimesmariam", [], [], {}, ["ensimesmar"], []),
         (
             "etc",
-            [],
             [],
             [],
             {
@@ -205,7 +197,6 @@ def setup_lua_ctx() -> None:
         (
             "galium",
             [],
-            [],
             [
                 "Do nome do gênero ao que pertence a planta, <i>Galium</i>. Pelo grego γάλιον, (galion), (planta galião, <i>G. verum</i>), de γάλα, (gala), (leite, por ser usada para coalhar o leite)."
             ],
@@ -216,7 +207,6 @@ def setup_lua_ctx() -> None:
         (
             "giro-",
             [],
-            [],
             ["Do grego antigo <i>γῦρος</i>&nbsp;<i>(gyros)</i>, pelo latim <i>gyrus</i>."],
             {"Afixo": ["círculo", "redondo"]},
             [],
@@ -224,7 +214,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "-ista",
-            [],
             [],
             [
                 "Do grego antigo <i>-ιστεσ</i> (<i>-istes</i>) através do latim <i>-ista</i> através do francês antigo <i>-iste</i>."
@@ -244,14 +233,12 @@ def setup_lua_ctx() -> None:
             "Ku",
             [],
             [],
-            [],
             {"Substantivo": ["símbolo químico do kurtschatóvio"]},
             [],
             [],
         ),
         (
             "neo-",
-            [],
             [],
             ["Do grego antigo <i>νέος</i>."],
             {
@@ -268,7 +255,6 @@ def setup_lua_ctx() -> None:
             "não tenho trocado",
             [],
             [],
-            [],
             {
                 "Frase": [
                     "usado por prestador de serviço para informar que não tem dinheiro amiúde que possa servir de troco ao valor pago por cliente",
@@ -280,7 +266,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "nomenclaturar",
-            [],
             [],
             [],
             {"Verbo": ["fazer a nomenclatura de"]},
@@ -340,7 +325,6 @@ def setup_lua_ctx() -> None:
         (
             "objetiva",
             [],
-            ["f"],
             [],
             {
                 "Substantivo|f.": [
@@ -354,7 +338,6 @@ def setup_lua_ctx() -> None:
         (
             "para",
             ["PT: /ˈpɐ.ɾɐ/"],
-            [],
             ["Do latim <i>per</i> <i>ad</i>."],
             {
                 "Preposição": ["exprime fim, destino, lugar, tempo, direção etc"],
@@ -365,7 +348,6 @@ def setup_lua_ctx() -> None:
         (
             "paulista",
             ["BR: /paw.ˈlis.tə/"],
-            [],
             [],
             {
                 "Adjetivo": [
@@ -384,7 +366,6 @@ def setup_lua_ctx() -> None:
             "quebrar galho",
             [],
             [],
-            [],
             {"Expressão": ["resolver uma situação difícil ou complicada"]},
             [],
             [],
@@ -393,15 +374,59 @@ def setup_lua_ctx() -> None:
             "sublist",
             [],
             [],
-            [],
             {"Adjetivo": ["<b>Romanização</b>", ("<b>Pinyin</b>: duo1 shan1",), "montanhoso"]},
             [],
             [],
         ),
-        ("tenui-", [], [], [], {"Antepositivo": ["variante ortográfica de <b>tenu-</b>"]}, [], []),
+        (
+            "tatu",
+            ["PT: /ta.ˈtu/", "BR: /taˈtu/"],
+            ["De substantivo¹ (animal):Do tupi <i>tatu</i>."],
+            {
+                "Substantivo|m.": [
+                    "(zoologia) (<i>epiceno</i>) nome comum aos animais da ordem dos cingulados oriunda da América do Sul e desta tendo se espalhado até o sudeste da América do Norte, caracterizado por contar com uma carapaça dorsal articulada (que por vezes se estende até a parte superior do crânio) formada por placas justapostas, geralmente dispostas em fileiras transversais, com cauda comprida, membros curtos e garras longas e afiadas para cavar as tocas onde habita",
+                    "(Brasil e&nbsp;alimentação) por extensão, prato feito com a carne desse animal",
+                    "(Brasil e&nbsp;Folclore) tipo de dança folclórica de São Paulo e Rio Grande do Sul, modalidade de fandango, composta de apresentação curta mas onde o sapateado masculino, com o tilintar das esporas, contrasta com o bailado delicado feminino, com versos ligeiros à moda de uma caça ao tatu, tamanho variando de 13-15 centímetros de comprimento na menor espécie até cerca de 1,5 m na espécie canastra",
+                    "(Brasil e&nbsp;Folclore) tipo de dança que existia no antigo estado de Mato Grosso",
+                    "(Brasil e&nbsp;Pecuária) variedade do porco doméstico",
+                    "(Amazonas) tipo de abrigo temporário feito com galhos e folhas durante as chuvas",
+                    "(Rio Grande do Sul) cobertura usada para a secagem da erva-mate",
+                    "(Brasil e&nbsp;Árvore) árvore de pequeno porte nativa do Brasil onde habita vários biomas (da amazônia ao cerrado), da família das opiliáceas (<i>Agonandra brasiliensis</i>), com madeira frequentemente usada para pisos e móveis, reflorestamento e até uso da casca para cortiça",
+                    "(Brasil e&nbsp;coloquial) muco nasal",
+                ],
+                "Substantivo|f.": [
+                    "o mesmo que tatuagem (desenho visível na pele humana resultado da aplicação subcutânea de pigmento]s introduzidos através de perfurações com agulhas)"
+                ],
+                "Acrónimo": [
+                    "clamiforídeo",
+                    "gliptodonte",
+                    "animal",
+                    "cingulado",
+                    "cordato",
+                    "mamífero",
+                    "placentário",
+                    "xenartro",
+                    "bambaquerê",
+                    "opiliácea",
+                    "dasipodídeo",
+                    "pichiego",
+                    "pau-marfim",
+                    "(estrangeirismo) <i>tattoo</i>",
+                    "tatuagem",
+                ],
+                "Expressão": [
+                    "<b>arrancar um tatu</b>: atolar-se",
+                    "<b>levar um tatu</b>: levar queda",
+                    "<b>pegar um tatu</b>: levar queda",
+                    "<b>mais ligeiro que tatu de kichute</b>: alguém que age ou foge de forma rápida (Rio Grande do Sul)",
+                ],
+            },
+            [],
+            ["tatus"],
+        ),
+        ("tenui-", [], [], {"Antepositivo": ["variante ortográfica de <b>tenu-</b>"]}, [], []),
         (
             "tique-taque",
-            [],
             [],
             [],
             {
@@ -415,9 +440,8 @@ def setup_lua_ctx() -> None:
             "to",
             [],
             [],
-            [],
             {
-                "Contração": [
+                "Contração|m.": [
                     "(antigo) contração do pronome pessoal te com o pronome pessoal ou demonstrativo o",
                 ]
             },
@@ -427,19 +451,17 @@ def setup_lua_ctx() -> None:
         (
             "ũa",
             [],
-            [],
             ["Do Latim <i>una-</i>: <i>una-</i> deu <b>ũa</b> por queda do <b>n</b> com a nasalação do <b>ũ</b>."],
             {"Artigo": ["ortografia antiga de uma"]},
             [],
             ["ũas", "ũu", "ũus"],
         ),
-        ("UTC", [], [], [], {"Sigla": ["(estrangeirismo) ver TUC"]}, [], []),
+        ("UTC", [], [], {"Sigla": ["(estrangeirismo) ver TUC"]}, [], []),
     ],
 )
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
@@ -447,8 +469,8 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "pt")
-    details = parse_word(word, code, "pt", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
