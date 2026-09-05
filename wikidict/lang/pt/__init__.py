@@ -103,7 +103,7 @@ reverse_variant_titles = (
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
-definitions_to_ignore = ("[[AFI]]:", "peçodef", "[[X-SAMPA]]:")
+definitions_to_ignore = ("[[AFI]]:", "AFI:", "peçodef", "X-SAMPA")
 
 templates_ignored = (
     "{{?",
