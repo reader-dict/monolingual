@@ -677,7 +677,10 @@ def parse_word(
         )
 
     if definitions or force:
-        prons = _find_pronunciations(top_sections, lang_src, lang_dst)
+        for pron in (prons := _find_pronunciations(top_sections, lang_src, lang_dst)).copy():
+            if "{{" in pron:
+                log.warning("Malformed pronunciation in %r: %r", word, pron)
+                prons.remove(pron)
         definitions.pop("Trans", None)
 
     # Etymology
