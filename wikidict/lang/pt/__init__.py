@@ -134,18 +134,22 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['mf']
     >>> find_genders("{{paroxítona|an|go|la}} {{gramática|2g}}\n{{paroxítona|an|go|la}} {{gramática|m}}\n{{paroxítona|an|go|la}} {{gramática|f}}", "pt")
     ['mf']
+    >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", "pt")
+    ['mf']
     """
     pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?([fmc2g]+)\}")
     res: set[str] = set()
     for gender in pattern.findall(code):
-        if gender in ("2g", "c2g"):
+        if gender in ("2g", "c2g", "mf", "fm"):
             res.update(("f", "m"))
         elif gender == "gc":
             res.add("c")
         else:
             res.add(gender)
-    if sorted(res) == ["f", "m"]:
-        return ["mf"]
+    if "f" in res and "m" in res:
+        res.add("mf")
+        res.discard("f")
+        res.discard("m")
     return utils.unique(sorted(res))
 
 
