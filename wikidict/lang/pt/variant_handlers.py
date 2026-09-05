@@ -29,6 +29,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     forms.discard(word)
     forms.discard("&ndash;")
     forms.discard("-")
+    forms.discard("—")
     forms.discard("")
 
     return sorted(forms)
