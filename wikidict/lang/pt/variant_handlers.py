@@ -5,7 +5,10 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
+    cleaned = utils.cleanup_rev_variant(form, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
+    if "''" in cleaned or "=" in cleaned:
+        return ""
+    return cleaned
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -34,18 +37,12 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     for line in lines:
         if "]], [[" in line:
             for subline in line.split("]], [["):
-                form = (re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]
-                if "''" not in form:
-                    forms.add(cleanup(form))
+                forms.add(cleanup((re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]))
         elif "<br/>" in line:
             for subline in line.split("<br/>"):
-                form = (re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]
-                if "''" not in form:
-                    forms.add(cleanup(form))
+                forms.add(cleanup((re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]))
         else:
-            form = (re.findall(r"\[\[([^#]+)#[^|]+\|", line) or [line.strip(" '|")])[0]
-            if "''" not in form:
-                forms.add(cleanup(form))
+            forms.add(cleanup((re.findall(r"\[\[([^#]+)#[^|]+\|", line) or [line.strip(" '|")])[0]))
 
     forms.discard(word)
     forms.discard("&ndash;")
