@@ -230,6 +230,14 @@ def setup_lua_ctx() -> None:
             [],
         ),
         (
+            "imbiras",
+            ["BR: /ĩ.ˈbi.ɾɐs/"],
+            [],
+            {},
+            ["imbira"],
+            ["imbira"],
+        ),
+        (
             "Ku",
             [],
             [],

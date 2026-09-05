@@ -1,0 +1,18 @@
+={{-pt-}}=
+==Forma de substantivo==
+{{flex.pt|fs=imbira|fp=imbiras}}
+{{paroxítona|im|bi|ras}}, {{gramática|fp}}
+# [[plural]] de '''[[imbira]]'''
+{{aviso.flexão|imbira}}
+
+=={{pronúncia|pt}}==
+===Brasil===
+====Paulista====
+* [[AFI]]: {{AFI|/ĩ.ˈbi.ɾɐs/}}
+* [[X-SAMPA]]: /i~."bi.46s/
+====Gaúcha====
+* [[AFI]]: {{AFI|/ĩ.ˈbi.ɾas/}}
+* [[X-SAMPA]]: /i~."bi.4as/
+
+
+[[Categoria:Forma de substantivo (Português)]]
