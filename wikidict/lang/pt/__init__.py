@@ -350,7 +350,7 @@ def adjust_wikicode(
                         if "-div" in tpl_sub and tpl_sub.count("{{") == 1:
                             tpl_sub = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_sub)
 
-                        if not tpl_sub.startswith(reverse_variant_titles):
+                        if not tpl_sub.startswith(interesting_reverse_variant_titles):
                             lines.append(tpl_sub)
                             continue
 
