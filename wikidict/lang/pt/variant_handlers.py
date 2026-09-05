@@ -1,8 +1,6 @@
 import re
 from collections import defaultdict
 
-import wikitextparser as wtp
-
 from ... import context, utils
 
 
@@ -12,19 +10,16 @@ def cleanup(form: str) -> str:
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     wikitext = re.sub(r"<sup>\d+</sup>", "", wikitext)
-    wikitext = wikitext.replace("<br>", "\n| ").replace("<br/>", "\n| ")
+    lines = [
+        line
+        for raw_line in wikitext.splitlines()
+        if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|+", "|}"))
+    ]
 
     forms: set[str] = set()
-    tables = wtp.parse(wikitext).get_tables(recursive=True)
-
-    for table in tables:
-        cells = table.data(span=False)
-        for lines in cells:
-            for item in lines:
-                if not item or "''" in item:
-                    continue
-                raw_forms = re.findall(r"\[\[(.+)#\w+\|\1\]\]", item) or [item]
-                forms.update([cleanup(form) for form in raw_forms])
+    for line in lines:
+        raw_forms = re.findall(r"\[\[([^#]+)#[^|]+\|\1\]\]", line) or [line.strip(" '|")]
+        forms.update([cleanup(form) for form in raw_forms if "''" not in form])
 
     forms.discard(word)
     forms.discard("&ndash;")
