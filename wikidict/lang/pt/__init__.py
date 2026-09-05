@@ -113,7 +113,7 @@ templates_ignored = (
 
 
 def find_genders(code: str, locale: str) -> list[str]:
-    """
+    r"""
     >>> find_genders("", "pt")
     []
     >>> find_genders("{{oxítona|ca|brum}}, {{mf}}", "pt")
@@ -124,12 +124,29 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['f']
     >>> find_genders("{{oxítona|ta|tu}}, {{g|f}}", "pt")
     ['f']
+    >>> find_genders("{{oxítona|ta|tu}}, {{g|c}}", "pt")
+    ['c']
     >>> find_genders("{{paroxítona|pau|lis|ta}}, {{c2g}}", "pt")
+    ['mf']
+    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{gramática|2g}}", "pt")
+    ['mf']
+    >>> find_genders("'''ANTT''', {{gramática|f}}\n'''ANTT''', {{gramática|m}}", "pt")
+    ['mf']
+    >>> find_genders("{{paroxítona|an|go|la}} {{gramática|2g}}\n{{paroxítona|an|go|la}} {{gramática|m}}\n{{paroxítona|an|go|la}} {{gramática|f}}", "pt")
     ['mf']
     """
     pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?([fmc2g]+)\}")
-    genders = {"c2g": "mf"}
-    return utils.unique([genders.get(g) or g for g in pattern.findall(code)])
+    res: set[str] = set()
+    for gender in pattern.findall(code):
+        if gender in ("2g", "c2g"):
+            res.update(("f", "m"))
+        elif gender == "gc":
+            res.add("c")
+        else:
+            res.add(gender)
+    if sorted(res) == ["f", "m"]:
+        return ["mf"]
+    return utils.unique(sorted(res))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
