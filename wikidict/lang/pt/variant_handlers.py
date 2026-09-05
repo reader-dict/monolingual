@@ -9,17 +9,43 @@ def cleanup(form: str) -> str:
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
+    wikitext = re.sub(r'(?:class|colspan|rowspan)="[^"]+"', "", wikitext)
     wikitext = re.sub(r"<sup>\d+</sup>", "", wikitext)
+    wikitext = wikitext.replace("|| ", "\n| ")
     lines = [
         line
         for raw_line in wikitext.splitlines()
-        if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|+", "|}"))
+        if (
+            (line := raw_line.strip())
+            and line.startswith("|")
+            and not line.startswith(("|-", "|+", "|}"))
+            and "lightgray" not in line
+            and "#CEE3F6" not in line
+            and "#CEF6CE" not in line
+            and "#F5ECCE" not in line
+            and "#F6CECE" not in line
+            and "background-color: white" not in line
+            and (line := re.sub(r'\|style="([^\|]+)', "", line))
+            and line != "|"
+        )
     ]
 
     forms: set[str] = set()
     for line in lines:
-        raw_forms = re.findall(r"\[\[([^#]+)#[^|]+\|\1\]\]", line) or [line.strip(" '|")]
-        forms.update([cleanup(form) for form in raw_forms if "''" not in form])
+        if "]], [[" in line:
+            for subline in line.split("]], [["):
+                form = (re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]
+                if "''" not in form:
+                    forms.add(cleanup(form))
+        elif "<br/>" in line:
+            for subline in line.split("<br/>"):
+                form = (re.findall(r"\[\[([^#]+)#[^|]+\|", subline) or [subline.strip(" '")])[0]
+                if "''" not in form:
+                    forms.add(cleanup(form))
+        else:
+            form = (re.findall(r"\[\[([^#]+)#[^|]+\|", line) or [line.strip(" '|")])[0]
+            if "''" not in form:
+                forms.add(cleanup(form))
 
     forms.discard(word)
     forms.discard("&ndash;")
