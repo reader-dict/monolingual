@@ -635,42 +635,6 @@ def parse_word(
     if parsed_sections:
         definitions = find_definitions(word, parsed_sections, lang_src, lang_dst, templates_status=templates_status)
 
-    # Some words have no head sections but only a list of definitions at the root of the "top" section.
-    # Sometimes, there will be a section for synonyms, and we still need to check for top-section-less data.
-    if (lang_src == "no" and (not definitions or (len(definitions) == 1 and "Synonymer" in definitions))) or (
-        lang_src == "pt"
-        and (
-            not definitions
-            or (
-                len(definitions) == 1
-                and any(syn in definitions for syn in ("Sinónimo", "Sinónimos", "Sinônimo", "Sinônimos"))
-            )
-        )
-    ):
-        top_section = top_sections[0]
-        top_section.title = "top"
-        section_pos = prettify_pos(top_section, lang_src, lang_dst)
-        definitions |= find_definitions(
-            word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
-        )
-
-    if definitions or force:
-        prons = _find_pronunciations(top_sections, lang_src, lang_dst)
-
-    # Etymology
-    if definitions:
-        if lang_src == "sv":
-            for top in top_sections:
-                etymology.extend(find_etymology(word, lang_src, lang_dst, top, templates_status=templates_status))
-        elif etymology_sections:
-            for etyl_data in etymology_sections:
-                etymology.extend(find_etymology(word, lang_src, lang_dst, etyl_data, templates_status=templates_status))
-
-        if etymology:
-            # Remove duplicates
-            seen = set()
-            etymology = [e for e in etymology if not (e in seen or seen.add(e))]  # type: ignore[func-returns-value]
-
     # Variants
     if parsed_sections:
         interesting_templates = lang.variant_templates[lang_dst]
@@ -692,8 +656,43 @@ def parse_word(
         if reverse_variants:
             reverse_variants = sorted(set(reverse_variants))
 
-    if definitions:
+    # Some words have no head sections but only a list of definitions at the root of the "top" section.
+    # Sometimes, there will be a section for synonyms, and we still need to check for top-section-less data.
+    if (lang_src == "no" and (not definitions or (len(definitions) == 1 and "Synonymer" in definitions))) or (
+        lang_src == "pt"
+        and (not variants and not reverse_variants)
+        and (
+            not definitions
+            or (
+                len(definitions) == 1
+                and any(syn in definitions for syn in ("Sinónimo", "Sinónimos", "Sinônimo", "Sinônimos"))
+            )
+        )
+    ):
+        top_section = top_sections[0]
+        top_section.title = "top"
+        section_pos = prettify_pos(top_section, lang_src, lang_dst)
+        definitions |= find_definitions(
+            word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
+        )
+
+    if definitions or force:
+        prons = _find_pronunciations(top_sections, lang_src, lang_dst)
         definitions.pop("Trans", None)
+
+    # Etymology
+    if definitions:
+        if lang_src == "sv":
+            for top in top_sections:
+                etymology.extend(find_etymology(word, lang_src, lang_dst, top, templates_status=templates_status))
+        elif etymology_sections:
+            for etyl_data in etymology_sections:
+                etymology.extend(find_etymology(word, lang_src, lang_dst, etyl_data, templates_status=templates_status))
+
+        if etymology:
+            # Remove duplicates
+            seen = set()
+            etymology = [e for e in etymology if not (e in seen or seen.add(e))]  # type: ignore[func-returns-value]
 
     return Word(prons, [], etymology, definitions, variants, reverse_variants)
 
