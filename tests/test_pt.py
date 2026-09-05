@@ -387,6 +387,26 @@ def setup_lua_ctx() -> None:
             [],
         ),
         (
+            "tabuense",
+            [],
+            [
+                "(Morfologia) Tabua + -ense",
+                "(Morfologia) Tábua + -ense",
+            ],
+            {
+                "Adjetivo": [
+                    "(Geografia e&nbsp;Portugal) relativo ou pertencente a Tabua",
+                    "(Geografia e&nbsp;Portugal) relativo ou pertencente a Tábua, vila de Coimbra, em Portugal",
+                ],
+                "Substantivo": [
+                    "(Gentílico e&nbsp;Portugal) natural de Tabua ou seu habitante",
+                    "(Gentílico e&nbsp;Portugal) natural de Tábua ou seu habitante",
+                ],
+            },
+            [],
+            ["tabuenses"],
+        ),
+        (
             "tatu",
             ["PT: /ta.ˈtu/", "BR: /taˈtu/"],
             ["De substantivo¹ (animal):Do tupi <i>tatu</i>."],

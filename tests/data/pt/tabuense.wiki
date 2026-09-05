@@ -1,0 +1,25 @@
+={{-pt-}}=
+
+=={{Adjetivo|pt}}==
+{{flex.pt|s=tabuense|p=tabuenses}}
+{{paroxítona|ta|bu|en|se}}, {{g|c2gs}}
+# {{escopo|pt|Geografia|Portugal}} [[relativo]] ou [[pertencente]] a [[w:Tabua|Tabua]]
+# {{escopo|pt|Geografia|Portugal}} [[relativo]] ou [[pertencente]] a [[w:Tábua|Tábua]], vila de Coimbra, em Portugal
+
+=={{Substantivo|pt}}==
+{{flex.pt|s=tabuense|p=tabuenses}}
+{{paroxítona|ta|bu|en|se}}, {{g|c2gs}}
+# {{escopo|pt|Gentílico|Portugal}} [[natural]] de [[w:Tabua|Tabua]] ou seu [[habitante]]
+# {{escopo|pt|Gentílico|Portugal}} [[natural]] de [[w:Tábua|Tábua]] ou seu [[habitante]]
+
+=={{Etimologia|pt}}==
+# {{escopo|Morfologia}} [[w:Tabua|Tabua]] + [[-ense]]
+# {{escopo|Morfologia}} [[w:Tábua|Tábua]] + [[-ense]]
+
+==Referências==
+* https://web.archive.org/web/20250317021503/https://otabuense.pt/index.php/2024/11/25/casa-dos-tabuenses-presente-no-17o-aniversario-da-associacao-das-casas-regionais-em-lisboa/
+* https://www.acomarcadearganil.pt/tabua-casa-dos-tabuenses-vai-comemorar-90-anos/
+* https://noticiasdetabua.sapo.pt/espero-que-os-tabuenses-fiquem-orgulhosos-de-mim/
+* https://radioboanova.sapo.pt/portugal-dos-pequenitos-esta-mais-perto-dos-tabuenses/
+* https://www.cm-tabua.pt/sistema-de-incentivos-de-base-territorial-apresentado-aos-empresarios-tabuenses/
+* https://web.archive.org/web/20250218195336/https://freguesiatabua.pt/index.php/cultura/historial
