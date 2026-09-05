@@ -60,8 +60,10 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     """
     >>> render_variant("flexion", ["ensimesmar"], defaultdict(str), "")
     'ensimesmar'
+    >>> render_variant("flexion", ["ensimesmar#Substantivo1"], defaultdict(str), "")
+    'ensimesmar'
     """
-    return parts[0]
+    return parts[0].split("#", 1)[0]
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
