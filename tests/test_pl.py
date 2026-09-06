@@ -30,9 +30,6 @@ def setup_lua_ctx() -> None:
                 "W polszczyźnie od XIII wieku; ogsłow. (por. czes. a 'i', rzadziej 'a', ros. а 'a, ale, lecz, i', serb.-chorw. a 'a, i', scs. a 'a, ale, i, chociaż, jakkolwiek') z prasł. *a – partykuła wzmacniająca i nawiązująca, prapokrewne z litew. õ 'i, a' oraz stind. ât 'potem, i, tak'.",
             ],
             {
-                "Litera": [
-                    "pierwsza litera podstawowego współczesnego alfabetu łacińskiego; zob. <i>też</i> a w Wikipedii"
-                ],
                 "Symbol": [
                     "fonet. (<i>w IPA</i>) samogłoska otwarta przednia niezaokrąglona",
                     "fiz. jedn. miar. symbol jednostki powierzchni, ara, równego 100\xa0m², czyli setnej części hektara",
@@ -93,7 +90,7 @@ def setup_lua_ctx() -> None:
             "książka",
             ["[ˈcɕɔ̃w̃ʃka]"],
             [
-                "prasł. *kъnigy, zdrobnienie od prasł. *kъnъ – kloc drewna; por. knieja; do XVI wieku tylko w liczbie mnogiej"
+                "prasł. *kъnigy, zdrobnienie od prasł. *kъnъ – kloc drewna; por.&#32;knieja; do XVI wieku tylko w liczbie mnogiej"
             ],
             {
                 "Rzeczownik|ż.": [

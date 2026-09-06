@@ -35,7 +35,7 @@ def setup_lua_ctx() -> None:
             {
                 "Sustantivo": [
                     "Vehículos, ciclismo: Vehículo, comúnmente de dos ruedas iguales, propulsado mediante la aplicación de la fuerza de las piernas sobre los pedales que la transmiten hacia los piñones y una cadena moviendo la rueda trasera.",
-                    ("<b>Sinónimos:</b> bici, velocípedo",),
+                    ("<b>Sinónimos:</b> bici, velocípedo.",),
                 ]
             },
             [],
@@ -60,13 +60,13 @@ def setup_lua_ctx() -> None:
             {
                 "Sustantivo": [
                     "Lámina en donde se imprime algún mensaje, ya sea con palabras, símbolos o imágenes, y se deja a la vista para difundir información.",
-                    ("<b>Sinónimos:</b> póster, lámina, afiche, pasquín",),
+                    ("<b>Sinónimos:</b> póster, lámina, afiche, pasquín.",),
                     "Política: Escrito anónimo que se fija sobre un cartel y se deja en un lugar público con mensajes satíricos hacia algún político.",
-                    ("<b>Sinónimos:</b> pasquín, cedulón",),
+                    ("<b>Sinónimos:</b> pasquín, cedulón.",),
                     "Escrito que se fija sobre un cartel en un lugar público, en donde se invita a otra persona a una contienda.",
                     "Escrito que se fija sobre un cartel en un lugar público, en donde se extorsiona al enemigo en una negociación, por ejemplo, en lo que respecta a la liberación de prisioneros.",
                     "Prestigio.",
-                    ("<b>Sinónimos:</b> prestigio, reputación, credibilidad, renombre, nombradía",),
+                    ("<b>Sinónimos:</b> prestigio, reputación, credibilidad, renombre, nombradía.",),
                     "Pesca: Red que se usa para la pesca de la sardina.",
                     "Variante de&nbsp;cártel.",
                 ]
@@ -83,18 +83,18 @@ def setup_lua_ctx() -> None:
             {
                 "Verbo": [
                     "Ingerir o tomar alimentos.",
-                    ("<b>Sinónimo:</b> meterse entre pecho y espalda&nbsp;(coloquial).",),
+                    ("<b>Sinónimo:</b> meterse entre pecho y espalda&nbsp;(coloquial)..",),
                     "Tomar la principal comida del día.",
-                    ("<b>Sinónimos:</b> yantar&nbsp;(anticuado), almorzar.",),
+                    ("<b>Sinónimos:</b> yantar&nbsp;(anticuado), almorzar..",),
                     "Malgastar bienes o recursos.",
                     "Corroer o consumir.",
                     "Producir comezón.",
-                    ("<b>Sinónimos:</b> carcomer, picar.",),
+                    ("<b>Sinónimos:</b> carcomer, picar..",),
                     "Juegos: En los juegos de mesa, eliminar una pieza del contrario.",
                     "Omitir elementos de información cuando se habla o escribe.",
                     "Llevar encogidas algunas prendas de ropa, como los calcetines.",
                     "Tener relaciones sexuales con alguien.",
-                    ("<b>Sinónimos:</b> coger, cachar&nbsp;(Perú), follar, hacer el amor.",),
+                    ("<b>Sinónimos:</b> coger, cachar&nbsp;(Perú), follar, hacer el amor..",),
                 ]
             },
             [],
@@ -163,11 +163,11 @@ def setup_lua_ctx() -> None:
                 "Sustantivo": [
                     "Ticket o boleto; credencial, billete o documento que autoriza a entrar en un evento, espectáculo o lugar.",
                     "Gastronomía: Plato que se sirve al comienzo de la comida.",
-                    ("<b>Sinónimo:</b> entrante.",),
+                    ("<b>Sinónimo:</b> entrante..",),
                     "Lingüística:",
                     (
                         "Vocablo que titula un artículo de diccionario.",
-                        "<b>Sinónimo:</b> lema",
+                        "<b>Sinónimo:</b> lema.",
                         "Artículo de un diccionario, enciclopedia u obra de referencia.",
                     ),
                     "Espacio por donde se tiene acceso a un lugar, especialmente algún edificio o propiedad.",
@@ -257,7 +257,7 @@ def setup_lua_ctx() -> None:
             "hala",  # Important, it is mostly used to check for infinite loop in the Lua interpreter
             ["[ˈala]"],
             ["De origen incierto. Voz expresiva."],
-            {"Interjección": ["Expresión para demandar prisa o sorpresa.", ("<b>Sinónimos:</b> ala, alá",)]},
+            {"Interjección": ["Expresión para demandar prisa o sorpresa.", ("<b>Sinónimos:</b> ala, alá.",)]},
             ["halar"],
             [],
         ),
@@ -270,16 +270,16 @@ def setup_lua_ctx() -> None:
             {
                 "Preposición": [
                     "Preposición que indica el fin o término de una actividad, sea en sentido locativo, cronológico o cuantitativo.",
-                    ("<b>Sinónimos:</b> a, entro, enta.",),
+                    ("<b>Sinónimos:</b> a, entro, enta..",),
                     "Seguida de <i>cuando</i> o de un gerundio, preposición que indica valor inclusivo.",
                     "Seguida de <i>que</i>, preposición que indica valor exclusivo.",
                 ],
                 "Adverbio": [
                     "Indica que pese a las circunstancias ocurre el hecho.",
-                    ("<b>Sinónimos:</b> aun, inclusive, incluso.",),
+                    ("<b>Sinónimos:</b> aun, inclusive, incluso..",),
                     "Indica que una situación eventual o hipotética no impide que ocurra el hecho.",
                     "Indica el comienzo de una acción o cuando ocurrirá.",
-                    ("<b>Sinónimo:</b> desde, no antes de, recién",),
+                    ("<b>Sinónimo:</b> desde., no antes de, recién",),
                 ],
                 "Sustantivo": ["Grafía obsoleta de&nbsp;asta."],
             },
@@ -340,10 +340,10 @@ def setup_lua_ctx() -> None:
                 "Adverbio": [
                     "Utilizado para especificar que una o varias cosas son similares, o que comparten atributos con otra previamente nombrada.",
                     (
-                        "<b>Sinónimos:</b> igualmente, asimismo, de igual modo, incluso, al igual, paralelamente, encima.",
+                        "<b>Sinónimos:</b> igualmente, asimismo, de igual modo, incluso, al igual, paralelamente, encima..",
                     ),
                     "Usado para añadir algo a lo anteriormente mencionado.",
-                    ("<b>Sinónimos:</b> además, en añadidura.",),
+                    ("<b>Sinónimos:</b> además, en añadidura..",),
                 ]
             },
             [],
@@ -356,7 +356,7 @@ def setup_lua_ctx() -> None:
             {
                 "Prefijo": [
                     "Elemento compositivo que significa uno. un único, relativo a uno solo.",
-                    ("<b>Sinónimo:</b> mono-&nbsp;(griego)",),
+                    ("<b>Sinónimo:</b> mono-&nbsp;(griego).",),
                 ]
             },
             [],

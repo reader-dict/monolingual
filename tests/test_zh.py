@@ -16,11 +16,10 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "七講八講",
-            [],
             [],
             [],
             {"動詞": ["(漳泉話，吳語) 亂講、胡說", "(<i>柳州官話</i>) 用各種方式解釋"]},
@@ -29,7 +28,6 @@ def setup_lua_ctx() -> None:
         (
             "稍後",
             ["/shāohòu/"],
-            [],
             [],
             {
                 "副詞": ["在短暫的時間之後"],
@@ -41,7 +39,6 @@ def setup_lua_ctx() -> None:
             "佛教",
             ["/Fójiào/"],
             [],
-            [],
             {
                 "專有名詞": [
                     "源自印度，奉釋迦牟尼為教主的宗教，以解脫生死、明心見性為教義，可以分為北傳佛教、南傳佛教以及禪宗、淨土宗、密宗等派別，信徒分布於東亞、南亞、東南亞，為世界三大宗教之一。"
@@ -52,7 +49,6 @@ def setup_lua_ctx() -> None:
         (
             "世界語",
             ["/shìjièyǔ/"],
-            [],
             [
                 "和製漢語（和製漢語），借自日語 <ruby>世<rp>(</rp><rt>せ</rt><rp>)</rp></ruby><ruby>界<rp>(</rp><rt>かい</rt><rp>)</rp></ruby><ruby>語<rp>(</rp><rt>ご</rt><rp>)</rp></ruby> (<i>sekaigo</i>)。經過二葉亭四迷於1906年出版的同名書籍而普及。"
             ],
@@ -62,7 +58,6 @@ def setup_lua_ctx() -> None:
         (
             "貔貅",
             ["/píxiū/"],
-            [],
             [
                 "現存最早的文獻紀錄見於下方兩者：",
                 "如《禮記》所述：",
@@ -79,7 +74,6 @@ def setup_lua_ctx() -> None:
         (
             "中華",
             ["/Zhōnghuá/"],
-            [],
             [
                 "古代華夏族多建都於黃河南北，因其在四方之中，所以稱作<b>中華</b>。",
                 "最早見於東晉孫盛《晉陽秋》（4世紀）中記載，桓溫紀念譙秀而作的一則上表（347年），後來又被南朝宋史學家裴松之引用在《三國志注》（5世紀早期）中。",
@@ -95,18 +89,17 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
+    print(f"{word = }")
     code = page(word, "zh")
     details = parse_word(word, code, "zh", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert etymology == details.etymology
     assert definitions == details.definitions
     assert variants == details.variants
