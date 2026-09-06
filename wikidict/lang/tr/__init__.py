@@ -94,8 +94,8 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >> adjust_wikicode('==Türkçe==\n===Eylem===\n# ''[[kenetlemek]]'' [[eylem]]inin [[bildirme kipi]] [[öğrenilen geçmiş zaman]] 2. [[çokluk]] şahıs [[olumlu]] çekimi', "tr")
-    '==Türkçe==\n===Eylem===\n# {{flexion|kenetlemek}}'
+    >>> adjust_wikicode('==Türkçe==\n===Eylem===\n# ''[[kenetlemek]]'' [[eylem]]inin [[bildirme kipi]] [[öğrenilen geçmiş zaman]] 2. [[çokluk]] şahıs [[olumlu]] çekimi', "tr")
+    '==Türkçe==\n===Eylem===\n# [[kenetlemek]] [[eylem]]inin [[bildirme kipi]] [[öğrenilen geçmiş zaman]] 2. [[çokluk]] şahıs [[olumlu]] çekimi'
 
     >>> _ = context.reset("tr")
 

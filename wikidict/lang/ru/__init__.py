@@ -92,7 +92,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("", "ru")
     []
 
-    >> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
+    >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
     ['[strɐˈnʲit͡sə]']
 
     >>> context.new_word("кажется")

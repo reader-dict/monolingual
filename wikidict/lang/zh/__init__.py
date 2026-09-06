@@ -153,7 +153,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> _ = context.reset("zh")
     >>> context.new_word("word")
 
-    >> find_pronunciations("{{zh-pron|m=bǎi jiàzi|c=baai2 gaa3 zi2|j=bai2 jia3 zeh|cat=v}}", "zh")
+    >>> find_pronunciations("{{zh-pron|m=bǎi jiàzi|c=baai2 gaa3 zi2|j=bai2 jia3 zeh|cat=v}}", "zh")
     ['/bǎi jiàzi/']
     >>> find_pronunciations("{{zh-pron|m=shāohòu|c=saau2 hau6|cat=adv,v}}", "zh")
     ['/shāohòu/']
