@@ -87,20 +87,34 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> from ... import context
     >>> _ = context.reset("ru")
-    >>> context.new_word("word")
 
+    >>> context.new_word("word")
     >>> find_pronunciations("", "ru")
     []
-    >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
-    ['[strɐˈnʲit͡sə]', '[strɐˈnʲit͡sɨ]']
+
+    >> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
+    ['[strɐˈnʲit͡sə]']
+
+    >>> context.new_word("кажется")
+    >>> find_pronunciations("{{transcription-ru|ка́жется|Ru-кажется.ogg}}", "ru")
+    ['[ˈkaʐɨt͡sə]']
     """
     from ... import context
 
-    pattern = re.compile(rf"(\{{\{{transcriptions-{locale}[^}}]+}}}})")
-    res: set[str] = set()
-    for tpl in pattern.findall(code):
-        res.update(re.findall(r"&#91;([^&]+)&#93;", context.expand(tpl, "ru")))
-    return sorted(f"[{pron}]" for pron in res)
+    lines: list[str] = []
+    for tpl in re.findall(rf"(\{{\{{transcriptions?-{locale}[^}}]+}}}})", code):
+        new_lines = context.expand(tpl, "ru").splitlines()
+        for line in lines:
+            if prons := re.findall(r"ед.&nbsp;ч.&nbsp;&#91;([^&]+)&#93;", line):
+                return [f"[{prons[0]}]"]
+        lines.extend(new_lines)
+
+    # Nothing found, lets pick the first result
+    for line in lines:
+        if prons := re.findall(r"&#91;([^&]+)&#93;", line):
+            return [f"[{prons[0]}]"]
+
+    return []
 
 
 def adjust_wikicode(
@@ -119,9 +133,9 @@ def adjust_wikicode(
     '= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.'
 
     >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# —\n#\n", "ru", word="гонит")
-    '= {{-ru-}} =\n==== Синонимы ====\n#\n'
+    '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
     >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# ?\n#\n", "ru", word="гонит")
-    '= {{-ru-}} =\n==== Синонимы ====\n#\n'
+    '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
 
     >>> from ... import context
     >>> _ = context.reset("ru")

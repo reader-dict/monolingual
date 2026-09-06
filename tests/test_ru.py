@@ -9,21 +9,22 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = "ru"
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("ru")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
-        ("-", [], [], [], {"Значение": ["дефис"]}, [], []),
+        ("-", [], [], {"Значение": ["дефис"]}, [], []),
         (
             "страница",
-            ["[strɐˈnʲit͡sə]", "[strɐˈnʲit͡sɨ]"],
-            ["ж"],
+            ["[strɐˈnʲit͡sə]"],
             [
                 "Происходит от страна, из церк.-слав. страна, далее из праслав.&#160;*storna, от которого в числе прочего произошли: др.-русск. сторона, ст.-слав. страна (др.-греч. χώρα, περίχωρος), русск., укр. сторона́, болг. страна́, сербохорв. стра́на (вин. стра̑ну), словенск. strána, чешск., словацк. strana, польск. strona, в.-луж., н.-луж. strona, полабск. stárna. Русск. <i>страна\xa0</i>— вместо исконного сторона́. Сюда же стра́нник, др.-русск. стороньникъ\xa0— то же, ст.-слав. страньникъ (др.греч. ξένος), а также странный\xa0— ст.-слав. страньнъ (ξένος). Использованы данные словаря М.&nbsp;Фасмера. См. Список литературы."
             ],
@@ -53,8 +54,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "неволящий",
-            [],
-            [],
+            ["[nʲɪˈvolʲɪɕːɪɪ̯]"],
             [],
             {},
             ["неволить"],
@@ -62,8 +62,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "какой",
-            [],
-            [],
+            ["[kɐˈkoɪ̯]"],
             [],
             {
                 "Значение": [
@@ -96,8 +95,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "коса",
-            ["[kɐˈsa]", "[ˈkosɨ]"],
-            ["м"],
+            ["[kɐˈsa]"],
             [
                 "Родств. церковносл./укр./болг./серб. коса, польск./словац./др.-чеш. kosa. М. Фасмер неубедительно связывает с др.-исл. haddr (волосы, протогерм. *hazda-), ср.-ирл. cír (гребень), лит. kasa, kasyti, kasît, др.-инд. <i>kacchus</i>, авест. <i>kasvis</i>, а тж. чередованием гласных с чесать, чешу и косма. Э. Бернекер, М. Рясянен и др. сводят коса I, коса II и коса III к косой.",
                 "Из праслав.&#160;*kosa, от которого в числе прочего произошли: русск. коса, укр. коса́, болг. коса́, сербохорв. ко̀са, словенск. kósa, чешск., польск., в.-луж., н.-луж. kоsа; из праиндоевр. *kes-&#032;«резать». Использованы данные словаря М.&nbsp;Фасмера. См. Список литературы.",
@@ -122,8 +120,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "бита",
-            [],
-            ["ж"],
+            ["[bʲɪˈta]"],
             [
                 "Из англ.&#32;(screwdriver) bit.",
             ],
@@ -139,8 +136,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "гонит",
-            [],
-            ["м"],
+            ["[ɡɐˈnʲit]"],
             [
                 "Происходит от др.-греч.&#160;γόνυ&#32;«колено».",
             ],
@@ -163,7 +159,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: list[Definitions],
     variants: list[str],
@@ -171,13 +166,14 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "ru")
+    print(f"{word = }")
+    code = page(word, LANG)
 
     # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
     # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
     code = re.sub(r"^=[ ]*\{\{(-\w+-)\|[^}]+\}\}[ ]*=", r"={{\1}}=", code, flags=re.MULTILINE)
 
-    details = parse_word(word, code, "ru", force=True)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert definitions == details.definitions
