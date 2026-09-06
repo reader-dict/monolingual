@@ -9,7 +9,7 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
-LANG = "ko"
+LANG = __name__.split("_", 1)[1]
 
 
 @pytest.fixture(scope="module", autouse=True)

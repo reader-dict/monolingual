@@ -9,11 +9,13 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("es")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
@@ -387,8 +389,8 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "es")
-    details = parse_word(word, code, "es", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

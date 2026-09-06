@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("lt")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "abalienacija",
             [],
-            ["f"],
             ["(<i>lot.</i>&#32;abalienatio)"],
             {"Daiktavardis|f.": ["(<i>Ekonomika</i>) - turto nusavinimas arba perleidimas."]},
             [],
@@ -41,7 +42,6 @@ def setup_lua_ctx() -> None:
         (
             "Antigva ir Barbuda",
             [],
-            ["f"],
             [],
             {
                 "Daiktavardis|f.": [
@@ -53,7 +53,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "dengti",
-            [],
             [],
             ["<= dengti, dengia, dengė"],
             {
@@ -153,7 +152,6 @@ def setup_lua_ctx() -> None:
         (
             "informatyvus",
             [],
-            ["m"],
             ["informuoti + -atyv"],
             {"Būdvardis|m.": ["teikiantis daug informacijos"]},
             [],
@@ -301,7 +299,6 @@ def setup_lua_ctx() -> None:
         (
             "pasaulis",
             [],
-            ["m"],
             [],
             {
                 "Daiktavardis|m.": ["visa žemė; Žemės rutulys", "visi žmonės; aplinkiniai žmonės", "visata"],
@@ -326,7 +323,6 @@ def setup_lua_ctx() -> None:
         (
             "senas",
             ["[ˈsʲæːnɐs]"],
-            ["f", "m"],
             [
                 "Iš Iš indoeuropiečių prokalbės *sénos. Plg. senovės graikų k. <i>ἕνος</i> (henos), sanskrito सन (sána) ir gotų k. 𐍃𐌹𐌽𐌴𐌹𐌲𐍃 (sineigs)."
             ],
@@ -483,7 +479,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -491,8 +486,8 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "lt")
-    details = parse_word(word, code, "lt", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
@@ -503,6 +498,6 @@ def test_parse_word(
 
 def test_skip_variant(page: Callable[[str, str], str]) -> None:
     word = "informatikos"
-    code = page(word, "lt")
-    details = parse_word(word, code, "lt", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert not details

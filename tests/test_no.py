@@ -9,7 +9,7 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
-LANG = "no"
+LANG = __name__.split("_", 1)[1]
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -19,12 +19,11 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "aberrasjon",
             [],
-            ["m"],
             [
                 "Fra latin <i>aberrātiō</i>&nbsp;(«lindring, avvikelse») , fra <i>aberrō</i>&nbsp;(«gå unna/bort, gå vill»), fra <i>ab</i>&nbsp;(«bort») + <i>errō</i>&nbsp;(«vandre/gå»).",
                 "Se aberrate.",
@@ -43,7 +42,6 @@ def setup_lua_ctx() -> None:
         (
             "-bar",
             [],
-            [],
             ["Fra nedertysk, egentlig «bærende»"],
             {
                 "Suffiks": [
@@ -57,14 +55,12 @@ def setup_lua_ctx() -> None:
             "bak lås og slå",
             [],
             [],
-            [],
             {"Frase": ["<i>(om straffedømt)</i> i fengsel"]},
             [],
             [],
         ),
         (
             "bare",
-            [],
             [],
             [],
             {
@@ -83,14 +79,12 @@ def setup_lua_ctx() -> None:
             "én svale gjør ingen sommer",
             [],
             [],
-            [],
             {"Ordtak": ["Det at noen har vært observert én gang betyr ikke at det er en regel eller et sikkert tegn"]},
             [],
             [],
         ),
         (
             "et",
-            [],
             [],
             [],
             {"Artikkel": ["artikkel for substantiv i ubestemt entall, av intetkjønn"]},
@@ -101,7 +95,6 @@ def setup_lua_ctx() -> None:
             "funnet",
             [],
             [],
-            [],
             {},
             ["finne", "funn"],
             [],
@@ -110,14 +103,12 @@ def setup_lua_ctx() -> None:
             "gjente",
             [],
             [],
-            [],
             {"Subjektiv": ["jente"]},
             [],
             [],
         ),
         (
             "hand",
-            [],
             [],
             [],
             {
@@ -141,7 +132,6 @@ def setup_lua_ctx() -> None:
         (
             "isogloss",
             [],
-            [],
             ["Fra gresk ίσος&nbsp;(<i>isos</i>,&nbsp;«lik») og γλώσσα&nbsp;(<i>glossa</i>,&nbsp;«språk»)."],
             {"Substantiv|m.": ["(<i>lingvistikk</i>) en linje på et kart som viser grensen for et dialektfenomen"]},
             [],
@@ -151,7 +141,6 @@ def setup_lua_ctx() -> None:
             "Kiberg",
             [],
             [],
-            [],
             {"Ordklasse": ["et tettsted i Vardø kommune i Finnmark"]},
             [],
             [],
@@ -159,7 +148,6 @@ def setup_lua_ctx() -> None:
         (
             "konsentrasjon",
             [],
-            ["m"],
             ["Fra <i>konsentrere</i> + <i>-sjon</i>"],
             {
                 "Substantiv|m.": [
@@ -173,7 +161,6 @@ def setup_lua_ctx() -> None:
         (
             "krokodille",
             [],
-            ["m"],
             [
                 "Fra middelalderlatin <i>cocodrillus</i>&nbsp;(«krokodille»), fra gammelgresk κροκόδειλος&nbsp;(<i>krokodeilos</i>)"
             ],
@@ -183,7 +170,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "liksom",
-            [],
             [],
             [],
             {
@@ -199,14 +185,12 @@ def setup_lua_ctx() -> None:
             "lumpen",
             [],
             [],
-            [],
             {"Adjektiv": ["tarvelig, nedrig"]},
             ["lump"],
             ["lumpe", "lumpent", "lumpne"],
         ),
         (
             "NS",
-            [],
             [],
             [],
             {"Initialord": ["<i>initialord for</i> partiet Nasjonal Samling", "<i>initialord for</i> Norsk Standard"]},
@@ -216,7 +200,6 @@ def setup_lua_ctx() -> None:
         (
             "rasshol",
             [],
-            ["n"],
             [],
             {
                 "Substantiv|n.": ["anus; brukt som skjellsord"],
@@ -228,7 +211,6 @@ def setup_lua_ctx() -> None:
         (
             "seg",
             [],
-            [],
             ["Av norrønt <i>sik</i>."],
             {"Pronomen": ["refleksivt pronomen, tredje person entall og flertall"]},
             [],
@@ -236,7 +218,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "slå to fluer i en smekk",
-            [],
             [],
             [],
             {"Idiom": ["(<i>idiomatisk</i>) få gjort to ting med én handling"]},
@@ -247,14 +228,12 @@ def setup_lua_ctx() -> None:
             "sviger-",
             [],
             [],
-            [],
             {"Prefiks": ["som befinner seg i inngiftet familie"]},
             [],
             [],
         ),
         (
             "tolvte",
-            [],
             [],
             ["Fra norrønt <i>tolfti</i>; <i>tolv</i> + <i>-te</i>"],
             {"Tallord": ["ordenstallet til tolv"]},
@@ -265,14 +244,12 @@ def setup_lua_ctx() -> None:
             "uten",
             [],
             [],
-            [],
             {"Preposisjon": ["som ikke har;som mangler"]},
             [],
             [],
         ),
         (
             "verken",
-            [],
             [],
             ["Fra gammeldansk: hwærki/hwærkin via dansk: hverken. Jamfør norrønt: hvárki."],
             {"Konjunksjon": ["danner sammen med eller en konjunksjon som binder sammen to nektinger"]},
@@ -283,7 +260,6 @@ def setup_lua_ctx() -> None:
             "vg.",
             [],
             [],
-            [],
             {"Forkortelse": ["forkortelse for <i>videregående</i>/<i>videregåande</i>"]},
             [],
             [],
@@ -292,14 +268,12 @@ def setup_lua_ctx() -> None:
             "Øyvind",
             [],
             [],
-            [],
             {"Egennavn": ["Norsk mannsnavn"]},
             [],
             [],
         ),
         (
             "ØNH",
-            [],
             [],
             [],
             {"Forklaring": ["forkortelse for <i>øre-nese-hals</i>"]},
@@ -311,7 +285,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],

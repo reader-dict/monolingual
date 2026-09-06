@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("it")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "brillantino",
             [],
-            ["m"],
             [
                 "da brillare",
                 "vedi brillantare",
@@ -38,7 +39,6 @@ def setup_lua_ctx() -> None:
         (
             "condividere",
             ["/kondiˈvidere/"],
-            [],
             [
                 "dal latino <i>cum</i> e <i>dividere</i>; l'attuale uso improprio del verbo <i>condividere</i> è dovuto alla diffusione dei social network negli anni 2000 e 2010",
             ],
@@ -67,7 +67,6 @@ def setup_lua_ctx() -> None:
         (
             "debolmente",
             ["/debolˈmente/"],
-            [],
             ["composto dall'aggettivo debole e dal suffisso -mente"],
             {
                 "Avverbio": ["in maniera debole, con debolezza"],
@@ -78,7 +77,6 @@ def setup_lua_ctx() -> None:
         (
             "lettore",
             ["/letˈtore/"],
-            ["m"],
             ['dal latino <i>lector</i>, derivazione di <i>legĕre</i> ossia "leggere"'],
             {
                 "Sostantivo|m.": [
@@ -93,7 +91,6 @@ def setup_lua_ctx() -> None:
         (
             "modalità Goblin",
             ["/modali'ta 'go blin/"],
-            ["f"],
             [],
             {
                 "Nome|f.": [
@@ -106,14 +103,12 @@ def setup_lua_ctx() -> None:
             "muratrici",
             [],
             [],
-            [],
             {},
             ["muratore"],
         ),
         (
             "rimpannucciare",
             ["/rimpannutˈʧare/"],
-            [],
             ["deriva da panno"],
             {
                 "Sinonimi": [
@@ -128,15 +123,14 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "it")
-    details = parse_word(word, code, "it", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

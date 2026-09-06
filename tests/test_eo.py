@@ -9,19 +9,20 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("eo")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "♍",
-            [],
             [],
             [],
             {"Signifo": ["(<i>astrologio</i>) zodiaka signo de Virgulino (<i>Virgo</i>)"]},
@@ -32,14 +33,12 @@ def setup_lua_ctx() -> None:
             "💀",
             [],
             [],
-            [],
             {"Signifo": ["morto"]},
             [],
             [],
         ),
         (
             "alkazabo",
-            [],
             [],
             ["el la andalus-araba <i>alqaṣába</i>, kaj tiu ĉi el la klasika araba <i>qaṣabah</i>, قصبة"],
             {
@@ -52,7 +51,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "ekami",
-            [],
             [],
             [],
             {"Signifo": ["(<i>transitiva</i>) komenci senti amon por iu aŭ eĉ io"]},
@@ -87,7 +85,6 @@ def setup_lua_ctx() -> None:
             "ekamus",
             [],
             [],
-            [],
             {},
             ["ekami"],
             [],
@@ -95,7 +92,6 @@ def setup_lua_ctx() -> None:
         (
             "kaskedo",
             ["kasked/o"],
-            [],
             [],
             {
                 "Signifo": [
@@ -107,7 +103,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "komputilo",
-            [],
             [],
             [],
             {
@@ -122,7 +117,6 @@ def setup_lua_ctx() -> None:
         (
             "latina",
             [],
-            [],
             ["De Latino"],
             {"Adjektivo": ["rilata al Latino."]},
             [],
@@ -131,7 +125,6 @@ def setup_lua_ctx() -> None:
         (
             "luko",
             ["luk/o"],
-            [],
             ["el la germana <i>Luke</i>"],
             {
                 "Signifo": [
@@ -144,21 +137,11 @@ def setup_lua_ctx() -> None:
             [],
             ["lukoj", "lukojn", "lukon"],
         ),
-        (
-            "Teodoriko",
-            [],
-            ["m"],
-            [],
-            {},
-            [],
-            [],
-        ),
     ],
 )
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -166,8 +149,8 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "eo")
-    details = parse_word(word, code, "eo", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

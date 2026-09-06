@@ -12,11 +12,13 @@ from wikidict.lang.da.variant_handlers import table_to_forms
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("da")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
@@ -214,7 +216,7 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "da")
+    code = page(word, LANG)
 
     # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
     # `{{=da=}}` → `=={{da}}==`
@@ -224,7 +226,7 @@ def test_parse_word(
     # `{{-mul-}}` → `=={{mul}}==`
     code = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
-    details = parse_word(word, code, "da", force=True)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

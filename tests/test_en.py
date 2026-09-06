@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("en")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "ab",
             ["/æb/"],
-            [],
             [
                 "Clipping of English <i><b>Ab</b>khaz</i> or Russian <i>абха́з</i> (<b>ab</b>xáz).",
                 "Abbreviation of <i>abscess</i>.",
@@ -45,7 +46,6 @@ def setup_lua_ctx() -> None:
         (
             "Acanthis",
             [],
-            ["f"],
             ["See <b>Acanthis (mythology)</b> on Wikipedia."],
             {
                 "Proper Noun|f.": [
@@ -57,7 +57,6 @@ def setup_lua_ctx() -> None:
         (
             "cum",
             ["/kʌm/"],
-            [],
             [
                 "Clipping of English <i><b>Cum</b>eral</i>.",
                 "Learned borrowing from Latin <i>cum</i> (“with”).",
@@ -91,7 +90,6 @@ def setup_lua_ctx() -> None:
         (
             "efficient",
             ["UK: /ɪˈfɪʃənt/"],
-            [],
             [
                 "1398, “making,” from Old French, from Latin <i>efficientem</i>, nominative <i>efficiēns</i>, participle of <i>efficere</i> (“work out, accomplish”) (see <i>effect</i>). Meaning “productive, skilled” is from 1787. <i>Efficiency apartment</i> is first recorded 1930, American English."
             ],
@@ -110,14 +108,12 @@ def setup_lua_ctx() -> None:
             "humans",
             [],
             [],
-            [],
             {},
             ["human"],
         ),
         (
             "it's",
             ["/ɪts/"],
-            [],
             [
                 "Contraction of ‘it is’, ‘it has’ or 'it was'.",
                 "From <i>it</i> +&lrm; <i>-’s</i> (possessive marker).",
@@ -136,7 +132,6 @@ def setup_lua_ctx() -> None:
         (
             "Mars",
             ["UK: /ˈmɑːz/", "US: /ˈmɑɹz/"],
-            [],
             [
                 "From Middle English&#32;<i>Mars</i>, from Latin&#32;<i>Mārs</i>&#32;(“god of war”), from older Latin (older than 75 <small>BCE</small>) <i>Māvors</i>.",
                 "Possibly a variant of <i>Marrs</i>, itself from <i>Marr</i> with post-medieval excrescent <i>-s</i>.",
@@ -161,11 +156,10 @@ def setup_lua_ctx() -> None:
             },
             [],
         ),
-        ("memoized", [], [], [], {}, ["memoize"]),
+        ("memoized", [], [], {}, ["memoize"]),
         (
             "portmanteau",
             ["UK: /pɔːtˈmæn.təʊ/"],
-            [],
             [
                 "From Middle French <i>portemanteau</i> (“coat stand”), from <i>porte</i> (“carries”, third-person singular present indicative of <i>porter</i> (“to carry”)) +&lrm; <i>manteau</i> (“coat”), literally “[that which] carries coat”.",
                 "First used by Lewis Carroll in <i>Through the Looking-Glass</i> to describe the words he coined in “Jabberwocky”.",
@@ -190,7 +184,6 @@ def setup_lua_ctx() -> None:
         (
             "someone",
             ["/ˈsʌmwʌn/"],
-            [],
             [
                 "From Middle English <i>sum on</i>, <i>sum one</i>, <i>sum oon</i>, equivalent to <i>some</i> +&lrm; <i>one</i>.",
             ],
@@ -203,7 +196,6 @@ def setup_lua_ctx() -> None:
         (
             "scourge",
             ["UK: /skɜːd͡ʒ/", "US: /skɜɹd͡ʒ/"],
-            [],
             [
                 "From Middle English <i>scourge</i> (“a lash, whip, scourge; affliction, calamity; person who causes affliction or calamity; shoot of a vine”), and then either:",
                 "CognatesItalian <i>scuriada</i>, <i>scuriata</i>",
@@ -235,7 +227,6 @@ def setup_lua_ctx() -> None:
         (
             "the",
             ["/ðiː/"],
-            [],
             [
                 "From Middle English <i>þe</i>, from Old English <i>þē</i>&nbsp;m (“the, that”, demonstrative pronoun), a late variant of <i>sē</i>, the <i>s-</i> (which occurred in the masculine and feminine nominative singular only) having been replaced by the <i>þ-</i> from the oblique stem.",
                 "replaced words, cognates",
@@ -281,7 +272,6 @@ def setup_lua_ctx() -> None:
             "they's",  # This one is to test `{{=}}`
             [],
             [],
-            [],
             {
                 "Contraction": [
                     "(<i>dialect</i>) Contraction of <i>they (<i>third-person pronoun</i>) is</i>.",
@@ -294,7 +284,6 @@ def setup_lua_ctx() -> None:
         (
             "um",
             ["/ʌm/"],
-            [],
             [
                 "From <i>u-</i> (“micro-”) +&lrm; <i>m</i> (“metre”).",
                 "Onomatopoeic.",
@@ -320,7 +309,6 @@ def setup_lua_ctx() -> None:
         (
             "us",
             ["/ʌs/"],
-            [],
             [
                 "From <i>u-</i> (“micro-”) +&lrm; <i>s</i> (“second”).",
                 "From Middle English <i>us</i>, from Old English <i>ūs</i> (“us”, dative personal pronoun), from Proto-West Germanic <i>&#42;uns</i>, from Proto-Germanic <i>&#42;uns</i> (“us”), from Proto-Indo-European <i>&#42;n̥swé</i>, alteration of <i>&#42;n̥smé</i> (“us”). The compensatory lengthening was lost in Middle English due to the word being unstressed when used. Cognate with Saterland Frisian <i>uus</i> (“us”), West Frisian <i>us</i>, <i>ús</i> (“us”), Low German <i>uns</i>, <i>us</i> (“us”), Dutch <i>ons</i> (“us”), German <i>uns</i> (“us”), Danish <i>os</i> (“us”), Latin <i>nōs</i> (“we, us”).",
@@ -357,7 +345,6 @@ def setup_lua_ctx() -> None:
                 "UK: /ˈwɔː.tə/",
                 "US: /ˈwɔ.təɹ/",
             ],
-            [],
             [
                 "From Middle English <i>water</i>, from Old English <i>wæter</i> (“water”), from Proto-West Germanic <i>&#42;watar</i>, from Proto-Germanic <i>&#42;watōr</i> (“water”), from Proto-Indo-European <i>&#42;wódr̥</i> (“water”).",
                 "Cognates",
@@ -414,7 +401,6 @@ def setup_lua_ctx() -> None:
         (
             "word",
             ["UK: /wɜːd/", "US: /wɜɹd/"],
-            [],
             [
                 "From Middle English <i>word</i>, from Old English <i>word</i>, from Proto-West Germanic <i>&#42;word</i>, from Proto-Germanic <i>&#42;wurdą</i>, from Proto-Indo-European <i>&#42;wr̥dʰh₁om</i>. Doublet of <i>verb</i> and <i>verve</i>; further related to <i>vrata</i>.",
                 "Variant of <i>worth</i> (“to become, turn into, grow, get”), from Middle English <i>worthen</i>, from Old English <i>weorþan</i> (“to turn into, become, grow”), from Proto-West Germanic <i>&#42;werþan</i>, from Proto-Germanic <i>&#42;werþaną</i> (“to turn, turn into, become”). More at worth §\xa0Verb.",
@@ -473,15 +459,14 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "en")
-    details = parse_word(word, code, "en", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

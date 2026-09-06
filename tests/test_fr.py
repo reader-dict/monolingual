@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("fr")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "42",
             ["\\ka.ʁɑ̃t.dø\\"],
-            ["m", "s"],
             [],
             {
                 "Numéral": [
@@ -43,7 +44,6 @@ def setup_lua_ctx() -> None:
             "5E",
             [],
             [],
-            [],
             {
                 "Symbole": [
                     "Code AITA de la compagnie d’aviation SGA Airlines <i>(Siam General Aviation Company Limited</i>, บริษัท สยาม เจนเนอรัล เอวิเอชั่น จำกัด)."
@@ -54,7 +54,6 @@ def setup_lua_ctx() -> None:
         (
             "-eresse",
             ["\\(ə).ʁɛs\\"],
-            ["f"],
             [
                 "Ce suffixe est né d’une coupe erronée du suffixe des mots comme <i>enchanteresse</i> et <i>pécheresse</i>. En effet, ces derniers sont en fait le cas sujet de mots en <i>-eur</i> auquel on a ajouté le suffixe féminisant <i>-esse</i> sous le schéma suivant :",
                 '<table style="border: 1px solid black; border-collapse: collapse; font-size: inherit;"><tr><th style="border: 1px solid black; padding: 0.2em 0.4em;">cas sujet</th><th style="border: 1px solid black; padding: 0.2em 0.4em;">cas régime</th><th style="border: 1px solid black; padding: 0.2em 0.4em;">cas sujet + <i>-esse</i></th></tr><tr><td style="border: 1px solid black; padding: 0.2em 0.4em;">pechere</td><td style="border: 1px solid black; padding: 0.2em 0.4em;">pecheur</td><td style="border: 1px solid black; padding: 0.2em 0.4em;">pecheresse</td></tr><tr><td style="border: 1px solid black; padding: 0.2em 0.4em;">enchantere</td><td style="border: 1px solid black; padding: 0.2em 0.4em;">enchanteur</td><td style="border: 1px solid black; padding: 0.2em 0.4em;">enchanteresse</td></tr></table>',
@@ -71,7 +70,6 @@ def setup_lua_ctx() -> None:
         (
             "a",
             ["\\ɑ\\"],
-            ["m"],
             [
                 "<i>(Symbole 2)</i> Abréviation de <i><b>a</b>tto-</i>.",
                 "<i>(Symbole 3)</i> Abréviation de <i><b>a</b>re</i>.",
@@ -99,7 +97,6 @@ def setup_lua_ctx() -> None:
             "π",
             [],
             [],
-            [],
             {
                 "Symbole": [
                     "<i>(Mathématiques)</i> Symbole représentant le rapport constant entre la circonférence d’un cercle et son diamètre, aussi appelé en français la <i>constante d’Archimède</i>.",
@@ -111,7 +108,6 @@ def setup_lua_ctx() -> None:
         (
             "accueil",
             ["\\a.kœj\\"],
-            ["m"],
             ["<i>(<small>XII</small><sup>e</sup> siècle)</i> Déverbal de <i>accueillir</i>."],
             {
                 "Nom|m.": [
@@ -132,7 +128,6 @@ def setup_lua_ctx() -> None:
         (
             "acrologie",
             ["\\a.kʁɔ.lɔ.ʒi\\"],
-            ["f"],
             [
                 "Du grec ancien ἄκρος, <i>akros</i> («&nbsp;extrémité&nbsp;»), voir <i>acro-</i>, avec le suffixe <i>-logie</i>."
             ],
@@ -149,7 +144,6 @@ def setup_lua_ctx() -> None:
         (
             "-aux",
             ["\\o\\"],
-            [],
             [
                 "Ayant dans le passé la forme « -als », au cours du XII<sup>e</sup> siècle, le « l » précédant une autre consonne se modifia en « u », comme dans « colp – coup, altre – autre ». Étant suivi d'une consonne uniquement au pluriel, la terminaison « -als » pris la forme de « aus ». Le « x » provient des manuscrits, qui étaient extrêmement chers à l'époque, il va de soi qu'on voulut y mettre le plus de texte possible. S'inspirant du latin où « us » s'écrivait « x », on obtint ainsi la forme « -ax ». Le « u » vient s'ajouter plus tard pour s'accorder à la prononciation [o]."
             ],
@@ -162,7 +156,6 @@ def setup_lua_ctx() -> None:
         (
             "base",
             ["\\bɑz\\"],
-            ["f"],
             ["Du latin <i>basis</i> («&nbsp;id.&nbsp;»), du grec ancien βάσις, <i>básis</i> («&nbsp;marche&nbsp;»)."],
             {
                 "Nom|f.": [
@@ -206,7 +199,6 @@ def setup_lua_ctx() -> None:
         (
             "bath",
             ["\\bat\\"],
-            ["m"],
             [
                 "(<i>Adjectif, nom 1</i>) <i>(1846)</i> Origine discutée :",
                 (
@@ -230,7 +222,6 @@ def setup_lua_ctx() -> None:
         (
             "Bogotanais",
             ["\\bɔ.ɡɔ.ta.nɛ\\"],
-            ["m", "sp"],
             ["Du nom Bogota avec le préfixe -ais."],
             {
                 "Nom|m.": ["Habitant de Bogota."],
@@ -240,7 +231,6 @@ def setup_lua_ctx() -> None:
         (
             "chacune",
             ["\\ʃa.kyn\\"],
-            ["s"],
             [],
             {},
             ["chacun"],
@@ -249,14 +239,12 @@ def setup_lua_ctx() -> None:
             "colligeait",
             ["\\kɔ.li.ʒɛ\\"],
             [],
-            [],
             {},
             ["colliger"],
         ),
         (
             "corps portant",
             ["\\kɔʁ pɔʁ.tɑ̃\\"],
-            ["m"],
             ["Locution composée de <i>corps</i>&#32;et de <i>portant</i>."],
             {
                 "Nom|m.": [
@@ -269,7 +257,6 @@ def setup_lua_ctx() -> None:
         (
             "DES",
             [],
-            ["m"],
             [
                 "<i>(Commerce international)</i> <i>(1936)</i> Terme créé par la Chambre de commerce internationale. Sigle de l’anglais <i>delivered ex ship</i>; « rendu par navire ».",
                 "<i>(Nom commun 1)</i> Sigle pour <b>d</b>i<b>é</b>thyl<b>s</b>tilbestrol.",
@@ -294,7 +281,6 @@ def setup_lua_ctx() -> None:
         (
             "dubitatif",
             ["\\dy.bi.ta.tif\\"],
-            [],
             ["Du latin <i>dubitativus</i>."],
             {"Adjectif": ["Qui sert à exprimer le doute.", "Qui éprouve un doute."]},
             [],
@@ -302,7 +288,6 @@ def setup_lua_ctx() -> None:
         (
             "effluve",
             ["\\e.flyv\\"],
-            ["mf"],
             [
                 "Du latin <i>effluvium</i>, du préfixe <i>ex-</i> indiquant la séparation et de <i>fluxus</i> (« écoulement »)."
             ],
@@ -318,7 +303,6 @@ def setup_lua_ctx() -> None:
         (
             "employer",
             ["\\ɑ̃.plwa.je\\"],
-            [],
             ["Du latin <i>implicāre</i> («&nbsp;impliquer&nbsp;»)."],
             {
                 "Verbe": [
@@ -332,7 +316,6 @@ def setup_lua_ctx() -> None:
         (
             "encyclopædie",
             ["\\ɑ̃.si.klɔ.pe.di\\"],
-            ["f"],
             ["→ voir <i>encyclopédie</i>"],
             {
                 "Nom|f.": ["<i>(Archaïsme)</i> <i>Variante orthographique&#32;de</i>&nbsp;encyclopédie."],
@@ -342,7 +325,6 @@ def setup_lua_ctx() -> None:
         (
             "éperon",
             ["\\e.pʁɔ̃\\"],
-            ["m"],
             [
                 "De l’ancien français <i>esperon</i>, du vieux-francique <i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
             ],
@@ -366,7 +348,6 @@ def setup_lua_ctx() -> None:
         (
             "greffier",
             ["\\ɡʁɛ.fje\\"],
-            ["m"],
             [
                 "(<i>Nom commun 1</i>) Du latin <i>graphiarius</i> («&nbsp;d’écriture, de style, de poinçon&nbsp;») ou dérivé de <i>greffe</i>, avec le suffixe <i>-ier</i>.",
                 "(<i>Nom commun 2</i>) Sans doute par jeu de mot avec <i>griffes</i> → voir <i>chat-fourré</i>.",
@@ -388,14 +369,12 @@ def setup_lua_ctx() -> None:
             "ich",
             [],
             [],
-            [],
             {"Symbole": ["<i>(Linguistique)</i> Code ISO 639-3 de l’etkywan."]},
             [],
         ),
         (
             "koro",
             ["\\kɔ.ʁo\\"],
-            ["m"],
             [],
             {
                 "Nom|m.": [
@@ -409,7 +388,6 @@ def setup_lua_ctx() -> None:
         (
             "mutiner",
             ["\\my.ti.ne\\"],
-            [],
             ["Dénominal de <i>mutin</i>."],
             {
                 "Verbe": [
@@ -423,7 +401,6 @@ def setup_lua_ctx() -> None:
         (
             "naguère",
             ["\\na.ɡɛʁ\\"],
-            [],
             [
                 "De <i>il n’y a guère</i> (de temps). À comparer avec le wallon «\xa0nawaire\xa0» (même sens). Voir aussi <i>na</i>."
             ],
@@ -440,7 +417,6 @@ def setup_lua_ctx() -> None:
         (
             "pinyin",
             ["\\pin.jin\\"],
-            ["m"],
             [
                 "<i>(Nom 1)</i> (Vers 1950) Du chinois 拼音, <i>pīnyīn</i>, composé de 拼, <i>pīn</i> («&nbsp;épeler&nbsp;»)&#32;et de 音, <i>yīn</i> («&nbsp;son&nbsp;»).",
                 "<i>(Nom 2)</i> De l’anglais <i>Pinyin</i>.",
@@ -459,7 +435,6 @@ def setup_lua_ctx() -> None:
         (
             "précepte",
             ["\\pʁe.sɛpt\\"],
-            ["m"],
             [
                 "Emprunté au latin <i>praeceptum</i> («&nbsp;précepte, leçon, règle&nbsp;»), dérivé de <i>praecipere</i> signifiant « prendre avant, prendre le premier » ou encore « recommander », « conseiller », « prescrire »."
             ],
@@ -476,7 +451,6 @@ def setup_lua_ctx() -> None:
         (
             "rance",
             ["\\ʁɑ̃s\\"],
-            ["mf", "m"],
             ["Du latin <i>rancidus</i> par l’intermédiaire de l’ancien occitan."],
             {
                 "Adjectif|mf.": [
@@ -494,7 +468,6 @@ def setup_lua_ctx() -> None:
         (
             "sapristi",
             ["\\sa.pʁis.ti\\"],
-            [],
             ["Déformation de <i>sacristi</i>, afin de ne pas blasphémer ouvertement."],
             {
                 "Interjection|invar.": [
@@ -507,7 +480,6 @@ def setup_lua_ctx() -> None:
         (
             "silicone",
             ["\\si.li.kon\\"],
-            ["f", "m"],
             [
                 "<i>(1863)</i> De l’allemand <i>Silikon</i>, mot créé par Friedrich Wöhler et, pour les équivalents français du mot allemand, dérivé de <i>silicium</i>, avec le suffixe <i>-one</i>."
             ],
@@ -527,13 +499,11 @@ def setup_lua_ctx() -> None:
             "suis",
             ["\\sɥi\\"],
             [],
-            [],
             {},
             ["suivre", "être"],
         ),
         (
             "venoient",
-            [],
             [],
             [],
             {
@@ -548,15 +518,14 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "fr")
-    details = parse_word(word, code, "fr", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

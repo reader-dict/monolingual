@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("tr")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "Avusturyalılık'ın",
             ["/a.vus.ˈtuɾ.ja.lɯ.ɫɯ.ˈ‿ɯn/"],
-            [],
             [],
             {},
             ["Avusturyalılık"],
@@ -30,7 +31,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "bulmaca",
-            [],
             [],
             [],
             {
@@ -45,14 +45,12 @@ def setup_lua_ctx() -> None:
             "bulmacamda",
             [],
             [],
-            [],
             {},
             ["bulmaca"],
             [],
         ),
         (
             "Estonyalı",
-            [],
             [],
             [],
             {"Ön Ad": ["(<i>milliyetler</i>) ökeni Estonya olan kimse", "Kökeni Estonya olan."]},
@@ -62,7 +60,6 @@ def setup_lua_ctx() -> None:
         (
             "iğne yaprak",
             ["/ɪ‿.ˈnɛ jɑp.ɾɑc/"],
-            [],
             [],
             {"Ad": ["(<i>bitki anatomisi</i>) çam türlerinde görülen, ince uzun, sivri uçlu yaprak"]},
             [],
@@ -130,14 +127,12 @@ def setup_lua_ctx() -> None:
             "kanat açmak",
             [],
             [],
-            [],
             {"Eylem": ["birini korumak, himaye etmek"]},
             [],
             [],
         ),
         (
             "Karaburç",
-            [],
             [],
             [],
             {
@@ -153,7 +148,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "payandalama",
-            [],
             [],
             [],
             {},
@@ -228,7 +222,6 @@ def setup_lua_ctx() -> None:
             "sarman",
             [],
             [],
-            [],
             {"Ad": ["(<i>kedigiller</i>) Sarı tüylü kedi."], "Ön Ad": ["Azman, iri."]},
             ["sarma"],
             [
@@ -296,7 +289,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -304,11 +296,10 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "tr")
-    details = parse_word(word, code, "tr", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert genders == details.genders
     assert OrderedDict(definitions) == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants

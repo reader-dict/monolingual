@@ -10,19 +10,20 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("de")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "@",
-            [],
             [],
             [],
             {
@@ -44,7 +45,6 @@ def setup_lua_ctx() -> None:
         (
             "CIA",
             ["[siːaɪ̯ˈɛɪ̯]"],
-            ["mf"],
             ["Abkürzung von Central Intelligence Agency"],
             {"Abkürzung|mf.": ["US-amerikanischer Auslandsnachrichtendienst"]},
             [],
@@ -54,7 +54,6 @@ def setup_lua_ctx() -> None:
             "Informationsverlusts",
             ["[ɪnfɔʁmaˈt͡si̯oːnsfɛɐ̯ˌlʊst͡s]"],
             [],
-            [],
             {},
             ["Informationsverlust"],
             ["Informationsverlustes"],
@@ -63,7 +62,6 @@ def setup_lua_ctx() -> None:
             "kartel",
             ["[ˈkaʁtl̩]"],
             [],
-            [],
             {},
             ["karteln"],
             ["kartele", "kartle"],
@@ -71,7 +69,6 @@ def setup_lua_ctx() -> None:
         (
             "volley",
             ["[ˈvɔle]", "[ˈvɔli]", "[ˈvɔlɛɪ̯]"],
-            [],
             [
                 "Dem seit 1960 im Duden lexikalisierten Wort liegt die englische Kollokation <i>at/on the volley</i> ‚aus der Luft‘ zugrunde.",
             ],
@@ -83,14 +80,13 @@ def setup_lua_ctx() -> None:
             [],
             [],
         ),
-        ("trage", ["[ˈtʁaːɡə]"], [], [], {}, ["tragen"], ["trag"]),
-        ("daß", [], [], [], {}, ["dass"], []),
+        ("trage", ["[ˈtʁaːɡə]"], [], {}, ["tragen"], ["trag"]),
+        ("daß", [], [], {}, ["dass"], []),
     ],
 )
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -98,13 +94,13 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "de")
+    code = page(word, LANG)
 
     # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
     # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
     code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
 
-    details = parse_word(word, code, "de", force=True)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology

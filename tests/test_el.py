@@ -9,20 +9,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("el")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "ανα-",
             ["/a.na/"],
-            [],
             [],
             {
                 "Πρόθημα": [
@@ -38,7 +39,6 @@ def setup_lua_ctx() -> None:
         (
             "-ης",
             [],
-            [],
             [
                 "<b>-ης</b> &lt; <i>αρχαία ελληνική</i> -ης",
                 "<b>-ης</b> &lt; (<i>ελληνιστική κοινή</i>) -ις &lt; <i>αρχαία ελληνική</i> -(ε)ιος (<i>αρχαία ελληνική</i> κύριος, <i><b>αιτιατική</b></i> τόν κύριον &gt; (<i>ελληνιστική κοινή</i>) τόν κῦριν →ὁ κῦρις &gt; μεσαιωνική ελληνική κύρης &gt; <i>νέα ελληνική</i> νοικοκύρης)",
@@ -53,7 +53,6 @@ def setup_lua_ctx() -> None:
         (
             "επίπεδο",
             ["/eˈpi.pe.ðo/"],
-            ["ουδέτερο"],
             [
                 "<b>επίπεδο</b>, <i>ουδέτερο του</i> <b>επίπεδος</b> &lt; (διαχρονικό&nbsp;δάνειο) αρχαία ελληνική ἐπίπεδον",
             ],
@@ -70,7 +69,6 @@ def setup_lua_ctx() -> None:
         (
             "ετικέτα",
             ["/e.tiˈce.ta/"],
-            ["θηλυκό"],
             [
                 "<b>ετικέτα</b> &lt; (άμεσο δάνειο) ιταλική etichetta &lt; γαλλική étiquette &lt; μέση γαλλική estiquette &lt; παλαιά γαλλική estiquette, &lt; φραγκική <big>*</big>stikkan &lt; πρωτογερμανική <big>*</big>stikaną / <big>*</big>stikōną <big>*</big>staikijaną &lt; <i>πρωτοϊνδοευρωπαϊκή ρίζα</i> <big>*</big><i>stig</i>- / <big>*</big>*<i>steyg</i>-",
                 "<i>για το πρωτόκολλο συμπεριφοράς</i> &lt; σημασιολογικό δάνειο από τη γαλλική étiquette",
@@ -89,7 +87,6 @@ def setup_lua_ctx() -> None:
         (
             "λαμβάνω",
             ["/laɱˈva.no/"],
-            [],
             [
                 "<b>λαμβάνω</b> &lt; (διαχρονικό&nbsp;δάνειο) αρχαία ελληνική λαμβάνω &lt; πρωτοϊνδοευρωπαϊκή *<i>sleh₂gʷ</i>-",
             ],
@@ -105,7 +102,6 @@ def setup_lua_ctx() -> None:
         (
             "τσιγγάνα",
             [],
-            ["θηλυκό"],
             [],
             {},
             ["τσιγγάνος"],
@@ -113,7 +109,6 @@ def setup_lua_ctx() -> None:
         (
             "-αίικο",
             ["/ˈe.i.ko/"],
-            ["ουδέτερο"],
             [
                 "<b>-αίικο</b> &lt; <i>ουσιαστικοποιημένο ουδέτερο</i> <i>του επιθέτου</i>&nbsp;-αίικος επίθημα σε επίθετα ή οικογενειακά επώνυμα -αί(οι) + -ικος"
             ],
@@ -134,7 +129,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -142,8 +136,8 @@ def test_parse_word(
 ) -> None:
     """Test the sections finder and definitions getter."""
     print(f"{word = }")
-    code = page(word, "el")
-    details = parse_word(word, code, "el", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert OrderedDict(definitions) == details.definitions

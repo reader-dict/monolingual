@@ -9,19 +9,20 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("ca")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants",
     [
         (
             "-ass-",
-            [],
             [],
             ["Del sufix <i>-às</i> amb valor augmentatiu."],
             {"Infix": ["Infix que afegeix un matís augmentatiu."]},
@@ -29,7 +30,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "-itzar",
-            [],
             [],
             ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> &lrm;(-ízein)."],
             {
@@ -41,7 +41,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "AFI",
-            [],
             [],
             [],
             {
@@ -56,7 +55,6 @@ def setup_lua_ctx() -> None:
             "avui",
             [],
             [],
-            [],
             {
                 "Adverbi": ["En el dia actual.", "Metafòricament, en el present."],
                 "Sinònims": ["[1] hui", "[2] hui, a hores d'ara, actualment, ara, ara com ara, ara per ara, ja"],
@@ -65,7 +63,6 @@ def setup_lua_ctx() -> None:
         ),
         (
             "bio-",
-            [],
             [],
             [],
             {
@@ -77,7 +74,6 @@ def setup_lua_ctx() -> None:
         (
             "bot",
             [],
-            ["m"],
             [
                 "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> &lrm;(‘bóta’), segle XIII.",
                 "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
@@ -108,7 +104,6 @@ def setup_lua_ctx() -> None:
         (
             "cap",
             [],
-            ["m", "mf"],
             [
                 "Del llatí vulgar <i>*capu(m)</i>, variant de l’acusatiu <i>caput</i>, segle XIII. Com a adjectiu pel sentit d’«extrem, punta». Com a preposició pel sentit de «part anterior (vers un lloc)»."
             ],
@@ -157,7 +152,6 @@ def setup_lua_ctx() -> None:
         (
             "cas",
             [],
-            ["m"],
             ["Del llatí <i>casus</i> &lrm;(‘caiguda, cas fortuït’), de <i>cadere</i> &lrm;(‘caure’), segle XIV."],
             {
                 "Nom|m.": [
@@ -177,11 +171,10 @@ def setup_lua_ctx() -> None:
                     "can",
                 ],
             },
-            ["ca", "casar"],
+            [LANG, "casar"],
         ),
         (
             "Castell",
-            [],
             [],
             ["De <i>castell</i>."],
             {
@@ -206,7 +199,6 @@ def setup_lua_ctx() -> None:
         (
             "català",
             [],
-            ["m"],
             [
                 "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
@@ -229,7 +221,6 @@ def setup_lua_ctx() -> None:
             "ch",
             [],
             [],
-            [],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del chamorro."],
             },
@@ -238,7 +229,6 @@ def setup_lua_ctx() -> None:
         (
             "compte",
             [],
-            ["m"],
             ["Del llatí <i>compŭtus</i>, segle XIII."],
             {
                 "Nom|m.": [
@@ -262,7 +252,6 @@ def setup_lua_ctx() -> None:
         (
             "disset",
             [],
-            ["m", "f"],
             [
                 "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> &lrm;(literalment ‘deu i set’), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
             ],
@@ -280,7 +269,6 @@ def setup_lua_ctx() -> None:
         (
             "el",
             ["/əɫ/"],
-            ["f"],
             [
                 "Del català antic <i>lo</i>, per fals tall sil·làbic de <i>·l</i>, forma reduïda darrere d’una <i>e</i>, segle XIV. Per exemple: <i>que lo &gt; que·l &gt; qu’el &gt; que el; de lo &gt; del; e lo &gt; e·l &gt; i el</i>."
             ],
@@ -308,24 +296,21 @@ def setup_lua_ctx() -> None:
             "expertes",
             [],
             [],
-            [],
             {},
             ["experta"],
         ),
-        ("halloweeniana", [], [], [], {}, ["halloweenià"]),
+        ("halloweeniana", [], [], {}, ["halloweenià"]),
         (
             "hivernacle",
             [],
-            ["m"],
             ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(‘hivernar’)."],
             {"Nom|m.": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
-        ("Mn.", [], [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),
-        ("PMF", [], [], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>."]}, []),
+        ("Mn.", [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),
+        ("PMF", [], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>."]}, []),
         (
             "pen",
-            [],
             [],
             [],
             {},
@@ -334,7 +319,6 @@ def setup_lua_ctx() -> None:
         (
             "si",
             [],
-            ["m"],
             [
                 "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
                 "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
@@ -359,15 +343,14 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "ca")
-    details = parse_word(word, code, "ca", force=True)
+    code = page(word, LANG)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert OrderedDict(definitions) == details.definitions

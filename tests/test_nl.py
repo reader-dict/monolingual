@@ -10,20 +10,21 @@ from wikidict import context
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
 
+LANG = __name__.split("_", 1)[1]
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_lua_ctx() -> None:
     with patch.dict("os.environ", {"CWD": str(Path(context.__file__).parent.parent)}):
-        assert context.reset("nl")
+        assert context.reset(LANG)
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, genders, etymology, definitions, variants, reverse_variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "a",
             ["/a/"],
-            ["m", "v"],
             [],
             {
                 "Voorvoegsel": ["(natuurkunde) voorvoegsel voor atto-, 10<sup>−18</sup>"],
@@ -58,7 +59,6 @@ def setup_lua_ctx() -> None:
         (
             "B",
             ["/be/"],
-            ["m"],
             ["verkorting van bachelor, binnen de Europese Unie gestandaardiseerd"],
             {
                 "Symbool": [
@@ -82,7 +82,6 @@ def setup_lua_ctx() -> None:
         (
             "chatterbot",
             [],
-            ["m"],
             ["samenstelling&#32;van&#32;&#160;chat&#32;zn&#160;&#32;en&#32;&#160;robot&#32;zn&#160;"],
             {
                 "Zelfstandig Naamwoord|m.": ["(internet) een geautomatiseerde gesprekspartner via het internet"],
@@ -94,7 +93,6 @@ def setup_lua_ctx() -> None:
         (
             "cokes",
             ["/koks/"],
-            ["mv"],
             [
                 "[A]: alleen meervoud van Engels cokes, in de betekenis van ‘residu van steenkool’ voor het eerst aangetroffen in het jaar 1829",
                 "[B]: &#160;coke&#32;zn&#160; met de uitgang <i>-s</i>",
@@ -115,7 +113,6 @@ def setup_lua_ctx() -> None:
         (
             "dom",
             ["/dɔm/"],
-            ["m"],
             [
                 "In de betekenis van ‘niet wijs’ voor het eerst aangetroffen in het jaar 901",
                 "Leenwoord uit het Portugees, in de betekenis van ‘Portugese titel’ voor het eerst aangetroffen in het jaar 1574",
@@ -156,7 +153,6 @@ def setup_lua_ctx() -> None:
         (
             "Konkani",
             ["/kɔŋˈkani/"],
-            ["m", "v"],
             [],
             {
                 "Zelfstandig Naamwoord|m., v.": [
@@ -186,7 +182,6 @@ def setup_lua_ctx() -> None:
         (
             "stint",
             ["/stɪnt/"],
-            ["m"],
             ['van de merknaam "Stint", gedeponeerd door het bedrijf <i>Stint Urban Mobility</i>'],
             {
                 "Zelfstandig Naamwoord|m.": [
@@ -205,7 +200,6 @@ def setup_lua_ctx() -> None:
             "stints",
             ["/stɪnts/"],
             [],
-            [],
             {},
             ["stint"],
             [],
@@ -215,7 +209,6 @@ def setup_lua_ctx() -> None:
 def test_parse_word(
     word: str,
     pronunciations: list[str],
-    genders: list[str],
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
@@ -223,13 +216,13 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
-    code = page(word, "nl")
+    code = page(word, LANG)
 
     # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
     # `{{=nld=}}` → `=={{nld}}==`
     code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
 
-    details = parse_word(word, code, "nl", force=True)
+    details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
