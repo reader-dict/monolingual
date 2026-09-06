@@ -64,7 +64,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['[ˈʁɪndɐˌsteːk]', '[ˈʁɪndɐˌʃteːk]', '[ˈʁɪndɐˌsteɪ̯k]']
     """
     pattern = re.compile(r"{Lautschrift\|([^=}]+)}")
-    return [f"[{p}]" for p in utils.unique(pattern.findall(code))]
+    return sorted(f"[{p}]" for p in utils.unique(pattern.findall(code)))
 
 
 def adjust_wikicode(
