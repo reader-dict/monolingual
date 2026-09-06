@@ -73,7 +73,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ɛn/']
     """
     pattern = re.compile(rf"\{{uttal\|{locale}\|(?:[^\|]+\|)?ipa=([^}}|]+)}}?\|?")
-    return [f"/{p}/" for p in utils.unique(pattern.findall(code))]
+    return sorted(f"/{p}/" for p in utils.unique(pattern.findall(code)))
 
 
 def adjust_wikicode(
