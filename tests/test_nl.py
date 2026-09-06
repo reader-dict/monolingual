@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -25,7 +26,6 @@ def setup_lua_ctx() -> None:
             ["m", "v"],
             [],
             {
-                "Synoniemen": ["Alfa <i>(NAVO-spellingsalfabet)</i>", "[4] la"],
                 "Voorvoegsel": ["(natuurkunde) voorvoegsel voor atto-, 10<sup>−18</sup>"],
                 "Symbool": [
                     "(wiskunde), (afkorting) symbool voor <i>are</i>, een oppervlaktemaat, gelijk aan 100 m², gelijk aan tien bij tien meter",
@@ -50,6 +50,7 @@ def setup_lua_ctx() -> None:
                     ),
                 ],
                 "Uitdrukkingen En Gezegden": ["van A tot Z", ("<i>Van het begin tot het einde.</i>",)],
+                "Synoniemen": ["Alfa <i>(NAVO-spellingsalfabet)</i>", "[4] la"],
             },
             [],
             ["a's", "a'tje", "a'tjes"],
@@ -60,7 +61,6 @@ def setup_lua_ctx() -> None:
             ["m"],
             ["verkorting van bachelor, binnen de Europese Unie gestandaardiseerd"],
             {
-                "Synoniemen": ["Bravo <i>(NAVO-spellingsalfabet)</i>"],
                 "Symbool": [
                     "(scheikunde), (element) symbool voor het scheikundig element boor/borium met atoomnummer 5, een metalloïde",
                     "(informatica), (afkorting) het symbool voor byte, het kleinste adresseerbare gedeelte van een computergeheugen",
@@ -74,6 +74,7 @@ def setup_lua_ctx() -> None:
                     "als benaming binnen een reeks categorieën die met letters worden aangeduid",
                 ],
                 "Afkorting": ["bachelor <i>(academische titel)</i>"],
+                "Synoniemen": ["Bravo <i>(NAVO-spellingsalfabet)</i>"],
             },
             [],
             ["B's", "B'tje", "B'tjes"],
@@ -99,6 +100,7 @@ def setup_lua_ctx() -> None:
                 "[B]: &#160;coke&#32;zn&#160; met de uitgang <i>-s</i>",
             ],
             {
+                "Zelfstandig Naamwoord|mv.": ["ontgaste steenkool"],
                 "Opmerkingen": [
                     (
                         "Het woord is oorspronkelijk als meervoud ontleend, maar "
@@ -106,7 +108,6 @@ def setup_lua_ctx() -> None:
                         "gebruik als enkelvoud voor, zonder verschil in betekenis."
                     )
                 ],
-                "Zelfstandig Naamwoord|mv.": ["ontgaste steenkool"],
             },
             [],
             [],
@@ -127,14 +128,14 @@ def setup_lua_ctx() -> None:
                     "Portugese eretitel",
                     "(religie) titel van een benedictijner monnik",
                 ],
-                "Opmerkingen": [
-                    'In de betekenis van kathedraal is het alleen gangbaar voor het aanduiden van een bepaald kerkgebouw, bijvoorbeeld <i>"de dom van Utrecht"</i> of <i>"de Keulse dom"</i>, maar niet onbepaald (met het lidwoord <i>een</i>) of in het meervoud. Hiervoor kan beter (een vorm van) het woord "domkerk" worden gebruikt.'
-                ],
-                "Synoniemen": ["(<i>hoofdkerk</i>)", ("kathedraal",), "(<i>boldak</i>)", ("koepel",)],
                 "Bijvoeglijk Naamwoord": [
                     "van weinig verstand getuigend",
                     "min of meer toevallig",
                     "routinematig, weinig geestelijke inspanning vereisend",
+                ],
+                "Synoniemen": ["(<i>hoofdkerk</i>)", ("kathedraal",), "(<i>boldak</i>)", ("koepel",)],
+                "Opmerkingen": [
+                    'In de betekenis van kathedraal is het alleen gangbaar voor het aanduiden van een bepaald kerkgebouw, bijvoorbeeld <i>"de dom van Utrecht"</i> of <i>"de Keulse dom"</i>, maar niet onbepaald (met het lidwoord <i>een</i>) of in het meervoud. Hiervoor kan beter (een vorm van) het woord "domkerk" worden gebruikt.'
                 ],
             },
             [],
@@ -216,7 +217,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -232,6 +233,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

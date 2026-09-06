@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -101,13 +102,13 @@ def setup_lua_ctx() -> None:
                 'I svenskan sedan 1631, från franska <i>mine</i> (varav även tyska <i>Miene</i>, engelska <i>mien</i>), av bretonskans <i>min</i>, "mun", "näbb", "nos"',
             ],
             {
-                "Förkortning": ["<i>förkortning för</i> minut", "<i>förkortning för</i> minimum"],
                 "Pronomen": [
                     "possessivt pronomen som indikerar ägande av eller tillhörighet till den talande (jag) om det ägda eller tillhörande är i ental och har n-genus; possessivt pronomen i första person singular med huvudordet i singular utrum",
                     "ovanstående i självständig form",
                     "reflexivt possessivt pronomen som syftar tillbaka på och indikerar ägande av eller tillhörighet till subjektet om subjektet är i första person singular (jag) och om det ägda eller tillhörande är i ental och har n-genus; reflexivt possessivt pronomen i första person singular med huvudordet i singular utrum",
                 ],
                 "Substantiv": ["känslouttryck i ansiktet"],
+                "Förkortning": ["<i>förkortning för</i> minut", "<i>förkortning för</i> minimum"],
             },
             [],
             ["minen", "minens", "miner", "minerna", "minernas", "miners", "mins"],
@@ -165,7 +166,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -176,6 +177,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

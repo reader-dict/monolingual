@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -135,6 +136,13 @@ def setup_lua_ctx() -> None:
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
                     "Grau militar.",
                 ],
+                "Adjectiu": [
+                    "(<i>negatiu</i>) Ni un.",
+                    "(interrogatiu,&#32;condicional) Algun.",
+                    "(<i>negatiu</i>) Gens de.",
+                    "(interrogatiu,&#32;condicional) Alguna mena de.",
+                ],
+                "Preposició": ["cap a"],
                 "Sinònims": [
                     "(anatomia) carbassot , cervell, clepsa, closca, crani, crisma, ment, testa",
                     "(seu del pensament) cervell, discerniment, judici, juí, raonament, raó, saviesa, senderi, seny, sindèresi, talent",
@@ -143,13 +151,6 @@ def setup_lua_ctx() -> None:
                     "(extremitat, part final) extrem, fi, final, punta",
                     "amo, cabdill, cacic, capitost, patró, senyor, superior, director, encarregat, gerent, president, propietari, responsable",
                 ],
-                "Adjectiu": [
-                    "(<i>negatiu</i>) Ni un.",
-                    "(interrogatiu,&#32;condicional) Algun.",
-                    "(<i>negatiu</i>) Gens de.",
-                    "(interrogatiu,&#32;condicional) Alguna mena de.",
-                ],
-                "Preposició": ["cap a"],
             },
             ["cabre", "capar"],
         ),
@@ -165,15 +166,15 @@ def setup_lua_ctx() -> None:
                     "(<i>lingüística</i>) Categoria gramatical que marca la funció sintàctica d’un mot.",
                     "Atenció, cura.",
                 ],
+                "Contracció": [
+                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
+                ],
                 "Sinònims": [
                     "causa, judici, litigi, plet, procés",
                     "(lingüística) cas gramatical",
                     "ca s' <i>(forma apostrofada)</i>",
                     "cal",
                     "can",
-                ],
-                "Contracció": [
-                    "Contracció entre el nom <i>casa</i> i l'article salat <i>es</i> quan és usat com un article personal. S'utilitza tant per referir-se a un habitatge com a una família. Sempre s'escriu davant de nom o de sobrenom."
                 ],
             },
             ["ca", "casar"],
@@ -246,6 +247,7 @@ def setup_lua_ctx() -> None:
                     "Suma de la quantitat a pagar.",
                     "(<i>beisbol</i>) Acció i efecte de l'àrbitre principal de determinar el nombre de boles i strikes d'un batedor en un temps de bat.",
                 ],
+                "Interjecció": ["atenció"],
                 "Sinònims": [
                     "advertiment, alerta, atenció, cura, ei, ep, precaució",
                     "atenció, consideració, cura, esment",
@@ -254,7 +256,6 @@ def setup_lua_ctx() -> None:
                     "explicació, report",
                     "factura, nota",
                 ],
-                "Interjecció": ["atenció"],
             },
             ["comptar"],
         ),
@@ -270,9 +271,9 @@ def setup_lua_ctx() -> None:
                     "(<i>cardinal</i>) Nombre enter situat entre el setze i el divuit.",
                     "(<i>valor ordinal</i>) dissetè, dissetena.",
                 ],
-                "Sinònims": ["desset, en balear i alguerès", "dèsset, en valencià", "desasset, en septentrional"],
                 "Nom|m.": ["Xifra i nombre 17."],
                 "Nom|f.": ["Dissetena hora."],
+                "Sinònims": ["desset, en balear i alguerès", "dèsset, en valencià", "desasset, en septentrional"],
             },
             [],
         ),
@@ -288,6 +289,11 @@ def setup_lua_ctx() -> None:
                 "Article": [
                     "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya."
                 ],
+                "Pronom": [
+                    'Acusatiu del masculí singular del pronom personal "ell".',
+                    'Substitueix el complement directe quan aquest porta l\'article "el".',
+                ],
+                "Nom|f.": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
                 "Sinònims": [
                     "l' (forma apostrofada)",
                     "lo, l' (dialectal)",
@@ -295,11 +301,6 @@ def setup_lua_ctx() -> None:
                     "so, s' (mallorquí i eivissenc en certs contextos)",
                     "en, n' (davant noms o sobrenoms de persona)",
                 ],
-                "Pronom": [
-                    'Acusatiu del masculí singular del pronom personal "ell".',
-                    'Substitueix el complement directe quan aquest porta l\'article "el".',
-                ],
-                "Nom|f.": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
             },
             [],
         ),
@@ -348,8 +349,8 @@ def setup_lua_ctx() -> None:
                     "(<i>per extensió</i>) Part interna d'una cosa.",
                     "Setena nota musical de l'escala.",
                 ],
-                "Sinònims": ["bust, pit, sina, tòrax", "mare, matriu"],
                 "Pronom": ["Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions."],
+                "Sinònims": ["bust, pit, sina, tòrax", "mare, matriu"],
             },
             [],
         ),
@@ -360,7 +361,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
@@ -369,6 +370,6 @@ def test_parse_word(
     details = parse_word(word, code, "ca", force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants

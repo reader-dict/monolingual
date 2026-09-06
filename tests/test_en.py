@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -28,16 +29,16 @@ def setup_lua_ctx() -> None:
                 "From the spelling books and the fact that it was the first of the letter combinations.",
             ],
             {
-                "Adverb": ["Abbreviation of <i>about</i>."],
+                "Symbol": ["(<i>international standards</i>) <i>ISO 639-1 language code for </i><b>Abkhaz</b><i>.</i>"],
                 "Noun": [
                     "(<i>informal</i>) Clipping of <i>abdominal muscle</i> &lsqb;mid 20<sup>th</sup> century&rsqb;.",
                     "(<i>slang</i>) An abscess caused by injecting an illegal drug, usually heroin.",
                     "Abbreviation of <i>abortion</i>.",
                     "(<i>US</i>) The early stages of; the beginning process; the start.",
                 ],
-                "Preposition": ["Abbreviation of <i>about</i>."],
-                "Symbol": ["(<i>international standards</i>) <i>ISO 639-1 language code for </i><b>Abkhaz</b><i>.</i>"],
                 "Verb": ["(climbing,&#32;informal) To abseil.", "Abbreviation of <i>abort</i>."],
+                "Preposition": ["Abbreviation of <i>about</i>."],
+                "Adverb": ["Abbreviation of <i>about</i>."],
             },
             [],
         ),
@@ -143,11 +144,6 @@ def setup_lua_ctx() -> None:
                 "From Ukrainian <i>Марс</i> (Mars).",
             ],
             {
-                "Noun": [
-                    "(heraldry,&#32;rare) Gules (red), in the postmedieval practice of blazoning the tinctures of certain sovereigns' (especially British monarchs') coats as planets.",
-                    "(obsolete,&#32;alchemy,&#32;chemistry) Iron.",
-                    "Alternative form of <i>Mas</i>.",
-                ],
                 "Proper Noun": [
                     "(<i>astronomy</i>) The fourth planet in the solar system. Symbol: <b>♂</b>",
                     "(<i>Roman mythology</i>) The Roman god of war.",
@@ -156,6 +152,11 @@ def setup_lua_ctx() -> None:
                     "A surname.",
                     "A brand of chocolate bar with caramel and nougat filling.",
                     "A village in Semenivka urban hromada, Novhorod-Siverskyi Raion, Chernihiv Oblast, Ukraine.",
+                ],
+                "Noun": [
+                    "(heraldry,&#32;rare) Gules (red), in the postmedieval practice of blazoning the tinctures of certain sovereigns' (especially British monarchs') coats as planets.",
+                    "(obsolete,&#32;alchemy,&#32;chemistry) Iron.",
+                    "Alternative form of <i>Mas</i>.",
                 ],
             },
             [],
@@ -194,8 +195,8 @@ def setup_lua_ctx() -> None:
                 "From Middle English <i>sum on</i>, <i>sum one</i>, <i>sum oon</i>, equivalent to <i>some</i> +&lrm; <i>one</i>.",
             ],
             {
-                "Noun": ["A partially specified but unnamed person.", "An important person."],
                 "Pronoun": ["One or some person of unspecified or indefinite identity."],
+                "Noun": ["A partially specified but unnamed person.", "An important person."],
             },
             [],
         ),
@@ -243,10 +244,8 @@ def setup_lua_ctx() -> None:
                 'From Middle English <i>the</i>, <i>thy</i>, <i>thi</i>, from Old English <i>þē̆</i>, probably a neuter instrumental form ("by that, thereby")—alongside the more common <i>þȳ</i> and <i>þon</i>—of the demonstrative pronoun <i>sē</i> ("that"). Compare Dutch <i>des <i>te</i></i> ("the, the more"), German <i>des<i>to</i></i> ("the, all the more"), Norwegian <i>for<i>di</i></i> and Norwegian <i>av di</i> ("because"), Icelandic <i>því</i> (“the; because”), Faroese <i>tí</i>, Swedish <i>ty</i>.',
             ],
             {
-                "Adverb": [
-                    "With a comparative or with <i>more</i> and a verb phrase, establishes a correlation with one or more other such comparatives.",
-                    "With a comparative, and often with <i>for it</i>, indicates a result more like said comparative. This can be negated with <i>none</i>.",
-                    "(<i>with a superlative adjective</i>) Beyond all others.",
+                "Symbol": [
+                    "(<i>international standards</i>) <i>ISO 639-3 language code for </i><b>Chitwania Tharu</b><i>.</i>"
                 ],
                 "Article": [
                     "Used before a noun phrase, including a simple noun",
@@ -268,11 +267,13 @@ def setup_lua_ctx() -> None:
                         "Used before a demonym ending in <i>-ish</i> or <i>-ese</i> to refer to people of a given country collectively.",
                     ),
                 ],
+                "Adverb": [
+                    "With a comparative or with <i>more</i> and a verb phrase, establishes a correlation with one or more other such comparatives.",
+                    "With a comparative, and often with <i>for it</i>, indicates a result more like said comparative. This can be negated with <i>none</i>.",
+                    "(<i>with a superlative adjective</i>) Beyond all others.",
+                ],
                 "Preposition": ["For each; per."],
                 "Pronoun": ["Obsolete form of <i>thee</i>."],
-                "Symbol": [
-                    "(<i>international standards</i>) <i>ISO 639-3 language code for </i><b>Chitwania Tharu</b><i>.</i>"
-                ],
             },
             [],
         ),
@@ -300,6 +301,7 @@ def setup_lua_ctx() -> None:
                 "Variant form of <i>-um</i>.",
             ],
             {
+                "Symbol": ["(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μm</i>."],
                 "Interjection": [
                     "Expression of hesitation, uncertainty or space filler in conversation.",
                     ("Synonyms: er, hmm, uh, eh",),
@@ -307,12 +309,11 @@ def setup_lua_ctx() -> None:
                     "An expression to forcefully call attention to something wrong.",
                     "(<i>childish</i>) An expression of shocked disapproval used by a child who witnesses forbidden behavior.",
                 ],
+                "Verb": ["(<i>intransitive</i>) To make the <i>um</i> sound to express uncertainty or hesitancy."],
                 "Noun": ['An occurrence of the interjection "um".'],
                 "Particle": [
                     "(dated,&#32;sometimes&#32;humorous,&#32;often&#32;offensive) An undifferentiated determiner or article&#59; a miscellaneous linking word, or filler with nonspecific meaning&#59; representation of broken English stereotypically or comically attributed to Native Americans."
                 ],
-                "Symbol": ["(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μm</i>."],
-                "Verb": ["(<i>intransitive</i>) To make the <i>um</i> sound to express uncertainty or hesitancy."],
             },
             [],
         ),
@@ -326,12 +327,10 @@ def setup_lua_ctx() -> None:
                 "From <i>u-</i> (“micro-, 10<sup>-6</sup>”) +&lrm; <i>s</i> (“second”).",
             ],
             {
-                "Determiner": [
-                    "Designates the speaker(s)&#47;writer(s) as constituting or belonging to the stated category of people (objective case).",
-                    "(<i>proscribed</i>) Designates the speaker(s)&#47;writer(s) as constituting or belonging to the stated category of people (subjective case).",
-                    "(Northern England,&#32;Nottinghamshire) Our.",
+                "Symbol": [
+                    "(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μs</i>.",
+                    "Alternative spelling of <i>μs</i>: microsecond.",
                 ],
-                "Noun": ["(<i>rare</i>) Alternative form of <i>u's</i>."],
                 "Pronoun": [
                     "Me and at least one other person, excluding the person(s) being addressed. (exclusive <i>us</i>.)",
                     "Me and at least one other person, including the person(s) being addressed. (inclusive <i>us</i>.)",
@@ -343,10 +342,12 @@ def setup_lua_ctx() -> None:
                     "(Commonwealth,&#32;colloquial,&#32;chiefly with certain verbs such as <i>give</i>, <i>get</i>, <i>fetch</i>, etc.) Me.",
                     "(<i>Northumbria</i>) Me (in all contexts).",
                 ],
-                "Symbol": [
-                    "(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μs</i>.",
-                    "Alternative spelling of <i>μs</i>: microsecond.",
+                "Determiner": [
+                    "Designates the speaker(s)&#47;writer(s) as constituting or belonging to the stated category of people (objective case).",
+                    "(<i>proscribed</i>) Designates the speaker(s)&#47;writer(s) as constituting or belonging to the stated category of people (subjective case).",
+                    "(Northern England,&#32;Nottinghamshire) Our.",
                 ],
+                "Noun": ["(<i>rare</i>) Alternative form of <i>u's</i>."],
             },
             [],
         ),
@@ -474,7 +475,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
@@ -484,7 +485,7 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
 
     assert not context.get_errors()

@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -36,7 +37,6 @@ def setup_lua_ctx() -> None:
                     '<svg width="1.23ex" height="2.343ex" style="vertical-align:-0.338ex" aria-labelledby="MathJax-SVG-1-Title" focusable="false" role="img" viewBox="0 -863.1 529.5 1008.6" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs aria-hidden="true"><path id="E1-MJMATHI-61" d="m33 157q0 101 76 192t171 92q51 0 90-49 16 30 46 30 13 0 23-8t10-20q0-13-37-160t-38-166q0-25 7-33t21-9q9 1 20 9 21 20 41 96 6 20 10 21 2 1 10 1h4q19 0 19-9 0-6-5-27t-20-54-32-50q-13-13-32-21-8-2-24-2-34 0-57 15t-30 31l-6 15q-1 1-4-1-2-2-4-4-59-56-120-56-55 0-97 40t-42 127zm318 171q0 6-5 22t-23 35-46 20q-35 0-67-31t-50-81q-29-79-41-164 0-3 0-11t-1-12q0-45 18-62t43-18q38 0 75 33t44 51q2 4 27 107t26 111z"/><path id="E1-MJMAIN-20D7" d="m-123 694q0 8 5 14t15 6q10 0 15-8t8-19 13-27 27-27q11-7 11-18 0-9-7-15t-17-10-30-19-38-40q-14-15-22-15t-14 6-6 14 11 23 23 25 13 11h-171l-171 1q-1 1-3 3t-5 3-3 5-2 8q0 7 13 20h359q-24 38-24 59z"/></defs><g transform="scale(1 -1)" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true"><use xlink:href="#E1-MJMATHI-61"/><use x="499" y="34" xlink:href="#E1-MJMAIN-20D7"/></g></svg> fiz. symbol oznaczający wektor przyspieszenia',
                     "muz. szósty dźwięk w podstawowej skali diatonicznej; zob. <i>też</i> a (dźwięk) w Wikipedii",
                 ],
-                "Synonimy": ["i, oraz", "ale, natomiast, zaś", "więc", "przy czym", "o!"],
                 "Spójnik": [
                     "<i>…uzupełniania</i>",
                     "<i>…przeciwstawności</i>",
@@ -46,6 +46,7 @@ def setup_lua_ctx() -> None:
                 "Partykuła": ["<i>…wzmacniająca</i>"],
                 "Wykrzyknik": ["<i>wyraz zaskoczenia, zdziwienia</i>"],
                 "Rzeczownik|n.": ["jęz. pierwsza litera polskiego alfabetu; zob. <i>też</i> a w Wikipedii"],
+                "Synonimy": ["i, oraz", "ale, natomiast, zaś", "więc", "przy czym", "o!"],
             },
             [],
             [],
@@ -238,7 +239,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -256,6 +257,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

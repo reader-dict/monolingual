@@ -10,7 +10,7 @@ import os
 import re
 import sys
 import warnings
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 from contextlib import suppress
 from datetime import timedelta
 from functools import partial
@@ -37,6 +37,8 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
     from .stubs import Definitions, SubDefinition
+
+log = logging.getLogger(__name__)
 
 
 # As stated in wikitextparser._spans.parse_pm_pf_tl():
@@ -71,7 +73,34 @@ DEBUG_EMPTY_WORDS = "DEBUG_EMPTY_WORDS" in os.environ
 #    python log-analyzer.py LOG_FILE
 DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 0
 
-log = logging.getLogger(__name__)
+
+# XXX_LOCALES
+POS_SYNONYMS = [
+    ("ca", "Sinònims"),
+    ("cs", "Synonyma"),
+    ("da", "Synonymer"),
+    ("de", "Synonyme"),
+    ("en", "Synonym"),
+    ("eo", "Sinonimoj"),
+    ("es", "Sinónimo"),
+    ("fr", "Synonymes"),
+    ("it", "Sinonimi"),
+    ("ja", "類義語"),
+    ("ko", "유의어"),
+    ("lt", "Sinonimai"),
+    ("nl", "Synoniemen"),
+    ("no", "Synonymer"),
+    ("pl", "Synonimy"),
+    ("pt", "Sinónimo"),
+    ("ro", "Sinonime"),
+    ("ru", "Синонимы"),
+    ("uk", "Синоніми"),
+    ("zh", "同义词"),
+]
+POS_NOTES = [
+    ("en", "Usage Note"),
+    ("nl", "Opmerkingen"),
+]
 
 
 def get_ignored_terms(lang_src: str, lang_dst: str) -> set[str]:
@@ -89,7 +118,7 @@ def find_definitions(
     templates_status: list[tuple[str, str]] | None = None,
 ) -> Definitions:
     """Find all definitions, without eventual subtext."""
-    definitions: Definitions = defaultdict(list)
+    definitions: defaultdict[str, list[Any]] = defaultdict(list)
 
     for pos, sections in parsed_sections.items():
         for section in sections:
@@ -101,13 +130,21 @@ def find_definitions(
                     if pos_def not in target_pos:
                         target_pos.append(pos_def)
 
-    # Move notes below definitions
-    if lang_src == "en" and "Usage Note" in definitions:
-        definitions["Usage Note"] = definitions.pop("Usage Note")
-    elif lang_src == "nl" and "Opmerkingen" in definitions:
-        definitions["Opmerkingen"] = definitions.pop("Opmerkingen")
+    # Move synonyms below definitions
+    for some_lang, some_pos in POS_SYNONYMS:
+        if lang_src == some_lang:
+            if some_pos in definitions:
+                definitions[some_pos] = definitions.pop(some_pos)
+            break
 
-    return dict(definitions)
+    # # Move notes at the end
+    for some_lang, some_pos in POS_NOTES:
+        if lang_src == some_lang:
+            if some_pos in definitions:
+                definitions[some_pos] = definitions.pop(some_pos)
+            break
+
+    return OrderedDict(definitions)
 
 
 def es_replace_defs_list_with_numbered_lists(
@@ -620,7 +657,7 @@ def parse_word(
     prons = []
     etymology = []
     etymology_sections: list[wtp.Section] = []
-    definitions: Definitions = {}
+    definitions: Definitions = OrderedDict()
     variants: list[str] = []
     reverse_variants: list[str] = []
 

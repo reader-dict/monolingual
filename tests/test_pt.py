@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -132,11 +133,11 @@ def setup_lua_ctx() -> None:
             ["Derivado de Bahia, mais o sufixo ano, com perda do H."],
             {
                 "Adjetivo": ["do Estado da Bahia, Brasil"],
-                "Expressão": ["<b>alqueire baiano</b>:", "<b>rodar a baiana</b>:"],
                 "Substantivo": [
                     "natural ou habitante do Estado da Bahia, Brasil",
                     "(São Paulo,&nbsp;Brasil,&nbsp;popular,&nbsp;pejorativo e&nbsp;racismo) pessoa que se veste de maneira incomum ou brega; fora da moda",
                 ],
+                "Expressão": ["<b>alqueire baiano</b>:", "<b>rodar a baiana</b>:"],
             },
             [],
             ["baiana", "baianas", "baianos"],
@@ -475,7 +476,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -486,6 +487,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

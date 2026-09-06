@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -31,18 +32,18 @@ def setup_lua_ctx() -> None:
             ["/kɨnˈta/"],
             ["Din latină <i>cantare</i>."],
             {
+                "Verb": [
+                    "(<i>v.intranz. și tranz.</i>) a emite cu vocea sau cu un instrument un șir de sunete muzicale care se rânduiesc într-o melodie, într-un acord etc.",
+                    "(<i>despre păsări, insecte etc.</i>) a scoate sunete plăcute la auz. caracteristice speciei.",
+                    "(<i>v.intranz. și tranz.</i>) a scrie versuri în cinstea cuiva sau a ceva, a elogia (în versuri) pe cineva sau ceva; a descrie, a povesti ceva în versuri.",
+                    "(<i>v.tranz.</i>) (<i>fam.</i>) a îndruga, a înșira vorbe goale.",
+                ],
                 "Expresie": ["<i><b>Joacă cum îi cântă</b> = face întocmai cum îi poruncește altul</i>"],
                 "Sinonime": [
                     (
                         "<b>1:</b> (muz.) executa, interpreta, intona, (pop.) glăsui, "
                         "spune, viersui, zice, (înv.) glăsi, juca, (muz.) suna"
                     )
-                ],
-                "Verb": [
-                    "(<i>v.intranz. și tranz.</i>) a emite cu vocea sau cu un instrument un șir de sunete muzicale care se rânduiesc într-o melodie, într-un acord etc.",
-                    "(<i>despre păsări, insecte etc.</i>) a scoate sunete plăcute la auz. caracteristice speciei.",
-                    "(<i>v.intranz. și tranz.</i>) a scrie versuri în cinstea cuiva sau a ceva, a elogia (în versuri) pe cineva sau ceva; a descrie, a povesti ceva în versuri.",
-                    "(<i>v.tranz.</i>) (<i>fam.</i>) a îndruga, a înșira vorbe goale.",
                 ],
             },
             [],
@@ -123,7 +124,6 @@ def setup_lua_ctx() -> None:
             [],
             ["Din latină <i>Paliurus</i> (numele științific al plantei)."],
             {
-                "Sinonime": ["(bot.) spinul-lui-Cristos, spinul-lui-Hristos"],
                 "Substantiv": [
                     (
                         "(<i>bot.</i>) (<i>Paliurus spina-christi</i>) arbust spinos "
@@ -131,6 +131,7 @@ def setup_lua_ctx() -> None:
                         "elastic se fac cozi de unelte."
                     )
                 ],
+                "Sinonime": ["(bot.) spinul-lui-Cristos, spinul-lui-Hristos"],
             },
             [],
             ["păliuri", "păliurii", "păliurilor", "păliurul", "păliurule", "păliurului"],
@@ -160,7 +161,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -171,6 +172,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

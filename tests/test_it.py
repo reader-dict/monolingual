@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -42,6 +43,13 @@ def setup_lua_ctx() -> None:
                 "dal latino <i>cum</i> e <i>dividere</i>; l'attuale uso improprio del verbo <i>condividere</i> è dovuto alla diffusione dei social network negli anni 2000 e 2010",
             ],
             {
+                "Verb": [
+                    "spartire con altri",
+                    "avere qualcosa in comune con qualcun altro",
+                    "essere d'accordo con altri su un punto di vista",
+                    "<small>(<i>filosofia</i>)</small> <small>(<i>economia</i>)</small> mettere spazi e risorse in comune con altri",
+                    "<small>(<i>informatica</i>)</small> ricevere o mettere un'informazione in comune con altri utenti",
+                ],
                 "Sinonimi": [
                     (
                         "aderire, appoggiare, approvare, concordare esprimere adesione, "
@@ -52,13 +60,6 @@ def setup_lua_ctx() -> None:
                         "<small>(<i>per estensione</i>)</small> <small>(<i>senso "
                         "figurato</i>)</small> accettare, accogliere"
                     ),
-                ],
-                "Verb": [
-                    "spartire con altri",
-                    "avere qualcosa in comune con qualcun altro",
-                    "essere d'accordo con altri su un punto di vista",
-                    "<small>(<i>filosofia</i>)</small> <small>(<i>economia</i>)</small> mettere spazi e risorse in comune con altri",
-                    "<small>(<i>informatica</i>)</small> ricevere o mettere un'informazione in comune con altri utenti",
                 ],
             },
             [],
@@ -80,12 +81,12 @@ def setup_lua_ctx() -> None:
             ["m"],
             ['dal latino <i>lector</i>, derivazione di <i>legĕre</i> ossia "leggere"'],
             {
-                "Sinonimi": ["riproduttore", "<i>(in informatica)</i> decodificatore, interprete"],
                 "Sostantivo|m.": [
                     "chi legge un libro, un giornale o una rivista",
                     "<small>(<i>religione</i>)</small> persona che in alcune chiese cristiane, come la Chiesa cattolica, la Chiesa anglicana e quella ortodossa, è incaricata di proclamare la parola di Dio e altri testi nelle celebrazioni liturgiche e di esercitare altri compiti in campo pastorale",
                     "<small>(<i>elettronica</i>)</small> <small>(<i>informatica</i>)</small> <small>(<i>tecnologia</i>)</small> <small>(<i>ingegneria</i>)</small> dispositivo elettronico che decodifica e riceve informazioni da un supporto",
                 ],
+                "Sinonimi": ["riproduttore", "<i>(in informatica)</i> decodificatore, interprete"],
             },
             [],
         ),
@@ -129,7 +130,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
@@ -139,5 +140,5 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants

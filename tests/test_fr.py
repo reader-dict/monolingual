@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -24,16 +25,16 @@ def setup_lua_ctx() -> None:
             ["m", "s"],
             [],
             {
+                "Numéral": [
+                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
+                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
+                ],
                 "Nom|invar.": [
                     "Quarante-deux.",
                     "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
                     "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
                 ],
                 "Nom Propre|m.": ["<i>(France)</i> Département de la Loire."],
-                "Numéral": [
-                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
-                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
-                ],
                 "Synonymes": ["quatre deux <i>(Familier)</i>"],
             },
             [],
@@ -86,11 +87,11 @@ def setup_lua_ctx() -> None:
                     "<i>(Chimie)</i> Symbole de l’activité chimique d’un composant.",
                     "<i>(Physique, Mécanique)</i> Symbole de l’accélération en tant que grandeur physique (uSI : mètre par seconde carré, m/s², m⋅s⁻² ; unité usuelle : g).",
                 ],
-                "Synonymes": ["γ («&nbsp;accélération&nbsp;»)"],
                 "Pronom": [
                     "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
                     "<i>(Québec)</i> <i>(Familier)</i> Elle.",
                 ],
+                "Synonymes": ["γ («&nbsp;accélération&nbsp;»)"],
             },
             ["avoir"],
         ),
@@ -549,7 +550,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
@@ -559,5 +560,5 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants

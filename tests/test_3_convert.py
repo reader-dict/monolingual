@@ -1,5 +1,6 @@
 import os
 import shutil
+from collections import OrderedDict
 from copy import deepcopy
 from datetime import UTC, datetime
 from pathlib import Path
@@ -16,29 +17,33 @@ from wikidict.stubs import Variants, Word, Words
 
 WORDS = {
     "empty": Word(),
-    "foo": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}),
-    "foos": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}, ["baz"]),
-    "baz": Word(["pron"], [], ["etyl"], {"Noun": ["def 1", ("sdef 1",)]}, ["foobar"]),
+    "foo": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1",)]})),
+    "foos": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}), ["baz"]),
+    "baz": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1",)]}), ["foobar"]),
     "empty1": Word(variants=["foo"]),
     "empty2": Word(variants=["empty1"]),
-    "Multiple Etymologies": Word(["pron"], [], ["etyl 1", ("setyl 1",)], {"Noun|m": ["def 1", ("sdef 1",)]}),
-    "Multiple Etymology": Word(["pron0"], [], ["etyl0"], {"Noun": ["def 0"]}, ["Multiple Etymologies"]),
+    "Multiple Etymologies": Word(
+        ["pron"], [], ["etyl 1", ("setyl 1",)], OrderedDict({"Noun|m": ["def 1", ("sdef 1",)]})
+    ),
+    "Multiple Etymology": Word(["pron0"], [], ["etyl0"], OrderedDict({"Noun": ["def 0"]}), ["Multiple Etymologies"]),
     "GIF": Word(
         ["pron"],
         [],
         ["etyl"],
-        {
-            "Noun": [
-                (
-                    '<img style="height:100%;max-height:0.8em;width:auto;vertical-align:bottom"'
-                    ' src="data:image/gif;base64,R0lGODdhNwAZAIEAAAAAAP///wAAAAAAACwAAAAANwAZAE'
-                    "AIwwADCAwAAMDAgwgTKlzIUKDBgwUZFnw4cGLDihEvOjSYseFEigQtLhSpsaNGiSdTQgS5kiVG"
-                    "lwhJeuRoMuHHkDBH1pT4cKdKmSpjUjT50efGnEWTsuxo9KbQnC1TFp051KhNpUid8tR6EijPkC"
-                    "V3en2J9erLoBjRXl1qVS1amTWn6oSK1WfGpnjDQo1q1Wvbs125PgX5l6zctW1JFgas96/FxYwv"
-                    'RnQsODHkyXuPDt5aVihYt5pBr9woGrJktmpNfxUYEAA7"/>'
-                )
-            ]
-        },
+        OrderedDict(
+            {
+                "Noun": [
+                    (
+                        '<img style="height:100%;max-height:0.8em;width:auto;vertical-align:bottom"'
+                        ' src="data:image/gif;base64,R0lGODdhNwAZAIEAAAAAAP///wAAAAAAACwAAAAANwAZAE'
+                        "AIwwADCAwAAMDAgwgTKlzIUKDBgwUZFnw4cGLDihEvOjSYseFEigQtLhSpsaNGiSdTQgS5kiVG"
+                        "lwhJeuRoMuHHkDBH1pT4cKdKmSpjUjT50efGnEWTsuxo9KbQnC1TFp051KhNpUid8tR6EijPkC"
+                        "V3en2J9erLoBjRXl1qVS1amTWn6oSK1WfGpnjDQo1q1Wvbs125PgX5l6zctW1JFgas96/FxYwv"
+                        'RnQsODHkyXuPDt5aVihYt5pBr9woGrJktmpNfxUYEAA7"/>'
+                    )
+                ]
+            }
+        ),
         ["gif"],
     ),
 }
@@ -366,38 +371,38 @@ def test_word_rendering(
 
 
 VARIANTS_FR = {
-    "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'estre'."]}),
-    "être": Word(pronunciations=["\\ɛtʁ\\"], definitions={"Verbe": ["Définition de 'être'."]}),
+    "estre": Word(pronunciations=["\\ɛtʁ\\"], definitions=OrderedDict({"Verbe": ["Définition de 'estre'."]})),
+    "être": Word(pronunciations=["\\ɛtʁ\\"], definitions=OrderedDict({"Verbe": ["Définition de 'être'."]})),
     "suis": Word(pronunciations=["\\sɥi\\"], variants=["suivre", "être", "estre"]),
-    "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions={"Verbe": ["Définition de 'suivre'."]}),
+    "suivre": Word(pronunciations=["\\sɥivʁ\\"], definitions=OrderedDict({"Verbe": ["Définition de 'suivre'."]})),
 }
 VARIANTS_FR_2 = deepcopy(VARIANTS_FR)
 VARIANTS_FR_2["suis"].definitions["Nom"] = ["Définition de 'suis'."]
 VARIANTS_FR_3 = {
     "loches": Word(variants=["loche", "locher"]),
-    "loche": Word(definitions={"Nom": ["Définitions de 'loche'."]}, variants=["locher"]),
-    "locher": Word(definitions={"Verbe": ["Définitions de 'locher'."]}),
-    "Loches": Word(definitions={"Nom Propre": ["Définitions de 'Loches'."]}),
+    "loche": Word(definitions=OrderedDict({"Nom": ["Définitions de 'loche'."]}), variants=["locher"]),
+    "locher": Word(definitions=OrderedDict({"Verbe": ["Définitions de 'locher'."]})),
+    "Loches": Word(definitions=OrderedDict({"Nom Propre": ["Définitions de 'Loches'."]})),
 }
 VARIANTS_FR_4 = {
-    "devoir": Word(definitions={"Verbe": ["Définition de 'devoir'."]}, reverse_variants=["se devoir à"]),
+    "devoir": Word(definitions=OrderedDict({"Verbe": ["Définition de 'devoir'."]}), reverse_variants=["se devoir à"]),
 }
 VARIANTS_ES = {
     "gastadan": Word(variants=["gastada"]),
     "gastada": Word(variants=["gastado"]),
     "gastado": Word(variants=["gastar"]),
-    "gastar": Word(definitions={"Verb": ["Definition of 'gastar'."]}),
+    "gastar": Word(definitions=OrderedDict({"Verb": ["Definition of 'gastar'."]})),
 }
 VARIANTS_ES_2 = {
     "-foba": Word(variants=["-fobo"]),
     "-fobas": Word(variants=["-foba", "-fobo"]),
-    "-fobo": Word(definitions={"Suffix": ["-phobe", "-phobic"]}),
+    "-fobo": Word(definitions=OrderedDict({"Suffix": ["-phobe", "-phobic"]})),
 }
 VARIANTS_JA = {
-    "あい": Word(definitions={"動詞": ["「あう」の連用形。"]}),
+    "あい": Word(definitions=OrderedDict({"動詞": ["「あう」の連用形。"]})),
 }
 VARIANTS_RU = {
-    "ФСБ": Word(definitions={"Значение": ["Definition of 'ФСБ'."]}),
+    "ФСБ": Word(definitions=OrderedDict({"Значение": ["Definition of 'ФСБ'."]})),
 }
 
 

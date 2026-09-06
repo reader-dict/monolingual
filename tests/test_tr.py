@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -297,7 +298,7 @@ def test_parse_word(
     pronunciations: list[str],
     genders: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -308,7 +309,7 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert genders == details.genders
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants

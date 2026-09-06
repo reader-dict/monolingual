@@ -1,4 +1,5 @@
 import re
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -82,19 +83,11 @@ def setup_lua_ctx() -> None:
                 "Menes at stamme fra indoeuropæisk sprog <i>ḱʷn̥tós</i>, fra <i>ḱwṓ</i> og derfra videre til germansk sprog <i>*hundaz</i> og fra oldnordisk hundr."
             ],
             {
-                "Decl": ["I sammensætninger er formen <i>hunde-</i> f.eks. <i>hundehus</i>, <i>hundeliv</i>."],
                 "Substantiv": [
                     "(<i>zoologi</i>): et pattedyr af underarten <i>Canis lupus familiaris</i>.",
                     "(<i>slang</i>): 100 DKK-seddel (bruges ikke i flertal)",
                 ],
-                "Synonymer": [
-                    "(<i>hunhund</i>): en tæve",
-                    "(<i>unge</i>): en hvalp",
-                    "(<i>nedsættende</i>): en køter",
-                    "(<i>slang om lille hund</i>): en tæppetisser",
-                    "(<i>babysprog</i>): en vovse",
-                    "(<i>babysprog</i>): en vovhund",
-                ],
+                "Decl": ["I sammensætninger er formen <i>hunde-</i> f.eks. <i>hundehus</i>, <i>hundeliv</i>."],
                 "Udtryk": [
                     "(have stor lyst til noget): At være en hund efter noget;",
                     "(problemets egentlige årsag): Dér ligger hunden begravet;",
@@ -108,6 +101,14 @@ def setup_lua_ctx() -> None:
                     "(meget dårligt vejr): Det er et hundevejr;",
                     "(når man nævner at man er med i noget uden at ville virke pralende): Og mig selv, sagde hunden;",
                     "(når man utilsigtet bringer uorden eller forstyrrelse i noget der ellers fungerer): Som en hund i et spil kegler.",
+                ],
+                "Synonymer": [
+                    "(<i>hunhund</i>): en tæve",
+                    "(<i>unge</i>): en hvalp",
+                    "(<i>nedsættende</i>): en køter",
+                    "(<i>slang om lille hund</i>): en tæppetisser",
+                    "(<i>babysprog</i>): en vovse",
+                    "(<i>babysprog</i>): en vovhund",
                 ],
             },
             [],
@@ -207,7 +208,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -227,7 +228,7 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
 

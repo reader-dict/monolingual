@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import patch
@@ -55,9 +56,9 @@ def setup_lua_ctx() -> None:
             [],
             ["形声。「馬」+音符「主 /*TO/」。漢語｛駐 /*tros/｝を表す字。"],
             {
-                "ことわざ": ["駐軍", "駐在", "駐箚", "駐車", "駐屯", "駐歩", "駐留", "駐輦", "移駐", "常駐", "進駐"],
                 "意義": ["（馬や車を）長時間、停める。", "（別に本拠とするところがあるが）じっと一箇所にいる。"],
                 "造語成分": ["国外に派遣されて、長期間滞在しているという意味の語を作る。"],
+                "ことわざ": ["駐軍", "駐在", "駐箚", "駐車", "駐屯", "駐歩", "駐留", "駐輦", "移駐", "常駐", "進駐"],
             },
             [],
             [],
@@ -69,11 +70,11 @@ def setup_lua_ctx() -> None:
                 "形声。「人」+音符「幷 /*PENG/」。「ならぶ」「あわさる」を意味する漢語｛併 /*peng/｝を表す字。もと「幷」が｛併｝を表す字であったが、人偏を加えた。"
             ],
             {
-                "ことわざ": ["併起", "併行", "併合", "併設", "併吞", "併発", "併用", "合併"],
                 "意義": [
                     "（『説文解字』では「幷・并」）あわす。あわさる。あわせる。",
                     "（『説文解字』では「倂・併」）ならぶ。ならべる。「並」とも書く。",
                 ],
+                "ことわざ": ["併起", "併行", "併合", "併設", "併吞", "併発", "併用", "合併"],
             },
             [],
             [],
@@ -91,8 +92,8 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "名詞": ["ラテン文字の第二十二字。", "（victoryより）勝利。", "（テレビ放送業界）VTRの略。映像。"],
                 "記号": ["バナジウムの元素記号", "電圧", "電圧の単位ボルト", "ローマ数字で5を表す記号（Ⅴ）"],
+                "名詞": ["ラテン文字の第二十二字。", "（victoryより）勝利。", "（テレビ放送業界）VTRの略。映像。"],
             },
             [],
             [],
@@ -106,6 +107,7 @@ def setup_lua_ctx() -> None:
                 "古典日本語「ゐる」を語源とするもの。",
             ],
             {
+                "連語": ["悦に入る、気に入る、興に入る"],
                 "動詞": [
                     "(自動詞) はいる。外から中へと移動する。",
                     "主に京都で、東西方向の移動を表す方言。単独では用いられず、「東入る」（東方向への移動）「西入る」（西方向への移動）の形で、若しくは「る」をカタカナにした「東入ル」「西入ル」の形で用いる。",
@@ -128,7 +130,6 @@ def setup_lua_ctx() -> None:
                     "(自動詞) すわる。",
                     "（補助動詞）その状態を保つことをする。",
                 ],
-                "連語": ["悦に入る、気に入る、興に入る"],
                 "類義語": ["射撃する", "あぶる、焙煎する", "ある（主に主語が無生物の場合）", "おる"],
             },
             [],
@@ -167,7 +168,7 @@ def test_parse_word(
     word: str,
     pronunciations: list[str],
     etymology: list[Definitions],
-    definitions: list[Definitions],
+    definitions: Definitions,
     variants: list[str],
     reverse_variants: list[str],
     page: Callable[[str, str], str],
@@ -183,6 +184,6 @@ def test_parse_word(
     assert details
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
-    assert definitions == details.definitions
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
