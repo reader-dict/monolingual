@@ -49,7 +49,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return parts[0]
 
     template = utils.reconstruct_tpl(tpl, parts, data)
-    table = context.expand(template, "eo")
+    table = context.expand(template, "eo", skip_cache=True)
 
     forms: set[str] = set()
     for line in table.splitlines():
