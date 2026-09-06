@@ -161,7 +161,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     from wikidict import context
 
     res: set[str] = set()
-    pattern = r"\[\[(.+)#官話\|\1\]\]"
+    pattern = r"\[\[[^#]+#官話\|([^\]]+)\]\]"
     for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]+}}}})", code):
         if prons := re.findall(pattern, context.expand(tpl, "zh")):
             res.add(prons[0])
