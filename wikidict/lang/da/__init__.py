@@ -121,7 +121,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/bɛ̜ːˀ/']
     """
     pattern = re.compile(rf"\{{\{{IPA(?:\|(.*?))?\|lang={locale}\}}\}}")
-    return [item for sublist in (re.findall(pattern, code) or []) for item in sublist.split("|") if item]
+    return sorted(item for sublist in (re.findall(pattern, code) or []) for item in sublist.split("|") if item)
 
 
 ALL_FORMS = [
