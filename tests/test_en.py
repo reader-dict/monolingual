@@ -32,7 +32,7 @@ def setup_lua_ctx() -> None:
             {
                 "Symbol": ["(<i>international standards</i>) <i>ISO 639-1 language code for </i><b>Abkhaz</b><i>.</i>"],
                 "Noun": [
-                    "(<i>informal</i>) Clipping of <i>abdominal muscle</i> &lsqb;mid 20<sup>th</sup> century&rsqb;.",
+                    "(<i>informal</i>) Clipping of <i>abdominal muscle</i> [mid 20<sup>th</sup> century].",
                     "(<i>slang</i>) An abscess caused by injecting an illegal drug, usually heroin.",
                     "Abbreviation of <i>abortion</i>.",
                     "(<i>US</i>) The early stages of; the beginning process; the start.",
@@ -116,7 +116,7 @@ def setup_lua_ctx() -> None:
             ["/ɪts/"],
             [
                 "Contraction of ‘it is’, ‘it has’ or 'it was'.",
-                "From <i>it</i> +&lrm; <i>-’s</i> (possessive marker).",
+                "From <i>it</i> +\u200e <i>-’s</i> (possessive marker).",
             ],
             {
                 "Contraction": [
@@ -161,7 +161,7 @@ def setup_lua_ctx() -> None:
             "portmanteau",
             ["UK: /pɔːtˈmæn.təʊ/"],
             [
-                "From Middle French <i>portemanteau</i> (“coat stand”), from <i>porte</i> (“carries”, third-person singular present indicative of <i>porter</i> (“to carry”)) +&lrm; <i>manteau</i> (“coat”), literally “[that which] carries coat”.",
+                "From Middle French <i>portemanteau</i> (“coat stand”), from <i>porte</i> (“carries”, third-person singular present indicative of <i>porter</i> (“to carry”)) +\u200e <i>manteau</i> (“coat”), literally “[that which] carries coat”.",
                 "First used by Lewis Carroll in <i>Through the Looking-Glass</i> to describe the words he coined in “Jabberwocky”.",
             ],
             {
@@ -185,7 +185,7 @@ def setup_lua_ctx() -> None:
             "someone",
             ["/ˈsʌmwʌn/"],
             [
-                "From Middle English <i>sum on</i>, <i>sum one</i>, <i>sum oon</i>, equivalent to <i>some</i> +&lrm; <i>one</i>.",
+                "From Middle English <i>sum on</i>, <i>sum one</i>, <i>sum oon</i>, equivalent to <i>some</i> +\u200e <i>one</i>.",
             ],
             {
                 "Pronoun": ["One or some person of unspecified or indefinite identity."],
@@ -243,18 +243,18 @@ def setup_lua_ctx() -> None:
                     (
                         "The definite grammatical article that shows that the noun phrase that immediately follows it is definitely identifiable...",
                         (
-                            "...because it has already been mentioned, is to be completely specified in the same sentence, or very shortly thereafter. &lsqb;from 10th c.&rsqb;",
+                            "...because it has already been mentioned, is to be completely specified in the same sentence, or very shortly thereafter. [from 10th c.]",
                             "...because it is presumed to be definitely known in context or from shared knowledge.",
                         ),
-                        "When stressed, indicates that it describes something which is considered to be best or exclusively worthy of attention. &lsqb;from 18th c.&rsqb;",
+                        "When stressed, indicates that it describes something which is considered to be best or exclusively worthy of attention. [from 18th c.]",
                         "Used before a noun phrase beginning with superlative or comparative adjective or an ordinal number, indicating that the noun refers to a single item.",
-                        "Introducing a singular term to be taken generically&#58; preceding a name of something standing for a whole class. &lsqb;from 9th c.&rsqb;",
+                        "Introducing a singular term to be taken generically&#58; preceding a name of something standing for a whole class. [from 9th c.]",
                         "Used with the plural of a surname to indicate the entire family.",
                     ),
                     "Used with an adjective",
                     (
-                        "Added to a superlative or an ordinal number to make it into a substantive. &lsqb;from 9th c.&rsqb;",
-                        "Used before an adjective, indicating all things (especially persons) described by that adjective. &lsqb;from 9th c.&rsqb;",
+                        "Added to a superlative or an ordinal number to make it into a substantive. [from 9th c.]",
+                        "Used before an adjective, indicating all things (especially persons) described by that adjective. [from 9th c.]",
                         "Used before a demonym ending in <i>-ish</i> or <i>-ese</i> to refer to people of a given country collectively.",
                     ),
                 ],
@@ -285,7 +285,7 @@ def setup_lua_ctx() -> None:
             "um",
             ["/ʌm/"],
             [
-                "From <i>u-</i> (“micro-”) +&lrm; <i>m</i> (“metre”).",
+                "From <i>u-</i> (“micro-”) +\u200e <i>m</i> (“metre”).",
                 "Onomatopoeic.",
                 "Variant form of <i>-um</i>.",
             ],
@@ -310,9 +310,9 @@ def setup_lua_ctx() -> None:
             "us",
             ["/ʌs/"],
             [
-                "From <i>u-</i> (“micro-”) +&lrm; <i>s</i> (“second”).",
+                "From <i>u-</i> (“micro-”) +\u200e <i>s</i> (“second”).",
                 "From Middle English <i>us</i>, from Old English <i>ūs</i> (“us”, dative personal pronoun), from Proto-West Germanic <i>&#42;uns</i>, from Proto-Germanic <i>&#42;uns</i> (“us”), from Proto-Indo-European <i>&#42;n̥swé</i>, alteration of <i>&#42;n̥smé</i> (“us”). The compensatory lengthening was lost in Middle English due to the word being unstressed when used. Cognate with Saterland Frisian <i>uus</i> (“us”), West Frisian <i>us</i>, <i>ús</i> (“us”), Low German <i>uns</i>, <i>us</i> (“us”), Dutch <i>ons</i> (“us”), German <i>uns</i> (“us”), Danish <i>os</i> (“us”), Latin <i>nōs</i> (“we, us”).",
-                "From <i>u-</i> (“micro-, 10<sup>-6</sup>”) +&lrm; <i>s</i> (“second”).",
+                "From <i>u-</i> (“micro-, 10<sup>-6</sup>”) +\u200e <i>s</i> (“second”).",
             ],
             {
                 "Symbol": [
@@ -367,7 +367,7 @@ def setup_lua_ctx() -> None:
                         "(<i>sometimes&#32;countable</i>) Mineral water.",
                         "(countable,&#32;often&#32;in the plural) Spa water.",
                         "(<i>pharmacy</i>) A solution in water of a gaseous or readily volatile substance.",
-                        "Urine. &lsqb;from 15th c.&rsqb;",
+                        "Urine. [from 15th c.]",
                         "Amniotic fluid or the amniotic sac containing it. (<i>Used only in the plural in the UK but often also in the singular in North America.</i>)",
                         "(colloquial,&#32;medicine) Fluids in the body, especially when causing swelling.",
                     ),
@@ -416,26 +416,26 @@ def setup_lua_ctx() -> None:
                     "Something like such a unit of language:",
                     (
                         "A sequence of letters, characters, or sounds, considered as a discrete entity, though it does not necessarily belong to a language or have a meaning.",
-                        "(<i>telegraphy</i>) A unit of text equivalent to five characters and one space. &lsqb;from 19th c.&rsqb;",
-                        "(<i>computing</i>) A fixed-size group of bits handled as a unit by a machine and which can be stored in or retrieved from a typical register (so that it has the same size as such a register). &lsqb;from 20th c.&rsqb;",
-                        "(<i>computing</i>) With regards to Intel or Intel-compatible hardware and/or in the context of Windows programming, a group of exactly 16 bits regardless of the actual processor capabilities; a fossilized unit referring to the small word size of historical CPUs. &lsqb;from 20th c.&rsqb;",
-                        "(<i>computer science</i>) A finite string that is not a command or operator. &lsqb;from 20th c.&rsqb;",
+                        "(<i>telegraphy</i>) A unit of text equivalent to five characters and one space. [from 19th c.]",
+                        "(<i>computing</i>) A fixed-size group of bits handled as a unit by a machine and which can be stored in or retrieved from a typical register (so that it has the same size as such a register). [from 20th c.]",
+                        "(<i>computing</i>) With regards to Intel or Intel-compatible hardware and/or in the context of Windows programming, a group of exactly 16 bits regardless of the actual processor capabilities; a fossilized unit referring to the small word size of historical CPUs. [from 20th c.]",
+                        "(<i>computer science</i>) A finite string that is not a command or operator. [from 20th c.]",
                         "(<i>group theory</i>) A group element, expressed as a product of group elements.",
                     ),
-                    "The fact or act of speaking, as opposed to taking action. &lsqb;from 9th c&rsqb;.",
-                    "(<i>now&#32;rare&#32;outside certain phrases</i>) Something that someone said; a comment, utterance; speech. &lsqb;from 10th c.&rsqb;",
+                    "The fact or act of speaking, as opposed to taking action. [from 9th c].",
+                    "(<i>now&#32;rare&#32;outside certain phrases</i>) Something that someone said; a comment, utterance; speech. [from 10th c.]",
                     "(<i>obsolete&#32;outside certain phrases</i>) A watchword or rallying cry, a verbal signal (even when consisting of multiple words).",
                     "(<i>obsolete</i>) A proverb or motto.",
-                    "(<i>uncountable</i>) News; tidings. &lsqb;from 10th c.&rsqb;",
-                    "An order; a request or instruction; an expression of will. &lsqb;from 10th c.&rsqb;",
-                    "A promise; an oath or guarantee. &lsqb;from 10th c.&rsqb;",
+                    "(<i>uncountable</i>) News; tidings. [from 10th c.]",
+                    "An order; a request or instruction; an expression of will. [from 10th c.]",
+                    "A promise; an oath or guarantee. [from 10th c.]",
                     ("Synonym: promise",),
-                    "A brief discussion or conversation. &lsqb;from 15th c.&rsqb;",
+                    "A brief discussion or conversation. [from 15th c.]",
                     "(<i>meiosis</i>) A minor reprimand.",
                     "(<i>in the plural</i>) <i>See</i> <b>words</b>.",
-                    "(theology,&#32;sometimes <b>Word</b>) Communication from God; the message of the Christian gospel; the Bible, Scripture. &lsqb;from 10th c.&rsqb;",
+                    "(theology,&#32;sometimes <b>Word</b>) Communication from God; the message of the Christian gospel; the Bible, Scripture. [from 10th c.]",
                     ("Synonyms: word of God, Bible",),
-                    "(theology,&#32;sometimes <b>Word</b>) Logos, Christ. &lsqb;from 8th c.&rsqb;",
+                    "(theology,&#32;sometimes <b>Word</b>) Logos, Christ. [from 8th c.]",
                     ("Synonyms: God, Logos",),
                 ],
                 "Verb": [

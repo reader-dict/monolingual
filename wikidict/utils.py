@@ -743,7 +743,7 @@ def clean(text: str) -> str:
         >>> clean("[[Stó:lō]]")
         'Stó:lō'
         >>> clean("[[Annexe:Principales puissances de 10|10{{e|&minus;6}}]] [[gray#fr-nom|gray]]")
-        '10{{e|&minus;6}} gray'
+        '10{{e|−6}} gray'
 
         >>> clean("[http://www.bertrange.fr/bienvenue/historique/]")
         ''
@@ -834,7 +834,7 @@ def clean(text: str) -> str:
     sub2 = regex.sub
 
     # <math style="bla" foo=bar>formula</math> → <math>formula</math>
-    text = re.sub(r"<math\s+[^>]+>(.+?)</math>", r"<math>\1</math>", text)
+    text = sub(r"<math\s+[^>]+>(.+?)</math>", r"<math>\1</math>", text)
 
     formulas, text = save_formulas(text)
 
@@ -919,11 +919,15 @@ def clean(text: str) -> str:
     # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", text)
 
     # Convert single "< ", and " >" to HTML quotes
-    text = re.sub(r'<[ ]+(?!\\")', "&lt; ", text)
-    text = re.sub(r'(?<!")[ ]+>', " &gt;", text)
+    text = sub(r'<[ ]+(?!\\")', "&lt; ", text)
+    text = sub(r'(?<!")[ ]+>', " &gt;", text)
 
     # Escape "<N" but not "{{tpl|...|arg=<N}}"
-    text = re.sub(r"(?<!=)<(\d)", r"&lt;\1", text)
+    text = sub(r"(?<!=)<(\d)", r"&lt;\1", text)
+
+    # Replace HTML entities
+    if "&" in text:
+        text = sub(r"&([A-Za-z][A-Za-z0-9]*;)", lambda m: constants.HTML_ENTITIES.get(m[1], f"&{m[1]}"), text)
 
     text = restore_formulas(formulas, text)
 
@@ -932,7 +936,7 @@ def clean(text: str) -> str:
         text = text.replace(f"##nowiki{idx}##", nowiki[8:-9])
 
     # Remove those HTML tags
-    text = re.sub(r"</?(?:div|p)[^>]*>", "", text)
+    text = sub(r"</?(?:div|p)[^>]*>", "", text)
 
     # ES - clean-up synonyms
     text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")

@@ -79,7 +79,7 @@ def setup_lua_ctx() -> None:
             {
                 "Symbole": [
                     "<i>(Linguistique)</i> Symbole de l’alphabet phonétique international pour la voyelle (ou vocoïde) ouverte antérieure non arrondie \\a\\.",
-                    "<i>(Métrologie)</i> Symbole du Système international (SI) pour le préfixe <b>atto-</b> (&times;10<sup>&minus;18</sup>).",
+                    "<i>(Métrologie)</i> Symbole du Système international (SI) pour le préfixe <b>atto-</b> (×10<sup>−18</sup>).",
                     "<i>(Métrologie)</i> Symbole de l’<b>are</b>, une unité de mesure de surface en dehors SI. Elle prend souvent le préfixe h pour former ha (hectare).",
                     "<i>(Métrologie)</i> Symbole (dérivé du système SI) de l’<b>année</b> (365,25 jours de 86,4 ks), du latin <i>annum</i>.",
                     "<i>(Chimie)</i> Symbole de l’activité chimique d’un composant.",

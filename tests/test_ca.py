@@ -31,7 +31,7 @@ def setup_lua_ctx() -> None:
         (
             "-itzar",
             [],
-            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> &lrm;(-ízein)."],
+            ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> \u200e(-ízein)."],
             {
                 "Sufix": [
                     "Aplicat a un substantiu o adjectiu forma un verb que expressa la seva realització o convertir-se'n.",
@@ -75,9 +75,9 @@ def setup_lua_ctx() -> None:
             "bot",
             [],
             [
-                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> &lrm;(‘bóta’), segle XIII.",
+                "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> \u200e(‘bóta’), segle XIII.",
                 "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
-                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> &lrm;(‘barca petita’), actualment <i>boat</i>.",
+                "[3] Nàutica: del francès antic <i>bot</i>, segle XVII, de l'anglès antic <i>bat</i> \u200e(‘barca petita’), actualment <i>boat</i>.",
                 "[4] Informàtica: afèresi de <i>robot</i>, calc de l’anglès <i>bot</i>, segle XX.",
             ],
             {
@@ -152,7 +152,7 @@ def setup_lua_ctx() -> None:
         (
             "cas",
             [],
-            ["Del llatí <i>casus</i> &lrm;(‘caiguda, cas fortuït’), de <i>cadere</i> &lrm;(‘caure’), segle XIV."],
+            ["Del llatí <i>casus</i> \u200e(‘caiguda, cas fortuït’), de <i>cadere</i> \u200e(‘caure’), segle XIV."],
             {
                 "Nom|m.": [
                     "Situació particular que es produeix entre les diverses possibles.",
@@ -200,7 +200,7 @@ def setup_lua_ctx() -> None:
             "català",
             [],
             [
-                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> &lrm;(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> &lrm;(Kastelanoi) o <i>Κατελανοι</i> &lrm;(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
+                "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> \u200e(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> \u200e(Kastelanoi) o <i>Κατελανοι</i> \u200e(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
             {
                 "Adjectiu|m.": [
@@ -253,7 +253,7 @@ def setup_lua_ctx() -> None:
             "disset",
             [],
             [
-                "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> &lrm;(literalment ‘deu i set’), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
+                "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> \u200e(literalment ‘deu i set’), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
             ],
             {
                 "Numeral": [
@@ -303,7 +303,7 @@ def setup_lua_ctx() -> None:
         (
             "hivernacle",
             [],
-            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> &lrm;(‘hivernar’)."],
+            ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> \u200e(‘hivernar’)."],
             {"Nom|m.": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
@@ -323,7 +323,7 @@ def setup_lua_ctx() -> None:
                 "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
                 "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
                 "[3] Nota musical: de les inicials llatines <i>Sancte</i> <i>Ioannes</i> de l'himne <i>Ut queant laxis</i> de Pau el Diaca d'on es va extraure l'escala musical, segle XIII.",
-                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> &lrm;(‘ell’).",
+                "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> \u200e(‘ell’).",
             ],
             {
                 "Símbol": ["Codi de llengua ISO 639-1 del singalès."],

@@ -1,5 +1,6 @@
 """Shared constants."""
 
+import html.entities
 from pathlib import Path
 
 import requests
@@ -63,3 +64,35 @@ HTML_REPL_BODY = {
     "&quot;": '"',
 }
 HTML_REPL_TITLE = {"&amp;": "&"}
+
+# HTML entities management
+# Whitelist of named entities we allow without an explicit declaration
+# (synced with https://github.com/ciscoriordan/kindling/blob/c79d431b3a2a00e08e1b02b94fed74d83242903f/src/checks/parse_encoding.rs#L341-L347)
+ALLOWED_ENTITIES = [
+    # XML 1.0 predefined set
+    "amp;",
+    "lt;",
+    "gt;",
+    "quot;",
+    "apos;",
+    # Common HTML5 entities used in publishing
+    "nbsp;",
+    "copy;",
+    "reg;",
+    "trade;",
+    "ndash;",
+    "mdash;",
+    "hellip;",
+    "lsquo;",
+    "rsquo;",
+    "ldquo;",
+    "rdquo;",
+    "bull;",
+    # Needed for us to prevent endless loops in `utils.process_templates()`
+    "lbrace;",
+    "rbrace;",
+]
+HTML_ENTITIES = html.entities.html5.copy()
+for ae in ALLOWED_ENTITIES:
+    HTML_ENTITIES.pop(ae, None)
+    HTML_ENTITIES.pop(ae.upper(), None)
