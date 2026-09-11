@@ -119,7 +119,11 @@ def adjust_wikicode(
     #
 
     if "{{Nebenformen}" in code:
-        for section_code in re.findall(r"^=+[ ]*{{Nebenformen}}[ ]*=+([^=]+)", code, flags=re.DOTALL | re.MULTILINE):
+        for section_code in re.findall(
+            r"^=+[ ]*\{\{Nebenformen\}\}[ ]*=+([^=]+)",
+            code,
+            flags=re.DOTALL | re.MULTILINE,
+        ):
             new_code = "\n".join(
                 f"# {{{{rev-flexion|{form.split('#', 1)[0]}}}}}"
                 for form in re.findall(r"\[\[([^\]]+)\]\]", section_code)

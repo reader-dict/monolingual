@@ -1,0 +1,82 @@
+{{Siehe auch|[[loss]]}}
+== Löss ({{Sprache|Deutsch}}) ==
+=== {{Wortart|Substantiv|Deutsch}}, {{m}} ===
+
+{{Deutsch Substantiv Übersicht
+|Genus=m
+|Nominativ Singular=Löss
+|Nominativ Plural=Lösse
+|Genitiv Singular=Lösses
+|Genitiv Plural=Lösse
+|Dativ Singular=Löss
+|Dativ Plural=Lössen
+|Akkusativ Singular=Löss
+|Akkusativ Plural=Lösse
+}}
+
+{{Nebenformen}}
+:[[Löß]]
+
+{{Worttrennung}}
+:Löss, {{Pl.}} Lös·se
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|lœs}}
+:{{Hörbeispiele}} {{Audio|De-Löss.ogg}}
+
+{{Bedeutungen}}
+:[1] {{K|Geologie}} schluffiges [[Sedimentgestein]], das aus der Zerstörung anderer Gesteine, deren Verwehung und Ablagerung entstanden ist
+
+{{Oberbegriffe}}
+:[1] [[Lockergestein]], [[Sediment]], [[Gestein]]
+
+{{Beispiele}}
+:[1] {{Beispiele fehlen|spr=de}}
+
+{{Wortbildungen}}
+:[1] [[Lössanwehung]], [[Lössbedeckung]], [[Lössboden]], [[Lössdecke]], [[Lössgebiet]], [[Lösskindel]], [[Lösslandschaft]], [[Lössmännchen]], [[Lössschicht]], [[Lösswand]]
+:[1] [[lössig]]
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=Geologie: schluffiges Sedimentgestein|Ü-Liste=
+*{{hy}}: {{Üt|hy|լյոս}}
+*{{bs}}: {{Ü|bs|les}} {{m}}
+*{{bg}}: {{Üt|bg|льос}} {{m}}
+*{{zh}}: {{Üt|zh|黃土|huángtǔ}}
+*{{da}}: {{Ü|da|løss}} {{u}}
+*{{en}}: {{Ü|en|loess}}
+*{{eo}}: {{Ü|eo|leŭso}}
+*{{fr}}: {{Ü|fr|lœss}}
+*{{hi}}: {{Üt|hi|लोयस|loyas}}
+*{{kk}}: {{Üt|kk|сары топырақ}}
+*{{ky}}: {{Üt|ky|лёсс}}
+*{{lt}}: {{Ü|lt|liosas}}
+*{{mk}}: {{Üt|mk|лес|les}} {{m}}
+*{{pt}}: {{Ü|pt|loess}} {{m}}
+*{{ru}}: {{Üt|ru|лёсс}} {{m}}
+*{{sv}}: {{Ü|sv|lössjord}}, {{Ü|sv|löss}}
+*{{sr}}: {{Üt|sr|лес|les}} {{m}}
+*{{sh}}: {{Üt|sh|лес|les}} {{m}}
+*{{sk}}: {{Ü|sk|spraš}} {{m}}
+*{{sl}}: {{Ü|sl|puhlica}} {{f}}
+*{{wen}}:
+**{{dsb}}: {{Ü|dsb|glinina}} {{f}}
+**{{hsb}}: {{Ü|hsb|hlinina}} {{f}}
+*{{es}}: {{Ü|es|loess}} {{m}}
+*{{cs}}: {{Ü|cs|spraš}} {{m}}
+*{{uk}}: {{Üt|uk|лес|les}} {{m}}
+*{{be}}: {{Üt|be|лёс}} {{m}}
+|Dialekttabelle=
+*Bairisch:
+*Ostmitteldeutsch: [[Löß]] ''(lang gesprochen: {{Lautschrift|løːs}})''
+}}
+
+{{Referenzen}}
+:[1] {{Wikipedia|Löss}}
+:[1] {{Ref-DWDS|Löß}}
+:[1] {{Ref-UniLeipzig|Löss}}
+:[1] {{Ref-FreeDictionary|Löss}}
+:[1] {{Ref-Duden|Löss}}
+
+=== Schreibweise Schweiz und Liechtenstein ===
+{{Schweizer und Liechtensteiner Schreibweise|Löß|Worttrennung=Löss}}

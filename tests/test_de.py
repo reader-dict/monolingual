@@ -83,6 +83,18 @@ def setup_lua_ctx() -> None:
             ["kartele", "kartle"],
         ),
         (
+            "Löss",
+            ["[lœs]"],
+            [],
+            {
+                "Substantiv|m.": [
+                    "<i>Geologie&#58;</i> schluffiges Sedimentgestein, das aus der Zerstörung anderer Gesteine, deren Verwehung und Ablagerung entstanden ist"
+                ]
+            },
+            [],
+            ["Löß"],
+        ),
+        (
             "Sinn",
             ["[zɪn]"],
             [
