@@ -109,7 +109,7 @@ def setup_lua_ctx() -> None:
         ("trage", ["[ˈtʁaːɡə]"], [], {}, ["tragen"], ["trag"]),
         (
             "volley",
-            ["[ˈvɔle]", "[ˈvɔli]", "[ˈvɔlɛɪ̯]"],
+            ["[ˈvɔli]", "[ˈvɔle]", "[ˈvɔlɛɪ̯]"],
             [
                 "Dem seit 1960 im Duden lexikalisierten Wort liegt die englische Kollokation <i>at/on the volley</i> ‚aus der Luft‘ zugrunde.",
             ],

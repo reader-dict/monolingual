@@ -46,7 +46,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("", "de")
     []
     >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", "de")
-    ['mf']
+    ['f', 'm']
     """
     pattern = re.compile(r",\s+\{\{([fmnu]+)\}\}")
     res: set[str] = set()
@@ -69,8 +69,11 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations(":{{IPA}} {{Lautschrift|ˈʁɪndɐˌsteːk}}, {{Lautschrift|ˈʁɪndɐˌʃteːk}}, {{Lautschrift|ˈʁɪndɐˌsteɪ̯k}}", "de")
     ['[ˈʁɪndɐˌsteːk]', '[ˈʁɪndɐˌʃteːk]', '[ˈʁɪndɐˌsteɪ̯k]']
     """
-    pattern = re.compile(r"{Lautschrift\|([^=}]+)}")
-    return sorted(f"[{p}]" for p in utils.unique(pattern.findall(code)))
+    for line in code.splitlines():
+        if "{{IPA}}" not in line:
+            continue
+        return [f"[{p}]" for p in re.findall(r"\{Lautschrift\|([^=}]+)}", line)]
+    return []
 
 
 def adjust_wikicode(
