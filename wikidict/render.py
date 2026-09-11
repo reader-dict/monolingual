@@ -103,6 +103,10 @@ POS_NOTES = [
 ]
 
 
+def fmt_genders(genders: list[str]) -> str:
+    return "/".join(f"{g}." for g in genders)
+
+
 def get_ignored_terms(lang_src: str, lang_dst: str) -> set[str]:
     ignored_terms = set(lang.definitions_to_ignore[lang_dst])
     ignored_terms.update(lang.variant_templates[lang_dst])
@@ -494,7 +498,7 @@ def prettify_pos(section: wtp.Section, lang_src: str, lang_dst: str) -> str:
 
     # A potential gender, specified in the section content, is merged into the current POS ("Noun" becomes "Noun f.")
     if pretty_pos != "Trans" and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
-        pretty_pos += f"|{', '.join(f'{g}.' for g in genders)}"
+        pretty_pos += f"|{fmt_genders(genders)}"
 
     return pretty_pos
 
@@ -535,13 +539,13 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
                         current_pos = "synonyme"
                     pos = utils.format_pos("de", current_pos)
                     if current_genders:
-                        pos += f"|{', '.join(f'{g}.' for g in current_genders)}"
+                        pos += f"|{fmt_genders(current_genders)}"
             elif title in etyl_section:
                 pos = title
             else:
                 pos = prettify_pos(section, lang_src, lang_dst)
                 if lang_src in {"ru", "uk"} and current_genders and "|" not in pos:
-                    pos += f"|{', '.join(f'{g}.' for g in current_genders)}"
+                    pos += f"|{fmt_genders(current_genders)}"
             ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)

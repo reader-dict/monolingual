@@ -127,7 +127,7 @@ def setup_lua_ctx() -> None:
                     "(<i>pilota basca</i>) Part més ampla d'una eina.",
                     "(<i>bàdminton</i>) base",
                 ],
-                "Nom|mf.": [
+                "Nom|f./m.": [
                     "Persona que ocupa el primer lloc, que mana o que dirigeix quelcom; capitost.",
                     "Grau militar.",
                 ],

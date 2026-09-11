@@ -48,8 +48,14 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", "de")
     ['mf']
     """
-    pattern = re.compile(r",\s+{{([fmnu]+)}}")
-    return utils.unique(pattern.findall(code))
+    pattern = re.compile(r",\s+\{\{([fmnu]+)\}\}")
+    res: set[str] = set()
+    for gender in pattern.findall(code):
+        if "".join(sgen := sorted(gender)) in {"fm", "fmn"}:
+            res.update(sgen)
+        else:
+            res.add(gender)
+    return utils.unique(sorted(res))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:

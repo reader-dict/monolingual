@@ -30,7 +30,7 @@ def setup_lua_ctx() -> None:
                     "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
                     "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
                 ],
-                "Nom|invar.": [
+                "Nom|inv.": [
                     "Quarante-deux.",
                     "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
                     "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
@@ -292,7 +292,7 @@ def setup_lua_ctx() -> None:
                 "Du latin <i>effluvium</i>, du préfixe <i>ex-</i> indiquant la séparation et de <i>fluxus</i> (« écoulement »)."
             ],
             {
-                "Nom|mf.": [
+                "Nom|f./m.": [
                     "<i>(Médecine)</i> <i>(Vieilli)</i> Substances organiques altérées, tenues en suspension dans l’air, principalement aux endroits marécageux, et donnant particulièrement lieu à des fièvres intermittentes, rémittentes et continues.",
                     "Émanation qui se dégage d’un corps quelconque.",
                     "<i>(Physique)</i> Décharge électrique à faible dégagement de chaleur ayant lieu entre deux conducteurs dont la différence de potentiel n’est pas assez élevée pour engendrer un arc électrique. → voir <i>effluveur</i>",
@@ -422,7 +422,7 @@ def setup_lua_ctx() -> None:
                 "<i>(Nom 2)</i> De l’anglais <i>Pinyin</i>.",
             ],
             {
-                "Nom|m., invar.": [
+                "Nom|inv./m.": [
                     "Systèmes de transcription de différentes langues, permettant de romaniser les sons des sinogrammes, et d’indiquer le ton utilisé lors de la prononciation. Le hanyu pinyin sert à la transcription du mandarin standard.",
                 ],
                 "Nom|m.": [
@@ -453,7 +453,7 @@ def setup_lua_ctx() -> None:
             ["\\ʁɑ̃s\\"],
             ["Du latin <i>rancidus</i> par l’intermédiaire de l’ancien occitan."],
             {
-                "Adjectif|mf.": [
+                "Adjectif|f./m.": [
                     "Se dit des corps gras qui, laissés au contact de l’air, ont pris une odeur forte et un goût désagréable.",
                     "<i>(Sens figuré)</i> Qui s’est encore envenimé.",
                     "<i>(Sens figuré)</i> <i>(Péjoratif)</i> Méprisable.",
@@ -470,7 +470,7 @@ def setup_lua_ctx() -> None:
             ["\\sa.pʁis.ti\\"],
             ["Déformation de <i>sacristi</i>, afin de ne pas blasphémer ouvertement."],
             {
-                "Interjection|invar.": [
+                "Interjection|inv.": [
                     "<i>(Familier)</i> <i>(Par euphémisme)</i> <i>(Vieilli)</i> Pour marquer l’étonnement ou l'énervement."
                 ],
                 "Variantes": ["pristi"],
@@ -484,7 +484,7 @@ def setup_lua_ctx() -> None:
                 "<i>(1863)</i> De l’allemand <i>Silikon</i>, mot créé par Friedrich Wöhler et, pour les équivalents français du mot allemand, dérivé de <i>silicium</i>, avec le suffixe <i>-one</i>."
             ],
             {
-                "Nom|f., m.": [
+                "Nom|f./m.": [
                     "<i>(Chimie)</i> Composé inorganique formés d’une chaine silicium-oxygène (ou siloxane) […-Si-O-Si-O-Si-O-…] dans laquelle des groupes [R] se fixent, sur les atomes de silicium.",
                     "<i>(Par extension)</i> Mastic à base de ce composé et vendu généralement en cartouche.",
                     (

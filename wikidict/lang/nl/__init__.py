@@ -55,7 +55,7 @@ GENDERS = {
     "m": "m",
     "n": "o",
     "o": "o",
-    "p": "mv",
+    "p": ["m", "v"],
     "v": "v",
 }
 
@@ -72,9 +72,18 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['m', 'v']
     """
     pattern = re.compile(r"\{\{-l-\|(\w+)\}\}")
-    for match in pattern.findall(code):
-        return utils.unique(utils.flatten(sorted(GENDERS[m] for m in match if m != "0")))
-    return []
+    res: set[str] = set()
+    for gender in pattern.findall(code):
+        if gender == "0":
+            continue
+        if "".join(sgen := sorted(gender)) in {"fm", "mv"}:
+            res.update(GENDERS[g] for g in sgen)  # type: ignore[misc]
+        else:
+            if gender == "p":
+                res.update(GENDERS[gender])
+            else:
+                res.add(GENDERS[gender])  # type: ignore[arg-type]
+    return utils.unique(sorted(res))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:

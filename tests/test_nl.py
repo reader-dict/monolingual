@@ -35,7 +35,7 @@ def setup_lua_ctx() -> None:
                     "(natuurkunde) het symbool voor versnelling.",
                     "(kristallografie) het symbool voor een glijspiegelvlak waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.",
                 ],
-                "Zelfstandig Naamwoord|m., v.": [
+                "Zelfstandig Naamwoord|m./v.": [
                     "(taalkunde) de eerste letter van het alfabet",
                     "het op de eerste plaats genoemde",
                     "(muziek) de standaardmuziektoon van 440 Hz",
@@ -98,7 +98,7 @@ def setup_lua_ctx() -> None:
                 "[B]: &#160;coke&#32;zn&#160; met de uitgang <i>-s</i>",
             ],
             {
-                "Zelfstandig Naamwoord|mv.": ["ontgaste steenkool"],
+                "Zelfstandig Naamwoord|m./v.": ["ontgaste steenkool"],
                 "Opmerkingen": [
                     (
                         "Het woord is oorspronkelijk als meervoud ontleend, maar "
@@ -155,10 +155,8 @@ def setup_lua_ctx() -> None:
             ["/kɔŋˈkani/"],
             [],
             {
-                "Zelfstandig Naamwoord|m., v.": [
+                "Zelfstandig Naamwoord|m./v.": [
                     "(demoniem) iemand afkomstig van de Konkan, het westelijk kustgebied van India",
-                ],
-                "Zelfstandig Naamwoord|mv.": [
                     "(demoniem) de oorspronkelijke bevolking van de Konkan",
                 ],
                 "Eigennaam|o.": [
@@ -196,14 +194,7 @@ def setup_lua_ctx() -> None:
             [],
             ["stints"],
         ),
-        (
-            "stints",
-            ["/stɪnts/"],
-            [],
-            {},
-            ["stint"],
-            [],
-        ),
+        ("stints", ["/stɪnts/"], [], {}, ["stint"], []),
     ],
 )
 def test_parse_word(

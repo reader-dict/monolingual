@@ -46,10 +46,11 @@ def setup_lua_ctx() -> None:
             "CIA",
             ["[siːaɪ̯ˈɛɪ̯]"],
             ["Abkürzung von Central Intelligence Agency"],
-            {"Abkürzung|mf.": ["US-amerikanischer Auslandsnachrichtendienst"]},
+            {"Abkürzung|f./m.": ["US-amerikanischer Auslandsnachrichtendienst"]},
             [],
             [],
         ),
+        ("daß", [], [], {}, ["dass"], []),
         (
             "Informationsverlusts",
             ["[ɪnfɔʁmaˈt͡si̯oːnsfɛɐ̯ˌlʊst͡s]"],
@@ -67,6 +68,31 @@ def setup_lua_ctx() -> None:
             ["kartele", "kartle"],
         ),
         (
+            "Sinn",
+            ["[zɪn]"],
+            [
+                "mittel- und althochdeutsch <i>sin,</i> weitere Herkunft nicht sicher; möglicherweise zur Gruppe von indogermanisch <i>*sent-,</i> „gehen, reisen, fahren“, zu der unter anderem althochdeutsch <i>sinnan,</i> „reisen, streben, trachten“ und lateinisch <i>sentire,</i> „empfinden, wahrnehmen“ zählen, vergleiche auch <i>senden, Gesinde</i>"
+            ],
+            {
+                "Substantiv|f./m./n.": [
+                    "<i>Biologie&#58;</i> bestimmte physiologische Fähigkeit zur Wahrnehmung von etwas",
+                    "<i>kein Plural&#58;</i> innere Beziehung, Verständnis einer Person für eine Sache",
+                    "<i>kein Plural&#58;</i> Zustand, Ausrichtung der Gedanken einer Person",
+                    "<i>kein Plural&#58;</i> die Bedeutungen und Vorstellungen, die sich mit einem sprachlichen Ausdruck verbinden",
+                    "<i>kein Plural&#58;</i> gedanklicher Hintergrund, Zweck einer Handlung oder Sache",
+                ],
+                "Synonyme|f./m./n.": [
+                    "<i>Linguistik:</i> Intension",
+                    "deutscher Familienname",
+                    "<i>Geografie&#58;</i> Fluss in Deutschland",
+                    "Stadt in Hessen, Gemeinde im Lahn-Dill-Kreis, gelegen am Fluss Sinn",
+                ],
+            },
+            [],
+            [],
+        ),
+        ("trage", ["[ˈtʁaːɡə]"], [], {}, ["tragen"], ["trag"]),
+        (
             "volley",
             ["[ˈvɔle]", "[ˈvɔli]", "[ˈvɔlɛɪ̯]"],
             [
@@ -80,8 +106,6 @@ def setup_lua_ctx() -> None:
             [],
             [],
         ),
-        ("trage", ["[ˈtʁaːɡə]"], [], {}, ["tragen"], ["trag"]),
-        ("daß", [], [], {}, ["dass"], []),
     ],
 )
 def test_parse_word(

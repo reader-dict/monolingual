@@ -1,0 +1,346 @@
+{{Siehe auch|[[sinn]]}}
+== Sinn ({{Sprache|Deutsch}}) ==
+=== {{Wortart|Substantiv|Deutsch}}, {{m}} ===
+
+{{Deutsch Substantiv Übersicht
+|Genus=m
+|Nominativ Singular=Sinn
+|Nominativ Plural=Sinne
+|Genitiv Singular=Sinns
+|Genitiv Singular*=Sinnes
+|Genitiv Plural=Sinne
+|Dativ Singular=Sinn
+|Dativ Singular*=Sinne
+|Dativ Plural=Sinnen
+|Akkusativ Singular=Sinn
+|Akkusativ Plural=Sinne
+|Bild 1=Makart_Fuenf_Sinne.jpg|mini|1|[[allegorisch|Allegorische]] Darstellung der fünf Sinne in einem [[Gemälde]] von Hans Makart: [[Tasten]], [[Hören]], [[Sehen]], [[Riechen]], [[Schmecken]]
+}}
+
+{{Worttrennung}}
+:Sinn, {{Pl.}} Sin·ne
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|zɪn}}
+:{{Hörbeispiele}} {{Audio|De-Sinn.ogg}}
+:{{Reime}} {{Reim|ɪn|Deutsch}}
+
+{{Bedeutungen}}
+:[1] {{K|Biologie}} bestimmte [[physiologisch]]e [[Fähigkeit]] zur [[Wahrnehmung]] von etwas
+:[2] {{K|kPl.}} innere [[Beziehung]], [[Verständnis]] einer Person [[für]] eine Sache
+:[3] {{K|kPl.}} [[Zustand]], [[Ausrichtung]] der [[Gedanken]] einer Person
+:[4] {{K|kPl.}} die [[Bedeutung]]en und [[Vorstellung]]en, die sich mit einem [[sprachlich]]en [[Ausdruck]] verbinden
+:[5] {{K|kPl.}} gedanklicher [[Hintergrund]], [[Zweck]] einer [[Handlung]] oder Sache
+
+{{Herkunft}}
+:[[mittelhochdeutsch|mittel-]] und [[althochdeutsch]] ''sin,'' weitere Herkunft nicht sicher; möglicherweise zur Gruppe von [[indogermanisch]] ''*sent-,'' „gehen, reisen, fahren“, zu der unter anderem althochdeutsch ''sinnan,'' „reisen, streben, trachten“ und [[lateinisch]] ''{{Ü|la|sentire}},'' „empfinden, wahrnehmen“ zählen, vergleiche auch ''[[senden]], [[Gesinde]]''<ref>{{Lit-Kluge: Etymologisches Wörterbuch|A=25}}</ref><ref>{{Lit-Duden: Herkunftswörterbuch|A=4}}</ref>
+
+{{Synonyme}}
+:[4] ''[[Linguistik]]:'' [[Intension]]
+
+{{Sinnverwandte Wörter}}
+:[5] [[Ziel]], [[Zweck]]
+
+{{Gegenwörter}}
+:[5] [[Sinnlosigkeit]]
+
+{{Unterbegriffe}}
+:[1] [[Hören]], [[Riechen]], [[Schmecken]], [[Sehen]], [[Tasten]]
+:[1] [[Gefühlssinn]], [[Gehörsinn]], [[Geruchssinn]], [[Geschmackssinn]], [[Gesichtssinn]], [[Gleichgewichtssinn]], [[Hautsinn]], [[Lichtsinn]], [[Muskelsinn]], [[Orientierungssinn]], [[Ortssinn]], [[Raumsinn]], [[Sehsinn]], [[Spürsinn]], [[Tastsinn]], [[Temperatursinn]], [[Verkehrssinn]], [[Vibrationssinn]], [[Wärmesinn]], [[Zahlensinn]]
+:[2] [[Biedersinn]], [[Bürgersinn]], [[Eigensinn]], [[Familiensinn]], [[Gemeinschaftssinn]], [[Gemeinsinn]], [[Gerechtigkeitssinn]], , [[Kameradschaftssinn]], [[Rechtssinn]]
+:[3] [[Edelsinn]], [[Feinsinn]], [[Frohsinn]], [[Hochsinn]], [[Leichtsinn]], [[Tiefsinn]]
+:[4] [[Doppelsinn]], [[Gegensinn]], [[Literalsinn]], [[Nebensinn]], [[Satzsinn]], [[Textsinn]], [[Wortsinn]]
+:[*] [[Abersinn]], [[Blödsinn]], [[Drehsinn]], [[Erwerbssinn]], [[Farbensinn]], [[Fernsinn]], [[Flattersinn]], [[Formensinn]], [[Freiheitssinn]], [[Freisinn]], [[Geschäftssinn]], [[Gesinnung]], [[Hintersinn]], [[Irrsinn]], [[Kaltsinn]], [[Kunstsinn]], [[Lebenssinn]], [[Opfersinn]], [[Ordnungssinn]], [[Quersinn]], [[Realitätssinn]], [[Reinlichkeitssinn]], [[Scharfsinn]], [[Schönheitssinn]], [[Schwachsinn]], [[Sprachsinn]], [[Starrsinn]], [[Strömungssinn]], [[Stumpfsinn]], [[Tatsachensinn]], [[Testsinn]], [[Trübsinn]], [[Uhrzeigersinn]], [[Unsinn]], [[Vollsinn]], [[Wahnsinn]], [[Wahrheitssinn]], [[Widersinn]], [[Wirklichkeitssinn]], [[Zartsinn]], [[Zeitsinn]]
+
+{{Beispiele}}
+:[1] Blinde haben oft sehr ausgeprägte andere ''Sinne'' wie ein feines Gehör.
+:[1] Ich habe für so etwas einen siebten ''Sinn.''
+:[1] „Darin unterscheidet sich der Mann von allen anderen Lebewesen, daß er sich in eine Frau nur durch die Vermittlung eines seiner ''Sinne'' verlieben kann, die alle, mit Ausnahme des Tastgefühls, ihren Sitz im Kopf haben.“<ref>{{Literatur | Autor= Giacomo Casanova |Titel= Geschichte meines Lebens, herausgegeben und eingeleitet von Erich Loos, Band XII | Übersetzer= Heinz von Sauter | Verlag= Propyläen | Ort=Berlin | Jahr=1985 (Neuausgabe) | Seiten= 79.}}</ref>
+:[1] „Sehen, Hören, Riechen, Schmecken, Tasten – erst über unsere ''Sinne'' erfahren wir, was um uns herum geschieht.“<ref>{{Internetquelle | url=https://www.nationalgeographic.de/wissenschaft/2022/01/optogenetik-wenn-blinde-wieder-sehen-koennen?utm_source=pocket-newtab-global-de-DE | titel=Optogenetik: Wenn Blinde wieder sehen können | autor=Jens Voss | hrsg=nationalgeographic.de, The Walt Disney Company Limited, London, England | datum=2022-01-21 | zugriff=2022-01-25 | kommentar= }}</ref>
+:[2] Sein Vater hat wirklich keinen ''Sinn'' für Humor.
+:[3] Was ist dir denn da in den ''Sinn'' gekommen, als du das Auto geliehen hast ohne zu fragen.
+:[3] Den Plan kannst du dir gleich wieder aus dem ''Sinn'' schlagen.
+:[3] „Es kommt keinem in den ''Sinn'', daß es einfacher wäre, nach Hause zu gehen.“<ref>{{Literatur|Autor=Erich Maria Remarque|Titel=Der schwarze Obelisk|TitelErg=Geschichte einer verspäteten Jugend. Roman|Auflage=5.|Verlag=Kiepenheuer & Witsch|Ort=Köln|Jahr=2003|ISBN=3-462-02725-5|Seiten=219.}} Erstmals 1956 erschienen.</ref>
+:[4] Bei alten Gesetzen muss man oft überlegen, welchen ''Sinn'' sie ursprünglich hatten.
+:[4] Diese Zeile hat keinen ''Sinn.''
+:[4] In der Linguistik spielt die Unterscheidung zwischen „Sinn“ und „Bedeutung“ (nach dem Philosophen G. Frege) eine große Rolle. In diesem Fall wäre die Bedeutung von „Abendstern“ und „Morgenstern“ die gleiche: gemeint ist in beiden Fällen der Planet Venus; der ''Sinn'' beider Ausdrücke ist aber verschieden.
+:[4] „Ihre Worte hatten eigentlich gar keinen ''Sinn'', aber sie erreichte mit ihnen doch, was sie gewollt hatte.“<ref>{{Literatur| Autor= Leo N. Tolstoi | Titel=Krieg und Frieden | TitelErg= Roman | Übersetzer=Werner Bergengruen | Verlag=Paul List Verlag | Ort= München | Jahr=1953 | Seiten=696}}. Russische Urfassung 1867.</ref>
+:[4] „Der Abbé schloß die Augen, dann antwortete er: Man müsse stets unterscheiden zwischen dem ''Sinn'' und dem Buchstaben.“<ref>{{Literatur|Autor=Gustave Flaubert|Titel=Bouvard und Pécuchet |TitelErg<sub> </sub>Roman|Übersetzer= Erich Marx|Verlag=Diogenes|Ort=Zürich |Jahr= 1979|ISBN= 3-257-20725-5}}, Seite 110. Französisch 1881.</ref>
+:[5] Welchen ''Sinn'' hat das Studium, wenn ich hinterher keinen Arbeitsplatz bekomme?
+:[5] Welchen ''Sinn'' verfolgt bitte Ihre Frage?
+:[5] „Später, als Journalist, suchte er ''Sinn'' und Sinnzusammenhang in Philosophie, Theologie und Psychologie.“<ref>{{Literatur|Autor=Jürgen Serke|Titel=Die verbrannten Dichter|TitelErg=Lebensgeschichten und Dokumente|Auflage=2.| Verlag=Wallstein|Ort= Göttingen |Jahr=2023| Seiten= 273.|ISBN=978-3-8353-5388-6}}</ref>
+
+{{Redewendungen}}
+:[1] [[sechster Sinn|sechster ''Sinn'']], [[wie von Sinnen|wie von ''Sinnen'']]
+:[3] [[ohne Sinn und Verstand|ohne ''Sinn'' und Verstand]], [[sich etwas aus dem Sinn schlagen|sich etwas aus dem ''Sinn'' schlagen]]
+:[4] [[im wahrsten Sinne des Wortes|im wahrsten ''Sinne'' des Wortes]], [[langer Rede kurzer Sinn|langer Rede kurzer ''Sinn'']], [[lange Rede, kurzer Sinn|lange Rede, kurzer ''Sinn'']]
+:[*] in jemandes ''Sinn'' sein/[[geschehen]]
+
+{{Sprichwörter}}
+:[3] [[aus den Augen, aus dem Sinn|aus den Augen, aus dem ''Sinn'']]
+
+{{Charakteristische Wortkombinationen}}
+:[1] alle [[fünf]] ''Sinne'' [[beisammen]] haben
+:[2] (einen) ''Sinn'' für etwas haben
+:[3] in den ''Sinn'' kommen, jemandem [[stehen|steht]] der ''Sinn'' nach etwas
+:[4] im [[eigentlich]]en ''Sinn[e],'' im [[engeren]] ''Sinne,'' im [[positiv]]en/[[negativ]]en ''Sinn,'' im [[übertragen]]en ''Sinn[e],'' im [[weiteren]] ''Sinne''
+:[5] ''Sinn'' [[haben]], ''Sinn'' [[ergeben]], der [[tief]]ere ''Sinn,'' ''Sinn'' [[machen]],<ref>Wird fälschlicherweise oft als Anglizismus von "make sense" bezeichnet, aber es gibt auch Belege in älterer Literatur von Goethe, Lessing, Luther u.a. Siehe [https://web.archive.org/web/20180323171649/http://www.iaas.uni-bremen.de/sprachblog/2007/10/01/sinnesfreuden-i/ Sprachblog der Universität Bremen] und Grimmsches Wörterbuch: „Petrus der maister Lampardus, der die sentencias machet, das ist das puch von hochen synnen zu teutsch.“ Aus dem Mittellateinischen der Scholastik “sententiam facere”. </ref> der ''Sinn'' des [[Leben]]s
+
+{{Wortbildungen}}
+:[[Sinnbedeutung]], [[Sinnbereich]], [[Sinnbezirk]], [[Sinnbild]], [[Sinnenfreude]], [[Sinnenlust]], [[Sinnenrausch]], [[Sinnentaumel]], [[Sinnergänzung]], [[Sinnesänderung]], [[Sinnesart]], [[Sinnesäußerung]], [[Sinneslust]], [[Sinnesphysiologie]], [[Sinnestäuschung]], [[Sinnesverwirrung]], [[Sinneswandel]], [[Sinnfindung]], [[Sinngebung]], [[Sinnkrise]], [[Sinnleere]], [[Sinnlehre]], [[Sinnpflanze]], [[Sinnspruch]], [[Sinnstiftung]], [[Sinnsuche]], [[Sinnsucher]], [[Sinnsucherin]], [[Sinnverlust]], [[Sinnzeichen]], [[Sinnzusammenhang]], [[Sinnzweifel]]
+:[[sinnähnlich]], [[sinnbetäubend]], [[sinnbetörend]], [[sinnen]], [[sinnentleert]], [[sinnerfüllt]], [[sinnfrei]], [[sinnfroh]], [[sinngemäß]], [[sinngleich]], [[sinnig]], [[sinnlich]], [[sinnlos]], [[sinnreich]], [[sinnstiftend]], [[sinnverloren]], [[sinnverwandt]], [[sinnverwirrend]], [[sinnvoll]], [[sinnwidrig]]
+:[4] [[i. d. S.]], [[i. e. S.]], [[i. eng. S.]], [[i. S. v.]], [[i. ü. S.]], [[i. w. S.]]
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=Biologie: bestimmte physiologische Fähigkeit zur Wahrnehmung|Ü-Liste=
+*{{da}}: {{Ü|da|sans}}
+*{{en}}: {{Ü|en|sense}}
+*{{eo}}: {{Ü|eo|senso}}
+*{{et}}: {{Ü|et|meel}}
+*{{fi}}: {{Ü|fi|aisti}}
+*{{fr}}: {{Ü|fr|sens}}, {{Ü|fr|signification}}
+*{{ka}}: {{Üt|ka|გრძნობა|grdznoba}}
+*{{el}}: {{Üt|el|αίσθηση|ésthisi}} {{f}}
+*{{ia}}: {{Ü|ia|senso}}
+*{{it}}: {{Ü|it|senso}} {{m}}
+*{{ja}}: {{Üt|ja|感覚|かんかく, kankaku}}, {{Üt|ja|センス|sensu}}
+*{{la}}: {{Ü|la|sensus}}
+*{{mk}}: {{Üt|mk|чувство|čuvstvo}} {{n}}
+*{{nl}}: {{Ü|nl|zin}}
+*{{no}}:
+**{{nn}}: {{Ü|nn|sans}}
+**{{nb}}: {{Ü|nb|sans}}
+*{{fa}}: {{Üt|fa|حس|}}, {{Üt|fa|سهش|soheš|سُهش}}
+*{{pl}}: {{Ü|pl|zmysł}}
+*{{pt}}: {{Ü|pt|sentido}} {{m}}
+*{{ro}}: {{Ü|ro|simț}}
+*{{ru}}: {{Üt|ru|ощущение}}
+*{{sv}}: {{Ü|sv|sinne}}
+*{{sr}}: {{Üt|sr|чуло|čulo}} {{n}}
+*{{es}}: {{Ü|es|sentido}} {{m}}
+*{{cs}}: {{Ü|cs|smysl}} {{m}}
+*{{hu}}: {{Ü|hu|érzék}}
+}}
+
+{{Ü-Tabelle|2|G=innere Beziehung, Verständnis für etwas|Ü-Liste=
+*{{fi}}: {{Ü|fi|mieli}}
+*{{fr}}: {{Ü|fr|sens}}, {{Ü|fr|signification}}
+*{{ka}}: {{Üt|ka|შეგრძნება|shegrdzneba}}, {{Üt|ka|აღქმა|aghkma}}
+*{{el}}: {{Üt|el|αίσθηση|ésthisi}} {{f}}
+*{{mk}}: {{Üt|mk|смисла|smisla}} {{m}}
+*{{nl}}: {{Ü|nl|zin}}
+*{{pl}}: {{Ü|pl|zmysł}}
+*{{pt}}: {{Ü|pt|sentido}} {{m}}
+*{{ro}}: {{Ü|ro|simț}}
+*{{ru}}: {{Üt|ru|чувство}}
+*{{sv}}: {{Ü|sv|sinne}}, {{Ü|sv|känsla}}
+*{{sr}}: {{Üt|sr|смисао|smisao}} {{m}}
+*{{es}}: {{Ü|es|sentido}} {{m}}
+*{{hu}}: {{Ü|hu|érzék}}
+}}
+
+{{Ü-Tabelle|3|G=Ausrichtung der Gedanken|Ü-Liste=
+*{{fi}}: {{Ü|fi|mieli}}
+*{{fr}}: {{Ü|fr|sens}}, {{Ü|fr|signification}}
+*{{el}}: {{Üt|el|νους|nous}} {{m}}
+*{{mk}}: {{Üt|mk|мисла|misla}} {{f}}
+*{{nl}}: {{Ü|nl|zin}}
+*{{pt}}: {{Ü|pt|sentido}} {{m}}
+*{{ro}}: {{Ü|ro|minte}}
+*{{ru}}: {{Üt|ru|ум}}
+*{{sv}}: {{Ü|sv|huvud}}, {{Ü|sv|tankar}}, {{Ü|sv|rim}}
+*{{sr}}: {{Üt|sr|мисао|misao}} {{f}}
+*{{es}}: {{Ü|es|sentido}} {{m}}
+*{{hu}}: {{Ü|hu|ész}}, {{Ü|hu|fej}}
+}}
+
+{{Ü-Tabelle|4|G=Zustand, Ausrichtung der Gedanken einer Person|Ü-Liste=
+*{{ar}}: {{Üt?|ar|معنى|maʿnan}}
+*{{en}}: {{Ü|en|sense}}
+*{{eo}}: {{Ü|eo|senco}}
+*{{fi}}: {{Ü|fi|merkitys}}
+*{{fr}}: {{Ü|fr|sens}}, {{Ü|fr|signification}}
+*{{ka}}: {{Üt|ka|არსი|arsi}}, {{Üt|ka|მნიშვნელობა|mnishvneloba}}, {{Üt|ka|აზრი|azri}}
+*{{el}}: {{Üt|el|νόημα|noima}} {{n}}
+*{{it}}: {{Ü|it|significato}} {{m}}
+*{{ja}}: {{Üt?|ja|意味|いみ, imi}}
+*{{mk}}: {{Üt|mk|смисла|smisla}} {{m}}
+*{{nl}}: {{Ü|nl|zin}}
+*{{no}}:
+**{{nn}}: {{Ü|nn|meining}}
+**{{nb}}: {{Ü|nb|mening}}
+*{{pl}}: {{Ü|pl|sens}}
+*{{pt}}: {{Ü|pt|sentido}} {{m}}
+*{{ro}}: {{Ü|ro|sens}}
+*{{sv}}: {{Ü|sv|mening}}
+*{{sr}}: {{Üt|sr|смисао|smisao}} {{m}}
+*{{es}}: {{Ü|es|sentido}} {{m}}, {{Ü|es|significado}} {{m}}
+*{{cs}}: {{Ü|cs|smysl}} {{m}}
+*{{hu}}: {{Ü|hu|értelem}}
+}}
+
+{{Ü-Tabelle|5|G=gedanklicher Hintergrund, Zweck einer Handlung oder Sache|Ü-Liste=
+*{{da}}: {{Ü|da|mening}}
+*{{en}}: {{Ü|en|meaning}}
+*{{eo}}: {{Ü|eo|senco}}
+*{{fi}}: {{Ü|fi|tarkoitus}}
+*{{fr}}: {{Ü|fr|sens}}, {{Ü|fr|but}}, {{Ü|fr|objectif}}
+*{{ka}}: {{Üt|ka|აზრი|azri}}
+*{{el}}: {{Üt|el|νόημα|noima}} {{n}}
+*{{it}}: {{Ü|it|senso}} {{m}}
+*{{swb}}: {{Ü|swb|maâna}}
+*{{la}}: {{Ü|la|sensus}}
+*{{mk}}: {{Üt|mk|смисла|smisla}} {{m}}
+*{{nl}}: {{Ü|nl|zin}}
+*{{pl}}: {{Ü|pl|sens}}
+*{{pt}}: {{Ü|pt|sentido}} {{m}}
+*{{ro}}: {{Ü|ro|sens}}
+*{{ru}}: {{Üt|ru|смысл}}
+*{{sv}}: {{Ü|sv|mening}}, {{Ü|sv|betydelse}}, {{Ü|sv|innebörd}}
+*{{sr}}: {{Üt|sr|смисао|smisao}} {{m}}
+*{{es}}: {{Ü|es|sentido}} {{m}}
+*{{hu}}: {{Ü|hu|értelem}}, {{Ü|hu|cél}}
+}}
+
+{{Referenzen}}
+:[1, 4] {{Wikipedia}}
+:[1] {{Wikipedia|Sinn (Wahrnehmung)}}
+:[4] {{Wikipedia|Sinn (Semantik)}}
+:[1, 5] {{Wikiquote}}
+:[1–5] {{Ref-Grimm}}
+:[1–5] {{Ref-DWDS}}
+:[1–5] {{Ref-Duden}}
+:[1–5] {{Ref-UniLeipzig}}
+:[1–5] {{Ref-FreeDictionary}}
+
+{{Quellen}}
+
+=== {{Wortart|Substantiv|Deutsch}}, {{mf}}, {{Wortart|Nachname|Deutsch}} ===
+
+{{Deutsch Nachname Übersicht
+}}
+
+{{Worttrennung}}
+:Sinn, {{Pl.}} Sinns
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|zɪn}}
+:{{Hörbeispiele}} {{Audio|De-Sinn.ogg}}
+:{{Reime}} {{Reim|ɪn|Deutsch}}
+
+{{Bedeutungen}}
+:[1] deutscher Familienname
+
+{{Bekannte Namensträger}}
+:[[w:Hans-Werner Sinn|Hans-Werner Sinn]], [[Wirtschaftswissenschaftler]]
+
+{{Beispiele}}
+:[1] „Hansjörg ''Sinn'' (* 20. Juli 1929 in Ludwigshafen am Rhein) ist ein deutscher Chemiker und ehemaliger Hamburger Senator.“<ref>[https://de.wikipedia.org/wiki/Hansj%C3%B6rg_Sinn Hansjörg Sinn] ''de.wikipedia.org'', abgerufen am 27. Mai 2014</ref>
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=deutscher Familienname|Ü-Liste=
+*{{en}}: {{Ü|en|}}
+*{{fr}}: {{Ü|fr|}}
+}}
+
+{{Referenzen}}
+:[1] {{Wikipedia|Sinn}}
+
+{{Quellen}}
+
+=== {{Wortart|Substantiv|Deutsch}}, {{f}}, {{Wortart|Toponym|Deutsch}} ===
+
+{{Deutsch Substantiv Übersicht
+|Genus=f
+|Nominativ Singular=Sinn
+|Nominativ Plural=—
+|Genitiv Singular=Sinn
+|Genitiv Plural=—
+|Dativ Singular=Sinn
+|Dativ Plural=—
+|Akkusativ Singular=Sinn
+|Akkusativ Plural=—
+|Bild=Sinn1.JPG|mini|1|Die ''Sinn'' bei Jossa in der Gemeinde Sinntal
+}}
+
+{{Worttrennung}}
+:Sinn, {{kPl.}}
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|zɪn}}
+:{{Hörbeispiele}} {{Audio|De-Sinn.ogg}}
+:{{Reime}} {{Reim|ɪn|Deutsch}}
+
+{{Bedeutungen}}
+:[1] {{K|Geografie}} [[Fluss]] in [[Deutschland]]
+
+{{Oberbegriffe}}
+:[1] [[Fluss]], [[Wasserlauf]], [[Fließgewässer]], [[Gewässer]]
+
+{{Unterbegriffe}}
+:[1] die ''Schmale Sinn'', rechter Zufluss der ''Sinn'' in Hessen und Bayern
+
+{{Beispiele}}
+:[1] Die ''Sinn'' erreicht die Fränkische Saale 700 Meter vor deren Mündung in den Main.
+:[1] „Die ''Sinn'' ist ein etwa 60 Kilometer langer, rechter bzw. nördlicher Nebenfluss der Fränkischen Saale in Unterfranken und Hessen in Deutschland.“<ref> [https://de.wikipedia.org/wiki/Sinn_%28Fluss%29 ''Sinn'' (Fluss)] ''de.wikipedia.org'', abgerufen am 27. Mai 2014</ref>
+
+{{Wortbildungen}}
+:[[Sinntal]]
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=Geografie: Fluss in Deutschland|Ü-Liste=
+*{{en}}: {{Ü|en|}}
+*{{fr}}: {{Ü|fr|}}
+*{{es}}: {{Ü|es|}}
+}}
+
+{{Referenzen}}
+:[1] {{Wikipedia|Sinn}}
+:[1] {{Ref-UniLeipzig|Sinn}}
+
+{{Quellen}}
+
+=== {{Wortart|Substantiv|Deutsch}}, {{n}}, {{Wortart|Toponym|Deutsch}} ===
+
+{{Deutsch Toponym Übersicht
+|Bild=Gemeinde_Sinn_%28Hessen%29_Gewerbezone.jpg|mini|1|Luftbild der Gemeinde ''Sinn''
+}}
+
+{{Worttrennung}}
+:Sinn, {{kPl.}}
+
+{{Aussprache}}
+:{{IPA}} {{Lautschrift|zɪn}}
+:{{Hörbeispiele}} {{Audio|De-Sinn.ogg}}
+:{{Reime}} {{Reim|ɪn|Deutsch}}
+
+{{Bedeutungen}}
+:[1] Stadt in [[Hessen]], Gemeinde im Lahn-Dill-Kreis, gelegen am Fluss Sinn
+
+{{Abkürzungen}}
+:[1] ''[[Kraftfahrzeugkennzeichen]]:'' [[LDK]]
+
+{{Oberbegriffe}}
+:[1] [[Stadt]]
+
+{{Charakteristische Wortkombinationen}}	
+:[1] in ''Sinn'' [[abfahren]], [[anlangen]], [[arbeiten]], [[aufwachsen]], [[leben]]
+:sich in ''Sinn'' [[aufhalten]], [[umsehen]]
+:''Sinn'' [[besuchen]], durch ''Sinn'' [[fahren]], nach ''Sinn'' [[fahren]], über ''Sinn'' [[fahren]], nach ''Sinn'' [[gehen]], nach ''Sinn'' [[kommen]], in ''Sinn'' [[leben]], nach ''Sinn'' [[reisen]], aus ''Sinn'' [[stammen]], in ''Sinn'' [[verweilen]], nach ''Sinn'' [[zurückkehren]]
+
+{{Wortbildungen}}
+:[[Sinner]], [[Sinnerin]]
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=Stadt in Hessen, Gemeinde im Lahn-Dill-Kreis, gelegen am Fluss Sinn|Ü-Liste=
+*{{en}}: {{Ü|en|}}
+*{{fr}}: {{Ü|fr|}}
+*{{it}}: {{Ü|it|}}
+*{{es}}: {{Ü|es|}}
+}}
+
+{{Referenzen}}
+:[1] {{Wikipedia|Sinn}}
+:[*] {{Ref-UniLeipzig|Sinn}}
+
+{{Ähnlichkeiten 1|[[Kinn]], [[sind]], [[Zinn]]}}

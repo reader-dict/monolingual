@@ -327,7 +327,7 @@ def setup_lua_ctx() -> None:
                 "Iš Iš indoeuropiečių prokalbės *sénos. Plg. senovės graikų k. <i>ἕνος</i> (henos), sanskrito सन (sána) ir gotų k. 𐍃𐌹𐌽𐌴𐌹𐌲𐍃 (sineigs)."
             ],
             {
-                "Būdvardis|f., m.": [
+                "Būdvardis|f./m.": [
                     "jau kuris laikas esantis",
                     "ilgai vartotas, palaikis",
                     "anksčiau buvęs, nedabartinis, pasenęs",

@@ -129,7 +129,15 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['invar']
     """
     pattern = re.compile(rf"\{{([fmpinvar]+)(?: \?\|{locale})*}}")
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    res: set[str] = set()
+    for gender in pattern.findall(code):
+        if "".join(sgen := sorted(gender)) == "fm":
+            res.update(sgen)
+        elif gender == "invar":
+            res.add("inv")
+        else:
+            res.add(gender)
+    return utils.unique(sorted(res))
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
