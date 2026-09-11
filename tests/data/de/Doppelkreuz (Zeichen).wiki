@@ -1,0 +1,26 @@
+== # ({{Sprache|International}}) ==
+=== {{Wortart|Symbol}} ===
+
+{{Bedeutungen}}
+:[[Doppelkreuz]]
+:[1] {{K|Mathematik}} Zeichen zur Kennzeichnung der [[Mächtigkeit]] ([[Kardinalität]]) einer [[Menge]]
+
+{{Synonyme}}
+:[1] <math>|\cdot|</math>
+
+{{Beispiele}}
+:[1] 
+
+==== {{Übersetzungen}} ====
+{{Ü-Tabelle|1|G=Zeichen zur Kennzeichnung der Mächtigkeit (Kardinalität) einer Menge|Ü-Liste=
+*{{la}}: {{Ü|la|}}
+*{{ru}}: {{Üt|ru|}}
+}}
+
+{{Referenzen}}
+:[1] {{Wikipedia|Doppelkreuz (Schriftzeichen)}}
+:[1] {{Wikipedia|Mächtigkeit (Mathematik)}}
+
+<!-- NICHT entfernen: diese IW-Links bleiben auch nach der Einführung von Cognate -->
+[[en:Unsupported titles/Number sign]]
+[[fr:Titres non pris en charge/Croisillon]]
