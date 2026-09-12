@@ -88,6 +88,7 @@ POS_SYNONYMS = [
     ("ja", "類義語"),
     ("ko", "유의어"),
     ("lt", "Sinonimai"),
+    ("mg", "Dika-Mitovy"),
     ("nl", "Synoniemen"),
     ("no", "Synonymer"),
     ("pl", "Synonimy"),
