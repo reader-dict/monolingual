@@ -6,7 +6,7 @@ from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://mg.wiktionary.org/wiki/Manokana:Kisendra"
 
-template_trans = "Modèle"
+template_trans = "Endrika"
 
 head_sections = ("{{=mg=}}", "{{=mul=}}")
 etyl_section = ("etim",)
