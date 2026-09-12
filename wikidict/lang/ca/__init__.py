@@ -12,9 +12,6 @@ random_word_url = "https://ca.wiktionary.org/wiki/Especial:RandomRootpage"
 module_trans = "Mòdul"
 template_trans = "Plantilla"
 
-float_separator = ","
-thousands_separator = "."
-
 head_sections = ("{{-ca-}}", "{{-mul-}}")
 etyl_section = ("{{-etimologia-", "{{-etim-", "{{etim-lang")
 sections = (

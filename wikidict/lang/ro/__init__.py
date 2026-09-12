@@ -11,9 +11,6 @@ random_word_url = "https://ro.wiktionary.org/wiki/Special:RandomRootpage"
 module_trans = "Modul"
 template_trans = "Format"
 
-float_separator = ","
-thousands_separator = "."
-
 section_patterns = ("#", r"\*")
 section_sublevels = (3,)
 head_sections = ("{{limba|ron}}", "{{limba|ro}}", "{{limba|conv}}")

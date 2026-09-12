@@ -11,9 +11,6 @@ random_word_url = "https://no.wiktionary.org/wiki/Spesial:Tilfeldig_rotside"
 module_trans = "Modul"
 template_trans = "Mal"
 
-float_separator = ","
-thousands_separator = " "
-
 head_sections = ("norsk",)
 section_sublevels = (3, 4)
 etyl_section = ("etymologi",)

@@ -9,9 +9,6 @@ random_word_url = "https://ko.wiktionary.org/wiki/%ED%8A%B9%EC%88%98:%EC%9E%84%E
 module_trans = "모듈"
 template_trans = "틀"
 
-float_separator = ","
-thousands_separator = " "
-
 head_sections = ("한국어", "국제")
 section_sublevels = (4, 3)
 sections = (

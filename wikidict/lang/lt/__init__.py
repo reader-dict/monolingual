@@ -12,8 +12,6 @@ random_word_url = "https://lt.wiktionary.org/wiki/Specialus:Atsitiktinis_puslapi
 
 template_trans = "Šablonas"
 
-float_separator = ","
-
 section_patterns = ("#", r"\*")
 sublist_patterns = ("#", r"\*", ":")
 section_sublevels = (3, 4)

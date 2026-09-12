@@ -10,9 +10,6 @@ random_word_url = "https://cs.wiktionary.org/wiki/Speci%C3%A1ln%C3%AD:N%C3%A1hod
 module_trans = "Modul"
 template_trans = "Šablona"
 
-float_separator = ","
-thousands_separator = " "
-
 section_sublevels = (3, 4)
 head_sections = ("čeština",)
 etyl_section = ("etymologie",)

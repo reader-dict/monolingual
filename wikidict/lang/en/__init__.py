@@ -10,9 +10,6 @@ from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://en.wiktionary.org/wiki/Special:RandomInCategory/English_lemmas#English"
 
-float_separator = "."
-thousands_separator = ","
-
 head_sections = ("english", "translingual")
 section_patterns = ("#", r"\*")
 sublist_patterns = ("#", ":")

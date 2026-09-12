@@ -10,9 +10,6 @@ random_word_url = "https://de.wiktionary.org/wiki/Spezial:Zuf%C3%A4llige_Stammse
 module_trans = "Modul"
 template_trans = "Vorlage"
 
-float_separator = ","
-thousands_separator = "."
-
 section_sublevels = (3, 4)
 head_sections = ("{{sprache|deutsch}}", "{{sprache|international}}")
 etyl_section = ("{{herkunft}}",)

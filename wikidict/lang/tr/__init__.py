@@ -11,9 +11,6 @@ random_word_url = "https://tr.wiktionary.org/wiki/%C3%96zel:Rastgele"
 module_trans = "Modül"
 template_trans = "Şablon"
 
-float_separator = ","
-thousands_separator = "."
-
 section_sublevels = (3, 4, 5)
 head_sections = ("türkçe",)
 etyl_section = ("köken",)

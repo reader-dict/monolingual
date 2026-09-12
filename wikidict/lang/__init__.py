@@ -41,12 +41,6 @@ template_adapters: dict[str, dict[str, Callable[[str], str]]] = _populate("templ
 # Wiktionary modules/templates to override
 template_overrides: dict[str, dict[str, Callable[[tuple[str, ...]], str]]] = _populate("template_overrides")
 
-# Float number separator
-float_separator: dict[str, str] = _populate("float_separator")
-
-# Thousands separator
-thousands_separator: dict[str, str] = _populate("thousands_separator")
-
 # Markers for sections that contain interesting text to analyse.
 section_patterns: dict[str, tuple[str, ...]] = _populate("section_patterns")
 sublist_patterns: dict[str, tuple[str, ...]] = _populate("sublist_patterns")

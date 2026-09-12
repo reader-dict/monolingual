@@ -10,9 +10,6 @@ random_word_url = "https://nl.wiktionary.org/wiki/Speciaal:WillekeurigeUitCatego
 
 template_trans = "Sjabloon"
 
-float_separator = ","
-thousands_separator = " "
-
 section_patterns = ("#", r"\*")
 sublist_patterns = ("#", r"\*")
 section_sublevels = (3, 4)

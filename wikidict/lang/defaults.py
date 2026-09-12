@@ -11,9 +11,6 @@ appendix_trans = "Appendix"
 template_adapters: dict[str, Callable[[str], str]] = {}
 template_overrides: dict[str, Callable[[tuple[str, ...]], str]] = {}
 
-float_separator = ""
-thousands_separator = ""
-
 section_patterns = ("#",)
 sublist_patterns = ("#",)
 section_level = 2

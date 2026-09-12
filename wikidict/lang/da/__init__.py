@@ -11,9 +11,6 @@ random_word_url = "https://da.wiktionary.org/wiki/Speciel:RandomRootpage"
 module_trans = "Modul"
 template_trans = "Skabelon"
 
-float_separator = ","
-thousands_separator = " "
-
 section_patterns = ("#", r"\*")
 section_sublevels = (3, 4)
 head_sections = (

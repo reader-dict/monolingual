@@ -15,9 +15,6 @@ module_trans = "モジュール"
 template_trans = "テンプレート"
 appendix_trans = "付録"
 
-float_separator = "."
-thousands_separator = ","
-
 head_sections = (
     "{{ja}}",
     "{{l|ja}}",

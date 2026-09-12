@@ -13,9 +13,6 @@ random_word_url = "https://uk.wiktionary.org/wiki/%D0%A1%D0%BF%D0%B5%D1%86%D1%96
 module_trans = "Модуль"
 template_trans = "Шаблон"
 
-float_separator = ","
-thousands_separator = " "
-
 section_level = 1
 section_sublevels = (3, 4)
 head_sections = ("uk", "mul")

@@ -7,9 +7,6 @@ random_word_url = (
 module_trans = "มอดูล"
 template_trans = "แม่แบบ"
 
-float_separator = ","
-thousands_separator = " "
-
 section_sublevels = (3, 4)
 head_sections = (
     "ภาษาไทย",  # Thai

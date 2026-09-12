@@ -11,9 +11,6 @@ random_word_url = "http://tools.wmflabs.org/anagrimes/hasard.php?langue=fr"
 
 template_trans = "Modèle"
 
-float_separator = ","
-thousands_separator = " "
-
 # https://fr.wiktionary.org/wiki/Wiktionnaire:Liste_des_sections_de_types_de_mots
 section_patterns = ("#", r"\*")
 section_sublevels = (3, 4)

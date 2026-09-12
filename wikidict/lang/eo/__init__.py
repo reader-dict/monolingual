@@ -12,9 +12,6 @@ random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage
 module_trans = "Modulo"
 template_trans = "Ŝablono"
 
-float_separator = ","
-thousands_separator = " "
-
 section_patterns = ("#", r":\[\d+\]", r"\*")
 section_sublevels = (3, 4)
 head_sections = ("{{lingvo|eo}}", "{{lingvo|mul}}", "esperanto", "multldingva", "translingva")

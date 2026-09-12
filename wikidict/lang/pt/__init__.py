@@ -13,9 +13,6 @@ random_word_url = "https://pt.wiktionary.org/wiki/Especial:RandomRootpage"
 module_trans = "Módulo"
 template_trans = "Predefinição"
 
-float_separator = ","
-thousands_separator = " "
-
 section_patterns = ("#", r"\*", ":#")
 sublist_patterns = ("#", r"\*")
 section_level = 1

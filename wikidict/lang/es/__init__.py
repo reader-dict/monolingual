@@ -13,9 +13,6 @@ random_word_url = "https://es.wiktionary.org/wiki/Especial:Aleatorio_en_categor%
 module_trans = "Módulo"
 template_trans = "Plantilla"
 
-float_separator = ","
-thousands_separator = " "
-
 head_sections = ("{{lengua|es}}",)
 section_sublevels = (4, 3)
 etyl_section = ("etimología", "etimología 1")

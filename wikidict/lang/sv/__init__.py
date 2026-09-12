@@ -11,9 +11,6 @@ random_word_url = "https://sv.wiktionary.org/wiki/Special:RandomRootpage"
 module_trans = "Modul"
 template_trans = "Mall"
 
-float_separator = ","
-thousands_separator = " "
-
 # https://sv.wiktionary.org/wiki/Wiktionary:Stilguide#Ordklassrubriken
 sublist_patterns = ("#", ":")
 head_sections = ("svenska",)
