@@ -19,6 +19,7 @@ namespaces = {
     "jbo": ["Image", "datnyvei", "klesi"],
     "ko": ["Image", "그림", "분류", "파일"],
     "lt": ["Image", "Kategorija", "Vaizdas"],
+    "mg": ["Catégorie", "Image", "Sary", "Sokajy"],
     "nl": ["Afbeelding", "Bestand", "Categorie", "Image"],
     "no": ["Bilde", "Fil", "Image", "Kategori"],
     "pl": ["Grafika", "Image", "Kategoria", "Plik"],
