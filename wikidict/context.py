@@ -212,18 +212,12 @@ class Context:
         self.ctx.db_conn.execute(query, (search, replace, like))
         self.ctx.db_conn.commit()
 
-    def cleanup_templates_lojban(self) -> None:
+    def cleanup_templates(self, pattern: str, repl: str) -> None:
         """Clean-up template names, and redirections."""
-        # Remove soon-to-be-duplicate
-        self.ctx.db_conn.execute("""
-            DELETE FROM pages
-             WHERE namespace_id = 10
-               AND title = "Template:termo'a:="
-        """)
-        self.ctx.db_conn.execute("""
+        self.ctx.db_conn.execute(f"""
             UPDATE pages
-               SET title = REPLACE(title, "termo'a:", ""),
-                   redirect_to = REPLACE(redirect_to, "termo&#039;a:", "Template:")
+               SET title = REPLACE(title, "{pattern}", "{repl}"),
+                   redirect_to = REPLACE(redirect_to, "{pattern}", "{repl}")
              WHERE namespace_id = 10
         """)
         self.ctx.db_conn.commit()
@@ -363,12 +357,16 @@ def adapt_templates(locale: str) -> None:
             redirect_to=page.redirect_to,
         )
 
-    if locale == "ja":
-        this_ctx.translate_requires("Module", "モジュール")
-    elif locale == "jbo":
-        this_ctx.cleanup_templates_lojban()
-    elif locale == "ko":
-        this_ctx.translate_requires("Module", "모듈")
+    match locale:
+        case "ja":
+            this_ctx.translate_requires("Module", "モジュール")
+        case "jbo":
+            this_ctx.cleanup_templates("termo'a:", "Template:")
+            this_ctx.cleanup_templates("termo&#039;a:", "Template:")
+        case "ko":
+            this_ctx.translate_requires("Module", "모듈")
+        case "mg":
+            this_ctx.cleanup_templates("Modèle:", "")
 
     this_ctx.set_cache_exclusions()
 
