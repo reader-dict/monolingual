@@ -1,0 +1,24 @@
+=={{=de=}}==
+
+{{-ana-|de}}
+'''Kilo''' 
+# [[kilôgrama]]
+
+{{-fanononana-}}
+* {{audio|de|De-Kilo.ogg|Audio}}
+
+{{-tsiahy-}}
+* {{R:Duden}}
+=={{=mul=}}==
+
+{{-etim-}}
+:Nindramina avy amin'ny {{en}} ''kilo''.
+{{-ana-|mul}}
+'''Kilo''' 
+# [[faneva]] [[famantarana]] ho an'ny [[litera]] K
+
+{{-fanononana-}}
+* {{IPA|mul|[ˈkilo]|ref={{cite-book |title=DIN 5009:2022-06 |page=Anhang B: Buchstabiertafel der ICAO („Radiotelephony Spelling Alphabet“) |publisher=Deutsches Institut für Normung |date=June 2022 }}}}
+
+{{-tsiahy-}}
+{{wikibolana|en|Kilo}}

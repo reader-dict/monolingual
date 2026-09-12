@@ -293,6 +293,21 @@ MERGE = {
         "top": "daiktavardis",
         "simboliai": "simbolis",  # symbol
     },
+    "mg": {
+        "ana": "anarana iombonana",  # common noun
+        "ana-flex": "bika anarana",  # nominal form
+        "ana, mpam": "iombonana / mpamaritra",  # adjective / common noun
+        "ana-pr": "anarana",  # name
+        "e-ana": "endrik’anarana",  # noun form
+        "e-mat": "bika matoanteny",  # verb form
+        "e-mpam": "endri-pamaritra anarana",  # adjective form
+        "mat": "matoanteny",  # verb
+        "mpam": "mpamaritra",  # adjective
+        "mpam-ana": "mpamaritra",  # adjective
+        "mpamp": "mpampiankin-teny",  # conjunction
+        "nom-pr": "anarana",  # proper noun
+        "tamb": "tambinteny",  # adverb
+    },
     "nl": {
         "abbr": "afkorting",
         "adjc": "bijvoeglijk naamwoord",

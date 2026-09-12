@@ -724,6 +724,10 @@ def parse_word(
                 prons.remove(pron)
         definitions.pop("Trans", None)
 
+        # Do not keep words having only a list of synonyms
+        if lang_src == "mg" and len(definitions) == 1 and "Dika-Mitovy" in definitions:
+            definitions.clear()
+
     # Etymology
     if definitions:
         if lang_src == "sv":
