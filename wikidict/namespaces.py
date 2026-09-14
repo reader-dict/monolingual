@@ -13,6 +13,7 @@ namespaces = {
     "en": ["CAT", "Category", "File", "Image"],
     "eo": ["Dosiero", "Image", "Kategorio"],
     "es": ["Archivo", "Categoría", "Image", "Imagen"],
+    "fi": ["Image", "Kuva", "Luokka", "Tiedosto"],
     "fr": ["Catégorie", "Fichier", "Image"],
     "it": ["Categoria", "File", "Image", "Immagine"],
     "ja": ["Image", "カテゴリ", "ファイル", "画像"],
