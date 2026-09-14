@@ -83,6 +83,7 @@ POS_SYNONYMS = [
     ("en", "Synonym"),
     ("eo", "Sinonimoj"),
     ("es", "Sinónimo"),
+    ("fi", "Synonyymit"),
     ("fr", "Synonymes"),
     ("it", "Sinonimi"),
     ("ja", "類義語"),
@@ -327,6 +328,8 @@ def find_etymology(
             items = get_items((":", "#"))
         case "es":
             items = get_items((r";\d",), skip=("=== etimología",))
+        case "fi":
+            items = get_items(("#", r"\*"))
         case "fr":
             definitions: list[Definition] = []
             tables = parsed_section.tables
@@ -761,9 +764,8 @@ def render_word(
     else:
         if details and (details.definitions or details.variants or details.reverse_variants):
             results[word] = details
-
-    if DEBUG_EMPTY_WORDS:
-        print(f"Empty {word = }", flush=True)
+        elif DEBUG_EMPTY_WORDS:
+            print(f"Empty {word = }", flush=True)
 
     if DEBUG_LUA:
         log.info("Job done.")

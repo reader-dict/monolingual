@@ -237,6 +237,10 @@ MERGE = {
         "verba formo": "verbo",
         "verbo, vortgrupo": "verbo",
     },
+    "fi": {
+        "verbii": "verbi",
+        "verbit": "verbi",
+    },
     "fr": {
         "abréviations": "abréviation",
         "adj": "adjectif",

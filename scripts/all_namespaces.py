@@ -16,6 +16,7 @@ locales = (
     "en",
     "eo",
     "es",
+    "fi",
     "fr",
     "it",
     "ja",

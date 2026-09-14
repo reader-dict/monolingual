@@ -1,0 +1,37 @@
+==Suomi==
+===Substantiivi===
+{{fi-subs|5|B}}
+
+# [[kreppikangas]]
+# [[kreppipaperi]]
+# (''ruoka'') hyvin ohut [[lettu]] tai [[räiskäle]] us. rullalle käärittynä
+#:''Täytteelliset rullalle käärityt krepit ovat kuin kääryleitä.''
+
+====Ääntäminen====
+{{fi-äänt}}
+
+====Taivutus====
+{{fi-subs-risti|kre|pp|p|ä|i}}
+
+====Käännökset====
+{{kohta|1|hyvin ohut lettu tai räiskäle us. rullalle käärittynä; katso myös ''[[lettu]]''|
+*englanti: {{käännös|en|crepe}}
+*ranska: {{käännös|fr|crêpe|suku=m}}
+|loppu}}
+
+====Liittyvät sanat====
+* (''kangas'') [[silkkikreppi]], [[villakreppi]]
+* (''ruoka'') [[kääryle]]
+
+=====Yhdyssanat=====
+[[kreppikangas]],
+[[kreppikiharrin]],
+[[kreppinailon]],
+[[kreppipaperi]],
+[[lainekreppi]]
+
+====Aiheesta muualla====
+*{{muualla-ks}}
+
+[[Luokka:Suomen kielen ruoat]]
+[[Luokka:Suomen kielen ranskalaiset lainat]]

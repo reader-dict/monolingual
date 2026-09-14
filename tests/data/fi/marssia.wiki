@@ -1,0 +1,27 @@
+==Suomi==
+===Substantiivi===
+'''marssia'''
+# {{taivm-y-part|fi|marssi|luok=s}}
+
+===Verbi===
+{{fi-verbi|61}}
+
+# kävellä [[marssi]]musiikin tahdissa
+# osallistua marssille
+# {{yhteys|kuva|k=fi}} tulla esille näyttävästi (varsinkin mielenosoituksellisesti)
+#: ''Hän '''marssi''' suoraan korkeimman johtajan juttusille.''
+
+====Ääntäminen====
+{{fi-äänt|*}}
+
+====Liittyvät sanat====
+=====Johdokset=====
+{{johdokset|fi|s|marssija|marssiminen|marssinta}}
+{{johdokset|fi|v|marssittaa}}
+
+====Aiheesta muualla====
+*{{muualla-ks}}
+*{{muualla-suvi|1087}}
+
+[[Luokka:Suomen kielen homonyymit]]
+[[Luokka:Suomen kielen ranskalaiset lainat]]

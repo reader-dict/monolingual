@@ -1,0 +1,397 @@
+{{katso|-a|-a-|a|a-|a.|A|á|Á|à|À|ă|Ă|ắ|Ắ|ằ|Ằ|ẵ|Ẵ|ẳ|Ẳ|â|Â|ấ|Ấ|ầ|Ầ|ẫ|Ẫ|ẩ|Ẩ|ǎ|Ǎ|ǻ|Ǻ|ǟ|Ǟ|ã|Ã|ȧ|Ȧ|ǡ|Ǡ|ą|Ą|ā|ā-|Ā|ả|Ả|ȁ|Ȁ|ặ|Ặ|ậ|Ậ|å|Å|ä|-ä|-ä-|Ä}}
+
+==Kansainvälinen==
+{{merkki|U+0061|LATIN SMALL LETTER A}}
+
+===Kirjain===
+{{aakkonen|kans|iso=A}}
+
+# latinalainen pieni kirjain [[A]], [[Unicode]]-merkki  U+0061
+# {{yhteys|fonetiikka}} [[IPA]]: [[väljä]] [[lavea]] [[etuvokaali]]
+
+====Ääntäminen [IPA]====
+* {{audio|Open_front_unrounded_vowel.ogg}}
+
+====Huomautukset [IPA]====
+* Eri äänne kuin suomen ''a'', jota merkitään IPAssa merkillä [[ɑ]]
+
+====Liittyvät sanat====
+; kirjaimet
+* [[á]], [[à]], [[â]] [[ä]] [[ã]] [[ã]] [[ǎ]] [[ā]] [[ă]] [[ą]] [[å]]
+* [[ḁ]] [[ẚ]] [[ạ]] [[ả]] [[ấ]] [[ầ]] [[ẩ]] [[ẫ]] [[ậ]] [[ắ]] [[ằ]] [[ẳ]] [[ẵ]] [[ặ]]
+* [[ǟ]]
+
+=====Vieruskäsitteet [IPA]=====
+* (''vastaava pyöreä'') [[ɶ]]
+
+===Lyhenne===
+{{lyhenne|kans}}
+
+# [[atto]], [[SI-järjestelmä|SI-järjestelmän]] etuliite, [[triljoonasosa]], 10<sup>&minus;18</sup>
+# [[vuosi|vuoden]] tunnus [[SI-järjestelmä]]ssä
+# [[aari]]n tunnus
+# {{yhteys|musiikki|sormintasoittimet}} espanjan ''{{l|es|anular}},'' [[nimetön]] (sormi)
+
+====Liittyvät sanat====
+*{{merkitys|4|musiikki}} [[p]], [[i]], [[m]], [[e]]
+
+[[Luokka:Kansainvälinen foneettinen aakkosto]]
+
+==Suomi==
+{{aakkoset||a|b}}
+
+===Aakkonen===
+{{aakkonen|kans|iso=A|nimi=aa}}
+
+# pieni a
+
+====Ääntäminen====
+Äännetään väljänä laveana takavokaalina. Lyhyenä ja pitkänä (‹aa›) äännettäessä äänteissä ei ole laadullista eroa.<ref>{{Kirjaviite | Tekijä=Karlsson, Fred | Nimeke=Suomen peruskielioppi | Selite=4. laajennettu ja uudistettu painos | Julkaisupaikka=Helsinki | Julkaisija=Suomalaisen kirjallisuuden seura | Vuosi=2009 | Tunniste=ISBN 978-952-222-097-4 | Sivu=26–27}}</ref>
+*{{IPA|[ɑ]}}
+*{{audio|Open_back_unrounded_vowel.ogg}}
+*SAMPA: [A]
+
+=====Erikseen lausuttuna=====
+*‹aa›
+*{{IPA|[ɑː]}}
+*SAMPA: [A:]
+*SUT: [A:]
+*{{audio|Fi-aa.ogg}}
+
+====Idiomit====
+*'''Kaiken a ja o'''
+*# tärkein, keskeisin asia, alku ja loppu, alfa ja oomega
+
+====Katso myös====
+* Suomen kielen aakkoset: {{Aakkosto/fi}}
+
+===Lyhenne===
+{{wikipedia|Approbatur}}
+{{wikipedia|Amfetamiini}}
+{{lyhenne|fi}}
+
+# ''[[approbatur]]'' (hyväksytään)
+# {{yhteys|slangia|k=fi}} [[amfetamiini]]
+# {{yhteys|k=fi|musiikki|C-duuriasteikossa}} 6. juurisävel
+# {{yhteys|k=fi|musiikki|A-molliasteikossa}} 1. juurisävel
+# {{yhteys|k=gi|musiikki|sävellajista}} [[a-molli]]
+
+====Käännökset====
+{{kohta|3. ja 4|sävel|
+*englanti: {{l|en|a}}
+*espanja: {{l|es|la}}
+*italia: {{l|it|la}}
+*ranska: {{l|fr|la}}
+*ruotsi: {{l|sv|a}}
+*saksa: {{l|de|a}}
+|loppu}}
+
+====Liittyvät sanat====
+=====Yhdyssanat=====
+*[[a-molli]]
+
+====Aiheesta muualla====
+*{{muualla-ses|word=a|etym_id=ETYM_0cc175b9c0f1b6a831c399e269772661}}
+*{{muualla-suvi|899}}
+
+==Ainu==
+===Verbi===
+{{verbi|ain}}, yksipaikkainen verbi, yksikkö
+
+# [[istua]], [[istuutua]]
+# olla [[hereillä]]
+
+====Liittyvät sanat====
+[[rok]], [[as]]/[[roski]], [[hopuni]]/[[hopumpa]]
+
+===Verbi===
+{{verbi|ain}}, yksipaikkainen verbi
+
+# [[palaa]]
+# (keitosta) olla [[paljon]]
+
+===Verbi===
+{{verbi|ain}}, yksikkö
+
+# {{yhteys|apuverbi|k=ain}} olla [[tehnyt]] (ilmaisee perfektiä)
+# {{yhteys|apuverbi|k=ain}} ('a + <verbi>' 2, 3 kertaa toistettuna) tehdä tekemästä päästyään, tehdä toistuvasti
+
+[[Luokka:Ainun_kielen_apuverbit]]
+
+===Interjektio===
+{{interjektio|ain}}
+
+# [[ai niin]]! (kun jokin asia muistuu mieleen)
+
+===Lähteet===
+* {{Kirjaviite | Tekijä=Tamura, Suzuko | Nimeke=アイヌ語沙流方言辞典 | Selite=(Ainugo Saru hogen jiten, Ainun sarun murteen sanakirja) | Julkaisija=Soufuukan | Vuosi=1996 | Tunniste=ISBN 978-488-323-093-8}}
+* {{Kirjaviite | Tekijä=Kayano, Shigeru (toim.) | Nimeke=萱野茂のアイヌ語辞典 | Selite=(Kayano Shigeru no ainugo jiten, Kayano Shigerun ainun sanakirja) | Julkaisija=Sanseidou | Vuosi=1996 | Tunniste=ISBN 978-438-517-050-3}}
+
+[[Luokka:Ainun kielen verbit, joilla on erillinen yksikkö- ja monikkomuoto]]
+
+==Asi==
+===Substantiivi===
+{{substantiivi|Asin}}
+
+# [[keppi]]
+
+==Englanti==
+===Artikkeli===
+{{sana|en}}
+
+# yksikön epämääräinen artikkeli, ei suomenneta 
+#:''A cat caught a mouse.'' – Kissa pyydysti hiiren.
+#:''Such a use violates the author's copyright.'' – Tuollainen käyttö loukkaa tekijänoikeuksia.
+
+====Liittyvät sanat====
+* Vokaaliäänteellä alkavien sanojen edellä: {{l|en|an}}
+* Määräinen: {{l|en|the}}
+
+==Espanja==
+===Prepositio===
+{{prepositio|es}}
+
+# ilmaisee suuntaa jonnekin; vastaa suomen [[illatiivi]]a ja [[allatiivi]]a
+# käytetään suoran henkilöobjektin edellä; vastaa suomen [[partitiivi]]a ja [[akkusatiivi]]a
+#:''¿Conoces a Paco?'' – Tunnetko Pacon?
+
+====Idiomit====
+*''junto a'' – vieressä
+*''a ver'' – katsotaanpa
+*''ir a'' – futuuri, aikoa
+*''jugar a – pelata jotakin
+*''a ciegas'' – ''(kuv.)'' sokeasti 
+*''a propósito'' – muuten, lisäksi
+*''a solas'' – kahdestaan, kaksin
+
+==Fidži==
+===Artikkeli===
+{{sana|fj|a}}
+
+# lauseen alussa [[yleisnimi]]ä [[edeltää|edeltävä]] [[artikkeli]]. Jos yleisnimi esiintyy lauseen keskellä, käytetään artikkelia [[na]].
+
+====Liittyvät sanat====
+*[[na]]
+
+==Interlingua==
+===Prepositio===
+{{prepositio|ia}}
+
+# [[-ssa]], [[-ssä]]
+
+==Italia==
+===Prepositio===
+{{prepositio|it}}
+
+# ilmaisee jossain olemista tai johonkin menemistä
+#:''Sono a casa.'' – Olen kotona.
+#:''La mia casa è a Roma.'' – Kotini on Roomassa.
+#:''Vado a Roma.'' – Menen Roomaan.
+
+====Huomautukset====
+*Prepositio yhtyy sen perässä olevaan artikkeliin. Mahdollisia yhdistelmiä ovat:
+*''al'' (a + il)
+*''alla'' (a + la)
+*''all''' (a + l')
+*''allo'' (a + lo)
+*''ai'' (a + i)
+*''alle'' (a + le)
+*''agli'' (a + gli)
+
+==Japani==
+===Latinisointi===
+'''a'''
+
+# {{ja-transkriptio|あ|ア}}
+
+==Karjala==
+===Konjunktio===
+{{konjunktio|krl}}
+
+# [[no]]
+# {{rinnkonj|k=krl}} [[mutta]]
+# {{rinnkonj|k=krl}} [[vaan]]
+
+====Aiheesta muualla====
+*{{muualla-kks}}
+
+==Kiribati==
+===Pronomini===
+{{pronomini|gil}}
+
+# {{perpron|k=gil}} [[he]]
+
+==Kroatia==
+===Konjunktio===
+{{konjunktio|hr}}
+
+# {{rinnkonj|k=hr}} [[vaan]], [[mutta]]
+# {{rinnkonj|k=hr}} kun taas
+
+====Ääntäminen====
+{{IPA|/a/}}
+{{tavutus|a|k=hr}}
+
+==Latina==
+===Aakkonen===
+{{aakkonen|la|iso=A|nimi=a}}
+
+# latinan aakkosten ensimmäinen kirjain
+
+====Katso myös====
+* {{kielen genetiivi|la}} kielen aakkoset: {{Aakkosto/la}}
+
+==Liivi==
+'''a'''
+
+# liivin aakkosten kirjain, '''aakkostus: 1'''
+
+====Liittyvät sanat====
+* ''iso kirjain [[A]]
+* ''pitkä muoto [[ā]]
+
+==Pohjoissaame==
+===Aakkonen===
+{{aakkonen|kans|iso=A}}
+
+# pieni a
+
+====Ääntäminen====
+Äännetään ensitavussa takaisena, suomen ''o'':hon vivahtavana. Muissa tavuissa äännearvo vaihtelee. Yhdistelmä ''ea'' ääntyy useimmiten kuten suomen ''eä''.<ref>{{Kirjaviite | Tekijä = Mikko Korhonen | Nimeke = Pikku jättiläinen | Vuosi = 1985 | Kappale = Saamen kieli | Sivu = 692 | Selite = | Julkaisupaikka = Porvoo Helsinki Juva | Julkaisija = WSOY | Tunniste = ISBN 951-0-12416-8 | Kieli = }}</ref>
+
+====Katso myös====
+* Pohjoissaamen aakkoset: {{Aakkosto/se}}
+
+==Portugali==
+===Artikkeli===
+{{sana|pt|a|suku=f}}
+
+# ''yksikön feminiinin määräinen artikkeli, ei suomenneta''
+
+====Huomautukset====
+*Artikkeli {{luokka|Portugalin kielen supistumat|sulautuu}} prepositioiden kanssa seuraavasti:
+::''{{l|pt|a}}'' (prepositio) + ''{{l|pt|a}}'' (artikkeli) → ''{{l|pt|à}}''
+::''{{l|pt|de}}'' + ''{{l|pt|a}}'' → ''{{l|pt|da}}''
+::''{{l|pt|em}}'' + ''{{l|pt|a}}'' → ''{{l|pt|na}}''
+::''{{l|pt|por}}'' + ''{{l|pt|a}}'' → ''{{l|pt|pela}}''
+
+====Liittyvät sanat====
+*{{l|pt|as}}, {{l|pt|o}}, {{l|pt|os}}
+
+===Prepositio===
+{{prepositio|pt}}
+
+# ''ilmaisee suuntaa jonnekin; vastaa suomen [[illatiivi]]a tai [[allatiivi]]a''
+
+==Puola==
+===Konjunktio===
+{{konjunktio|pl}}
+
+# {{rinnkonj|k=pl}} [[ja]] (eri asioita yhdistävänä)
+
+====Liittyvät sanat====
+* {{l|pl|i}}
+
+==Ranska==
+===Verbi===
+'''a'''
+
+# {{fr-v-taivm|indpy3|a|*|avoir}}
+
+====Liittyvät sanat====
+=====Sanaliitot=====
+{{yhdyssanat|fr|y a}}
+
+==Romania==
+===Artikkeli===
+{{sana|ro|a}}
+
+# feminiinin genetiivinen artikkeli (+ genetiivi-datiivi)
+#:''o carte a mea'' – minun kirjani
+#:''o soră a lui Alexandru'' – Alexandrun sisar
+#:''intervenţia rapidă a echipajului'' – miehistön nopea toiminta
+
+===Partikkeli===
+{{partikkeli|ro}}
+
+# verbin infinitiiviä ilmaiseva partikkeli
+#:''a fi'' – olla
+
+===Verbi===
+'''a'''
+
+# {{ind.p.y3|ro|avea}}
+#:''A văzut acest film?'' – Onko hän nähnyt tämän filmin?
+
+====Huomautukset====
+*Verbimuodolla muodostetaan partisiipin perfektin kanssa verbin perfekti; ''{{l|ro|avea}}''-verbin normaalimerkityksessä ko. muoto on ''{{l|ro|are}}''.
+
+==Serbia==
+===Konjunktio===
+{{konjunktio|sr|kyr=а}}
+
+# {{rinnkonj|k=sr}} [[ja]]
+# {{rinnkonj|k=sr}} [[mutta]]
+# {{rinnkonj|k=sr}} kun taas
+
+==Sloveeni==
+===Konjunktio===
+{{konjunktio|sl}}
+
+# {{rinnkonj|k=sl}} [[ja]]
+# {{rinnkonj|k=sl}} [[mutta]]
+# {{rinnkonj|k=sl}} kun taas
+
+==Toki pona==
+{{tok-logo}}
+===Interjektio===
+{{interjektio|tokipona}}
+
+# jotakin [[tunne]]tta ilmaiseva [[sana]]
+
+==Tšekki==
+===Adverbi===
+{{adverbi|cs}}
+
+# [[myös]]
+
+===Konjunktio===
+{{konjunktio|cs}}
+
+# {{rinnkonj|k=cs}} [[ja]]
+#:''Dětství a mládí'' – Lapsuus ja nuoruus
+# {{rinnkonj|k=cs}} [[mutta]]
+
+====Liittyvät sanat====
+* {{l|cs|i}}
+
+==Tuvalu==
+===Artikkeli===
+{{sana|tvl|a}}
+
+# [[erisnimi]]en ja [[persoonapronomini]]en eteen laitettava [[artikkeli]]
+
+==Unkari==
+===Artikkeli===
+{{sana|hu|a}}
+
+# ''konsonanttialkuisten sanojen määräinen artikkeli, ei suomenneta''
+#:''a [[macska]]''
+#:''a [[ház]]''
+#:''a [[gyermek]]''
+
+==Viro==
+===Lyhenne===
+{{lyhenne|et}}
+
+# ''[[aasta]]'', [[vuosi]]
+
+==Viitteet==
+{{viitteet}}
+
+[[Luokka:Latinalaiset aakkoset]]
+[[Luokka:Fidžin kielen artikkelit]]
+[[Luokka:Portugalin kielen artikkelit]]
+[[Luokka:Romanian kielen artikkelit]]
+[[Luokka:Tuvalun kielen artikkelit]]
+[[Luokka:Unkarin kielen artikkelit]]

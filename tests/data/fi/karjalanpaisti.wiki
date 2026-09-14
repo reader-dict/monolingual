@@ -1,0 +1,19 @@
+{{Wikipedia}}
+
+==Suomi==
+===Substantiivi===
+{{fi-subs}}
+# suomalainen perinneruoka, johon kuuluu pitkään kypsytettyä lihaa kuutioina
+
+====Etymologia====
+{{yhdyssana-taiv|k=fi|genetiivi|Karjala|paisti}}
+
+====Käännökset====
+{{kohta|1|suomalainen perinneruoka, johon kuuluu pitkään kypsytettyä lihaa kuutioina|
+*englanti: [[Karelian]] [[stew]]
+|loppu}}
+
+====Aiheesta muualla====
+*{{muualla-ks}}
+
+[[Luokka:Suomen kielen ruoat]]
