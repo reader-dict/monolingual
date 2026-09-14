@@ -131,11 +131,11 @@ def adjust_wikicode(
 
     lines: list[str] = []
 
-    if "{{taivm}}" in code:
+    if "{{taivm}}" in code or "(''taivutusmuoto'')" in code:
         for raw_line in code.splitlines():
             if not (line := raw_line.strip()):
                 continue
-            elif line.startswith(("# {{taivm}}", "#{{taivm}}")) and (
+            elif line.startswith(("# {{taivm}}", "#{{taivm}}", "# (''taivutusmuoto'')", "#(''taivutusmuoto'')")) and (
                 forms_ := (
                     re.findall(r"'+\[\[([^\]]+)\]\]'+$", line)
                     or re.findall(rf"'+\{{\{{l\|{locale}\|([^}}]+)\}}\}}'+$", line)
