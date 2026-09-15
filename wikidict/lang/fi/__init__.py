@@ -55,8 +55,8 @@ sections = (
 variant_templates = tuple(f"{{{{{tpl}" for tpl in variant_handlers_mod.VAR_TEMPLATES)
 
 reverse_variant_titles = (
-    "{{fi-subs",
-    "{{fi-verbi",
+    "{{fi-subs-",
+    "{{fi-verbi-",
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
@@ -148,6 +148,13 @@ def adjust_wikicode(
                 line = f"# {{{{flexion|{forms_[0]}}}}}"
             lines.append(line)
         code = "\n".join(lines)
+
+    # Given that variants templates are very well formatted, and there are a LOT of them,
+    # it is simpler to automatically add handlers for them.
+    interesting_variant_templates = lang.variant_templates[locale]
+    pattern = rf"\{{\{{((?:{'|'.join(tpl[2:] for tpl in interesting_variant_templates)})[^|}}]*)"
+    for tpl_name in set(re.findall(pattern, code)):
+        variant_handlers_mod.append_to_variants(tpl_name)
 
     #
     # Reverse variants
