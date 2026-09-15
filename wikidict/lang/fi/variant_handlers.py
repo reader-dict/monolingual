@@ -7,6 +7,7 @@ VAR_TEMPLATES = {
     "flexion",
     "fi-komp",
     "fi-pass-ppe",
+    "fi-pron-taivm",
     "fi-sup",
     "fi-v-taivm1",
     "fi-v-taivm",

@@ -61,7 +61,10 @@ reverse_variant_titles = (
 reverse_variant_templates = ("{{rev-flexion",)
 
 templates_ignored = (
-    "{{lainaus?",  # To verify
+    "{{esim?",  # source
+    "{{lainaus?",  # to be verified
+    "{{määritelmä/korjattava",  # definition to repair
+    "{{tarkistettava/lainaus",  # to be verified
 )
 
 
