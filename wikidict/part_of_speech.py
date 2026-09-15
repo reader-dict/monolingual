@@ -42,6 +42,10 @@ PATTERNS = {
         # `verbo transitivo` → `verbo`
         re.compile(r"([^\s]+)\s+.*").sub,
     },
+    "fi": [
+        # `verbit` → `verbi`
+        re.compile(r"(.+)t").sub,
+    ],
     "fr": [
         # `{{s|verbe|fr}}` → `verbe`
         re.compile(r"\{\{s\|([^|}]+).*").sub,
@@ -238,9 +242,7 @@ MERGE = {
         "verbo, vortgrupo": "verbo",
     },
     "fi": {
-        "fraasit": "fraasi",
         "verbii": "verbi",
-        "verbit": "verbi",
     },
     "fr": {
         "abréviations": "abréviation",
