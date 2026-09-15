@@ -209,6 +209,8 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("es", "verbo")
     'Verbo'
 
+    >>> format_pos("fi", "substantiivit")
+    'Substantiivi'
     >>> format_pos("fi", "verbit")
     'Verbi'
 

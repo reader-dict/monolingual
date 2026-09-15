@@ -30,7 +30,7 @@ sections = (
     "artikkeli",
     "erisnimi",  # proper noun
     "fraasi",
-    "idiomit",  # idoms
+    "idiomi",  # idom
     "interjektio",
     "lyhenne",  # abbreviation
     # "kirjoitusmerkki",  # character, see #2624
@@ -46,7 +46,7 @@ sections = (
     "suffiksi",
     "supistuma",  # contraction
     "symboli",
-    "synonyymit",
+    "synonyymi",
     "taivutus",  # inflection
     "verbi",
     "välimerkki",  # punctuation mark
@@ -152,7 +152,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+}}}})"
+        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)}).+)"
         lines.clear()
 
         for line in code.splitlines():

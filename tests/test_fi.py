@@ -37,7 +37,7 @@ def setup_lua_ctx() -> None:
                     "(<i>musiikki, A-molliasteikossa</i>) 1. juurisävel",
                     "(<i>musiikki, sävellajista</i>) a-molli",
                 ],
-                "Idiomit": ["<b>Kaiken a ja o</b>", ("tärkein, keskeisin asia, alku ja loppu, alfa ja oomega",)],
+                "Idiomi": ["<b>Kaiken a ja o</b>", ("tärkein, keskeisin asia, alku ja loppu, alfa ja oomega",)],
             },
             [],
             [],

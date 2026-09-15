@@ -83,7 +83,7 @@ POS_SYNONYMS = [
     ("en", "Synonym"),
     ("eo", "Sinonimoj"),
     ("es", "Sinónimo"),
-    ("fi", "Synonyymit"),
+    ("fi", "Synonyymi"),
     ("fr", "Synonymes"),
     ("it", "Sinonimi"),
     ("ja", "類義語"),

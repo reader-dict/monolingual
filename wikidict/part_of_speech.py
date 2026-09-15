@@ -44,7 +44,7 @@ PATTERNS = {
     },
     "fi": [
         # `verbit` → `verbi`
-        re.compile(r"(.+)t").sub,
+        re.compile(r"(.+)t$").sub,
     ],
     "fr": [
         # `{{s|verbe|fr}}` → `verbe`
