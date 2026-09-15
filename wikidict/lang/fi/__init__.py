@@ -120,6 +120,8 @@ def adjust_wikicode(
     '# {{flexion|yrittää}}'
     >>> adjust_wikicode("# {{taivm}} {{taivm-teksti|aktiivin indikatiivin preesensin konnegaatiomuoto verbistä}} '''{{l|fi|tuntea}}'''", LANG)
     '# {{flexion|tuntea}}'
+    >>> adjust_wikicode("# {{taivm}} {{taivm-teksti|aktiivin indikatiivin preesensin konnegaatiomuoto verbistä}} '''{{l|fi|tuntea|tuntea se}}'''", LANG)
+    '# {{flexion|tuntea}}'
     """
     # Fix POS-less words
     if "{{subs-taivm|Suomen|" in code:
@@ -137,8 +139,7 @@ def adjust_wikicode(
                 continue
             elif line.startswith(("# {{taivm}}", "#{{taivm}}", "# (''taivutusmuoto'')", "#(''taivutusmuoto'')")) and (
                 forms_ := (
-                    re.findall(r"'+\[\[([^\]]+)\]\]'+$", line)
-                    or re.findall(rf"'+\{{\{{l\|{locale}\|([^}}]+)\}}\}}'+$", line)
+                    re.findall(r"'+\[\[([^\]]+)\]\]'+$", line) or re.findall(rf"'+\{{\{{l\|{locale}\|([^|}}]+)", line)
                 )
             ):
                 line = f"# {{{{flexion|{forms_[0]}}}}}"
