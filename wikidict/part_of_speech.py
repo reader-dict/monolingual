@@ -238,6 +238,7 @@ MERGE = {
         "verbo, vortgrupo": "verbo",
     },
     "fi": {
+        "fraasit": "fraasi",
         "verbii": "verbi",
         "verbit": "verbi",
     },
