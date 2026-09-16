@@ -19,6 +19,7 @@ sections = (
     *etyl_section,
     "{{abbr",
     "{{adjc",
+    "{{adverb",
     "{{decl",
     "{{expr",
     "{{interj",
@@ -181,16 +182,16 @@ def adjust_wikicode(
     code = code.replace("{{pn}}", word)
 
     # {{=nld=}} → == {{nld}} ==
-    code = re.sub(r"^\{\{=(.+)=\}\}", r"== {{\1}} ==", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{=(.+)=\}\}", r"== {{\1}} ==\n", code, flags=re.MULTILINE)
 
     # {{-etym-}} → === {{etym}} ===
-    code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|0}} → === {{noun}} ===
-    code = re.sub(r"^\{\{-(\w+)-\|\d+\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(\w+)-\|\d+\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|ANY}} → === {{noun|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
 
     #
     # Variants

@@ -151,6 +151,18 @@ def setup_lua_ctx() -> None:
             ],
         ),
         (
+            "FAS",
+            [],
+            ["(initiaalwoord) van free alongside ship"],
+            {
+                "Adverb": [
+                    "vrachtvrij langszij schip; waarbij de verkoper zorgt voor het vervoer tot de haven en aflevering direct bij een afgesproken schip, waarna de koper zorgt voor het verdere transport (f.a.s., v.l.b.)"
+                ]
+            },
+            [],
+            [],
+        ),
+        (
             "Konkani",
             ["/kɔŋˈkani/"],
             [],
