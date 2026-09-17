@@ -460,6 +460,7 @@ class KoboFormat(Summary, BaseFormat):
             assert fh.testzip() is None, fh.testzip()
 
         self.summary(final_file)
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
     def save_html(self, name: str, words: Words, output_dir: Path) -> Path | None:
         """Generate individual HTML files.
@@ -614,6 +615,7 @@ class ConverterFromDictFile(DictFileFormat):
         self._convert()
         final_file = self._compress()
         BaseFormat.summary(self, final_file)
+        self._cleanup()
 
 
 class BZ2DictFileFormat(BaseFormat):
