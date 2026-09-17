@@ -1,0 +1,8 @@
+{{=qtu=}}
+{{-etym-}}
+*{{initiaalwoord|qtu}} van [[free alongside ship]]
+{{-adverb-|qtu}}
+'''{{pn}}'''
+#vrachtvrij langszij schip; waarbij de verkoper zorgt voor het vervoer tot de haven en aflevering direct bij een afgesproken schip, waarna de koper zorgt voor het verdere transport ([[f.a.s.]], [[v.l.b.]])
+{{-rel-}}
+{{qtu-incoterms}}
