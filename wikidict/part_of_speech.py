@@ -87,7 +87,7 @@ PATTERNS = {
         # `interj2` → `interj`
         re.compile(r"(.+)+\d").sub,
         # `pronom-pos` → `pronom`
-        re.compile(r"(pronom)-\w+").sub,
+        re.compile(r"(\w+)-\w+").sub,
     ],
     "no": [
         # `verb 1` → `verb`
