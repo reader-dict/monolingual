@@ -20,6 +20,7 @@ sections = (
     "{{abbr",
     "{{adjc",
     "{{adverb",
+    "{{conj",
     "{{decl",
     "{{expr",
     "{{interj",
