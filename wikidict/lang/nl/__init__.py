@@ -75,13 +75,15 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['v']
     >>> find_genders("{{-l-|mf}}", LANG)
     ['m', 'v']
+    >>> find_genders("{{-l-|mfn}}", LANG)
+    ['m', 'o', 'v']
     """
     pattern = re.compile(r"\{\{-l-\|(\w+)\}\}")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if gender == "0":
             continue
-        if "".join(sgen := sorted(gender)) in {"fm", "mv"}:
+        if "".join(sgen := sorted(gender)) in {"fm", "fmn", "mv"}:
             res.update(GENDERS[g] for g in sgen)  # type: ignore[misc]
         else:
             if gender == "p":
@@ -92,7 +94,7 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
-    """
+    r"""
     >>> find_pronunciations("", LANG)
     []
 
@@ -108,11 +110,15 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> context.new_word("turflucifer")
     >>> find_pronunciations("{{IPA-nl-standaard|plaatshouder taxonomie}}", LANG)
     []
+
+    >>> context.new_word("era")
+    >>> find_pronunciations("{{-pron-}}\n*{{WikiW|IPA}}: {{IPA-nl-standaard|ˈera}}\n**{{pron-reg|N=a}} {{IPA|/ɪːra/|nld}}\n**{{pron-reg|V=a|l=a}} {{IPA|/eːra/|nld}}", LANG)
+    ['/ˈera/']
     """
     res: list[str] = []
     for pattern in [
-        r"\{\{IPA\|([^|}]+)",
         r"\{\{IPA-nl-standaard\|[^}]+\}\}",
+        r"\{\{IPA\|([^|}]+)",
     ]:
         for match in re.findall(pattern, code):
             if "IPA-nl-standaard" in match:
@@ -121,6 +127,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
                     res.append(f"/{expanded.split('&#x202F;')[-2]}/")
             else:
                 res.append(match)
+        if res:
+            break
     return [re.sub(r"[()]", "", pron.replace("/ ", "/").replace(" /", "/")) for pron in res]
 
 
