@@ -96,14 +96,14 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("", LANG)
     []
 
-    >>> find_pronunciations("{{IPA|/ɑː/|ang}}", LANG)
+    >>> find_pronunciations("{{IPA|/ ɑː /|ang}}", LANG)
     ['/ɑː/']
 
     >>> _ = context.reset(LANG)
 
     >>> context.new_word("isolatiebedrijven")
-    >>> find_pronunciations("{{IPA-nl-standaard|izoˈla(t)sibəˌdrɛivə(n)}}", LANG)
-    ['/izoˈla(t)sibəˌdrɛivə(n)/']
+    >>> find_pronunciations("{{IPA-nl-standaard| izoˈlatsibəˌdrɛivən }}", LANG)
+    ['/izoˈlatsibəˌdrɛivən/']
 
     >>> context.new_word("turflucifer")
     >>> find_pronunciations("{{IPA-nl-standaard|plaatshouder taxonomie}}", LANG)
@@ -121,7 +121,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
                     res.append(f"/{expanded.split('&#x202F;')[-2]}/")
             else:
                 res.append(match)
-    return res
+    return [re.sub(r"[()]", "", pron.replace("/ ", "/").replace(" /", "/")) for pron in res]
 
 
 def adjust_wikicode(
