@@ -324,6 +324,7 @@ MERGE = {
         "name": "eigennaam",
         "note": "opmerkingen",
         "noun": "zelfstandig naamwoord",
+        "phrase": "frase",
         "pref": "voorvoegsel",
         "prep": "voorzetsel",
         "pronom": "voornaamwoord",

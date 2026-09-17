@@ -28,6 +28,7 @@ sections = (
     "{{noun",
     "{{pref",
     "{{prep",
+    "{{phrase",
     "{{pronom",
     "{{prov",
     "{{symbool",
