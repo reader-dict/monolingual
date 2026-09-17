@@ -129,6 +129,9 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
+    >>> adjust_wikicode("{{-prep-nv-|nld|dat}}", "nl")
+    '=== {{prep-nv|nld|dat}} ===\n'
+
     >>> _ = context.reset("nl")
 
     >>> context.new_word("pover")
@@ -195,7 +198,7 @@ def adjust_wikicode(
     code = re.sub(r"^\{\{-(\w+)-\|\d+\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|ANY}} → === {{noun|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([\w-]+)-\|([^}\[\]{}]+)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
 
     #
     # Variants
