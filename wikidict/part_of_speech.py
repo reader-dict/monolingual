@@ -332,6 +332,7 @@ MERGE = {
         "prep": "voorzetsel",
         "pronom": "voornaamwoord",
         "prov": "spreekwoorden",
+        "suff": "achtervoegsel",
         "syn": "synoniemen",
         "top": "zelfstandig naamwoord",
         "verb": "werkwoord",
