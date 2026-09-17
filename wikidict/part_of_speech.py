@@ -318,6 +318,7 @@ MERGE = {
     "nl": {
         "abbr": "afkorting",
         "adjc": "bijvoeglijk naamwoord",
+        "art": "lidwoord",
         "conj": "coegwoord",
         "decl": "verbuiging",
         "expr": "uitdrukkingen en gezegden",
