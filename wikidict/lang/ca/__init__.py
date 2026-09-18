@@ -2,10 +2,12 @@
 
 import re
 
-from ... import utils
+from ... import context, utils
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
+
+LANG = __file__.rsplit("/", 2)[-2]
 
 random_word_url = "https://ca.wiktionary.org/wiki/Especial:RandomRootpage"
 
@@ -64,11 +66,11 @@ templates_ignored = (
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "ca")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{ca-nom|m}}", "ca")
+    >>> find_genders("{{ca-nom|m}}", LANG)
     ['m']
-    >>> find_genders("{{ca-nom|m}} {{ca-nom|m}}", "ca")
+    >>> find_genders("{{ca-nom|m}} {{ca-nom|m}}", LANG)
     ['m']
     """
     pattern = re.compile(rf"\{{{locale}-\w+\|([fm]+)")
@@ -82,24 +84,37 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
+    r"""
+    >>> _ = context.reset(LANG)
+
+    >>> context.new_word("AFI")
+    >>> find_pronunciations("{{ca-pron}}", LANG)
+    ['/ˈa.fi/']
+
+    >>> context.new_word("el")
+    >>> find_pronunciations("{{ca-pron|q=àton|or=/əɫ/|occ=/eɫ/\n|f-centr=LL-Q7026 (cat)-Unjoanqualsevol-el.wav\n}}", LANG)
+    ['/eɫ/']
+
+    >>> context.new_word("miolar")
+    >>> find_pronunciations("{{ca-pron|tipus=inf\n|f-centr=LL-Q7026 (cat)-Marvives-miolar.wav\n}}", LANG)
+    ['/mi.uˈɫa/']
     """
-    >>> find_pronunciations("", "ca")
-    []
-    >>> find_pronunciations("{{ca-pron|/as/}}", "ca")
-    ['/as/']
-    >>> find_pronunciations("{{ca-pron|or=/əɫ/}}", "ca")
-    ['/əɫ/']
-    >>> find_pronunciations("{{ca-pron|or=/əɫ/|occ=/eɫ/}}", "ca")
-    ['/əɫ/']
-    >>> find_pronunciations("{{ca-pron|q=àton|or=/əɫ/|occ=/eɫ/|rima=}}", "ca")
-    ['/əɫ/']
-    >>> find_pronunciations("{{pronafi|ca|/əɫ/}} {{àudio simple|ca-ca-l.ogg|àudio}}", "ca")
-    ['/əɫ/']
-    """
-    return utils.unique(
-        re.findall(re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)"), code)
-        + re.findall(re.compile(rf"\{{\{{pronafi\|{locale}\|(/[^/]+/)"), code),
-    )
+    if not (templates := re.findall(rf"(\{{\{{{locale}-pron[^}}]*\}}\}})", code, flags=re.DOTALL | re.MULTILINE)):
+        return []
+
+    lines = [line.strip() for line in context.expand(templates[0], LANG).splitlines()]
+
+    # Prefer the standard one first
+    for line in lines:
+        if "|central" in line:
+            return re.findall(r"(/[^/]+/)$", line)
+
+    # Fallback to the first AFI available
+    for line in lines:
+        if "Pronúncia del català" in line:
+            return re.findall(r"(/[^/]+/)$", line)
+
+    return []
 
 
 def adjust_wikicode(
@@ -111,7 +126,7 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("== {{-ca-}} ==\n=== Interjecció ===\n{{-sin-}}\n* [[quina llàstima]]\n* desaprofitat, fallit, malreeixit", "ca")
+    >>> adjust_wikicode("== {{-ca-}} ==\n=== Interjecció ===\n{{-sin-}}\n* [[quina llàstima]]\n* desaprofitat, fallit, malreeixit", LANG)
     '== {{-ca-}} ==\n=== Interjecció ===\n=== Sinònims ===\n# [[quina llàstima]]\n# desaprofitat, fallit, malreeixit'
     """
     # {{-sin-}} → === Sinònims ===

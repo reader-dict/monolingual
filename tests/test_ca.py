@@ -30,7 +30,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "-itzar",
-            [],
+            ["/iˈd͡za/"],
             ["Del llatí <i>-izare</i>, del grec antic <i>-ίζειν</i> \u200e(-ízein)."],
             {
                 "Sufix": [
@@ -41,7 +41,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "AFI",
-            [],
+            ["/ˈa.fi/"],
             [],
             {
                 "Sigles": [
@@ -53,7 +53,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "avui",
-            [],
+            ["/əˈvuj/"],
             [],
             {
                 "Adverbi": ["En el dia actual.", "Metafòricament, en el present."],
@@ -73,7 +73,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "bot",
-            [],
+            ["/ˈbot/"],
             [
                 "[1] Per la forma de bóta: del llatí vulgar <i>buttis</i> \u200e(‘bóta’), segle XIII.",
                 "[2] Per l’acció de botar: de <i>botar</i> i la desinència <i>Ø</i>, segle XV.",
@@ -103,7 +103,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "cap",
-            [],
+            ["/ˈkap/"],
             [
                 "Del llatí vulgar <i>*capu(m)</i>, variant de l’acusatiu <i>caput</i>, segle XIII. Com a adjectiu pel sentit d’«extrem, punta». Com a preposició pel sentit de «part anterior (vers un lloc)»."
             ],
@@ -151,7 +151,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "cas",
-            [],
+            ["/ˈkas/"],
             ["Del llatí <i>casus</i> \u200e(‘caiguda, cas fortuït’), de <i>cadere</i> \u200e(‘caure’), segle XIV."],
             {
                 "Nom|m.": [
@@ -175,7 +175,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "Castell",
-            [],
+            ["/kasˈteʎ/"],
             ["De <i>castell</i>."],
             {
                 "Nom Propi": [
@@ -198,7 +198,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "català",
-            [],
+            ["/ka.taˈɫa/"],
             [
                 "D’origen incert, paral·lel al de <i>Catalunya</i>, segle XII. Potser de <i>*catelanos</i>, metàtesi del llatí <i>Lacetanōs</i>, acusatiu de <i>Lacetani</i> \u200e(‘lacetans’), poble ibèric de la regió central de Catalunya i que podria relacionar-se amb la menció de Ptolomeu dels <i>Καστελανοι</i> \u200e(Kastelanoi) o <i>Κατελανοι</i> \u200e(Katelanoi). Vegeu més informació a <i>Catalunya</i>."
             ],
@@ -228,7 +228,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "compte",
-            [],
+            ["/ˈkom.te/"],
             ["Del llatí <i>compŭtus</i>, segle XIII."],
             {
                 "Nom|m.": [
@@ -251,7 +251,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "disset",
-            [],
+            ["/diˈsɛt/"],
             [
                 "Contracció de l’antic <i>*deïsset</i>, evolució fonètica del català antic <i>deesset</i> per la pronúncia /ɛe/, de <i>desesset</i>, del llatí <i>decem et septem</i> \u200e(literalment ‘deu i set’), segle XVIII. Compareu amb <i>divuit</i> i <i>dinou</i>."
             ],
@@ -268,7 +268,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "el",
-            ["/əɫ/"],
+            ["/eɫ/"],
             [
                 "Del català antic <i>lo</i>, per fals tall sil·làbic de <i>·l</i>, forma reduïda darrere d’una <i>e</i>, segle XIV. Per exemple: <i>que lo &gt; que·l &gt; qu’el &gt; que el; de lo &gt; del; e lo &gt; e·l &gt; i el</i>."
             ],
@@ -294,21 +294,21 @@ def setup_lua_ctx() -> None:
         ),
         (
             "expertes",
-            [],
+            ["/eksˈpɛɾ.tes/"],
             [],
             {},
             ["experta"],
         ),
-        ("halloweeniana", [], [], {}, ["halloweenià"]),
+        ("halloweeniana", ["/ha.ɫo.wi.niˈa.na/"], [], {}, ["halloweenià"]),
         (
             "hivernacle",
-            [],
+            ["/i.vəɾˈna.kɫə/"],
             ["Del llatí <i>hībernāculum</i>, de <i>hībernō</i> \u200e(‘hivernar’)."],
             {"Nom|m.": ["Cobert per a protegir plantes del vent o del fred extrem."]},
             [],
         ),
         ("Mn.", [], [], {"Abreviatura": ["mossèn com a tractament davant el nom"]}, []),
-        ("PMF", [], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>."]}, []),
+        ("PMF", ["/ˌpeˌe.maˈe.fa/"], [], {"Sigles": ["<i>Sigles de</i> <b>preguntes més freqüents</b>."]}, []),
         (
             "pen",
             [],
@@ -318,7 +318,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "si",
-            [],
+            ["/ˈsi/"],
             [
                 "[1] Conjunció: del llatí <i>sī</i>, segle XII.",
                 "[2] Nom: del llatí <i>sĭnus</i>, segle XIII. Doblet del cultisme <i>sinus</i>.",
