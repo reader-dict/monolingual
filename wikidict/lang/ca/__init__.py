@@ -93,9 +93,13 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/əɫ/']
     >>> find_pronunciations("{{ca-pron|q=àton|or=/əɫ/|occ=/eɫ/|rima=}}", "ca")
     ['/əɫ/']
+    >>> find_pronunciations("{{pronafi|ca|/əɫ/}} {{àudio simple|ca-ca-l.ogg|àudio}}", "ca")
+    ['/əɫ/']
     """
-    pattern = re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)")
-    return utils.unique(pattern.findall(code))
+    return utils.unique(
+        re.findall(re.compile(rf"\{{\{{\s*{locale}-pron\s*\|(?:q=\S*\|)?(?:\s*or\s*=\s*)?(/[^/]+/)"), code)
+        + re.findall(re.compile(rf"\{{\{{pronafi\|{locale}\|(/[^/]+/)"), code),
+    )
 
 
 def adjust_wikicode(
