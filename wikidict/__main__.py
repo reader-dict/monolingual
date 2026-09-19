@@ -20,9 +20,9 @@ Options:
   --convert                 Convert rendered data to working dictionaries into several files:
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.df.bz2": DictFile format.
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.dic": Pocketbook/Vivlio format.
-                                - "data/$LOCALE/dict-$LOCALE-$LOCALE.mobi": Kindle format.
+                                - "data/$LOCALE/dict-$LOCALE-$LOCALE.mobi": MobiPocket format.
                                 - "data/$LOCALE/dict-$LOCALE-$LOCALE.zip": StarDict format.
-                                - "data/$LOCALE/dicthtml-$LOCALE-$LOCALE.zip": Kobo format.
+                                - "data/$LOCALE/dicthtml-$LOCALE-$LOCALE.zip": dictHTML format.
                                 - "data/$LOCALE/dictorg-$LOCALE-$LOCALE.zip": DICT.org format.
                               --with-etym-only  Only generate dictionaries with etymologies
   --get-word=WORD           Get and render WORD.
@@ -32,7 +32,7 @@ Options:
                             separated with a comma: WORD1,WORD2,WORD3,...
                             The generated filename can be tweaked via the --output=FILENAME argument.
   --show-pos                Show part of speechs.
-  --format=FORMAT           Format can be all, dictfile, df, dictorg, jsonvolume, kobo, dicthtml, kindle, mobi, stardict or a comma separated list
+  --format=FORMAT           Format can be all, dictfile, dictorg, jsonvolume, dicthtml, mobi, stardict or a comma separated list
 If no argument given, --download, --parse, --render, --show-pos, and --convert, will be done automatically.
 """
 

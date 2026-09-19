@@ -24,5 +24,5 @@ def setup_lua_ctx() -> None:
     ],
 )
 def test_gen_dict(locale: str, words: str, tmp_path: Path) -> None:
-    for format in ["dictfile", "df", "dictorg", "kobo", "dicthtml", "kindle", "mobi", "stardict"]:
+    for format in ["dictfile", "dicthtml", "dictorg", "jsonvolume", "mobi", "stardict"]:
         assert gen_dict.main(locale, words, tmp_path, format=format) == 0

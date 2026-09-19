@@ -64,7 +64,7 @@ def test_simple(tmp_path: Path) -> None:
     # Ensure summaries are properly handled
     assert (
         len([record for record in log_records if "Effective words + variants" in record])
-        == 2 * 2  # (KoboFormat + DictFileFormat) * (etym + noetym)
+        == 2 * 2  # (DictHtmlFormat + DictFileFormat) * (etym + noetym)
     )
 
     # Check for all dictionary files
@@ -263,8 +263,8 @@ def test_no_json_file() -> None:
     [
         (convert.DictFileFormat, "dict-fr-fr.df", True),
         (convert.DictFileFormat, "dict-fr-fr-noetym.df", False),
-        (convert.KoboFormat, "dicthtml-fr-fr.zip", True),
-        (convert.KoboFormat, "dicthtml-fr-fr-noetym.zip", False),
+        (convert.DictHtmlFormat, "dicthtml-fr-fr.zip", True),
+        (convert.DictHtmlFormat, "dicthtml-fr-fr-noetym.zip", False),
     ],
 )
 def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -344,8 +344,8 @@ FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY = """"""
 @pytest.mark.parametrize(
     "formatter, include_etymology, expected",
     [
-        pytest.param(convert.KoboFormat, True, FORMATTED_WORD_KOBO, id="kobo"),
-        pytest.param(convert.KoboFormat, False, FORMATTED_WORD_KOBO_NO_ETYMOLOGY, id="kobo-noetym"),
+        pytest.param(convert.DictHtmlFormat, True, FORMATTED_WORD_KOBO, id="kobo"),
+        pytest.param(convert.DictHtmlFormat, False, FORMATTED_WORD_KOBO_NO_ETYMOLOGY, id="kobo-noetym"),
         pytest.param(convert.DictFileFormat, True, FORMATTED_WORD_DICTFILE, id="df"),
         pytest.param(convert.DictFileFormat, False, FORMATTED_WORD_DICTFILE_NO_ETYMOLOGY, id="df-noetym"),
         pytest.param(convert.JSONVolumeFormat, True, FORMATTED_WORD_JSONVOLUME_NO_ETYMOLOGY, id="jsonvolume"),
@@ -610,7 +610,7 @@ def test_df_format(locale: str, words: Words, word: str, expected: str, tmp_path
 )
 def test_kobo_format(locale: str, words: Words, word: str, expected: str, tmp_path: Path) -> None:
     variants = convert.make_variants(words)
-    formatter = convert.KoboFormat(locale, tmp_path, words, variants, "20250322")
+    formatter = convert.DictHtmlFormat(locale, tmp_path, words, variants, "20250322")
 
     output = ["\n".join(formatter.handle_word(w, words)) for w in word.split("|")]
     assert "\n".join(output).lstrip() == expected
@@ -694,9 +694,8 @@ def test_format(format: str) -> None:
         assert secondary == {convert.FORMATTERS[format][1]}
 
 
-@pytest.mark.parametrize("format", ["mobi", "kindle"])
-def test_format_mobi(format: str) -> None:
-    primary, secondary = convert.get_formatters(format)
+def test_format_mobi() -> None:
+    primary, secondary = convert.get_formatters("mobi")
     assert primary == {convert.FORMATTERS["mobi"][0]}
     assert secondary == {convert.FORMATTERS["mobi"][1]}
 
@@ -715,6 +714,6 @@ def test_format_unknown() -> None:
 
 
 def test_formats() -> None:
-    primary, secondary = convert.get_formatters("df,mobi")
-    assert primary == {convert.FORMATTERS["df"][0], convert.FORMATTERS["mobi"][0]}
-    assert secondary == {convert.FORMATTERS["df"][1], convert.FORMATTERS["mobi"][1]}
+    primary, secondary = convert.get_formatters("dictfile,mobi")
+    assert primary == {convert.FORMATTERS["dictfile"][0], convert.FORMATTERS["mobi"][0]}
+    assert secondary == {convert.FORMATTERS["dictfile"][1], convert.FORMATTERS["mobi"][1]}
