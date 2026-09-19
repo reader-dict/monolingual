@@ -384,9 +384,9 @@ class KoboFormat(Summary, BaseFormat):
         self.groups = self.make_groups(self.words)
         self.save()
 
-    @staticmethod
-    def craft_index(wordlist: list[str], output_dir: Path) -> Path:
+    def craft_index(self, wordlist: list[str], output_dir: Path) -> Path:
         """Generate the special file "words" that is an index of all words."""
+        log.info("[%s] Crafting index", self.id())
         output = output_dir / "words"
         trie = Trie(wordlist)
         trie.save(output)
@@ -402,6 +402,7 @@ class KoboFormat(Summary, BaseFormat):
 
     def make_groups(self, words: Words) -> Groups:
         """Group word by prefix."""
+        log.info("[%s] Making groups", self.id())
         groups: Groups = defaultdict(dict)
         guess_prefix = partial(utils.guess_prefix, locale=self.effective_lang_src())
         for word, details in words.items():
