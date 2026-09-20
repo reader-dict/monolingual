@@ -22,8 +22,8 @@ from wikidict.stubs import Variants, Word, Words
 
 log = logging.getLogger(__name__)
 
-PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, JSONVolumeFormat}
-SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, MobiFormat, StarDictFormat}
+PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, JSONVolumeFormat, StarDictFormat}
+SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, MobiFormat}
 FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     # "format": (primary formatter class, secondary formatter class)
     "dictfile": (DictFileFormat, BZ2DictFileFormat),
@@ -31,7 +31,7 @@ FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     "dictorg": (DictFileFormat, DictOrgFormat),
     "jsonvolume": (JSONVolumeFormat, None),
     "mobi": (DictFileFormat, MobiFormat),
-    "stardict": (DictFileFormat, StarDictFormat),
+    "stardict": (StarDictFormat, None),
 }
 
 

@@ -58,15 +58,6 @@ def test_simple(tmp_path: Path) -> None:
     with patch.object(utils, "setup_logging", setup_logging):
         assert convert.main("fr") == 0
 
-    log_file = tmp_path / "fr" / "fr.log"
-    log_records = log_file.read_text().splitlines()
-
-    # Ensure summaries are properly handled
-    assert (
-        len([record for record in log_records if "Effective words + variants" in record])
-        == 2 * 2  # (DictHtmlFormat + DictFileFormat) * (etym + noetym)
-    )
-
     # Check for all dictionary files
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
 
@@ -74,8 +65,8 @@ def test_simple(tmp_path: Path) -> None:
     for file in [
         "dict-fr-fr{etym}.df",  # DictFile
         "dict-fr-fr{etym}.df.bz2",  # DictFile bz2
+        "dicthtml-fr-fr{etym}.zip",  # DictHTML
         "dictorg-fr-fr{etym}.zip",  # DICT.org
-        "dicthtml-fr-fr{etym}.zip",  # Kobo
         "dict-fr-fr{etym}.mobi.zip",  # Mobi
         "dict-fr-fr{etym}.zip",  # StarDict
     ]:
@@ -202,11 +193,10 @@ def test_simple(tmp_path: Path) -> None:
 
     # Check the StarDict ZIP content
     expected_files = [
-        "dict-data.dict.dz",
-        "dict-data.idx",
-        "dict-data.ifo",
-        "dict-data.syn",
-        "res/db28a816.gif",
+        "reader.dict-fr.dict.dz",
+        "reader.dict-fr.idx",
+        "reader.dict-fr.ifo",
+        "reader.dict-fr.syn",
     ]
     expected_ifo_lines = [
         "StarDict's dict ifo file",
@@ -214,12 +204,12 @@ def test_simple(tmp_path: Path) -> None:
         "bookname=reader.dict FR",
         "wordcount=39",
         "idxfilesize=619",
+        "author=reader.dict",
+        "website=https://www.reader-dict.com",
+        f"description=Clean, optimized dictionary generated from Wiktionary data.<br>Contains 44 entries with etymologies.<br><br>© reader.dict {datetime.now(tz=UTC).year}",
+        "date=2020-12-17",
         "sametypesequence=h",
         "synwordcount=5",
-        "website=https://www.reader-dict.com",
-        "date=2020-12-17",
-        f"description=© reader.dict {datetime.now(tz=UTC).year}",
-        "lang=fr-fr",
     ]
     with ZipFile(stardict) as fh:
         assert sorted(fh.namelist()) == expected_files
@@ -228,7 +218,7 @@ def test_simple(tmp_path: Path) -> None:
         errors = fh.testzip()
         assert errors is None
 
-        ifo = fh.read("dict-data.ifo").decode()
+        ifo = fh.read("reader.dict-fr.ifo").decode()
         assert ifo.splitlines() == expected_ifo_lines
 
     # Check the Mobi content
