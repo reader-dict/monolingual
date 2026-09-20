@@ -116,13 +116,10 @@ class StarDictFormat(Summary, BaseFormat):
         self.variants_index: list[tuple[bytes, int]] = []
 
     def render_word(self, template: Template, **kwargs: Any) -> str:
-        rendered = super().render_word(template, **kwargs).encode("utf-8")
-        rendered_len = len(rendered)
-
         offset = self.dict_file_h.tell()
-        self.dict_file_h.write(rendered)
+        size = self.dict_file_h.write(super().render_word(template, **kwargs).encode("utf-8"))
         self.idx_file_h.write(
-            kwargs["word"].encode("utf-8") + b"\0" + struct.pack(">I", offset) + struct.pack(">I", rendered_len)
+            kwargs["word"].encode("utf-8") + b"\0" + struct.pack(">I", offset) + struct.pack(">I", size)
         )
         self.variants_index.extend((variant.encode("utf-8"), self.entry_index) for variant in kwargs["variants"])
 
