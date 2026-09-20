@@ -29,7 +29,7 @@ sections = (
     "adjektiv",
     "adverbium",
     "alternativ form",
-    "bogstav",
+    # "bogstav",  # letter, see #2634
     "bøjning",
     "fast udtryk",
     "formelt subjekt",
