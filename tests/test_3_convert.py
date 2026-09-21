@@ -162,16 +162,15 @@ def check_dicthtml(file: Path) -> None:
 
 
 def check_mobi(file: Path, tmp_dir: Path) -> None:
+    mobi_file = "reader.dict-fr.mobi"
     with ZipFile(file) as fh:
-        fh.extract(file.name.removesuffix(".zip"), tmp_dir)
-    tempdir, _ = mobi.extract(str(tmp_dir / file.name.removesuffix(".zip")))
+        fh.extract(mobi_file, tmp_dir)
+    tempdir, _ = mobi.extract(str(tmp_dir / mobi_file))
     files = sorted(path.relative_to(tempdir).as_posix() for path in Path(tempdir).glob("**/*"))
     expected_files = [
         "HDImages",
         "mobi7",
         "mobi7/Images",
-        "mobi7/Images/cover00009.jpeg",
-        "mobi7/Images/image00010.gif",
         "mobi7/book.html",
         "mobi7/content.opf",
         "mobi7/toc.ncx",
@@ -247,6 +246,7 @@ def test_simple(tmp_path: Path) -> None:
     def setup_logging(*args: str, **kwargs: str) -> None:
         setup_logging_original("fr", "fr", folder=tmp_path)
 
+    log_file = tmp_path / "fr" / "fr.log"
     with patch.object(utils, "setup_logging", setup_logging):
         assert convert.main("fr") == 0
 
@@ -274,6 +274,12 @@ def test_simple(tmp_path: Path) -> None:
     check_stardict(output_dir / "dict-fr-fr.zip", tmp_path)
     check_mobi(output_dir / "dict-fr-fr.mobi.zip", tmp_path)
 
+    # More Mobi checks
+    log_records = log_file.read_text()
+    print(log_records)
+    assert "Encoding 43 unique lookup terms" in log_records
+    assert "MOBI check: 16 P0 checks passed, 0 P1 warnings" in log_records
+
     shutil.rmtree(tmp_path, ignore_errors=True)
 
 
@@ -290,6 +296,8 @@ def test_no_json_file() -> None:
         (convert.DictFileFormat, "dict-fr-fr-noetym.df", False),
         (convert.DictHtmlFormat, "dicthtml-fr-fr.zip", True),
         (convert.DictHtmlFormat, "dicthtml-fr-fr-noetym.zip", False),
+        (convert.MobiFormat, "dict-fr-fr.mobi", True),
+        (convert.MobiFormat, "dict-fr-fr-noetym.mobi", False),
     ],
 )
 def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -315,8 +323,6 @@ def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: st
         (convert.BZ2DictFileFormat, "dict-fr-fr-noetym.df.bz2", False),
         (convert.DictOrgFormat, "dictorg-fr-fr.zip", True),
         (convert.DictOrgFormat, "dictorg-fr-fr-noetym.zip", False),
-        (convert.MobiFormat, "dict-fr-fr.mobi", True),
-        (convert.MobiFormat, "dict-fr-fr-noetym.mobi", False),
         (convert.StarDictFormat, "dict-fr-fr.zip", True),
         (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
     ],
@@ -649,10 +655,15 @@ def test_kobo_format(locale: str, words: Words, word: str, expected: str, tmp_pa
             VARIANTS_RU,
             "ФСБ",
             """\
-@ ФСБ
-& фсб
-<html><p><b>Значение</b></p><ol><li>Definition of 'ФСБ'.</li></ol>
-
+<idx:entry scriptable="yes" spell="yes">
+<idx:orth>ФСБ
+<idx:infl>
+<idx:iform value="фсб" exact="yes" />
+</idx:infl>
+</idx:orth>
+<br/><p><b>Значение</b></p><ol><li>Definition of 'ФСБ'.</li></ol>
+</idx:entry>
+<hr/>\
 """,
             id="RU: variants from uppercase-only word (issue #2623)",
         ),
@@ -719,12 +730,6 @@ def test_format(format: str) -> None:
         assert secondary == {convert.FORMATTERS[format][1]}
 
 
-def test_format_mobi() -> None:
-    primary, secondary = convert.get_formatters("mobi")
-    assert primary == {convert.FORMATTERS["mobi"][0]}
-    assert secondary == {convert.FORMATTERS["mobi"][1]}
-
-
 @pytest.mark.parametrize("format", ["", "all"])
 def test_format_all(format: str) -> None:
     primary, secondary = convert.get_formatters(format)
@@ -736,9 +741,3 @@ def test_format_unknown() -> None:
     primary, secondary = convert.get_formatters("unknown")
     assert not primary
     assert not secondary
-
-
-def test_formats() -> None:
-    primary, secondary = convert.get_formatters("dictfile,mobi")
-    assert primary == {convert.FORMATTERS["dictfile"][0], convert.FORMATTERS["mobi"][0]}
-    assert secondary == {convert.FORMATTERS["dictfile"][1], convert.FORMATTERS["mobi"][1]}

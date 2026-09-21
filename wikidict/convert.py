@@ -22,7 +22,7 @@ from wikidict.stubs import Variants, Word, Words
 
 log = logging.getLogger(__name__)
 
-PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, DictOrgFormat, JSONVolumeFormat, StarDictFormat}
+PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, DictOrgFormat, JSONVolumeFormat, MobiFormat, StarDictFormat}
 SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, MobiFormat}
 FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     # "format": (primary formatter class, secondary formatter class)
@@ -30,7 +30,7 @@ FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     "dicthtml": (DictHtmlFormat, None),
     "dictorg": (DictOrgFormat, None),
     "jsonvolume": (JSONVolumeFormat, None),
-    "mobi": (DictFileFormat, MobiFormat),
+    "mobi": (MobiFormat, None),
     "stardict": (StarDictFormat, None),
 }
 
