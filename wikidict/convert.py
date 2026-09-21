@@ -22,13 +22,13 @@ from wikidict.stubs import Variants, Word, Words
 
 log = logging.getLogger(__name__)
 
-PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, JSONVolumeFormat, StarDictFormat}
+PRIMARY_FORMATTERS = {DictHtmlFormat, DictFileFormat, DictOrgFormat, JSONVolumeFormat, StarDictFormat}
 SECONDARY_FORMATTERS = {BZ2DictFileFormat, DictOrgFormat, MobiFormat}
 FORMATTERS: dict[str, tuple[type[BaseFormat], type[BaseFormat] | None]] = {
     # "format": (primary formatter class, secondary formatter class)
     "dictfile": (DictFileFormat, BZ2DictFileFormat),
     "dicthtml": (DictHtmlFormat, None),
-    "dictorg": (DictFileFormat, DictOrgFormat),
+    "dictorg": (DictOrgFormat, None),
     "jsonvolume": (JSONVolumeFormat, None),
     "mobi": (DictFileFormat, MobiFormat),
     "stardict": (StarDictFormat, None),
