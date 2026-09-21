@@ -71,7 +71,9 @@ class JSONVolumeFormat(BaseFormat):
         if not details.definitions:
             if details.reverse_variants:
                 return {self.KEY_REDIRECT: details.reverse_variants[0]}
-            return {self.KEY_REDIRECT: details.variants[0]}
+            if details.variants:
+                return {self.KEY_REDIRECT: details.variants[0]}
+            return {}
 
         word_data: dict[str, Any] = {}
         if defs := self._format_definitions(details.definitions):
@@ -129,7 +131,8 @@ class JSONVolumeFormat(BaseFormat):
         first_word = ""
 
         for word, details in all_words:
-            word_data = self._format_word_data(word, details)
+            if not (word_data := self._format_word_data(word, details)):
+                continue
 
             # Estimate size of adding this word
             test_entry = {word: word_data}
