@@ -10,7 +10,7 @@ from typing import Any
 from jinja2 import Template
 
 from wikidict import constants
-from wikidict.converters import BaseFormat, Summary
+from wikidict.converters import BaseFormat
 from wikidict.converters.stardict import TEMPLATE
 
 GROUP_XHTML_TEMPLATE = """<?xml version="1.0" encoding="utf-8" standalone="no"?>
@@ -77,7 +77,7 @@ OPF_TEMPLATE = """
 log = getLogger(__name__)
 
 
-class MobiFormat(Summary, BaseFormat):
+class MobiFormat(BaseFormat):
     """Save the data into a MobiPocket file."""
 
     target_format = "mobi"

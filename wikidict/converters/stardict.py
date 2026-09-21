@@ -9,7 +9,7 @@ from typing import Any
 from jinja2 import Template
 
 from wikidict import constants
-from wikidict.converters import BaseFormat, Summary, dictzip
+from wikidict.converters import BaseFormat, dictzip
 
 log = getLogger(__name__)
 
@@ -68,7 +68,7 @@ TEMPLATE = Template(
 )
 
 
-class StarDictFormat(Summary, BaseFormat):
+class StarDictFormat(BaseFormat):
     """Save the data into a StarDict file."""
 
     target_format = "stardict"

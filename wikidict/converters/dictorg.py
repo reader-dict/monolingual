@@ -9,7 +9,7 @@ from typing import Any
 
 from jinja2 import Template
 
-from wikidict.converters import BaseFormat, Summary, dictzip
+from wikidict.converters import BaseFormat, dictzip
 from wikidict.converters.stardict import TEMPLATE
 
 B64_LIST = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
@@ -36,7 +36,7 @@ def sort_df_key(string: str) -> tuple[str, str]:
     return (key, string.upper())
 
 
-class DictOrgFormat(Summary, BaseFormat):
+class DictOrgFormat(BaseFormat):
     """Save the data into a DICT.org file (dictd)."""
 
     target_format = "dictorg"

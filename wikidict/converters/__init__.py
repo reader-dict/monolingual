@@ -206,22 +206,16 @@ class BaseFormat:
         self.compute_checksum(file)
 
         log.info(
-            "[%s] Finished the conversion with %s words, and %s variants, as expected.",
-            self.id(),
-            f"{len(self.words):,}",
-            f"{len(self.variants):,}",
-        )
-
-
-class Summary(BaseFormat):
-    """Display words + variants summary for primary formaters."""
-
-    def summary(self, file: Path) -> None:
-        log.info(
             "[%s] Effective words + variants: %s + %s => %s",
             self.id(),
             f"{self.words_count:,}",
             f"{self.variants_count:,}",
             f"{self.words_count + self.variants_count:,}",
         )
-        super().summary(file)
+
+        log.info(
+            "[%s] Finished the conversion with %s words, and %s variants, as expected.",
+            self.id(),
+            f"{len(self.words):,}",
+            f"{len(self.variants):,}",
+        )

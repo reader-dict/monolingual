@@ -13,7 +13,7 @@ from jinja2 import Template
 from marisa_trie import Trie
 
 from wikidict import constants, utils
-from wikidict.converters import BaseFormat, Summary
+from wikidict.converters import BaseFormat
 from wikidict.stubs import Groups, Words
 
 log = getLogger(__name__)
@@ -83,7 +83,7 @@ TEMPLATE = Template(
 )
 
 
-class DictHtmlFormat(Summary, BaseFormat):
+class DictHtmlFormat(BaseFormat):
     """Save the data into Kobo-specific ZIP file."""
 
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"

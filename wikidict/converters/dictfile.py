@@ -5,7 +5,7 @@ import logging
 
 from jinja2 import Template
 
-from wikidict.converters import BaseFormat, Summary
+from wikidict.converters import BaseFormat
 
 # DictFile-related dictionaries
 # Source: https://pgaskin.net/dictutil/dictgen/#dictfile-format
@@ -75,7 +75,7 @@ TEMPLATE = Template(
 log = logging.getLogger(__name__)
 
 
-class DictFileFormat(Summary, BaseFormat):
+class DictFileFormat(BaseFormat):
     """Save the data into a bz2-compressed *.df* DictFile."""
 
     output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df.bz2"
