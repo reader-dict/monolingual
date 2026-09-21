@@ -76,23 +76,16 @@ log = logging.getLogger(__name__)
 
 
 class DictFileFormat(Summary, BaseFormat):
-    """Save the data into a *.df* DictFile."""
+    """Save the data into a bz2-compressed *.df* DictFile."""
 
-    output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df"
+    output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df.bz2"
     template = TEMPLATE
 
     def process(self) -> None:
         file = self.dictionary_file(self.output_file)
         words = self.words
-        data = "".join(formatted_word for word in words for formatted_word in self.handle_word(word, words))
-        file.write_text(data, encoding="utf-8")
+        with bz2.open(file, mode="wb") as fh:
+            for word in words:
+                fh.write("".join(self.handle_word(word, words)).encode(encoding="utf-8"))
 
         self.summary(file)
-
-
-class BZ2DictFileFormat(BaseFormat):
-    def process(self) -> None:
-        df_file = self.dictionary_file(DictFileFormat.output_file)
-        bz2_file = df_file.with_suffix(".df.bz2")
-        bz2_file.write_bytes(bz2.compress(df_file.read_bytes()))
-        return self.summary(bz2_file)

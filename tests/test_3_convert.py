@@ -288,16 +288,19 @@ def test_no_json_file() -> None:
         assert convert.main("fr") == 1
 
 
-@pytest.mark.dependency()
 @pytest.mark.parametrize(
     "formatter, filename, include_etymology",
     [
-        (convert.DictFileFormat, "dict-fr-fr.df", True),
-        (convert.DictFileFormat, "dict-fr-fr-noetym.df", False),
+        (convert.DictFileFormat, "dict-fr-fr.df.bz2", True),
+        (convert.DictFileFormat, "dict-fr-fr-noetym.df.bz2", False),
         (convert.DictHtmlFormat, "dicthtml-fr-fr.zip", True),
         (convert.DictHtmlFormat, "dicthtml-fr-fr-noetym.zip", False),
+        (convert.DictOrgFormat, "dictorg-fr-fr.zip", True),
+        (convert.DictOrgFormat, "dictorg-fr-fr-noetym.zip", False),
         (convert.MobiFormat, "dict-fr-fr.mobi", True),
         (convert.MobiFormat, "dict-fr-fr-noetym.mobi", False),
+        (convert.StarDictFormat, "dict-fr-fr.zip", True),
+        (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
     ],
 )
 def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -319,19 +322,11 @@ def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: st
 @pytest.mark.parametrize(
     "formatter, filename, include_etymology",
     [
-        (convert.BZ2DictFileFormat, "dict-fr-fr.df.bz2", True),
-        (convert.BZ2DictFileFormat, "dict-fr-fr-noetym.df.bz2", False),
         (convert.DictOrgFormat, "dictorg-fr-fr.zip", True),
         (convert.DictOrgFormat, "dictorg-fr-fr-noetym.zip", False),
         (convert.StarDictFormat, "dict-fr-fr.zip", True),
         (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
     ],
-)
-@pytest.mark.dependency(
-    depends=[
-        "test_generate_primary_dict[DictFileFormat-dict-fr-fr.df-True]",
-        "test_generate_primary_dict[DictFileFormat-dict-fr-fr-noetym.df-False]",
-    ]
 )
 def test_generate_secondary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
     output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr"
@@ -712,32 +707,20 @@ def test_sublang(locale: str, lang_src: str, lang_dst: str, tmp_path: Path) -> N
 
         args = (source_dir / "output", snapshot, locale, words, variants)
         for include_etymology in [False, True]:
-            mocked_dw.assert_any_call(convert.get_primary_formatters(), *args, include_etymology=include_etymology)
-            mocked_dw.assert_any_call(
-                convert.get_secondary_formatters(),
-                *args,
-                include_etymology=False,
-                sequential=True,
-            )
-        assert mocked_dw.call_count == 4
+            mocked_dw.assert_any_call(set(convert.FORMATTERS.values()), *args, include_etymology=include_etymology)
+        assert mocked_dw.call_count == 2
 
 
 @pytest.mark.parametrize("format", list(convert.FORMATTERS.keys()))
 def test_format(format: str) -> None:
-    primary, secondary = convert.get_formatters(format)
-    assert primary == {convert.FORMATTERS[format][0]}
-    if secondary:
-        assert secondary == {convert.FORMATTERS[format][1]}
+    formatter = convert.get_formatters(format)
+    assert formatter == {convert.FORMATTERS[format]}
 
 
 @pytest.mark.parametrize("format", ["", "all"])
 def test_format_all(format: str) -> None:
-    primary, secondary = convert.get_formatters(format)
-    assert primary == convert.get_primary_formatters()
-    assert secondary == convert.get_secondary_formatters()
+    assert convert.get_formatters(format) == set(convert.FORMATTERS.values())
 
 
 def test_format_unknown() -> None:
-    primary, secondary = convert.get_formatters("unknown")
-    assert not primary
-    assert not secondary
+    assert not convert.get_formatters("unknown")
