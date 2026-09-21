@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
 from collections.abc import Generator
 from contextlib import suppress
 from copy import deepcopy
@@ -11,12 +12,28 @@ from pathlib import Path
 from time import monotonic
 from typing import Any
 
+from idzip import compressor
 from jinja2 import Template
 
 from wikidict import constants, utils
 from wikidict.stubs import Variants, Words
 
 log = logging.getLogger(__name__)
+
+
+def dictzip(ifile: Path) -> Path:
+    ofile = ifile.with_suffix(f"{ifile.suffix}.dz")
+    with ifile.open(mode="rb") as in_file, ofile.open(mode="wb") as out_file:
+        ifile_stat = os.fstat(in_file.fileno())
+        compressor.compress(
+            in_file,
+            ifile_stat.st_size,
+            out_file,
+            ifile.name,
+            int(ifile_stat.st_mtime),
+        )
+    ifile.unlink()
+    return ofile
 
 
 class BaseFormat:

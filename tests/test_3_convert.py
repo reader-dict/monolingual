@@ -1,5 +1,7 @@
 import os
+import platform
 import shutil
+import subprocess
 from collections import OrderedDict
 from copy import deepcopy
 from datetime import UTC, datetime
@@ -49,40 +51,7 @@ WORDS = {
 }
 
 
-def test_simple(tmp_path: Path) -> None:
-    setup_logging_original = utils.setup_logging
-
-    def setup_logging(*args: str, **kwargs: str) -> None:
-        setup_logging_original("fr", "fr", folder=tmp_path)
-
-    with patch.object(utils, "setup_logging", setup_logging):
-        assert convert.main("fr") == 0
-
-    # Check for all dictionary files
-    output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
-
-    count = 0
-    for file in [
-        "dict-fr-fr{etym}.df",  # DictFile
-        "dict-fr-fr{etym}.df.bz2",  # DictFile bz2
-        "dicthtml-fr-fr{etym}.zip",  # DictHTML
-        "dictorg-fr-fr{etym}.zip",  # DICT.org
-        "dict-fr-fr{etym}.mobi.zip",  # Mobi
-        "dict-fr-fr{etym}.zip",  # StarDict
-    ]:
-        for etym in ["", "-noetym"]:
-            fname = file.format(etym=etym)
-            assert (output_dir / fname).is_file()
-            assert (output_dir / f"{fname}.{ASSET_CHECKSUM_ALGO}").is_file()
-            count += 2
-
-    assert count == 24
-
-    dicthtml = output_dir / "dicthtml-fr-fr.zip"
-    mobi_file = output_dir / "dict-fr-fr.mobi.zip"
-    stardict = output_dir / "dict-fr-fr.zip"
-
-    # Check the Kobo ZIP content
+def check_dicthtml(file: Path) -> None:
     expected_files = [
         "11.html",
         constants.ZIP_WORDS_COUNT,
@@ -172,7 +141,7 @@ def test_simple(tmp_path: Path) -> None:
         "suis\têt",
     ]
 
-    with ZipFile(dicthtml) as fh:
+    with ZipFile(file) as fh:
         assert fh.comment.decode(encoding="utf-8") == "© reader.dict 2026"
 
         assert sorted(fh.namelist()) == expected_files
@@ -191,7 +160,29 @@ def test_simple(tmp_path: Path) -> None:
         trie.map(fh.read("prefix_exceptions"))
         assert sorted(trie.keys()) == expected_prefix_exceptions
 
-    # Check the StarDict ZIP content
+
+def check_mobi(file: Path, tmp_dir: Path) -> None:
+    with ZipFile(file) as fh:
+        fh.extract(file.name.removesuffix(".zip"), tmp_dir)
+    tempdir, _ = mobi.extract(str(tmp_dir / file.name.removesuffix(".zip")))
+    files = sorted(path.relative_to(tempdir).as_posix() for path in Path(tempdir).glob("**/*"))
+    expected_files = [
+        "HDImages",
+        "mobi7",
+        "mobi7/Images",
+        "mobi7/Images/cover00009.jpeg",
+        "mobi7/Images/image00010.gif",
+        "mobi7/book.html",
+        "mobi7/content.opf",
+        "mobi7/toc.ncx",
+    ]
+    try:
+        assert files == expected_files
+    finally:
+        shutil.rmtree(tempdir)
+
+
+def check_stardict(file: Path, tmp_dir: Path) -> None:
     expected_files = [
         "reader.dict-fr.dict.dz",
         "reader.dict-fr.idx",
@@ -211,7 +202,7 @@ def test_simple(tmp_path: Path) -> None:
         "sametypesequence=h",
         "synwordcount=5",
     ]
-    with ZipFile(stardict) as fh:
+    with ZipFile(file) as fh:
         assert sorted(fh.namelist()) == expected_files
 
         # testfile returns the name of the first corrupt file, or None
@@ -221,25 +212,69 @@ def test_simple(tmp_path: Path) -> None:
         ifo = fh.read("reader.dict-fr.ifo").decode()
         assert ifo.splitlines() == expected_ifo_lines
 
-    # Check the Mobi content
-    with ZipFile(mobi_file) as fh:
-        fh.extract(mobi_file.name.removesuffix(".zip"), tmp_path)
-    tempdir, _ = mobi.extract(str(tmp_path / mobi_file.name.removesuffix(".zip")))
-    files = sorted(path.relative_to(tempdir).as_posix() for path in Path(tempdir).glob("**/*"))
-    expected_files = [
-        "HDImages",
-        "mobi7",
-        "mobi7/Images",
-        "mobi7/Images/cover00009.jpeg",
-        "mobi7/Images/image00010.gif",
-        "mobi7/book.html",
-        "mobi7/content.opf",
-        "mobi7/toc.ncx",
-    ]
-    try:
-        assert files == expected_files
-    finally:
-        shutil.rmtree(tempdir)
+    # Check file conformity
+    if platform.system() != "Linux":
+        return
+
+    output_dir = tmp_dir / "contents"
+    with ZipFile(file) as fh:
+        fh.extractall(path=output_dir)
+    result = subprocess.run(
+        ["/usr/lib/stardict-tools/stardict-verify", output_dir],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout
+    print(output)
+    assert "warning" not in output
+    assert "error" not in output
+    assert "Verification result: success" in output
+    assert "Verification result: OK" in output
+
+    # This is a reliable way to ensure variants are properly handled
+    xml_file = tmp_dir / "output.xml"
+    subprocess.check_call(["/usr/lib/stardict-tools/stardict-bin2text", output_dir / "reader.dict-fr.ifo", xml_file])
+    reference_xml = Path(os.environ["CWD"]) / "data" / "fr" / "stardict-xml.ref"
+    assert xml_file.read_text() == reference_xml.read_text()
+
+
+def test_simple(tmp_path: Path) -> None:
+    setup_logging_original = utils.setup_logging
+
+    def setup_logging(*args: str, **kwargs: str) -> None:
+        setup_logging_original("fr", "fr", folder=tmp_path)
+
+    with patch.object(utils, "setup_logging", setup_logging):
+        assert convert.main("fr") == 0
+
+    # Check for all dictionary files
+    output_dir = Path(os.environ["CWD"]) / "data" / "fr" / "fr" / "output"
+
+    count = 0
+    for file in [
+        "dict-fr-fr{etym}.df",  # DictFile
+        "dict-fr-fr{etym}.df.bz2",  # DictFile bz2
+        "dicthtml-fr-fr{etym}.zip",  # DictHTML
+        "dictorg-fr-fr{etym}.zip",  # DICT.org
+        "dict-fr-fr{etym}.mobi.zip",  # Mobi
+        "dict-fr-fr{etym}.zip",  # StarDict
+    ]:
+        for etym in ["", "-noetym"]:
+            fname = file.format(etym=etym)
+            assert (output_dir / fname).is_file()
+            assert (output_dir / f"{fname}.{ASSET_CHECKSUM_ALGO}").is_file()
+            count += 2
+
+    assert count == 24
+
+    check_dicthtml(output_dir / "dicthtml-fr-fr.zip")
+    check_stardict(output_dir / "dict-fr-fr.zip", tmp_path)
+    check_mobi(output_dir / "dict-fr-fr.mobi.zip", tmp_path)
+
+    shutil.rmtree(tmp_path, ignore_errors=True)
 
 
 def test_no_json_file() -> None:

@@ -17,7 +17,7 @@ from wikidict.converters import BaseFormat, Summary
 # DictFile-related dictionaries
 # Source: https://pgaskin.net/dictutil/dictgen/#dictfile-format
 # Source: https://github.com/hunspell/hunspell/blob/ecc6dbb52025bdf3a766429988e64190d912765f/man/hunspell.1#L93-L139 (for later, in case of issues with other sub-formats)
-WORD_TPL_DICTFILE = Template(
+TEMPLATE = Template(
     """\
 @ {{ word }}
 {%- if pronunciation %}
@@ -94,7 +94,7 @@ class DictFileFormat(Summary, BaseFormat):
     """Save the data into a *.df* DictFile."""
 
     output_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.df"
-    template = WORD_TPL_DICTFILE
+    template = TEMPLATE
 
     def process(self) -> None:
         file = self.dictionary_file(self.output_file)

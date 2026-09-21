@@ -1,45 +1,24 @@
 from __future__ import annotations
 
-import os
 import shutil
 import struct
 import zipfile
 from collections import deque
 from logging import getLogger
-from pathlib import Path
 from typing import Any
 
-from idzip import compressor
 from jinja2 import Template
 
 from wikidict import constants
-from wikidict.converters import BaseFormat, Summary
+from wikidict.converters import BaseFormat, Summary, dictzip
 
 log = getLogger(__name__)
 
-
-def dictzip(ifile: Path) -> Path:
-    ofile = ifile.with_suffix(f"{ifile.suffix}.dz")
-    with ifile.open(mode="rb") as in_file, ofile.open(mode="wb") as out_file:
-        inputInfo = os.fstat(in_file.fileno())
-        compressor.compress(
-            in_file,
-            inputInfo.st_size,
-            out_file,
-            ifile.name,
-            int(inputInfo.st_mtime),
-        )
-    ifile.unlink()
-    return ofile
-
-
-WORD_TPL_STARDICT = Template(
+TEMPLATE = Template(
     """\
-@ {{ word }}
-{%- if pronunciation %}
-:{{ pronunciation }}
-{%- endif %}
-<html>
+{% if pronunciation %}
+{{ pronunciation }}
+{% endif %}
 {%- for pos, pos_definitions in definitions -%}
     <p>
     {%- if pos.find("|") > -1 -%}
@@ -95,7 +74,7 @@ class StarDictFormat(Summary, BaseFormat):
 
     target_format = "stardict"
     final_file = "dict-{lang_src}-{lang_dst}{etym_suffix}.zip"
-    template = WORD_TPL_STARDICT
+    template = TEMPLATE
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
@@ -112,18 +91,15 @@ class StarDictFormat(Summary, BaseFormat):
         self.dict_file_h = self.dict_file.open(mode="wb")
         self.idx_file_h = self.idx_file.open(mode="wb")
 
-        self.entry_index = 0
         self.variants_index: list[tuple[bytes, int]] = []
 
     def render_word(self, template: Template, **kwargs: Any) -> str:
         offset = self.dict_file_h.tell()
-        size = self.dict_file_h.write(super().render_word(template, **kwargs).encode("utf-8"))
+        size = self.dict_file_h.write(super().render_word(template, **kwargs).strip().encode("utf-8"))
         self.idx_file_h.write(
             kwargs["word"].encode("utf-8") + b"\0" + struct.pack(">I", offset) + struct.pack(">I", size)
         )
-        self.variants_index.extend((variant.encode("utf-8"), self.entry_index) for variant in kwargs["variants"])
-
-        self.entry_index += 1
+        self.variants_index.extend((variant.encode("utf-8"), self.words_count - 1) for variant in kwargs["variants"])
         return ""
 
     def process(self) -> None:
@@ -133,18 +109,16 @@ class StarDictFormat(Summary, BaseFormat):
             deque(self.handle_word(word, words), maxlen=0)  # Exhaust the generator
 
         idx_file_size = self.idx_file_h.tell()
-        self.dict_file_h.close()
         self.idx_file_h.close()
 
-        assert self.entry_index == self.words_count
-        assert len(self.variants_index) == self.variants_count
-
+        self.dict_file_h.close()
         self.dict_file = dictzip(self.dict_file)
 
         if self.variants_count:
-            pack = struct.pack
             with self.syn_file.open(mode="wb") as fh:
-                variants = sorted(self.variants_index, key=lambda s: (s[0].lower(), s[0]))  # stardict_strcmp()
+                variants = self.variants_index
+                variants.sort(key=lambda s: (s[0].lower(), s[0]))  # stardict_strcmp()
+                pack = struct.pack
                 fh.writelines(variant + b"\0" + pack(">I", entry_index) for variant, entry_index in variants)
 
         # https://github.com/huzheng001/stardict-3/blob/master/dict/doc/StarDictFileFormat
@@ -173,7 +147,7 @@ class StarDictFormat(Summary, BaseFormat):
             fh.writelines(f"{key}={value}\n" for key, value in ifo_data.items())
 
         file = self.dictionary_file(self.final_file)
-        with zipfile.ZipFile(file, "w", zipfile.ZIP_DEFLATED) as fh:
+        with zipfile.ZipFile(file, mode="w", compression=zipfile.ZIP_DEFLATED) as fh:
             fh.write(self.dict_file, arcname=self.dict_file.name)
             fh.write(self.ifo_file, arcname=self.ifo_file.name)
             fh.write(self.idx_file, arcname=self.idx_file.name)

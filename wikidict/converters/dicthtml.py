@@ -22,7 +22,7 @@ log = getLogger(__name__)
 #       the next word would'nt be properly visually separated from the previous word's etymology.
 # Note: We cannot remove the space before the slash in `<a name="{{ word }}" />` because
 #       the Kobo lookup regexp for Japanese words is `(<a name="WORD" />.*</w>)`.
-WORD_TPL_KOBO = Template(
+TEMPLATE = Template(
     """\
 <w><p><a name="{{ headword }}" /><b>{{ word }}</b>{{ pronunciation }}<br/><br/>
 {%- for pos, pos_definitions in definitions -%}
@@ -87,7 +87,7 @@ class DictHtmlFormat(Summary, BaseFormat):
     """Save the data into Kobo-specific ZIP file."""
 
     output_file = "dicthtml-{lang_src}-{lang_dst}{etym_suffix}.zip"
-    template = WORD_TPL_KOBO
+    template = TEMPLATE
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
