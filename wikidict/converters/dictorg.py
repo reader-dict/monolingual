@@ -5,7 +5,6 @@ Source: https://github.com/jgoerzen/dictdlib
 import shutil
 import string
 import zipfile
-from collections import deque
 from typing import Any
 
 from jinja2 import Template
@@ -93,7 +92,9 @@ class DictOrgFormat(Summary, BaseFormat):
     def process(self) -> None:
         words = self.words
         for word in sorted(words):
-            deque(self.handle_word(word, words), maxlen=0)  # Exhaust the generator
+            # Exhaust the generator
+            for _ in self.handle_word(word, words):
+                pass
 
         self.write_metadata()
 

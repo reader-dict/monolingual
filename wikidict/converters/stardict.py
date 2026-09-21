@@ -3,7 +3,6 @@ from __future__ import annotations
 import shutil
 import struct
 import zipfile
-from collections import deque
 from logging import getLogger
 from typing import Any
 
@@ -106,7 +105,9 @@ class StarDictFormat(Summary, BaseFormat):
         words = self.words
         entries = sorted(words, key=lambda s: (s.encode("utf-8").lower(), s.encode("utf-8")))  # stardict_strcmp()
         for word in entries:
-            deque(self.handle_word(word, words), maxlen=0)  # Exhaust the generator
+            # Exhaust the generator
+            for _ in self.handle_word(word, words):
+                pass
 
         idx_file_size = self.idx_file_h.tell()
         self.idx_file_h.close()

@@ -4,7 +4,6 @@ import shutil
 import subprocess
 import uuid
 import zipfile
-from collections import deque
 from logging import getLogger
 from typing import Any
 
@@ -140,7 +139,9 @@ class MobiFormat(Summary, BaseFormat):
     def process(self) -> None:
         words = self.words
         for word in sorted(words):
-            deque(self.handle_word(word, words), maxlen=0)  # Exhaust the generator
+            # Exhaust the generator
+            for _ in self.handle_word(word, words):
+                pass
 
         if self.group_contents:
             self.save_xhtml_group()
