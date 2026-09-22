@@ -474,7 +474,9 @@ def find_all_sections(
             )
 
     # Get interesting top sections
-    top_sections = [section for section in parsed.get_sections(level=level) if section_title(section) in head_sections]
+    top_sections = [
+        section for section in parsed.get_sections(level=level) if section_title(section).startswith(head_sections)
+    ]
 
     # Get all sections without any filtering
     all_sections.extend(
