@@ -22,6 +22,7 @@ locales = (
     "ja",
     "jbo",
     "ko",
+    "la",
     "lt",
     "mg",
     "nl",

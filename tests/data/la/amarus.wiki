@@ -1,0 +1,47 @@
+{{caput|la|amarus}}
+=={{-lingua-|la|amarus}}==
+ 
+==={{appellatio}}===
+:{{Audio|La-cls-amarus.ogg|/aˈmaːrus/|{{la-cls-appellatio}}|la|amārus}}
+:{{Audio|La-ecc-amarus.ogg|/aˈmarus/|{{la-ecc-appellatio}}|la}}
+:{{syllabae|a|mā|rus|morph=amar-us}}
+
+==={{adiectivum|la}}=== 
+'''ămār'''|'''us, -a, -um''' 
+# Acerbus; sapore [[absinthium|absinthii]] vel [[quinina]]e.
+
+==={{declinatio}}=== 
+{{la-declinatio-1adj|amār|us}}
+{{collabi|{{la-declinatio-comp|amāri|or}}|caput=''amarus'' comparativus}}
+{{collabi|{{la-declinatio-1adj|amārissim|us|modus=superlativus}}|caput=''amarus'' superlativus}}
+
+==={{collatae}}===
+{{anton}}
+*{{la-nx|dulcis}}
+
+==={{derivatae}}===
+*{{la-nx|amārē}}, {{la-nx|amāriter}} ''({{la-nx|adverbium}})''
+*{{la-nx|amārescō}}, {{la-nx|amārescere}}
+*{{la-nx|amāricō}}, {{la-nx|amāricāre}}
+*{{la-nx|amārificō}}, {{la-nx|amārificāre}}
+*{{la-nx|amāritās}}
+*{{la-nx|amāritia}}
+*{{la-nx|amāritiēs}}
+*{{la-nx|amāritōsus}}
+*{{la-nx|amāritūdō}}
+*{{la-nx|amarizō}}, {{la-nx|amarizāre}}
+*{{la-nx|amārō}}, {{la-nx|amārāre}}
+*{{la-nx|amāror}}
+*{{la-nx|amārulentus}}
+
+==={{trans}}=== <!-- Translationes -->
+{{trans-top|Acerbus}}
+* Anglice: {{t+|en|bitter}}
+* Dacoromane: {{t+|ro|amar}}
+* Esperantice: {{t+|eo|amara}}
+* Germanice: {{t+|de|bitter}}
+{{trans-mid}}
+* Graeca Antiqua: {{t|grc|πικρός}}
+* Hispanice: {{t+|es|amargo}}
+* Italice: {{t+|it|amaro}}
+{{trans-bottom}}

@@ -1,0 +1,30 @@
+
+{{caput|la|agitandus}} <!-- {{subst:PAGENAME}} -->
+=={{-lingua-|la|agitandus}}==
+
+==={{appellatio}}=== <!-- Appellatio et syllabificatio -->
+:{{Audio|La-cls-agitandus.ogg|/agiˈtandus/|{{la-cls-appellatio}}|la}} <!-- Exemplum Latinum apellationis -->
+:{{syllabae|a|gi|tan|dus|morph=agit-and-us}} <!-- Exemplum syllabificationis -->
+
+==={{notatio}}===
+:{{la-nx|agitō|prae=}} ({{la-nx|agitāre}})
+
+==={{gerundivum|la}}===
+{{=cform=|casu}} <!-- Exemplum Latinum coniugationis -->
+{{coniug|la|agitandus|agitō||||gndv|pas|casu=nom|(agitāre)}}
+{{=cfin=}}
+
+==={{declinatio}}===
+{{la-declinatio-1adj|agitand|us}}
+
+=={{loci|la}}== <!-- Verba allata scriptorum / auctorum -->
+{{chronologia|saec1=[[Marcus Fabius Quintilianus|M. Fabius Quintilianus]] ca. 35-100}}
+{{exempla|Latinitas Romana|
+{{saec1}}
+*Faciunt favorem et ilia paene communia non tamen omittenda, vel ideo ne occupentur, optare, abominari, rogare, sollicitum agere; quia plerumque attentum iudicem facit, si res agi videtur nova, magna, atrox, pertinens ad exemplum, praecipue tamen, si index aut sua vice aut reipublicae commovetur, cuius animus spe, metu, admonitione, precibus, vanitate denique, si id profuturum credimus, '''agitandus''' est. —''Institutio oratoria'' [[Marcus Fabius Quintilianus|Quintiliani]] <ref name=Quintilianus /><ref name=q />
+}}
+
+{{fontes|noref=|ref= <!-- Eventus <ref>…</ref> -->
+<ref name=Quintilianus>{{Quintilianus|4|1|33|com=agitandus}}</ref>
+<ref name=q>''Vicicitatio:'' '''[[q:agitandus|agitandus]]'''.</ref>
+}}

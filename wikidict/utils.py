@@ -257,6 +257,9 @@ def format_pos(locale: str, value: str) -> str:
     >>> format_pos("ko", "명사 10")
     '명사'
 
+    >>> format_pos("la", "{{int:wikt-verbum-tr}}")
+    'Verbum Transitivum'
+
     >>> format_pos("lt", "daiktavardis #1")
     'Daiktavardis'
 
@@ -1065,6 +1068,7 @@ def process_templates(
         or "<h2>" in text
         or "<h3>" in text
         or "#ifeq:" in text
+        or (locale.endswith("la") and "⧼wikt" in text)
     ):
         if templates_status is not None:
             templates_status.append((word, "skipped"))

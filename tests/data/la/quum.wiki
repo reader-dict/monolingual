@@ -1,0 +1,5 @@
+{{caput|la|Quum}}
+=={{-la-|Quum}}==
+
+=={{int:wikt-affines}}==
+* {{la}}: '''quum''' — Alia forma vocis '''[[cum]]''', q.v.

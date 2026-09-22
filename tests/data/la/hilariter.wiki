@@ -1,0 +1,49 @@
+{{caput|la|hilariter}} <!-- {{subst:PAGENAME}} -->
+=={{-lingua-|la|hilariter}}==
+
+==={{appellatio}}=== <!-- Appellatio et syllabificatio -->
+:{{Audio|La-cls-hilariter.ogg|/hiˈla.ri.ter/|{{la-cls-appellatio}}|la}} <!-- Exemplum Latinum apellationis -->
+:{{syllabae|hi|la|ri|ter|morph=hilari-ter}} <!-- Exemplum syllabificationis -->
+
+==={{notatio}}===
+:{{la-nx|hilaris|prae=}}
+
+==={{adverbium|la}}===
+'''hilariter''', ''({{la-nx|comparātīvus|Comp.}})'' {{la-nx|hilarius}}, ''({{la-nx|superlātīvus|Sup.}})'' {{la-nx|hilarissimē}}
+#Cum hilaritate.
+
+==={{collatae}}===
+*{{la-nx|hilaritās}}
+{{synon}}
+#{{la-nx|hilarē}}
+
+==={{trans}}=== <!-- Translationes -->
+{{trans-tab|Cum hilaritate|
+*{{en}}: {{t+|en|joyfully}}, {{t+|en|cheerfully}}
+*{{de}}: {{t+|de|heiter}}, {{t+|de|fröhlich}}
+*{{pl}}: {{t+|pl|wesoło}}
+}}
+
+=={{loci|la}}== <!-- Verba allata scriptorum / auctorum -->
+{{chronologia|saec4=[[Aurelius Augustinus Hipponensis]]<br />354–430|saec13=Auctores varii<br />fl. 1230}}
+{{exempla|Latinitas postclassica|
+{{saec4}}
+*Intuens ergo et considerans universam creaturam, quicumque iter agit ad sapientiam, sentit sapientiam in via se sibi ostendere '''hilariter''', et in omni providentia occurrere sibi: et tanto alacrius ardescit viam istam peragere, quanto et ipsa via per illam pulchra est, ad quam exaestuat pervenire. —''De libero arbitrio'' [[Aurelius Augustinus Hipponensis|Augustini]] <ref>{{Augustinus|secundus|XVII|45.|De libero arbitrio|n=7288:2.17.1;2|com=hilariter}}</ref>
+}}
+{{exempla|Latinitas mediaevalis|
+{{saec13}}
+*Circumgyrantes canite concorditer!
+:pedem pedi committite '''hilariter''',
+:congaudentes iubilo,
+:concrepando manuum cum plausibus!
+:solus solam veneror his laudibus,
+:terso mentis nubilo;
+:nam cum totalem video pudicam,
+:singolari gaudio tunc potior
+:optans in amicam. —''Carmina Burana'' variorum auctorum <ref name=CarminaBurana /><ref name=q />
+}}
+
+{{fontes|noref=|ref= <!-- Eventus <ref>…</ref> -->
+<ref name=CarminaBurana>{{Carmina Burana|Carmina amatoria|165|3|n=19858:2.148|com=hilariter}}</ref>
+<ref name=q>''Vicicitatio:'' '''[[q:hilariter|hilariter]]'''.</ref>
+}}

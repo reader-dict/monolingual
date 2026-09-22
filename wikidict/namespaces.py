@@ -19,6 +19,7 @@ namespaces = {
     "ja": ["Image", "カテゴリ", "ファイル", "画像"],
     "jbo": ["Image", "datnyvei", "klesi"],
     "ko": ["Image", "그림", "분류", "파일"],
+    "la": ["Categoria", "Fasciculus", "Image", "Imago"],
     "lt": ["Image", "Kategorija", "Vaizdas"],
     "mg": ["Catégorie", "Image", "Sary", "Sokajy"],
     "nl": ["Afbeelding", "Bestand", "Categorie", "Image"],

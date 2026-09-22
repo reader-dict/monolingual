@@ -77,6 +77,12 @@ PATTERNS = {
         # `명사 1` → `명사`
         re.compile(r"(.+)\s*1").sub,
     ],
+    "la": [
+        # `{{transitivum|la}}` → `transitivum`
+        re.compile(r"\{\{([^|}]+).+").sub,
+        # `int:wikt-verbum-tr` → `verbum-tr`
+        re.compile(r"int:wikt-(.+)").sub,
+    ],
     "lt": [
         # `daiktavardis #1` → `daiktavardis`
         re.compile(r"(.+) #\d").sub,
@@ -295,6 +301,27 @@ MERGE = {
     "ko": {
         "타동사": "동사",  # transitive verb → verb
         "top": "명사",  # noun
+    },
+    "la": {
+        "adiectivum": "nomen adiectivum",
+        "auxiliare": "verbum auxiliare",
+        "cardinalis": "numerus cardinalis",
+        "deponens": "verbum deponens",
+        "intransitivum": "verbum intransitivum",
+        "locutiones": "locutio",
+        "nomen-adj": "nomen adiectivum",
+        "nomen-prop": "nomen proprium",
+        "nomen-subst": "nomen substantivum",
+        "ordinalis": "numerus ordinalis",
+        "praep": "praepositio",
+        "proprium": "nomen proprium",
+        "reflexivum": "verbum reflexivum",
+        "semideponens": "verbum semideponens",
+        "substantivum": "nomen substantivum",
+        "synon": "synonyma",
+        "transitivum": "verbum transitivum",
+        "verbum-intr": "verbum intransitivum",
+        "verbum-tr": "verbum transitivum",
     },
     "lt": {
         "top": "daiktavardis",
