@@ -362,6 +362,10 @@ def find_etymology(
             items = get_items(("#", r"\*"))
         case "jbo":
             items = get_items(("",), skip=("===vlakra", "=== vlakra"))
+        case "mg":
+            items = []
+            for line in parsed_section.contents.splitlines():
+                items.append(line.lstrip("#:"))
         case "nl":
             items = get_items((r"\*",))
         case "no":

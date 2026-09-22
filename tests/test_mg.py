@@ -21,7 +21,14 @@ def setup_lua_ctx() -> None:
 @pytest.mark.parametrize(
     "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
-        ("Kilo", ["/ˈkilo/"], [], {"Anarana Iombonana": ["faneva famantarana ho an'ny litera K"]}, [], []),
+        (
+            "Kilo",
+            ["/ˈkilo/"],
+            ["Nindramina avy amin'ny anglisy <i>kilo</i>."],
+            {"Anarana Iombonana": ["faneva famantarana ho an'ny litera K"]},
+            [],
+            [],
+        ),
         (
             "nasian-tenimiafina",
             ["/nasintenimiafinạ/"],
