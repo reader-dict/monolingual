@@ -1120,10 +1120,10 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
     level = lang.section_level[locale]
     equals = "=" * level
 
-    interesting_sections = [
-        re.compile(rf"{equals}[ ]*{re.escape(section)}[ ]*{equals}", flags=re.IGNORECASE)
-        for section in lang.head_sections[locale]
-    ]
+    interesting_sections = re.compile(
+        rf"{equals}[ ]*(?:{'|'.join(re.escape(section) for section in lang.head_sections[locale])})",
+        flags=re.IGNORECASE,
+    )
 
     cleaned: list[str] = []
     in_expected_section = False
@@ -1131,7 +1131,7 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
         if not (line := raw_line.strip()):
             continue
         if line.startswith(equals) and line[level] != "=":
-            in_expected_section = any(pattern.match(line) for pattern in interesting_sections)
+            in_expected_section = interesting_sections.match(line) is not None
         if in_expected_section:
             cleaned.append(line)
     return "\n".join(cleaned) if cleaned else ""

@@ -917,7 +917,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
             return any(hs in wikicode for hs in lang.head_sections[lang_dst])
     else:
         has_interesting_sections = re.compile(
-            rf"^={{1,2}}[ ]*({'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
+            rf"^={{{lang.section_level[lang_dst]}}}[ ]*({'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
             flags=re.IGNORECASE | re.MULTILINE,
         ).search  # type: ignore[assignment]
 
