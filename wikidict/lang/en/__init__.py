@@ -248,7 +248,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         else:
             final.append(pron)
 
-    return utils.unique(utils.flatten(sorted(final)))
+    return utils.flatten(sorted(final))
 
 
 def adjust_wikicode(

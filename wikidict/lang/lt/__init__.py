@@ -95,7 +95,7 @@ def find_pronunciations(
     >>> find_pronunciations("{{IPA|[ˈsʲæːnɐs]}}", "lt")
     ['[ˈsʲæːnɐs]']
     """
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    return utils.flatten(pattern.findall(code))
 
 
 def adjust_wikicode(

@@ -71,7 +71,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     []
     """
     pattern = re.compile(r"\{\{IPA\d*\|([^}]+)")
-    return [f"[{pron}]" for pron in utils.unique(pattern.findall(code)) if "[" not in pron]
+    return [f"[{pron}]" for pron in pattern.findall(code) if "[" not in pron]
 
 
 def pos_and_gender(matches: re.Match[str]) -> str:

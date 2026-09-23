@@ -2,7 +2,6 @@
 
 import re
 
-from ... import utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://el.wiktionary.org/wiki/%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C:RandomRootpage"
@@ -188,4 +187,4 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             continue
         if parts := [part for part in parts if "=" not in part and part not in {"ΔΦΑ", locale}]:
             res.append(f"/{parts[-1]}/")
-    return utils.unique(res)
+    return res

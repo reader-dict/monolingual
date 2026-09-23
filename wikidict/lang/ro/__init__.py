@@ -97,7 +97,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ):
         res.extend(pattern.findall(code))
 
-    return utils.unique(utils.flatten(res))
+    return utils.flatten(res)
 
 
 REV_VARIANTS_IGNORED = {"-", "I", "II", "III", "IV", "V", "VI"}

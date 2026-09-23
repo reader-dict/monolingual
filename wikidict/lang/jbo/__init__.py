@@ -43,7 +43,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈfor.ʃa/']
     """
     pattern = re.compile(r"\{\{gykyvysym.\|/([^/]+)/")
-    return [f"/{pron}/" for pron in utils.unique(pattern.findall(code))]
+    return [f"/{pron}/" for pron in pattern.findall(code)]
 
 
 def adjust_wikicode(

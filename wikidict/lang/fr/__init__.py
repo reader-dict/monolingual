@@ -123,7 +123,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''-eresse''' {{pron|(ə).ʁɛs|fr}} {{f}}", "fr")
     ['f']
     >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{invar}}", "fr")
-    ['invar']
+    ['inv']
     """
     pattern = re.compile(rf"\{{([fmpinvar]+)(?: \?\|{locale})*}}")
     res: set[str] = set()
