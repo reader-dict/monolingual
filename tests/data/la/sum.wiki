@@ -1,0 +1,136 @@
+{{caput|la|sum}}
+=={{-lingua-|la|sum}}==
+
+==={{appellatio}}=== <!-- Appellatio et syllabificatio -->
+:{{Audio|La-cls-sum.ogg|/sum/|{{la-cls-appellatio}}|la}}  <!-- Exemplum Latinum apellationis -->
+:{{syllabae|sum|morph=sum}} <!-- Exemplum syllabificationis -->
+
+==={{notatio}}===
+[[Category:Radice es|Sum]]
+[[Category:Radice fu|Sum]]
+:''Articulus principalis: [[sum (notatio)]]''
+A lingua prisca Indoeuropaea ''*H₁es-'' (praesens) et ''*bhu-'' (perfecta).  Vide [[:Category:Radice es|radicem ''es'']] et [[:Category:Radice fu|radicem ''fu'']].
+
+==={{verbum|la|intrans=|aux=}}===
+'''sum, esse, fuī''' (''sine supino'')
+# ''(Intransitivum)'' [[exsisto]] in vero
+# ''(Auxiliare)'' verbum copulativum, qui existere in aliquo modo vel aliquo relatione indicat.
+
+==={{coniugatio}}===
+{{la-coniugatio-3spec|sum|fu||fut|ImpfConAct2=for|infFuturAct2=fore|act=}}
+
+==={{usus}}===
+'''Exsistere:'''
+* Solum significans [[existo|existere]] seu [[vivo|vivere]]:
+*:Cogito ergo '''sum'''.
+* De eventis, significans [[evenio|evenire]]:
+*:Quid tibi '''est?'''
+*:Ludus in Amphitheatro '''erit.'''
+* De locis, significans locum ubi:
+*:Roma in Italia '''est'''.
+*:Historia in libro '''est'''.
+*:Hodie apud Iohannem '''fuit'''.
+* ''(cum [[in]] + abl.)'' de positione, officio, vestimento, etc.:
+*:In servitio '''sunt.'''
+*:Ea in [[kimonum|kimono]] '''est.'''
+* ''(cum [[in]] + abl.)'' pendens in aliquo:
+*:Periculum murtati in edendo '''est.'''
+
+* constructum cum pronomine relativo:
+*:'''Sunt''' qui anibas non edunt.
+*:Alii '''sunt''' qui eis fruuntur.
+* ''(cum dat.)'' pertinere, implicari cum vel admisceri:
+*:Nomen Iohannes mihi '''est.'''
+*:Mihi cum feminis viridibus non '''est'''.
+* ''(cum [[ab]])''  servire alicui:
+*: Ab Andria '''est''' ancilla haec.  (Terentius)
+* ''(cum [[ex]])'' consistere in:
+*: Haec potio ex aqua et saccharo est.
+* ''(cum [[pro]])'' favorare aliquem:
+*: '''Sumus''' pro accusatione senatoris.
+
+==={{collatae}}===
+{{synon}}
+#{{la-nx|exsistō}}
+{{colloc}}
+*[[cogito|Cogito]] [[ergo]] '''sum'''
+*:''{{en}}: [[I]] [[think]], [[therefore]] [[I]] '''[[be|am]]'''.''
+*:''{{fi}}: [[ajatella|Ajattelen]], [[siis]] '''[[olla|olen]]'''.''
+*:''{{fr}}: ''[[je|Je]] [[penser|pense]], [[donc]] [[je]] '''[[être|suis]]'''.''
+*:''{{de}}: Ich denke, also '''bin''' ich.''
+*:''{{es}}: Pienso luego '''existo'''.''
+*:''{{it}}: Penso dunque '''[[essere|sono]]'''.''
+*:''{{pt}}: Penso, logo '''existo'''.''
+*[[tigris]] '''est''' [[ferox]]
+*:''{{en}}: [[a]] [[tiger]] '''[[be|is]]''' [[fierce]]''
+
+==={{derivatae}}===
+{{compos}}
+*{{la-nx|absum}}, {{la-nx|abesse}}
+*{{la-nx|adsum}}, {{la-nx|adesse}}
+*{{la-nx|dēsum}}, {{la-nx|dēesse}}
+*{{la-nx|īnsum}}, {{la-nx|inesse}}
+*{{la-nx|intersum}}, {{la-nx|interesse}}
+*{{la-nx|obsum}}, {{la-nx|obesse}}
+*{{la-nx|possum}}, {{la-nx|posse}}
+*{{la-nx|praesum}}, {{la-nx|praeesse}}
+*{{la-nx|prōsum}}, {{la-nx|prōdesse}}
+*{{la-nx|subsum}}, {{la-nx|subesse}}
+*{{la-nx|supersum}}, {{la-nx|superesse}}
+
+==={{trans}}=== <!-- Translationes -->
+{{trans-tab|Exsistere|
+* {{en}}: {{t+|en|be}}, {{t+|en|exist}}
+* {{rup}}: {{t|rup|escu}}
+* {{nl}}: {{t+|nl|zijn}}
+* {{bg}}: {{t+|bg|съм|sc=Cyrl}}
+* {{ro}}: {{t+|ro|fi}}
+* {{eo}}: {{t+|eo|esti}}
+* {{ext}}: {{t|ext|sel}}
+* {{fi}}: {{t+|fi|olla}}
+* {{fr}}: {{t+|fr|être}}
+* {{de}}: {{t+|de|sein}}
+* {{es}}: {{t+|es|estar}}, {{t+|es|haber}}, {{t+|es|ser}}
+* {{ja}}: {{t+|ja|ある|tr=aru|sc=Jpan}}, {{t+|ja| いる|tr=iru|sc=Jpan}}
+* {{is}}: {{t+|is|vera}}
+* {{it}}: {{t+|it|esserci}}
+* {{lad}}: {{t|lad|ser}}
+* {{pt}}: {{t+|pt|estar}}, {{t+|pt|haver}}, {{t+|pt|ter}}
+* {{el}}: {{t+|el|υπάρχω}}
+* {{pl}}: {{t+|pl|być}}
+* {{sl}}: {{t+|sl|biti}}
+* {{sv}}: {{t+|sv|vara}}
+}}
+{{trans-tab|Verbum copulativum|
+* {{en}}: {{t+|en|be}}
+* {{nl}}: {{t+|nl|zijn}}
+* {{eo}}: {{t+|eo|havi}}
+* {{fi}}: {{t+|fi|olla}}
+* {{fr}}: {{t+|fr|être}}
+* {{de}}: {{t+|de|sein}}, {{t+|de|haben}}
+* {{es}}: {{t+|es|ser}}, {{t+|es|estar}}
+* {{ja}}: {{t+|ja|だ|tr=da|sc=Jpan}}
+* {{it}}: {{t+|it|essere}}
+* {{pt}}: {{t+|pt|ser}}, {{t+|pt|estar}}
+* {{el}}: {{t+|el|είμαι}}
+}}
+
+=={{loci|la}}==
+{{chronologia|saec17=[[Benedictus de Spinoza|Spinoza]]}}
+===Latinitas Romana===
+'''saec. VI. a.C.n.'''
+* ''Inscriptio “Duenos”:''
+*:<span dir="rtl">[[ni|𐌍𐌄𐌉]][[tu|𐌕𐌄𐌃]][[in|𐌄𐌍𐌃𐌏]][[cosmis|𐌂𐌏𐌔𐌌𐌉𐌔]][[virgo|𐌖𐌉𐌓𐌂𐌏]]'''𐌔𐌉𐌄𐌃'''</span>
+*:''nei ted endo cosmis virco '''sied'''''
+===Latinitas Nova===
+{{saec17}}
+*Docuit nimirum eosdem experientia, vitia [[sum|fore]] [[donec]] [[homo|homines]]. [[Benedictus de Spinoza|Benedicti de Spinoza]] [[Tractatus Politicus]], Caput I, §2.
+
+{{caput|mul|sum}}
+{{discretiva}}
+*{{nexus-d|en}}
+*{{nexus-d|pl}}
+
+=={{affines}}== <!-- Formae affines -->
+
+[[Categoria:Index Verborum Latinorum Collegii Dickinsonii]]

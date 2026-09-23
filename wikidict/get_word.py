@@ -41,6 +41,11 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
         case "de":
             # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
             code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
+        case "la":
+            # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
+            code = re.sub(r"^\{\{lingua2\|([^|}]+).*", r"=={{-\1-}}==", code, flags=re.MULTILINE)
+            # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
+            code = code.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", count=1)
         case "ja":
             if "{{kanji header" in code:
                 code = f"=={{{{kanji}}}}==\n{code}"

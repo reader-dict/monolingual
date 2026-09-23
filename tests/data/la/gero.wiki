@@ -1,0 +1,176 @@
+{{caput|la|gero}} <!-- {{subst:PAGENAME}} -->
+=={{-lingua-|la|gero}}==
+
+==={{pars|gerō}}===
+==={{appellatio}}=== <!-- Appellatio et syllabificatio -->
+:{{Audio|La-cls-gero.ogg|/ˈgeroː/|{{la-cls-appellatio}}|la|gerō}} <!-- Exemplum Latinum apellationis -->
+:{{syllabae|ge|rō|morph=ger-o}} <!-- Exemplum syllabificationis -->
+
+==={{transitivum|la}}===
+'''gĕr'''|'''ō, -ĕre, gessī, gestum''' <ref name=Forcellini /><ref name=Freund /><ref name=Georges /><ref name=Langenscheidt /><ref name=Olivetti />
+#√ {{la-nx|portō|Portare}}, {{la-nx|ferō|ferre}}.
+#{{la-nx|agō|Agere}}, {{la-nx|faciō|facere}}.
+
+===={{coniugatio}}====
+{{la-coniugatio-3|ger|gess|gest|3plPerfIndAct2=gessēre}}
+
+===={{collatae}}====
+{{compos|5}}
+*{{la-nx|adaggerō}}, {{la-nx|adaggerāre}}
+*{{la-nx|aliēnigerō}}, {{la-nx|aliēnigerāre}}
+*{{la-nx|belligerō}}, {{la-nx|belligerāre}}
+*{{la-nx|circumaggerō}}, {{la-nx|circumaggerāre}}
+*{{la-nx|coaggerō}}, {{la-nx|coaggerāre}}
+*{{la-nx|exaggerō}}, {{la-nx|exaggerāre}}
+*{{la-nx|fāmigerō}}, {{la-nx|fāmigerāre}}
+*{{la-nx|flammigerō}}, {{la-nx|flammigerāre}}
+*{{la-nx|rūmigerō}}, {{la-nx|rūmigerāre}}
+*{{la-nx|superaggerō}}, {{la-nx|superaggerāre}}
+*{{la-nx|verbigerō}}, {{la-nx|verbigerāre}}
+
+===={{derivatae}}====
+*{{la-nx|gerulō}}
+*{{la-nx|gerulus}}
+*{{la-nx|gerundium}}
+*{{la-nx|gestiō|div=sub}}, {{la-nx|gestiōnis}}
+*{{la-nx|gestiō}}, {{la-nx|gestīre}}
+*{{la-nx|gestitō}}, {{la-nx|gestitāre}}
+*{{la-nx|gestō}}, {{la-nx|gestāre}}
+*{{la-nx|gestor}}, {{la-nx|gestrīx}}
+*{{la-nx|gestus|div=sub}}, {{la-nx|gestūs}}
+{{compos|5}}
+*{{la-nx|aggerō}}, {{la-nx|aggere}}
+*{{la-nx|congerō}}, {{la-nx|congere}}
+*{{la-nx|dēgerō}}, {{la-nx|dēgere}}
+*{{la-nx|dīgerō}}, {{la-nx|dīgere}}
+*{{la-nx|ēgerō}}, {{la-nx|ēgere}}
+*{{la-nx|ingerō}}, {{la-nx|ingere}}
+*{{la-nx|intergerō}}, {{la-nx|intergere}}
+*{{la-nx|oggerō}}, {{la-nx|oggere}}
+*{{la-nx|praegerō}}, {{la-nx|praegere}}
+*{{la-nx|prōgerō}}, {{la-nx|prōgere}}
+*{{la-nx|recongerō}}, {{la-nx|recongere}}
+*{{la-nx|regerō}}, {{la-nx|regere}}
+*{{la-nx|suggerō}}, {{la-nx|suggere}}
+*{{la-nx|supergerō}}, {{la-nx|supergere}}
+*{{la-nx|superingerō}}, {{la-nx|superingere}}
+*{{la-nx|trānsgerō}}, {{la-nx|trānsgere}}
+
+{{der5|title=Adiectiva suffixi ''-ger''
+|{{la-nx|armiger}}
+|{{la-nx|astriger}}
+|{{la-nx|auriger}}
+|{{la-nx|belliger}}
+|{{la-nx|barbiger}}
+|{{la-nx|caeliger}}
+|{{la-nx|carniger}}
+|{{la-nx|clāviger}}
+|{{la-nx|cōniger}}
+|{{la-nx|corniger}}
+|{{la-nx|crīniger}}
+|{{la-nx|cristiger}}
+|{{la-nx|ēnsiger}}
+|{{la-nx|falciger}}
+|{{la-nx|fasciger}}
+|{{la-nx|flammiger}}
+|{{la-nx|flōriger}}
+|{{la-nx|flūctiger}}
+|{{la-nx|fraudiger}}
+|{{la-nx|frēniger}}
+|{{la-nx|hamiger}}
+|{{la-nx|hederiger}}
+|{{la-nx|honōriger}}
+|{{la-nx|lāniger}}
+|{{la-nx|lauriger}}
+|{{la-nx|libriger}}
+|{{la-nx|līniger}}
+|{{la-nx|lītiger}}
+|{{la-nx|mundiger}}
+|{{la-nx|naviger}}
+|{{la-nx|palmiger}}
+|{{la-nx|penātiger}}
+|{{la-nx|penniger}}
+|{{la-nx|pharetriger}}
+|{{la-nx|pīniger}}
+|{{la-nx|pinniger}}
+|{{la-nx|pistriger}}
+|{{la-nx|plantiger}}
+|{{la-nx|plēctriger}}
+|{{la-nx|plūmiger}}
+|{{la-nx|rōriger}}
+|{{la-nx|saetiger}}
+|{{la-nx|sagittiger}}
+|{{la-nx|salūtiger}}
+|{{la-nx|scēptriger}}
+|{{la-nx|secūriger}}
+|{{la-nx|serēniger}}
+|{{la-nx|silviger}}
+|{{la-nx|sīstriger}}
+|{{la-nx|somniger}}
+|{{la-nx|spīniger}}
+|{{la-nx|spūmiger}}
+|{{la-nx|squāmiger}}
+|{{la-nx|stēlliger}}
+|{{la-nx|thyrsiger}}
+|{{la-nx|tridentiger}}
+|{{la-nx|triumphiger}}
+|{{la-nx|turriger}}
+|{{la-nx|ūrniger}}
+|{{la-nx|vēliger}}
+}}
+
+===={{trans}}==== <!-- Translationes -->
+{{trans-top|Portare, ferre}}
+* Anglice: {{t+|en|carry}}, {{t+|en|bear}}
+* Batave: {{t+|nl|dragen}}
+{{trans-mid}}
+* Germanice: {{t+|de|tragen}}, {{t+|de|herbeitragen}}
+{{trans-bottom}}
+
+==={{substantivum|la}}=== 
+'''ger'''|'''ō, -ōnis''' ''{{m}}'' <ref name=Freund-2 /><ref name=Georges-2 />
+#Qui gerit.
+
+===={{notatio}}====
+:← {{nexus-d|la|gerō}} ({{la-nx|gerere}})
+
+===={{declinatio}}====
+{{la-declinatio-3|ger|ō|genus=m}}
+
+===={{trans}}==== <!-- Translationes -->
+{{trans-top|Qui gerit}}
+* Anglice: {{t+|en|carrier}}
+* Batave: {{t+|nl|drager|m}}
+* Francogallice: {{t+|fr|porteur|m}}
+{{trans-mid}}
+* Germanice: {{t+|de|Träger|m}}
+{{trans-bottom}}
+
+{{caput|mul|gero}} <!-- {{subst:PAGENAME}} -->
+{{discretiva}}
+*{{nexus-d|eo}}
+*{{nexus-d|id}}
+
+=={{affines}}== <!-- Formae affines -->
+==={{-lingua-|pt}}=== <!-- Divisio Lusitana -->
+
+===={{pars|gero}}====
+====={{proprietates}}=====
+{{=cform=}} <!-- Exemplum Lusitanum coniugationis -->
+{{coniug|pt|gero|gerar|1|sg|praes|ind|act}}
+{{=cfin=}}
+
+====={{appellatio}}===== <!-- Appellatio et syllabificatio -->
+:{{Audio|Pt-gero.ogg|[ˈʒeru]|{{pt-PT-appellatio}}|pt}} <!-- Exemplum Lusitanum apellationis -->
+:{{syllabae|ge|ro|morph=ger-o}} <!-- Exemplum syllabificationis -->
+
+{{fontes|noref=}} <!-- Eventus <ref>…</ref> -->
+<div style="font-size:90%;"><references>
+<ref name=Forcellini>{{Forcellini|II|592|com=“GĔRO, gĕris, gessi, gestum, gĕrere, a. 3.”}}</ref>
+<ref name=Freund>{{Freund|II|27|com=“1. gero, gessi, gestum, 3. v. a.”}}</ref>
+<ref name=Georges>{{Georges|1. gero, gessī, gestum, ere|n=20002402432|tom=1|p=2926}}</ref>
+<ref name=Langenscheidt>{{Langenscheidt|gerere}}</ref>
+<ref name=Olivetti>{{Olivetti|gero}}</ref>
+<ref name=Freund-2>{{Freund|II|29|com=“2. gĕro, onis, m. [1. gero]”}}</ref>
+<ref name=Georges-2>{{Georges|2. gero, ōnis, m. (gero, ere)|n=20002402440|tom=1|p=2928}}</ref>
+</references></div>

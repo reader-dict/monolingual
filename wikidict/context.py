@@ -212,6 +212,16 @@ class Context:
         self.ctx.db_conn.execute(query, (search, replace, like))
         self.ctx.db_conn.commit()
 
+    def cleanup_modules(self, pattern: str, repl: str) -> None:
+        """Clean-up modules names, and redirections."""
+        self.ctx.db_conn.execute(f"""
+            UPDATE pages
+               SET title = REPLACE(title, "{pattern}", "{repl}"),
+                   redirect_to = REPLACE(redirect_to, "{pattern}", "{repl}")
+             WHERE namespace_id = 828
+        """)
+        self.ctx.db_conn.commit()
+
     def cleanup_templates(self, pattern: str, repl: str) -> None:
         """Clean-up template names, and redirections."""
         self.ctx.db_conn.execute(f"""
@@ -365,6 +375,8 @@ def adapt_templates(locale: str) -> None:
             this_ctx.cleanup_templates("termo&#039;a:", "Template:")
         case "ko":
             this_ctx.translate_requires("Module", "모듈")
+        case "la":
+            this_ctx.cleanup_modules("Modulus:", "")
         case "mg":
             this_ctx.cleanup_templates("Modèle:", "")
 

@@ -1,0 +1,47 @@
+{{caput|la|turris}}
+=={{-la-|turris}}==
+[[Image:Burg Rabenstein Tor.jpg|thumb|Turris]]
+
+==={{substantivum|la}}===
+'''turr'''|'''is, -is''' ''{{f}}''
+# Alta domus, palatium, arx
+
+==={{declinatio}}===
+{{la-declinatio-3im|turr|is}}
+
+==={{trans}}===
+{{=sum=}}
+{{en}}
+: {{x|en|tower}}
+{{nl}}
+: {{x|nl|toren|g={{m}}}}
+{{ca}}
+: {{x|ca|torre|g={{f}}}}
+{{eo}}
+: {{x|eo|turo}}
+{{fr}}
+: {{x|fr|tour|g={{f}}}}
+{{de}}
+: {{x|de|Turm|g={{m}}}}
+{{=med=}}
+{{es}}
+: {{x|es|torre|g={{f}}}}
+{{it}}
+: {{x|it|torre|g={{f}}}}
+{{pt}}
+: {{x|pt|torre|g={{f}}}}
+{{nah}}
+: {{x|nah|tlapilkoyan}}
+{{tr}}
+: {{x|tr|kule}}
+{{=ima=}}
+
+=={{affines}}==
+==={{-la-}}===
+===={{proprietates}}====
+*{{decl|la|turris|turris|gen|sg}}
+*{{decl|la|turris|turris|voc|sg}}
+*{{decl|la|turrīs|turris|acc|pl}}
+
+{{DEFAULTSORT:Turris}}
+[[Categoria:Aedificia]]

@@ -1,0 +1,34 @@
+{{caput|la|Gaius Plinius Secundus}}
+{{lingua2|la|Gaius Plinius Secundus}}
+{{exornatio|Plinyelder.jpg|Gaius Plinius Secundus|mag=210px}}
+
+==={{proprium|la}}=== <!-- Nomen proprium Latinum -->
+'''[[Gaius]] [[Plinius]] [[Secundus]]''' ''{{m}}'' 
+#{{la-nx|vir|Vir}} {{la-nx|doctus}}, {{la-nx|scrīptor|scriptor}}, 23 – 79 [[p. Chr. n.]]
+
+==={{opera}}===
+*[[:s:Naturalis Historia|Naturalis historiae libri XXXVII]]
+*De iaculatione equestri liber I (deest)
+*De vita Pomponii Secundi libri II (desunt)
+*Bellorum Germaniae libri XX (desunt)
+*Studiosi libri III (desunt)
+*Dubii sermonis libri VIII (desunt)
+*A fine Aufidi Bassi libri XXXI (desunt)
+
+==={{vide}}===
+*[[:Categoria:Paginae Latinae cum locis a Plinio Maiore conscriptis|Paginae Latinae cum locis a Plinio Maiore conscriptis]].
+*[[w:la:Gaius Plinius Secundus|Gaius Plinius Secundus]] ''apud Vicipediam''.
+*[[s:Scriptor:Gaius Plinius Secundus|Gaius Plinius Secundus]] ''apud Vicifontem''.
+*[[q:la:Gaius Plinius Secundus|Gaius Plinius Secundus]] ''apud Vicicitationem''.
+
+{{loci2|la}} <!-- Verba allata scriptorum / auctorum -->
+{{chronologia|saec1=[[Gaius Plinius Secundus|C. Plinius Secundus]]<br />23–79}}
+{{exempla|Latinitas Romana|
+{{saec1|ca. 78 p.C.n.}}
+*De longitudine ac latitudine haec sunt, quae digna memoratu putem. {{cc=|universum}} autem circuitum Eratosthenes, in omnium quidem litterarum subtilitate, {{c=|s|d=set}}et in hac utique praeter ceteros solers, quem cunctis probari video, CCLII milium stadiorum prodidit, quae mensura Romana conputatione efficit trecentiens quindeciens centena milia passuum: inprobum ausum, verum ita subtili argumentatione conprehensum, ut pudeat non credere. Hipparchus, et in coarguendo eo et in reliqua omni diligentia mirus, adicit stadiorum paulo minus {{Miliens|XXVI}}. —''Naturalis historia'' [[Gaius Plinius Secundus|Plinii]] <ref name=Plinius>{{Plinius|2|112|247|com=universum}}</ref>
+}}
+
+{{fontes|noref=|ref= <!-- Eventus <ref>…</ref> -->
+}}
+[[Categoria:Nomina Latina hominum]]
+[[Categoria:Scriptores]]

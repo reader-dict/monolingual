@@ -1,0 +1,25 @@
+{{caput|la|Sugo}}
+=={{-la-|Sugo}}== 
+==={{int:wikt-notatio}}===
+[[Categoria:Radice sūg|Sugo]]
+:&larr; Protindeuropaee ''*sūg-''
+
+Cognata est vox Anglica {{cito|en|suck}}. 
+
+==={{int:wikt-verbum-tr}}=== 
+'''sūg'''|'''ō, -ĕre, suxī, suctum'''
+# Imbibere liquidum per os trahendo, ut per [[mamma]]m.
+
+==={{int:wikt-coniugatio}}=== 
+{{coniugatio-3|sug|sūg|sux|sux|suct|suct}}
+
+==={{int:wikt-trans}}===
+
+{{en}}
+: {{x|en|suck}}
+
+{{fr}}
+: {{x|fr|sucer}}
+
+{{de}}
+: {{x|de|saugen}}

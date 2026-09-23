@@ -190,6 +190,11 @@ def process(file: Path, locale: str) -> bool:
             case "de":
                 # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
                 body = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
+            case "la":
+                # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
+                body = re.sub(r"^\{\{lingua2\|([^|}]+).*", r"=={{-\1-}}==", body, flags=re.MULTILINE)
+                # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
+                body = body.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", count=1)
             case "pl":
                 # `== piękny ({{język polski}}) ==` → `==polski==`
                 body = re.sub(r"^==[ ]*.*\(\{\{język ([^}]+)\}\}\)[ ]*==", r"==\1==", body, flags=re.MULTILINE)

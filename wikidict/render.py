@@ -88,6 +88,7 @@ POS_SYNONYMS = [
     ("it", "Sinonimi"),
     ("ja", "類義語"),
     ("ko", "유의어"),
+    ("la", "Synonyma"),
     ("lt", "Sinonimai"),
     ("mg", "Dika-Mitovy"),
     ("nl", "Synoniemen"),
@@ -362,6 +363,8 @@ def find_etymology(
             items = get_items(("#", r"\*"))
         case "jbo":
             items = get_items(("",), skip=("===vlakra", "=== vlakra"))
+        case "la":
+            items = [line for line in parsed_section.contents.splitlines() if not line.startswith((":", "*"))]
         case "mg":
             items = []
             for line in parsed_section.contents.splitlines():
@@ -433,13 +436,19 @@ def find_etymology(
     return etyms  # type: ignore[return-value]
 
 
-def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_dst: str) -> list[str]:
+def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_dst: str, word: str) -> list[str]:
     """Find pronunciations."""
     results = []
     func = lang.find_pronunciations[lang_src]
+
+    args = [lang_dst]
+    if lang_src == "la":
+        args.append(word)
+
     for top_section in top_sections:
-        if result := func(top_section.contents, lang_dst):
+        if result := func(top_section.contents, *args):
             results.extend(result)
+
     return utils.unique(results)
 
 
@@ -728,7 +737,7 @@ def parse_word(
         )
 
     if definitions or force:
-        for pron in (prons := _find_pronunciations(top_sections, lang_src, lang_dst)).copy():
+        for pron in (prons := _find_pronunciations(top_sections, lang_src, lang_dst, word)).copy():
             if "{{" in pron:
                 log.warning("Malformed pronunciation in %r: %r", word, pron)
                 prons.remove(pron)
