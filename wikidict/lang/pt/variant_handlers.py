@@ -5,7 +5,7 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    cleaned = utils.cleanup_rev_variant(form, rpl={"não "}, skip={"plural", "singular", "subjuntivo"})
+    cleaned = utils.cleanup_rev_variant(form, rpl=["não "], skip={"plural", "singular", "subjuntivo"})
     if "''" in cleaned or "=" in cleaned:
         return ""
     return cleaned

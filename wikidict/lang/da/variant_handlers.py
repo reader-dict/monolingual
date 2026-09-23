@@ -14,7 +14,7 @@ def cleanup(form: str) -> str:
     return utils.cleanup_rev_variant(
         form,
         skip={"akkusativ", "bestemt", "dativ", "genitiv", "nominativ", "ubestemt"},
-        rpl={"(de) ", "(den) "},
+        rpl=["(de) ", "(den) "],
     )
 
 

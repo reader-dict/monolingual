@@ -11,7 +11,7 @@ def cleanup(form: str) -> str:
     """
     return utils.cleanup_rev_variant(
         form,
-        rpl={"najbardziej ", "bardziej ", " się"},
+        rpl=["najbardziej ", "bardziej ", " się"],
     )
 
 

@@ -1250,7 +1250,7 @@ def remove_parens(text: str) -> str:
     return text
 
 
-def cleanup_rev_variant(form: str, *, rpl: set[str] | None = None, skip: set[str] | None = None) -> str:
+def cleanup_rev_variant(form: str, *, rpl: list[str] | None = None, skip: set[str] | None = None) -> str:
     """
     >>> cleanup_rev_variant("mot (Français)")
     'mot'

@@ -7,7 +7,7 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, rpl={"haber "})
+    return utils.cleanup_rev_variant(form, rpl=["haber "])
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:

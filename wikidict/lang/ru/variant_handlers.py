@@ -16,7 +16,7 @@ def cleanup(form: str) -> str:
     >>> cleanup("торосья<sup>△</sup>")
     'торосья'
     """
-    return strip_accents(utils.cleanup_rev_variant(form, rpl={"&#42;", " ''(уст.)''", " ''(перен.)''", "<sup>△</sup>"}))
+    return strip_accents(utils.cleanup_rev_variant(form, rpl=["&#42;", " ''(уст.)''", " ''(перен.)''", "<sup>△</sup>"]))
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:

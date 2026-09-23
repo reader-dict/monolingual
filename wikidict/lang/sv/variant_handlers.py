@@ -5,7 +5,7 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, rpl={"(av)", "(?)"})
+    return utils.cleanup_rev_variant(form, rpl=["(av)", "(?)"])
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:

@@ -17,7 +17,7 @@ def cleanup(form: str) -> str:
     cleaned = strip_accents(
         utils.cleanup_rev_variant(
             form,
-            rpl={"*", "&#160;", "&#32;", "на/у ", "буду/будеш… "},
+            rpl=["*", "&#160;", "&#32;", "на/у ", "буду/будеш… "],
             skip={"на/в"},
         )
     )
