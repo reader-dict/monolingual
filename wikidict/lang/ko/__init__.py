@@ -10,7 +10,7 @@ module_trans = "모듈"
 template_trans = "틀"
 
 head_sections = ("한국어", "국제")
-section_sublevels = (4, 3)
+section_sublevels = (3, 4)
 sections = (
     # https://ko.wiktionary.org/w/index.php?title=모듈:headword/data&oldid=4480618#L-41
     "형용사",  # adjectives

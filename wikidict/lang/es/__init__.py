@@ -14,7 +14,7 @@ module_trans = "Módulo"
 template_trans = "Plantilla"
 
 head_sections = ("{{lengua|es}}",)
-section_sublevels = (4, 3)
+section_sublevels = (3, 4)
 etyl_section = ("etimología", "etimología 1")
 sections = (
     *etyl_section,

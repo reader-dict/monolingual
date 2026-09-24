@@ -23,7 +23,7 @@ head_sections = (
     "記号",  # symbol
 )
 section_patterns = ("#", r"\*")
-section_sublevels = (5, 4, 3)
+section_sublevels = (3, 4, 5)
 etyl_section = ("{{etym}}", "字源")
 sections = (
     *etyl_section,

@@ -15,7 +15,7 @@ head_sections = (
     "跨語言",  # Translingual
 )
 etyl_section = ("词源", "詞源", *[f"词源 {idx}" for idx in range(1, 20)])
-section_sublevels = (4, 3)
+section_sublevels = (3, 4)
 sections = (
     *etyl_section,
     # https://zh.wiktionary.org/w/index.php?title=Module:Headword/data&oldid=9239080#L-41
