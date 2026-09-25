@@ -114,7 +114,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("", "pt")
     []
     >>> find_genders("{{oxítona|ca|brum}}, {{mf}}", "pt")
-    ['mf']
+    ['f', 'm']
     >>> find_genders("'''COPOM''', {{m}}", "pt")
     ['m']
     >>> find_genders("{{oxítona|ta|tu}}, {{gramática|f}}", "pt")
@@ -124,15 +124,15 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{oxítona|ta|tu}}, {{g|c}}", "pt")
     ['c']
     >>> find_genders("{{paroxítona|pau|lis|ta}}, {{c2g}}", "pt")
-    ['mf']
+    ['f', 'm']
     >>> find_genders("{{paroxítona|pau|lis|ta}}, {{gramática|2g}}", "pt")
-    ['mf']
+    ['f', 'm']
     >>> find_genders("'''ANTT''', {{gramática|f}}\n'''ANTT''', {{gramática|m}}", "pt")
-    ['mf']
+    ['f', 'm']
     >>> find_genders("{{paroxítona|an|go|la}} {{gramática|2g}}\n{{paroxítona|an|go|la}} {{gramática|m}}\n{{paroxítona|an|go|la}} {{gramática|f}}", "pt")
-    ['mf']
+    ['f', 'm']
     >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", "pt")
-    ['mf']
+    ['f', 'm']
     """
     pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?([fmc2g]+)\}")
     res: set[str] = set()
@@ -143,10 +143,6 @@ def find_genders(code: str, locale: str) -> list[str]:
             res.add("c")
         else:
             res.add(gender)
-    if "f" in res and "m" in res:
-        res.add("mf")
-        res.discard("f")
-        res.discard("m")
     return utils.unique(sorted(res))
 
 

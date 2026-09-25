@@ -147,7 +147,7 @@ def setup_lua_ctx() -> None:
             [],
             ["Do latim <i>caprunu</i>&nbsp;“cabra”."],
             {
-                "Adjetivo|mf.": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
+                "Adjetivo|f./m.": ["(Pecuária) de cabras:", "(Brasil) marido de mulher adúltera"],
                 "Interjeição": ["indica estrondo"],
                 "Sinónimo": ["caprídeo", "caprino"],
             },
@@ -359,11 +359,11 @@ def setup_lua_ctx() -> None:
             ["BR: /paw.ˈlis.tə/"],
             [],
             {
-                "Adjetivo|mf.": [
+                "Adjetivo|f./m.": [
                     "diz-se de pessoa de origem do Estado de São Paulo, Brasil",
                     "diz-se de artigo ou objeto do Estado de São Paulo",
                 ],
-                "Substantivo|mf.": [
+                "Substantivo|f./m.": [
                     "pessoa de origem do Estado de São Paulo, Brasil",
                     "artigo ou objeto do Estado de São Paulo",
                 ],
