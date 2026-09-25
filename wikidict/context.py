@@ -240,13 +240,13 @@ class Context:
         query = "SELECT title, redirect_to FROM pages WHERE namespace_id = 0 AND redirect_to IS NOT NULL"
         yield from self.ctx.db_conn.execute(query)
 
-    def clear_errors(self) -> None:
-        """It might be desired to be able to purge the errors list."""
-        self.ctx.errors.clear()
-
-    def get_errors(self) -> list[str]:
+    def get_and_clean_errors(self) -> list[str]:
         everything = self.ctx.to_return()
-        return [error["msg"] for error in everything["errors"]] + [error["msg"] for error in everything["wiki_notices"]]
+        errors = [error["msg"] for error in everything["errors"]] + [
+            error["msg"] for error in everything["wiki_notices"]
+        ]
+        self.ctx.errors.clear()
+        return errors
 
     def get_word(self, title: str) -> str:
         query = "SELECT body FROM pages WHERE namespace_id = 0 AND title = ?"
@@ -308,12 +308,8 @@ def reset(locale: str, *, db_already_setup: bool = True) -> bool:
     return setup_modules_db(locale, db_already_setup=db_already_setup)
 
 
-def clear_errors() -> None:
-    get_ctx().clear_errors()
-
-
-def get_errors() -> list[str]:
-    return get_ctx().get_errors()
+def get_then_clear_errors() -> list[str]:
+    return get_ctx().get_and_clean_errors()
 
 
 def get_word(title: str) -> str:
@@ -334,12 +330,7 @@ def new_word(word: str) -> None:
 
 def expand(wikitext: str, locale: str, *, skip_cache: bool = False) -> str:
     ctx = get_ctx()
-    expanded = ctx.expand(wikitext, locale, skip_cache=skip_cache)
-
-    if locale == "tr" and "too deep recursion" in expanded:
-        ctx.clear_errors()
-
-    return expanded
+    return ctx.expand(wikitext, locale, skip_cache=skip_cache)
 
 
 def adapt_templates(locale: str) -> None:

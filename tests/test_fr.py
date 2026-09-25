@@ -531,3 +531,5 @@ def test_parse_word(
     assert etymology == details.etymology
     assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
+
+    assert not context.get_then_clear_errors()

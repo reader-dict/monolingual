@@ -143,3 +143,5 @@ def test_parse_word(
     assert OrderedDict(definitions) == details.definitions
     assert etymology == details.etymology
     assert variants == details.variants
+
+    assert not context.get_then_clear_errors()

@@ -495,6 +495,8 @@ def test_parse_word(
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
 
+    assert not context.get_then_clear_errors()
+
 
 def test_skip_variant(page: Callable[[str, str], str]) -> None:
     word = "informatikos"

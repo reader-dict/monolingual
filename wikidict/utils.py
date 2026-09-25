@@ -1059,7 +1059,7 @@ def process_templates(
 
     # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
     if not KEEP_UNFINISHED and (
-        bool(context.get_errors())
+        bool(context.get_then_clear_errors())
         or f":{lang.module_trans[locale]}:" in text
         or f":{lang.template_trans[locale]}:" in text
         or "{{" in text
@@ -1069,6 +1069,7 @@ def process_templates(
         or "<h3>" in text
         or "#ifeq:" in text
         or (locale.endswith("la") and "⧼wikt" in text)
+        or (locale.endswith("tr") and "too deep recursion" in text)
     ):
         if templates_status is not None:
             templates_status.append((word, "skipped"))

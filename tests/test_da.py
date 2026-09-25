@@ -234,6 +234,8 @@ def test_parse_word(
     assert variants == details.variants
     assert reverse_variants == details.reverse_variants
 
+    assert not context.get_then_clear_errors()
+
 
 @pytest.mark.parametrize(
     "word, wikitext, forms",
