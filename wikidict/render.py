@@ -158,11 +158,11 @@ def es_replace_defs_list_with_numbered_lists(
     lst: wtp.WikiList,
     *,
     regex_item: re.Pattern[str] = re.compile(
-        r"(^|\\n);\d+[ |:]+",  # `;1:`
+        r"(^|\\n);\d++[ |:]++",  # `;1:`
         flags=re.MULTILINE,
     ),
     regex_subitem: re.Pattern[str] = re.compile(
-        r"(^|\\n):;\s*[a-z]:+\s+",  # `:;a:`
+        r"(^|\\n):;\s*+[a-z]:++\s++",  # `:;a:`
         flags=re.MULTILINE,
     ),
 ) -> str:
@@ -544,7 +544,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
             title = title.strip("'")
 
         if lang_src == "de" and section.level == 3:
-            current_pos = "/".join(re.findall(r"\{\{\w+\|([^|}]+)", title)) or current_pos
+            current_pos = "/".join(re.findall(r"\{\{\w++\|([^|}]++)", title)) or current_pos
             continue
 
         # Filter on interesting sections
@@ -580,7 +580,7 @@ def add_potential_variant(
     locale: str,
     variants: list[str],
     *,
-    repl: Callable[[str, str], str] = re.compile(r"(</?[^>]+>)").sub,
+    repl: Callable[[str, str], str] = re.compile(r"(</?[^>]++>)").sub,
     is_reverse_variant: bool = False,
 ) -> None:
     """
@@ -627,7 +627,7 @@ def add_potential_variant(
             any(char in variant_cleaned for char in "<>|={}")
             or any(char in variant_cleaned for char in "()")
             and all(char not in word for char in "()")
-            and not (locale == "nl" and re.findall(r"\b\(I*\)\b", variant_cleaned))
+            and not (locale == "nl" and re.search(r"\b\(I*+\)\b", variant_cleaned))
         ):
             kind = "variant"
             if is_reverse_variant:
@@ -928,7 +928,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
             return any(hs in wikicode for hs in lang.head_sections[lang_dst])
     else:
         has_interesting_sections = re.compile(
-            rf"^={{{lang.section_level[lang_dst]}}}[ ]*({'|'.join(hs.replace('{', r'\{').replace('|', r'\|') for hs in lang.head_sections[lang_dst])})",
+            rf"^={{{lang.section_level[lang_dst]}}}[ ]*+(?:{'|'.join(re.escape(hs) for hs in lang.head_sections[lang_dst])})",
             flags=re.IGNORECASE | re.MULTILINE,
         ).search  # type: ignore[assignment]
 

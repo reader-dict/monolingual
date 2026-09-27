@@ -2,7 +2,7 @@
 
 import re
 
-from ... import lang, utils
+from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -67,7 +67,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['ж']
     """
     # https://ru.wiktionary.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D1%81%D1%83%D1%89-ru
-    pattern: re.Pattern[str] = re.compile(rf"(?:\{{сущ.{locale}.)([fmnмжс])|(?:\{{сущ.{locale}.*\|)([fmnмжс])")
+    pattern: re.Pattern[str] = re.compile(rf"\{{сущ.{locale}.[^\}}\n]*?(?:[^\}}\n|]++\|)?([fmnмжс])")
     return utils.unique(
         [
             {
@@ -96,20 +96,18 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{transcription-ru|ка́жется|Ru-кажется.ogg}}", "ru")
     ['[ˈkaʐɨt͡sə]']
     """
-    from ... import context
-
     lines: list[str] = []
-    for tpl in re.findall(rf"(\{{\{{transcriptions?-{locale}[^}}]+}}}})", code):
+    for tpl in re.findall(rf"\{{\{{transcriptions?-{locale}[^}}\n]*+}}}}", code):
         new_lines = context.expand(tpl, "ru").splitlines()
         for line in lines:
-            if prons := re.findall(r"ед.&nbsp;ч.&nbsp;&#91;([^&]+)&#93;", line):
-                return [f"[{prons[0]}]"]
+            if pron := re.search(r"ед\.&nbsp;ч\.&nbsp;&#91;([^&]++)&#93;", line):
+                return [f"[{pron[1]}]"]
         lines.extend(new_lines)
 
     # Nothing found, lets pick the first result
     for line in lines:
-        if prons := re.findall(r"&#91;([^&]+)&#93;", line):
-            return [f"[{prons[0]}]"]
+        if pron := re.search(r"&#91;([^&]++)&#93;", line):
+            return [f"[{pron[1]}]"]
 
     return []
 
@@ -192,17 +190,17 @@ def adjust_wikicode(
 
     # `= {{-ru-|nocat}} =\n{{Форма-гл...` → `= {{-ru-|nocat}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
     code = re.sub(
-        r"(^=[ ]*\{\{-ru-\|nocat\}\}[ ]*=)\n(\{\{Форма-.+)",
-        r"\1\n=== Морфологические и синтаксические свойства ===\n\2",
+        r"(^=[ ]*+\{\{-ru-\|nocat\}\}[ ]*+=\n)(\{\{Форма-[^\n]++)",
+        r"\1=== Морфологические и синтаксические свойства ===\n\2",
         code,
-        flags=re.DOTALL | re.MULTILINE,
+        flags=re.MULTILINE,
     )
 
     # Delete empty synonyms
-    code = re.sub(r"^#[ ]*(?:—|-|\?)[ ]*$", "", code, flags=re.MULTILINE)
+    code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
 
     # Remove `{{etym-lang|...}}`
-    code = re.sub(r"\{\{etym-lang\|.+}$", "", code, flags=re.MULTILINE)
+    code = re.sub(r"\{\{etym-lang\|[^\n]++", "", code, flags=re.MULTILINE)
 
     #
     # Reverse variants

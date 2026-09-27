@@ -111,7 +111,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{g|m}}", "eo")
     ['m']
     """
-    pattern = re.compile(r"{g\|(\w+)")
+    pattern = re.compile(r"\{\{g\|(\w++)")
     return utils.unique(pattern.findall(code))
 
 
@@ -137,13 +137,13 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['ˈbɛʁɡŋ̩']
     """
     if prons := [
-        utils.process_templates("", match.rstrip("."), locale) for match in re.findall(r"\{\{PRON\|`([^`]+)`", code)
+        utils.process_templates("", match.rstrip("."), locale) for match in re.findall(r"\{\{PRON\|`([^`]++)`", code)
     ]:
         return prons
 
     return [
         utils.process_templates("", match.rstrip(".").split("|")[-1], locale)
-        for match in re.findall(r"\{\{IFA\|([^}]+)}}", code)
+        for match in re.findall(r"\{\{IFA\|([^}]++)}}", code)
     ]
 
 
@@ -190,7 +190,7 @@ def adjust_wikicode(
     )
     for line in code.splitlines():
         if line.startswith(("{{", "=")):
-            in_unwanted_section = bool(re.search(rf"^[= ]*(?:{'|'.join(unwanted)})", line, flags=re.MULTILINE))
+            in_unwanted_section = bool(re.search(rf"^[= ]*+(?:{'|'.join(unwanted)})", line, flags=re.MULTILINE))
         if not in_unwanted_section:
             cleaned.append(line)
     code = "\n".join(cleaned)
@@ -220,10 +220,10 @@ def adjust_wikicode(
 
     # {{xxx}} → ==== {{xxx}} ====
     # {{xx-x}} → ==== {{xx-x}} ====
-    code = re.sub(r"^(\{\{[\w\-]+\}\})", r"==== \1 ====", code, flags=re.MULTILINE)
+    code = re.sub(r"^(\{\{[\w\-]++\}\})", r"==== \1 ====", code, flags=re.MULTILINE)
 
     # Easier pronunciation
-    code = re.sub(r"==== {{Vorterseparo}} ====\s*:(.+)\s*", r"\n{{PRON|`\1`}}\n", code, flags=re.MULTILINE)
+    code = re.sub(r"==== {{Vorterseparo}} ====\s*+:(.+)\s*+", r"\n{{PRON|`\1`}}\n", code, flags=re.MULTILINE)
 
     #
     # Reverse variants

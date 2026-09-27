@@ -54,7 +54,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{Pn}} ''m sing''", "it")
     ['m']
     """
-    pattern = re.compile(r"{{Pn\|?w?}} ''([fm])[singvol ]*''")
+    pattern = re.compile(r"\{\{Pn\|?w?\}\} ''([fm])[singvol ]*+''")
     return utils.unique(pattern.findall(code))
 
 
@@ -67,8 +67,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|/əˈtʃì:vəb<sup>lə</sup>/}}", "it")
     ['/əˈtʃì:vəb<sup>lə</sup>/']
     """
-    pattern = re.compile(r"{IPA\|(/(.+)/)}")
-    return [prons[0][0]] if (prons := pattern.findall(code)) else []
+    pattern = re.compile(r"\{\{IPA\|(/(.+)/)\}\}")
+    return [pron[1]] if (pron := pattern.search(code)) else []
 
 
 START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
@@ -76,10 +76,10 @@ PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
     # gerundio presente di [[abalienare]
-    r".+(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]+)",
+    r".+?(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]++)",
     # participio presente di [[amare]]
     # participio passato di [[amare]]
-    r"participio (?:passato|presente)[^\n]+di \[\[([^#\]]+)",
+    r"participio (?:passato|presente)[^\n]+di \[\[([^#\]]++)",
 ]
 
 
@@ -134,7 +134,7 @@ def adjust_wikicode(
     """
 
     # [[en:foo]] → ''
-    code = re.sub(r"(\[\[\w+:\w+\]\])", "", code)
+    code = re.sub(r"(\[\[\w++:\w++\]\])", "", code)
 
     # {{-verb form-}} → === {{verb form}} ===
     code = re.sub(r"^\{\{-(.+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
@@ -143,10 +143,10 @@ def adjust_wikicode(
     code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-|ANY}} → === {{avv|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(.+)-\|(\w++)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-}} → === {{avv}} ===
-    code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(\w++)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # [[w:A|B]] → [[A|B]]
     code = code.replace("[[w:", "[[")

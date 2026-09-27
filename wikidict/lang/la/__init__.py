@@ -146,13 +146,13 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     prons = []
     for line in lines:
         expanded = context.expand(line, LANG)
-        expanded = re.sub("<[^>]+>", "", expanded)
+        expanded = re.sub(r"<[^>]++>", "", expanded)
         if expanded.startswith(":[[Auxilium"):
             continue
 
         expanded = expanded.split(" ", 1)[1].strip()
         sep_start, sep_end = ("/", "/") if expanded[0] == "/" else (r"\[", r"\]")
-        if not (pronunciations := re.findall(rf"{sep_start}([^{sep_end}]+){sep_end}", expanded)):
+        if not (pronunciations := re.findall(rf"{sep_start}([^{sep_end}]++){sep_end}", expanded)):
             continue
 
         pron = pronunciations[0]
@@ -211,7 +211,7 @@ def adjust_wikicode(
             if line == "==={{int:wikt-affines}}===":
                 in_section = True
             if in_section and line.startswith("*"):
-                line = re.sub(r".+\[\[([^\]]+).+", r"# {{flexion|\1}}", line)
+                line = re.sub(r".*?\[\[([^\]]++).+", r"# {{flexion|\1}}", line)
             lines.append(line)
         code = "\n".join(lines)
 
@@ -242,7 +242,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+\}}\}})"
+        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
         lines.clear()
 
         # Drop the collapsable tables template (`{{collabi|{{la-declinatio-comp|amāri|or}}|caput=''amarus'' comparativus}}`)

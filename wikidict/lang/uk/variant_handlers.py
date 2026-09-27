@@ -73,7 +73,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         parts.append(parts[0])
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "uk")
-    table = re.sub(r'^<td.*bgcolor="#ffffff"[^>]*>([^<]+)</td>', r"| \1", table, flags=re.MULTILINE)
+    table = re.sub(r"^<td[^>]*?bgcolor=\"#ffffff\"[^>]*+>([^<]++)</td>", r"| \1", table, flags=re.MULTILINE)
     table = "\n".join(
         line
         for raw_line in table.splitlines()
@@ -86,10 +86,10 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             and "#eef9ff" not in line
         )
     )
-    table = re.sub(r"^\|.*declension-white[^|]*", "", table, flags=re.MULTILINE)
-    table = re.sub(r"^\|.*bgcolor=.*$", "", table, flags=re.MULTILINE)
+    table = re.sub(r"^\|[^|]*?declension-white[^|]*+", "", table, flags=re.MULTILINE)
+    table = re.sub(r"^\|[^\n]*?bgcolor=.*+$", "", table, flags=re.MULTILINE)
     table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ").replace("<br />", "\n| ").replace(" | ", "\n| ")
-    table = re.sub(r"^\|[ ]*\[\[([^|#]+)\|.+", r"| \1", table, flags=re.MULTILINE)
+    table = re.sub(r"^\|[ ]*+\[\[([^|#]++)\|.++", r"| \1", table, flags=re.MULTILINE)
 
     forms = {form[1:].strip() for form in table.splitlines() if form and "[[" not in form}
     for form in forms.copy():

@@ -326,7 +326,7 @@ def setup_lua_ctx() -> None:
             "éperon",
             ["\\e.pʁɔ̃\\"],
             [
-                "De l’ancien français <i>esperon</i>, du vieux-francique <i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
+                "De l’ancien français <i>esperon</i>, du vieux-francique *<i>sporo</i>\xa0; apparenté notamment, dans les langues germaniques, à l’allemand <i>Sporn</i>, l’anglais <i>spur</i>, le néerlandais <i>spoor</i> et le suédois <i>sporre</i>."
             ],
             {
                 "Nom|m.": [

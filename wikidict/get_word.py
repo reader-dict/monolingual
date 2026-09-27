@@ -6,8 +6,9 @@ import os
 import re
 import sys
 
+from wikidict.parse import preprocess
+
 from . import constants, context, utils
-from .lang.da.langs import langs as langs_da
 from .render import parse_word, render_word
 from .stubs import Word, Words
 
@@ -29,43 +30,7 @@ def get_word(word: str, locale: str, *, templates_status: list[tuple[str, str]] 
 
     # Header section adjustments may be required to search for specific locale
     lang_src, _ = utils.guess_locales(locale, use_log=False)
-    match lang_src:
-        case "da":
-            # `{{=da=}}` → `=={{da}}==`
-            code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
-
-            # Transform sub-locales into their own section to prevent mixing stuff
-            # `{{-da-}}` → `=={{da}}==`
-            # `{{-mul-}}` → `=={{mul}}==`
-            code = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
-        case "de":
-            # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
-            code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
-        case "la":
-            # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
-            code = re.sub(r"^\{\{lingua2\|([^|}]+).*", r"=={{-\1-}}==", code, flags=re.MULTILINE)
-            # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
-            code = code.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", count=1)
-        case "ja":
-            if "{{kanji header" in code:
-                code = f"=={{{{kanji}}}}==\n{code}"
-        case "nl":
-            # `{{=nld=}}` → `=={{nld}}==`
-            code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
-        case "pl":
-            # `== piękny ({{język polski}}) ==` → `==polski==`
-            code = re.sub(r"^==[ ]*.*\(\{\{język ([^}]+)\}\}\)[ ]*==", r"==\1==", code, flags=re.MULTILINE)
-            # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
-            code = re.sub(r"^==[ ]*.*\(\{\{użycie ([^}]+)\}\}\)[ ]*==", r"==\1==", code, flags=re.MULTILINE)
-        case "ru":
-            # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
-            code = re.sub(r"^=[ ]*\{\{(-\w+-)\|[^}]+\}\}[ ]*=", r"={{\1}}=", code, flags=re.MULTILINE)
-        case "uk":
-            # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
-            code = re.sub(r"^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}", r"=\1=", code, flags=re.MULTILINE)
-
-            # `{{=uk=}}` → `=uk=`
-            code = re.sub(r"^\{\{=(\w+)=\}\}", r"=\1=", code, flags=re.MULTILINE)
+    code = preprocess(lang_src, code)
 
     if not context.setup_modules_db(locale):
         sys.exit(1)

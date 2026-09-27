@@ -66,8 +66,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             for raw_line in table.splitlines()
             if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith(("|-", "|}")))
         )
-        table = re.sub(r'^\| class="grey".+$', "", table, flags=re.MULTILINE)
-        table = re.sub(r"^\|\}<b>.+$", "", table, flags=re.MULTILINE)
+        table = re.sub(r'^\| class="grey"[^\n]++', "", table, flags=re.MULTILINE)
+        table = re.sub(r"^\|\}[ ]*+<b>[^\n]++", "", table, flags=re.MULTILINE)
         table = (
             table.replace("<br>", "\n| ")
             .replace("<br/>", "\n| ")
@@ -75,11 +75,11 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             .replace("||", "\n| ")
             .replace("(по) ", "\n| ")
         )
-        table = re.sub(r'^\|[ ]*bgcolor="[^|]+', "", table, flags=re.MULTILINE)
+        table = re.sub(r'^\|[ ]*+bgcolor="[^|\n]++', "", table, flags=re.MULTILINE)
         forms = {form[1:].strip() for form in table.splitlines()}
     else:
         table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
-        forms = set(re.findall(r"<td>([^<]+)</td>", table))
+        forms = set(re.findall(r"<td>([^<]++)</td>", table))
 
     if not forms:
         return ""

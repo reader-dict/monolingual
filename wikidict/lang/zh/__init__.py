@@ -158,15 +158,15 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     from wikidict import context
 
     res: set[str] = set()
-    pattern = r"\[\[[^#]+#官話\|([^\]]+)\]\]"
-    for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]+}}}})", code):
-        if prons := re.findall(pattern, context.expand(tpl, "zh")):
-            res.add(prons[0])
+    pattern = r"\[\[[^#]++#官話\|([^\]]++)\]\]"
+    for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]++}}}})", code):
+        if pron := re.search(pattern, context.expand(tpl, "zh")):
+            res.add(pron[1])
     return sorted(f"/{pron}/" for pron in res)
 
 
 # Example: 興{xīng}
-HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\[?\p{Han}\]?)(\{[^{}]+\})")
+HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\[?\p{Han}\]?)(\{[^{}]++\})")
 # Example: -{适}-
 HAN_SURROUNDED_BY_BRACKETS = regex.compile(r"-\{\p{Han}\}-")
 
@@ -205,7 +205,7 @@ def adjust_wikicode(
     # `{{zh-pron...` → `# {{zh-pron...`
     code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
     # `# {{zh-pron\n|...` → `# {{zh-pron|...`
-    code = re.sub(r"^(# \{\{zh-pron.*?\}\})", lambda m: m[0].replace("\n", ""), code, flags=re.DOTALL | re.MULTILINE)
+    code = re.sub(r"^# \{\{zh-pron[^\}]*+\}\}", lambda m: m[0].replace("\n", ""), code, flags=re.MULTILINE)
 
     # `; '''限定代詞'''` → `:: 限定代詞`
     # `;限定代詞` → `:: 限定代詞`

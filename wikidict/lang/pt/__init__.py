@@ -134,7 +134,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", "pt")
     ['f', 'm']
     """
-    pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?([fmc2g]+)\}")
+    pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?+([fmc2g]++)\}")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if gender in ("2g", "c2g", "mf", "fm"):
@@ -191,32 +191,32 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         if (
             kind
             and not pronunciations[kind]
-            and (prons := re.findall(r"/([^/]+)/", line) or re.findall(r"\{AFI\|\[([^\]]+)\]", line))
+            and (pron := re.search(r"/([^/]++)/", line) or re.search(r"\{AFI\|\[([^\]]++)\]", line))
         ):
-            pron = prons[0].replace("''", "")
+            pron = pron[1].replace("''", "")  # type: ignore[assignment]
             pronunciations[kind] = f"/{pron}/"
 
     # `reverse=True` because we want "PT" first, then "BR"
     return sorted((f"{kind}: {pron}" for kind, pron in pronunciations.items() if pron), reverse=True)
 
 
-START = rf"^(?:{'|'.join(section_patterns)})\s*"
+START = rf"^(?:{'|'.join(section_patterns)})\s*+"
 PATTERNS = [
     # [[plural]] [[de]] '''[[anão]]'''
     # plural de [[anão]]
     # feminino plural de [[anão]]
     # plural de '''[[úlcera#{{pt}}|úlcera]]'''
-    r"\[*(?:feminino)?\s*plural.+'*\[\[([^#\]]+)",
+    r"\[*(?:feminino)?\s*+plural(?:\]\])?\s*+(?:(?:\[\[)?de(?:\]\])?\s*+)?+'*+\[\[([^#\]]+)",
     # {{f}} de [[objetivo]]
-    r"\{\{f\}\} de \[\[([^\]]+)+\]",
+    r"\{\{f\}\}\s*+de\s*+\[\[([^\]]++)\]",
     # feminino de '''[[frito#Português|frito]]'''
-    r"feminino de '*\[\[([^#\]]+)",
+    r"feminino\s*+de\s*+'*+\[\[([^#\]]++)",
     # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
     # [[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''
     # [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''
     r"\[?\[?.+ (?:da|do).+do.+do \[*verbo\]* '*\[*([^'#\]]+)",
     # [[particípio]] do verbo '''[[abotecar]]'''
-    r"\[?\[?(?:gerúndio|particípio)\]?\]? do \[*verbo\]* '*\[\[([^#\]]+)",
+    r"\[?+\[?+(?:gerúndio|particípio)\]?+\]?+\s*+do\s*+\[*+verbo\]*+\s*+'*+\[\[([^#\]]++)",
 ]
 
 
@@ -306,21 +306,21 @@ def adjust_wikicode(
     '# {{rev-flexion|Ị}}'
     """
     # `=={{Substantivo|pt}}<sup>1</sup>==` → `=={{Substantivo 1|pt}}==`
-    code = re.sub(r"==\s*\{\{Substantivo\|(\w+)\}\}\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \2|\1}}==", code)
+    code = re.sub(r"==\s*+\{\{Substantivo\|(\w++)\}\}\s*+<sup>(\d++)</sup>\s*+==", r"=={{Substantivo \2|\1}}==", code)
 
     # `==Substantivo<sup>2</sup>==` → `=={{Substantivo 2}}==`
-    code = re.sub(r"==\s*Substantivo\s*<sup>(\d)</sup>\s*==", r"=={{Substantivo \1}}==", code)
+    code = re.sub(r"==\s*+Substantivo\s*+<sup>(\d++)</sup>\s*+==", r"=={{Substantivo \1}}==", code)
 
     # <li value="2"> → ''
-    code = re.sub(r"<li [^>]+>", "", code)
+    code = re.sub(r"<li\s++[^>]*+>", "", code)
 
     # `={{-pt-}}=\n{{flex.}}` → `={{-pt-}}=\n==Substantivo==\n{{flex.}}`
-    code = re.sub(r"=\s*{{-pt-}}\s*=\n{{flex", r"={{-pt-}}=\n==Substantivo==\n{{flex", code)
+    code = re.sub(r"=\s*+\{\{-pt-\}\}\s*+=\s*+\{\{flex", r"={{-pt-}}=\n==Substantivo==\n{{flex", code)
 
     # Try to find more genders
     # `'''anões''' ''masculino ''` → `'''anões''' {{m}}`
     code = re.sub(
-        r"^([{']+.*)[ ']+(feminino|masculino)[ ']+",
+        r"^([{']++.*)[ ']++(feminino|masculino)[ ']++",
         lambda m: f"{m[1]}{{{{{m[2][0]}}}}}",
         code,
         flags=re.MULTILINE,
@@ -361,12 +361,12 @@ def adjust_wikicode(
                         # Apply some clean-up to prevent breaking everything
                         if "#if:" in tpl_sub:
                             # `{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}`
-                            tpl_sub = re.sub(r"\{\{#if:\|<br/>\{\{\{\d\}\}\}[^}]*}}", "", tpl_sub)
+                            tpl_sub = re.sub(r"\{\{#if:\|<br/>\{\{\{\d++\}\}\}[^}]*+}}", "", tpl_sub)
                         if tpl_sub.count("{{") > 1:
                             # `{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}`
-                            tpl_sub = re.sub(r"=\{{3}+\d\}{3}", "=", tpl_sub)
+                            tpl_sub = re.sub(r"=\{{3}\d++\}{3}", "=", tpl_sub)
                         if "-div" in tpl_sub and tpl_sub.count("{{") == 1:
-                            tpl_sub = re.sub(r"\s*\|\w+-div=[^|}]+", "", tpl_sub)
+                            tpl_sub = re.sub(r"\s*+\|\w++-div=[^|}]++", "", tpl_sub)
 
                         if not tpl_sub.startswith(interesting_reverse_variant_titles):
                             lines.append(tpl_sub)

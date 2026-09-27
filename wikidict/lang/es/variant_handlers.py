@@ -24,7 +24,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                     continue
                 if "&ensp;" in line:
                     line = line.split("&ensp;", 1)[1]
-                line = re.sub(r"\[\[([^|]+)\|\1\]\]", r"\1", line)
+                line = re.sub(r"\[\[([^|]++)\|\1\]\]", r"\1", line)
                 forms.update(cleanup(form) for form in line.split(","))
 
         forms.discard("")
@@ -35,7 +35,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                 for line in lines[1:]:  # Skip the header
                     if not line.endswith("]]"):
                         continue
-                    forms.update(cleanup(form) for form in re.findall(r"\[\[([^#]+)#", line))
+                    forms.update(cleanup(form) for form in re.findall(r"\[\[([^#]++)#", line))
 
     forms.discard(word)
     forms.discard("―")
@@ -72,7 +72,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
         # Prevent keeping the "haber" auxiliary
         # `[[habrías|habrías]][[ superscripto| superscripto]]` → `[[superscripto|superscripto]]`
-        table = re.sub(r"\[\[(h[^|]+)\|\1\]\]\[\[ ([^|]+)\| \2\]\]", r"[[\2|\2]]", table)
+        table = re.sub(r"\[\[(h[^|]++)\|\1\]\]\[\[ ([^|]++)\| \2\]\]", r"[[\2|\2]]", table)
 
     return "|".join(table_to_forms(word, table))
 

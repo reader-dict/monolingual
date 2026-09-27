@@ -374,13 +374,46 @@ def adapt_templates(locale: str) -> None:
     this_ctx.set_cache_exclusions()
 
 
-@lru_cache(maxsize=256)
 def all_namespaces(locale: str) -> str:
     all_namespaces_ = set()
     for namespace in namespaces[locale] + namespaces["en"]:
         all_namespaces_.add(namespace)
         all_namespaces_.add(namespace.lower())
     return "|".join(iter(all_namespaces_))
+
+
+@lru_cache(maxsize=256)
+def _get_file_namespace_re(locale: str) -> re.Pattern[str]:
+    return re.compile(
+        # Courtesy of Casimir et Hippolyte & Wiktor Stribiżew from https://stackoverflow.com/q/79006887/1117028
+        rf"""
+        # Match [[
+        \[\[
+
+        # Namespace followed by :
+        (?:{all_namespaces(locale)}):
+
+        # Match any chars other than [ and ], or any ] that is not immediately followed with another ], or a [
+        # that is not immediately followed with [ or one or more digits + ]
+        [^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*
+
+        # Match zero or more occurrences of either [+digit(s)+], or strings between [[ and ]] and then any chars
+        # other than [ and ], or any ] that is not immediately followed with another ], or a [ that is not immediately
+        # followed with [ or one or more digits + ]
+        (?:(?:\[\d+\]|\[\[[^][]*(?:](?!])[^][]*|\[(?!\[)[^][]*)*\]\])[^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*)*
+
+        # Match ]]
+        ]]
+        """,
+        flags=re.VERBOSE,
+    )
+
+
+RE_COMMENTS = re.compile(r"<!--[\s\S]*?-->")
+RE_REFERENCES = re.compile(r"<references[^>]++>[\s\S]*?</references>")
+RE_REF_COLON = re.compile(r"<ref:[^>]++>++")
+RE_REF_SELF_CLOSE = re.compile(r"<ref[^/>]++/>")
+RE_REF_BLOCK = re.compile(r"<+ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)")
 
 
 def clean_html_input(code: str, locale: str) -> str:
@@ -452,60 +485,52 @@ def clean_html_input(code: str, locale: str) -> str:
     >>> clean_html_input("# {{lb|en|<<transitive>> or (obsolete) <<reflexive>>}} to [[ask]] politely, to say [[please]]", "en")
     '# {{lb|en|<<transitive>> or (obsolete) <<reflexive>>}} to [[ask]] politely, to say [[please]]'
     """
-    sub = re.sub
 
     # [[File:...|...]] → ''
-    code = sub(
-        # Courtesy of Casimir et Hippolyte & Wiktor Stribiżew from https://stackoverflow.com/q/79006887/1117028
-        rf"""
-        # Match [[
-        \[\[
-
-        # Namespace followed by :
-        (?:{all_namespaces(locale)}):
-
-        # Match any chars other than [ and ], or any ] that is not immediately followed with another ], or a [
-        # that is not immediately followed with [ or one or more digits + ]
-        [^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*
-
-        # Match zero or more occurrences of either [+digit(s)+], or strings between [[ and ]] and then any chars
-        # other than [ and ], or any ] that is not immediately followed with another ], or a [ that is not immediately
-        # followed with [ or one or more digits + ]
-        (?:(?:\[\d+\]|\[\[[^][]*(?:](?!])[^][]*|\[(?!\[)[^][]*)*\]\])[^][]*(?:](?!])[^][]*|\[(?!\[|\d+\])[^][]*)*)*
-
-        # Match ]]
-        ]]
-        """,
-        "",
-        code,
-        flags=re.VERBOSE,
-    )
+    code = _get_file_namespace_re(locale).sub("", code)
 
     # HTML comments (multiline supported)
     # <!-- foo --> → ''
-    code = sub(r"(?=<!--)([\s\S]*?-->)", "", code)
+    code = RE_COMMENTS.sub("", code)
+
+    # <references>...</references> → ''
+    code = RE_REFERENCES.sub("", code)
 
     # <ref:...> → ''
-    code = sub(r"<ref:[^>]+>+", "", code)
+    code = RE_REF_COLON.sub("", code)
 
     # <ref name="CFC"/> → ''
-    code = sub(r"<ref[^>]*/>", "", code)
+    code = RE_REF_SELF_CLOSE.sub("", code)
 
     # <ref>foo → ''
     # <ref>foo</ref> → ''
     # <ref name="CFC">{{Import:CFC}}</ref> → ''
     # <ref name="CFC"><tag>...</tag></ref> → ''
-    code = sub(r"<+ref[^>]*/?>[\s\S]*?(?:</\s*ref[^>]*>|$)", lambda m: m[0] if m[0].startswith("<<") else "", code)
+    code = RE_REF_BLOCK.sub(lambda m: m[0] if m[0].startswith("<<") else "", code)
 
     # <ref> → ''
     # </ref> → ''
-    code = code.replace("<ref>", "").replace("</ref>", "")
+    if "<ref>" in code or "</ref>" in code:
+        code = code.replace("<ref>", "").replace("</ref>", "")
 
     return code
 
 
+RE_INTER_PROJECT = re.compile(r'<span class="interProject[^>]++>[^<]*+</span>')
+RE_NBSP_LINK = re.compile(r"&nbsp;\[\[:[^\]]++\]\]")
+RE_NBSP_SUP = re.compile(r"&nbsp;<sup[^>]*+>→&nbsp;\w++</sup>")
+RE_NOWIKI = re.compile(r"<nowiki[^>]++>")
+RE_SPAN_ITALIC = re.compile(r'<span class="(?:ib-content|label)[^>]++>([^<]*+)</span>')
+RE_ETYTREE = re.compile(r'<div class="etytree[^>]*+>.*?</ul>', flags=re.DOTALL)
+RE_STRIP_TAGS = re.compile(r"</?(?:a|bdi|cite|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*+>")
+RE_CLEAN_ATTRS = re.compile(r"<(b|dl|i|small|sub|sup)\s++[^>]*+>")
+
+
 def clean_html_output(html: str, locale: str) -> str:
     """
+    >>> clean_html_output('<span class="ib-brac">(</span><span class="ib-content">masculí</span><span class="ib-brac">)</span>', "ca")  # AFI
+    '(<i>masculí</i>)'
+
     >>> clean_html_output('<div class="mw-content-ltr mw-parser-output" lang="en" dir="ltr"><p><span class="form-of-definition use-with-mention"><a href="/wiki/Appendix:Glossary#abbreviation" title="Appendix:Glossary">Abbreviation</a> of <span class="form-of-definition-link"><i class="Latn mention" lang="en"><a href="/wiki/Acre#English" title="Acre">Acre</a></i></span></span>: a <a href="/wiki/state" title="state">state</a> of <span class="Latn" lang="en"><a href="/wiki/Brazil#English" title="Brazil"><b some="attr">Brazil</a></b></span>\\n</p></div>', "en")
     'Abbreviation of <i>Acre</i>: a state of <b>Brazil</b>'
     >>> clean_html_output('<span class="interProject">[[w:Acanthis (mythology)|Wikipedia ]]</span>', "en")  # Acanthis
@@ -528,30 +553,30 @@ def clean_html_output(html: str, locale: str) -> str:
     'From <i>[[:astonish#English|astonish]]</i> + <i>[[:-ment#English|-ment]]</i>.'
     """
     # Wipe out inter project links
-    html = re.sub(r'<span class="interProject[^>]*>[^<]*</span>', "", html)
-    html = re.sub(r"&nbsp;\[\[:.+\]\]", "", html)
-    html = re.sub(r"&nbsp;<sup[^>]*>→&nbsp;\w+</sup>", "", html)
+    html = RE_INTER_PROJECT.sub("", html)
+    html = RE_NBSP_LINK.sub("", html)
+    html = RE_NBSP_SUP.sub("", html)
 
     # Purge
-    html = html.replace(" <small>[script needed]</small>", "")
-    html = html.replace(" <small>[Term?]</small>", "")
+    if " <small>[" in html:
+        html = html.replace(" <small>[script needed]</small>", "").replace(" <small>[Term?]</small>", "")
 
     # Remove nowiki tags
-    html = re.sub(r"<nowiki[^>]*>", "", html)
+    html = RE_NOWIKI.sub("", html)
 
     # Apply italic on labels
-    html = re.sub(r'<span class="ib-content[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
-    html = re.sub(r'<span class="label[^>]*>([^<]*)</span>', r"<i>\1</i>", html)
+    html = RE_SPAN_ITALIC.sub(r"<i>\1</i>", html)
 
     # Remove etymology tree
-    html = re.sub(r'<div class="etytree.+</ul>', "", html, flags=re.DOTALL)
+    html = RE_ETYTREE.sub("", html)
 
     # Remove those tags
-    html = re.sub(r"</?(?:a|bdi|cite|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*>", "", html)
-    html = html.replace("<hr>", "<br/>")
+    html = RE_STRIP_TAGS.sub("", html)
+    if "<hr>" in html:
+        html = html.replace("<hr>", "<br/>")
 
     # Clean-up attributes from those tags
-    html = re.sub(r"<(b|dl|i|small|sub|sup)\s+[^>]+>", r"<\1>", html)
+    html = RE_CLEAN_ATTRS.sub(r"<\1>", html)
 
     # Remove unwanted categories
     return clean_html_input(html, locale).strip()

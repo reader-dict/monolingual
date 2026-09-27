@@ -164,8 +164,8 @@ def adjust_wikicode(
     *,
     templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
-    forms: str = "|".join(ALL_FORMS),
-    start: str = rf"^(?:{'|'.join(section_patterns)})\s*",
+    forms: str = r"|".join(ALL_FORMS),
+    start: str = rf"^(?:{'|'.join(section_patterns)})\s*+",
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
@@ -250,7 +250,7 @@ def adjust_wikicode(
 
     # `=== Alternativ form ===\n* {{l|...}}` → `=== Alternativ form ===\n* {{flexion|...}}`
     code = re.sub(
-        r"^(={3,}[ ]*Alternativ form[ ]*={3,})\n\* \{\{l\|[^|]+\|([^}]+)\}\}",
+        r"^(={3,}[ ]*+Alternativ form[ ]*+={3,})\n\* \{\{l\|[^|]++\|([^}]++)\}\}",
         r"\1\n* {{flexion|\2}}",
         code,
         flags=re.MULTILINE,
@@ -260,10 +260,10 @@ def adjust_wikicode(
     code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-|ANY}} → === {{avv|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(.+)-\|(\w++)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-}} → === {{avv}} ===
-    code = re.sub(r"^\{\{-(\w+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-(\w++)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     #
     # Variants
@@ -271,13 +271,13 @@ def adjust_wikicode(
 
     patterns = [
         # Pluralis af [[tale#Substantiv|tale]]
-        rf"(?:{forms})\s+\[\[([^\]#|]+)(?:[#|].+)?]]",
+        rf"(?:{forms})\s++\[\[([^\]#|]++)(?:[#|].+)?\]\]",
         # {{flertal af}} '''[[tale]]'''
-        rf"\{{\{{(?:{forms})\}}\}} '*\[\[([^\]]+)",
+        rf"\{{\{{(?:{forms})\}}\}} '*+\[\[([^\]]++)",
         #''præsens participium af'' '''[[abandonnere]]'''.
-        rf"'+(?:{forms})[\s']+\[\[([^\]]+)",
+        rf"'++(?:{forms})[\s']++\[\[([^\]]++)",
         # {{flertal af}} {{l|da|tale}}
-        rf".*\{{\{{(?:{forms})\}}\}}\s+(\{{\{{[^}}]+\}}\}})",
+        rf".*\{{\{{(?:{forms})\}}\}}\s++(\{{\{{[^}}]++\}}\}})",
     ]
 
     lines: list[str] = []
@@ -296,7 +296,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+}}}})"
+        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
         cleaned: list[str] = []
 
         for line in code.splitlines():

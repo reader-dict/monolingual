@@ -1,4 +1,3 @@
-import re
 from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
@@ -146,11 +145,6 @@ def test_parse_word(
 ) -> None:
     """Test the sections finder and definitions getter."""
     code = page(word, LANG)
-
-    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
-    # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
-    code = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", code, flags=re.MULTILINE)
-
     details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations

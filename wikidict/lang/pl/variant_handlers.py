@@ -34,7 +34,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "pl")
     table = table.replace(' colspan="2"', "")
 
-    forms = {cleanup(form) for form in re.findall(r"<td[ ]*>([^<]+)</td>", table)}
+    forms = {cleanup(form) for form in re.findall(r"<td\s*>([^<]++)</td>", table)}
     forms.discard(word)
 
     return "|".join(sorted(forms))

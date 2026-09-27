@@ -77,7 +77,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{substantiv-ron|gen={{n}}}}", "ro")
     ['n']
     """
-    pattern = re.compile(r"gen={{([fmsingp]+)(?: \?\|)*}")
+    pattern = re.compile(r"gen=\{\{([fmsingp]++)(?: \?\|)*\}")
     return utils.unique(utils.flatten(pattern.findall(code)))
 
 
@@ -92,8 +92,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     res = []
     for pattern in (
-        re.compile(r"\{AFI\|(/[^/]+/)(?:\|(/[^/]+/))*"),
-        re.compile(rf"\{{IPA\|{locale}\|([^}}]+)"),
+        re.compile(r"\{AFI\|(/[^/\n]++\/)(?:\|(/[^/\n]++\/))*+"),
+        re.compile(rf"\{{IPA\|{locale}\|([^}}\n]++)"),
     ):
         res.extend(pattern.findall(code))
 
@@ -153,17 +153,17 @@ def adjust_wikicode(
         code = "\n".join(cleaned)
 
     # `{{-avv-|ANY|ANY}}` → === `{{avv|ANY|ANY}} ===`
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\|(\w+)\}\}", r"=== {{\1|\2|\3}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([^-\n]++)-\|(\w++)\|(\w++)\}\}", r"=== {{\1|\2|\3}} ===", code, flags=re.MULTILINE)
 
     # `====Verb tranzitiv====` → `=== {{Verb tranzitiv}} ===`
-    code = re.sub(r"====([^=]+)====", r"=== {{\1}} ===", code)
+    code = re.sub(r"====([^=\n]++)====", r"=== {{\1}} ===", code)
 
     # `{{-avv-|ANY}}` → `=== {{avv|ANY}} ===`
-    code = re.sub(r"^\{\{-(.+)-\|(\w+)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([^-\n]++)-\|(\w++)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
 
     # `{{-avv-}}` → `=== {{avv}} ===`
     # `{{-nume propriu-}}` → `=== {{nume propriu}} ===`
-    code = re.sub(r"^\{\{-([\w ]+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([\w \n]++)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     #
     # Variants
@@ -172,7 +172,7 @@ def adjust_wikicode(
     # `#''forma de feminin singular pentru'' [[frumos]].` → `# {{flexion|frumos}}`
     # `#''formă alternativă pentru'' [[fântânioară]].` → `# {{flexion|fântânioară}}`
     code = re.sub(
-        r"^#\s*'+(?:forma de|formă) [^']+'+\s*'*\[\[([^\]]+)\]\]'*\.?",
+        r"^#\s*+'++(?:forma de|formă) [^']++'++\s*+'*+\[\[([^\]]+)\]\]'*+\.?",
         r"# {{flexion|\1}}",
         code,
         flags=re.MULTILINE,
@@ -198,11 +198,11 @@ def adjust_wikicode(
                     in_tpl = False
                     tpl_code, rest = tpl_code.rsplit("}}", 1)
                     forms: set[str] = set()
-                    for form in re.findall(r"=([^|{}]+)", tpl_code):
+                    for form in re.findall(r"=([^|{}\n]++)", tpl_code):
                         if "(" in form:
                             form = form.split("(", 1)[0]
                         if "<br" in form:
-                            form = re.sub(r"<br\s?/?>", "/", form)
+                            form = re.sub(r"<br\s*+/?+>", "/", form)
                         if "/" in form:
                             for sform in form.split("/"):
                                 forms.add(sform.strip("[]").strip())

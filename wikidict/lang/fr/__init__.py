@@ -125,7 +125,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{invar}}", "fr")
     ['inv']
     """
-    pattern = re.compile(rf"\{{([fmpinvar]+)(?: \?\|{locale})*}}")
+    pattern = re.compile(rf"\{{([fmpinvar]++)(?:[ ]\?\|{locale})*+\}}")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if "".join(sgen := sorted(gender)) == "fm":
@@ -148,7 +148,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{pron|un|fr} {{pron|ɔ̃|fr}}\n'''fongus''' {{pron|fɔ̃.ɡys|fr}} {{m}}", "fr")
     ['\\fɔ̃.ɡys\\']
     """
-    pattern = re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]+)")
+    pattern = re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]++)")
     for line in code.splitlines():
         if not line.startswith("'''"):
             continue
@@ -169,31 +169,31 @@ ALL_FORMS = [
     "pluriel inhabituel",
 ]
 FORMS = "|".join(ALL_FORMS)
-START = rf"^(?:{'|'.join(section_patterns)})[ ]*'*"
+START = rf"^(?:{'|'.join(section_patterns)})[ ]*+'*+"
 PATTERNS = [
     # ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.
-    r".+(?:première|deuxième|troisième) personne du (?:pluriel|singulier).+du verbe''\s*\{\{lien\|([^\|}]+)",
+    r".+(?:première|deuxième|troisième) personne du (?:pluriel|singulier).+du verbe''\s*+\{\{lien\|([^\|}]++)",
     # ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.
-    r".+Agglutination du verbe''\s*\{\{lien\|([^\|}]+)",
+    r".+Agglutination du verbe''\s*+\{\{lien\|([^\|}]++)",
     # ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?) du verbe''\s*\{\{lien\|([^\|}]+)",
+    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?) du verbe''\s*+\{\{lien\|([^\|}]++)",
     # ''Féminin singulier de'' {{lien|terne|fr}}.
     # ''Féminin (singulier) de'' {{lien|terne|fr}}.
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\{\{lien\|([^\|}]+)",
+    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\{\{lien\|([^\|}]++)",
     # ''Participe passé masculin singulier du verbe'' [[pouvoir]].
     # ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
     # ''Pluriel de ''[[anisophylle]]''.''
-    rf"(?:{FORMS}).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    rf"(?:{FORMS}).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
     # ''Pluriel de'' {{lien|anisophylle|fr}}.
-    rf"(?:{FORMS}).*'\s*\{{\{{lien\|([^\|\}}]+)",
+    rf"(?:{FORMS}).*'\s*+\{{\{{lien\|([^\|\}}]++)",
     # ''Pluriel'' ''de ''[[nécrophage]].
-    r"(?:féminin|masculin|pluriel)'+\s+'+de.*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    r"(?:féminin|masculin|pluriel)'++\s++'++de.*'\s*+\[\[([^\]#]++)(?:#.+)?]]",
     # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
     # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
-    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\[\[([^\]#]+)(?:#.+)?]]",
+    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
     # ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.
-    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*\{\{lien\|([^\|}]+)",
+    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\{\{lien\|([^\|}]++)",
 ]
 
 
@@ -263,13 +263,13 @@ def adjust_wikicode(
     '== {{langue|fr}} ==\n# {{flexion|sparlare}}'
     """
     # == {{caractère}} == → '== {{caractère}} ==\n=== {{s|caractère}} ==='
-    code = re.sub(r"(==\s*{{caractère}}\s*==)", r"\1\n=== {{s|caractère}} ===", code)
+    code = re.sub(r"(==\s*+{{caractère}}\s*+==)", r"\1\n=== {{s|caractère}} ===", code)
 
     # === {{s|caractère}} ===\n{{hangeul unicode}} → '=== {{s|caractère}} ===\n# {{hangeul unicode}}'
-    code = re.sub(r"=== \{\{s\|caractère}} ===\n\s*\{\{", "=== {{s|caractère}} ===\n# {{", code, flags=re.MULTILINE)
+    code = re.sub(r"=== \{\{s\|caractère}} ===\n\s*+\{\{", "=== {{s|caractère}} ===\n# {{", code, flags=re.MULTILINE)
 
     # <li value="2"> → ''
-    code = re.sub(r"<li [^>]+>", "", code)
+    code = re.sub(r"<li [^>]++>", "", code)
 
     # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
     code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)

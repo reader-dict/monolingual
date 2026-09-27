@@ -95,12 +95,12 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     from wikidict import context
 
     lookups = [
-        r"(\{\{ipa\|[^}]+}})",
-        rf"(\{{\{{{locale}-pron\|[^}}]+}}}})",
-        # rf"(\{{\{{IPA\|{locale}\|[^}}]+}}}})",
-        # rf"(\{{\{{{locale}-IPA[^}}]*}}}})",
+        r"(\{\{ipa\|[^}]++\}\})",
+        rf"(\{{\{{{locale}-pron\|[^}}]++\}}\}})",
+        # rf"(\{{\{{IPA\|{locale}\|[^}}]++\}}\}})",
+        # rf"(\{{\{{{locale}-IPA[^}}]*+\}}\}})",
     ]
-    patterns = [r": (/[^/]+/)$", r"<samp>(\[[^\]]+\])</samp>", r"&#32;([\[/][^\]/]+[\]/])(?!\])"]
+    patterns = [r": (/[^/]++/)$", r"<samp>(\[[^\]]++\])</samp>", r"&#32;([\[/][^\]/]++[\]/])(?!\])"]
 
     for lookup in lookups:
         for tpl in re.findall(lookup, code):
@@ -108,8 +108,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             if locale == "ja":
                 line = expanded.splitlines()[0]
                 if "東京式" in line:
-                    line = re.sub(r"\[\[([^\]]+)\]\]", r"\1", line.split(" ", 1)[1], count=1)
-                    line = re.sub(r" +<samp>[^<]+</samp>", "", line)
+                    line = re.sub(r"\[\[([^\]]++)\]\]", r"\1", line.split(" ", 1)[1], count=1)
+                    line = re.sub(r"[ ]++<samp>[^<]++</samp>", "", line)
                     if "[[" in line:
                         line = line.split("[[", 1)[0]
                     return [line.replace("&#8203;", "")]
@@ -161,17 +161,17 @@ def adjust_wikicode(
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|有される}}\n# {{rev-flexion|有した}}\n# {{rev-flexion|有しない}}\n# {{rev-flexion|有します}}\n# {{rev-flexion|有しろ}}\n# {{rev-flexion|有すること}}\n# {{rev-flexion|有すれば}}\n# {{rev-flexion|有せず}}\n# {{rev-flexion|有せよ}}'
     """
     # `<span style="font-size:smaller;">` → ``
-    code = re.sub(r'<span style="font-size:[ ]*small[^"]*">([^<]+)</span>', r"<small>\1</small>", code)
+    code = re.sub(r'<span style="font-size:[ ]*+small[^"]*+">([^<]++)</span>', r"<small>\1</small>", code)
 
     # `<span id="語義1"></span>` → ``
     # `<span id="語義1"><b>語義</b></span> ` → `<b>語義</b>`
-    code = re.sub(r"</?span[^>]*>", "", code)
+    code = re.sub(r"</?span[^>]*+>", "", code)
 
     # `==={{etym}}:いる===` → `==={{etym}}===`
-    code = re.sub(r"^={3,}[ ]*\{\{etym\}\}.+", "==={{etym}}===", code, flags=re.MULTILINE)
+    code = re.sub(r"^={3,}[ ]*+\{\{etym\}\}.*+", "==={{etym}}===", code, flags=re.MULTILINE)
 
     # `==記号==` → `==記号==\n===記号===`
-    code = re.sub(r"^(==[ ]*記号[ ]*==)", r"\1\n===記号===", code)
+    code = re.sub(r"^(==[ ]*+記号[ ]*+==)", r"\1\n===記号===", code)
 
     #
     # Reverse variants
@@ -179,7 +179,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"^(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]+}}}})"
+        pattern = rf"^(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
         cleaned: list[str] = []
 
         for line in code.splitlines():
@@ -195,7 +195,7 @@ def adjust_wikicode(
 
             # Remove ruby tags: `{{日本語変格活用|{{ruby|有|ゆう}}|する}}}}` → `{{日本語変格活用|有|する}}`
             if "{{ruby" in line:
-                line = re.sub(r"\{\{ruby\|([^|]+)\|[^}]+}}", r"\1", line)
+                line = re.sub(r"\{\{ruby\|([^|]++)\|[^}]++\}\}", r"\1", line)
 
             for tpl in re.findall(pattern, line, flags=re.MULTILINE):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")

@@ -33,13 +33,18 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-RE_REDIRECT = re.compile(r'<redirect title="(.+)" />').finditer
-RE_TEXT = re.compile(r"<text[^>]*>(.*)</text>", flags=re.DOTALL).finditer
-RE_TITLE_WORD = re.compile(r"<title>([^:]*)</title>").finditer
+RE_REDIRECT = re.compile(r'<redirect title="([^"]++)" />').finditer
+RE_TEXT = re.compile(r"<text[^>]*+>(.*?)</text>", flags=re.DOTALL).finditer
+RE_TITLE_WORD = re.compile(r"<title>([^:<]++)</title>").finditer
 
 # To list all words not taken into account with current head sections:
 #    DEBUG_PARSE=1 python -m wikidict LOCALE --parse >out.log
 DEBUG_PARSE = "DEBUG_PARSE" in os.environ
+
+RE_LANGS_DA = re.compile(
+    rf"^\{{\{{-({'|'.join(langs_da)})-\}}\}}",
+    flags=re.MULTILINE,
+)
 
 
 def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
@@ -148,6 +153,51 @@ def xml_parse_element(
     return empty
 
 
+def preprocess(locale: str, body: str) -> str:
+    match locale:
+        case "da":
+            # `{{=da=}}` → `=={{da}}==`
+            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
+
+            # Transform sub-locales into their own section to prevent mixing stuff
+            # `{{-da-}}` → `=={{da}}==`
+            # `{{-mul-}}` → `=={{mul}}==`
+            body = RE_LANGS_DA.sub(r"=={{\1}}==", body)
+        case "de":
+            # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
+            body = re.sub(r"^==\s*[^(]*+\((\{\{Sprache\|[^}]++\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
+        case "la":
+            # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
+            body = re.sub(r"^\{\{lingua2\|([^|\n]++)[^\n]*+", r"=={{-\1-}}==", body, flags=re.MULTILINE)
+            # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
+            body = body.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", 1)
+        case "pl":
+            # `== piękny ({{język polski}}) ==` → `==polski==`
+            body = re.sub(r"^==[ ]*+[^(]*+\(\{\{język ([^}]++)\}\}\)[ ]*+==", r"==\1==", body, flags=re.MULTILINE)
+            # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
+            body = re.sub(r"^==[ ]*+[^(]*+\(\{\{użycie ([^}]++)\}\}\)[ ]*+==", r"==\1==", body, flags=re.MULTILINE)
+        case "ja":
+            if "{{kanji header" in body:
+                body = f"=={{{{kanji}}}}==\n{body}"
+        case "nl":
+            # `{{=nld=}}` → `=={{nld}}==`
+            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
+        case "ru":
+            # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
+            body = re.sub(r"^=[ ]*+\{\{(-\w++-)\|[^}]++\}\}[ ]*+=", r"={{\1}}=", body, flags=re.MULTILINE)
+        case "tr":
+            # Lower all section titles to workaround regexp with unicode diacritics being lost.
+            # See https://stackoverflow.com/q/79169550/1117028 for more details.
+            body = re.sub(r"^==[ {]*+(\w++)[} ]*+==", lambda m: f"=={m[1].lower()}==", body, flags=re.MULTILINE)
+        case "uk":
+            # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
+            body = re.sub(r"^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}", r"=\1=", body, flags=re.MULTILINE)
+            # `{{=uk=}}` → `=uk=`
+            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=\1=", body, flags=re.MULTILINE)
+
+    return body
+
+
 def process(file: Path, locale: str) -> bool:
     """Process the big XML file and retain only information we are interested in."""
     lang_src, lang_dst = utils.guess_locales(locale, use_log=False)
@@ -156,9 +206,9 @@ def process(file: Path, locale: str) -> bool:
 
     log.info("Processing %s for destination lang %r ...", file, lang_dst)
 
-    module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]+)</title>").finditer
-    template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]+)</title>").finditer
-    appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]+)</title>").finditer
+    module_matcher = re.compile(rf"<title>({lang.module_trans[lang_dst]}:[^<]++)</title>").finditer
+    template_matcher = re.compile(rf"<title>({lang.template_trans[lang_dst]}:[^<]++)</title>").finditer
+    appendix_matcher = re.compile(rf"<title>({lang.appendix_trans[lang_dst]}:[^<]++)</title>").finditer
 
     if is_monolingual := lang_src == lang_dst:
         context.setup_modules_db(locale, db_already_setup=False)
@@ -175,56 +225,16 @@ def process(file: Path, locale: str) -> bool:
             continue
 
         title = unescape(title, entities=constants.HTML_REPL_TITLE)
-        body = unescape(code, entities=constants.HTML_REPL_BODY)
+        body = preprocess(lang_dst, unescape(code, entities=constants.HTML_REPL_BODY))
 
-        # Header section adjustments may be required to search for specific locale in --render
-        match lang_dst:
-            case "da":
-                # `{{=da=}}` → `=={{da}}==`
-                body = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
-
-                # Transform sub-locales into their own section to prevent mixing stuff
-                # `{{-da-}}` → `=={{da}}==`
-                # `{{-mul-}}` → `=={{mul}}==`
-                body = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", body, flags=re.MULTILINE)
-            case "de":
-                # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
-                body = re.sub(r"^==\s*.*\((\{\{Sprache\|[^}]+\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
-            case "la":
-                # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
-                body = re.sub(r"^\{\{lingua2\|([^|}]+).*", r"=={{-\1-}}==", body, flags=re.MULTILINE)
-                # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
-                body = body.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", count=1)
-            case "pl":
-                # `== piękny ({{język polski}}) ==` → `==polski==`
-                body = re.sub(r"^==[ ]*.*\(\{\{język ([^}]+)\}\}\)[ ]*==", r"==\1==", body, flags=re.MULTILINE)
-                # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
-                body = re.sub(r"^==[ ]*.*\(\{\{użycie ([^}]+)\}\}\)[ ]*==", r"==\1==", body, flags=re.MULTILINE)
-            case "ja":
-                if "{{kanji header" in body:
-                    body = f"=={{{{kanji}}}}==\n{body}"
-            case "nl":
-                # `{{=nld=}}` → `=={{nld}}==`
-                body = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
-            case "ru":
-                # Redirections (`#перенаправление [[REDIRECT_TO]]`
-                if body.startswith("#перенаправление"):
-                    redirect_to = re.findall(r"#перенаправление \[\[([^\]]+)\]\]", body)[0]
-                    context.new_page(title, 0, None, redirect_to)
-                    continue
-
-                # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
-                body = re.sub(r"^=[ ]*\{\{(-\w+-)\|[^}]+\}\}[ ]*=", r"={{\1}}=", body, flags=re.MULTILINE)
-            case "tr":
-                # Lower all section titles to workaround regexp with unicode diacritics being lost.
-                # See https://stackoverflow.com/q/79169550/1117028 for more details.
-                body = re.sub(r"^==[ {]*(\w+)[} ]*==", lambda m: f"=={m[1].lower()}==", body, flags=re.MULTILINE)
-            case "uk":
-                # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
-                body = re.sub(r"^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}", r"=\1=", body, flags=re.MULTILINE)
-
-                # `{{=uk=}}` → `=uk=`
-                body = re.sub(r"^\{\{=(\w+)=\}\}", r"=\1=", body, flags=re.MULTILINE)
+        # [RU] Redirections (`#перенаправление [[REDIRECT_TO]]`)
+        if (
+            lang_dst == "ru"
+            and body.startswith("#перенаправление")
+            and (m := re.search(r"#перенаправление\s*+\[\[([^\]]++)\]\]", body))
+        ):
+            context.new_page(title, 0, None, m.group(1))
+            continue
 
         context.new_page(title, 0, body, None)
 

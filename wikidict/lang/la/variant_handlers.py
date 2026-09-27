@@ -16,7 +16,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|}"))
         ]
     )
-    forms = {cleanup(form) for form in re.findall(r"\[\[([^|]+)", lines)}
+    forms = {cleanup(form) for form in re.findall(r"\[\[([^|]++)", lines)}
 
     forms.discard(word)
     forms.discard("-")
@@ -43,7 +43,9 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         return parts[0].strip()
 
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "la")
-    return str(re.findall(r"\[\[([^#]+)", expanded.splitlines()[-1])[0])
+    if base := re.search(r"\[\[([^#]++)", expanded.splitlines()[-1]):
+        return base[1]
+    return ""
 
 
 handlers = {

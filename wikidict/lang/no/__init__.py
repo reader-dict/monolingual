@@ -96,8 +96,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['f']
     """
     for pattern in [
-        re.compile(r"{{n[bon]-sub\|(\w+)}}"),
-        re.compile(r"{{n[bon]-sub\|\w+=(\w+)"),
+        re.compile(r"\{\{n[bon]-sub\|(\w++)\}\}"),
+        re.compile(r"\{\{n[bon]-sub\|\w++=(\w++)"),
     ]:
         if genders := pattern.findall(code):
             return utils.unique(utils.flatten(genders))
@@ -115,7 +115,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|['klɑɾ]||['kɽɑɾ] (tykk ''L'' (østnorsk)|språk=no}}", "no")
     ["['klɑɾ]"]
     """
-    pattern = re.compile(r"{{\s*IPA\s*\|[^\}]*}}")
+    pattern = re.compile(r"\{\{\s*+IPA\s*+\|[^}]*+\}\}")
     result: list[str] = []
     for f in pattern.findall(code):
         fsplit = f.split("|")
@@ -175,7 +175,9 @@ def adjust_wikicode(
     code = code.replace("----", "")
 
     # <includeonly>...</includeonly> → ''
-    code = re.sub(r"(<includeonly>.+</includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE)
+    code = re.sub(
+        r"(<includeonly>(?:(?!<\/includeonly>)[\s\S])*+<\/includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE
+    )
 
     # Synonyms
     if "Synonymer" in code:

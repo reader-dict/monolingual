@@ -25,7 +25,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     # Try 1
     for table in tables:
         line = str(table).splitlines()[2]
-        for form in re.findall(r"<b>\[\[([^\]#]+)", line):
+        for form in re.findall(r"<b>\[\[([^\]#]++)", line):
             if "<br/>" in form:
                 forms.update([cleanup(f) for f in form.split("<br/>")])
             elif "/" in form:
@@ -41,7 +41,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                 for line in lines:
                     if not line or "''" in line:
                         continue
-                    if form := re.findall(r"\[\[([^\]#]+)", line):
+                    if form := re.findall(r"\[\[([^\]#]++)", line):
                         forms.add(cleanup(form[0]))
                     # Try 3
                     elif line.strip("[]()"):

@@ -78,7 +78,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{-l-|mfn}}", LANG)
     ['m', 'o', 'v']
     """
-    pattern = re.compile(r"\{\{-l-\|(\w+)\}\}")
+    pattern = re.compile(r"\{\{-l-\|(\w++)\}\}")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if gender == "0":
@@ -117,8 +117,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     res: list[str] = []
     for pattern in [
-        r"\{\{IPA-nl-standaard\|[^}]+\}\}",
-        r"\{\{IPA\|([^|}]+)",
+        r"\{\{IPA-nl-standaard\|[^}]++\}\}",
+        r"\{\{IPA\|([^|}]++)",
     ]:
         for match in re.findall(pattern, code):
             if "IPA-nl-standaard" in match:
@@ -229,16 +229,16 @@ def adjust_wikicode(
     code = re.sub(r"^\{\{=(.+)=\}\}", r"== {{\1}} ==\n", code, flags=re.MULTILINE)
 
     # {{-etym-}} → === {{etym}} ===
-    code = re.sub(r"^\{\{-([\w-]+)-\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([\w-]+)(?=-\}\})\-\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|0}} → === {{noun}} ===
-    code = re.sub(r"^\{\{-([\w-]+)-\|0\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([\w-]+)(?=-\|0\}\})\-\|0\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|LOCALE}} → === {{noun|LOCALE}} ===
     code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3})\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
 
     # {{-noun-|LOCALE|...}} → === {{noun|LOCALE|...}} ===
-    code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3}\|[^}\[\]{}]+)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3}\|[^}\[\]{}]++)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
 
     #
     # Variants
@@ -246,7 +246,7 @@ def adjust_wikicode(
 
     # {{noun-pl|isolatiebedrijf}} → # {{noun-pl|isolatiebedrijf}}
     if "noun-pl" in code:
-        code = re.sub(r"^(\{\{noun-pl\|[^}]+\}\})", r"# \1", code, flags=re.MULTILINE)
+        code = re.sub(r"^(\{\{noun-pl\|[^}]++\}\})", r"# \1", code, flags=re.MULTILINE)
 
     #
     # Reverse variants

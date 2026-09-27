@@ -5,11 +5,13 @@ from ... import context, utils
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
-    lines = re.sub(r"""^\| style=["'][^"']+["']\s*""", "", wikitext, flags=re.MULTILINE)
+    lines = re.sub(r"""^\| style=(?:"[^"]*+"|'[^']*+')\s*+""", "", wikitext, flags=re.MULTILINE)
 
     if "Template loop detected" in lines:
         # `| (...) Template loop detected: [[&#x3a;Template&#x3a;SAYFAADI#Türkçe|:Template:SAYFAADI]]es` → `| [[WORDes]]`
-        lines = re.sub(r"\|.+Template loop detected:.+\]\](.*)", rf"| [[{word}\1]]", lines, flags=re.MULTILINE)
+        lines = re.sub(
+            r"\|[^\n]*?Template loop detected:[^\n\]]*+\]\](.*)", rf"| [[{word}\1]]", lines, flags=re.MULTILINE
+        )
 
     lines = "\n".join(
         line
@@ -18,9 +20,9 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     )
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
-    forms = set(re.findall(r"\[\[([^#\]]+)\]\]", lines))  # `[[foo]]`
+    forms = set(re.findall(r"\[\[([^#\]]++)\]\]", lines))  # `[[foo]]`
     if "#" in lines:
-        forms.update(re.findall(r"\[\[[^#]+[^|]+\|([^\]]+)\]\]", lines))  # `[[foö#Türkçe|foo]]`
+        forms.update(re.findall(r"\[\[[^#|]++\|([^\]]++)\]\]", lines))  # `[[foö#Türkçe|foo]]`
 
     forms.discard(word)
 
@@ -56,7 +58,9 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         return parts[0] if parts else word.split("'", 1)[0]
 
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "tr")
-    return str(re.findall(r"<i>\[\[[^\|]+\|([^\]]+)\]\]</i>", expanded)[0])
+    if base := re.search(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>", expanded):
+        return base[1]
+    return ""
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:

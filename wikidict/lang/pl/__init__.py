@@ -70,7 +70,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA3|ˈ[[a]][[d]][[r]][[ɛ]][[s]]}}", "pl")
     []
     """
-    pattern = re.compile(r"\{\{IPA\d*\|([^}]+)")
+    pattern = re.compile(r"\{\{IPA\d*\|([^}]++)")
     return [f"[{pron}]" for pron in pattern.findall(code) if "[" not in pron]
 
 
@@ -103,7 +103,7 @@ def adjust_wikicode(
     has_variants = "''{{forma " in code
 
     # Extract POS, and gender
-    code = re.sub("^(''([^']+)'').*$", pos_and_gender, code, flags=re.MULTILINE)
+    code = re.sub("^(''([^']++)'').*$", pos_and_gender, code, flags=re.MULTILINE)
 
     # {{synonimy}} → ===synonimy===
     code = re.sub(r"^\{\{(\w+)\}\}", r"===\1===", code, flags=re.MULTILINE)
@@ -120,8 +120,8 @@ def adjust_wikicode(
                 in_tpl = "forma " in line
                 lines.append(line)
             elif in_tpl:
-                if variant := re.findall(r"\[\[([^\]]+)\]\]$", line):
-                    lines.append(f": (0.0) {{{{flexion|{variant[0]}}}}}")
+                if variant := re.search(r"\[\[([^\]]++)\]\]$", line):
+                    lines.append(f": (0.0) {{{{flexion|{variant[1]}}}}}")
             else:
                 lines.append(line)
         code = "\n".join(lines)

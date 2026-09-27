@@ -33,7 +33,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     for line in table.splitlines():
         if not line.startswith("|") or line.startswith(("|-", "|}", '|colspan="2" rowspan="5"')):
             continue
-        forms.update(cleanup(form) for form in re.findall(r"\[\[([^\]#]+)", line))
+        forms.update(cleanup(form) for form in re.findall(r"\[\[([^\]#]++)", line))
 
     forms.discard(word)
 

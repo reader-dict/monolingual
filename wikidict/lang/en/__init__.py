@@ -125,7 +125,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{taxoninfl|i=1|g=f}}", "en")
     ['f']
     """
-    pattern = re.compile(r"{taxoninfl\|(?:i=\d+\|)?g=(\w+).*")
+    pattern = re.compile(r"\{\{taxoninfl\|(?:i=\d++\|)?g=(\w++).*")
     return utils.unique(utils.flatten(pattern.findall(code)))
 
 
@@ -174,7 +174,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         elif was_in_section:
             break
 
-    pattern = re.compile(r"\{\{IPA\|en\|([^}]+)\}\}")
+    pattern = re.compile(r"\{\{IPA\|en\|([^}]++)\}\}")
     if not lines or not (matches := re.findall(pattern, code)):
         return []
 

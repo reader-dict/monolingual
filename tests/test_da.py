@@ -1,4 +1,3 @@
-import re
 from collections import OrderedDict
 from collections.abc import Callable
 from pathlib import Path
@@ -7,7 +6,6 @@ from unittest.mock import patch
 import pytest
 
 from wikidict import context
-from wikidict.lang.da.langs import langs as langs_da
 from wikidict.lang.da.variant_handlers import table_to_forms
 from wikidict.render import parse_word
 from wikidict.stubs import Definitions
@@ -217,15 +215,6 @@ def test_parse_word(
 ) -> None:
     """Test the sections finder and definitions getter."""
     code = page(word, LANG)
-
-    # Needs specific transformations before hand (they are done in --parse & --get-word, but this is not a taken path by the test)
-    # `{{=da=}}` → `=={{da}}==`
-    code = re.sub(r"\{\{=(\w+)=\}\}", r"=={{\1}}==", code, flags=re.MULTILINE)
-    # Transform sub-locales into their own section to prevent mixing stuff
-    # `{{-da-}}` → `=={{da}}==`
-    # `{{-mul-}}` → `=={{mul}}==`
-    code = re.sub(rf"\{{\{{-({'|'.join(langs_da)})-\}}\}}", r"=={{\1}}==", code, flags=re.MULTILINE)
-
     details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations

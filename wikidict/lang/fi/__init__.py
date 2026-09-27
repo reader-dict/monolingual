@@ -90,18 +90,18 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈmɑrsːiɑˣ/']
     """
     res: list[str] = []
-    if prons := re.findall(r"\{\{IPA\|.([^/\]}]+)", code):
+    if prons := re.findall(r"\{\{IPA\|.([^/\]}]++)", code):
         pron = prons[0]
         if "{{" in pron:
             pron = pron.split("|")[-1]
         res.append(pron)
     else:
-        if not (templates := re.findall(rf"({{{{{locale}-äänt[^}}]*}}}})", code)):
+        if not (templates := re.findall(rf"({{{{{locale}-äänt[^}}]*+}}}})", code)):
             templates = [f"{{{{{locale}-äänt}}}}"]
 
         expanded = context.expand(templates[0], LANG, skip_cache=True)
         if line := next((l_ for l_ in expanded.splitlines() if "|IPA" in l_), ""):
-            res.extend(re.findall(r"/([^/]+)/", line))
+            res.extend(re.findall(r"/([^/]++)/", line))
 
     return [re.sub(r"[()]", "", f"/{pron}/") for pron in res]
 
@@ -142,7 +142,8 @@ def adjust_wikicode(
                 continue
             elif line.startswith(("# {{taivm}}", "#{{taivm}}", "# (''taivutusmuoto'')", "#(''taivutusmuoto'')")) and (
                 forms_ := (
-                    re.findall(r"'+\[\[([^\]]+)\]\]'+$", line) or re.findall(rf"'+\{{\{{l\|{locale}\|([^|}}]+)", line)
+                    re.findall(r"'+\[\[([^\]]++)\]\]'++$", line)
+                    or re.findall(rf"'++\{{\{{l\|{locale}\|([^|}}]++)", line)
                 )
             ):
                 line = f"# {{{{flexion|{forms_[0]}}}}}"
@@ -152,7 +153,7 @@ def adjust_wikicode(
     # Given that variants templates are very well formatted, and there are a LOT of them,
     # it is simpler to automatically add handlers for them.
     interesting_variant_templates = lang.variant_templates[locale]
-    pattern = rf"\{{\{{((?:{'|'.join(tpl[2:] for tpl in interesting_variant_templates)})[^|}}]*)"
+    pattern = rf"\{{\{{((?:{'|'.join(tpl[2:] for tpl in interesting_variant_templates)})[^|}}]*+)"
     for tpl_name in set(re.findall(pattern, code)):
         variant_handlers_mod.append_to_variants(tpl_name)
 

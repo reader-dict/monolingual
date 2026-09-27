@@ -6,6 +6,8 @@ from xml.sax.saxutils import escape
 
 import pytest
 
+from wikidict.parse import preprocess
+
 os.environ["CWD"] = str(Path(__file__).parent)
 
 
@@ -58,6 +60,6 @@ def page() -> Callable[[str, str], str]:
     def _page(word: str, locale: str) -> str:
         data = Path(os.environ["CWD"]) / "data" / locale
         file = data / f"{word}.wiki"
-        return file.read_text(encoding="utf-8")
+        return preprocess(locale, file.read_text(encoding="utf-8"))
 
     return _page

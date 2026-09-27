@@ -93,8 +93,8 @@ def get_random_word(locale: str) -> str:
     while True:
         with constants.SESSION.get(url) as req:
             req.raise_for_status()
-            if match := re.findall(r'<span class="mw-page-title-main">([^<]+)</span>', req.text):
-                word: str = match[0]
+            if match := re.search(r'<span class="mw-page-title-main">([^<]+)</span>', req.text):
+                word: str = match[1]
                 if ":" not in word and "/" not in word:
                     log.info(f"Got random: {word!r}")
                     break
@@ -679,25 +679,71 @@ def guess_prefix(word: str, *, locale: str = "") -> str:
     return prefix if prefix.isalpha() else "11"
 
 
+_RE_FORMULAS = re.compile(r"<(chem|hiero|math)>[\s\S]*?</\1>")
+
+
 def save_formulas(text: str) -> tuple[dict[str, str], str]:
-    """Save <chem>, <hiero>, and <math>, parts to prevent altering them."""
+    """Save <chem>, <hiero>, and <math> parts to prevent altering them."""
+    if not text:
+        return {}, ""
+
     formulas: dict[str, str] = {}
-    idx = 0
-    for tag in ("chem", "hiero", "math"):
-        if new_formulas := re.findall(rf"(<{tag}>.+?</{tag}>)", text):
-            for formula in new_formulas:
-                rpl = f"##{tag}{idx}##"
-                text = text.replace(formula, rpl)
-                formulas[rpl] = formula
-                idx += 1
+
+    def _replace_formula(match: re.Match[str]) -> str:
+        rpl = f"##{match[1]}{len(formulas)}##"
+        formulas[rpl] = match[0]
+        return rpl
+
+    text = _RE_FORMULAS.sub(_replace_formula, text)
     return formulas, text
 
 
 def restore_formulas(formulas: dict[str, str], text: str) -> str:
     """Restore <chem>, <hiero>, and <math>, parts."""
+    if not formulas or not text:
+        return text
+
     for rpl, formula in formulas.items():
         text = text.replace(rpl, formula)
+
     return text
+
+
+_RE_MATH_ATTRS = re.compile(r"<math\s+[^>]+>(.+?)</math>")
+_RE_NOWIKI = re.compile(r"(<nowiki>.+?</nowiki>)")
+_RE_NOINCLUDE = re.compile(r"<noinclude>[^<]+</noinclude>")
+_RE_GALLERY = re.compile(r"<gallery>[\s\S]*?</gallery>")
+_RE_BR_CONSECUTIVE = re.compile(r"(<br[^>]*/?>)+")
+
+# Wikitext bold and italic formatting
+_REGEX_BOLD = regex.compile(r"'''(\0*+[^'\n]++.*?)(?:''')")
+_REGEX_ITALIC = regex.compile(r"''(\0*+[^'\n]++.*?)''(?!')")
+
+# Links
+_RE_LINK_LOCAL = re.compile(r"\[\[([^|:\]]+)\]\]")
+_RE_LINK_TEMPLATE = re.compile(r"\[\[(\{\{[^}]+\}\})\]\]")
+_RE_LINK_PIPE = re.compile(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]")
+_RE_EXT_LINK_DBL = re.compile(r"\[\[https?://[^\s]+\s[^\]]+\]\]")
+_RE_EXT_LINK_NO_TEXT = re.compile(r"\[https?://[^\s\]]+\]")
+_RE_EXT_LINK_TEXT = re.compile(r"\[https?://[^\s]+\s([^\]]+)\]")
+_RE_EXT_LINK_SCHEMALESS = re.compile(r"\[//[^\s]+\s([^\]]+)\]")
+
+# MediaWiki structures
+_RE_TABLE = re.compile(r"{\|[^}]+\|}")
+_RE_HEADING = re.compile(r"^=+\s?([^=]+)\s?=+", re.MULTILINE)
+_RE_LIST_ITEM = re.compile(r"^\*+\s?", re.MULTILINE)
+_RE_MAGIC_WORDS = re.compile(r"__[A-Z]+__")
+_RE_EMPTY_TAGS = re.compile(r"<([^>]+)>[? ]*</\1>")
+_RE_MULTIPLE_SPACES = re.compile(r"\s{2,}")
+_RE_SPACE_BEFORE_DOT = re.compile(r"\s+\.")
+_RE_ANGLE_BRACKETS_SINGLE = re.compile(r"<<([^/>]+)>>")
+
+# Special characters and entities
+_RE_LT_SPACE = re.compile(r'<[ ]+(?!\\")')
+_RE_GT_SPACE = re.compile(r'(?<!")[ ]+>')
+_RE_ESCAPED_LT_DIGIT = re.compile(r"(?<!=)<(\d)")
+_RE_HTML_ENTITIES = re.compile(r"&([A-Za-z][A-Za-z0-9]*;)")
+_RE_HTML_DIV_P = re.compile(r"</?(?:div|p)[^>]*>")
 
 
 def clean(text: str) -> str:
@@ -737,7 +783,7 @@ def clean(text: str) -> str:
         '<b>strong and <i>italic</b></i>'
         >>> clean("'''''Parer à'''''")
         '<i><b>Parer à</b></i>'
-        >>> clean("''Contraction de [[préposition]] ''[[à]]'' et de l'[[article]] défini ''[[les]]'' .''")
+        >>> clean("''Contraction de [[préposition]] ''[[à]]'' et de l'[[article]]    défini ''[[les]]'' .''")
         "<i>Contraction de préposition </i>à<i> et de l'article défini </i>les<i>.</i>"
         >>> clean("'''Contraction de [[préposition]] '''[[à]]''' et de l'[[article]] défini '''[[les]]''' .'''")
         "<b>Contraction de préposition </b>à<b> et de l'article défini </b>les<b>.</b>"
@@ -778,6 +824,12 @@ def clean(text: str) -> str:
         'country'
         >>> clean("<<region/Middle East>>")
         '<<region/Middle East>>'
+
+        >>> clean("{|foo..|}")
+        ''
+
+        >>> clean("{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}")
+        '{{гл ru 11b/c-ся|основа=в|слоги={{по-слогам|ви́|ться}}}}'
 
         >>> clean("__NOTOC__")
         ''
@@ -838,104 +890,102 @@ def clean(text: str) -> str:
     """
 
     # Speed-up lookup
-    sub = re.sub
-    sub2 = regex.sub
 
     # <math style="bla" foo=bar>formula</math> → <math>formula</math>
-    text = sub(r"<math\s+[^>]+>(.+?)</math>", r"<math>\1</math>", text)
+    text = _RE_MATH_ATTRS.sub(r"<math>\1</math>", text)
 
     formulas, text = save_formulas(text)
 
     # Save <nowiki> parts to prevent altering them
-    if nowikis := re.findall(r"(<nowiki>.+?</nowiki>)", text):
+    if nowikis := _RE_NOWIKI.findall(text):
         for idx, nowiki in enumerate(nowikis):
             text = text.replace(nowiki, f"##nowiki{idx}##")
+
+    # <nowiki/> → ''
+    text = text.replace("<nowiki/>", "")
 
     # Remove line breaks
     text = text.replace("\n", "")
 
     # HTML
     # Source: https://github.com/5j9/wikitextparser/blob/b24033b/wikitextparser/_wikitext.py#L83
-    text = sub2(r"'''(\0*+[^'\n]++.*?)(?:''')", r"<b>\1</b>", text)
+    text = _REGEX_BOLD.sub(r"<b>\1</b>", text)
     # ''foo'' → <i>foo></i>
-    text = sub2(r"''(\0*+[^'\n]++.*?)(?:'')", r"<i>\1</i>", text)
+    text = _REGEX_ITALIC.sub(r"<i>\1</i>", text)
 
     # Consecutive <br> → '<br/>'
-    text = sub(r"(<br[^>]*/?>)+", "<br/>", text)
-
-    # <nowiki/> → ''
-    text = text.replace("<nowiki/>", "")
+    text = _RE_BR_CONSECUTIVE.sub("<br/>", text)
 
     # <noinclude>»</noinclude> → ''
-    text = sub("<noinclude>[^<]+</noinclude>", "", text)
+    text = _RE_NOINCLUDE.sub("", text)
 
     # <gallery>
-    text = sub(r"<gallery>[\s\S]*?</gallery>", "", text)
+    text = _RE_GALLERY.sub("", text)
 
     # Local links
-    text = sub(r"\[\[([^|:\]]+)\]\]", r"\1", text)  # [[a]] → a
+    # [[a]] → a
+    text = _RE_LINK_LOCAL.sub(r"\1", text)
 
     # Links
     # Internal: [[{{a|b}}]] → {{a|b}}
-    text = sub(r"\[\[({{[^}]+}})\]\]", r"\1", text)
+    text = _RE_LINK_TEMPLATE.sub(r"\1", text)
     # Internal: [[a|b]] → b
-    text = sub(r"\[\[[^|]+\|(.+?(?=\]\]))\]\]", r"\1", text)
+    text = _RE_LINK_PIPE.sub(r"\1", text)
     # External: [[http://example.com Some text]] → ''
-    text = sub(r"\[\[https?://[^\s]+\s[^\]]+\]\]", "", text)
+    text = _RE_EXT_LINK_DBL.sub("", text)
     # External: [http://example.com] → ''
-    text = sub(r"\[https?://[^\s\]]+\]", "", text)
+    text = _RE_EXT_LINK_NO_TEXT.sub("", text)
     # External: [http://example.com Some text] → 'Some text'
-    text = sub(r"\[https?://[^\s]+\s([^\]]+)\]", r"\1", text)
+    text = _RE_EXT_LINK_TEXT.sub(r"\1", text)
     # External: [//example.com Some text] → 'Some text'
-    text = sub(r"\[//[^\s]+\s([^\]]+)\]", r"\1", text)
+    text = _RE_EXT_LINK_SCHEMALESS.sub(r"\1", text)
     text = text.replace("[[", "").replace("]]", "")
 
     # Tables
     # {|foo..|}
-    text = sub(r"{\|[^}]+\|}", "", text)
+    text = _RE_TABLE.sub("", text)
 
     # Headings
     # == a == → a
-    text = sub(r"^=+\s?([^=]+)\s?=+", lambda matches: matches.group(1).strip(), text)
+    # text = _RE_HEADING.sub(lambda m: m.group(1).strip(), text)
+    # text = sub(r"^=+\s?([^=]+)\s?=+", lambda matches: matches.group(1).strip(), text)
 
     # Lists
-    text = sub(r"^\*+\s?", "", text)
+    # text = _RE_LIST_ITEM.sub("", text)
+    # text = sub(r"^\*+\s?", "", text)
 
     # Magic words
-    text = sub(r"__[A-Z]+__", "", text)  # __TOC__
+    # __TOC__
+    text = _RE_MAGIC_WORDS.sub("", text)
 
-    # Remove extra quotes left
-    text = text.replace("''", "")
-
-    # Remove extra brackets left
-    text = text.replace(" []", "")
-    text = text.replace(" ]", "")
+    # Remove extra quotes, and brackets, left
+    text = text.replace("''", "").replace(" []", "").replace(" ]", "")
 
     # Remove empty HTML tags
     # <sup></sup> → ''
     # <sup>?</sup> → ''
     # <i> </i> → ''
-    text = sub(r"<([^>]+)>[? ]*</\1>", "", text)
+    text = _RE_EMPTY_TAGS.sub("", text)
 
     # Remove extra spaces
-    text = sub(r"\s{2,}", " ", text)
-    text = sub(r"\s{1,}\.", ".", text)
+    text = _RE_MULTIPLE_SPACES.sub(" ", text)
+    text = _RE_SPACE_BEFORE_DOT.sub(".", text)
 
     # <<bar>> → foo
-    text = sub(r"<<([^/>]+)>>", r"\1", text)
+    text = _RE_ANGLE_BRACKETS_SINGLE.sub(r"\1", text)
     # <<foo/bar>> → bar
     # text = sub(r"<<(?:[^/>]+)/([^>]+)>>", r"\1", text)
 
     # Convert single "< ", and " >" to HTML quotes
-    text = sub(r'<[ ]+(?!\\")', "&lt; ", text)
-    text = sub(r'(?<!")[ ]+>', " &gt;", text)
+    text = _RE_LT_SPACE.sub("&lt; ", text)
+    text = _RE_GT_SPACE.sub(" &gt;", text)
 
     # Escape "<N" but not "{{tpl|...|arg=<N}}"
-    text = sub(r"(?<!=)<(\d)", r"&lt;\1", text)
+    text = _RE_ESCAPED_LT_DIGIT.sub(r"&lt;\1", text)
 
     # Replace HTML entities
     if "&" in text:
-        text = sub(r"&([A-Za-z][A-Za-z0-9]*;)", lambda m: constants.HTML_ENTITIES.get(m[1], f"&{m[1]}"), text)
+        text = _RE_HTML_ENTITIES.sub(lambda m: constants.HTML_ENTITIES.get(m[1], f"&{m[1]}"), text)
 
     text = restore_formulas(formulas, text)
 
@@ -944,10 +994,11 @@ def clean(text: str) -> str:
         text = text.replace(f"##nowiki{idx}##", nowiki[8:-9])
 
     # Remove those HTML tags
-    text = sub(r"</?(?:div|p)[^>]*>", "", text)
+    text = _RE_HTML_DIV_P.sub("", text)
 
     # ES - clean-up synonyms
-    text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
+    if ":*<b>Sinónimo" in text:
+        text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
 
     return text.strip()
 
@@ -1054,8 +1105,8 @@ def process_templates(
     text = sub(r"<i>([^<]*[\u0627-\u064a]+[^<]*)</i>", r"\1", text)
 
     # Remove extra spaces (it happens when a template is ignored for instance)
-    text = sub(r"\s{2,}", " ", text)
-    text = sub(r"\s{1,}\.", ".", text)
+    text = _RE_MULTIPLE_SPACES.sub(" ", text)
+    text = _RE_SPACE_BEFORE_DOT.sub(".", text)
 
     # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
     if not KEEP_UNFINISHED and (
@@ -1245,13 +1296,20 @@ def table2html(word: str, locale: str, table: wikitextparser.Table) -> str:
     return phrase
 
 
+_RE_PARENS_WORD = re.compile(r"(\w+)\((\w+)\)(\w*)")
+
+
 def remove_parens(text: str) -> str:
+    """
+    >>> remove_parens("atlase(r)ne")
+    'atlaserne'
+    >>> remove_parens("atlas(ser)")
+    'atlasser'
+    >>> remove_parens("atlas (ser) ne")
+    'atlas (ser) ne'
+    """
     if "(" in text:
-        # atlase(r)ne
-        text = re.sub(r"(\w+)\b\((\w+)\)\b(\w+)", r"\1\2\3", text)
-    if "(" in text:
-        # atlas(ser)
-        text = re.sub(r"(\w+)\b\((\w+)\)", r"\1\2", text)
+        return _RE_PARENS_WORD.sub(r"\1\2\3", text)
     return text
 
 

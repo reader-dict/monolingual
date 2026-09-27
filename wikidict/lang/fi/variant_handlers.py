@@ -36,8 +36,8 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|}"))
         ]
     )
-    forms = {cleanup(form) for form in re.findall(r"\[\[([^#]+)#", lines)}
-    forms.update(cleanup(form) for form in re.findall(r"#\w+\|([^\]]+)\]\]", lines))
+    forms = {cleanup(form) for form in re.findall(r"\[\[([^#]++)#", lines)}
+    forms.update(cleanup(form) for form in re.findall(r"#\w++\|([^\]]++)\]\]", lines))
 
     forms.discard(word)
     forms.discard("-")
@@ -64,7 +64,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     'monistaa'
     """
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "fi")
-    return bases[0] if (bases := re.findall(r"\[\[([^#]+)#", expanded)) else ""
+    return bases[0] if (bases := re.findall(r"\[\[([^#]++)#", expanded)) else ""
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:

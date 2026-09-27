@@ -69,7 +69,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{uttal|sv|ipa=ɛn|uttalslänk=-}}", "sv")
     ['/ɛn/']
     """
-    pattern = re.compile(rf"\{{uttal\|{locale}\|(?:[^\|]+\|)?ipa=([^}}|]+)}}?\|?")
+    pattern = re.compile(rf"\{{\{{uttal\|{locale}\|(?:[^|\n]++\|)?ipa=([^}}|\n]++)")
     return sorted(f"/{p}/" for p in pattern.findall(code))
 
 

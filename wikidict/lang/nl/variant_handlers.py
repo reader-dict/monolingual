@@ -10,7 +10,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("flexion", ["[B] cokes"], defaultdict(str), "cokes")
     'cokes'
     """
-    return re.sub(r"^\[\w\] ", "", parts[-1].strip())
+    return re.sub(r"^\[\w\] ", "", parts[-1].strip(), flags=re.MULTILINE)
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -32,16 +32,16 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             continue
         part = re.sub(r"\s\[\d\]", "", part)
         if "<br" in part:
-            variants.update(re.sub(r"<br\s*/?>", "|", part).split("|"))
+            variants.update(re.sub(r"<br\s*+\/?>", "|", part).split("|"))
         elif "," in part:
-            variants.update(re.sub(r",\s*", "|", part).split("|"))
+            variants.update(re.sub(r",\s*+", "|", part).split("|"))
         else:
             variants.add(part)
 
     first_char = word[0]
     res: set[str] = set()
     for variant in variants:
-        variant = re.sub(r"\b\s*\([^)]+\),?$", "", variant, flags=re.MULTILINE)  # `VARIANT(something)`
+        variant = re.sub(r"\b\s*+\([^)]++\),?$", "", variant, flags=re.MULTILINE)  # `VARIANT(something)`
         variant = variant.split(" <i>(", 1)[0]  # VARIANT <i>(something)</i>
         variant = variant.split(")</i> ", 1)[-1]  # <i>(something)</i> VARIANT
         variant = variant.strip(" ()[].*,")

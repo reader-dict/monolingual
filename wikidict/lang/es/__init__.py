@@ -88,8 +88,7 @@ def find_pronunciations(
     code: str,
     locale: str,
     *,
-    pattern: re.Pattern[str] = re.compile(r"(\{\{pron-graf[^\}]*\}\})"),
-    find_prons: re.Pattern[str] = re.compile(r"^\|(\[[^\[\]]+])", flags=re.MULTILINE),
+    pattern: re.Pattern[str] = re.compile(r"(\{\{pron-graf[^\}]*+\}\})"),
 ) -> list[str]:
     r"""
     >>> _ = context.reset("es")
@@ -118,7 +117,7 @@ def find_pronunciations(
     for tpl in pattern.findall(code):
         expanded = context.expand(tpl, "es").splitlines()
         for line1, line2 in itertools.pairwise(expanded):
-            if not (prons := re.findall(r"\|(\[[^\[\]]+\])", line2)):
+            if not (prons := re.findall(r"\|(\[[^\[\]]++\])", line2)):
                 continue
 
             if "seseante'''" not in line1 or "'''no sheísta'''" in line1:  # No system

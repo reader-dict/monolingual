@@ -73,7 +73,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{ca-nom|m}} {{ca-nom|m}}", LANG)
     ['m']
     """
-    pattern = re.compile(rf"\{{{locale}-\w+\|([fm]+)")
+    pattern = re.compile(rf"\{{{locale}-\w++\|([fm]++)")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if gender in ("mf", "fm"):
@@ -99,7 +99,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ca-pron|tipus=inf\n|f-centr=LL-Q7026 (cat)-Marvives-miolar.wav\n}}", LANG)
     ['/mi.uˈɫa/']
     """
-    if not (templates := re.findall(rf"(\{{\{{{locale}-pron[^}}]*\}}\}})", code, flags=re.DOTALL | re.MULTILINE)):
+    if not (templates := re.findall(rf"(\{{\{{{locale}-pron[^}}]*+\}}\}})", code, flags=re.DOTALL | re.MULTILINE)):
         return []
 
     lines = [line.strip() for line in context.expand(templates[0], LANG).splitlines()]
@@ -107,12 +107,12 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     # Prefer the standard one first
     for line in lines:
         if "|central" in line:
-            return re.findall(r"(/[^/]+/)$", line)
+            return re.findall(r"(/[^/]++/)$", line)
 
     # Fallback to the first AFI available
     for line in lines:
         if "Pronúncia del català" in line:
-            return re.findall(r"(/[^/]+/)$", line)
+            return re.findall(r"(/[^/]++/)$", line)
 
     return []
 

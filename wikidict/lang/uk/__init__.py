@@ -2,7 +2,7 @@
 
 import re
 
-from ... import lang, utils
+from ... import context, lang, utils
 from ..ru import extract_templates
 from . import variant_handlers as variant_handlers_mod
 from .template_overrides import overrides as template_overrides  # noqa: F401
@@ -48,7 +48,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['мн']
     """
     # https://uk.wiktionary.org/wiki/Категорія:Шаблони_словозміни/uk/Іменники
-    pattern = re.compile(rf"\{{\{{імен.{locale}.\w+.([fmnplмжс]+)")
+    pattern = re.compile(rf"\{{\{{імен.{locale}.\w++.([fmnplмжс]++)")
     return utils.unique(
         [
             {
@@ -78,12 +78,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{transcriptions-uk|}}", "uk")
     ['[bɔbrek]']
     """
-    from ... import context
-
-    pattern = re.compile(rf"(\{{\{{transcriptions?(?:-{locale})?[^}}]+}}}})")
+    pattern = re.compile(rf"\{{\{{transcriptions?(?:-{locale})?[^}}\n]++}}}}")
     res: set[str] = set()
     for tpl in pattern.findall(code):
-        res.update(re.findall(r"&#91;([^&]+)&#93;", context.expand(tpl, "uk")))
+        res.update(re.findall(r"&#91;([^&]++)&#93;", context.expand(tpl, "uk")))
     return sorted(f"[{pron}]" for pron in res)
 
 
@@ -108,7 +106,7 @@ def adjust_wikicode(
     '=uk=\n==== Значення ====\n# [[пристрій]]\n==== Синоніми ====\n\n'
     """
     # Delete empty synonyms
-    code = re.sub(r"^#[ ]*(?:—|-|\?)[ ]*$", "", code, flags=re.MULTILINE)
+    code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
 
     #
     # Reverse variants
@@ -155,7 +153,7 @@ def adjust_wikicode(
                 [
                     lines[0],
                     "====значення====",
-                    f"""# {re.sub(r"^'+[^']+'+[: –—\-]*", "", lines[1], flags=re.MULTILINE)}""",
+                    f"""# {re.sub(r"^'++[^']++'++[: –—\-]*+", "", lines[1], flags=re.MULTILINE)}""",
                 ]
             )
 

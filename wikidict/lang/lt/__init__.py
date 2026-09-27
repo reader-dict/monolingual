@@ -78,7 +78,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("(<i>vyr. g.</i>)", "lt")
     ['m']
     """
-    res: list[str] = re.compile(r"\{\{([fm]+)\}\}").findall(code)
+    res: list[str] = re.compile(r"\{\{([fm]++)\}\}").findall(code)
     if "(<i>mot. g.</i>)" in code:
         res.append("f")
     if "(<i>vyr. g.</i>)" in code:
@@ -87,7 +87,7 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 def find_pronunciations(
-    code: str, locale: str, *, pattern: re.Pattern[str] = re.compile(r"\{IPA\|([^}]+)")
+    code: str, locale: str, *, pattern: re.Pattern[str] = re.compile(r"\{IPA\|([^}]++)")
 ) -> list[str]:
     """
     >>> find_pronunciations("", "lt")
@@ -163,7 +163,7 @@ def adjust_wikicode(
     code = "\n".join(lines)
 
     # More clean-up
-    code = re.sub(r"<br clear=all[ ]*/?>", "", code)
+    code = re.sub(r"<br clear=all[ ]*+/?>", "", code)
     code = code.replace("----", "")
     code = code.replace(f"'''[[{word}]]''' - ", "")
     code = code.replace(f"'''[[{word}]]'''", "")

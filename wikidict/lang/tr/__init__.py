@@ -72,8 +72,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA-Telaffuz|dil=tr|bacca:li'je|bacca:lijeˈleɾ}}", "tr")
     ["/bacca:li'je/", '/bacca:lijeˈleɾ/']
     """
-    for tpl in re.findall(r"(\{\{IPA(?:-Telaffuz)?\|[^}]+}})", code):
-        parts = tpl[2:-2].split("|")[1:]
+    if tpl := re.search(r"\{\{IPA(?:-Telaffuz)?\|[^\}\n]*+\}\}", code):
+        parts = tpl[0][2:-2].split("|")[1:]
         utils.extract_keywords_from(parts)
         for idx in range(len(parts)):
             parts[idx] = f"/{parts[idx].strip('[/]')}/"
@@ -121,8 +121,8 @@ def adjust_wikicode(
     for line in code.splitlines():
         if line.startswith("#") and line.endswith(("-çekimi}}", "-çekim}}")):
             expanded = context.expand(line.removeprefix("#").strip(), "tr")
-            if variants := re.findall(r"<i>\[\[[^\|]+\|([^\]]+)\]\]</i>", expanded):
-                line = f"# {{{{flexion|{variants[-1]}}}}}"
+            if variant := re.search(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>", expanded):
+                line = f"# {{{{flexion|{variant[1]}}}}}"
         lines.append(line)
     code = "\n".join(lines)
 
@@ -132,7 +132,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]*\}}\}})"
+        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]*+\}}\}})"
         cleaned: list[str] = []
 
         for line in code.splitlines():

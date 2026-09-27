@@ -67,14 +67,14 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|patɔliːzaluːf}}", "cs")
     ['[patɔliːzaluːf]']
     """
-    res = set(re.findall(r"\{\{IPA\|([^}]+)", code))
+    res = set(re.findall(r"\{\{IPA\|([^}]++)", code))
     return sorted(f"[{pron}]" for pron in res)
 
 
 VAR_PATTERNS = [
-    re.compile(r"^#[ ']*.+ (?:plurálu|singuláru) substantiva \[\[([^\]#]+).*", flags=re.IGNORECASE),
+    re.compile(r"^#[ ']*.+ (?:plurálu|singuláru) substantiva \[\[([^\]#]++).*", flags=re.IGNORECASE),
     re.compile(
-        r"^#[ ']*.+ (?:čísla|číslo).+(?:adjektiva|číslovky|jména|jnéna|podstata|přídavného|propria|psoun|rodu|slova|slovesa|sloveso|spojení|substantiva|zájmena|způsobu)'* \[\[([^\]#]+).*",
+        r"^#[ ']*+.+ (?:čísla|číslo).+(?:adjektiva|číslovky|jména|jnéna|podstata|přídavného|propria|psoun|rodu|slova|slovesa|sloveso|spojení|substantiva|zájmena|způsobu)'*+ \[\[([^\]#]++).*",
         flags=re.IGNORECASE,
     ),
 ]
@@ -150,7 +150,7 @@ def adjust_wikicode(
     '# {{rev-flexion|toho}}'
     """
     # Delete empty synonyms
-    code = re.sub(r"^#[ ]*(?:—|–|-|\?)[ ]*$", "", code, flags=re.MULTILINE)
+    code = re.sub(r"^#[ ]*+(?:—|–|-|\?)[ ]*+$", "", code, flags=re.MULTILINE)
 
     #
     # Variants
@@ -185,15 +185,15 @@ def adjust_wikicode(
                 elif "=" not in line or "= skrýt" in line or "= ano" in line:
                     continue
 
-                line = re.sub(r"\{\{(?:Doplňte|Příznak|#tag|Upřesnění)[^}]+\}\}", "", line)
-                line = re.sub(r"<br[ ]+/>", "<br/>", line)
+                line = re.sub(r"\{\{(?:Doplňte|Příznak|#tag|Upřesnění)[^}]++\}\}", "", line)
+                line = re.sub(r"<br[ ]++/>", "<br/>", line)
 
                 _, rest = line.split("=", 1)
                 for rpl in REV_VAR_RPL:
                     rest = rest.replace(rpl, "")
 
                 if "<br/>" in rest:
-                    rest, count = re.subn(r"<br/> +\{\{Potenciálně\|([^}]+)\}\}", r"\1", rest, count=1)
+                    rest, count = re.subn(r"<br/> ++\{\{Potenciálně\|([^}]++)\}\}", r"\1", rest, count=1)
                     if not count:
                         rest = rest.replace("<br/>", "/")
 

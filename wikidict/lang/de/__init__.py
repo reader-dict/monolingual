@@ -45,7 +45,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", "de")
     ['f', 'm']
     """
-    pattern = re.compile(r",\s+\{\{([fmnu]+)\}\}")
+    pattern = re.compile(r",\s++\{\{([fmnu]++)\}\}")
     res: set[str] = set()
     for gender in pattern.findall(code):
         if "".join(sgen := sorted(gender)) in {"fm", "fmn"}:
@@ -69,7 +69,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     for line in code.splitlines():
         if "{{IPA}}" not in line:
             continue
-        return [f"[{p}]" for p in re.findall(r"\{Lautschrift\|([^=}]+)}", line)]
+        return [f"[{p}]" for p in re.findall(r"\{\{Lautschrift\|([^=}]++)}", line)]
     return []
 
 
@@ -97,7 +97,7 @@ def adjust_wikicode(
     """
     # `{{Grundformverweis Konj|tragen}}` → `{{flexion|tragen}}`
     code = re.sub(
-        r"^\{\{(?:Alte Schreibweise|Grundformverweis)[^|]*\|([^}]+)\}\}",
+        r"^\{\{(?:Alte Schreibweise|Grundformverweis)[^|]*+\|([^}]++)\}\}",
         r"==== {{Variant}} ====\n# {{flexion|\1}}",
         code,
         flags=re.MULTILINE,
@@ -109,7 +109,7 @@ def adjust_wikicode(
     # Definition lists are not well supported by the parser, replace them by numbered lists.
     # Note: using `[ ]*` rather than `\s*` to bypass issues when a section above another one
     #       contains an empty item.
-    code = re.sub(r":\[\d+\][ ]*", "# ", code)
+    code = re.sub(r":\[\d++\][ ]*+", "# ", code)
 
     #
     # Reverse variants
@@ -117,13 +117,13 @@ def adjust_wikicode(
 
     if "{{Nebenformen}" in code:
         for section_code in re.findall(
-            r"^=+[ ]*\{\{Nebenformen\}\}[ ]*=+([^=]+)",
+            r"^=++[ ]*+\{\{Nebenformen\}\}[ ]*+=++([^=]++)",
             code,
             flags=re.DOTALL | re.MULTILINE,
         ):
             new_code = "\n".join(
                 f"# {{{{rev-flexion|{form.split('#', 1)[0]}}}}}"
-                for form in re.findall(r"\[\[([^\]]+)\]\]", section_code)
+                for form in re.findall(r"\[\[([^\]]++)\]\]", section_code)
             )
             code = code.replace(section_code, f"\n{new_code}\n", count=1)
 

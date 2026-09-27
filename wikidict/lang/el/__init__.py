@@ -157,7 +157,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''{{PAGENAME}}''' {{α}} ({{ετ|ιδιωματικό|0=-}}, Κάλυμνος)", "el")
     ['α']
     """
-    pattern = re.compile(r"{{([^{}]*)}}")
+    pattern = re.compile(r"\{\{([^{}]*+)\}\}")
     line_pattern = "'''{{PAGENAME}}''' "
     return [
         g
@@ -181,7 +181,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈni.ði.mos/']
     """
     res: list[str] = []
-    for tpl in re.findall(r"\{\{(ΔΦΑ\|[^\}]+)\}\}", code):
+    for tpl in re.findall(r"\{\{(ΔΦΑ\|[^\}]++)\}\}", code):
         parts = [part.strip() for part in tpl.split("|")]
         if f"γλ={locale}" not in parts and locale not in parts:
             continue
