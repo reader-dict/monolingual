@@ -1068,8 +1068,8 @@ def process_templates(
         or "<h2>" in text
         or "<h3>" in text
         or "#ifeq:" in text
-        or (locale.endswith("la") and "⧼wikt" in text)
-        or (locale.endswith("tr") and "too deep recursion" in text)
+        or "⧼wikt" in text
+        or "too deep recursion" in text
     ):
         if templates_status is not None:
             templates_status.append((word, "skipped"))
