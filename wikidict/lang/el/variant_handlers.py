@@ -1,4 +1,7 @@
+import re
 from collections import defaultdict
+
+from wikidict import context, utils
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -43,6 +46,60 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
             return parts[0]
         case _:
             return parts[-1] if parts else word
+
+
+def cleanup(form: str) -> str:
+    return utils.cleanup_rev_variant(form)
+
+
+def table_to_forms(word: str, wikitext: str) -> list[str]:
+    kept_lines: list[str] = []
+    for raw_line in wikitext.splitlines():
+        if not (line := raw_line.strip()) or not line.startswith("|") or line.startswith(("|-", "| style", "|}")):
+            continue
+
+        if "rowspan" in line:
+            line = re.sub(r"\s*+rowspan[^|]++\|", "", line)
+        if line == "|":
+            continue
+
+        if "<br />" in line:
+            kept_lines.extend(l_.strip(" |") for l_ in line.split("<br />"))
+        else:
+            kept_lines.append(line.strip(" |"))
+
+    for idx in range(len(kept_lines)):
+        line = kept_lines[idx]
+        if "(" in line:
+            kept_lines[idx] = re.sub(r"[()]", "", line)
+            kept_lines.append(re.sub(r"\([^)]++\)", "", line))
+
+    word_spaces_count = word.count(" ")
+    for idx in range(len(kept_lines)):
+        line = kept_lines[idx]
+        if line.count(" ") > word_spaces_count:
+            kept_lines[idx] = line.rsplit(" ", word_spaces_count + 1)[-1]
+
+    forms = {cleanup(form) for form in kept_lines}
+
+    forms.discard(word)
+    forms.discard("-")
+    forms.discard("—")
+    forms.discard("")
+
+    return sorted(forms)
+
+
+def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
+    """
+    >>> render_reverse_variant("rev-flexion", ["baskylen"], defaultdict(str), "baskyle")
+    'baskylen'
+    """
+    if tpl == "rev-flexion":
+        return parts[0].strip()
+
+    table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "el")
+    return "|".join(table_to_forms(word, table))
 
 
 handlers = {
@@ -104,4 +161,12 @@ handlers = {
         },
         render_variant,
     ),
+    "rev-flexion": render_reverse_variant,
 }
+
+
+def append_to_reverse_variants(tpl: str) -> None:
+    """Dynamically append a template to reverse variants templates."""
+    if tpl in handlers:
+        return
+    handlers[tpl] = render_reverse_variant

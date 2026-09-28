@@ -19,7 +19,7 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "ανα-",
@@ -35,6 +35,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "-ης",
@@ -48,6 +49,7 @@ def setup_lua_ctx() -> None:
                 "<b>-ης</b> &lt; τουρκική <b>-i</b> (fıstık &gt; fıstık<b>i</b>)",
             ],
             {"Επίθημα": ["επίθημα τρικατάληκτων τριγενών επιθέτων (-<b>ής</b>, -<b>ιά</b>, -<b>ί</b>)"]},
+            [],
             [],
         ),
         (
@@ -65,6 +67,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             ["επίπεδος"],
+            [],
         ),
         (
             "ετικέτα",
@@ -83,6 +86,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "λαμβάνω",
@@ -98,6 +102,72 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [
+                "έλαβα",
+                "έλαβαν",
+                "έλαβε",
+                "έλαβες",
+                "ειλημμένος",
+                "λάβαμε",
+                "λάβαν",
+                "λάβανε",
+                "λάβατε",
+                "λάβε",
+                "λάβει",
+                "λάβεις",
+                "λάβετε",
+                "λάβουμε",
+                "λάβουν",
+                "λάβουνε",
+                "λάβω",
+                "λάμβανα",
+                "λάμβαναν",
+                "λάμβανε",
+                "λάμβανες",
+                "λήφθηκα",
+                "λήφθηκαν",
+                "λήφθηκε",
+                "λήφθηκες",
+                "λαμβάναμε",
+                "λαμβάναν",
+                "λαμβάνανε",
+                "λαμβάνατε",
+                "λαμβάνει",
+                "λαμβάνεις",
+                "λαμβάνεσαι",
+                "λαμβάνεστε",
+                "λαμβάνεται",
+                "λαμβάνετε",
+                "λαμβάνομαι",
+                "λαμβάνονται",
+                "λαμβάνονταν",
+                "λαμβάνοντας",
+                "λαμβάνουμε",
+                "λαμβάνουν",
+                "λαμβάνουνε",
+                "λαμβανόμασταν",
+                "λαμβανόμαστε",
+                "λαμβανόμουν",
+                "λαμβανόμουνα",
+                "λαμβανόντουσαν",
+                "λαμβανόσασταν",
+                "λαμβανόσαστε",
+                "λαμβανόσουν",
+                "λαμβανόσουνα",
+                "λαμβανόταν",
+                "λαμβανότανε",
+                "ληφθήκαμε",
+                "ληφθήκαν",
+                "ληφθήκανε",
+                "ληφθήκατε",
+                "ληφθεί",
+                "ληφθείς",
+                "ληφθείτε",
+                "ληφθούμε",
+                "ληφθούν",
+                "ληφθούνε",
+                "ληφθώ",
+            ],
         ),
         (
             "τσιγγάνα",
@@ -105,6 +175,7 @@ def setup_lua_ctx() -> None:
             [],
             {},
             ["τσιγγάνος"],
+            [],
         ),
         (
             "-αίικο",
@@ -123,6 +194,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
     ],
 )
@@ -132,6 +204,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -140,8 +213,9 @@ def test_parse_word(
     details = parse_word(word, code, LANG, force=True)
     assert details
     assert pronunciations == details.pronunciations
-    assert OrderedDict(definitions) == details.definitions
     assert etymology == details.etymology
+    assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
 
     assert not context.get_then_clear_errors()
