@@ -1066,7 +1066,7 @@ def process_templates(
     last_template_idx = text.count("{{")
     current_template_idx = 0
     templates_ignored = lang.templates_ignored[locale]
-    while templates := re.findall(r"({{[^{}]*}})", text):
+    while templates := re.findall(r"(\{\{[^{}]*+\}\})", text):
         for tpl in templates:
             # Skip undesired templates
             if tpl.startswith(templates_ignored):
