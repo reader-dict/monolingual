@@ -3,6 +3,7 @@
 import re
 
 from ... import lang, utils
+from ...lang.pl import extract_templates
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -209,14 +210,45 @@ def adjust_wikicode(
     >>> from ... import context
     >>> _ = context.reset(LANG)
 
+    >>> context.new_word("όποιος")
+    >>> adjust_wikicode("{{el-κλίσ-'ποιος'‎|όποι|γεα=οποιανού|γεθ=οποιανής|γεο=οποιανού|γπα=οποιανών|γπθ=οποιανών|γπο=οποιανών|απα=οποιανούς}}", LANG, word="όποιος")
+    '===={{κλίση}====\n# {{rev-flexion|οποιανής}}\n# {{rev-flexion|οποιανού}}\n# {{rev-flexion|οποιανούς}}\n# {{rev-flexion|οποιανών}}\n# {{rev-flexion|όποια}}\n# {{rev-flexion|όποιες}}\n# {{rev-flexion|όποιο}}\n# {{rev-flexion|όποιοι}}\n# {{rev-flexion|όποιον}}'
+
+    >>> context.new_word("μουράγιο")
+    >>> adjust_wikicode("{{el-κλίση-'πεύκο'|κατ=πεύκο|όπως=ουδέτερα#πεύκο{{!}}πεύκο}}", LANG, word="μουράγιο")
+    '===={{κλίση}====\n# {{rev-flexion|μουράγια}}\n# {{rev-flexion|μουράγιου}}\n# {{rev-flexion|μουράγιων}}'
+
+    >>> context.new_word("αναμένω")
+    >>> adjust_wikicode("{{el-κλίσ-'δροσίζω'|αναμέν|ανέμεν|αναμείν|ανέμειν|πρ1=ανάμενε|πρ3=ανάμεινε|πρ4=αναμείνετε<br>(αναμείνατε)}}", LANG, word="αναμένω")
+    '===={{κλίση}====\n# {{rev-flexion|ανάμεινε}}\n# {{rev-flexion|ανάμενε}}\n# {{rev-flexion|ανέμεινα}}\n# {{rev-flexion|ανέμειναν}}\n# {{rev-flexion|ανέμεινε}}\n# {{rev-flexion|ανέμεινες}}\n# {{rev-flexion|ανέμενα}}\n# {{rev-flexion|ανέμεναν}}\n# {{rev-flexion|ανέμενε}}\n# {{rev-flexion|ανέμενες}}\n# {{rev-flexion|αναμέναμε}}\n# {{rev-flexion|αναμέναν}}\n# {{rev-flexion|αναμένανε}}\n# {{rev-flexion|αναμένατε}}\n# {{rev-flexion|αναμένει}}\n# {{rev-flexion|αναμένεις}}\n# {{rev-flexion|αναμένετε}}\n# {{rev-flexion|αναμένοντας}}\n# {{rev-flexion|αναμένουμε}}\n# {{rev-flexion|αναμένουν}}\n# {{rev-flexion|αναμένουνε}}\n# {{rev-flexion|αναμείναμε}}\n# {{rev-flexion|αναμείναν}}\n# {{rev-flexion|αναμείνανε}}\n# {{rev-flexion|αναμείνατε}}\n# {{rev-flexion|αναμείνει}}\n# {{rev-flexion|αναμείνεις}}\n# {{rev-flexion|αναμείνετε}}\n# {{rev-flexion|αναμείνουμε}}\n# {{rev-flexion|αναμείνουν}}\n# {{rev-flexion|αναμείνουνε}}\n# {{rev-flexion|αναμείνω}}'
+
+    >>> context.new_word("ζυγός")
+    >>> adjust_wikicode("{{el-κλίση-'καλός'}}", LANG, word="ζυγός")
+    '===={{κλίση}====\n# {{rev-flexion|ζυγά}}\n# {{rev-flexion|ζυγέ}}\n# {{rev-flexion|ζυγές}}\n# {{rev-flexion|ζυγή}}\n# {{rev-flexion|ζυγής}}\n# {{rev-flexion|ζυγοί}}\n# {{rev-flexion|ζυγού}}\n# {{rev-flexion|ζυγούς}}\n# {{rev-flexion|ζυγό}}\n# {{rev-flexion|ζυγών}}'
+
     >>> context.new_word("ανακατεύω")
     >>> adjust_wikicode("{{el-κλίσ-'παντρεύω'|παρακΒ=1}}", LANG, word="ανακατεύω")
-    '# {{rev-flexion|ανακάτευα}}\n# {{rev-flexion|ανακάτευαν}}\n# {{rev-flexion|ανακάτευε}}\n# {{rev-flexion|ανακάτευες}}\n# {{rev-flexion|ανακάτεψα}}\n# {{rev-flexion|ανακάτεψαν}}\n# {{rev-flexion|ανακάτεψε}}\n# {{rev-flexion|ανακάτεψες}}\n# {{rev-flexion|ανακατέψαμε}}\n# {{rev-flexion|ανακατέψαν}}\n# {{rev-flexion|ανακατέψανε}}\n# {{rev-flexion|ανακατέψατε}}\n# {{rev-flexion|ανακατέψει}}\n# {{rev-flexion|ανακατέψεις}}\n# {{rev-flexion|ανακατέψετε}}\n# {{rev-flexion|ανακατέψουμε}}\n# {{rev-flexion|ανακατέψουν}}\n# {{rev-flexion|ανακατέψουνε}}\n# {{rev-flexion|ανακατέψτε}}\n# {{rev-flexion|ανακατέψω}}\n# {{rev-flexion|ανακατεμένο}}\n# {{rev-flexion|ανακατεύαμε}}\n# {{rev-flexion|ανακατεύαν}}\n# {{rev-flexion|ανακατεύανε}}\n# {{rev-flexion|ανακατεύατε}}\n# {{rev-flexion|ανακατεύει}}\n# {{rev-flexion|ανακατεύεις}}\n# {{rev-flexion|ανακατεύετε}}\n# {{rev-flexion|ανακατεύοντας}}\n# {{rev-flexion|ανακατεύουμε}}\n# {{rev-flexion|ανακατεύουν}}\n# {{rev-flexion|ανακατεύουνε}}'
+    '===={{κλίση}====\n# {{rev-flexion|ανακάτευα}}\n# {{rev-flexion|ανακάτευαν}}\n# {{rev-flexion|ανακάτευε}}\n# {{rev-flexion|ανακάτευες}}\n# {{rev-flexion|ανακάτεψα}}\n# {{rev-flexion|ανακάτεψαν}}\n# {{rev-flexion|ανακάτεψε}}\n# {{rev-flexion|ανακάτεψες}}\n# {{rev-flexion|ανακατέψαμε}}\n# {{rev-flexion|ανακατέψαν}}\n# {{rev-flexion|ανακατέψανε}}\n# {{rev-flexion|ανακατέψατε}}\n# {{rev-flexion|ανακατέψει}}\n# {{rev-flexion|ανακατέψεις}}\n# {{rev-flexion|ανακατέψετε}}\n# {{rev-flexion|ανακατέψουμε}}\n# {{rev-flexion|ανακατέψουν}}\n# {{rev-flexion|ανακατέψουνε}}\n# {{rev-flexion|ανακατέψτε}}\n# {{rev-flexion|ανακατέψω}}\n# {{rev-flexion|ανακατεμένο}}\n# {{rev-flexion|ανακατεύαμε}}\n# {{rev-flexion|ανακατεύαν}}\n# {{rev-flexion|ανακατεύανε}}\n# {{rev-flexion|ανακατεύατε}}\n# {{rev-flexion|ανακατεύει}}\n# {{rev-flexion|ανακατεύεις}}\n# {{rev-flexion|ανακατεύετε}}\n# {{rev-flexion|ανακατεύοντας}}\n# {{rev-flexion|ανακατεύουμε}}\n# {{rev-flexion|ανακατεύουν}}\n# {{rev-flexion|ανακατεύουνε}}'
 
     >>> context.new_word("αρσενικό")
     >>> adjust_wikicode("{{el-κλίση-'βουνό'|α2=εν}}", LANG, word="αρσενικό")
-    '# {{rev-flexion|αρσενικού}}'
+    '===={{κλίση}====\n# {{rev-flexion|αρσενικού}}'
+
+    >>> context.new_word("βάτος")
+    >>> adjust_wikicode("{{el-κλίση-'ναύλος'|υποκατ=αρσενικά}}", LANG, word="βάτος")
+    '===={{κλίση}====\n# {{rev-flexion|βάτα}}\n# {{rev-flexion|βάτε}}\n# {{rev-flexion|βάτο}}\n# {{rev-flexion|βάτοι}}\n# {{rev-flexion|βάτου}}\n# {{rev-flexion|βάτους}}\n# {{rev-flexion|βάτων}}'
+
+    >>> context.new_word("κοντραστάρω")
+    >>> adjust_wikicode("{{el-κλίσ-'ξέρω'|2=κοντράσταρ}}", LANG, word="κοντραστάρω")
+    '===={{κλίση}====\n# {{rev-flexion|κοντράσταρα}}\n# {{rev-flexion|κοντράσταραν}}\n# {{rev-flexion|κοντράσταρε}}\n# {{rev-flexion|κοντράσταρες}}\n# {{rev-flexion|κοντραστάραμε}}\n# {{rev-flexion|κοντραστάραν}}\n# {{rev-flexion|κοντραστάρανε}}\n# {{rev-flexion|κοντραστάρατε}}\n# {{rev-flexion|κοντραστάρε}}\n# {{rev-flexion|κοντραστάρει}}\n# {{rev-flexion|κοντραστάρεις}}\n# {{rev-flexion|κοντραστάρετε}}\n# {{rev-flexion|κοντραστάροντας}}\n# {{rev-flexion|κοντραστάρουμε}}\n# {{rev-flexion|κοντραστάρουν}}\n# {{rev-flexion|κοντραστάρουνε}}'
+
+    >>> context.new_word("φακός επαφής")
+    >>> adjust_wikicode("{{el-κλίση-όρος|αρσ=1|τύπος=ναός|κοινό=[[επαφή|{{χθ|επαφής}}]]|[[φακός|{{χθ|φακός}}]]|φακού|αεΛ=φακό|κεΛ=φακέ|φακοί|φακών|απΛ=φακούς}}", LANG, word="φακός επαφής")
+    '===={{κλίση}====\n# {{rev-flexion|φακέ επαφής}}\n# {{rev-flexion|φακοί επαφής}}\n# {{rev-flexion|φακού επαφής}}\n# {{rev-flexion|φακούς επαφής}}\n# {{rev-flexion|φακό επαφής}}\n# {{rev-flexion|φακών επαφής}}'
     """
+
+    if f"{{{locale}-κλίσ" in code:
+        code = code.replace(f"{{{{{locale}-κλίσ", f"===={{{{κλίση}}====\n{{{{{locale}-κλίσ")
 
     #
     # Reverse variants
@@ -224,20 +256,32 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
-        cleaned: list[str] = []
+        lines: list[str] = []
+        in_tpl = False
+        tpl_code = ""
 
         for line in code.splitlines():
-            if not line.startswith(interesting_reverse_variant_titles):
-                cleaned.append(line)
-                continue
+            if line.startswith(interesting_reverse_variant_titles):
+                in_tpl = True
 
-            for tpl in re.findall(pattern, line):
-                tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
-                variant_handlers_mod.append_to_reverse_variants(tpl_name)
-                forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)
-                cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
-
-        code = "\n".join(cleaned)
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    for tpl_sub in extract_templates(tpl_code):
+                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip(" \u200e")
+                        variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                        forms = utils.process_templates(
+                            word,
+                            tpl_sub,
+                            locale,
+                            templates_status=templates_status,
+                            variant_only=True,
+                        )
+                        lines.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
+                    tpl_code = ""
+            else:
+                lines.append(line)
+        code = "\n".join(lines)
 
     return code

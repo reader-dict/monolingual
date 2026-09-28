@@ -1,6 +1,8 @@
 import re
 from collections import defaultdict
 
+import wikitextparser as wtp
+
 from wikidict import context, utils
 
 
@@ -49,53 +51,142 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form)
+    """
+    >>> cleanup("παρακΒ=1")
+    ''
+    """
+    cleaned = utils.cleanup_rev_variant(form)
+    return "" if "=" in cleaned else cleaned
+
+
+def escape(value: str) -> str:
+    """
+    >>> escape("ζυγός")
+    'ζυγός'
+    >>> escape("[[ζυγός|ζυγός]]")
+    'ζυγός'
+    >>> escape("[[ζυγός#Νέα ελληνικά (el)|ζυγός]]")
+    'ζυγός'
+    >>> escape("διαγραφ(τ)ούν(ε)")
+    'διαγραφτούνε'
+    """
+    res = value.split("|")[-1].rstrip("]")
+    if "(" in res:
+        res = re.sub(r"[()]", "", res)
+    return res
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
-    kept_lines: list[str] = []
-    for raw_line in wikitext.splitlines():
-        if not (line := raw_line.strip()) or not line.startswith("|") or "#d5e2f6" in line or "#c0c0c0" in line:
-            continue
-
-        if "&nbsp;" in line:
-            line = line.replace("&nbsp;", "")
-
-        if "style" in line:
-            line = re.sub(r"\s*+style[^|]++\|", "", line)
-        elif "rowspan" in line:
-            line = re.sub(r"\s*+rowspan[^|]++\|", "", line)
-
-        if (line := line.strip(" |")) in {"|", "-", "}"} or "=" in line:
-            continue
-
-        if "<br />" in line:
-            kept_lines.extend(line.split("<br />"))
-        else:
-            kept_lines.append(line)
-
-    for idx in range(len(kept_lines)):
-        line = kept_lines[idx]
-        if "(" in line:
-            kept_lines[idx] = re.sub(r"[()]", "", line)
-            kept_lines.append(re.sub(r"\([^)]++\)", "", line))
-
     word_spaces_count = word.count(" ")
-    for idx in range(len(kept_lines)):
-        line = kept_lines[idx]
-        if line.count(" ") > word_spaces_count:
-            kept_lines[idx] = line.rsplit(" ", word_spaces_count + 1)[-1]
+    forms: set[str] = set()
 
-    forms = {cleanup(form) for form in kept_lines}
-    forms = {cleanup(re.sub(r"\[\[[^|]++\|([^\]]++)\]\]", r"\1", form)) for form in kept_lines}
+    if "<br />" in wikitext:
+        wikitext = wikitext.replace("<br />", "\n| ")
+    if "<br/>" in wikitext:
+        wikitext = wikitext.replace("<br/>", "\n| ")
+
+    for table in wtp.parse(wikitext).get_tables():
+        data = table.data(span=not True)
+        rows_len = len(data[0])
+        idx = 1
+        match rows_len:
+            case 1:  # ανακατεύω
+                idx = 0
+                while idx < len(data):
+                    row = data[idx]
+                    if len(row) == 1:
+                        idx += 1
+                    elif len(row) > 2:
+                        for raw_cell in row[1:]:
+                            if not (cell := str(raw_cell).strip()):
+                                continue
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    idx += 1
+            case 2:  # ζυγός, αρσενικό
+                while idx < len(data):
+                    row = data[idx]
+                    if len(row) == 3:  # αρσενικό
+                        cell = str(row[-1])
+                        if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                            cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                        forms.add(cleanup(escape(cell)))
+                        if "(" in cell:
+                            forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    elif len(row) == 4:  # όποιος
+                        if "&rarr;" in str(row[0]):
+                            idx += 1
+                            continue
+                        for raw_cell in row[1:]:
+                            cell = str(raw_cell)
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    elif len(row) == 7:  # ζυγός
+                        for cidx in (2, 4, 6):
+                            cell = str(row[cidx])
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    idx += 1
+            case 3:  # επίπεδο
+                while idx < len(data):
+                    row = data[idx]
+                    if len(row) == 5:
+                        for cidx in (2, 4):
+                            cell = str(row[cidx])
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    elif len(row) == 6:
+                        for cidx in (2, 3, 5):
+                            cell = str(row[cidx])
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    idx += 1
+            case 4:  # βάτος
+                while idx < len(data):
+                    row = data[idx]
+                    if len(row) == 7:
+                        for cidx in (2, 4, 6):
+                            cell = str(row[cidx])
+                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                            forms.add(cleanup(escape(cell)))
+                            if "(" in cell:
+                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    idx += 1
+            case 7:  # κοντραστάρω
+                while idx < len(data):
+                    row = data[idx]
+                    for raw_cell in row[1:]:
+                        if not (cell := str(raw_cell).strip()):
+                            continue
+                        if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+                            cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
+                        forms.add(cleanup(escape(cell)))
+                        if "(" in cell:
+                            forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    idx += 1
+            case _:
+                msg = f"Unhandled rows length: {rows_len}"
+                raise RuntimeError(msg)
 
     forms.discard(word)
-    forms.discard("του")
-    forms.discard("το")
-    forms.discard("-")
-    forms.discard("—")
+    forms.discard("&mdash;")
     forms.discard("")
-
     return sorted(forms)
 
 
