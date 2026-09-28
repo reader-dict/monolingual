@@ -12,17 +12,17 @@ PATTERNS = {
     ],
     "da": [
         # `{{verbum}}` → `verbum`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
         # `verbum 1` → `verbum`
-        re.compile(r"(.+)\s+\d+.*").sub,
+        re.compile(r"(.+)\s++\d++.*").sub,
     ],
     "de": [
         # `abkürzung/eigenname` → `abkürzung`
-        re.compile(r"([^/]+)/.+").sub,
+        re.compile(r"([^/]++)/.+").sub,
     ],
     "el": [
         # `{{έκφραση|el}}` → `έκφραση`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
     ],
     "en": [
         # `proper noun 1` → `proper noun`
@@ -32,15 +32,15 @@ PATTERNS = {
     ],
     "eo": [
         # `{{vortospeco|adverbo, vortgrupo|eo}}` → `adverbo, vortgrupo`
-        re.compile(r"\{\{vortospeco\|([^|]+).*").sub,
+        re.compile(r"\{\{vortospeco\|([^|]++).*").sub,
         # `{{signifoj}}` → `signifoj`
-        re.compile(r"\{\{([^}]+).*").sub,
+        re.compile(r"\{\{([^}]++).*").sub,
     ],
     "es": {
         # `{{verbo transitivo|es|terciopersonal}}` → `verbo transitivo`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
         # `verbo transitivo` → `verbo`
-        re.compile(r"([^\s]+)\s+.*").sub,
+        re.compile(r"([^\s]++)\s++.*").sub,
     },
     "fi": [
         # `verbit` → `verbi`
@@ -48,19 +48,19 @@ PATTERNS = {
     ],
     "fr": [
         # `{{s|verbe|fr}}` → `verbe`
-        re.compile(r"\{\{s\|([^|}]+).*").sub,
+        re.compile(r"\{\{s\|([^|}]++).*").sub,
         # `adjectif démonstratif` → `adjectif`
-        re.compile(r"(adjectif|adverbe|article|déterminant|pronom)\s+.*").sub,
+        re.compile(r"(adjectif|adverbe|article|déterminant|pronom)\s++.*").sub,
     ],
     "it": [
         # `{{nome}}` → `nome`
-        re.compile(r"\{\{([^}]+).*").sub,
+        re.compile(r"\{\{([^}]++).*").sub,
     ],
     "ja": [
         # `{{noun|ja}}` → `noun`
         re.compile(r"((?:noun|prov|syn|Syn)).+").sub,
         # `{{verb}}（中国地方）` → `verb`
-        re.compile(r"\{\{([^}]+).*").sub,
+        re.compile(r"\{\{([^}]++).*").sub,
         # `動詞 見てる・縮約形` → `動詞`
         re.compile(r"(動詞).*").sub,
         # `副詞1` → `副詞`
@@ -69,17 +69,17 @@ PATTERNS = {
         # `名詞：ダブリュー` → `名詞：ダブリュー`
         # `名詞・サ変動詞` → `名詞・サ変動詞`
         # `名詞･田の実` → `名詞`
-        re.compile(r"([^\d（:：・･]+).*").sub,
+        re.compile(r"([^\d（:：・･]++).*").sub,
     ],
     "ko": [
         # `동사 8` → `동사`
-        re.compile(r"(.+)\s*\d+").sub,
+        re.compile(r"(.+)\s*+\d++").sub,
         # `명사 1` → `명사`
-        re.compile(r"(.+)\s*1").sub,
+        re.compile(r"(.+)\s*+1").sub,
     ],
     "la": [
         # `{{transitivum|la}}` → `transitivum`
-        re.compile(r"\{\{([^|}]+).+").sub,
+        re.compile(r"\{\{([^|}]++).+").sub,
         # `int:wikt-verbum-tr` → `verbum-tr`
         re.compile(r"int:wikt-(.+)").sub,
     ],
@@ -89,34 +89,34 @@ PATTERNS = {
     ],
     "nl": [
         # `{{noun|nld}}` → `noun`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
         # `interj2` → `interj`
         re.compile(r"(.+)+\d").sub,
         # `pronom-pos` → `pronom`
-        re.compile(r"(\w+)-\w+").sub,
+        re.compile(r"(\w++)-\w++").sub,
     ],
     "no": [
         # `verb 1` → `verb`
-        re.compile(r"([^\s,]+),?\s+.*").sub,
+        re.compile(r"([^\s,]++),?\s++.*").sub,
     ],
     "pl": [
         # `czasownik, forma fleksyjna` → `czasownik`
-        re.compile(r"([^ ,]+).*").sub,
+        re.compile(r"([^ ,]++).*").sub,
     ],
     "pt": [
         # `{{pepb|sinónimo|...` → `sinónimo`
-        re.compile(r"\{\{pepb\|([^|]+).*").sub,
+        re.compile(r"\{\{pepb\|([^|]++).*").sub,
         # `{{forma de locução substantiva 1|pt}}` → `forma de locução substantiva 1`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
         # `forma de locução substantiva 1` → `locução substantiva 1`
         re.compile(r"forma de (.+)").sub,
         # `substantivo³` → `substantivo`
         # `substantivo2` → `substantivo`
         # `substantivo 2` → `substantivo`
         # `substantivo <small>''Feminino''</small>` → `substantivo`
-        re.compile(r"([^\d¹²³<,]+),?\s*.*").sub,
+        re.compile(r"([^\d¹²³<,]++),?\s*+.*").sub,
         # `pronome pessoal` → `pronome`
-        re.compile(r"(adjetivo|caractere|expressão|expressões|frase|locução|numeral|pronome|verbo)\s+.*").sub,
+        re.compile(r"(adjetivo|caractere|expressão|expressões|frase|locução|numeral|pronome|verbo)\s++.*").sub,
         # `substantivos` → `substantivo`
         re.compile("(.+)s$").sub,
         # `símbolos derivado` → `símbolo`
@@ -130,23 +130,23 @@ PATTERNS = {
     ],
     "ro": [
         # `{{nume taxonomic|conv}}` → `nume taxonomic`
-        re.compile(r"\{\{([^|}]+).*").sub,
+        re.compile(r"\{\{([^|}]++).*").sub,
         # `verb auxiliar` → `verb`
-        re.compile(r"(locuțiune|numeral|verb)\s+.*").sub,
+        re.compile(r"(locuțiune|numeral|verb)\s++.*").sub,
     ],
     "th": [
         # `คำนาม 1` → `คำนาม`
-        re.compile(r"(.+) +\d").sub,
+        re.compile(r"(.+) ++\d").sub,
     ],
     "tr": [
         # `ad 2` → `ad`
-        re.compile(r"(.+) +\d").sub,
+        re.compile(r"(.+) ++\d").sub,
     ],
     "zh": [
         # `發音1` → `發音`
         # `發音 1` → `發音`
         # `發音①` → `發音`
-        re.compile(r"([^\s\d①②③]+).*").sub,
+        re.compile(r"([^\s\d①②③]++).*").sub,
     ],
 }
 
