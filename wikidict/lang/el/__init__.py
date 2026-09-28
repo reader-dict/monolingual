@@ -212,6 +212,10 @@ def adjust_wikicode(
     >>> context.new_word("ανακατεύω")
     >>> adjust_wikicode("{{el-κλίσ-'παντρεύω'|παρακΒ=1}}", LANG, word="ανακατεύω")
     '# {{rev-flexion|ανακάτευα}}\n# {{rev-flexion|ανακάτευαν}}\n# {{rev-flexion|ανακάτευε}}\n# {{rev-flexion|ανακάτευες}}\n# {{rev-flexion|ανακάτεψα}}\n# {{rev-flexion|ανακάτεψαν}}\n# {{rev-flexion|ανακάτεψε}}\n# {{rev-flexion|ανακάτεψες}}\n# {{rev-flexion|ανακατέψαμε}}\n# {{rev-flexion|ανακατέψαν}}\n# {{rev-flexion|ανακατέψανε}}\n# {{rev-flexion|ανακατέψατε}}\n# {{rev-flexion|ανακατέψει}}\n# {{rev-flexion|ανακατέψεις}}\n# {{rev-flexion|ανακατέψετε}}\n# {{rev-flexion|ανακατέψουμε}}\n# {{rev-flexion|ανακατέψουν}}\n# {{rev-flexion|ανακατέψουνε}}\n# {{rev-flexion|ανακατέψτε}}\n# {{rev-flexion|ανακατέψω}}\n# {{rev-flexion|ανακατεμένο}}\n# {{rev-flexion|ανακατεύαμε}}\n# {{rev-flexion|ανακατεύαν}}\n# {{rev-flexion|ανακατεύανε}}\n# {{rev-flexion|ανακατεύατε}}\n# {{rev-flexion|ανακατεύει}}\n# {{rev-flexion|ανακατεύεις}}\n# {{rev-flexion|ανακατεύετε}}\n# {{rev-flexion|ανακατεύοντας}}\n# {{rev-flexion|ανακατεύουμε}}\n# {{rev-flexion|ανακατεύουν}}\n# {{rev-flexion|ανακατεύουνε}}'
+
+    >>> context.new_word("αρσενικό")
+    >>> adjust_wikicode("{{el-κλίση-'βουνό'|α2=εν}}", LANG, word="αρσενικό")
+    '# {{rev-flexion|αρσενικού}}'
     """
 
     #

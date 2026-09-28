@@ -55,18 +55,24 @@ def cleanup(form: str) -> str:
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     kept_lines: list[str] = []
     for raw_line in wikitext.splitlines():
-        if not (line := raw_line.strip()) or not line.startswith("|") or line.startswith(("|-", "| style", "|}")):
+        if not (line := raw_line.strip()) or not line.startswith("|") or "#d5e2f6" in line or "#c0c0c0" in line:
             continue
 
-        if "rowspan" in line:
+        if "&nbsp;" in line:
+            line = line.replace("&nbsp;", "")
+
+        if "style" in line:
+            line = re.sub(r"\s*+style[^|]++\|", "", line)
+        elif "rowspan" in line:
             line = re.sub(r"\s*+rowspan[^|]++\|", "", line)
-        if line == "|":
+
+        if (line := line.strip(" |")) in {"|", "-", "}"} or "=" in line:
             continue
 
         if "<br />" in line:
-            kept_lines.extend(l_.strip(" |") for l_ in line.split("<br />"))
+            kept_lines.extend(line.split("<br />"))
         else:
-            kept_lines.append(line.strip(" |"))
+            kept_lines.append(line)
 
     for idx in range(len(kept_lines)):
         line = kept_lines[idx]
@@ -81,8 +87,11 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             kept_lines[idx] = line.rsplit(" ", word_spaces_count + 1)[-1]
 
     forms = {cleanup(form) for form in kept_lines}
+    forms = {cleanup(re.sub(r"\[\[[^|]++\|([^\]]++)\]\]", r"\1", form)) for form in kept_lines}
 
     forms.discard(word)
+    forms.discard("του")
+    forms.discard("το")
     forms.discard("-")
     forms.discard("—")
     forms.discard("")
