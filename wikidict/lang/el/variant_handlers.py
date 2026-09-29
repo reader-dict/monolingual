@@ -76,6 +76,19 @@ def escape(value: str) -> str:
     return res
 
 
+def add_form(form: str | None, forms: set[str], word_spaces_count: int) -> None:
+    if not form or not (form := form.strip()):
+        return
+
+    if form.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
+        form = form.rsplit(" ", word_spaces_count + 1)[-1]
+
+    forms.add(cleanup(escape(form)))
+
+    if "(" in form:
+        forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", form))))
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     word_spaces_count = word.count(" ")
     forms: set[str] = set()
@@ -97,89 +110,52 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                     if len(row) == 1:
                         idx += 1
                     elif len(row) > 2:
-                        for raw_cell in row[1:]:
-                            if not (cell := str(raw_cell).strip()):
-                                continue
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                        for form in row[1:]:
+                            add_form(form, forms, word_spaces_count)
                     idx += 1
+
             case 2:  # ζυγός, αρσενικό
                 while idx < len(data):
                     row = data[idx]
                     if len(row) == 3:  # αρσενικό
-                        cell = str(row[-1])
-                        if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                            cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                        forms.add(cleanup(escape(cell)))
-                        if "(" in cell:
-                            forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                        add_form(row[-1], forms, word_spaces_count)
                     elif len(row) == 4:  # όποιος
                         if "&rarr;" in str(row[0]):
                             idx += 1
                             continue
-                        for raw_cell in row[1:]:
-                            cell = str(raw_cell)
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                        for form in row[1:]:
+                            add_form(form, forms, word_spaces_count)
                     elif len(row) == 7:  # ζυγός
                         for cidx in (2, 4, 6):
-                            cell = str(row[cidx])
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                            add_form(row[cidx], forms, word_spaces_count)
                     idx += 1
+
             case 3:  # επίπεδο
                 while idx < len(data):
                     row = data[idx]
                     if len(row) == 5:
                         for cidx in (2, 4):
-                            cell = str(row[cidx])
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                            add_form(row[cidx], forms, word_spaces_count)
                     elif len(row) == 6:
                         for cidx in (2, 3, 5):
-                            cell = str(row[cidx])
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                            add_form(row[cidx], forms, word_spaces_count)
                     idx += 1
+
             case 4:  # βάτος
                 while idx < len(data):
                     row = data[idx]
                     if len(row) == 7:
                         for cidx in (2, 4, 6):
-                            cell = str(row[cidx])
-                            if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                                cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                            forms.add(cleanup(escape(cell)))
-                            if "(" in cell:
-                                forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                            add_form(row[cidx], forms, word_spaces_count)
                     idx += 1
+
             case 7:  # κοντραστάρω
                 while idx < len(data):
                     row = data[idx]
-                    for raw_cell in row[1:]:
-                        if not (cell := str(raw_cell).strip()):
-                            continue
-                        if cell.count(" ") > word_spaces_count:  # `έχουμε ανακατέψει` → `ανακατέψει`
-                            cell = cell.rsplit(" ", word_spaces_count + 1)[-1]
-                        forms.add(cleanup(escape(cell)))
-                        if "(" in cell:
-                            forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", cell))))
+                    for form in row[1:]:
+                        add_form(form, forms, word_spaces_count)
                     idx += 1
+
             case _:
                 msg = f"Unhandled rows length: {rows_len}"
                 raise RuntimeError(msg)
