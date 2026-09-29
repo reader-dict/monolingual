@@ -360,14 +360,22 @@ def adapt_templates(locale: str) -> None:
 
     match locale:
         case "ja":
-            this_ctx.translate_requires("Module", "モジュール")
+            from .lang.ja import module_trans
+
+            this_ctx.translate_requires("Module", module_trans)
         case "jbo":
-            this_ctx.cleanup_templates("termo'a:", "Template:")
-            this_ctx.cleanup_templates("termo&#039;a:", "Template:")
+            from .lang.jbo import template_trans
+
+            this_ctx.cleanup_templates(template_trans, "Template:")
+            this_ctx.cleanup_templates(template_trans.replace("'", "&#039;"), "Template:")
         case "ko":
-            this_ctx.translate_requires("Module", "모듈")
+            from .lang.ko import module_trans
+
+            this_ctx.translate_requires("Module", module_trans)
         case "la":
-            this_ctx.cleanup_modules("Modulus:", "")
+            from .lang.la import module_trans
+
+            this_ctx.cleanup_modules(f"{module_trans}:", "")
         case "mg":
             this_ctx.cleanup_templates("Modèle:", "")
 
