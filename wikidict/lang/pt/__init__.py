@@ -206,11 +206,13 @@ PATTERNS = [
     # plural de [[anão]]
     # feminino plural de [[anão]]
     # plural de '''[[úlcera#{{pt}}|úlcera]]'''
-    r"\[*(?:feminino)?\s*+plural(?:\]\])?\s*+(?:(?:\[\[)?de(?:\]\])?\s*+)?+'*+\[\[([^#\]]+)",
+    r"\[*+(?:feminino)?\s*+plural(?:\]\])?\s*+(?:(?:\[\[)?de(?:\]\])?\s*+)?+'*+\[\[([^#\]]+)",
     # {{f}} de [[objetivo]]
     r"\{\{f\}\}\s*+de\s*+\[\[([^\]]++)\]",
     # feminino de '''[[frito#Português|frito]]'''
     r"feminino\s*+de\s*+'*+\[\[([^#\]]++)",
+    # [[feminino]] de [[rígido]]
+    r"\[\[feminino\]\]\ de \[\[([^#\]]++)",
     # [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''
     # [[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''
     # [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''
@@ -255,6 +257,8 @@ def adjust_wikicode(
     '={{-pt-}}=\n# {{flexion|sardenho}}'
     >>> adjust_wikicode("={{-pt-}}=\n# feminino de '''[[frito#Português|frito]]'''", "pt")
     '={{-pt-}}=\n# {{flexion|frito}}'
+    >>> adjust_wikicode("={{-pt-}}=\n# [[feminino]] de [[rígido]]", "pt", word="rígida")
+    '={{-pt-}}=\n# {{flexion|rígido}}'
 
     >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''", "pt")
     '={{-pt-}}=\n# {{flexion|amar}}'
