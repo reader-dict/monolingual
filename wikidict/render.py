@@ -208,7 +208,7 @@ def find_section_definitions(
                     continue
 
                 # Keep the definition ...
-                if definition not in definitions:
+                if definition != word and definition not in definitions:
                     definitions.append(definition)
 
                 # ... And its eventual sub-definitions
@@ -246,7 +246,7 @@ def find_section_definitions(
                         if not subdefinition:
                             continue
 
-                        if subdefinition not in subdefinitions:
+                        if subdefinition != word and subdefinition not in subdefinitions:
                             subdefinitions.append(subdefinition)
 
                         subsubdefinitions: list[str] = []
@@ -257,13 +257,17 @@ def find_section_definitions(
 
                             for subsubcode in subsublist.items:
                                 if (
-                                    subsubdefinition := utils.process_templates(
-                                        word,
-                                        subsubcode,
-                                        lang_dst,
-                                        templates_status=templates_status,
+                                    (
+                                        subsubdefinition := utils.process_templates(
+                                            word,
+                                            subsubcode,
+                                            lang_dst,
+                                            templates_status=templates_status,
+                                        )
                                     )
-                                ) and subsubdefinition not in subsubdefinitions:
+                                    and subsubdefinition != word
+                                    and subsubdefinition not in subsubdefinitions
+                                ):
                                     subsubdefinitions.append(subsubdefinition)
 
                         if subsubdefinitions:
