@@ -13,7 +13,7 @@ head_sections = (
     "ภาษาร่วม",  # Translingual
 )
 etyl_section = ("รากศัพท์", *[f"รากศัพท์ {idx}" for idx in range(1, 10)])
-sections = (
+_sections = [
     *etyl_section,
     # https://th.wiktionary.org/w/index.php?title=%E0%B8%A1%E0%B8%AD%E0%B8%94%E0%B8%B9%E0%B8%A5:headword/data&oldid=5757802
     "คำย่อ",  # abbreviations
@@ -71,4 +71,6 @@ sections = (
     "พยางค์",  # syllables
     "สัญลักษณ์",  # symbols
     "คำกริยา",  # verbs
-)
+]
+_sections.extend(f"{{{{{s}" for s in _sections.copy())
+sections = tuple(_sections)
