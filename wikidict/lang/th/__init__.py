@@ -1,5 +1,7 @@
 """Thai language."""
 
+import re
+
 random_word_url = (
     "https://th.wiktionary.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:%E0%B8%AA%E0%B8%B8%E0%B9%88%E0%B8%A1"
 )
@@ -74,3 +76,14 @@ _sections = [
 ]
 _sections.extend(f"{{{{{s}" for s in _sections.copy())
 sections = tuple(_sections)
+
+
+def find_pronunciations(code: str, locale: str) -> list[str]:
+    """
+    >>> find_pronunciations("", "th")
+    []
+    >>> find_pronunciations("{{IPA|th|/ˈjestədeɪ/}}", "th")
+    ['/ˈjestədeɪ/']
+    """
+    pattern = re.compile(rf"\{{\{{IPA\|{locale}\|(/[^/]++/)")
+    return sorted(set(re.findall(pattern, code)))
