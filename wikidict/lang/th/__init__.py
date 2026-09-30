@@ -48,6 +48,7 @@ sections = (
     "ตัวอักษรควบ",  # ligatures
     "ลุฌโว",  # lujvo
     "หน่วยคำ",  # morphemes
+    "หน้าที่",  # noun
     "คำนาม",  # nouns
     "จำนวน",  # numbers
     "ตัวเลข",  # numeral symbols
