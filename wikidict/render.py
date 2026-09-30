@@ -412,7 +412,7 @@ def find_etymology(
             items = [parsed_section.contents]
 
     etyms = [
-        etyl.replace("<br/>", "") if lang_src == "jbo" else etyl
+        etyl.replace("<br/>", "") if lang_src == "jbo" else etyl.lstrip(": ")
         for item in items
         if (etyl := utils.process_templates(word, item, lang_dst, templates_status=templates_status)) and len(etyl) > 1
     ]
