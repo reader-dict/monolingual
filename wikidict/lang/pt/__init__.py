@@ -330,11 +330,36 @@ def adjust_wikicode(
         flags=re.MULTILINE,
     )
 
+    # Remove uninteresting sections to speed-up process, and prevent mixing unrelated data (unit tested by "candidatar")
+    lines: list[str] = []
+    in_section = False
+    for line in code.splitlines():
+        if line.startswith("==") and not line.startswith("===="):
+            in_section = (
+                "anagramas" in (line_lower := line.lower())
+                or "ligações externas" in line_lower
+                or "na wikcionário" in line_lower
+                or "no commons" in line_lower
+                or "no wikcionário" in line_lower
+                or "no wikipédia" in line_lower
+                or "no wikispecies" in line_lower
+                or "nota" in line_lower
+                or "referências" in line_lower
+                or "termos derivados" in line_lower
+                or "variante ortográfica" in line_lower
+                or "varort" in line_lower
+                or "ver também" in line_lower
+                or "verbetes derivados" in line_lower
+            )
+        if not in_section:
+            lines.append(line)
+    code = "\n".join(lines)
+
     #
     # Variants
     #
 
-    lines: list[str] = []
+    lines.clear()
     for line in code.splitlines():
         if re.match(START, line):
             for pattern in PATTERNS:

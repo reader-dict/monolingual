@@ -1,0 +1,35 @@
+={{-pt-}}=
+==Verbo==
+{{paroxítona|can|di|da|tar}}, {{gramática|vp}}
+# tornar a si mediante algum meio ou modo um [[candidato]]
+
+===Conjugação===
+{{conj/pt|candidat|ar}}
+
+==Ver também==
+===No Wikcionário===
+====Substantivo====
+{{verTambém.Ini}}
+* [[cargo]]
+* [[chamada]]
+* [[currículo]]
+* [[entrevista]]
+* [[entrevistador]]
+{{verTambém.NovaColuna}}
+* [[prova]]
+* [[seleção]]
+* [[selecionador]]
+* [[teste]]
+* [[vaga]]
+{{verTambém.Fim}}
+
+====Substantivo====
+{{verTambém.Ini}}
+* [[concorrer]]
+* [[disputar]]
+{{verTambém.NovaColuna}}
+* [[passar]]
+* [[prestar]]
+{{verTambém.Fim}}
+
+[[Categoria:Verbo (Português)]]
