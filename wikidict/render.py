@@ -422,6 +422,7 @@ def find_etymology(
                 "See",
                 "See.",
                 "See further at etymology 1.",
+                "See the etymology of the corresponding lemma form.",
                 "Variant forms.",
                 "Unknown",
             },
