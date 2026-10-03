@@ -227,7 +227,7 @@ def setup_lua_ctx() -> None:
                 "Synonymes": ["génial", "super <i>(Familier)</i>"],
             },
             [],
-            ["baths"],
+            ["bathim", "baths"],
         ),
         (
             "Bogotanais",

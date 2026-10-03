@@ -3,34 +3,43 @@ from collections import defaultdict
 
 from wikidict import context, utils
 
+REPLACEMENTS: list[str] = []
+
 
 def cleanup(form: str) -> str:
-    cleaned = utils.cleanup_rev_variant(form)
-    return cleaned
+    cleaned = re.sub(r"\{\{\{\d\}\}\}", r"", form)
+    return utils.cleanup_rev_variant(cleaned, rpl=REPLACEMENTS)
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
+    if "<br" in wikitext:
+        wikitext = re.sub(r"<br[^>]*+>", "\n| ", wikitext)
+
     lines = [
         line
         for raw_line in wikitext.splitlines()
         if (
             (line := raw_line.strip())
             and line.startswith("|")
-            and not line.startswith(("|-", "|}"))
+            and not line.startswith(("|-", "|+", "|}"))
             and "Annexe:Prononciation" not in line
         )
     ]
 
     forms: set[str] = set()
     for line in lines:
-        if f"'''{word}'''" in line:
-            # We want reverse variants for the base word only
-            if forms:
+        if form := re.search(r"\[\[([^#\]]++)", line) or re.search(rf"'''({word})'''", line):
+            cleaned = cleanup(form[1])
+            # We want reverse variants for the base word only (the first occurrence in the table)
+            if not forms and cleaned != word:
                 return []
-        elif form := re.search(r"\[\[([^#]++)#", line):
-            forms.add(cleanup(form[1]))
+            forms.add(cleaned)
 
     forms.discard(word)
+    forms.discard("-")
+    forms.discard("—")
+    forms.discard("+")
+    forms.discard("")
 
     return sorted(forms)
 
@@ -42,6 +51,9 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     """
     if tpl == "rev-flexion":
         return parts[0]
+
+    if not parts and not (tpl.endswith("-nom") or "décl" in tpl):
+        parts.append(word)
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "fr")
     return "|".join(table_to_forms(word, table))
