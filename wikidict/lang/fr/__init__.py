@@ -15,7 +15,7 @@ template_trans = "Modèle"
 
 # https://fr.wiktionary.org/wiki/Wiktionnaire:Liste_des_sections_de_types_de_mots
 section_patterns = ("#", r"\*")
-section_sublevels = (3, 4)
+section_sublevels = (3, 4, 5)
 head_sections = ("{{langue|fr}}", "{{langue|conv}}", "{{caractère}}")
 etyl_section = ("{{s|étymologie}}",)
 core_sections = [

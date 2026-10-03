@@ -14,6 +14,7 @@ template_trans = "Mall"
 # https://sv.wiktionary.org/wiki/Wiktionary:Stilguide#Ordklassrubriken
 sublist_patterns = ("#", ":")
 head_sections = ("svenska",)
+section_sublevels = (3, 4)
 sections = (
     "adjektiv",
     "adverb",
