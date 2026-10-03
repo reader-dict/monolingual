@@ -2,7 +2,9 @@
 
 import re
 
-from ... import utils
+from ... import lang, utils
+from ...lang.pl import extract_templates
+from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -82,11 +84,18 @@ sections = (
 )
 
 variant_templates = (
-    "{{fr-accord-",
-    "{{fr-rég",
     "{{fr-verbe-flexion",
     "{{flexion",
 )
+
+reverse_variant_titles = (
+    "{{fr-accord-",
+    "{{fr-adj-",
+    "{{fr-conj-",
+    "{{fr-rég",
+)
+reverse_variant_templates = ("{{rev-flexion",)
+
 
 definitions_to_ignore = (
     "{doute",
@@ -275,7 +284,8 @@ def adjust_wikicode(
     code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)
 
     # Simplify genders
-    code = code.replace("{{msing}}", "{{m}}")
+    if "{{msing}}" in code:
+        code = code.replace("{{msing}}", "{{m}}")
 
     #
     # Variants
@@ -291,6 +301,41 @@ def adjust_wikicode(
                     line = f"# {{{{flexion|{parts[1]}}}}}"
                     break
         lines.append(line)
+    code = "\n".join(lines)
+
+    #
+    # Reverse variants
+    #
+
+    interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
+    if any(tpl in code for tpl in interesting_reverse_variant_titles):
+        lines.clear()
+        in_tpl = False
+        tpl_code = ""
+
+        for line in code.splitlines():
+            if line.startswith(interesting_reverse_variant_titles):
+                in_tpl = True
+
+            if in_tpl:
+                tpl_code += line
+                if tpl_code.count("{") == tpl_code.count("}"):
+                    in_tpl = False
+                    for tpl_sub in extract_templates(tpl_code):
+                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip(" \u200e")
+                        variant_handlers_mod.append_to_reverse_variants(tpl_name)
+                        forms = utils.process_templates(
+                            word,
+                            tpl_sub,
+                            locale,
+                            templates_status=templates_status,
+                            variant_only=True,
+                        )
+                        lines.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
+                    tpl_code = ""
+            else:
+                lines.append(line)
+        code = "\n".join(lines)
 
     return "\n".join(lines)
 

@@ -19,7 +19,7 @@ def setup_lua_ctx() -> None:
 
 
 @pytest.mark.parametrize(
-    "word, pronunciations, etymology, definitions, variants",
+    "word, pronunciations, etymology, definitions, variants, reverse_variants",
     [
         (
             "42",
@@ -39,6 +39,7 @@ def setup_lua_ctx() -> None:
                 "Synonymes": ["quatre deux <i>(Familier)</i>"],
             },
             [],
+            [],
         ),
         (
             "5E",
@@ -49,6 +50,7 @@ def setup_lua_ctx() -> None:
                     "Code AITA de la compagnie d’aviation SGA Airlines <i>(Siam General Aviation Company Limited</i>, บริษัท สยาม เจนเนอรัล เอวิเอชั่น จำกัด)."
                 ]
             },
+            [],
             [],
         ),
         (
@@ -66,6 +68,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["-eresses"],
         ),
         (
             "a",
@@ -92,6 +95,7 @@ def setup_lua_ctx() -> None:
                 "Synonymes": ["γ («&nbsp;accélération&nbsp;»)"],
             },
             ["avoir"],
+            [],
         ),
         (
             "π",
@@ -103,6 +107,7 @@ def setup_lua_ctx() -> None:
                     "<i>(Bases de données)</i> Symbole de la projection.",
                 ],
             },
+            [],
             [],
         ),
         (
@@ -124,6 +129,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            ["accueils"],
         ),
         (
             "acrologie",
@@ -140,6 +146,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["acrologies"],
         ),
         (
             "-aux",
@@ -151,6 +158,7 @@ def setup_lua_ctx() -> None:
                 "Suffixe": ["<i>Forme courante du pluriel de</i> -al."],
                 "Variantes": ["-als, <i>(Dans certains cas particuliers)</i>."],
             },
+            [],
             [],
         ),
         (
@@ -195,6 +203,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             ["baser"],
+            ["bases"],
         ),
         (
             "bath",
@@ -218,6 +227,7 @@ def setup_lua_ctx() -> None:
                 "Synonymes": ["génial", "super <i>(Familier)</i>"],
             },
             [],
+            ["baths"],
         ),
         (
             "Bogotanais",
@@ -227,6 +237,7 @@ def setup_lua_ctx() -> None:
                 "Nom|m.": ["Habitant de Bogota."],
             },
             [],
+            [],
         ),
         (
             "chacune",
@@ -234,6 +245,7 @@ def setup_lua_ctx() -> None:
             [],
             {},
             ["chacun"],
+            [],
         ),
         (
             "colligeait",
@@ -241,6 +253,7 @@ def setup_lua_ctx() -> None:
             [],
             {},
             ["colliger"],
+            [],
         ),
         (
             "corps portant",
@@ -253,6 +266,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["corps portants"],
         ),
         (
             "DES",
@@ -277,6 +291,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            [],
         ),
         (
             "dubitatif",
@@ -284,6 +299,7 @@ def setup_lua_ctx() -> None:
             ["Du latin <i>dubitativus</i>."],
             {"Adjectif": ["Qui sert à exprimer le doute.", "Qui éprouve un doute."]},
             [],
+            ["dubitatifs", "dubitative", "dubitatives"],
         ),
         (
             "effluve",
@@ -299,6 +315,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             ["effluver"],
+            ["effluves"],
         ),
         (
             "employer",
@@ -312,6 +329,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "encyclopædie",
@@ -321,6 +339,7 @@ def setup_lua_ctx() -> None:
                 "Nom|f.": ["<i>(Archaïsme)</i> <i>Variante orthographique&#32;de</i>&nbsp;encyclopédie."],
             },
             [],
+            ["encyclopædies"],
         ),
         (
             "éperon",
@@ -344,6 +363,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["éperons"],
         ),
         (
             "greffier",
@@ -364,12 +384,14 @@ def setup_lua_ctx() -> None:
                 ],
             },
             [],
+            ["greffiers"],
         ),
         (
             "ich",
             [],
             [],
             {"Symbole": ["<i>(Linguistique)</i> Code ISO 639-3 de l’etkywan."]},
+            [],
             [],
         ),
         (
@@ -384,6 +406,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
         (
             "mutiner",
@@ -396,6 +419,7 @@ def setup_lua_ctx() -> None:
                     "<i>(Poétique)</i> …",
                 ]
             },
+            [],
             [],
         ),
         (
@@ -412,6 +436,7 @@ def setup_lua_ctx() -> None:
                 ],
                 "Synonymes": ["autrefois", "jadis", "orains <i>(archaïque, régionalisme normand)</i>"],
             },
+            [],
             [],
         ),
         (
@@ -431,6 +456,7 @@ def setup_lua_ctx() -> None:
                 "Variantes": ["pin yin"],
             },
             [],
+            [],
         ),
         (
             "précepte",
@@ -447,6 +473,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            ["préceptes"],
         ),
         (
             "rance",
@@ -464,6 +491,7 @@ def setup_lua_ctx() -> None:
                 ],
             },
             ["rancer"],
+            ["rances"],
         ),
         (
             "sapristi",
@@ -475,6 +503,7 @@ def setup_lua_ctx() -> None:
                 ],
                 "Variantes": ["pristi"],
             },
+            [],
             [],
         ),
         (
@@ -494,6 +523,7 @@ def setup_lua_ctx() -> None:
                 "Synonymes": ["polysiloxane"],
             },
             ["siliconer"],
+            ["silicones"],
         ),
         (
             "suis",
@@ -501,6 +531,7 @@ def setup_lua_ctx() -> None:
             [],
             {},
             ["suivre", "être"],
+            [],
         ),
         (
             "venoient",
@@ -512,6 +543,7 @@ def setup_lua_ctx() -> None:
                 ]
             },
             [],
+            [],
         ),
     ],
 )
@@ -521,6 +553,7 @@ def test_parse_word(
     etymology: list[Definitions],
     definitions: Definitions,
     variants: list[str],
+    reverse_variants: list[str],
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
@@ -531,5 +564,6 @@ def test_parse_word(
     assert etymology == details.etymology
     assert OrderedDict(definitions) == details.definitions
     assert variants == details.variants
+    assert reverse_variants == details.reverse_variants
 
     assert not context.get_then_clear_errors()
