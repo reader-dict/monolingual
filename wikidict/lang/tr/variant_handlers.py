@@ -18,9 +18,16 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     )
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
-    forms = set(re.findall(r"\[\[([^#\]]++)\]\]", lines))  # `[[foo]]`
+    forms: set[str] = set()
+    for form in re.findall(r"\[\[([^#\]]++)\]\]", lines):  # `[[foo]]` or `[[föo|foo]]`
+        if "|" in form:
+            forms.update(utils.cleanup_rev_variant(f_) for f_ in form.split("|"))
+        else:
+            forms.add(utils.cleanup_rev_variant(form))
+
     if "#" in lines:
-        forms.update(re.findall(r"\[\[[^#]++[^|]++\|([^\]]++)\]\]", lines))  # `[[foö#Türkçe|foo]]`
+        for form in re.findall(r"\[\[[^#]++[^|]++\|([^\]]++)\]\]", lines):  # `[[foö#Türkçe|foo]]`
+            forms.add(utils.cleanup_rev_variant(form))
 
     forms.discard(word)
 
