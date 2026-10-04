@@ -173,6 +173,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/stɛm/']
     >>> find_pronunciations("===Pronunciation===\n* {{qualifier|stressed}}\n** {{IPA|en|/ɪt/|a=RP,GA,Aus}} {{enPR|ĭt}}\n** {{audio|en|en-uk-it.ogg|a=UK}}\n** {{audio|en|en-us-it.ogg|a=US}}\n** {{IPA|en|/ɘt/|a=NZ}}\n** {{rhymes|en|ɪt|s=1}}\n* {{qualifier|unstressed}}\n** {{IPA|en|/ɪt/|[ɪ̈t]|[ɪt]|a=RP}}\n** {{rhymes|en|ɪt|s=1}}\n** {{IPA|en|/ət/|[ɪ̈t]|[ɪ̈ʔ]|a=GA}}, {{enPR|ət}}\n** {{IPA|en|[ɪʔ]|a=Pacific Northwest}}\n** {{IPA|en|/ət/|a=Aus}}\n** {{IPA|en|/ɘt/|a=NZ}}\n* {{audio|en|LL-Q1860 (eng)-Vealhurl-it.wav|a=Southern England}}\n* {{homophones|en|at}} {{qualifier|unstressed}} {{a|en|General American|General Australian}}\n<!-- 1 syllable words !-->", "en")
     ['/ɪt/']
+    >>> find_pronunciations("====Pronunciation====\n* {{q|letter name}}\n** {{IPA|en|/eɪ/|a=UK,US}}\n*** {{audio|en|en-us-a.ogg|a=US}}\n** {{IPA|en|/æɪ/|a=AusE}}\n** {{IPA|en|[eː]|a=CA}}\n** {{rhymes|en|eɪ|s=1}}\n*: The current pronunciation resulted from the [[w:Great Vowel Shift|Great Vowel Shift]]. Before the early part of the 17th century, the pronunciation was similar to that in other languages.\n* {{q|phoneme}} {{IPA|en|/æ/|/ɑː/|/eɪ/|/ə/}}, etc.", "en")
+    ['/eɪ/']
     """
     lines: list[str] = []
     in_section = False
@@ -202,8 +204,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         if "a=" not in line:
             continue
         if "GA" in line or "GenAm" in line or "US" in line:
-            kind = "" if "RP" in line else "US"
-        elif "RP" in line:
+            kind = "" if "RP" in line or "UK" in line else "US"
+        elif "RP" in line or "UK" in line:
             kind = "UK"
         else:
             continue
@@ -215,7 +217,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     if not pronunciations:
         kind = ""
         for line in lines:
-            if "{{a|en|RP}}" in line:
+            if "{{a|en|RP}}" in line or "{{a|en|UK}}" in line:
                 kind = "UK"
             elif "{{a|en|GA}}" in line or "{{a|en|GenAm}}" in line or "{{a|en|US}}" in line:
                 kind = "US"
