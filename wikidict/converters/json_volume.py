@@ -81,7 +81,7 @@ class JSONVolumeFormat(BaseFormat):
         if etyms := self._format_etymology(details.etymology):
             word_data[self.KEY_ETYMOLOGY] = etyms
         if prons := utils.convert_pronunciation(details.pronunciations):
-            word_data[self.KEY_PRONUNCIATION] = prons
+            word_data[self.KEY_PRONUNCIATION] = prons.strip()
         if variants := self.variants.get(word):
             word_data[self.KEY_VARIANT] = sorted(variants)
 
