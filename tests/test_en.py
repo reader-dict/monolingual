@@ -89,7 +89,7 @@ def setup_lua_ctx() -> None:
         ),
         (
             "efficient",
-            ["UK: /ɪˈfɪʃənt/"],
+            ["/ɪˈfɪʃənt/"],
             [
                 "1398, “making,” from Old French, from Latin <i>efficientem</i>, nominative <i>efficiēns</i>, participle of <i>efficere</i> (“work out, accomplish”) (see <i>effect</i>). Meaning “productive, skilled” is from 1787. <i>Efficiency apartment</i> is first recorded 1930, American English."
             ],
@@ -159,7 +159,7 @@ def setup_lua_ctx() -> None:
         ("memoized", [], [], {}, ["memoize"]),
         (
             "portmanteau",
-            ["UK: /pɔːtˈmæn.təʊ/"],
+            ["UK: /pɔːtˈmæn.təʊ/", "US: /pɔːɹtˈmæntoʊ/"],
             [
                 "From Middle French <i>portemanteau</i> (“coat stand”), from <i>porte</i> (“carries”, third-person singular present indicative of <i>porter</i> (“to carry”)) +\u200e <i>manteau</i> (“coat”), literally “[that which] carries coat”.",
                 "First used by Lewis Carroll in <i>Through the Looking-Glass</i> to describe the words he coined in “Jabberwocky”.",
