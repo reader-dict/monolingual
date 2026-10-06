@@ -593,7 +593,7 @@ def prettify_pos(top_title: str, section: wtp.Section, lang_src: str, lang_dst: 
 
     pretty_pos = utils.format_pos(lang_src, section_pos)
 
-    if top_title in POS_TRANSLINGUAL:
+    if pretty_pos != "Trans" and top_title in POS_TRANSLINGUAL:
         parens = "(", ")"
         sep = " "
         match lang_dst:
@@ -605,7 +605,7 @@ def prettify_pos(top_title: str, section: wtp.Section, lang_src: str, lang_dst: 
         pretty_pos += f"{sep}{parens[0]}{INTERNATIONAL_POS[lang_dst]}{parens[1]}"
 
     # A potential gender, specified in the section content, is merged into the current POS ("Noun" becomes "Noun f.")
-    if not pretty_pos.startswith("Trans") and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
+    if pretty_pos != "Trans" and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
         pretty_pos += f"|{fmt_genders(genders)}"
 
     return pretty_pos
