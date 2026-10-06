@@ -64,7 +64,7 @@ def setup_lua_ctx() -> None:
             "♁",
             [],
             [],
-            {"snile'u": ["(kesyske) plini cu du le.terdi.", "(xumjetske) antimoni"]},
+            {"snile'u (int.)": ["(kesyske) plini cu du le.terdi.", "(xumjetske) antimoni"]},
             [],
         ),
     ],

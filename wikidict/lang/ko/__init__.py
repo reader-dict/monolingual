@@ -9,7 +9,10 @@ random_word_url = "https://ko.wiktionary.org/wiki/%ED%8A%B9%EC%88%98:%EC%9E%84%E
 module_trans = "모듈"
 template_trans = "틀"
 
-head_sections = ("한국어", "국제")
+head_sections = (
+    "한국어",  # Korean
+    "국제",  # international
+)
 section_sublevels = (3, 4)
 sections = (
     # https://ko.wiktionary.org/w/index.php?title=모듈:headword/data&oldid=4480618#L-41

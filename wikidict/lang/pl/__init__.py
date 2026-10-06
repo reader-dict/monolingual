@@ -11,7 +11,10 @@ random_word_url = "https://pl.wiktionary.org/wiki/Specjalna:Losowa_strona"
 module_trans = "Moduł"
 template_trans = "Szablon"
 
-head_sections = ("polski", "międzynarodowe")
+head_sections = (
+    "polski",  # Polish
+    "międzynarodowe",  # international
+)
 section_patterns = (
     r":[ ]*\(\d+\.\d+\)",  # `: (1.1) ...`
     r":[ ]*\(\d+\.\d+-\d+\)",  # `: (1.1–2) ...`

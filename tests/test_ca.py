@@ -171,7 +171,7 @@ def setup_lua_ctx() -> None:
                     "can",
                 ],
             },
-            [LANG, "casar"],
+            ["ca", "casar"],
         ),
         (
             "Castell",
@@ -222,7 +222,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Símbol": ["Codi de llengua ISO 639-1 del chamorro."],
+                "Símbol (int.)": ["Codi de llengua ISO 639-1 del chamorro."],
             },
             [],
         ),
@@ -273,7 +273,6 @@ def setup_lua_ctx() -> None:
                 "Del català antic <i>lo</i>, per fals tall sil·làbic de <i>·l</i>, forma reduïda darrere d’una <i>e</i>, segle XIV. Per exemple: <i>que lo &gt; que·l &gt; qu’el &gt; que el; de lo &gt; del; e lo &gt; e·l &gt; i el</i>."
             ],
             {
-                "Símbol": ["Codi de llengua ISO 639-1 del grec modern."],
                 "Article": [
                     "Article determinat masculí singular que serveix per actualitzar i concretar el contingut del substantiu que acompanya."
                 ],
@@ -282,6 +281,7 @@ def setup_lua_ctx() -> None:
                     'Substitueix el complement directe quan aquest porta l\'article "el".',
                 ],
                 "Nom|f.": ["(<i>obsolet</i>) <i>Forma alternativa de</i> <b>ela</b>."],
+                "Símbol (int.)": ["Codi de llengua ISO 639-1 del grec modern."],
                 "Sinònims": [
                     "l' (forma apostrofada)",
                     "lo, l' (dialectal)",
@@ -326,7 +326,6 @@ def setup_lua_ctx() -> None:
                 "[4] Pronom: del llatí <i>sibī</i>, datiu de <i>ille</i> \u200e(‘ell’).",
             ],
             {
-                "Símbol": ["Codi de llengua ISO 639-1 del singalès."],
                 "Conjunció": ["Nexe condicional que introdueix un supòsit, una premissa."],
                 "Nom|m.": [
                     "Cavitat interna del cos.",
@@ -334,6 +333,7 @@ def setup_lua_ctx() -> None:
                     "Setena nota musical de l'escala.",
                 ],
                 "Pronom": ["Forma del pronom reflexiu de tercera persona quan s'usa darrere de preposicions."],
+                "Símbol (int.)": ["Codi de llengua ISO 639-1 del singalès."],
                 "Sinònims": ["bust, pit, sina, tòrax", "mare, matriu"],
             },
             [],

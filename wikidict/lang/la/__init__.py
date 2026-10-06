@@ -19,7 +19,6 @@ head_sections = (
     "{{-lingua-|la|",
     "{{-lingua-|la}",
     "latice",
-    "{{mul",
 )
 section_sublevels = (3, 4)
 etyl_section = ("Notatio",)

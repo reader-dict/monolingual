@@ -75,6 +75,77 @@ DEBUG_LUA = int(os.getenv("DEBUG_LUA", "0")) > 0
 
 
 # XXX_LOCALES
+POS_TRANSLINGUAL = {
+    # CA
+    "{{-mul-}}",  # + DA, RU
+    # DA
+    "{{mul}}",
+    "{{=mul=}}",  # + MG
+    (
+        "tværsprogligt"
+        # DE
+        "{{sprache|international}}"
+    ),
+    # EN
+    "translingual",
+    # EO
+    "multldingva",
+    "translingva",
+    "{{lingvo|mul}}",
+    # FI
+    "kansainvälinen",
+    # FR
+    "{{langue|conv}}",
+    # JBO
+    "sorbau",
+    "{{bau|mul}}",
+    # KO
+    "국제",
+    # NL
+    "{{qtu}}",
+    # PL
+    "międzynarodowe",
+    # PT
+    "{{-mult-}}",
+    # RO
+    "{{limba|conv}}",
+    # TH
+    "ภาษาร่วม",
+    # UK
+    "mul",
+    # ZH
+    "跨語言",
+}
+INTERNATIONAL_POS = {
+    "ca": "int.",
+    "cs": "mez.",
+    "da": "int.",
+    "de": "int.",
+    "el": "διεθν.",
+    "en": "intl.",
+    "eo": "int.",
+    "es": "int.",
+    "fi": "kv.",
+    "fr": "int.",
+    "it": "int.",
+    "ja": "国際",
+    "jbo": "int.",
+    "ko": "국제",
+    "la": "int.",
+    "lt": "tarpt.",
+    "mg": "int.",
+    "nl": "int.",
+    "no": "int.",
+    "pl": "międz.",
+    "pt": "int.",
+    "ro": "int.",
+    "ru": "межд.",
+    "sv": "int.",
+    "th": "นานาชาติ",
+    "tr": "ulusl.",
+    "uk": "міжн.",
+    "zh": "国际",
+}
 POS_SYNONYMS = [
     ("ca", "Sinònims"),
     ("cs", "Synonyma"),
@@ -186,7 +257,7 @@ def find_section_definitions(
     definitions: list[Definition] = []
 
     if lang_src == "es":
-        if section.title.lstrip().lower().startswith("forma"):
+        if str(section.title).lstrip().lower().startswith("forma"):
             return []
         if lists := section.get_lists(pattern="[:;]"):
             section.contents = "".join(es_replace_defs_list_with_numbered_lists(lst) for lst in lists)
@@ -462,10 +533,10 @@ def section_title(section: wtp.Section) -> str:
 
 def find_all_sections(
     code: str, lang_src: str, lang_dst: str
-) -> tuple[list[wtp.Section], list[tuple[str, wtp.Section]]]:
+) -> tuple[list[wtp.Section], list[tuple[str, str, wtp.Section]]]:
     """Find all sections holding definitions."""
     parsed = wtp.parse(code)
-    all_sections: list[tuple[str, wtp.Section]] = []
+    all_sections: list[tuple[str, str, wtp.Section]] = []
     level = lang.section_level[lang_dst]
     head_sections = tuple(hs.replace(" ", "") for hs in lang.head_sections[lang_dst])
 
@@ -478,6 +549,7 @@ def find_all_sections(
 
             all_sections.extend(
                 (
+                    section_title(leading_part),
                     etyl_l_sections[0],
                     wtp.Section(f"=== {etyl_l_sections[0]} ===\n{line}"),
                 )
@@ -489,10 +561,13 @@ def find_all_sections(
     top_sections = [
         section for section in parsed.get_sections(level=level) if section_title(section).startswith(head_sections)
     ]
+    # We want the translingual section to come last
+    if len(top_sections) > 1 and section_title(top_sections[0]) in POS_TRANSLINGUAL:
+        top_sections.reverse()
 
     # Get all sections without any filtering
     all_sections.extend(
-        (section.title.strip(), section)
+        (section_title(top_section), str(section.title).strip(), section)
         for top_section in top_sections
         for sublevel in lang.section_sublevels[lang_dst]
         for section in top_section.get_sections(include_subsections=False, level=sublevel)
@@ -501,7 +576,7 @@ def find_all_sections(
     return top_sections, all_sections
 
 
-def prettify_pos(section: wtp.Section, lang_src: str, lang_dst: str) -> str:
+def prettify_pos(top_title: str, section: wtp.Section, lang_src: str, lang_dst: str) -> str:
     section_pos = str(section.title).strip().lower()
 
     if lang_src == "en" and section_pos.startswith("etymology"):
@@ -518,8 +593,19 @@ def prettify_pos(section: wtp.Section, lang_src: str, lang_dst: str) -> str:
 
     pretty_pos = utils.format_pos(lang_src, section_pos)
 
+    if top_title in POS_TRANSLINGUAL:
+        parens = "(", ")"
+        sep = " "
+        match lang_dst:
+            case "ja" | "zh":
+                parens = "（", "）"
+                sep = ""
+            case "ko":
+                sep = ""
+        pretty_pos += f"{sep}{parens[0]}{INTERNATIONAL_POS[lang_dst]}{parens[1]}"
+
     # A potential gender, specified in the section content, is merged into the current POS ("Noun" becomes "Noun f.")
-    if pretty_pos != "Trans" and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
+    if not pretty_pos.startswith("Trans") and (genders := lang.find_genders[lang_src](section.contents, lang_dst)):
         pretty_pos += f"|{fmt_genders(genders)}"
 
     return pretty_pos
@@ -541,7 +627,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
         # Genders are found in inflections
         current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
 
-    for title, section in all_sections:
+    for top_title, title, section in all_sections:
         title = title.lower()
         if lang_src == "lt":
             title = title.strip("'")
@@ -565,7 +651,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
             elif title in etyl_section:
                 pos = title
             else:
-                pos = prettify_pos(section, lang_src, lang_dst)
+                pos = prettify_pos(top_title, section, lang_src, lang_dst)
                 if lang_src in {"ru", "uk"} and current_genders and "|" not in pos:
                     pos += f"|{fmt_genders(current_genders)}"
             ret[pos].append(section)
@@ -734,7 +820,7 @@ def parse_word(
     ):
         top_section = top_sections[0]
         top_section.title = "top"
-        section_pos = prettify_pos(top_section, lang_src, lang_dst)
+        section_pos = prettify_pos(section_title(top_section), top_section, lang_src, lang_dst)
         definitions |= find_definitions(
             word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
         )
@@ -756,8 +842,8 @@ def parse_word(
             for top in top_sections:
                 etymology.extend(find_etymology(word, lang_src, lang_dst, top, templates_status=templates_status))
         elif etymology_sections:
-            for etyl_data in etymology_sections:
-                etymology.extend(find_etymology(word, lang_src, lang_dst, etyl_data, templates_status=templates_status))
+            for section in etymology_sections:
+                etymology.extend(find_etymology(word, lang_src, lang_dst, section, templates_status=templates_status))
 
         if etymology:
             # Remove duplicates

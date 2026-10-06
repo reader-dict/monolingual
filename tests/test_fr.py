@@ -26,16 +26,16 @@ def setup_lua_ctx() -> None:
             ["\\ka.ʁɑ̃t.dø\\"],
             [],
             {
-                "Numéral": [
-                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
-                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
-                ],
                 "Nom|inv.": [
                     "Quarante-deux.",
                     "<i>(Par ellipse)</i> Une année qui se termine par <b>42</b>.",
                     "<i>(France)</i> <i>(Familier)</i> Habitant du département de la Loire.",
                 ],
                 "Nom Propre|m.": ["<i>(France)</i> Département de la Loire."],
+                "Numéral (int.)": [
+                    "Numéral en chiffres arabes du nombre quarante-deux, en notation décimale. Selon la base utilisée, ce numéral peut représenter d’autres nombres. En notation hexadécimale, par exemple, ce numéral représente le nombre soixante-six ; en octal, le nombre trente-quatre.",
+                    "<i>(Par ellipse)</i> <i>(Dans la plupart des langues)</i> Une année qui se termine par <b>42</b>.",
+                ],
                 "Synonymes": ["quatre deux <i>(Familier)</i>"],
             },
             [],
@@ -46,7 +46,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Symbole": [
+                "Symbole (int.)": [
                     "Code AITA de la compagnie d’aviation SGA Airlines <i>(Siam General Aviation Company Limited</i>, บริษัท สยาม เจนเนอรัล เอวิเอชั่น จำกัด)."
                 ]
             },
@@ -80,7 +80,11 @@ def setup_lua_ctx() -> None:
                 "<i>(Symbole 6)</i> Abréviation de <i><b>a</b>ccélération</i>.",
             ],
             {
-                "Symbole": [
+                "Pronom": [
+                    "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
+                    "<i>(Québec)</i> <i>(Familier)</i> Elle.",
+                ],
+                "Symbole (int.)": [
                     "<i>(Linguistique)</i> Symbole de l’alphabet phonétique international pour la voyelle (ou vocoïde) ouverte antérieure non arrondie \\a\\.",
                     "<i>(Métrologie)</i> Symbole du Système international (SI) pour le préfixe <b>atto-</b> (×10<sup>−18</sup>).",
                     "<i>(Métrologie)</i> Symbole de l’<b>are</b>, une unité de mesure de surface en dehors SI. Elle prend souvent le préfixe h pour former ha (hectare).",
@@ -88,11 +92,7 @@ def setup_lua_ctx() -> None:
                     "<i>(Chimie)</i> Symbole de l’activité chimique d’un composant.",
                     "<i>(Physique, Mécanique)</i> Symbole de l’accélération en tant que grandeur physique (uSI : mètre par seconde carré, m/s², m⋅s⁻² ; unité usuelle : g).",
                 ],
-                "Pronom": [
-                    "<i>(Familier)</i> Pronom personnel (indéterminé en genre et en personne : première, deuxième ou troisième).",
-                    "<i>(Québec)</i> <i>(Familier)</i> Elle.",
-                ],
-                "Synonymes": ["γ («&nbsp;accélération&nbsp;»)"],
+                "Synonymes (int.)": ["γ («&nbsp;accélération&nbsp;»)"],
             },
             ["avoir"],
             [],
@@ -102,7 +102,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Symbole": [
+                "Symbole (int.)": [
                     "<i>(Mathématiques)</i> Symbole représentant le rapport constant entre la circonférence d’un cercle et son diamètre, aussi appelé en français la <i>constante d’Archimède</i>.",
                     "<i>(Bases de données)</i> Symbole de la projection.",
                 ],
@@ -272,15 +272,11 @@ def setup_lua_ctx() -> None:
             "DES",
             [],
             [
-                "<i>(Commerce international)</i> <i>(1936)</i> Terme créé par la Chambre de commerce internationale. Sigle de l’anglais <i>delivered ex ship</i>; « rendu par navire ».",
                 "<i>(Nom commun 1)</i> Sigle pour <b>d</b>i<b>é</b>thyl<b>s</b>tilbestrol.",
                 "<i>(Nom commun 2)</i> Sigle.",
+                "<i>(Commerce international)</i> <i>(1936)</i> Terme créé par la Chambre de commerce internationale. Sigle de l’anglais <i>delivered ex ship</i>; « rendu par navire ».",
             ],
             {
-                "Symbole": ["<i>(Aviation)</i> Code AITA de l’aéroport de Desroches, aux Seychelles."],
-                "Adverbe": [
-                    "<i>(Commerce international)</i> Incoterm qui signifie que le vendeur a dûment livré sa marchandise dès lors que celle-ci, dédouanée à l’exportation et non à l’importation, est mise à disposition de l’acheteur à bord du navire, au port de destination convenu. Les frais de déchargement sont à la charge de l’acheteur."
-                ],
                 "Nom|m.": [
                     "<i>(Biochimie)</i> Diéthylstilbestrol, un œstrogène de synthèse, source de graves complications chez les filles de ses utilisatrices.",
                     "<i>(Québec)</i> Diplôme d’études secondaires, un diplôme obtenu après cinq années d’études secondaires au Québec ; anciennement <i>Certificat d’études secondaires</i> (CES ou CÉS).",
@@ -288,6 +284,10 @@ def setup_lua_ctx() -> None:
                     "<i>(Belgique)</i> Diplôme d’études spécialisées, un diplôme de troisième cycle universitaire en Belgique.",
                     "<i>(France)</i> Diplôme d’études supérieures, un diplôme français.",
                     "<i>(Mathématiques)</i> Décomposition en éléments simples, une méthode de calcul mathématique.",
+                ],
+                "Symbole (int.)": ["<i>(Aviation)</i> Code AITA de l’aéroport de Desroches, aux Seychelles."],
+                "Adverbe (int.)": [
+                    "<i>(Commerce international)</i> Incoterm qui signifie que le vendeur a dûment livré sa marchandise dès lors que celle-ci, dédouanée à l’exportation et non à l’importation, est mise à disposition de l’acheteur à bord du navire, au port de destination convenu. Les frais de déchargement sont à la charge de l’acheteur."
                 ],
             },
             [],
@@ -390,7 +390,7 @@ def setup_lua_ctx() -> None:
             "ich",
             [],
             [],
-            {"Symbole": ["<i>(Linguistique)</i> Code ISO 639-3 de l’etkywan."]},
+            {"Symbole (int.)": ["<i>(Linguistique)</i> Code ISO 639-3 de l’etkywan."]},
             [],
             [],
         ),

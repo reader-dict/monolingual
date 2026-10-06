@@ -26,14 +26,6 @@ def setup_lua_ctx() -> None:
             ["/a/"],
             [],
             {
-                "Voorvoegsel": ["(natuurkunde) voorvoegsel voor atto-, 10<sup>−18</sup>"],
-                "Symbool": [
-                    "(wiskunde), (afkorting) symbool voor <i>are</i>, een oppervlaktemaat, gelijk aan 100 m², gelijk aan tien bij tien meter",
-                    "(wiskunde), (afkorting) symbool voor <i>acre</i>, een Engelse oppervlaktemaat.",
-                    "(tijdrekening), (eenheid), (geologie), (astronomie) het symbool voor annum.",
-                    "(natuurkunde) het symbool voor versnelling.",
-                    "(kristallografie) het symbool voor een glijspiegelvlak waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.",
-                ],
                 "Zelfstandig Naamwoord|m./v.": [
                     "(taalkunde) de eerste letter van het alfabet",
                     "het op de eerste plaats genoemde",
@@ -50,7 +42,16 @@ def setup_lua_ctx() -> None:
                     ),
                 ],
                 "Uitdrukkingen En Gezegden": ["van A tot Z", ("<i>Van het begin tot het einde.</i>",)],
-                "Synoniemen": ["Alfa <i>(NAVO-spellingsalfabet)</i>", "[4] la"],
+                "Synoniemen (int.)": ["Alfa <i>(NAVO-spellingsalfabet)</i>"],
+                "Voorvoegsel (int.)": ["(natuurkunde) voorvoegsel voor atto-, 10<sup>−18</sup>"],
+                "Symbool (int.)": [
+                    "(wiskunde), (afkorting) symbool voor <i>are</i>, een oppervlaktemaat, gelijk aan 100 m², gelijk aan tien bij tien meter",
+                    "(wiskunde), (afkorting) symbool voor <i>acre</i>, een Engelse oppervlaktemaat.",
+                    "(tijdrekening), (eenheid), (geologie), (astronomie) het symbool voor annum.",
+                    "(natuurkunde) het symbool voor versnelling.",
+                    "(kristallografie) het symbool voor een glijspiegelvlak waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.",
+                ],
+                "Synoniemen": ["[4] la"],
             },
             [],
             ["a's", "a'tje", "a'tjes"],
@@ -60,20 +61,20 @@ def setup_lua_ctx() -> None:
             ["/be/"],
             ["verkorting van bachelor, binnen de Europese Unie gestandaardiseerd"],
             {
-                "Symbool": [
-                    "(scheikunde), (element) symbool voor het scheikundig element boor/borium met atoomnummer 5, een metalloïde",
-                    "(informatica), (afkorting) het symbool voor byte, het kleinste adresseerbare gedeelte van een computergeheugen",
-                    "(medisch) het symbool voor een bepaalde bloedgroep",
-                    "(materiaalkunde) symbool voor de zachtheid van een potlood, in toenemende zachtheid: B, 2B, 3B, 4B, 5B, 6B, 7B, 8B en 9B",
-                    "(muziek) symbool van het “B-majeurakkoord”",
-                ],
                 "Zelfstandig Naamwoord|m.": [
                     "(taalkunde) hoofdletter van de b, de tweede letter van het alfabet",
                     "(muziek), (afkorting) afkorting van “B-majeur”",
                     "als benaming binnen een reeks categorieën die met letters worden aangeduid",
                 ],
                 "Afkorting": ["bachelor <i>(academische titel)</i>"],
-                "Synoniemen": ["Bravo <i>(NAVO-spellingsalfabet)</i>"],
+                "Symbool": ["(muziek) symbool van het “B-majeurakkoord”"],
+                "Synoniemen (int.)": ["Bravo <i>(NAVO-spellingsalfabet)</i>"],
+                "Symbool (int.)": [
+                    "(scheikunde), (element) symbool voor het scheikundig element boor/borium met atoomnummer 5, een metalloïde",
+                    "(informatica), (afkorting) het symbool voor byte, het kleinste adresseerbare gedeelte van een computergeheugen",
+                    "(medisch) het symbool voor een bepaalde bloedgroep",
+                    "(materiaalkunde) symbool voor de zachtheid van een potlood, in toenemende zachtheid: B, 2B, 3B, 4B, 5B, 6B, 7B, 8B en 9B",
+                ],
             },
             [],
             ["B's", "B'tje", "B'tjes"],
@@ -154,7 +155,7 @@ def setup_lua_ctx() -> None:
             [],
             ["(initiaalwoord) van free alongside ship"],
             {
-                "Adverb": [
+                "Adverb (int.)": [
                     "vrachtvrij langszij schip; waarbij de verkoper zorgt voor het vervoer tot de haven en aflevering direct bij een afgesproken schip, waarna de koper zorgt voor het verdere transport (f.a.s., v.l.b.)"
                 ]
             },

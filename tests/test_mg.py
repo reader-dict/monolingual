@@ -25,7 +25,7 @@ def setup_lua_ctx() -> None:
             "Kilo",
             ["/ˈkilo/"],
             ["Nindramina avy amin'ny anglisy <i>kilo</i>."],
-            {"Anarana Iombonana": ["faneva famantarana ho an'ny litera K"]},
+            {"Anarana Iombonana (int.)": ["faneva famantarana ho an'ny litera K"]},
             [],
             [],
         ),
@@ -46,7 +46,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Anarana": [
+                "Anarana (int.)": [
                     "fianakaviana lehibe misy ny tsimokaretina izay fantatra amin'ny hoe tsimokaretina ny dingana misy ny gidro"
                 ]
             },

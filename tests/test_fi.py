@@ -23,14 +23,10 @@ def setup_lua_ctx() -> None:
     [
         (
             "a",
-            ["/ˈɑ/", "/ɑ/"],
+            ["/ɑ/", "/ˈɑ/"],
             [],
             {
                 "Lyhenne": [
-                    "atto, SI-järjestelmän etuliite, triljoonasosa, 10<sup>−18</sup>",
-                    "vuoden tunnus SI-järjestelmässä",
-                    "aarin tunnus",
-                    "(<i>musiikki, sormintasoittimet</i>) espanjan <i>anular,</i> nimetön (sormi)",
                     "<i>approbatur</i> (hyväksytään)",
                     "(<i>slangia</i>) amfetamiini",
                     "(<i>musiikki, C-duuriasteikossa</i>) 6. juurisävel",
@@ -38,6 +34,12 @@ def setup_lua_ctx() -> None:
                     "(<i>musiikki, sävellajista</i>) a-molli",
                 ],
                 "Idiomi": ["<b>Kaiken a ja o</b>", ("tärkein, keskeisin asia, alku ja loppu, alfa ja oomega",)],
+                "Lyhenne (kv.)": [
+                    "atto, SI-järjestelmän etuliite, triljoonasosa, 10<sup>−18</sup>",
+                    "vuoden tunnus SI-järjestelmässä",
+                    "aarin tunnus",
+                    "(<i>musiikki, sormintasoittimet</i>) espanjan <i>anular,</i> nimetön (sormi)",
+                ],
             },
             [],
             [],

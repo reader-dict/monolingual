@@ -30,7 +30,6 @@ def setup_lua_ctx() -> None:
                 "From the spelling books and the fact that it was the first of the letter combinations.",
             ],
             {
-                "Symbol": ["(<i>international standards</i>) <i>ISO 639-1 language code for </i><b>Abkhaz</b><i>.</i>"],
                 "Noun": [
                     "(<i>informal</i>) Clipping of <i>abdominal muscle</i> [mid 20<sup>th</sup> century].",
                     "(<i>slang</i>) An abscess caused by injecting an illegal drug, usually heroin.",
@@ -40,6 +39,9 @@ def setup_lua_ctx() -> None:
                 "Verb": ["(climbing,&#32;informal) To abseil.", "Abbreviation of <i>abort</i>."],
                 "Preposition": ["Abbreviation of <i>about</i>."],
                 "Adverb": ["Abbreviation of <i>about</i>."],
+                "Symbol (intl.)": [
+                    "(<i>international standards</i>) <i>ISO 639-1 language code for </i><b>Abkhaz</b><i>.</i>"
+                ],
             },
             [],
         ),
@@ -48,7 +50,7 @@ def setup_lua_ctx() -> None:
             [],
             ["See <b>Acanthis (mythology)</b> on Wikipedia."],
             {
-                "Proper Noun|f.": [
+                "Proper Noun (intl.)|f.": [
                     "A taxonomic genus within the family Fringillidae&nbsp;– redpolls, of northern woodlands, formerly included in <i>Carduelis</i>."
                 ]
             },
@@ -63,9 +65,6 @@ def setup_lua_ctx() -> None:
                 'Variant of <i>come</i>, attested (in the basic sense "come, move from further to nearer, arrive") since Old English. The sexual sense of <i>come</i> is attested since the 1650s. In this sense and spelling, attested from 1970s.',
             ],
             {
-                "Symbol": [
-                    "(international standards,&#32;obsolete) <i>Former&#x20;ISO 639-3 language code for </i><b>Cumeral</b><i>.</i>"
-                ],
                 "Preposition": [
                     "Used in indicating a thing or person which has two or more roles, functions, or natures, or which has changed from one to another."
                 ],
@@ -84,6 +83,9 @@ def setup_lua_ctx() -> None:
                     "Eye dialect spelling of <i>come</i> (“move from further to nearer; arrive”).",
                 ],
                 "Adjective": ["Clipping of <i>cumulative</i>."],
+                "Symbol (intl.)": [
+                    "(international standards,&#32;obsolete) <i>Former&#x20;ISO 639-3 language code for </i><b>Cumeral</b><i>.</i>"
+                ],
             },
             [],
         ),
@@ -235,9 +237,6 @@ def setup_lua_ctx() -> None:
                 'From Middle English <i>the</i>, <i>thy</i>, <i>thi</i>, from Old English <i>þē̆</i>, probably a neuter instrumental form ("by that, thereby")—alongside the more common <i>þȳ</i> and <i>þon</i>—of the demonstrative pronoun <i>sē</i> ("that"). Compare Dutch <i>des <i>te</i></i> ("the, the more"), German <i>des<i>to</i></i> ("the, all the more"), Norwegian <i>for<i>di</i></i> and Norwegian <i>av di</i> ("because"), Icelandic <i>því</i> (“the; because”), Faroese <i>tí</i>, Swedish <i>ty</i>.',
             ],
             {
-                "Symbol": [
-                    "(<i>international standards</i>) <i>ISO 639-3 language code for </i><b>Chitwania Tharu</b><i>.</i>"
-                ],
                 "Article": [
                     "Used before a noun phrase, including a simple noun",
                     (
@@ -265,6 +264,9 @@ def setup_lua_ctx() -> None:
                 ],
                 "Preposition": ["For each; per."],
                 "Pronoun": ["Obsolete form of <i>thee</i>."],
+                "Symbol (intl.)": [
+                    "(<i>international standards</i>) <i>ISO 639-3 language code for </i><b>Chitwania Tharu</b><i>.</i>"
+                ],
             },
             [],
         ),
@@ -290,7 +292,6 @@ def setup_lua_ctx() -> None:
                 "Variant form of <i>-um</i>.",
             ],
             {
-                "Symbol": ["(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μm</i>."],
                 "Interjection": [
                     "Expression of hesitation, uncertainty or space filler in conversation.",
                     ("Synonyms: er, hmm, uh, eh",),
@@ -303,6 +304,7 @@ def setup_lua_ctx() -> None:
                 "Particle": [
                     "(dated,&#32;sometimes&#32;humorous,&#32;often&#32;offensive) An undifferentiated determiner or article&#59; a miscellaneous linking word, or filler with nonspecific meaning&#59; representation of broken English stereotypically or comically attributed to Native Americans."
                 ],
+                "Symbol (intl.)": ["(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μm</i>."],
             },
             [],
         ),
@@ -315,10 +317,6 @@ def setup_lua_ctx() -> None:
                 "From <i>u-</i> (“micro-, 10<sup>-6</sup>”) +\u200e <i>s</i> (“second”).",
             ],
             {
-                "Symbol": [
-                    "(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μs</i>.",
-                    "Alternative spelling of <i>μs</i>: microsecond.",
-                ],
                 "Pronoun": [
                     "Me and at least one other person, excluding the person(s) being addressed. (exclusive <i>us</i>.)",
                     "Me and at least one other person, including the person(s) being addressed. (inclusive <i>us</i>.)",
@@ -335,7 +333,9 @@ def setup_lua_ctx() -> None:
                     "(<i>proscribed</i>) Designates the speaker(s)&#47;writer(s) as constituting or belonging to the stated category of people (subjective case).",
                     "(Northern England,&#32;Nottinghamshire) Our.",
                 ],
+                "Symbol": ["Alternative spelling of <i>μs</i>: microsecond."],
                 "Noun": ["(<i>rare</i>) Alternative form of <i>u's</i>."],
+                "Symbol (intl.)": ["(metrology,&#32;informal,&#32;proscribed) Alternative form of <i>μs</i>."],
             },
             [],
         ),

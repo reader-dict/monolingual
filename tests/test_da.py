@@ -26,7 +26,7 @@ def setup_lua_ctx() -> None:
             "▶",
             [],
             [],
-            {"Symbol": ["knap som bruges til at afspille en video, lyd el. musik"]},
+            {"Symbol (int.)": ["knap som bruges til at afspille en video, lyd el. musik"]},
             [],
             [],
         ),

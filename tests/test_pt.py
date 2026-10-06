@@ -27,7 +27,7 @@ def setup_lua_ctx() -> None:
             [],
             {
                 "Pronome": ["(internetês) cês"],
-                "Símbolo": ["algarismo indo-arábico que representa o numeral seis"],
+                "Símbolo (int.)": ["algarismo indo-arábico que representa o numeral seis"],
             },
             [],
             [],

@@ -91,7 +91,7 @@ def setup_lua_ctx() -> None:
             [],
             [],
             {
-                "Nume Taxonomic": [
+                "Nume Taxonomic (int.)": [
                     "(<i>zool.</i>) gen de animale din familia <i>Camelidae</i>; (<i>spec.</i>) lamă, guanaco"
                 ]
             },
@@ -117,7 +117,7 @@ def setup_lua_ctx() -> None:
             "MHz",
             [],
             [],
-            {"Simbol": ["simbol pentru megahertz"]},
+            {"Simbol (int.)": ["simbol pentru megahertz"]},
             [],
             [],
         ),
