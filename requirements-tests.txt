@@ -1,6 +1,6 @@
 -r requirements.txt
 mobi==0.4.1
-mypy==2.3.1
+mypy==2.4.0
 pytest==9.1.1
 responses==0.26.3
 ruff==0.16.9
