@@ -5,4 +5,4 @@ pytest==9.1.1
 responses==0.26.3
 ruff==0.16.9
 ruff-api==0.2.1
-types-requests==2.33.0.20260906
+types-requests==2.33.0.20261006
