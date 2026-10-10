@@ -37,30 +37,16 @@ class JSONVolumeFormat(BaseFormat):
         output_base = self.dictionary_file(self.output_file)
         output_base.mkdir(exist_ok=True, parents=True)
 
-        # Get all words sorted alphabetically
-        all_words = sorted(
-            (word, details)
-            for word, details in self.words.items()
-            # Skip variant-only words, or without definitions
-            if not details.is_variant or details.definitions
-        )
-
-        log.info(
-            "[%s] Processing %s words into volumes (max %dKB each)",
-            self.id(),
-            f"{len(all_words):,}",
-            self.max_volume_size_kb,
-        )
-
-        volumes = self._create_volumes(all_words, output_base)
+        volumes = self._create_volumes(output_base)
         self._save_manifest(volumes, output_base)
 
         log.info(
-            "[%s] Generated %s volumes with %s total words (max size: %dKB)",
+            "[%s] Generated %s volumes with %s total words (max size: %dKB) in %s",
             self.id(),
             f"{len(volumes):,}",
-            f"{len(all_words):,}",
+            f"{self.words_count:,}",
             self.max_volume_size_kb,
+            timedelta(seconds=monotonic() - self.start),
         )
 
     def _format_word_data(self, word: str, details: Word) -> dict[str, Any]:
@@ -116,7 +102,7 @@ class JSONVolumeFormat(BaseFormat):
         json_str = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
         return len(json_str.encode("utf-8"))
 
-    def _create_volumes(self, all_words: list[tuple[str, Word]], output_dir: Path) -> list[dict[str, Any]]:
+    def _create_volumes(self, output_dir: Path) -> list[dict[str, Any]]:
         """Split words into volumes based on size."""
         volumes = []
         current_volume_words: dict[str, dict[str, Any]] = {}
@@ -124,7 +110,7 @@ class JSONVolumeFormat(BaseFormat):
         volume_num = 0
         first_word = ""
 
-        for word, details in all_words:
+        for word, details in sorted(self.words.items()):
             if not (word_data := self._format_word_data(word, details)):
                 continue
 
@@ -177,14 +163,13 @@ class JSONVolumeFormat(BaseFormat):
         filepath = output_dir / filename
 
         # Write gzipped JSON
-        json_content = json.dumps(volume_data, ensure_ascii=False, separators=(",", ":"))
         with gzip.open(filepath, "wt", encoding="utf-8") as f:
-            f.write(json_content)
+            f.write(json.dumps(volume_data, ensure_ascii=False, separators=(",", ":")))
 
         file_size = filepath.stat().st_size  # Get actual compressed file size
 
         log.info(
-            "[%s] Volume %s: %s → %s (%s words, %sKB)",
+            "[%s] Volume %s: %r → %r (%s words, %sKB)",
             self.id(),
             f"{volume_num:08d}",
             first_word,
@@ -223,23 +208,4 @@ class JSONVolumeFormat(BaseFormat):
         }
 
         manifest_path = output_dir / "manifest.json"
-        with manifest_path.open("w", encoding="utf-8") as f:
-            json.dump(manifest, f, ensure_ascii=False, indent=2)
-
-        log.info("[%s] Generated manifest.json with %d volumes", self.id(), len(volumes))
-        self.compute_checksum(manifest_path)
-
-    def summary(self, file: Path) -> None:
-        """Override summary to handle directory output."""
-        log.info(
-            "[%s] Generated JSON volumes with %s words in %s",
-            self.id(),
-            f"{self.words_count:,}",
-            timedelta(seconds=monotonic() - self.start),
-        )
-        log.info(
-            "[%s] Finished the conversion with %s words, and %s variants, as expected.",
-            self.id(),
-            f"{len(self.words):,}",
-            f"{len(self.variants):,}",
-        )
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
