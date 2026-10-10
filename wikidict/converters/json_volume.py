@@ -31,6 +31,7 @@ class JSONVolumeFormat(BaseFormat):
     def process(self) -> None:
         """Generate the JSON volumes."""
         if not self.include_etymology:
+            log.info("[%s] Skipped etymology-free volumes.", self.id())
             return
 
         output_base = self.dictionary_file(self.output_file)
@@ -40,7 +41,7 @@ class JSONVolumeFormat(BaseFormat):
         all_words = sorted(
             (word, details)
             for word, details in self.words.items()
-            # Skip variant-only words without definitions
+            # Skip variant-only words, or without definitions
             if not details.is_variant or details.definitions
         )
 
@@ -51,13 +52,9 @@ class JSONVolumeFormat(BaseFormat):
             self.max_volume_size_kb,
         )
 
-        # Split into volumes
         volumes = self._create_volumes(all_words, output_base)
-
-        # Generate and save manifest
         self._save_manifest(volumes, output_base)
 
-        # Summary
         log.info(
             "[%s] Generated %s volumes with %s total words (max size: %dKB)",
             self.id(),
@@ -76,12 +73,12 @@ class JSONVolumeFormat(BaseFormat):
             return {}
 
         word_data: dict[str, Any] = {}
-        if defs := self._format_definitions(details.definitions):
-            word_data[self.KEY_DEFINITION] = defs
-        if etyms := self._format_etymology(details.etymology):
-            word_data[self.KEY_ETYMOLOGY] = etyms
-        if prons := utils.convert_pronunciation(details.pronunciations):
-            word_data[self.KEY_PRONUNCIATION] = prons.strip()
+        if defs := details.definitions:
+            word_data[self.KEY_DEFINITION] = self._format_definitions(defs)
+        if etyms := details.etymology:
+            word_data[self.KEY_ETYMOLOGY] = self._format_etymology(etyms)
+        if prons := details.pronunciations:
+            word_data[self.KEY_PRONUNCIATION] = utils.convert_pronunciation(prons).strip()
         if variants := self.variants.get(word):
             word_data[self.KEY_VARIANT] = sorted(variants)
 
@@ -102,9 +99,6 @@ class JSONVolumeFormat(BaseFormat):
 
     def _format_etymology(self, etymology: list[Definition]) -> str | list[Any]:
         """Format etymology preserving nested structure."""
-        if not etymology:
-            return ""
-
         if len(etymology) == 1 and isinstance(etymology[0], str):
             return etymology[0]
 
