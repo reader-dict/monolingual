@@ -140,8 +140,8 @@ class JSONVolumeFormat(BaseFormat):
     def _save_volume(self) -> None:
         """Save a single volume and return its metadata."""
         words = self.current_volume_words
+        last_word = list(words.keys())[-1]
         volume_data = {"words": words}
-        last_word = list(self.current_volume_words.keys())[-1]
         file = self.tmp_dir / f"vol-{self.volume_num:08d}.json.gz"
 
         # Write gzipped JSON
@@ -181,7 +181,7 @@ class JSONVolumeFormat(BaseFormat):
         manifest = {
             "version": "3.0",
             "totalVolumes": len(self.volumes),
-            "totalWords": self.words_count,
+            "totalWords": self.words_count + self.variants_count,
             "maxVolumeSizeKB": MAX_VOLUME_SIZE_KB,
             "volumes": [
                 {
