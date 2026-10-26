@@ -657,13 +657,13 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
                     if "synonyme" in title:
                         current_pos = "synonyme"
                     pos = utils.format_pos("de", current_pos)
-                    if current_genders:
+                    if pos != "Trans" and current_genders:
                         pos += f"|{fmt_genders(current_genders)}"
             elif title in etyl_section:
                 pos = title
             else:
                 pos = prettify_pos(top_title, section, lang_src, lang_dst)
-                if lang_src in {"bg", "ru", "uk"} and current_genders and "|" not in pos:
+                if pos != "Trans" and lang_src in {"bg", "ru", "uk"} and current_genders and "|" not in pos:
                     pos += f"|{fmt_genders(current_genders)}"
             ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
