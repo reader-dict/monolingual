@@ -251,6 +251,9 @@ def preprocess(locale: str, title: str, body: str) -> str:
                 # `{{-bg-}}` → `={{-bg-}}=`
                 body = re.sub(r"^\{\{(-\w++-)\}\}", r"={{\1}}=", body, flags=re.MULTILINE)
 
+                # `={{-bg-}}={{...}}` → `={{-bg-}}=\n{{...}}`
+                body = re.sub(r"^(=\{\{-\w++-\}\}=)([^\n]++)", r"\1\n\2", body, flags=re.MULTILINE)
+
                 # Transform spaghetti templates into more structured data
                 body = preprocess_bg(body)
         case "da":
