@@ -77,12 +77,15 @@ templates_ignored = (
 
 
 GENDERS = {
+    "cp": "cp",
     "среден": "cp",
     "f": "ж",
     "m": "м",
+    "м": "м",
     "мъжки": "м",
     "n": "cp",
     "женски": "ж",
+    "ж": "ж",
 }
 
 
@@ -103,8 +106,9 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("===род===\nж\n===род===\nж", LANG)
     ['ж']
     """
-    genders = map(str.lower, re.findall(r"===род===\n(\w++)", code))
-    return sorted({GENDERS.get(gender) or gender for gender in genders})
+    if (gender_raw := re.search(r"===род===\n(\w++)", code)) and (gender := GENDERS.get(gender_raw[1].lower().strip())):
+        return [gender]
+    return []
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
