@@ -33,9 +33,9 @@ if TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-RE_REDIRECT = re.compile(r'<redirect title="([^"]++)" />').finditer
-RE_TEXT = re.compile(r"<text[^>]*+>(.*?)</text>", flags=re.DOTALL).finditer
-RE_TITLE_WORD = re.compile(r"<title>([^:<]++)</title>").finditer
+RE_REDIRECT = re.compile(r'<redirect title="([^"]++)" />').search
+RE_TEXT = re.compile(r"<text[^>]*+>(.*?)</text>", flags=re.DOTALL).search
+RE_TITLE_WORD = re.compile(r"<title>([^:<]++)</title>").search
 
 # To list all words not taken into account with current head sections:
 #    DEBUG_PARSE=1 python -m wikidict LOCALE --parse >out.log
@@ -107,9 +107,9 @@ class MatcherHasMatched(Exception): ...
 def handle_matcher(matcher: Callable[[str], Iterator[re.Match[str]]], element: str, namespace_id: int) -> None:
     if (title := next(matcher(element), None)) and not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
         body, redirect_to = None, None
-        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+        if redirect := RE_REDIRECT(element, endpos=element.find("<revision")):
             redirect_to = redirect[1]
-        elif text := next(RE_TEXT(element, pos=element.find("<text")), ""):
+        elif text := RE_TEXT(element, pos=element.find("<text")):
             body = unescape(text[1], entities=constants.HTML_REPL_BODY)
         if body or redirect_to:
             page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
@@ -137,16 +137,16 @@ def xml_parse_element(
             return empty
 
     # Word
-    if title := next(RE_TITLE_WORD(element), None):
+    if title := RE_TITLE_WORD(element):
         # Redirection
-        if redirect := next(RE_REDIRECT(element, endpos=element.find("<revision")), None):
+        if redirect := RE_REDIRECT(element, endpos=element.find("<revision")):
             page = unescape(title[1], entities=constants.HTML_REPL_TITLE)
             redirect_to = unescape(redirect[1], entities=constants.HTML_REPL_TITLE)
             context.new_page(page, 0, None, redirect_to)
             return empty
 
         # Actual word
-        if text := next(RE_TEXT(element, pos=element.find("<text", title.endpos)), ""):
+        if text := RE_TEXT(element, pos=element.find("<text", title.endpos)):
             return title[1], text[1]
 
     # No Wikicode; unfinished page; no interesting head section; a foreign word, or a module/template.
