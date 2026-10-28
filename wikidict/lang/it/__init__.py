@@ -113,16 +113,23 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{-it-}} ==\n[[en:foo]]", "it")
     '== {{-it-}} =='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form-}}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n ([[:it:foo|italian]])", "it")
+    '== {{-it-}} =='
+    >>> adjust_wikicode("== {{-it-}} ==\n([[:it:foo|italian]])", "it")
+    '== {{-it-}} =='
+    >>> adjust_wikicode("== {{-it-}} ==\n[[:it:foo|italian]]", "it")
+    '== {{-it-}} =='
+
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form- }}", "it")
     '== {{-it-}} ==\n=== {{verb form}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-|it}}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv- |it }}", "it")
     '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-|ANY}}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv-| ANY }}", "it")
     '== {{-it-}} ==\n=== {{avv|ANY}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv-}}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv- }}", "it")
     '== {{-it-}} ==\n=== {{avv}} ==='
 
     >>> adjust_wikicode("== {{-it-}} ==\n# plurale di [[-ectomia]]", "it")
@@ -149,19 +156,22 @@ def adjust_wikicode(
     """
 
     # [[en:foo]] → ''
-    code = re.sub(r"(\[\[\w++:\w++\]\])", "", code)
+    code = re.sub(r"(\[\[:?\w++:\w++\]\])", "", code)
+
+    # ` ([[:it:foo|italian]])` → ''
+    code = re.sub(r"[ ]*+\(?\[\[:\w++:[^|]++\|[^\]]++\]\]\)?", "", code)
 
     # {{-verb form-}} → === {{verb form}} ===
-    code = re.sub(r"^\{\{-(.+)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{[ ]*+-(.+)-[ ]*+\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-|it}} → === {{avv}} ===
-    code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(rf"^\{{\{{[ ]*+-(.+)-[ ]*+\|[ ]*+{locale}[ ]*+\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-|ANY}} → === {{avv|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w++)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{[ ]*+-(.+)-[ ]*+\|[ ]*+(\w++)[ ]*+\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
 
     # {{-avv-}} → === {{avv}} ===
-    code = re.sub(r"^\{\{-(\w++)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    code = re.sub(r"^\{\{[ ]*+-(\w++)-[ ]*+\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
 
     # [[w:A|B]] → [[A|B]]
     code = code.replace("[[w:", "[[")
