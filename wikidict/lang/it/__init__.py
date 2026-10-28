@@ -48,10 +48,7 @@ sections = (
     "{{verb form}",
 )
 
-variant_templates = (
-    "{{flexion",
-    "{{Tabs",
-)
+variant_templates = ("{{flexion",)
 
 definitions_to_ignore = (
     "{{Nodef",
