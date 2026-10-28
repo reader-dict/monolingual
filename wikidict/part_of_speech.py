@@ -301,6 +301,7 @@ MERGE = {
         "top": "nom",
     },
     "it": {
+        "abbr": "acronimo / abbreviazione",
         "acron": "abbreviazione",
         "agg form": "aggettivo",
         "agg": "aggettivo",
@@ -309,8 +310,10 @@ MERGE = {
         "cong": "congiunzione",
         "espr": "espressione",
         "inter": "interiezione",
+        "loc agg": "locuzione aggettivale",
         "loc avv": "locuzione avverbiale",
         "loc nom": "locuzione nominale",
+        "loc prep": "locuzione prepositiva",
         "loc verb": "locuzione verbale",
         "pref": "prefisso",
         "prep": "preposizione",

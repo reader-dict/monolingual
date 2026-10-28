@@ -15,6 +15,7 @@ etyl_section = ("{{etim}}",)
 sections = (
     *head_sections,
     *etyl_section,
+    "{{abbr}",
     "{{acron}",
     "{{agg}",
     "{{agg form}",
@@ -23,8 +24,10 @@ sections = (
     "{{cong}",
     "{{espr}",
     "{{inter}",
+    "{{loc agg}",
     "{{loc avv}",
     "{{loc nom}",
+    "{{loc prep}",
     "{{loc verb}",
     "{{nome}",
     "{{pref}",
