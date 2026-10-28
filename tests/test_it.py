@@ -43,7 +43,7 @@ def setup_lua_ctx() -> None:
                 "dal latino <i>cum</i> e <i>dividere</i>; l'attuale uso improprio del verbo <i>condividere</i> è dovuto alla diffusione dei social network negli anni 2000 e 2010",
             ],
             {
-                "Verb": [
+                "Verbo": [
                     "spartire con altri",
                     "avere qualcosa in comune con qualcun altro",
                     "essere d'accordo con altri su un punto di vista",
@@ -93,7 +93,7 @@ def setup_lua_ctx() -> None:
             ["/modali'ta 'go blin/"],
             [],
             {
-                "Nome|f.": [
+                "Locuzione Nominale|f.": [
                     "modalità Goblin, oppure in modalità Goblin è un tipo di comportamento autoindulgente, pigro, sciatto o avido, che rifiuta le norme o le aspettative sociali. Questo comportamento si deve anche all'influsso del covid nell'ambiente fisico sulla mente e la socialità delle persone"
                 ]
             },
