@@ -79,9 +79,11 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/kondiˈvidere/']
     >>> find_pronunciations("{{IPA|/əˈtʃì:vəb<sup>lə</sup>/}}", "it")
     ['/əˈtʃì:vəb<sup>lə</sup>/']
+    >>> find_pronunciations("{{IPA|/ undiˈt͡ʃɛzimo/}} o {{IPA|/uniˈt͡ʃezimo/}}", "it")
+    ['/undiˈt͡ʃɛzimo/']
     """
-    pattern = re.compile(r"\{\{IPA\|(/(.+)/)\}\}")
-    return [pron[1]] if (pron := pattern.search(code)) else []
+    pattern = re.compile(r"\{\{IPA\|/([^}]+)/\}\}")
+    return [f"/{pron[1].strip()}/"] if (pron := pattern.search(code)) else []
 
 
 START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"
