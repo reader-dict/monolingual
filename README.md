@@ -1,5 +1,7 @@
 # reader.dict Monolingual Dictionaries
 
+![reader.dict logo](https://github.com/reader-dict/.github/raw/refs/heads/main/profile/header-logo.svg)
+
 🚀 Features, **downloads**, and installation details on [reader.dict](https://www.reader-dict.com).
 
 🎇 Want to know what is being cooked, and what was done in past releases? Have a look at our [discussions](https://github.com/reader-dict/monolingual/discussions).
