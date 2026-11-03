@@ -88,6 +88,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     forms.discard("&")
     forms.discard("")
     forms.discard("-")
+    forms.discard("—")
     forms.discard("}")
     forms.discard(word)
 
