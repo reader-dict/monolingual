@@ -55,7 +55,7 @@ def cleanup(form: str) -> str:
     >>> cleanup("παρακΒ=1")
     ''
     """
-    cleaned = utils.cleanup_rev_variant(form)
+    cleaned = utils.cleanup_rev_variant(form, skip={"οι", "ουδέτερο", "ς", "του", "τους", "των"})
     return "" if "=" in cleaned else cleaned
 
 
