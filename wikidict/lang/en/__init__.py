@@ -86,6 +86,7 @@ definitions_to_ignore = (
 )
 
 templates_ignored = (
+    "{{#lsth",
     "{{att",
     "{{cite-",
     "{{cleanup",
