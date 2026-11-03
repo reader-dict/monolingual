@@ -5,7 +5,7 @@ from ... import context, utils
 
 
 def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form, rpl=["haber "])
+    return utils.cleanup_rev_variant(form, rpl=["haber ", "(о) "])
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
@@ -20,6 +20,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     }
     forms.discard(word)
     forms.discard("―")
+    forms.discard("-")
     forms.discard("")
 
     return sorted(forms)
