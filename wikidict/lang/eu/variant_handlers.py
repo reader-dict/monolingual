@@ -10,6 +10,7 @@ def cleanup(form: str) -> str:
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     wikitext = wikitext.replace(" || ", "\n| ")
+    wikitext = re.sub(r"\[//\w++.wiktionary.org[^ ]++ ([^\]]++)\]", r"[[\1]]", wikitext)
     lines = "\n".join(
         [
             line

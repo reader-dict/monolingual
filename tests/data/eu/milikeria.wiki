@@ -1,0 +1,27 @@
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+=== {{Jatorria}} ===
+
+
+==== {{Izena}} ====
+{{Izen bizigabe-a-
+|AW=milikeri
+|a=1
+}}
+:'''milikeria'''
+# Gehiegizko sentiberatasuna adierazten duen keinua. 
+
+
+<br clear="all">
+==== {{Itzulpen}} ====
+{{(}}
+* {{es}}: {{itz|es|remilgo}}, {{itz|es|melindre}}
+{{-}}
+{{)}}
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:-keria atzizkidun izenak euskaraz]]
