@@ -54,6 +54,7 @@ reverse_variant_templates = ("{{rev-flexion",)
 definitions_to_ignore = (
     "'''Adibidea",  # example
     "Oraindik ez daukagu",  # missing details
+    "Zehaztasunak eman",  # provide details
 )
 
 PRON_PATTERNS = [
