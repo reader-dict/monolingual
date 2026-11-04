@@ -1,0 +1,18 @@
+{{-eu-}}
+
+==={{Ahoskera}}=== 
+:* {{IPA|/ogei.´tamaikaɾenganaɲo}}
+
+==={{Jatorria}}===
+:* [[{{Ordezkatu|{{PAGENAME}}|renganaino|}}]] + [[-renganaino]] atzizkia
+
+==={{Izena}}===
+# [[{{Ordezkatu|{{PAGENAME}}|renganaino|}}|{{ucfirst:{{Ordezkatu|{{PAGENAME}}|renganaino|}}}}]] hitzaren deklinabide forma muga-adlatibo mugagabea.
+<!-- #* '''Adibidea''': ''hitz (definitzen ari zaren hitza)'' horrek parte hartzen duen esaldi bat -->
+# [[{{Ordezkatu|{{PAGENAME}}|renganaino|}}|{{ucfirst:{{Ordezkatu|{{PAGENAME}}|renganaino|}}}}]] hitzaren deklinabide forma muga-adlatibo singularra.
+<!-- #* '''Adibidea''': ''hitz (definitzen ari zaren hitza)'' horrek parte hartzen duen esaldi bat -->
+
+
+[[Kategoria:Izenaren deklinabide formak euskaraz]]
+[[Kategoria:Muga-adlatiboa euskaraz]]
+[[Kategoria:{{ucfirst:{{Ordezkatu|{{PAGENAME}}|renganaino|}}}}ren deklinabide formak euskaraz]]

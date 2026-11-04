@@ -1,0 +1,44 @@
+{{wikipedia}}
+
+{{-eu-}}
+
+{{Hizkuntzen deklinabide-a-
+|AW=limburger
+|a=1
+}}
+
+=== {{Ahoskera}} ===
+:* {{IPA|lim'buR.geɾa}}
+
+=== {{Izena}} ===
+:'''limburgera'''
+
+:# [[Belgika]] eta [[Herbehereak|Herbehereetako]] [[Limburg]] eskualdean hitz egiten den [[hizkuntza]] multzoa.
+
+=== {{Hitz eratorriak}} ===
+:* [[limburgotar]]
+:* [[Limburg]]
+
+<br clear="all">
+=== {{Itzulpen}} ===
+{{(}}
+* {{da}}: {{itz|da|limburgsk}}
+* {{de}}: {{itz|de|Limburgisch}}
+* {{en}}: {{itz|en|Limburgish}}
+* {{fi}}: {{itz|fi|limburgin murre}}
+* {{fr}}: {{itz|fr|limbourgeois}}
+* {{es}}: {{itz|es|limburgués}}
+{{-}}
+* {{it}}: {{itz|it|limburghese}}
+* {{ja}}: {{itz|ja|リンブルフ語}} (rinburufu-go)
+* {{nl}}: {{itz|nl|Limburgs}}
+* {{pt}}: {{itz|pt|limburguês}}
+* {{ru}}: {{itz|ru|лимбургский}} (limbúrgskij)
+* {{zh}}: {{itz|zh|林堡語}}, {{itz|zh|林堡语}} (Línbǎoyǔ)
+{{)}}
+<br clear="all"/>
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Izen bizigabeak euskaraz]]
+[[Kategoria:Hizkuntzen izenak euskaraz]]

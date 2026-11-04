@@ -267,6 +267,16 @@ def preprocess(locale: str, title: str, body: str) -> str:
         case "de":
             # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
             body = re.sub(r"^==\s*[^(]*+\((\{\{Sprache\|[^}]++\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
+        case "eu":
+            # `{{-eu-}}` → `==eu==`
+            body = re.sub(r"^\{\{-(\w+)-\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
+            # `=== {{Izena}} ===` → `===izena===`
+            body = re.sub(
+                r"^(=++)[ ]*+\{\{([^}]++)\}\}[ ]*+=++",
+                lambda m: f"{m[1]}{m[2].lower()}{m[1]}",
+                body,
+                flags=re.MULTILINE,
+            )
         case "la":
             # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
             body = re.sub(r"^\{\{lingua2\|([^|\n]++)[^\n]*+", r"=={{-\1-}}==", body, flags=re.MULTILINE)

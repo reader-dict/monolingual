@@ -1,0 +1,30 @@
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+=== {{Jatorria}} ===
+XVII. mendeko [[:w:François Barrême|François Barrême]] frantziar matematikariarengandik, zeinaren kontabilitate liburu batek zabalkuntza handia izan zuen bere garaian, ''Barême universel'' izenaz.
+
+{{Izen bizigabe
+|av=1
+|kv=1
+}}
+
+=== {{Izena}} ===
+:'''baremo'''
+:# Zerbait baloratzeko eratutako taula edo koadroa.
+#* '''Adibidea''': Espainia, Frantzia zein Euskal Herriko espetxeetan dauden edozein presoren senideek jaso dezakete laguntza hori, diru sarreretan oinarritutako ''baremo'' batzuen arabera. <small>[http://paperekoa.berria.info/berria/2009-03-26/008/007/lege_info.htm www.berria.info], 2009-03-26.</small>.
+
+<br clear="all">
+=== {{Itzulpen}} ===
+{{(}}
+* {{es}}: {{itz|es|baremo}}
+* {{fr}}: {{itz|fr|barème}}
+{{-}}
+{{)}}
+<br clear="all"/>
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Izen bizigabeak euskaraz]]

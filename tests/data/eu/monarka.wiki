@@ -1,0 +1,50 @@
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* {{IPA|mo.´narka}}
+
+=== {{Jatorria}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+{{Izen bizidun-a-
+|AWW=monark
+|aa=1
+}}
+
+=== {{Izena}} ===
+# [[Monarkia]] baten [[buru]]a.
+#* '''Adibidea''': Seguritate neurri handiak hartu dituzte ''monarkaren'' bisita baino lehen. 
+
+=== {{Sinonimoak}} ===
+:* [[errege]]
+:* [[erregina]] 
+
+<br clear="all">
+=== {{Itzulpen}} ===
+{{(}}
+* {{de}}: {{itz|de|Monarch}}
+* {{da}}: {{itz|da|monark}}
+* {{ru}}: {{itz|ru|монарх}}
+* {{fi}}: {{itz|fi|hallitsija}}, {{itz|fi|monarkki}}
+* {{fr}}: {{itz|fr|monarque}}
+* {{ga}}: {{itz|ga|monarc}}
+* {{es}}: {{itz|es|monarca}}
+* {{el}}: {{itz|el|μονάρχης}}
+* {{en}}: {{itz|en|monarch}}
+* {{it}}: {{itz|it|monarca}}
+{{-}}
+* {{ja}}: {{itz|ja|君主}}, {{itz|ja|王}}
+* {{lv}}: {{itz|lv|monarhs}}
+* {{gv}}: {{itz|gv|ard-ree}}
+* {{mk}}: {{itz|mk|монарх}}, {{itz|mk|владетел}}
+* {{nl}}: {{itz|nl|monarch}}
+* {{no}}: {{itz|no|monark}}
+* {{pl}}: {{itz|pl|monarcha}}
+* {{sv}}: {{itz|sv|monark}}
+* {{cs}}: {{itz|cs|panovník}}, {{itz|cs|monarcha}}
+{{)}}
+<br clear="all"/>
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Izen bizidunak euskaraz]]

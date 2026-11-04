@@ -156,6 +156,7 @@ POS_SYNONYMS = {
     "en": "Synonym",
     "eo": "Sinonimoj",
     "es": "Sinónimo",
+    "eu": "Sinonimoak",
     "fi": "Synonyymi",
     "fr": "Synonymes",
     "it": "Sinonimi",
@@ -404,6 +405,12 @@ def find_etymology(
             items = get_items((":", "#"))
         case "es":
             items = get_items((r";\d",), skip=("=== etimología",))
+        case "eu":
+            items = [
+                line.lstrip(":#* ")
+                for line in parsed_section.contents.splitlines()
+                if not line.startswith(("{{", "}}", "|"))
+            ]
         case "fi":
             items = get_items(("#", r"\*"))
         case "fr":
