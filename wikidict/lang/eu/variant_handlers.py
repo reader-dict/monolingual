@@ -4,13 +4,17 @@ from collections import defaultdict
 from ... import context, utils
 
 
-def cleanup(form: str) -> str:
-    return utils.cleanup_rev_variant(form)
+def cleanup(word: str, form: str) -> str:
+    cleaned = utils.cleanup_rev_variant(form)
+    if " " not in word and " " in cleaned:
+        cleaned = cleaned.split(" ")[-1]
+    return cleaned
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     wikitext = wikitext.replace(" || ", "\n| ")
     wikitext = re.sub(r"\[//\w++.wiktionary.org[^ ]++ ([^\]]++)\]", r"[[\1]]", wikitext)
+    wikitext = re.sub(r"<sup>[^<]++</sup>", "", wikitext)
     lines = "\n".join(
         [
             line
@@ -19,16 +23,19 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             and not line.startswith(("|-", "|}"))
             and "background" not in line
             and "bgcolor" not in line
+            and "edota:" not in line
         ]
     )
+    lines = re.sub(r"\| colspan[^|]++", "", lines, flags=re.MULTILINE)
 
     forms = {
-        cleanup(form)
+        cleanup(word, form)
         for form in re.findall(r"\[\[([^#|\]]++)", lines)
         or re.findall(r"^\|[ ]*+([^|=\n]++)$", lines, flags=re.MULTILINE)
     }
     forms.discard(word)
     forms.discard("―")
+    forms.discard("—")
     forms.discard("-")
     forms.discard("")
 
