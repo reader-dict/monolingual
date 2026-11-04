@@ -25,6 +25,11 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
         else:
             forms.add(utils.cleanup_rev_variant(form))
 
+    if not forms:
+        forms.update(
+            utils.cleanup_rev_variant(form) for form in re.findall(r"^\|[ ]*+([^\n]++)", lines, flags=re.MULTILINE)
+        )
+
     if "#" in lines:
         for form in re.findall(r"\[\[[^#]++[^|]++\|([^\]]++)\]\]", lines):  # `[[foö#Türkçe|foo]]`
             forms.add(utils.cleanup_rev_variant(form))
