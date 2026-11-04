@@ -26,6 +26,7 @@ sections = (
     "atzizkia",  # suffix
     "aurrizkia",  # prefix
     "deklinabidea",  # declension
+    "erakuslea",  # demonstrative
     "esaldi-lokuzioa",  # sentence
     "interjekzioa",  # interjection
     "izen",  # several POS

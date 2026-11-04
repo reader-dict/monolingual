@@ -9,13 +9,21 @@ def cleanup(form: str) -> str:
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
+    wikitext = wikitext.replace(" || ", "\n| ")
     lines = "\n".join(
-        [line for line in wikitext.splitlines() if line.startswith("|") and not line.startswith(("|-", "|}"))]
+        [
+            line
+            for line in wikitext.splitlines()
+            if line.startswith("|")
+            and not line.startswith(("|-", "|}"))
+            and "background:" not in line
+            and "bgcolor" not in line
+        ]
     )
 
     forms = {
         cleanup(form)
-        for form in re.findall(r"\[\[([^#|]++)", lines)
+        for form in re.findall(r"\[\[([^#|\]]++)", lines)
         or re.findall(r"^\|[ ]*+([^|=\n]++)$", lines, flags=re.MULTILINE)
     }
     forms.discard(word)
