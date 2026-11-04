@@ -17,7 +17,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             for line in wikitext.splitlines()
             if line.startswith("|")
             and not line.startswith(("|-", "|}"))
-            and "background:" not in line
+            and "background" not in line
             and "bgcolor" not in line
         ]
     )
