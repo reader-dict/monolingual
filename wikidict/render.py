@@ -282,7 +282,13 @@ def find_section_definitions(
                 # ... And its eventual sub-definitions
                 subdefinitions: list[SubDefinition] = []
                 for sublist in a_list.sublists(i=idx, pattern=lang.sublist_patterns[lang_dst]):
-                    if not (items := [item for item in sublist.items if item]):
+                    if not (
+                        items := [
+                            item
+                            for item in sublist.items
+                            if item and not any(ignore_me in item.lower() for ignore_me in ignored_terms)
+                        ]
+                    ):
                         continue
 
                     if lang_src == "el":
@@ -375,19 +381,17 @@ def find_etymology(
         else:
             if skip:
                 items = [item for item in items if not item.lstrip().lower().startswith(skip)]
-        if items:
-            ignored_terms = {term.lower() for term in lang.definitions_to_ignore[lang_dst]}
-            items = [item for item in items if all(ignore_me not in item.lower() for ignore_me in ignored_terms)]
         return items
 
     match lang_src:
         case "bg":
             items = [line.lstrip("#:") for line in parsed_section.contents.splitlines()]
         case "cs":
-            items = []
-            for line in parsed_section.contents.splitlines():
-                if not line.startswith(("{{", "}}")):
-                    items.append(line.lstrip(":;#*"))
+            items = [
+                line.lstrip(":;#*")
+                for line in parsed_section.contents.splitlines()
+                if not line.startswith(("{{", "}}"))
+            ]
         case "da":
             items = get_items(("#", ":"))
         case "de":
@@ -455,9 +459,7 @@ def find_etymology(
         case "la":
             items = [line for line in parsed_section.contents.splitlines() if not line.startswith((":", "*"))]
         case "mg":
-            items = []
-            for line in parsed_section.contents.splitlines():
-                items.append(line.lstrip("#:"))
+            items = [line.lstrip("#:") for line in parsed_section.contents.splitlines()]
         case "nl":
             items = get_items((r"\*",))
         case "no":
@@ -474,17 +476,11 @@ def find_etymology(
                 tpl.__str__()[len("{{etymologi|") : -2] for tpl in parsed_section.templates if tpl.name == "etymologi"
             ]
         case "th":
-            items = []
-            for line in parsed_section.contents.splitlines():
-                if line.startswith("#:"):
-                    continue
-                items.append(line.lstrip("#"))
+            items = [line.lstrip("#") for line in parsed_section.contents.splitlines() if not line.startswith("#:")]
         case "tr":
             items = get_items(("#", ":"))
         case "uk":
-            items = []
-            for line in parsed_section.contents.splitlines():
-                items.append(line.lstrip(":;#*"))
+            items = [line.lstrip(":;#*") for line in parsed_section.contents.splitlines()]
         case "zh":
             items = []
             for line_ in parsed_section.contents.splitlines():
@@ -496,16 +492,18 @@ def find_etymology(
         case _:
             items = [parsed_section.contents]
 
+    ignored_terms = {term.lower() for term in lang.definitions_to_ignore[lang_dst]}
     etyms = [
         etyl.replace("<br/>", "") if lang_src == "jbo" else etyl.lstrip(": ")
         for item in items
         if item
+        and all(ignore_me not in item.lower() for ignore_me in ignored_terms)
         and (etyl := utils.process_templates(word, item, lang_dst, templates_status=templates_status))
         and len(etyl) > 1
     ]
 
     # Do not keep incomplete etymologies
-    if lang_src in {"el", "en", "es", "ru", "uk"}:
+    if etyms and lang_src in {"el", "en", "es", "ru", "uk"}:
         useless = {
             "el": {f"<b>{word}</b> &lt;"},
             "en": {
