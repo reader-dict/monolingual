@@ -1,0 +1,28 @@
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* /''Oraindik ez daukagu hitz honen ahoskera. Lagundu ezazu jartzen.''/
+
+=== {{Jatorria}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+=== {{Izenlaguna}} ===
+{{Izen bizidun
+|rr=1
+}}
+:'''donostiar''' (jentilizioa)
+# Jatorriz edo hiritartasunez [[Donostia]]koa. 
+#* '''Adibidea''': Bilintx ''donostiar'' bertsolaria izan zen.
+
+<br clear="all">
+==== {{Itzulpen}} ====
+{{(}}
+* {{es}}: {{itz|es|donostiarra}}
+{{-}}
+{{)}}
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Izenlagunak euskaraz]]
+[[Kategoria:Jentilizioak euskaraz]]
+[[Kategoria:Euskal Herriko jentilizioak euskaraz]]

@@ -1,0 +1,143 @@
+[[Fitxategi:Legal status of German in the world.svg|thumb|right|300px|Alemanera munduan]]
+
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* [[International Phonetic Alphabet|IPA]]: '''{{Azpimarratu|/a.l̻e̻.ma.ne.ɾa/}}'''
+
+=== {{Jatorria}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+{{Hizkuntzen deklinabide-a-
+|AW=alemaner
+|a=1
+}}
+
+=== {{Izena}} ===
+# Indoeuropar [[hizkuntza]] bat da, germaniar hizkuntzen taldekoa.
+#* '''Adibidea''': ''Alemanera'' munduko hamaikagarren hizkuntza ikasiena da.
+
+=== {{Sinonimoak}} ===
+* [[aleman]]
+
+=== {{Hitz eratorriak}} ===
+* [[alemaniar]]
+* [[Alemania]]
+
+<br clear="all">
+=== {{Itzulpen}} ===
+{{(}}
+* {{af}}: {{itz|af|Duits}}
+* {{als}}: {{itz|als|Deitscha}}
+* {{am}}: {{itz|am|ጀርመን}}
+* {{an}}: {{itz|an|alemán}}
+* {{ang}}: {{itz|ang|Þēodisce}}
+* {{ar}}: {{itz|ar|ألمانية}}
+* {{ast}}: {{itz|ast|alemán}}
+* {{ay}}: {{itz|ay|aliman aru}}
+* {{bg}}: {{itz|bg|немски}}
+* {{br}}: {{itz|br|alamaneg}}
+* {{bs}}: {{itz|bs|njemački}}
+* {{ca}}: {{itz|ca|alemany}}, {{itz|ca|alt alemany}}
+* {{ceb}}: {{itz|ceb|inaleman}}
+* {{chr}}: {{itz|chr|ᎠᏛᏥ}}
+* {{cs}}: {{itz|cs|němčina}}
+* {{cy}}: {{itz|cy|Almaeneg}}
+* {{da}}: {{itz|da|tysk}}
+* {{de}}: {{itz|de|Deutsch}}, {{itz|de|Hochdeutsch}}
+* {{dsb}}: {{itz|dsb|nimšćina}}
+* {{dv}}: {{itz|dv|އަލްމާނީ}}
+* {{el}}: {{itz|el|γερμανικά}}
+* {{en}}: {{itz|en|German}}
+* {{eo}}: {{itz|eo|Germana}}
+* {{es}}: {{itz|es|alemán}}
+* {{et}}: {{itz|et|saksa}}
+* {{fa}}: {{itz|fa|آلمانی}}
+* {{fi}}: {{itz|fi|saksa}}
+* {{fo}}: {{itz|fo|týskt}}
+* {{fr}}: {{itz|fr|allemand}}
+* {{fy}}: {{itz|fy|Dútsk}}
+* {{ga}}: {{itz|ga|Gearmáinis}}
+* {{gd}}: {{itz|gd|Gearmailtis}}
+* {{gl}}: {{itz|gl|alemán}}
+* {{gu}}: {{itz|gu|જર્મન}}
+* {{gv}}: {{itz|gv|germaanish}}
+* {{he}}: {{itz|he|גרמנית}}
+* {{hi}}: {{itz|hi|जर्मन}}
+* {{hr}}: {{itz|hr|njemački jezik}}
+* {{hsb}}: {{itz|hsb|němska rěč}}
+* {{ht}}: {{itz|ht|alman}}
+* {{hu}}: {{itz|hu|német}}
+* {{hy}}: {{itz|hy|գերմաներեն}}
+* {{ia}}: {{itz|ia|germano}}
+* {{id}}: {{itz|id|bahasa Jerman}}
+* {{ie}}: {{itz|ie|german}}
+* {{ilo}}: {{itz|ilo|Aleman}}
+* {{io}}: {{itz|io|germaniana}}, {{itz|io|germana}}
+* {{is}}: {{itz|is|þýska}}
+* {{it}}: {{itz|it|tedesco}}
+* {{ja}}: {{itz|ja|ドイツ語}}
+* {{jbo}}: {{itz|jbo|dotybau}}
+* {{ka}}: {{itz|ka|გერმანული}}
+* {{kg}}: {{itz|kg|kidoitce}}
+* {{kk}}: {{itz|kk|неміс}}
+{{-}}
+* {{kl}}: {{itz|kl|Tyskisut}}
+* {{kn}}: {{itz|kn|ಡಚ್}}
+* {{ko}}: {{itz|ko|독일어}}, {{itz|ko|독어}}
+* {{ku}}: {{itz|ku|elmanî}}
+* {{kw}}: {{itz|kw|almaynek}}
+* {{la}}: {{itz|la|lingua Germana}}
+* {{lb}}: {{itz|lb|Däitsch}}
+* {{li}}: {{itz|li|duits}}
+* {{ln}}: {{itz|ln|lialémani}}
+* {{lt}}: {{itz|lt|vokiečių}}, {{itz|lt|vokiečių kalba}}
+* {{mg}}: {{itz|mg|alema}}
+* {{mk}}: {{itz|mk|германски}}
+* {{ms}}: {{itz|ms|bahasa Jerman}}
+* {{mt}}: {{itz|mt|Ġermaniż}}
+* {{nah}}: {{itz|nah|teutontlahtōlli}}
+* {{nl}}: {{itz|nl|Duits}}
+* {{nn}}: {{itz|nn|tysk}}
+* {{no}}: {{itz|no|tysk}}
+* {{nrm}}: {{itz|nrm|allemaund}}
+* {{nv}}: {{itz|nv|Bééshbichʼahii bizaad}}
+* {{oc}}: {{itz|oc|alemand}}
+* {{pl}}: {{itz|pl|niemiecki}}, {{itz|pl|język niemiecki}}
+* {{ps}}: {{itz|ps|الماني}}
+* {{pt}}: {{itz|pt|alemão}}
+* {{qu}}: {{itz|qu|aliman simi}}
+* {{rm}}: {{itz|rm|tudestg}}
+* {{ro}}: {{itz|ro|germană}}, {{itz|ro|nemţeşte}}
+* {{ru}}: {{itz|ru|немецкий}}, {{itz|ru|немецкий язык}}
+* {{rw}}: {{itz|rw|ikidage}}
+* {{se}}: {{itz|se|duiskkagiella}}
+* {{si}}: {{itz|si|ජර්මානු}}
+* {{sk}}: {{itz|sk|nemčina}}
+* {{sl}}: {{itz|sl|nemščina}}
+* {{sm}}: {{itz|sm|fa'asiamani}}
+* {{sq}}: {{itz|sq|gjermanishte}}
+* {{sr}}: {{itz|sr|немачки}}, {{itz|sr|nemački}}, {{itz|sr|њемачки}}, {{itz|sr|njemački}}
+* {{ss}}: {{itz|ss|síJalimáne}}
+* {{st}}: {{itz|st|se-jeremane}}
+* {{sv}}: {{itz|sv|tyska}}
+* {{sw}}: {{itz|sw|kijerumani}}
+* {{th}}: {{itz|th|ภาษาเยอรมัน}}
+* {{tl}}: {{itz|tl|Aleman}}, {{itz|tl|Jerman}}
+* {{tpi}}: {{itz|tpi|tok Siamani}}
+* {{tr}}: {{itz|tr|almanca}}
+* {{uk}}: {{itz|uk|німецька}}, {{itz|uk|німецька мова}}
+* {{ur}}: {{itz|ur|جرمن زبان}}
+* {{vi}}: {{itz|vi|tiếng Đức}}
+* {{wa}}: {{itz|wa|almand}}
+* {{xh}}: {{itz|xh|isiJamani}}
+* {{yi}}: {{itz|yi|דײַטש}}
+* {{zh}}: {{itz|zh|德語}}, {{itz|zh|德语}}
+* {{zu}}: {{itz|zu|isiJalimani}}
+{{)}}
+<br clear="all"/>
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Izen bizigabeak euskaraz]]
+[[Kategoria:Hizkuntzen izenak euskaraz]]
