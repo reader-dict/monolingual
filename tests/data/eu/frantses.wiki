@@ -1,0 +1,257 @@
+{{wikipedia}}
+
+{{-eu-}}
+
+=== {{Ahoskera}} ===
+:* [[International Phonetic Alphabet|IPA]]: '''{{Azpimarratu|/fRan.t̻s̻e̻s̻/}}'''
+:* {{audio|Eus-frantses.ogg|frantses}}
+
+=== {{Jatorria}} ===
+:* /''Oraindik ez daukagu hitz honen etimologia. Lagundu ezazu jartzen.''/
+
+{{Lema|frantses|1}}
+
+{{Hizkuntzen deklinabide 
+|kv=1
+|ko=1
+}}
+
+==== {{Izena}} ====
+# Frantziar Estatuan, [[Suitza]]n, [[Monako]]n, [[Luxenburgo]]n, [[Belgika]]n eta [[Kanada]]ko eskualde batzuetan ez ezik [[Afrika]]ko hainbat estatutan ere hitz egiten den [[hizkuntza]] erromanikoa da.
+#* '''Adibidea''': Iparraldean euskararekin batera ''frantsesa'' ere hitz egiten da.
+
+==== {{Sinonimoak}} ====
+* [[frantziera]]
+
+==== {{Hitz eratorriak}} ====
+* [[Frantzia]] 
+* [[frantziar]] 
+* [[frantses-euskaldun]]
+* [[frantses-porru]] 
+
+<br clear="all">
+==== {{Itzulpen}} ====
+{{(}}
+* {{af}}: {{itz|af|Frans}}
+* {{am}}: {{itz|am|ፈረንሳይኛ}}
+* {{an}}: {{itz|an|franzés}}
+* {{ang}}: {{itz|ang|Frencisc sprǣc}}
+* {{ar}}: {{itz|ar|فرنسية}}
+* {{ASL }}: {{itz|ASL|F@NearForehead-HandPalmDown F@NearForehead-HandPalmUp HorizSmallTwist}}
+* {{ast}}: {{itz|ast|francés}}
+* {{az}}: {{itz|az|Fransız dili}}
+* {{be}}: {{itz|be|французская мова}}
+* {{bg}}: {{itz|bg|френски}}
+* {{bm}}: {{itz|bm|Faransekan}}
+* {{br}}: {{itz|br|galleg}}
+* {{bs}}: {{itz|bs|francuski}}
+* {{ca}}: {{itz|ca|francès}}
+* {{ceb}}: {{itz|ceb|Prinanses}}
+* {{cr}}: {{itz|cr|ᐅᐱᔥᑎᑯᔮᐅᐊᔨᒧᐎᓐ}}
+* {{cs}}: {{itz|cs|francouzština}}
+* {{cy}}: {{itz|cy|Ffrangeg}}
+* {{da}}: {{itz|da|fransk}}
+* {{de}}: {{itz|de|Französisch}}
+* {{dv}}: {{itz|dv|ފަރަންސޭސި}}
+* {{ee}}: {{itz|ee|Fransegbe}}
+* {{el}}: {{itz|el|γαλλικά}}
+* {{en}}: {{itz|en|French}}
+* {{eo}}: {{itz|eo|franca lingvo}}
+* {{es}}: {{itz|es|francés}}
+* {{et}}: {{itz|et|prantsuse}}, {{itz|et|prantsuse keel}}
+* {{fa}}: {{itz|fa|فرانسه}}
+* {{fi}}: {{itz|fi|ranska}}, {{itz|fi|ranskan kieli}}
+* {{fo}}: {{itz|fo|Franskt}}
+* {{fr}}: {{itz|fr|français}}
+* {{fy}}: {{itz|fy|Frânsk}}
+* {{ga}}: {{itz|ga|Fraincis}}
+* {{gd}}: {{itz|gd|Frangais}}
+* {{gu}}: {{itz|gu|ફ્રાન્સીસી}}
+* {{gv}}: {{itz|gv|Frangish}}
+* {{haw}}: {{itz|haw|ōlelo Palani}}
+* {{he}}: {{itz|he|צרפתית}}
+* {{hi}}: {{itz|hi|फ़्राँसीसी}}
+* {{hr}}: {{itz|hr|Francuski jezik}}
+* {{ht}}: {{itz|ht|lang franse}}
+* {{hu}}: {{itz|hu|francia}}
+* {{hy}}: {{itz|hy|ֆրանսերեն}}
+* {{ia}}: {{itz|ia|francese}}
+* {{id}}: {{itz|id|bahasa Perancis}}
+* {{is}}: {{itz|is|franska}}
+* {{it}}: {{itz|it|francese}}
+* {{iu}}: {{itz|iu|ᐅᐃᕖᑎᑐᑦ}}
+* {{ja}}: {{itz|ja|フランス語}}
+* {{jv}}: {{itz|jv|basa Prancis}}
+{{-}}
+* {{ka}}: {{itz|ka|ფრანგული}}
+* {{kg}}: {{itz|kg|Kifalanse}}
+* {{km}}: {{itz|km|ភាសាបារាំង}}
+* {{kn}}: {{itz|kn|ಫ್ರೆಂಚ್}}
+* {{ko}}: {{itz|ko|프랑스어}}
+* {{ku}}: {{itz|ku|zimanê fransî}}
+* {{kv}}: {{itz|kv|Франция кыв}}
+* {{kw}}: {{itz|kw|Frenkek}}
+* {{la}}: {{itz|la|lingua Francogallica}}
+* {{lb}}: {{itz|lb|Franséisch}}
+* {{li}}: {{itz|li|Frans}}
+* {{ln}}: {{itz|ln|Falansé}}
+* {{lo}}: {{itz|lo|ພາສາຝະລັ່ງ}}
+* {{lv}}: {{itz|lv|franču valoda}}
+* {{mk}}: {{itz|mk|француски јазик}}
+* {{ml}}: {{itz|ml|ഫ്രഞ്ച് ഭാഷ}}
+* {{mn}}: {{itz|mn|Франц хэл}}
+* {{mr}}: {{itz|mr|फ्रान्सीय}}
+* {{ms}}: {{itz|ms|bahasa Perancis}}
+* {{nah}}: {{itz|nah|Francitlahtōlli}}
+* {{nap}}: {{itz|nap|franzese}}
+* {{ne}}: {{itz|ne|फ्रान्सेली भाषा}}
+* {{nl}}: {{itz|nl|Frans}}
+* {{no}}: {{itz|no|fransk}}
+* {{nv}}: {{itz|nv|Dáághahii bizaad}}
+* {{oc}}: {{itz|oc|francés}}
+* {{os}}: {{itz|os|францусаг æвзаг}}
+* {{pl}}: {{itz|pl|francuski}}, {{itz|pl|francuszczyzna}}
+* {{ps}}: {{itz|ps|فرانسوي}}
+* {{pt}}: {{itz|pt|francês}}
+* {{ro}}: {{itz|ro|franceză}}, {{itz|ro|limba franceză}}, {{itz|ro|franțuzește}}
+* {{ru}}: {{itz|ru|французский}}
+* {{sd}}: {{itz|sd|فِرانسِيسِي}}
+* {{se}}: {{itz|se|Fránskkagiella}}
+* {{sl}}: {{itz|sl|francoščina}}
+* {{sq}}: {{itz|sq|Gjuha frënge}}
+* {{sr}}: {{itz|sr|француски}}, {{itz|sr|francuski}}
+* {{ss}}: {{itz|ss|SíFulentji}}
+* {{st}}: {{itz|st|Se-french}}
+* {{sv}}: {{itz|sv|franska}}
+* {{sw}}: {{itz|sw|Kifaransa}}
+* {{ta}}: {{itz|ta|ஃப்ரெஞ்ச்}}
+* {{th}}: {{itz|th|ภาษาฝรั่งเศส}}
+* {{tl}}: {{itz|tl|Pranses}}
+* {{tr}}: {{itz|tr|Fransızca}}
+* {{uk}}: {{itz|uk|французька мова}}
+* {{ur}}: {{itz|ur|فرانسیسی زبان}}
+* {{vi}}: {{itz|vi|tiếng Pháp}}, {{itz|vi|Pháp ngữ}}
+* {{wa}}: {{itz|wa|Francès}}
+* {{yi}}: {{itz|yi|פראנצויזיש}}
+* {{zh}}: {{itz|zh|法語}}
+* {{zu}}: {{itz|zu|SiFulentshi}}
+{{)}}
+<br clear="all"/>
+
+{{Lema|frantses|2}}
+
+{{Izen bizidun 
+|kb=1
+|kon=1
+}}
+
+==== {{Izena}} edo izenondoa ====
+# Frantziako [[biztanle]]ari edo hari dagokionari deritzo.
+#* '''Adibidea''': ''Frantsesek'' oso gustoko dute txirrindularitza.
+
+==== {{Sinonimoak}} ====
+* [[frantziar]]
+
+==== {{Hitz eratorriak}} ====
+* [[Frantzia]] 
+* [[frantses-euskaldun]]
+* [[frantses-porru]] 
+* [[frantziera]]
+
+<br clear="all">
+==== {{Itzulpen}} ====
+{{(}}
+* {{ar}}: {{itz|ar|فرنسي}}
+* {{ast}}: {{itz|ast|francés}}
+* {{ca}}: {{itz|ca|francès}}
+* {{cs}}: {{itz|cs|francouzský}}
+* {{da}}: {{itz|da|fransk}}
+* {{de}}: {{itz|de|französisch}}
+* {{el}}: {{itz|el|γαλλικός}}
+* {{en}}: {{itz|en|french}}
+* {{eo}}: {{itz|eo|franca}}
+* {{es}}: {{itz|es|francés}}, {{itz|es|francesa}}
+* {{fi}}: {{itz|fi|ranskalainen}}
+* {{fr}}: {{itz|fr|français}}, {{itz|fr|Français}}
+* {{fy}}: {{itz|fy|Frânsk}}
+* {{gd}}: {{itz|gd|Frangach}}
+* {{hr}}: {{itz|hr|francuski}}
+* {{hu}}: {{itz|hu|francia}}
+{{-}}
+* {{hy}}: {{itz|hy|ֆրանսիական}}
+* {{is}}: {{itz|is|franskur}}, {{itz|is|frönsk}}, {{itz|is|franskt}}
+* {{it}}: {{itz|it|francese}}
+* {{ja}}: {{itz|ja|フランス人}}
+* {{nl}}: {{itz|nl|Frans}}
+* {{no}}: {{itz|no|fransk}}
+* {{pl}}: {{itz|pl|francuski}}
+* {{pt}}: {{itz|pt|francês}}
+* {{ru}}: {{itz|ru|французский}}
+* {{sl}}: {{itz|sl|francoski}}, {{itz|sl|francoska}}, {{itz|sl|francosko}}
+* {{sv}}: {{itz|sv|fransk}}
+* {{tr}}: {{itz|tr|Fransız}}
+* {{vi}}: {{itz|vi|người}}
+{{)}}
+<br clear="all"/>
+
+{{Lema|frantses|3}}
+
+==== {{Izenondoa}} ====
+# Frantziari dagokiona. 
+#* '''Adibidea''': Gastronomia ''frantsesak'' ospe handia du. 
+
+==== {{Sinonimoak}} ====
+* [[frantziar]]
+
+==== {{Hitz eratorriak}} ====
+* [[Frantzia]] 
+* [[frantses-euskaldun]]
+* [[frantses-porru]] 
+* [[frantziera]]
+
+<br clear="all">
+==== {{Itzulpen}} ====
+{{(}}
+* {{ar}}: {{itz|ar|فرنسي}}
+* {{ast}}: {{itz|ast|francés}}
+* {{ca}}: {{itz|ca|francès}}
+* {{cs}}: {{itz|cs|francouzský}}
+* {{da}}: {{itz|da|fransk}}
+* {{de}}: {{itz|de|französisch}}
+* {{el}}: {{itz|el|γαλλικός}}
+* {{en}}: {{itz|en|french}}
+* {{eo}}: {{itz|eo|franca}}
+* {{es}}: {{itz|es|francés}}, {{itz|es|francesa}}
+* {{fi}}: {{itz|fi|ranskalainen}}, {{itz|fi|ranska}}
+* {{fil}}: {{itz|fil|Pranses}}
+* {{fr}}: {{itz|fr|français}}
+* {{fy}}: {{itz|fy|Frânsk}}
+* {{gd}}: {{itz|gd|Frangach}}
+* {{hr}}: {{itz|hr|francuski}}
+* {{hu}}: {{itz|hu|francia}}
+{{-}}
+* {{hy}}: {{itz|hy|ֆրանսիական}}
+* {{io}}: {{itz|io|Franciana}}
+* {{is}}: {{itz|is|franskur}}, {{itz|is|frönsk}}, {{itz|is|franskt}}
+* {{it}}: {{itz|it|francese}}
+* {{ja}}: {{itz|ja|フランス人}}
+* {{nl}}: {{itz|nl|Frans}}
+* {{no}}: {{itz|no|fransk}}
+* {{pl}}: {{itz|pl|francuski}}
+* {{pt}}: {{itz|pt|francês}}
+* {{ru}}: {{itz|ru|французский}}
+* {{sl}}: {{itz|sl|francoski}}, {{itz|sl|francoska}}, {{itz|sl|francosko}}
+* {{sv}}: {{itz|sv|fransk}}
+* {{tl}}: {{itz|tl|Pranses}}
+* {{tr}}: {{itz|tr|Fransız}}
+* {{vi}}: {{itz|vi|Pháp}}
+{{)}}
+<br clear="all"/>
+
+[[Kategoria:Euskara]]
+[[Kategoria:Izenak euskaraz]]
+[[Kategoria:Adjektiboak euskaraz]]
+[[Kategoria:Izen bizigabeak euskaraz]]
+[[Kategoria:Izen bizidunak euskaraz]]
+[[Kategoria:Izenondoak euskaraz]]
+[[Kategoria:Hizkuntzen izenak euskaraz]]

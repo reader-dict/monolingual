@@ -136,6 +136,33 @@ def setup_lua_ctx() -> None:
             ],
         ),
         (
+            "frantses",
+            ["/fRan.t̻s̻e̻s̻/"],
+            [],
+            {
+                "Izena": [
+                    "Frantziar Estatuan, Suitzan, Monakon, Luxenburgon, Belgikan eta Kanadako eskualde batzuetan ez ezik Afrikako hainbat estatutan ere hitz egiten den hizkuntza erromanikoa da."
+                ],
+                "Izena Edo Izenondoa": ["Frantziako biztanleari edo hari dagokionari deritzo."],
+                "Izenondoa": ["Frantziari dagokiona."],
+                "Sinonimoak": ["frantziera", "frantziar"],
+            },
+            [],
+            [
+                "frantsesa",
+                "frantsesak",
+                "frantsesan",
+                "frantsesarekin",
+                "frantsesaren",
+                "frantsesarengatik",
+                "frantsesarentzat",
+                "frantsesari",
+                "frantsesaz",
+                "frantsesik",
+                "frantsestzat",
+            ],
+        ),
+        (
             "hogeita hamaikarenganaino",
             ["/ogei.´tamaikaɾenganaɲo/"],
             [],

@@ -272,8 +272,8 @@ def preprocess(locale: str, title: str, body: str) -> str:
             body = re.sub(r"^\{\{-(\w+)-\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
             # `=== {{Izena}} ===` → `===izena===`
             body = re.sub(
-                r"^(=++)[ ]*+\{\{([^}]++)\}\}[ ]*+=++",
-                lambda m: f"{m[1]}{m[2].lower()}{m[1]}",
+                r"^(=++)[ ]*+\{\{([^=]++)=++",
+                lambda m: f"{m[1]}{m[2].replace('{', '').replace('}', '').strip().lower()}{m[1]}",
                 body,
                 flags=re.MULTILINE,
             )
