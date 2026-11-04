@@ -20,6 +20,7 @@ sections = (
     *etyl_section,
     "adberbio",  # adverb, adverbial phrase
     "aditz",  # verb
+    "adizlaguna",  # adverb
     "adjektibo",  # adjective
     "artikulua",  # article
     "atsotitza",  # proverb
@@ -34,6 +35,7 @@ sections = (
     "juntagailua",  # conjunction
     "lokailua",  # conjunction
     "partikula",  # particle
+    "preposizio-lokuzioa",  # prepositional phrase
     "sinonimoak",  # synonym
     "zenba",  # quantifier, numerator
 )
