@@ -48,9 +48,11 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['мн']
     >>> find_genders("{{імен uk 1a n ina|склади={{склади|мі|сто}}|мі́ст|мі́ст}}", "uk")
     ['с']
+    >>> find_genders("{{імен uk 3a-city m una|склади={{склади|Бо́б|рик}}|Бо́брик|Бобрик}}", "uk")
+    ['ч']
     """
     # https://uk.wiktionary.org/wiki/Категорія:Шаблони_словозміни/uk/Іменники
-    pattern = re.compile(rf"\{{\{{імен.{locale}.\w++.([fmnplмжс]++)")
+    pattern = re.compile(rf"\{{\{{імен.{locale}.[\w-]++.([fmnplмжс]++)")
     return utils.unique(
         [
             {
