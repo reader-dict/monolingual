@@ -531,7 +531,7 @@ def _find_pronunciations(top_sections: list[wtp.Section], lang_src: str, lang_ds
     func = lang.find_pronunciations[lang_src]
 
     args = [lang_dst]
-    if lang_src == "la":
+    if lang_src in {"la", "ru", "uk"}:
         args.append(word)
 
     for top_section in top_sections:

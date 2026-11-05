@@ -113,8 +113,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     return utils.unique([gender for match in pattern.findall(code) for gender in genders.get(match[0] or match[1], [])])
 
 
-def find_pronunciations(code: str, locale: str) -> list[str]:
+def find_pronunciations(code: str, locale: str, word: str = "") -> list[str]:
     """
+    The pronunciation of each homonym, starting with the word and its stress.
+
     >>> from ... import context
     >>> _ = context.reset("ru")
 
@@ -122,27 +124,38 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("", "ru")
     []
 
-    >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru")
-    ['[strɐˈnʲit͡sə]']
+    >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru", "страница")
+    ['страни́ца [strɐˈnʲit͡sə]']
 
     >>> context.new_word("кажется")
-    >>> find_pronunciations("{{transcription-ru|ка́жется|Ru-кажется.ogg}}", "ru")
-    ['[ˈkaʐɨt͡sə]']
+    >>> find_pronunciations("{{transcription-ru|ка́жется|Ru-кажется.ogg}}", "ru", "кажется")
+    ['ка́жется [ˈkaʐɨt͡sə]']
+
+    >>> context.new_word("атлас")
+    >>> find_pronunciations("{{transcriptions-ru|а́тлас|а́тласы||}}\\n{{transcription-ru|атла́с|}}", "ru", "атлас")
+    ['а́тлас [ˈatɫəs]', 'атла́с [ɐˈtɫas]']
+
+    >>> context.new_word("стол")
+    >>> find_pronunciations("{{transcriptions-ru|стол|столы́}}", "ru", "стол")
+    ['[stoɫ]']
     """
-    lines: list[str] = []
-    for tpl in re.findall(rf"\{{\{{transcriptions?-{locale}[^}}\n]*+}}}}", code):
-        new_lines = context.expand(tpl, "ru").splitlines()
-        for line in lines:
-            if pron := re.search(r"ед\.&nbsp;ч\.&nbsp;&#91;([^&]++)&#93;", line):
-                return [f"[{pron[1]}]"]
-        lines.extend(new_lines)
+    # Each stressed spelling with its first pronunciation: homonyms stressed differently get one each,
+    # a word with several pronunciations ("провожжа́ться" [ʑː] and [ʐː]) only the first one, as before
+    found: dict[str, str] = {}
+    for tpl in re.finditer(rf"\{{\{{transcriptions?-{locale}\|([^|}}\n]*+)[^}}\n]*+}}}}", code):
+        lines = context.expand(tpl[0], "ru").splitlines()
+        ipa = next((f"[{m[1]}]" for line in lines if (m := _IPA_SINGULAR.search(line))), "")
+        ipa = ipa or next((f"[{m[1]}]" for line in lines if (m := _IPA.search(line))), "")
+        stressed = utils.stress_word(word, tpl[1]) if word and "=" not in tpl[1] else ""
+        if (stressed or ipa) and stressed not in found:
+            found[stressed] = ipa
+    if len(found) > 1:
+        found.pop("", None)
+    return [" ".join(part for part in (stressed, ipa) if part) for stressed, ipa in found.items()]
 
-    # Nothing found, lets pick the first result
-    for line in lines:
-        if pron := re.search(r"&#91;([^&]++)&#93;", line):
-            return [f"[{pron[1]}]"]
 
-    return []
+_IPA_SINGULAR = re.compile(r"ед\.&nbsp;ч\.&nbsp;&#91;([^&]++)&#93;")
+_IPA = re.compile(r"&#91;([^&]++)&#93;")
 
 
 _EXAMPLE = re.compile(r"[ ]*\{\{(?:[Пп]ример|[Цц]итата)\b")
