@@ -1359,3 +1359,95 @@ def reconstruct_tpl(tpl: str, parts: list[str], data: defaultdict[str, str]) -> 
         template += f"|{'|'.join(args)}"
     template += "}}"
     return template
+
+
+def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, forms: tuple[str, ...] = ()) -> str:
+    r"""
+    Put the synonyms under their meaning, as a sub-definition, for Wiktionaries that write one line of synonyms
+    per meaning, in the same order, with an empty line for a meaning without synonyms (like the RU and UK ones).
+    As a list of their own, the synonyms would not be numbered like the meanings once the empty lines are dropped.
+
+    `meanings` and `synonyms` are the titles of the level-4 sections, and `label` is put before the synonyms.
+    The list is kept as it is when it cannot be matched with the meanings: more synonyms than meanings,
+    synonyms of an empty meaning, lines that are not list items, or a template spanning several lines.
+    A homonym without any meaning (only empty lines, or the `forms` templates of a page that is the form
+    of another word) loses its synonyms: they would turn the form into a word of its own.
+
+    >>> attach_synonyms("==== Значение ====\n# смысл 1\n#: пример\n# смысл 2\n# смысл 3\n\n==== Синонимы ====\n# [[а]], [[б]]\n# -\n# [[в]]\n\n==== Антонимы ====\n# [[г]]", "значение", "синонимы", "син.")
+    "==== Значение ====\n# смысл 1\n#: пример\n## ''син.:'' [[а]], [[б]]\n# смысл 2\n# смысл 3\n## ''син.:'' [[в]]\n\n==== Антонимы ====\n# [[г]]"
+    >>> attach_synonyms("====значення====\n# сенс\n====синоніми====\n# [[а]]", "значення", "синоніми", "син.")
+    "====значення====\n# сенс\n## ''син.:'' [[а]]"
+    >>> attach_synonyms("==== Значение ====\n# смысл 1\n==== Синонимы ====\n# [[а]]\n# [[б]]", "значение", "синонимы", "син.")
+    '==== Значение ====\n# смысл 1\n==== Синонимы ====\n# [[а]]\n# [[б]]'
+    >>> attach_synonyms("==== Значение ====\n# смысл 1\n# \n==== Синонимы ====\n# [[а]]\n# [[б]]", "значение", "синонимы", "син.")
+    '==== Значение ====\n# смысл 1\n# \n==== Синонимы ====\n# [[а]]\n# [[б]]'
+    >>> attach_synonyms("==== Значение ====\n# смысл 1\n# смысл 2\n==== Синонимы ====\n#{{aslinks|а\n#б|#,}}", "значение", "синонимы", "син.")
+    '==== Значение ====\n# смысл 1\n# смысл 2\n==== Синонимы ====\n#{{aslinks|а\n#б|#,}}'
+    >>> attach_synonyms("==== Значение ====\n# смысл 1\n==== Синонимы ====\n* [[а]]", "значение", "синонимы", "син.")
+    '==== Значение ====\n# смысл 1\n==== Синонимы ====\n* [[а]]'
+    >>> attach_synonyms("=== Семантические свойства ===\n==== Значение ====\n# смысл\n=== Этимология ===\n==== Синонимы ====\n# [[а]]", "значение", "синонимы", "син.")
+    '=== Семантические свойства ===\n==== Значение ====\n# смысл\n=== Этимология ===\n==== Синонимы ====\n# [[а]]'
+    >>> attach_synonyms("==== Значение ====\n# \n==== Синонимы ====\n# [[а]]\n==== Антонимы ====", "значение", "синонимы", "син.")
+    '==== Значение ====\n# \n==== Антонимы ===='
+    >>> attach_synonyms("==== Значение ====\n# {{прич.|перекроить|прош|страд}}\n# \n==== Синонимы ====\n#перешитый\n#переделанный", "значение", "синонимы", "син.", forms=("{{прич.",))
+    '==== Значение ====\n# {{прич.|перекроить|прош|страд}}\n# '
+    """
+    lines = code.split("\n")
+
+    def is_item(line: str) -> bool:
+        return line.startswith("#") and not line.startswith(("#:", "##", "#*"))
+
+    def is_balanced(line: str) -> bool:
+        return line.count("{{") == line.count("}}") and line.count("[[") == line.count("]]")
+
+    def section_end(start: int) -> int:
+        return next((n for n in range(start + 1, len(lines)) if lines[n].startswith("=")), len(lines))
+
+    def level(line: str) -> int:
+        return len(line) - len(line.lstrip("="))
+
+    def title(line: str) -> str:
+        return line.strip("= ").lower()
+
+    drop: set[int] = set()
+    insert: dict[int, str] = {}
+    for start, line in enumerate(lines):
+        if level(line) != 4 or title(line) != meanings:
+            continue
+        end = section_end(start)
+        # The synonyms of the same homonym: the next level-4 section with that title, before any higher one
+        syn_start = end
+        while syn_start < len(lines) and level(lines[syn_start]) == 4:
+            if title(lines[syn_start]) == synonyms:
+                break
+            syn_start = section_end(syn_start)
+        else:
+            continue
+        syn_end = section_end(syn_start)
+        items = [n for n in range(start + 1, end) if is_item(lines[n])]
+        if not any(lines[n][1:].strip() and not lines[n][1:].lstrip().startswith(forms or ("\0",)) for n in items):
+            drop.update(range(syn_start, syn_end))
+            continue
+        syn_lines = [lines[n] for n in range(syn_start + 1, syn_end) if lines[n].strip()]
+        if not all(is_item(line) and is_balanced(line) for line in syn_lines):
+            continue
+        texts = ["" if re.fullmatch(r"[—\-?]?", text := line[1:].strip()) else text for line in syn_lines]
+        while texts and not texts[-1]:
+            texts.pop()
+        pairs = list(zip(items, texts))
+        if len(texts) > len(items) or any(text and not lines[item][1:].strip() for item, text in pairs):
+            continue
+        for item, text in pairs:
+            if text:
+                # After the meaning and its own sub-items
+                after = next((n for n in range(item + 1, end) if not lines[n].startswith(("#:", "##", "#*"))), end)
+                insert[after - 1] = f"## ''{label}:'' {text}"
+        drop.update(range(syn_start, syn_end))
+
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        if n not in drop:
+            out.append(line)
+        if n in insert:
+            out.append(insert[n])
+    return "\n".join(out)
