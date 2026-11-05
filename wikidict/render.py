@@ -11,7 +11,6 @@ import re
 import sys
 import warnings
 from collections import OrderedDict, defaultdict
-from contextlib import suppress
 from datetime import timedelta
 from functools import partial
 from pathlib import Path
@@ -908,6 +907,29 @@ def render_word(
         log.info("Job done.")
 
 
+def add_redirection(words: Words, word: str, redirect_to: str, lang_src: str) -> bool:
+    """
+    Make a redirection page a variant of the word it redirects to. Return False when that word is unknown.
+
+    >>> words = {"защёлкнутый": Word()}
+    >>> add_redirection(words, "защёлкнутое", "защёлкнутый", "ru")
+    True
+    >>> add_redirection(words, "защёлкнутым", "неизвестный", "ru")
+    False
+
+    [RU] As in `parse_word()`, the spelling without "ё" is added too ("защелкнутое" should find "защёлкнутый"):
+    the forms of participles are redirection pages.
+    >>> words["защёлкнутый"].reverse_variants
+    ['защёлкнутое', 'защелкнутое']
+    """
+    if (details := words.get(redirect_to)) is None:
+        return False
+    details.reverse_variants.append(word)
+    if lang_src == "ru" and (without_yo := word.replace("ё", "е").replace("Ё", "Е")) != word:
+        details.reverse_variants.append(without_yo)
+    return True
+
+
 def init_worker(locale: str) -> None:
     utils.setup_logging(*utils.guess_locales(locale, use_log=False))
     if not context.setup_modules_db(locale):
@@ -974,8 +996,7 @@ def render(
         )
         redirection_count = 0
         for word, redirect_to in redirections:
-            with suppress(KeyError):
-                results_final[redirect_to].reverse_variants.append(word)
+            if add_redirection(results_final, word, redirect_to, lang_src):
                 redirection_count += 1
                 progress.update(redirection_task, completed=redirection_count)
         progress.update(
