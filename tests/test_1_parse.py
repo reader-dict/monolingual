@@ -551,6 +551,10 @@ def test_preprocess(locale: str, body: str, expected: str) -> None:
             '<title>Modèle:ex &quot;2&quot;</title>\n<redirect title="Modèle:ex &quot;1&quot;" />\n<revision>',
             ('Modèle:ex "2"', 10, None, 'Modèle:ex "1"'),
         ),
+        (
+            '<title>Modèle:ex 3</title>\n<redirect title="Modèle:ex &#039;1&#039;" />\n<revision>',
+            ("Modèle:ex 3", 10, None, "Modèle:ex '1'"),
+        ),
     ],
 )
 def test_handle_matcher_unescapes_titles(element: str, expected: tuple[str, int, str | None, str | None]) -> None:
