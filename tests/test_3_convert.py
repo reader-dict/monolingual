@@ -724,3 +724,12 @@ def test_format_all(format: str) -> None:
 
 def test_format_unknown() -> None:
     assert not convert.get_formatters("unknown")
+
+
+def test_distribute_workload_raises_formatter_error(tmp_path: Path) -> None:
+    class BrokenFormat(convert.StarDictFormat):
+        def process(self) -> None:
+            raise ValueError("boom")
+
+    with pytest.raises(ValueError, match="boom"):
+        convert.distribute_workload({BrokenFormat}, tmp_path, "20201218", "fr", {}, {})
