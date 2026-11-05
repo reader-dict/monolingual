@@ -634,6 +634,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     etyl_section = lang.etyl_section[lang_dst]
     top_sections, all_sections = find_all_sections(code, lang_src, lang_dst)
     current_genders: list[str] = []
+    homonyms_genders: list[tuple[tuple[int, int], list[str]]] = []
     current_pos = ""
 
     if lang_src == "de":
@@ -642,6 +643,12 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
     elif lang_src in {"bg", "ru", "uk"}:
         # Genders are found in inflections
         current_genders = lang.find_genders[lang_src](top_sections[0].contents, lang_src)
+        # Homonyms have their own: "стать" is a verb, then a feminine noun
+        homonyms_genders = [
+            (homonym.span, lang.find_genders[lang_src](homonym.contents, lang_src))
+            for top_section in top_sections
+            for homonym in top_section.get_sections(level=lang.section_level[lang_dst] + 1)
+        ]
 
     for top_title, title, section in all_sections:
         title = title.lower()
@@ -668,8 +675,13 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
                 pos = title
             else:
                 pos = prettify_pos(top_title, section, lang_src, lang_dst)
-                if pos != "Trans" and lang_src in {"bg", "ru", "uk"} and current_genders and "|" not in pos:
-                    pos += f"|{fmt_genders(current_genders)}"
+                if lang_src in {"bg", "ru", "uk"}:
+                    genders = next(
+                        (genders for (start, end), genders in homonyms_genders if start <= section.span[0] < end),
+                        current_genders,
+                    )
+                    if pos != "Trans" and genders and "|" not in pos:
+                        pos += f"|{fmt_genders(genders)}"
             ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
