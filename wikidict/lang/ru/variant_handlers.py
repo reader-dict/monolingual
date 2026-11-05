@@ -83,13 +83,22 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             .replace("(по) ", "\n| ")
         )
         table = re.sub(r'^\|[ ]*+bgcolor="[^|\n]++', "", table, flags=re.MULTILINE)
+        # Cell attributes: `| colspan=2| дву́х`
+        table = re.sub(r"^\|[ ]*+[a-z]++=[^|\n]*+\|(?!\|)", "| ", table, flags=re.MULTILINE)
         forms = {form[1:].strip() for form in table.splitlines()}
     else:
-        table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>")
+        table = re.sub(r"<br[ ]*+/?>", "</td><td>", table)
+        # Labels inside a cell: `не́кой<br />[[Викисловарь:Условные сокращения|<i>устар.</i>]]&nbsp;не́коей`
+        table = re.sub(r"\[\[[^\]|]*+\|<i>[^<]*+</i>\]\]", "", table)
         # Drop cell attributes (`<td rowspan="3">`) and footnote marks (`<sup>△</sup>`)
         table = re.sub(r"<td [^>]*+>", "<td>", table)
         table = re.sub(r"<sup>[^<]*+</sup>", "", table)
         forms = set(re.findall(r"<td>([^<]++)</td>", table))
+
+    # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
+    if comparative := data.get("степень", ""):
+        comparative = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", comparative)
+        forms |= {part for part in re.split(r"[,;/]|<br[ ]*+/?>", comparative) if " " not in part.strip()}
 
     if not forms:
         return ""

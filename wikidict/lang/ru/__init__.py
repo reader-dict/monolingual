@@ -202,6 +202,18 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n{{ сущ ru m ina 1b\n|основа=хвост\n|основа1=хвост\n}}", "ru", word="хвост")
     '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста}}\n# {{rev-flexion|хвостам}}\n# {{rev-flexion|хвостами}}\n# {{rev-flexion|хвостах}}\n# {{rev-flexion|хвосте}}\n# {{rev-flexion|хвостов}}\n# {{rev-flexion|хвостом}}\n# {{rev-flexion|хвосту}}\n# {{rev-flexion|хвосты}}'
 
+    >>> context.new_word("крепкий")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 3*a/c'\n|основа=кре́пк\n|основа1=кре́пок\n|основа2=крепк\n|степень=кре́пче\n}}", "ru", word="крепкий")
+    "= {{-ru-}} =\n{{прил ru 3*a/c'|}}\n# {{rev-flexion|крепка}}\n# {{rev-flexion|крепкая}}\n# {{rev-flexion|крепки}}\n# {{rev-flexion|крепкие}}\n# {{rev-flexion|крепким}}\n# {{rev-flexion|крепкими}}\n# {{rev-flexion|крепких}}\n# {{rev-flexion|крепко}}\n# {{rev-flexion|крепкого}}\n# {{rev-flexion|крепкое}}\n# {{rev-flexion|крепкой}}\n# {{rev-flexion|крепком}}\n# {{rev-flexion|крепкому}}\n# {{rev-flexion|крепкою}}\n# {{rev-flexion|крепкую}}\n# {{rev-flexion|крепок}}\n# {{rev-flexion|крепче}}"
+
+    >>> context.new_word("некий")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 3a^+\n|основа=не́к\n}}", "ru", word="некий")
+    '= {{-ru-}} =\n{{прил ru 3a^+|}}\n# {{rev-flexion|некая}}\n# {{rev-flexion|некие}}\n# {{rev-flexion|неким}}\n# {{rev-flexion|некими}}\n# {{rev-flexion|неких}}\n# {{rev-flexion|некое}}\n# {{rev-flexion|некоего}}\n# {{rev-flexion|некоей}}\n# {{rev-flexion|некоем}}\n# {{rev-flexion|некоему}}\n# {{rev-flexion|некоею}}\n# {{rev-flexion|некоим}}\n# {{rev-flexion|некоими}}\n# {{rev-flexion|некоих}}\n# {{rev-flexion|некой}}\n# {{rev-flexion|некою}}\n# {{rev-flexion|некую}}'
+
+    >>> context.new_word("два")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{числ-2\n|основа=дв\n|соотв=второ́й\n}}", "ru", word="два")
+    '= {{-ru-}} =\n{{числ-2|}}\n# {{rev-flexion|две}}\n# {{rev-flexion|двум}}\n# {{rev-flexion|двумя}}\n# {{rev-flexion|двух}}'
+
     >>> context.new_word("он")
     >>> adjust_wikicode("= {{-ru-}} =\n{{падежи ru 1\n|nom=он\n|gen=[[его|его́]]{{^|△}},&nbsp;[[него|него́]]{{^|△}}\n|dat=[[ему|ему́]]{{^|△}},&nbsp;[[нему|нему́]]{{^|△}}\n|ins=[[им]]{{^|△}},&nbsp;[[ним]]{{^|△}}\n|prp=[[нём]]{{^|△}}\n}}", "ru", word="он")
     '= {{-ru-}} =\n{{падежи ru 1|}}\n# {{rev-flexion|его}}\n# {{rev-flexion|ему}}\n# {{rev-flexion|им}}\n# {{rev-flexion|него}}\n# {{rev-flexion|нему}}\n# {{rev-flexion|ним}}\n# {{rev-flexion|нём}}'
