@@ -108,7 +108,7 @@ def handle_matcher(matcher: Callable[[str], Iterator[re.Match[str]]], element: s
     if (title := next(matcher(element), None)) and not title[1].lower().endswith(constants.MODULES_TO_IGNORE):
         body, redirect_to = None, None
         if redirect := RE_REDIRECT(element, endpos=element.find("<revision")):
-            redirect_to = redirect[1]
+            redirect_to = unescape(redirect[1], entities=constants.HTML_REPL_TITLE)
         elif text := RE_TEXT(element, pos=element.find("<text")):
             body = unescape(text[1], entities=constants.HTML_REPL_BODY)
         if body or redirect_to:

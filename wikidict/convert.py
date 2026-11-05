@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import json
 import logging
-import threading
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 from pathlib import Path
 from time import monotonic
@@ -86,23 +86,28 @@ def distribute_workload(
     include_etymology: bool = True,
     sequential: bool = False,
 ) -> None:
-    """Run formatters in parallel."""
-    threads = []
-
-    for formatter in formatters:
-        if sequential:
+    """Run formatters in parallel. An error raised by a formatter is raised again here."""
+    if sequential:
+        for formatter in formatters:
             run_formatter(formatter, locale, output_dir, words, variants, snapshot, include_etymology=include_etymology)
-        else:
-            th = threading.Thread(
-                target=run_formatter,
-                args=(formatter, locale, output_dir, words, variants, snapshot),
-                kwargs={"include_etymology": include_etymology},
-            )
-            th.start()
-            threads.append(th)
+        return
 
-    for th in threads:
-        th.join()
+    with ThreadPoolExecutor(max_workers=formatters) as executor:
+        futures = [
+            executor.submit(
+                run_formatter,
+                formatter,
+                locale,
+                output_dir,
+                words,
+                variants,
+                snapshot,
+                include_etymology=include_etymology,
+            )
+            for formatter in formatters
+        ]
+    for future in futures:
+        future.result()
 
 
 def get_latest_json_file(source_dir: Path) -> Path | None:
