@@ -64,6 +64,7 @@ OPF_TEMPLATE = """
 <dc:description>{description}</dc:description>
 <dc:Subject BASICCode="REF008000">Dictionaries</dc:Subject>
 </dc-metadata>
+<meta name="cover" content="cover-image" />
 <x-metadata>
 <output encoding="utf-8"></output>
 <DictionaryInLanguage>{source_lang}</DictionaryInLanguage>
@@ -169,6 +170,11 @@ class MobiFormat(BaseFormat):
 
         if self.group_contents:
             self.save_xhtml_group()
+
+        shutil.copyfile(constants.COVER_FILE, self.oebps_dir / constants.COVER_FILE.name)
+        self.manifest_items.append(
+            f'<item id="cover-image" href="{constants.COVER_FILE.name}" media-type="image/png" properties="cover-image"/>'
+        )
 
         description = "\n".join(
             [
