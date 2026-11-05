@@ -70,19 +70,47 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['ср']
     >>> find_genders("{{сущ ru f ina 5a|основа=страни́ц|слоги={{по-слогам|стра|ни́|ца}}}}", "ru")
     ['ж']
+    >>> find_genders("{{сущ ru m a 2b|}}", "ru")
+    ['м']
+    >>> find_genders("{{сущ ru пол1|}}", "ru")
+    []
+
+    `{{сущ-ru}}` has the gender in its second parameter, in Cyrillic
+    >>> find_genders("{{сущ-ru|ма́льчик|мо 3a|}}", "ru")
+    ['м']
+    >>> find_genders("{{сущ-ru|соба́ка|жо//ж 3a|}}", "ru")
+    ['ж']
+    >>> find_genders("{{сущ-ru|молоко́|с 3b|}}", "ru")
+    ['ср']
+    >>> find_genders("{{сущ-ru|дом|м, 1c(1)|}}", "ru")
+    ['м']
+    >>> find_genders("{{сущ-ru|сирота́|мо-жо 1d|}}", "ru")
+    ['м', 'ж']
+    >>> find_genders("{{сущ-ru|я́сли|мн.|}}", "ru")
+    ['мн']
+    >>> find_genders("{{сущ-ru|сепу́лька|hide-text=1|}}", "ru")
+    []
     """
     # https://ru.wiktionary.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D1%81%D1%83%D1%89-ru
-    pattern: re.Pattern[str] = re.compile(rf"\{{сущ.{locale}.[^\}}\n]*?(?:[^\}}\n|]++\|)?([fmnмжс])")
-    return utils.unique(
-        [
-            {
-                "f": "ж",
-                "m": "м",
-                "n": "ср",
-            }.get(gender, gender)
-            for gender in utils.flatten(pattern.findall(code))
-        ]
+    pattern: re.Pattern[str] = re.compile(
+        rf"\{{\{{сущ(?: {locale} ([^ |}}\n]++)|-{locale}\|[^|{{}}\n]*+\|[ ]*+([^ |{{}}\n/,]++))"
     )
+    genders = {
+        "f": ["ж"],
+        "ж": ["ж"],
+        "жо": ["ж"],
+        "m": ["м"],
+        "м": ["м"],
+        "мо": ["м"],
+        "n": ["ср"],
+        "с": ["ср"],
+        "со": ["ср"],
+        "mf": ["м", "ж"],
+        "мо-жо": ["м", "ж"],
+        "мн": ["мн"],
+        "мн.": ["мн"],
+    }
+    return utils.unique([gender for match in pattern.findall(code) for gender in genders.get(match[0] or match[1], [])])
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -115,6 +143,52 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             return [f"[{pron[1]}]"]
 
     return []
+
+
+_EXAMPLE = re.compile(r"[ ]*\{\{(?:[Пп]ример|[Цц]итата)\b")
+
+
+def strip_examples(line: str) -> str:
+    """
+    Remove the usage examples (`{{пример|...}}`, `{{Цитата|...}}`) from a definition line,
+    even when their braces are not balanced.
+
+    >>> strip_examples("# a {{пример|x {{выдел|y}} z}} b")
+    '# a b'
+    >>> strip_examples("# a {{пример|Белов}|x}} {{пример|q}}.")
+    '# a.'
+    >>> strip_examples("# a {{пример|never closed {{выдел|y}}")
+    '# a'
+    >>> strip_examples("# a {{пример|{{{1|}}}}} c")
+    '# a c'
+    >>> strip_examples("# a {{Пример|x}} b {{цитата|y}}")
+    '# a b'
+    >>> strip_examples("# a {{примерно}}")
+    '# a {{примерно}}'
+    """
+    out: list[str] = []
+    pos = 0
+    while m := _EXAMPLE.search(line, pos):
+        out.append(line[pos : m.start()])
+        i, stack = m.end(), [2]
+        while stack and i < len(line):
+            if line.startswith("{{{", i):
+                stack.append(3)
+                i += 3
+            elif line.startswith("{{", i):
+                stack.append(2)
+                i += 2
+            elif stack[-1] == 3 and line.startswith("}}}", i):
+                stack.pop()
+                i += 3
+            elif line.startswith("}}", i):
+                stack.pop()
+                i += 2
+            else:
+                i += 1
+        pos = i  # an example that is never closed is dropped up to the end of the line
+    out.append(line[pos:])
+    return "".join(out)
 
 
 def adjust_wikicode(
@@ -261,6 +335,9 @@ def adjust_wikicode(
     )
     code = re.sub(r"^\*(?!\*)([^\n]*?\{\{сокращ)", r"#\1", code, flags=re.MULTILINE)
 
+    # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
+    code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
+
     # Delete empty synonyms
     code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
 
@@ -305,7 +382,12 @@ def adjust_wikicode(
                         templates_status=templates_status,
                         variant_only=True,
                     )
-                    cleaned.append(f"{{{{{tpl_name}|}}}}")  # This is required for genders finding
+                    # This is required for genders finding: `{{сущ ru f ina 1a|}}`, and `{{сущ-ru|коса́|f ina 1d|}}`
+                    # as that template has the gender in its second parameter
+                    placeholder = tpl_name
+                    if params := re.match(r"\{\{сущ-ru\|([^|{}]*+)\|([^|{}]*+)", tpl_code):
+                        placeholder += f"|{params[1]}|{params[2]}"
+                    cleaned.append(f"{{{{{placeholder}|}}}}")
                     cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
                     tpl_code = ""
             else:
