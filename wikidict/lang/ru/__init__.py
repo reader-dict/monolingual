@@ -174,7 +174,7 @@ def adjust_wikicode(
 
     >>> context.new_word("виться")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
-    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|вейся}}\n# {{rev-flexion|вейтесь}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
+    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|вейся}}\n# {{rev-flexion|вейтесь}}\n# {{rev-flexion|вившийся}}\n# {{rev-flexion|вившись}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вились}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}\n# {{rev-flexion|вьющийся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
 
     >>> context.new_word("оба")
     >>> adjust_wikicode("= {{-ru-}} =\n{{числ ru оба\n|основа=о́б\n|основа1=об\n|слоги={{по-слогам|о́|.|ба}}\n|тип=собирательное\n}}", "ru", word="оба")
