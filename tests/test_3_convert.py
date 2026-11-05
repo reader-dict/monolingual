@@ -174,7 +174,8 @@ def check_mobi(file: Path, tmp_dir: Path) -> None:
         "HDImages",
         "mobi7",
         "mobi7/Images",
-        "mobi7/Images/image00009.gif",  # extracted from a data: URL
+        "mobi7/Images/cover00009.png",
+        "mobi7/Images/image00010.gif",  # extracted from a data: URL
         "mobi7/book.html",
         "mobi7/content.opf",
         "mobi7/toc.ncx",
@@ -362,7 +363,7 @@ def test_simple(tmp_path: Path) -> None:
     log_records = log_file.read_text()
     print(log_records)
     assert "Encoding 43 unique lookup terms" in log_records
-    assert "MOBI check: 16 P0 checks passed, 0 P1 warnings" in log_records
+    assert "MOBI check: 18 P0 checks passed, 0 P1 warnings" in log_records
 
     shutil.rmtree(tmp_path, ignore_errors=True)
 
