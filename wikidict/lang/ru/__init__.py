@@ -63,6 +63,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "ru")
     []
+    >>> find_genders("{{сущ ru n ina 7a|основа=освеще́ни}}", "ru")
+    ['ср']
     >>> find_genders("{{сущ ru f ina 5a|основа=страни́ц|слоги={{по-слогам|стра|ни́|ца}}}}", "ru")
     ['ж']
     """
@@ -73,7 +75,7 @@ def find_genders(code: str, locale: str) -> list[str]:
             {
                 "f": "ж",
                 "m": "м",
-                "n": "cp",
+                "n": "ср",
             }.get(gender, gender)
             for gender in utils.flatten(pattern.findall(code))
         ]

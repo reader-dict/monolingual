@@ -1,4 +1,5 @@
 import os
+import re
 from collections.abc import Callable
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -537,3 +538,27 @@ def test_preprocess(locale: str, body: str, expected: str) -> None:
     processed = parse.preprocess(locale, "", body)
     print(processed)
     assert processed == expected
+
+
+@pytest.mark.parametrize(
+    "element, expected",
+    [
+        (
+            '<title>Modèle:ex &quot;1&quot;</title>\n<revision>\n<text xml:space="preserve">body</text>',
+            ('Modèle:ex "1"', 10, "body", None),
+        ),
+        (
+            '<title>Modèle:ex &quot;2&quot;</title>\n<redirect title="Modèle:ex &quot;1&quot;" />\n<revision>',
+            ('Modèle:ex "2"', 10, None, 'Modèle:ex "1"'),
+        ),
+        (
+            '<title>Modèle:ex 3</title>\n<redirect title="Modèle:ex &#039;1&#039;" />\n<revision>',
+            ("Modèle:ex 3", 10, None, "Modèle:ex '1'"),
+        ),
+    ],
+)
+def test_handle_matcher_unescapes_titles(element: str, expected: tuple[str, int, str | None, str | None]) -> None:
+    matcher = re.compile(r"<title>(Modèle:[^<]++)</title>").finditer
+    with patch.object(context, "new_page") as new_page, pytest.raises(parse.MatcherHasMatched):
+        parse.handle_matcher(matcher, element, 10)
+    new_page.assert_called_once_with(*expected)

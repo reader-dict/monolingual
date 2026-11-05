@@ -46,6 +46,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     ['ч']
     >>> find_genders("{{імен uk 4a pl una|склади={{склади|аль|бо́м|чик}}|альбо́мчик|альбо́мчик|альбо́мчик}}", "uk")
     ['мн']
+    >>> find_genders("{{імен uk 1a n ina|склади={{склади|мі|сто}}|мі́ст|мі́ст}}", "uk")
+    ['с']
     """
     # https://uk.wiktionary.org/wiki/Категорія:Шаблони_словозміни/uk/Іменники
     pattern = re.compile(rf"\{{\{{імен.{locale}.\w++.([fmnplмжс]++)")
@@ -54,7 +56,7 @@ def find_genders(code: str, locale: str) -> list[str]:
             {
                 "f": "ж",
                 "m": "ч",
-                "n": "c",
+                "n": "с",
                 "pl": "мн",
             }.get(gender, gender)
             for gender in utils.flatten(pattern.findall(code))
