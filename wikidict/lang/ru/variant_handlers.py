@@ -85,13 +85,21 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         table = re.sub(r'^\|[ ]*+bgcolor="[^|\n]++', "", table, flags=re.MULTILINE)
         forms = {form[1:].strip() for form in table.splitlines()}
     else:
-        table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>").replace(' rowspan="2"', "")
+        table = table.replace("<br>", "</td><td>").replace("<br/>", "</td><td>")
+        # Drop cell attributes (`<td rowspan="3">`) and footnote marks (`<sup>△</sup>`)
+        table = re.sub(r"<td [^>]*+>", "<td>", table)
+        table = re.sub(r"<sup>[^<]*+</sup>", "", table)
         forms = set(re.findall(r"<td>([^<]++)</td>", table))
 
     if not forms:
         return ""
 
     forms = {cleanup(form) for form in forms}
+    # One cell can hold several forms: "его́, него́"
+    if " " not in word:
+        forms = {part for form in forms for part in re.split(r"[\s,;]+", form)}
+    # Analytic forms: "буду/будешь… сидеть"
+    forms = {form for form in forms if "/" not in form and "…" not in form}
     forms.discard("&")
     forms.discard("")
     forms.discard("-")
