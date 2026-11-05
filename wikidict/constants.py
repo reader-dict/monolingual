@@ -63,7 +63,7 @@ HTML_REPL_BODY = {
     # Found in modules importing another module
     "&quot;": '"',
 }
-HTML_REPL_TITLE = {"&amp;": "&"}
+HTML_REPL_TITLE = {"&amp;": "&", "&quot;": '"', "&#039;": "'"}
 
 # HTML entities management
 # Whitelist of named entities we allow without an explicit declaration
