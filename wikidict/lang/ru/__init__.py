@@ -145,6 +145,52 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return []
 
 
+_EXAMPLE = re.compile(r"[ ]*\{\{(?:[Пп]ример|[Цц]итата)\b")
+
+
+def strip_examples(line: str) -> str:
+    """
+    Remove the usage examples (`{{пример|...}}`, `{{Цитата|...}}`) from a definition line,
+    even when their braces are not balanced.
+
+    >>> strip_examples("# a {{пример|x {{выдел|y}} z}} b")
+    '# a b'
+    >>> strip_examples("# a {{пример|Белов}|x}} {{пример|q}}.")
+    '# a.'
+    >>> strip_examples("# a {{пример|never closed {{выдел|y}}")
+    '# a'
+    >>> strip_examples("# a {{пример|{{{1|}}}}} c")
+    '# a c'
+    >>> strip_examples("# a {{Пример|x}} b {{цитата|y}}")
+    '# a b'
+    >>> strip_examples("# a {{примерно}}")
+    '# a {{примерно}}'
+    """
+    out: list[str] = []
+    pos = 0
+    while m := _EXAMPLE.search(line, pos):
+        out.append(line[pos : m.start()])
+        i, stack = m.end(), [2]
+        while stack and i < len(line):
+            if line.startswith("{{{", i):
+                stack.append(3)
+                i += 3
+            elif line.startswith("{{", i):
+                stack.append(2)
+                i += 2
+            elif stack[-1] == 3 and line.startswith("}}}", i):
+                stack.pop()
+                i += 3
+            elif line.startswith("}}", i):
+                stack.pop()
+                i += 2
+            else:
+                i += 1
+        pos = i  # an example that is never closed is dropped up to the end of the line
+    out.append(line[pos:])
+    return "".join(out)
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -280,6 +326,9 @@ def adjust_wikicode(
         flags=re.MULTILINE,
     )
     code = re.sub(r"^\*(?!\*)([^\n]*?\{\{сокращ)", r"#\1", code, flags=re.MULTILINE)
+
+    # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
+    code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
 
     # Delete empty synonyms
     code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
