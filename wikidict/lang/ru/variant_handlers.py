@@ -109,6 +109,11 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         table = re.sub(r"<td [^>]*+>", "<td>", table)
         table = re.sub(r"<sup>[^<]*+</sup>", "", table)
         forms = set(re.findall(r"<td>([^<]++)</td>", table))
+        # Links in a cell, only the first one was kept as the form is cut at "#":
+        # `[[погасший#пога́сший|пога́сший]], [[погаснувший#пога́снувший|пога́снувший]]` → `пога́сший, пога́снувший`
+        forms = {re.sub(r"\[\[(?:[^|\]]*+\|)?([^|\]]*+)\]\]", r"\1", form) for form in forms}
+        # A second form in parentheses, it was dropped with them: `пога́снул (пога́с)` → `пога́снул, пога́с`
+        forms = {re.sub(r"^([^\s()]++)[ ]*+\(([^\s().,;]++)\)$", r"\1, \2", form.strip()) for form in forms}
 
     # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
     if comparative := data.get("степень", ""):
