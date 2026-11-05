@@ -44,6 +44,8 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     'находить'
     >>> render_variant("прич.", ["<small>?</small>"], defaultdict(str), "")
     ''
+    >>> render_variant("Форма-сущ", ["сто́ла", "р", "мн"], defaultdict(str), "стол")
+    'стола'
     """
     if tpl.startswith("Форма-") and (base := data["база"]) and not parts:
         parts.append(base)
@@ -54,7 +56,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         variant = variant.split(" (", 1)[0]
     if "#" in variant:
         variant = variant.split("#", 1)[0]
-    return variant
+    return strip_accents(variant)
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
