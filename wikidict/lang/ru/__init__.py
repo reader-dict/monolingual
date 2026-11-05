@@ -41,7 +41,10 @@ reverse_variant_titles = (
     "{{гл ru",
     "{{гл-ru",
     "{{числ ru",
-    "{{числ-ru",
+    "{{числ-",  # {{числ-ru}}, {{числ-5}}, {{числ-дцать}}...
+    "{{мест ru",
+    "{{мест-ru",
+    "{{падежи ru",
 )
 
 templates_ignored = (
@@ -179,7 +182,7 @@ def adjust_wikicode(
 
     >>> context.new_word("бежать")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b-ж\n|основа=беж\n|основа1=бег\n|основа2=бе́г\n|слоги={{по слогам|бе|жа́ть}}\n|дореф=бѣжа́ть\n|2в=1\n|коммент=В некоторых значениях «бежать» может использоваться как глагол совершенного вида, особенно в формах прош. времени: {{пример|преступники {{выдел|бежали}} из тюрьмы}} {{пример|враг {{выдел|бежал}}}} {{пример|он {{выдел|бежал}} городской суеты}} {{пример|суп {{выдел|бежал}}}}. В 3л. мн.ч. употребляется нестандартная форма «''бегу́т''». До XIX также равноправной формой была форма «''бежа́т''» (см. пример).\n|imper-1p=1\n}}", "ru", word="бежать")
-    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
+    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беганный}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бегут}}\n# {{rev-flexion|бегущий}}\n# {{rev-flexion|бежа}}\n# {{rev-flexion|бежав}}\n# {{rev-flexion|бежавший}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежали}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежимый}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
 
     >>> context.new_word("нутряной")
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1bX\n|основа=нутрян\n|основа1=\n|слоги={{по-слогам|нутряно́й}}\n|тип=относительное\n|степень=\n|краткая=\n|Категория={{{Категория|Прилагательные, склонение 1bX}}}\n}}", "ru", word="нутряной")
@@ -200,6 +203,34 @@ def adjust_wikicode(
     >>> context.new_word("торос")
     >>> adjust_wikicode("{{сущ ru m ina 1a^\n|основа=то́рос\n|основа1=торо́с\n|слоги={{по слогам|то|ро́с}}\n|зачин=Также существует вариант склонения по схеме 1a^.\n}}", "ru", word="торос")
     '{{сущ ru m ina 1a^|}}\n# {{rev-flexion|тороса}}\n# {{rev-flexion|торосе}}\n# {{rev-flexion|торосом}}\n# {{rev-flexion|торосу}}\n# {{rev-flexion|торосьев}}\n# {{rev-flexion|торосья}}\n# {{rev-flexion|торосьям}}\n# {{rev-flexion|торосьями}}\n# {{rev-flexion|торосьях}}'
+
+    >>> context.new_word("сидеть")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b^-т\n|основа=сид\n|основа1=сиж\n|основа2=си́д\n|слоги={{по-слогам|си|де́ть}}\n}}", "ru", word="сидеть")
+    '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
+
+    >>> context.new_word("шесть")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{числ-5\n|основа=ше́ст\n|основа1=шест\n|соотв=[[шестой|шесто́й]]\n}}", "ru", word="шесть")
+    '= {{-ru-}} =\n{{числ-5|}}\n# {{rev-flexion|шести}}\n# {{rev-flexion|шестью}}'
+
+    >>> context.new_word("хвост")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{ сущ ru m ina 1b\n|основа=хвост\n|основа1=хвост\n}}", "ru", word="хвост")
+    '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста}}\n# {{rev-flexion|хвостам}}\n# {{rev-flexion|хвостами}}\n# {{rev-flexion|хвостах}}\n# {{rev-flexion|хвосте}}\n# {{rev-flexion|хвостов}}\n# {{rev-flexion|хвостом}}\n# {{rev-flexion|хвосту}}\n# {{rev-flexion|хвосты}}'
+
+    >>> context.new_word("крепкий")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 3*a/c'\n|основа=кре́пк\n|основа1=кре́пок\n|основа2=крепк\n|степень=кре́пче\n}}", "ru", word="крепкий")
+    "= {{-ru-}} =\n{{прил ru 3*a/c'|}}\n# {{rev-flexion|крепка}}\n# {{rev-flexion|крепкая}}\n# {{rev-flexion|крепки}}\n# {{rev-flexion|крепкие}}\n# {{rev-flexion|крепким}}\n# {{rev-flexion|крепкими}}\n# {{rev-flexion|крепких}}\n# {{rev-flexion|крепко}}\n# {{rev-flexion|крепкого}}\n# {{rev-flexion|крепкое}}\n# {{rev-flexion|крепкой}}\n# {{rev-flexion|крепком}}\n# {{rev-flexion|крепкому}}\n# {{rev-flexion|крепкою}}\n# {{rev-flexion|крепкую}}\n# {{rev-flexion|крепок}}\n# {{rev-flexion|крепче}}"
+
+    >>> context.new_word("некий")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 3a^+\n|основа=не́к\n}}", "ru", word="некий")
+    '= {{-ru-}} =\n{{прил ru 3a^+|}}\n# {{rev-flexion|некая}}\n# {{rev-flexion|некие}}\n# {{rev-flexion|неким}}\n# {{rev-flexion|некими}}\n# {{rev-flexion|неких}}\n# {{rev-flexion|некое}}\n# {{rev-flexion|некоего}}\n# {{rev-flexion|некоей}}\n# {{rev-flexion|некоем}}\n# {{rev-flexion|некоему}}\n# {{rev-flexion|некоею}}\n# {{rev-flexion|некоим}}\n# {{rev-flexion|некоими}}\n# {{rev-flexion|некоих}}\n# {{rev-flexion|некой}}\n# {{rev-flexion|некою}}\n# {{rev-flexion|некую}}'
+
+    >>> context.new_word("два")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{числ-2\n|основа=дв\n|соотв=второ́й\n}}", "ru", word="два")
+    '= {{-ru-}} =\n{{числ-2|}}\n# {{rev-flexion|две}}\n# {{rev-flexion|двум}}\n# {{rev-flexion|двумя}}\n# {{rev-flexion|двух}}'
+
+    >>> context.new_word("он")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{падежи ru 1\n|nom=он\n|gen=[[его|его́]]{{^|△}},&nbsp;[[него|него́]]{{^|△}}\n|dat=[[ему|ему́]]{{^|△}},&nbsp;[[нему|нему́]]{{^|△}}\n|ins=[[им]]{{^|△}},&nbsp;[[ним]]{{^|△}}\n|prp=[[нём]]{{^|△}}\n}}", "ru", word="он")
+    '= {{-ru-}} =\n{{падежи ru 1|}}\n# {{rev-flexion|его}}\n# {{rev-flexion|ему}}\n# {{rev-flexion|им}}\n# {{rev-flexion|него}}\n# {{rev-flexion|нему}}\n# {{rev-flexion|ним}}\n# {{rev-flexion|нём}}'
     """
 
     # Form pages without a subsection, also under homonym headers:
@@ -231,6 +262,9 @@ def adjust_wikicode(
     #
     # Reverse variants
     #
+
+    # `{{ прил ru 3a/c"` → `{{прил ru 3a/c"`
+    code = re.sub(r"^\{\{[ ]++", "{{", code, flags=re.MULTILINE)
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
