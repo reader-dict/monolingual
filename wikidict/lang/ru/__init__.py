@@ -222,6 +222,8 @@ def adjust_wikicode(
     '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
     >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# ?\n#\n", "ru", word="гонит")
     '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
+    >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n#{{aslinks|хлопоты\n#внимание, [[попечение|попечения]]|#,}}\n# {{aslinks|вера, доверие}}", "ru", word="забота")
+    '= {{-ru-}} =\n==== Синонимы ====\n#хлопоты\n#внимание, [[попечение|попечения]]\n# {{aslinks|вера, доверие}}'
 
     >>> from ... import context
     >>> _ = context.reset("ru")
@@ -334,6 +336,14 @@ def adjust_wikicode(
         flags=re.MULTILINE,
     )
     code = re.sub(r"^\*(?!\*)([^\n]*?\{\{сокращ)", r"#\1", code, flags=re.MULTILINE)
+
+    # A list written inside `{{aslinks}}` (it only turns the words into links) was cut into broken list items:
+    # `#{{aslinks|хлопоты\n#внимание, попечение|#,}}` → `#хлопоты\n#внимание, попечение`
+    code = re.sub(
+        r"\{\{aslinks\|((?:[^{}|\[\n]|\[\[[^\[\]]*+\]\])*+\n(?:[^{}|\[]|\[\[[^\[\]]*+\]\])*+)(?:\|[^{}]*+)?\}\}",
+        r"\1",
+        code,
+    )
 
     # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
     code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
