@@ -348,6 +348,9 @@ def adjust_wikicode(
     # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
     code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
 
+    # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings
+    code = utils.attach_synonyms(code, "значение", "синонимы", "син.", forms=variant_templates)
+
     # Delete empty synonyms
     code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
 

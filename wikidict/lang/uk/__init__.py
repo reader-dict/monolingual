@@ -107,8 +107,11 @@ def adjust_wikicode(
     '=uk=\n====значення====\n# ракцією.'
 
     >>> adjust_wikicode("=uk=\n==== Значення ====\n# [[пристрій]]\n==== Синоніми ====\n# —\n# —", "uk")
-    '=uk=\n==== Значення ====\n# [[пристрій]]\n==== Синоніми ====\n\n'
+    '=uk=\n==== Значення ====\n# [[пристрій]]'
     """
+    # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings
+    code = utils.attach_synonyms(code, "значення", "синоніми", "син.", forms=variant_templates)
+
     # Delete empty synonyms
     code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
 
