@@ -1,6 +1,9 @@
+import gzip
 import os
 import platform
+import re
 import shutil
+import struct
 import subprocess
 from collections import OrderedDict
 from copy import deepcopy
@@ -240,6 +243,85 @@ def check_stardict(file: Path, tmp_dir: Path) -> None:
     assert xml_file.read_text() == reference_xml.read_text()
 
 
+def read_stardict(file: Path) -> tuple[list[tuple[str, str]], dict[str, list[int]]]:
+    """Return the words with their article, and the variants with the number of their words."""
+    with ZipFile(file) as fh:
+        idx = fh.read("reader.dict-fr.idx")
+        syn = fh.read("reader.dict-fr.syn")
+        data = gzip.decompress(fh.read("reader.dict-fr.dict.dz"))
+    words, pos = [], 0
+    while pos < len(idx):
+        end = idx.index(b"\0", pos)
+        offset, size = struct.unpack(">II", idx[end + 1 : end + 9])
+        words.append((idx[pos:end].decode(), data[offset : offset + size].decode()))
+        pos = end + 9
+    variants: dict[str, list[int]] = {}
+    pos = 0
+    while pos < len(syn):
+        end = syn.index(b"\0", pos)
+        variants.setdefault(syn[pos:end].decode(), []).append(struct.unpack(">I", syn[end + 1 : end + 5])[0])
+        pos = end + 5
+    return words, variants
+
+
+def check_stardict_nosyn(file: Path, stardict_file: Path, tmp_dir: Path) -> None:
+    expected_files = [
+        "reader.dict-fr.dict.dz",
+        "reader.dict-fr.idx",
+        "reader.dict-fr.ifo",
+    ]
+    expected_ifo_lines = [
+        "StarDict's dict ifo file",
+        "version=3.0.0",
+        "bookname=reader.dict FR",
+        "wordcount=42",
+        "idxfilesize=670",
+        "author=reader.dict",
+        "website=https://www.reader-dict.com",
+        f"description=Clean, optimized dictionary generated from Wiktionary data.<br>Contains 42 entries with etymologies.<br><br>© reader.dict {datetime.now(tz=UTC).year}",
+        "date=2020-12-17",
+        "sametypesequence=h",
+    ]
+    with ZipFile(file) as fh:
+        assert sorted(fh.namelist()) == expected_files
+        assert fh.testzip() is None
+        assert fh.read("reader.dict-fr.ifo").decode().splitlines() == expected_ifo_lines
+
+    # Each word and variant of the StarDict file shows the same articles, its own one first
+    words, variants = read_stardict(stardict_file)
+    numbers = {word: number for number, (word, _) in enumerate(words)}
+    expected = {}
+    for spelling in {*numbers, *variants}:
+        shown = ([numbers[spelling]] if spelling in numbers else []) + sorted(variants.get(spelling, []))
+        expected[spelling] = "<hr>".join(f"<b>{words[n][0]}</b> {words[n][1]}" for n in shown)
+    assert read_stardict_nosyn(file) == expected
+
+    # Check file conformity
+    if platform.system() != "Linux":
+        return
+
+    output_dir = tmp_dir / "contents-nosyn"
+    with ZipFile(file) as fh:
+        fh.extractall(path=output_dir)
+    result = subprocess.run(
+        ["/usr/lib/stardict-tools/stardict-verify", output_dir],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        errors="replace",
+        check=False,
+    )
+    output = result.stdout
+    print(output)
+    assert "error" not in output
+    assert "Verification result: success" in output
+    # Entries showing the same articles point to the same data block, and stardict-verify reports it as
+    # an unreferenced block with a negative size: "(10741, 4294966985)". Any other warning is a problem.
+    for line in output.splitlines():
+        if line.startswith("[warning]") and "unreferenced data blocks" not in line:
+            assert int(line.rsplit(", ", 1)[1].rstrip(")")) >= 2**31, line
+
+
 def test_simple(tmp_path: Path) -> None:
     setup_logging_original = utils.setup_logging
 
@@ -261,6 +343,7 @@ def test_simple(tmp_path: Path) -> None:
         "dictorg-fr-fr{etym}.zip",  # DICT.org
         "dict-fr-fr{etym}.mobi.zip",  # Mobi
         "dict-fr-fr{etym}.zip",  # StarDict
+        "dict-fr-fr{etym}-nosyn.zip",  # StarDict without .syn
     ]:
         for etym in ["", "-noetym"]:
             fname = file.format(etym=etym)
@@ -268,10 +351,11 @@ def test_simple(tmp_path: Path) -> None:
             assert (output_dir / f"{fname}.{ASSET_CHECKSUM_ALGO}").is_file()
             count += 2
 
-    assert count == 24
+    assert count == 28
 
     check_dicthtml(output_dir / "dicthtml-fr-fr.zip")
     check_stardict(output_dir / "dict-fr-fr.zip", tmp_path)
+    check_stardict_nosyn(output_dir / "dict-fr-fr-nosyn.zip", output_dir / "dict-fr-fr.zip", tmp_path)
     check_mobi(output_dir / "dict-fr-fr.mobi.zip", tmp_path)
 
     # More Mobi checks
@@ -301,6 +385,8 @@ def test_no_json_file() -> None:
         (convert.MobiFormat, "dict-fr-fr-noetym.mobi", False),
         (convert.StarDictFormat, "dict-fr-fr.zip", True),
         (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
+        (convert.StarDictNoSynFormat, "dict-fr-fr-nosyn.zip", True),
+        (convert.StarDictNoSynFormat, "dict-fr-fr-noetym-nosyn.zip", False),
     ],
 )
 def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -326,6 +412,8 @@ def test_generate_primary_dict(formatter: type[convert.BaseFormat], filename: st
         (convert.DictOrgFormat, "dictorg-fr-fr-noetym.zip", False),
         (convert.StarDictFormat, "dict-fr-fr.zip", True),
         (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
+        (convert.StarDictNoSynFormat, "dict-fr-fr-nosyn.zip", True),
+        (convert.StarDictNoSynFormat, "dict-fr-fr-noetym-nosyn.zip", False),
     ],
 )
 def test_generate_secondary_dict(formatter: type[convert.BaseFormat], filename: str, include_etymology: bool) -> None:
@@ -670,6 +758,67 @@ def test_kindle_format(locale: str, words: Words, word: str, expected: str, tmp_
 
     output = ["\n".join(formatter.handle_word(w, words)) for w in word.split("|")]
     assert "\n".join(output).lstrip() == expected
+
+
+def read_stardict_nosyn(file: Path) -> dict[str, str]:
+    """Return the article shown for each entry of the .idx file."""
+    with ZipFile(file) as fh:
+        idx = fh.read("reader.dict-fr.idx")
+        data = gzip.decompress(fh.read("reader.dict-fr.dict.dz"))
+    articles, pos = {}, 0
+    while pos < len(idx):
+        end = idx.index(b"\0", pos)
+        offset, size = struct.unpack(">II", idx[end + 1 : end + 9])
+        articles[idx[pos:end].decode()] = data[offset : offset + size].decode()
+        pos = end + 9
+    return articles
+
+
+@pytest.mark.parametrize(
+    "words, expected",
+    [
+        pytest.param(
+            VARIANTS_FR,
+            {
+                "estre": ["estre"],
+                "suis": ["estre", "suivre", "être"],
+                "suivre": ["suivre"],
+                "être": ["être"],
+            },
+            id="variant of several words",
+        ),
+        pytest.param(
+            VARIANTS_FR_2,
+            {
+                "estre": ["estre"],
+                "suis": ["suis", "estre", "suivre", "être"],
+                "suivre": ["suivre"],
+                "être": ["être"],
+            },
+            id="variant being a word too",
+        ),
+        pytest.param(
+            VARIANTS_ES,
+            {
+                "gastada": ["gastar"],
+                "gastado": ["gastar"],
+                "gastar": ["gastar"],
+            },
+            id="variant of a variant",
+        ),
+    ],
+)
+def test_stardict_nosyn_format(words: Words, expected: dict[str, list[str]], tmp_path: Path) -> None:
+    convert.run_formatter(convert.StarDictNoSynFormat, "fr", tmp_path, words, convert.make_variants(words), "20251105")
+    file = tmp_path / "dict-fr-fr-nosyn.zip"
+    with ZipFile(file) as fh:
+        assert sorted(fh.namelist()) == ["reader.dict-fr.dict.dz", "reader.dict-fr.idx", "reader.dict-fr.ifo"]
+
+    # Entries are sorted, and the articles shown for each one start with their word
+    articles = read_stardict_nosyn(file)
+    assert list(articles) == sorted(articles, key=lambda s: (s.encode().lower(), s.encode()))
+    shown = {entry: re.findall(r"(?:^|<hr>)<b>([^<]+)</b> ", article) for entry, article in articles.items()}
+    assert shown == expected
 
 
 @pytest.mark.parametrize(

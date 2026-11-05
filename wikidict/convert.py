@@ -17,7 +17,7 @@ from wikidict.converters.dicthtml import DictHtmlFormat
 from wikidict.converters.dictorg import DictOrgFormat
 from wikidict.converters.json_volume import JSONVolumeFormat
 from wikidict.converters.mobi import MobiFormat
-from wikidict.converters.stardict import StarDictFormat
+from wikidict.converters.stardict import StarDictFormat, StarDictNoSynFormat
 from wikidict.stubs import Variants, Word, Words
 
 log = logging.getLogger(__name__)
@@ -29,6 +29,7 @@ FORMATTERS: dict[str, type[BaseFormat]] = {
     "jsonvolume": JSONVolumeFormat,
     "mobi": MobiFormat,
     "stardict": StarDictFormat,
+    "stardict-nosyn": StarDictNoSynFormat,
 }
 
 

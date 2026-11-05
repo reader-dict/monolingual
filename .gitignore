@@ -16,6 +16,7 @@ data
 !tests/data
 tests/data/fr/fr/output/
 tests/data/fr/fr/stardict/
+tests/data/fr/fr/stardict-nosyn/
 tests/data/fr/fr/tmp/
 
 # Python stuff
