@@ -92,7 +92,7 @@ def distribute_workload(
             run_formatter(formatter, locale, output_dir, words, variants, snapshot, include_etymology=include_etymology)
         return
 
-    with ThreadPoolExecutor(max_workers=formatters) as executor:
+    with ThreadPoolExecutor(max_workers=len(formatters) or 1) as executor:
         futures = [
             executor.submit(
                 run_formatter,
