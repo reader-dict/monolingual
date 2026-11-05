@@ -6,7 +6,14 @@ from ... import context, utils
 
 
 def strip_accents(text: str) -> str:
-    return "".join(char for char in unicodedata.normalize("NFD", text) if unicodedata.category(char) != "Mn")
+    """
+    Remove stress marks only, letters such as "й" and "ї" are kept.
+
+    >>> strip_accents("ї́жак мо́ї край")
+    'їжак мої край'
+    """
+    decomposed = unicodedata.normalize("NFD", text)
+    return unicodedata.normalize("NFC", "".join(char for char in decomposed if char not in "\u0300\u0301"))
 
 
 def cleanup(form: str) -> str:
@@ -55,7 +62,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     >>> context.new_word("стояти")  # `( -їмо́)`
     >>> render_reverse_variant("дієсл uk нед 5b^", ["сто", "сті́"], defaultdict(str, {"склади": "{{склади|сто|я́|ти}}"}), "стояти")
-    'стоти|стою|стоявши|стоятиме|стоятимемо|стоятимете|стоятимеш|стоятиму|стоятимуть|стоять|стоячи|стоячии|стоім|стоімімо|стоіте|стоіть|стоіш'
+    'стоти|стою|стоявши|стоятиме|стоятимемо|стоятимете|стоятимеш|стоятиму|стоятимуть|стоять|стоячи|стоячий|стоїм|стоїмїмо|стоїте|стоїть|стоїш'
 
     >>> context.new_word("збіднити")  # `( -имо́)`
     >>> render_reverse_variant("дієсл uk 4bДВ", [], defaultdict(str, {"склади": "{{склади|збід|ни́|ти}}|збідн|збідн}}"}), "збіднити")
@@ -63,7 +70,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     >>> context.new_word("розпилити")  # `( -имо)`
     >>> render_reverse_variant("дієсл uk 4c/bДВ", ["розпил", "розпи́л", "розпил"], defaultdict(str, {"склади": "{{склади|роз|пи|ли́|ти}}", "ю": "1", "и": "1", "БезосФорма": "", "відп": ""}), "розпилити")
-    'розпилении|розпиливши|розпилим|розпилимим|розпилите|розпилить|розпилиш|розпилю|розпилять'
+    'розпилений|розпиливши|розпилим|розпилимим|розпилите|розпилить|розпилиш|розпилю|розпилять'
     """
     if tpl == "rev-flexion":
         return parts[0].strip()

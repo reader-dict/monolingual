@@ -6,7 +6,14 @@ from ... import context, utils
 
 
 def strip_accents(text: str) -> str:
-    return "".join(char for char in unicodedata.normalize("NFD", text) if unicodedata.category(char) != "Mn")
+    """
+    Remove stress marks only, letters such as "й" and "ё" are kept.
+
+    >>> strip_accents("ключе́й ёлка́ ко̀е-где́")
+    'ключей ёлка кое-где'
+    """
+    decomposed = unicodedata.normalize("NFD", text)
+    return unicodedata.normalize("NFC", "".join(char for char in decomposed if char not in "\u0300\u0301"))
 
 
 def cleanup(form: str) -> str:
