@@ -853,6 +853,10 @@ def parse_word(
             word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
         )
 
+    # [RU] Selecting an abbreviation in a book often leaves its final dot out, so "тыс" should find "тыс."
+    if lang_src == "ru" and definitions and word.endswith(".") and any(char.isalpha() for char in word):
+        reverse_variants = sorted({*reverse_variants, word.rstrip(".")})
+
     # [RU] Books are mostly printed without "ё", so "елка" should find "ёлка", and "черного" should find "чёрный"
     if lang_src == "ru" and (definitions or reverse_variants):
         without_yo = {form.replace("ё", "е").replace("Ё", "Е") for form in (word, *reverse_variants)}
