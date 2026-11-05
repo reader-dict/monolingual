@@ -222,7 +222,7 @@ def format_pos(locale: str, value: str) -> str:
     'Lettre'
 
     >>> format_pos("it", "{{loc nom}}")
-    'Nome'
+    'Locuzione Nominale'
     >>> format_pos("it", "{{nome}}")
     'Nome'
     >>> format_pos("it", "nome")

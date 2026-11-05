@@ -35,6 +35,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             forms.add(utils.cleanup_rev_variant(form))
 
     forms.discard(word)
+    forms.discard(f"'''{word}'''")
 
     return sorted(forms)
 
