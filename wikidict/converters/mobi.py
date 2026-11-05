@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import base64
+import hashlib
+import re
 import shutil
 import subprocess
 import uuid
@@ -44,6 +47,9 @@ INFL_TEMPLATE = """
 """.strip()
 
 IFORM_TEMPLATE = """<idx:iform value="{variant}" exact="yes" />"""
+
+# Images embedded in definitions (chemistry, hieroglyphs, maths)
+DATA_URI = re.compile(r'src="data:image/(gif|jpeg|png);base64,([A-Za-z0-9+/=]++)"')
 
 OPF_TEMPLATE = """
 <?xml version="1.0" encoding="utf-8"?>
@@ -92,6 +98,9 @@ class MobiFormat(BaseFormat):
         self.tmp_dir.mkdir(parents=True, exist_ok=True)
         self.oebps_dir = self.tmp_dir / "OEBPS"
         self.oebps_dir.mkdir(exist_ok=True)
+        self.images_dir = self.oebps_dir / "images"
+        self.images_dir.mkdir(exist_ok=True)
+        self.images: set[str] = set()
 
         self.max_file_size = 2**18
         self.uuid = str(uuid.uuid4()).replace("-", "")
@@ -102,7 +111,7 @@ class MobiFormat(BaseFormat):
         self.file_index = 0
 
     def render_word(self, template: Template, **kwargs: Any) -> str:
-        rendered = super().render_word(template, **kwargs)
+        rendered = self.save_images(super().render_word(template, **kwargs))
         formatted = self.format_entry(kwargs["word"], rendered, kwargs["variants"])
         size = len(formatted.encode("utf-8"))
 
@@ -112,6 +121,21 @@ class MobiFormat(BaseFormat):
         self.group_contents.append(formatted)
         self.current_size += size
         return formatted
+
+    def save_images(self, html: str) -> str:
+        """Kindle does not support data: URLs: the images have to be files of the book, listed in its manifest."""
+
+        def save(match: re.Match[str]) -> str:
+            kind, data = match[1], base64.b64decode(match[2])
+            name = f"{hashlib.sha256(data).hexdigest()[:16]}.{'jpg' if kind == 'jpeg' else kind}"
+            if name not in self.images:
+                self.images.add(name)
+                (self.images_dir / name).write_bytes(data)
+                item_id = f"image_{name.split('.', 1)[0]}"
+                self.manifest_items.append(f'<item id="{item_id}" href="images/{name}" media-type="image/{kind}"/>')
+            return f'src="images/{name}"'
+
+        return DATA_URI.sub(save, html)
 
     def save_xhtml_group(self) -> None:
         name = f"group_{self.file_index}.xhtml"

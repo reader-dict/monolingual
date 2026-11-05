@@ -174,6 +174,7 @@ def check_mobi(file: Path, tmp_dir: Path) -> None:
         "HDImages",
         "mobi7",
         "mobi7/Images",
+        "mobi7/Images/image00009.gif",  # extracted from a data: URL
         "mobi7/book.html",
         "mobi7/content.opf",
         "mobi7/toc.ncx",
@@ -819,6 +820,23 @@ def test_stardict_nosyn_format(words: Words, expected: dict[str, list[str]], tmp
     assert list(articles) == sorted(articles, key=lambda s: (s.encode().lower(), s.encode()))
     shown = {entry: re.findall(r"(?:^|<hr>)<b>([^<]+)</b> ", article) for entry, article in articles.items()}
     assert shown == expected
+
+
+def test_kindle_images(tmp_path: Path) -> None:
+    # Kindle does not support data: URLs (#2781)
+    formatter = convert.MobiFormat("fr", tmp_path, WORDS, convert.make_variants(WORDS), "20260122")
+    html = next(formatter.handle_word("GIF", WORDS))
+    assert "data:" not in html
+    (name,) = formatter.images
+    assert f'src="images/{name}"' in html
+    assert (formatter.images_dir / name).read_bytes().startswith(b"GIF")
+    manifest = [f'<item id="image_{name.split(".")[0]}" href="images/{name}" media-type="image/gif"/>']
+    assert formatter.manifest_items == manifest
+
+    # The same image is saved once
+    next(formatter.handle_word("GIF", WORDS))
+    assert len(formatter.images) == 1
+    assert formatter.manifest_items == manifest
 
 
 @pytest.mark.parametrize(
