@@ -41,7 +41,7 @@ reverse_variant_titles = (
     "{{гл ru",
     "{{гл-ru",
     "{{числ ru",
-    "{{числ-ru",
+    "{{числ-",  # {{числ-ru}}, {{числ-5}}, {{числ-дцать}}...
     "{{мест ru",
     "{{мест-ru",
     "{{падежи ru",
@@ -194,6 +194,14 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b^-т\n|основа=сид\n|основа1=сиж\n|основа2=си́д\n|слоги={{по-слогам|си|де́ть}}\n}}", "ru", word="сидеть")
     '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
 
+    >>> context.new_word("шесть")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{числ-5\n|основа=ше́ст\n|основа1=шест\n|соотв=[[шестой|шесто́й]]\n}}", "ru", word="шесть")
+    '= {{-ru-}} =\n{{числ-5|}}\n# {{rev-flexion|шести}}\n# {{rev-flexion|шестью}}'
+
+    >>> context.new_word("хвост")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{ сущ ru m ina 1b\n|основа=хвост\n|основа1=хвост\n}}", "ru", word="хвост")
+    '= {{-ru-}} =\n{{сущ ru m ina 1b|}}\n# {{rev-flexion|хвоста}}\n# {{rev-flexion|хвостам}}\n# {{rev-flexion|хвостами}}\n# {{rev-flexion|хвостах}}\n# {{rev-flexion|хвосте}}\n# {{rev-flexion|хвостов}}\n# {{rev-flexion|хвостом}}\n# {{rev-flexion|хвосту}}\n# {{rev-flexion|хвосты}}'
+
     >>> context.new_word("он")
     >>> adjust_wikicode("= {{-ru-}} =\n{{падежи ru 1\n|nom=он\n|gen=[[его|его́]]{{^|△}},&nbsp;[[него|него́]]{{^|△}}\n|dat=[[ему|ему́]]{{^|△}},&nbsp;[[нему|нему́]]{{^|△}}\n|ins=[[им]]{{^|△}},&nbsp;[[ним]]{{^|△}}\n|prp=[[нём]]{{^|△}}\n}}", "ru", word="он")
     '= {{-ru-}} =\n{{падежи ru 1|}}\n# {{rev-flexion|его}}\n# {{rev-flexion|ему}}\n# {{rev-flexion|им}}\n# {{rev-flexion|него}}\n# {{rev-flexion|нему}}\n# {{rev-flexion|ним}}\n# {{rev-flexion|нём}}'
@@ -216,6 +224,9 @@ def adjust_wikicode(
     #
     # Reverse variants
     #
+
+    # `{{ прил ru 3a/c"` → `{{прил ru 3a/c"`
+    code = re.sub(r"^\{\{[ ]++", "{{", code, flags=re.MULTILINE)
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
