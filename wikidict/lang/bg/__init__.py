@@ -77,13 +77,14 @@ templates_ignored = (
 
 
 GENDERS = {
-    "cp": "cp",
-    "среден": "cp",
+    "cp": "ср",
+    "ср": "ср",
+    "среден": "ср",
     "f": "ж",
     "m": "м",
     "м": "м",
     "мъжки": "м",
-    "n": "cp",
+    "n": "ср",
     "женски": "ж",
     "ж": "ж",
 }
@@ -100,7 +101,9 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("===род===\nМ", LANG)
     ['м']
     >>> find_genders("===род===\nсреден", LANG)
-    ['cp']
+    ['ср']
+    >>> find_genders("===род===\ncp", LANG)
+    ['ср']
     >>> find_genders("===род===\nж", LANG)
     ['ж']
     >>> find_genders("===род===\nж\n===род===\nж", LANG)
