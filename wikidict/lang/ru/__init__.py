@@ -250,6 +250,14 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
     '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|вейся}}\n# {{rev-flexion|вейтесь}}\n# {{rev-flexion|вившийся}}\n# {{rev-flexion|вившись}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вились}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}\n# {{rev-flexion|вьющийся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
 
+    `|степень=1` is not a comparative, and an HTML entity in the stem is not cut
+    >>> context.new_word("аборальный")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1*a\n|основа=абора́льн\n|основа1=абора́лен\n|степень=1\n}}", "ru", word="аборальный")
+    '= {{-ru-}} =\n{{прил ru 1*a|}}\n# {{rev-flexion|аборален}}\n# {{rev-flexion|аборальна}}\n# {{rev-flexion|аборальная}}\n# {{rev-flexion|аборально}}\n# {{rev-flexion|аборального}}\n# {{rev-flexion|аборальное}}\n# {{rev-flexion|аборальной}}\n# {{rev-flexion|аборальном}}\n# {{rev-flexion|аборальному}}\n# {{rev-flexion|аборальною}}\n# {{rev-flexion|аборальную}}\n# {{rev-flexion|аборальны}}\n# {{rev-flexion|аборальные}}\n# {{rev-flexion|аборальным}}\n# {{rev-flexion|аборальными}}\n# {{rev-flexion|аборальных}}'
+    >>> context.new_word("Гётеборг")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{сущ ru m ina 3a\n|основа=Гё&#768;тебо́рг\n}}", "ru", word="Гётеборг")
+    '= {{-ru-}} =\n{{сущ ru m ina 3a|}}\n# {{rev-flexion|Гётеборга}}\n# {{rev-flexion|Гётеборгам}}\n# {{rev-flexion|Гётеборгами}}\n# {{rev-flexion|Гётеборгах}}\n# {{rev-flexion|Гётеборге}}\n# {{rev-flexion|Гётеборги}}\n# {{rev-flexion|Гётеборгов}}\n# {{rev-flexion|Гётеборгом}}\n# {{rev-flexion|Гётеборгу}}'
+
     >>> context.new_word("оба")
     >>> adjust_wikicode("= {{-ru-}} =\n{{числ ru оба\n|основа=о́б\n|основа1=об\n|слоги={{по-слогам|о́|.|ба}}\n|тип=собирательное\n}}", "ru", word="оба")
     '= {{-ru-}} =\n{{числ ru оба|}}\n# {{rev-flexion|обе}}\n# {{rev-flexion|обеим}}\n# {{rev-flexion|обеими}}\n# {{rev-flexion|обеих}}\n# {{rev-flexion|обоим}}\n# {{rev-flexion|обоими}}\n# {{rev-flexion|обоих}}'

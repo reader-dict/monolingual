@@ -1,3 +1,4 @@
+import html
 import re
 import unicodedata
 from collections import defaultdict
@@ -22,8 +23,20 @@ def cleanup(form: str) -> str:
     'ультрамонтанства'
     >>> cleanup("торосья<sup>△</sup>")
     'торосья'
+    >>> cleanup("Гё&#768;тебо́рга")
+    'Гётеборга'
+    >>> cleanup("авиаопрыски&shy;ватель")
+    'авиаопрыскиватель'
+    >>> cleanup("ВИЧ&#8209;диссидента")
+    'ВИЧ-диссидента'
+    >>> cleanup("*бешенный")
+    'бешенный'
     """
-    return strip_accents(utils.cleanup_rev_variant(form, rpl=["&#42;", " ''(уст.)''", " ''(перен.)''", "<sup>△</sup>"]))
+    # Entities first, they would be cut at "#": `Гё&#768;тебо́рга` → `Гё&`
+    form = html.unescape(form).replace("\xa0", " ")
+    # Soft and non-breaking hyphens
+    form = form.replace("\xad", "").replace("\u2011", "-")
+    return strip_accents(utils.cleanup_rev_variant(form, rpl=["*", " ''(уст.)''", " ''(перен.)''", "<sup>△</sup>"]))
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -100,7 +113,12 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
     if comparative := data.get("степень", ""):
         comparative = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", comparative)
-        forms |= {part for part in re.split(r"[,;/]|<br[ ]*+/?>", comparative) if " " not in part.strip()}
+        forms |= {
+            part
+            for part in re.split(r"[,;/]|<br[ ]*+/?>", comparative)
+            # `|степень=1` is not a form
+            if " " not in part.strip() and any(char.isalpha() for char in part)
+        }
 
     if not forms:
         return ""
