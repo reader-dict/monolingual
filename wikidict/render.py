@@ -853,6 +853,11 @@ def parse_word(
             word, {section_pos: top_sections}, lang_src, lang_dst, templates_status=templates_status
         )
 
+    # [RU] Books are mostly printed without "ё", so "елка" should find "ёлка", and "черного" should find "чёрный"
+    if lang_src == "ru" and (definitions or reverse_variants):
+        without_yo = {form.replace("ё", "е").replace("Ё", "Е") for form in (word, *reverse_variants)}
+        reverse_variants = sorted({*reverse_variants, *without_yo} - {word})
+
     if definitions or force:
         for pron in (prons := _find_pronunciations(top_sections, lang_src, lang_dst, word)).copy():
             if "{{" in pron:
