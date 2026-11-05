@@ -338,7 +338,6 @@ def test_simple(tmp_path: Path) -> None:
 
     count = 0
     for file in [
-        "dict-fr-fr{etym}.df",  # DictFile
         "dict-fr-fr{etym}.df.bz2",  # DictFile bz2
         "dicthtml-fr-fr{etym}.zip",  # DictHTML
         "dictorg-fr-fr{etym}.zip",  # DICT.org
@@ -352,7 +351,7 @@ def test_simple(tmp_path: Path) -> None:
             assert (output_dir / f"{fname}.{ASSET_CHECKSUM_ALGO}").is_file()
             count += 2
 
-    assert count == 28
+    assert count == 24
 
     check_dicthtml(output_dir / "dicthtml-fr-fr.zip")
     check_stardict(output_dir / "dict-fr-fr.zip", tmp_path)
@@ -382,8 +381,8 @@ def test_no_json_file() -> None:
         (convert.DictHtmlFormat, "dicthtml-fr-fr-noetym.zip", False),
         (convert.DictOrgFormat, "dictorg-fr-fr.zip", True),
         (convert.DictOrgFormat, "dictorg-fr-fr-noetym.zip", False),
-        (convert.MobiFormat, "dict-fr-fr.mobi", True),
-        (convert.MobiFormat, "dict-fr-fr-noetym.mobi", False),
+        (convert.MobiFormat, "dict-fr-fr.mobi.zip", True),
+        (convert.MobiFormat, "dict-fr-fr-noetym.mobi.zip", False),
         (convert.StarDictFormat, "dict-fr-fr.zip", True),
         (convert.StarDictFormat, "dict-fr-fr-noetym.zip", False),
         (convert.StarDictNoSynFormat, "dict-fr-fr-nosyn.zip", True),
