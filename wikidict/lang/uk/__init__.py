@@ -66,8 +66,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     )
 
 
-def find_pronunciations(code: str, locale: str) -> list[str]:
+def find_pronunciations(code: str, locale: str, word: str = "") -> list[str]:
     """
+    The pronunciations, the first one of each transcription starting with the word and its stress.
+
     >>> from ... import context
     >>> _ = context.reset("uk")
 
@@ -75,18 +77,24 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     []
 
     >>> context.new_word("Бобрик")
-    >>> find_pronunciations("{{transcription-uk|Бо́брик}}", "uk")
+    >>> find_pronunciations("{{transcription-uk|Бо́брик}}", "uk", "Бобрик")
+    ['Бо́брик [ˈbɔbrek]']
+    >>> find_pronunciations("{{transcription|ˈbɔbrek}}", "uk", "Бобрик")
     ['[ˈbɔbrek]']
-    >>> find_pronunciations("{{transcription|ˈbɔbrek}}", "uk")
-    ['[ˈbɔbrek]']
-    >>> find_pronunciations("{{transcriptions-uk|}}", "uk")
+    >>> find_pronunciations("{{transcriptions-uk|}}", "uk", "Бобрик")
     ['[bɔbrek]']
     """
-    pattern = re.compile(rf"\{{\{{transcriptions?(?:-{locale})?[^}}\n]++}}}}")
-    res: set[str] = set()
-    for tpl in pattern.findall(code):
-        res.update(re.findall(r"&#91;([^&]++)&#93;", context.expand(tpl, "uk")))
-    return sorted(f"[{pron}]" for pron in res)
+    pattern = re.compile(rf"\{{\{{transcriptions?(?:-{locale})?(?:\|([^|}}\n]*+))?[^}}\n]*+}}}}")
+    res: list[str] = []
+    seen: set[str] = set()
+    for tpl in pattern.finditer(code):
+        prons = [f"[{pron}]" for pron in re.findall(r"&#91;([^&]++)&#93;", context.expand(tpl[0], "uk"))]
+        prons = [pron for pron in dict.fromkeys(prons) if pron not in seen]
+        seen.update(prons)
+        if prons and word and (stressed := utils.stress_word(word, tpl[1] or "")):
+            prons[0] = f"{stressed} {prons[0]}"
+        res.extend(prons)
+    return res
 
 
 def adjust_wikicode(

@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+import unicodedata
 from collections import defaultdict
 from functools import cache, partial
 from pathlib import Path
@@ -1451,3 +1452,66 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
         if n in insert:
             out.append(insert[n])
     return "\n".join(out)
+
+
+_STRESS_MARKS = "\u0300\u0301"
+# In NFD, so without "ё", "й" and "ї", that are a base letter with a diacritic
+_VOWELS = "аеиоуыэюяі"
+
+
+def stress_word(word: str, spelling: str) -> str:
+    """
+    Return `word` with the stress marks of `spelling`, or an empty string when there are none to put.
+    The spelling of a transcription follows the pronunciation ("синэкти́ческий" for "синектический"),
+    so it is accepted when it has as many letters as the word, and most of them are the same.
+    For the Cyrillic Wiktionaries (RU, UK).
+
+    >>> stress_word("говорить", "говори́ть")
+    'говори́ть'
+    >>> stress_word("синектический", "синэкти́ческий")
+    'синекти́ческий'
+    >>> stress_word("Москва", "москва́")
+    'Москва́'
+    >>> stress_word("кое-где", "ко̀е-где́")
+    'ко̀е-где́'
+    >>> stress_word("железная дорога", "желе́зная доро́га")
+    'желе́зная доро́га'
+    >>> stress_word("стол", "стол")
+    ''
+    >>> stress_word("тёзка", "тёзка")
+    ''
+    >>> stress_word("стол", "сто́лик")
+    ''
+    >>> stress_word("монохориальный", "м̀онохориа́льный")
+    ''
+    >>> stress_word("железная дорога", "желе́зная-доро́га")
+    ''
+    >>> stress_word("говорити", "говори́ти")
+    'говори́ти'
+    >>> stress_word("хуй его знает", "ху́й его̏ зна́ет")
+    'ху́й его зна́ет'
+    """
+
+    def letters(text: str) -> list[list[str]]:
+        # Each letter (with its diacritics, like "й" or "ё") followed by its stress marks
+        out: list[list[str]] = []
+        for char in unicodedata.normalize("NFD", text.strip()):
+            if char == "\u030f":  # "его̏": an unstressed word in transcriptions
+                continue
+            if out and unicodedata.combining(char):
+                out[-1][1 if char in _STRESS_MARKS else 0] += char
+            else:
+                out.append([char, ""])
+        return out
+
+    word_letters, spelling_letters = letters(word), letters(spelling)
+    if len(word_letters) != len(spelling_letters) or not any(marks for _, marks in spelling_letters):
+        return ""
+    pairs = list(zip(word_letters, spelling_letters))
+    different = sum(a.lower() != b.lower() for (a, _), (b, _) in pairs)
+    if different > len(word_letters) // 4 or any(a != b and (a in " -" or b in " -") for (a, _), (b, _) in pairs):
+        return ""
+    # A stress mark on a consonant is a typo: "м̀онохориа́льный"
+    if any(marks and letter.lower() not in _VOWELS for (letter, _), (_, marks) in pairs):
+        return ""
+    return unicodedata.normalize("NFC", "".join(letter + marks for (letter, _), (_, marks) in pairs))
