@@ -279,7 +279,7 @@ def adjust_wikicode(
 
     >>> context.new_word("бежать")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b-ж\n|основа=беж\n|основа1=бег\n|основа2=бе́г\n|слоги={{по слогам|бе|жа́ть}}\n|дореф=бѣжа́ть\n|2в=1\n|коммент=В некоторых значениях «бежать» может использоваться как глагол совершенного вида, особенно в формах прош. времени: {{пример|преступники {{выдел|бежали}} из тюрьмы}} {{пример|враг {{выдел|бежал}}}} {{пример|он {{выдел|бежал}} городской суеты}} {{пример|суп {{выдел|бежал}}}}. В 3л. мн.ч. употребляется нестандартная форма «''бегу́т''». До XIX также равноправной формой была форма «''бежа́т''» (см. пример).\n|imper-1p=1\n}}", "ru", word="бежать")
-    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беганный}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бегут}}\n# {{rev-flexion|бегущий}}\n# {{rev-flexion|бежа}}\n# {{rev-flexion|бежав}}\n# {{rev-flexion|бежавший}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежали}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежимый}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
+    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беганный}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бегут}}\n# {{rev-flexion|бегущий}}\n# {{rev-flexion|бежа}}\n# {{rev-flexion|бежав}}\n# {{rev-flexion|бежавши}}\n# {{rev-flexion|бежавший}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежали}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежимый}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
 
     >>> context.new_word("нутряной")
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1bX\n|основа=нутрян\n|основа1=\n|слоги={{по-слогам|нутряно́й}}\n|тип=относительное\n|степень=\n|краткая=\n|Категория={{{Категория|Прилагательные, склонение 1bX}}}\n}}", "ru", word="нутряной")
@@ -303,7 +303,7 @@ def adjust_wikicode(
 
     >>> context.new_word("сидеть")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b^-т\n|основа=сид\n|основа1=сиж\n|основа2=си́д\n|слоги={{по-слогам|си|де́ть}}\n}}", "ru", word="сидеть")
-    '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
+    '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевши}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
 
     >>> context.new_word("шесть")
     >>> adjust_wikicode("= {{-ru-}} =\n{{числ-5\n|основа=ше́ст\n|основа1=шест\n|соотв=[[шестой|шесто́й]]\n}}", "ru", word="шесть")
