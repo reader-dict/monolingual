@@ -72,6 +72,48 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return strip_accents(variant)
 
 
+def comparative_forms(text: str) -> list[str]:
+    """
+    The forms given by `|степень=`, without the markup of the templates it holds,
+    nor the comments: "/" in a closing tag was taken as a separator.
+
+    >>> comparative_forms("[[шире|ши́ре]]")
+    ['ши́ре']
+    >>> comparative_forms("здорове́е<sup>△</sup>, поздорове́е<sup>△</sup>, <i>устар.</i>: здоро́вее")
+    ['здорове́е', 'поздорове́е', 'здоро́вее']
+    >>> comparative_forms("<b>коинциде́нтней; коинциде́нтнее</b>")
+    ['коинциде́нтней', 'коинциде́нтнее']
+    >>> comparative_forms("деше́вле <i>и</i> подеше́вле <i>(в значении цены)</i>, дешеве́е <i>(в перен. знач.)</i>")
+    ['деше́вле', 'подеше́вле', 'дешеве́е']
+    >>> comparative_forms("го́рче<sup>△</sup> (вкус); го́рше<sup>△</sup>, го́рший<sup>△</sup> (эмоция)")
+    ['го́рче', 'го́рше', 'го́рший']
+    >>> comparative_forms("ме́ньше (поме́ньше), ме́ньший (ме́ньшее, ме́ньшая)")
+    ['ме́ньше', 'ме́ньший', 'поме́ньше', 'ме́ньшее', 'ме́ньшая']
+    >>> comparative_forms("ле́пше, ле́пее, (<i>редк.</i> ле́плее)")
+    ['ле́пше', 'ле́пее', 'ле́плее']
+    >>> comparative_forms("сипа́че, сипа́чей<!-- сопатый — сопа́че -->")
+    ['сипа́че', 'сипа́чей']
+    >>> comparative_forms("1")  # not a form
+    []
+    """
+    text = re.sub(r"<!--.*?-->|<sup>.*?</sup>|<i>.*?</i>", " ", text, flags=re.DOTALL)
+    text = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", text)
+    text = re.sub(r"<[^>]*+>|''+", " ", text)
+
+    def words(part: str) -> list[str]:
+        return [word for word in re.split(r"[\s,;:/]+", part) if len(word) > 2 and any(c.isalpha() for c in word)]
+
+    def start(word: str) -> str:
+        return strip_accents(word).removeprefix("по")[:3]
+
+    forms = words(re.sub(r"\([^()]*+\)", " ", text))
+    # A note in parentheses can hold other forms of the word, "(поме́ньше)", or not, "(вкус)"
+    starts = {start(form) for form in forms}
+    for note in re.findall(r"\(([^()]*+)\)", text):
+        forms.extend(word for word in words(note) if start(word) in starts)
+    return [form for form in forms if not form.endswith(".")]
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["коро́ль"], defaultdict(str), "")
@@ -117,13 +159,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
     if comparative := data.get("степень", ""):
-        comparative = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", comparative)
-        forms |= {
-            part
-            for part in re.split(r"[,;/]|<br[ ]*+/?>", comparative)
-            # `|степень=1` is not a form
-            if " " not in part.strip() and any(char.isalpha() for char in part)
-        }
+        forms |= set(comparative_forms(comparative))
 
     if not forms:
         return ""
