@@ -1,3 +1,4 @@
+import html
 import re
 import unicodedata
 from collections import defaultdict
@@ -20,7 +21,11 @@ def cleanup(form: str) -> str:
     """
     >>> cleanup("альбо́мчики*")
     'альбомчики'
+    >>> cleanup("кам&#39;яни́стого")
+    "кам'янистого"
     """
+    # Entities first, they would be cut at "#": `кам&#39;яни́стого` → `кам&`
+    form = html.unescape(form.replace("&#160;", "").replace("&#32;", ""))
     cleaned = strip_accents(
         utils.cleanup_rev_variant(
             form,
@@ -80,6 +85,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         parts.append(parts[0])
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "uk")
+    # Several cells on one line in the adjective tables: `|| [[називний|Н.]] ||  class="declension-white" | вірогі́дний`
+    table = re.sub(r"[ ]*+\|\|[ ]*+class=\"declension-white\"[ ]*+\|", "\n|", table)
     table = re.sub(r"^<td[^>]*?bgcolor=\"#ffffff\"[^>]*+>([^<]++)</td>", r"| \1", table, flags=re.MULTILINE)
     # The past tense and the imperative of the verbs, the line was removed with its attributes:
     # `| bgcolor="#ffffff" align="left" | чита́в<br />чита́ла` → `| чита́в<br />чита́ла`
