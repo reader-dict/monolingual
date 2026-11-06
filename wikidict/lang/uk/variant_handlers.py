@@ -58,19 +58,19 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     >>> context.new_word("убрести")  # `( -емо́)`
     >>> render_reverse_variant("дієсл uk 7bДВ", ["убред", "убре", "убрі́"], defaultdict(str, {"склади": "{{склади|у|бре|сти́}}", "відп": ""}), "убрести")
-    'убреде|убредем|убредемемо|убредете|убредеш|убреду|убредуть'
+    'убреде|убредем|убредемемо|убредете|убредеш|убреди|убреду|убредуть|убредімо|убредіть|убрела|убрели|убрело|убрів'
 
     >>> context.new_word("стояти")  # `( -їмо́)`
     >>> render_reverse_variant("дієсл uk нед 5b^", ["сто", "сті́"], defaultdict(str, {"склади": "{{склади|сто|я́|ти}}"}), "стояти")
-    'стоти|стою|стоявши|стоятиме|стоятимемо|стоятимете|стоятимеш|стоятиму|стоятимуть|стоять|стоячи|стоячий|стоїм|стоїмїмо|стоїте|стоїть|стоїш'
+    'стоти|стою|стояв|стоявши|стояла|стояли|стояло|стоятиме|стоятимемо|стоятимете|стоятимеш|стоятиму|стоятимуть|стоять|стоячи|стоячий|стоїм|стоїмїмо|стоїте|стоїть|стоїш|стій|стійте'
 
     >>> context.new_word("збіднити")  # `( -имо́)`
     >>> render_reverse_variant("дієсл uk 4bДВ", [], defaultdict(str, {"склади": "{{склади|збід|ни́|ти}}|збідн|збідн}}"}), "збіднити")
-    'збідним|збіднимимо|збідните|збіднить|збідниш|збідню|збіднять'
+    'збідни|збіднив|збіднила|збіднили|збіднило|збідним|збіднимимо|збідните|збіднить|збідниш|збідню|збіднять|збідніте'
 
     >>> context.new_word("розпилити")  # `( -имо)`
     >>> render_reverse_variant("дієсл uk 4c/bДВ", ["розпил", "розпи́л", "розпил"], defaultdict(str, {"склади": "{{склади|роз|пи|ли́|ти}}", "ю": "1", "и": "1", "БезосФорма": "", "відп": ""}), "розпилити")
-    'розпилений|розпиливши|розпилим|розпилимим|розпилите|розпилить|розпилиш|розпилю|розпилять'
+    'розпилений|розпили|розпилив|розпиливши|розпилила|розпилили|розпилило|розпилим|розпилимим|розпилите|розпилить|розпилиш|розпилю|розпилять|розпиліте'
     """
     if tpl == "rev-flexion":
         return parts[0].strip()
@@ -81,6 +81,9 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "uk")
     table = re.sub(r"^<td[^>]*?bgcolor=\"#ffffff\"[^>]*+>([^<]++)</td>", r"| \1", table, flags=re.MULTILINE)
+    # The past tense and the imperative of the verbs, the line was removed with its attributes:
+    # `| bgcolor="#ffffff" align="left" | чита́в<br />чита́ла` → `| чита́в<br />чита́ла`
+    table = re.sub(r"^\|[^|\n]*?bgcolor=\"#ffffff\"[^|\n]*+\|[ ]*+", "| ", table, flags=re.MULTILINE)
     table = "\n".join(
         line
         for raw_line in table.splitlines()
@@ -110,7 +113,12 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
                 forms.discard(form)
 
     forms = {cleanup(form) for form in forms}
+    # Several forms in a cell: "цабаньмо, цабанімо", and no analytic forms: "буде щастіти"
+    forms = {part.strip() for form in forms for part in form.split(",")}
+    if " " not in word:
+        forms = {form for form in forms if " " not in form}
     forms.discard("")
+    forms.discard("–")
     forms.discard("&")
     forms.discard("—")
     forms.discard(word)
