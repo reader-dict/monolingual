@@ -420,6 +420,9 @@ def adjust_wikicode(
                         templates_status=templates_status,
                         variant_only=True,
                     )
+                    if not forms and tpl_name in {"прил ru", "прич ru"}:
+                        # No declension type, so no table
+                        forms = "|".join(form for form in decline_adjective(word) if form != word)
                     if forms and tpl_name.startswith(("гл ru", "гл-ru")):
                         forms = "|".join(
                             sorted({f for form in forms.split("|") for f in decline_participle(form, word)})
@@ -438,6 +441,42 @@ def adjust_wikicode(
         code = "\n".join(cleaned)
 
     return code
+
+
+def decline_adjective(word: str) -> list[str]:
+    """
+    The forms of an adjective or a participle whose table has no declension type, and so is empty.
+    Only the endings that decline one way are handled.
+
+    >>> decline_adjective("быстроглазый")[:4]
+    ['быстроглазый', 'быстроглазого', 'быстроглазому', 'быстроглазым']
+    >>> decline_adjective("западно-сибирский")[-3:]
+    ['западно-сибирские', 'западно-сибирских', 'западно-сибирскими']
+    >>> decline_adjective("многосуставной")[:3]
+    ['многосуставной', 'многосуставного', 'многосуставному']
+    >>> decline_adjective("короткорогий")[3]
+    'короткорогим'
+    >>> decline_adjective("наилюбезнейший")[1]
+    'наилюбезнейшего'
+    >>> decline_adjective("раскисший")[1]
+    'раскисшего'
+    >>> decline_adjective("росомаший")  # a possessive adjective: "росомашьего"
+    ['росомаший']
+    >>> decline_adjective("синий")  # "синего", but "шаманий" is "шаманьего"
+    ['синий']
+    """
+    if match := re.fullmatch(r"(.+[бвдзлмнпрстфц])ый", word):
+        stem, endings = match[1], ("ый", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
+    elif match := re.fullmatch(r"(.+[бвдзлмнпрстфц])ой", word):
+        stem, endings = match[1], ("ой", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
+    elif match := re.fullmatch(r"(.+[гкхжшчщ])ой|(.+[гкх])ий", word):
+        stem = match[1] or match[2]
+        endings = (word[-2:], "ого", "ому", "им", "ом", "ая", "ой", "ую", "ою", "ое", "ие", "их", "ими")
+    elif re.search(r"(?:[^аеёиоуыэюя]ш|щ)ий(?:ся)?$", word):
+        return decline_participle(word, word)
+    else:
+        return [word]
+    return [stem + ending for ending in endings]
 
 
 def decline_participle(form: str, verb: str) -> list[str]:
