@@ -72,7 +72,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return strip_accents(variant)
 
 
-def comparative_forms(text: str) -> list[str]:
+def comparative_forms(text: str, word: str = "") -> list[str]:
     """
     The forms given by `|степень=`, without the markup of the templates it holds,
     nor the comments: "/" in a closing tag was taken as a separator.
@@ -83,35 +83,51 @@ def comparative_forms(text: str) -> list[str]:
     ['здорове́е', 'поздорове́е', 'здоро́вее']
     >>> comparative_forms("<b>коинциде́нтней; коинциде́нтнее</b>")
     ['коинциде́нтней', 'коинциде́нтнее']
+    >>> comparative_forms("<i>ковы́листее, поковы́листее</i>")
+    ['ковы́листее', 'поковы́листее']
     >>> comparative_forms("деше́вле <i>и</i> подеше́вле <i>(в значении цены)</i>, дешеве́е <i>(в перен. знач.)</i>")
-    ['деше́вле', 'подеше́вле', 'дешеве́е']
+    ['дешеве́е', 'деше́вле', 'подеше́вле']
     >>> comparative_forms("го́рче<sup>△</sup> (вкус); го́рше<sup>△</sup>, го́рший<sup>△</sup> (эмоция)")
     ['го́рче', 'го́рше', 'го́рший']
     >>> comparative_forms("ме́ньше (поме́ньше), ме́ньший (ме́ньшее, ме́ньшая)")
     ['ме́ньше', 'ме́ньший', 'поме́ньше', 'ме́ньшее', 'ме́ньшая']
     >>> comparative_forms("ле́пше, ле́пее, (<i>редк.</i> ле́плее)")
     ['ле́пше', 'ле́пее', 'ле́плее']
+    >>> comparative_forms("ржачне́е, ржачне́й<i>. Превосходная степень\xa0— </i>ржачне́йший")
+    ['ржачне́е', 'ржачне́йший', 'ржачне́й']
+    >>> comparative_forms("более смра́дный", "смрадный")  # no form of its own
+    []
     >>> comparative_forms("сипа́че, сипа́чей<!-- сопатый — сопа́че -->")
     ['сипа́че', 'сипа́чей']
     >>> comparative_forms("1")  # not a form
     []
     """
-    text = re.sub(r"<!--.*?-->|<sup>.*?</sup>|<i>.*?</i>", " ", text, flags=re.DOTALL)
+    text = re.sub(r"<!--.*?-->|<sup>.*?</sup>", " ", text, flags=re.DOTALL)
     text = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", text)
     text = re.sub(r"<[^>]*+>|''+", " ", text)
 
-    def words(part: str) -> list[str]:
-        return [word for word in re.split(r"[\s,;:/]+", part) if len(word) > 2 and any(c.isalpha() for c in word)]
+    def is_form(part: str) -> bool:
+        # Not a label: "устар.", "и"; nor the word itself: "более смра́дный"
+        return (
+            len(part) > 2
+            and any(char.isalpha() for char in part)
+            and not part.endswith(".")
+            and strip_accents(part) != word
+        )
 
-    def start(word: str) -> str:
-        return strip_accents(word).removeprefix("по")[:3]
+    def start(form: str) -> str:
+        return strip_accents(form).removeprefix("по")[:3]
 
-    forms = words(re.sub(r"\([^()]*+\)", " ", text))
-    # A note in parentheses can hold other forms of the word, "(поме́ньше)", or not, "(вкус)"
-    starts = {start(form) for form in forms}
-    for note in re.findall(r"\(([^()]*+)\)", text):
-        forms.extend(word for word in words(note) if start(word) in starts)
-    return [form for form in forms if not form.endswith(".")]
+    parts = [part.strip() for part in re.split(r"[,;:/—]", re.sub(r"\([^()]*+\)", ",", text))]
+    forms = [part for part in parts if is_form(part) and not re.search(r"\s", part)]
+    # The words of a longer part or of a note in parentheses are kept when they look like the other forms or
+    # the word: "деше́вле и подеше́вле", "(поме́ньше)", but not "Превосходная степень" or "(вкус)"
+    starts = {start(form) for form in forms} | ({start(word)} if word else set())
+    longer = [part for part in parts if re.search(r"\s", part)] + re.findall(r"\(([^()]*+)\)", text)
+    forms.extend(
+        form for part in longer for form in re.split(r"[\s,;:/—]+", part) if is_form(form) and start(form) in starts
+    )
+    return forms
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -159,7 +175,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
     if comparative := data.get("степень", ""):
-        forms |= set(comparative_forms(comparative))
+        forms |= set(comparative_forms(comparative, word))
 
     if not forms:
         return ""
