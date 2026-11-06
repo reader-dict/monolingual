@@ -164,6 +164,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     if not forms:
         return ""
 
+    # A letter that can be added in front, as after a preposition: `(н)ея́же` → `ея́же, нея́же`
+    forms = {re.sub(r"^\(([^\s().,;]++)\)([^\s()]++)$", r"\2, \1\2", form.strip()) for form in forms}
     forms = {cleanup(form) for form in forms}
     # One cell can hold several forms: "его́, него́"
     if " " not in word:
