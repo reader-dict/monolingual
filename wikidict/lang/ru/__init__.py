@@ -267,7 +267,7 @@ def adjust_wikicode(
 
     >>> context.new_word("виться")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 11b/c''-ся\n|основа=в\n|слоги={{по-слогам|ви́|ться}}\n}}", "ru", word="виться")
-    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|вейся}}\n# {{rev-flexion|вейтесь}}\n# {{rev-flexion|вившийся}}\n# {{rev-flexion|вившись}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вились}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}\n# {{rev-flexion|вьющийся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
+    '= {{-ru-}} =\n{{гл ru 11b/c-ся|}}\n# {{rev-flexion|вейся}}\n# {{rev-flexion|вейтесь}}\n# {{rev-flexion|вившаяся}}\n# {{rev-flexion|вившегося}}\n# {{rev-flexion|вившееся}}\n# {{rev-flexion|вившейся}}\n# {{rev-flexion|вившемся}}\n# {{rev-flexion|вившемуся}}\n# {{rev-flexion|вившеюся}}\n# {{rev-flexion|вившиеся}}\n# {{rev-flexion|вившийся}}\n# {{rev-flexion|вившимися}}\n# {{rev-flexion|вившимся}}\n# {{rev-flexion|вившись}}\n# {{rev-flexion|вившихся}}\n# {{rev-flexion|вившуюся}}\n# {{rev-flexion|вилась}}\n# {{rev-flexion|вились}}\n# {{rev-flexion|вилось}}\n# {{rev-flexion|вился}}\n# {{rev-flexion|вьюсь}}\n# {{rev-flexion|вьются}}\n# {{rev-flexion|вьющаяся}}\n# {{rev-flexion|вьющегося}}\n# {{rev-flexion|вьющееся}}\n# {{rev-flexion|вьющейся}}\n# {{rev-flexion|вьющемся}}\n# {{rev-flexion|вьющемуся}}\n# {{rev-flexion|вьющеюся}}\n# {{rev-flexion|вьющиеся}}\n# {{rev-flexion|вьющийся}}\n# {{rev-flexion|вьющимися}}\n# {{rev-flexion|вьющимся}}\n# {{rev-flexion|вьющихся}}\n# {{rev-flexion|вьющуюся}}\n# {{rev-flexion|вьёмся}}\n# {{rev-flexion|вьётесь}}\n# {{rev-flexion|вьётся}}\n# {{rev-flexion|вьёшься}}'
 
     `|степень=1` is not a comparative, and an HTML entity in the stem is not cut
     >>> context.new_word("аборальный")
@@ -283,7 +283,7 @@ def adjust_wikicode(
 
     >>> context.new_word("бежать")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b-ж\n|основа=беж\n|основа1=бег\n|основа2=бе́г\n|слоги={{по слогам|бе|жа́ть}}\n|дореф=бѣжа́ть\n|2в=1\n|коммент=В некоторых значениях «бежать» может использоваться как глагол совершенного вида, особенно в формах прош. времени: {{пример|преступники {{выдел|бежали}} из тюрьмы}} {{пример|враг {{выдел|бежал}}}} {{пример|он {{выдел|бежал}} городской суеты}} {{пример|суп {{выдел|бежал}}}}. В 3л. мн.ч. употребляется нестандартная форма «''бегу́т''». До XIX также равноправной формой была форма «''бежа́т''» (см. пример).\n|imper-1p=1\n}}", "ru", word="бежать")
-    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беганный}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бегут}}\n# {{rev-flexion|бегущий}}\n# {{rev-flexion|бежа}}\n# {{rev-flexion|бежав}}\n# {{rev-flexion|бежавши}}\n# {{rev-flexion|бежавший}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежали}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежимый}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
+    '= {{-ru-}} =\n{{гл ru 5b-ж|}}\n# {{rev-flexion|беган}}\n# {{rev-flexion|бегана}}\n# {{rev-flexion|беганная}}\n# {{rev-flexion|беганного}}\n# {{rev-flexion|беганное}}\n# {{rev-flexion|беганной}}\n# {{rev-flexion|беганном}}\n# {{rev-flexion|беганному}}\n# {{rev-flexion|беганною}}\n# {{rev-flexion|беганную}}\n# {{rev-flexion|беганные}}\n# {{rev-flexion|беганный}}\n# {{rev-flexion|беганным}}\n# {{rev-flexion|беганными}}\n# {{rev-flexion|беганных}}\n# {{rev-flexion|бегано}}\n# {{rev-flexion|беганы}}\n# {{rev-flexion|беги}}\n# {{rev-flexion|бегите}}\n# {{rev-flexion|бегу}}\n# {{rev-flexion|бегут}}\n# {{rev-flexion|бегущая}}\n# {{rev-flexion|бегущего}}\n# {{rev-flexion|бегущее}}\n# {{rev-flexion|бегущей}}\n# {{rev-flexion|бегущем}}\n# {{rev-flexion|бегущему}}\n# {{rev-flexion|бегущею}}\n# {{rev-flexion|бегущие}}\n# {{rev-flexion|бегущий}}\n# {{rev-flexion|бегущим}}\n# {{rev-flexion|бегущими}}\n# {{rev-flexion|бегущих}}\n# {{rev-flexion|бегущую}}\n# {{rev-flexion|бежа}}\n# {{rev-flexion|бежав}}\n# {{rev-flexion|бежавшая}}\n# {{rev-flexion|бежавшего}}\n# {{rev-flexion|бежавшее}}\n# {{rev-flexion|бежавшей}}\n# {{rev-flexion|бежавшем}}\n# {{rev-flexion|бежавшему}}\n# {{rev-flexion|бежавшею}}\n# {{rev-flexion|бежавши}}\n# {{rev-flexion|бежавшие}}\n# {{rev-flexion|бежавший}}\n# {{rev-flexion|бежавшим}}\n# {{rev-flexion|бежавшими}}\n# {{rev-flexion|бежавших}}\n# {{rev-flexion|бежавшую}}\n# {{rev-flexion|бежал}}\n# {{rev-flexion|бежала}}\n# {{rev-flexion|бежали}}\n# {{rev-flexion|бежало}}\n# {{rev-flexion|бежим}}\n# {{rev-flexion|бежима}}\n# {{rev-flexion|бежимая}}\n# {{rev-flexion|бежимо}}\n# {{rev-flexion|бежимого}}\n# {{rev-flexion|бежимое}}\n# {{rev-flexion|бежимой}}\n# {{rev-flexion|бежимом}}\n# {{rev-flexion|бежимому}}\n# {{rev-flexion|бежимою}}\n# {{rev-flexion|бежимую}}\n# {{rev-flexion|бежимы}}\n# {{rev-flexion|бежимые}}\n# {{rev-flexion|бежимый}}\n# {{rev-flexion|бежимым}}\n# {{rev-flexion|бежимыми}}\n# {{rev-flexion|бежимых}}\n# {{rev-flexion|бежит}}\n# {{rev-flexion|бежите}}\n# {{rev-flexion|бежишь}}'
 
     >>> context.new_word("нутряной")
     >>> adjust_wikicode("= {{-ru-}} =\n{{прил ru 1bX\n|основа=нутрян\n|основа1=\n|слоги={{по-слогам|нутряно́й}}\n|тип=относительное\n|степень=\n|краткая=\n|Категория={{{Категория|Прилагательные, склонение 1bX}}}\n}}", "ru", word="нутряной")
@@ -307,7 +307,7 @@ def adjust_wikicode(
 
     >>> context.new_word("сидеть")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b^-т\n|основа=сид\n|основа1=сиж\n|основа2=си́д\n|слоги={{по-слогам|си|де́ть}}\n}}", "ru", word="сидеть")
-    '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевши}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
+    '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевшая}}\n# {{rev-flexion|сидевшего}}\n# {{rev-flexion|сидевшее}}\n# {{rev-flexion|сидевшей}}\n# {{rev-flexion|сидевшем}}\n# {{rev-flexion|сидевшему}}\n# {{rev-flexion|сидевшею}}\n# {{rev-flexion|сидевши}}\n# {{rev-flexion|сидевшие}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидевшим}}\n# {{rev-flexion|сидевшими}}\n# {{rev-flexion|сидевших}}\n# {{rev-flexion|сидевшую}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидима}}\n# {{rev-flexion|сидимая}}\n# {{rev-flexion|сидимо}}\n# {{rev-flexion|сидимого}}\n# {{rev-flexion|сидимое}}\n# {{rev-flexion|сидимой}}\n# {{rev-flexion|сидимом}}\n# {{rev-flexion|сидимому}}\n# {{rev-flexion|сидимою}}\n# {{rev-flexion|сидимую}}\n# {{rev-flexion|сидимы}}\n# {{rev-flexion|сидимые}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидимым}}\n# {{rev-flexion|сидимыми}}\n# {{rev-flexion|сидимых}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящая}}\n# {{rev-flexion|сидящего}}\n# {{rev-flexion|сидящее}}\n# {{rev-flexion|сидящей}}\n# {{rev-flexion|сидящем}}\n# {{rev-flexion|сидящему}}\n# {{rev-flexion|сидящею}}\n# {{rev-flexion|сидящие}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сидящим}}\n# {{rev-flexion|сидящими}}\n# {{rev-flexion|сидящих}}\n# {{rev-flexion|сидящую}}\n# {{rev-flexion|сижу}}'
 
     >>> context.new_word("Тургенев")
     >>> adjust_wikicode("= {{-ru-}} =\n{{Фам ин ов\n|основа=Турге́нев\n|слоги={{по-слогам|Тур|ге́|нев}}\n}}", "ru", word="Тургенев")
@@ -420,6 +420,10 @@ def adjust_wikicode(
                         templates_status=templates_status,
                         variant_only=True,
                     )
+                    if forms and tpl_name.startswith(("гл ru", "гл-ru")):
+                        forms = "|".join(
+                            sorted({f for form in forms.split("|") for f in decline_participle(form, word)})
+                        )
                     # This is required for genders finding: `{{сущ ru f ina 1a|}}`, and `{{сущ-ru|коса́|f ina 1d|}}`
                     # as that template has the gender in its second parameter
                     placeholder = tpl_name
@@ -434,6 +438,43 @@ def adjust_wikicode(
         code = "\n".join(cleaned)
 
     return code
+
+
+def decline_participle(form: str, verb: str) -> list[str]:
+    """
+    The conjugation tables give the participles only as "раскисший", so their other forms are added.
+    Other forms are returned as they are, and so are the ones that do not start like the verb: a table
+    with an empty stem gives junk such as "анный".
+
+    >>> decline_participle("раскисший", "раскиснуть")
+    ['раскисший', 'раскисшего', 'раскисшему', 'раскисшим', 'раскисшем', 'раскисшая', 'раскисшей', 'раскисшую', 'раскисшею', 'раскисшее', 'раскисшие', 'раскисших', 'раскисшими']
+    >>> decline_participle("читающийся", "читаться")[:3]
+    ['читающийся', 'читающегося', 'читающемуся']
+    >>> decline_participle("решённый", "решить")[-4:]
+    ['решён', 'решена', 'решено', 'решены']
+    >>> decline_participle("раскрытый", "раскрыть")[-4:]
+    ['раскрыт', 'раскрыта', 'раскрыто', 'раскрыты']
+    >>> decline_participle("читаемый", "читать")[-4:]
+    ['читаем', 'читаема', 'читаемо', 'читаемы']
+    >>> decline_participle("раскис", "раскиснуть")
+    ['раскис']
+    >>> decline_participle("анный", "метафоризировать")
+    ['анный']
+    """
+    if form[:1].lower() != verb[:1].lower():
+        return [form]
+    if match := re.fullmatch(r"(.+[шщ])ий(ся)?", form):
+        stem, reflexive = match[1], match[2] or ""
+        endings = ("ий", "его", "ему", "им", "ем", "ая", "ей", "ую", "ею", "ее", "ие", "их", "ими")
+        return [stem + ending + reflexive for ending in endings]
+    if match := re.fullmatch(r"(.+(?:нн|т|м))ый", form):
+        stem = match[1]
+        endings = ("ый", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
+        # Short forms: "прочитан", "решён" and "решена" (the stress moves to the ending)
+        short = stem.removesuffix("н") if stem.endswith("нн") else stem
+        rest = short[:-2] + short[-2:].replace("ё", "е")
+        return [stem + ending for ending in endings] + [short, rest + "а", rest + "о", rest + "ы"]
+    return [form]
 
 
 def extract_templates(templates: str) -> list[str]:
