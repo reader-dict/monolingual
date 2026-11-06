@@ -197,4 +197,4 @@ class JSONVolumeFormat(BaseFormat):
         }
 
         manifest_path = self.tmp_dir / "manifest.json"
-        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+        manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
