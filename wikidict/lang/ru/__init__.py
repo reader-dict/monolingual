@@ -45,6 +45,10 @@ reverse_variant_titles = (
     "{{мест ru",
     "{{мест-ru",
     "{{падежи ru",
+    "{{Фам ",  # surnames: {{Фам ин ов}}, {{Фам ru f 7a}}...
+    "{{Фам-",
+    "{{фам ",
+    "{{Мс-п",  # possessive adjectives: {{Мс-п6*a}} for "коровий"
 )
 
 templates_ignored = (
@@ -304,6 +308,14 @@ def adjust_wikicode(
     >>> context.new_word("сидеть")
     >>> adjust_wikicode("= {{-ru-}} =\n{{гл ru 5b^-т\n|основа=сид\n|основа1=сиж\n|основа2=си́д\n|слоги={{по-слогам|си|де́ть}}\n}}", "ru", word="сидеть")
     '= {{-ru-}} =\n{{гл ru 5b^-т|}}\n# {{rev-flexion|сидев}}\n# {{rev-flexion|сидевши}}\n# {{rev-flexion|сидевший}}\n# {{rev-flexion|сидел}}\n# {{rev-flexion|сидела}}\n# {{rev-flexion|сидели}}\n# {{rev-flexion|сидело}}\n# {{rev-flexion|сиди}}\n# {{rev-flexion|сидим}}\n# {{rev-flexion|сидимый}}\n# {{rev-flexion|сидит}}\n# {{rev-flexion|сидите}}\n# {{rev-flexion|сидишь}}\n# {{rev-flexion|сидя}}\n# {{rev-flexion|сидят}}\n# {{rev-flexion|сидящий}}\n# {{rev-flexion|сижу}}'
+
+    >>> context.new_word("Тургенев")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{Фам ин ов\n|основа=Турге́нев\n|слоги={{по-слогам|Тур|ге́|нев}}\n}}", "ru", word="Тургенев")
+    '= {{-ru-}} =\n{{Фам ин ов|}}\n# {{rev-flexion|Тургенева}}\n# {{rev-flexion|Тургеневе}}\n# {{rev-flexion|Тургеневой}}\n# {{rev-flexion|Тургеневу}}\n# {{rev-flexion|Тургеневы}}\n# {{rev-flexion|Тургеневым}}\n# {{rev-flexion|Тургеневыми}}\n# {{rev-flexion|Тургеневых}}'
+
+    >>> context.new_word("коровий")
+    >>> adjust_wikicode("= {{-ru-}} =\n{{Мс-п6*a\n|основа=коро́в\n|слоги={{по-слогам|ко|ро́|вий}}\n}}", "ru", word="коровий")
+    '= {{-ru-}} =\n{{Мс-п6*a|}}\n# {{rev-flexion|коровье}}\n# {{rev-flexion|коровьего}}\n# {{rev-flexion|коровьей}}\n# {{rev-flexion|коровьем}}\n# {{rev-flexion|коровьему}}\n# {{rev-flexion|коровьею}}\n# {{rev-flexion|коровьи}}\n# {{rev-flexion|коровьим}}\n# {{rev-flexion|коровьими}}\n# {{rev-flexion|коровьих}}\n# {{rev-flexion|коровью}}\n# {{rev-flexion|коровья}}'
 
     >>> context.new_word("шесть")
     >>> adjust_wikicode("= {{-ru-}} =\n{{числ-5\n|основа=ше́ст\n|основа1=шест\n|соотв=[[шестой|шесто́й]]\n}}", "ru", word="шесть")
