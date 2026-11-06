@@ -69,14 +69,14 @@ def find_genders(code: str, locale: str) -> list[str]:
     )
 
 
-def find_pronunciations(code: str, locale: str, word: str = "") -> list[str]:
+def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     """
     The pronunciations, the first one of each transcription starting with the word and its stress.
 
     >>> from ... import context
     >>> _ = context.reset("uk")
 
-    >>> find_pronunciations("", "uk")
+    >>> find_pronunciations("", "uk", "")
     []
 
     >>> context.new_word("Бобрик")

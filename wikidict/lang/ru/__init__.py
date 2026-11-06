@@ -117,7 +117,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     return utils.unique([gender for match in pattern.findall(code) for gender in genders.get(match[0] or match[1], [])])
 
 
-def find_pronunciations(code: str, locale: str, word: str = "") -> list[str]:
+def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     """
     The pronunciation of each homonym, starting with the word and its stress.
 
@@ -125,7 +125,7 @@ def find_pronunciations(code: str, locale: str, word: str = "") -> list[str]:
     >>> _ = context.reset("ru")
 
     >>> context.new_word("word")
-    >>> find_pronunciations("", "ru")
+    >>> find_pronunciations("", "ru", "")
     []
 
     >>> find_pronunciations("{{transcriptions-ru|страни́ца|страни́цы|Ru-страница.ogg}}", "ru", "страница")
