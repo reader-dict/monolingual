@@ -31,6 +31,9 @@ reverse_variant_titles = (
     "{{дієсл uk",
     "{{дієприкм uk",
     "{{імен uk",
+    "{{прикм uk",
+    "{{займ uk",
+    "{{числ",
 )
 
 templates_ignored = (
