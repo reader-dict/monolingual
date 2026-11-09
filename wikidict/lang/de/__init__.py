@@ -106,6 +106,11 @@ def adjust_wikicode(
     # `{{Bedeutungen}}` → `==== {{Bedeutungen}} ====`
     code = re.sub(r"^\{\{(.+)\}\}", r"==== {{\1}} ====", code, flags=re.MULTILINE)
 
+    # Synonyms go under their meaning: `:[1, 2] [[flink]]` as a sub-definition of the meanings 1 and 2
+    code = utils.attach_numbered_synonyms(
+        code, "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+"
+    )
+
     # Definition lists are not well supported by the parser, replace them by numbered lists.
     # Note: using `[ ]*` rather than `\s*` to bypass issues when a section above another one
     #       contains an empty item.

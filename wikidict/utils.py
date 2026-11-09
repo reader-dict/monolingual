@@ -1454,6 +1454,94 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
     return "\n".join(out)
 
 
+def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str, *, number: str) -> str:
+    r"""
+    Put the synonyms under their meaning, as a sub-definition, for Wiktionaries that write the numbers of the
+    meanings in front of each line of synonyms, like `:[1, 2] [[flink]]` in DE.
+
+    `meanings` and `synonyms` are the titles of the level-4 sections, `label` is put before the synonyms, and
+    `number` is a regex for the start of a meaning or synonyms line, with the numbers as its first group.
+    A line of synonyms goes under every meaning it refers to: `[1, 2]`, `[1–3]`. The list is kept as it is when
+    a line has no number, or a number that is not the one of a meaning: `[1a]` refers to a sub-meaning, `[*]`.
+
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n:[3] jung\n==== {{Herkunft}} ====\n:von x\n==== {{Synonyme}} ====\n:[1] [[rasch]]\n:[1, 3] [[flink]]\n==== {{Beispiele}} ====\n:[1] Er ist schnell.", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    "==== {{Bedeutungen}} ====\n:[1] schnell\n## ''Syn.:'' [[rasch]]\n## ''Syn.:'' [[flink]]\n:[2] klug\n:[3] jung\n## ''Syn.:'' [[flink]]\n==== {{Herkunft}} ====\n:von x\n==== {{Beispiele}} ====\n:[1] Er ist schnell."
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n==== {{Synonyme}} ====\n:[1–2] [[gescheit]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    "==== {{Bedeutungen}} ====\n:[1] schnell\n## ''Syn.:'' [[gescheit]]\n:[2] klug\n## ''Syn.:'' [[gescheit]]"
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n::[1a] sehr schnell\n==== {{Synonyme}} ====\n:[1a] [[rasant]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    '==== {{Bedeutungen}} ====\n:[1] schnell\n::[1a] sehr schnell\n==== {{Synonyme}} ====\n:[1a] [[rasant]]'
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:[2] [[klug]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    '==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:[2] [[klug]]'
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:''siehe auch:'' [[flott]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    "==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:''siehe auch:'' [[flott]]"
+    """
+    lines = code.split("\n")
+    line_number = re.compile(number)
+
+    def section_end(start: int) -> int:
+        return next((n for n in range(start + 1, len(lines)) if lines[n].startswith("=")), len(lines))
+
+    def level(line: str) -> int:
+        return len(line) - len(line.lstrip("="))
+
+    def title(line: str) -> str:
+        return line.strip("= ").lower()
+
+    def numbers(text: str) -> list[int]:
+        """`1, 3–5` → `[1, 3, 4, 5]`, or an empty list when it is not only numbers."""
+        found: list[int] = []
+        for part in text.split(","):
+            if not (match := re.fullmatch(r"\s*+(\d++)\s*+(?:[–-]\s*+(\d++)\s*+)?", part)):
+                return []
+            first, last = int(match[1]), int(match[2] or match[1])
+            found.extend(range(first, last + 1))
+        return found
+
+    drop: set[int] = set()
+    insert: defaultdict[int, list[str]] = defaultdict(list)
+    for start, line in enumerate(lines):
+        if level(line) != 4 or title(line) != meanings:
+            continue
+        end = section_end(start)
+        # The synonyms of the same homonym: the next level-4 section with that title, before any higher one
+        syn_start = end
+        while syn_start < len(lines) and level(lines[syn_start]) == 4:
+            if title(lines[syn_start]) == synonyms:
+                break
+            syn_start = section_end(syn_start)
+        else:
+            continue
+        syn_end = section_end(syn_start)
+        meaning_lines: dict[int, int] = {}
+        for n in range(start + 1, end):
+            if (match := line_number.match(lines[n])) and len(found := numbers(match[1])) == 1:
+                meaning_lines[found[0]] = n
+        attached: defaultdict[int, list[str]] = defaultdict(list)
+        for n in range(syn_start + 1, syn_end):
+            # The categories of the page can follow the last section: `[[Kategorie:Deutsch]]`
+            if not (text := lines[n].strip()) or re.fullmatch(r"\[\[[^\[\]|:]++:[^\[\]]*+\]\]", text):
+                continue
+            match = line_number.match(lines[n])
+            refs = numbers(match[1]) if match else []
+            synonym = lines[n][match.end() :].strip() if match else ""
+            if not refs or not synonym or any(ref not in meaning_lines for ref in refs):
+                break
+            for ref in refs:
+                attached[meaning_lines[ref]].append(f"## ''{label}:'' {synonym}")
+        else:
+            if attached:
+                for n, sublines in attached.items():
+                    insert[n].extend(sublines)
+                drop.update(range(syn_start, syn_end))
+
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        if n not in drop:
+            out.append(line)
+        out.extend(insert.get(n, []))
+    return "\n".join(out)
+
+
 _STRESS_MARKS = "\u0300\u0301"
 # In NFD, so without "ё", "й" and "ї", that are a base letter with a diacritic
 _VOWELS = "аеиоуыэюяі"
