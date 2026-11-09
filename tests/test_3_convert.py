@@ -896,6 +896,8 @@ def test_format_unknown() -> None:
 def test_distribute_workload_raises_formatter_error(tmp_path: Path) -> None:
     class BrokenFormat(convert.StarDictFormat):
         def process(self) -> None:
+            self.dict_file_h.close()
+            self.idx_file_h.close()
             raise ValueError("boom")
 
     with pytest.raises(ValueError, match="boom"):
