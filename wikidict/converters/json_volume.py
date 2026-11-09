@@ -21,7 +21,6 @@ KEY_DEFINITION = "d"
 KEY_ETYMOLOGY = "e"
 KEY_PRONUNCIATION = "p"
 KEY_REDIRECT = "r"
-KEY_VARIANT = "v"
 
 
 class JSONVolumeFormat(BaseFormat):
@@ -34,7 +33,7 @@ class JSONVolumeFormat(BaseFormat):
 
         self.max_volume_bytes = MAX_VOLUME_SIZE_KB * 1024
         self.volumes: list[dict[str, Any]] = []
-        self.current_volume_words: dict[str, dict[str, Any]] = {}
+        self.current_volume_entries: list[tuple[str, dict[str, Any]]] = []
         self.current_volume_size = 0
         self.volume_num = 0
         self.first_word = ""
@@ -72,24 +71,27 @@ class JSONVolumeFormat(BaseFormat):
                 pass
 
         for word, data in sorted(self.rendered_entries, key=lambda kv: kv[0]):
-            # Estimate size of adding this word
-            size = self._estimate_json_size({word: data})
+            # Estimate size of adding this entry
+            size = self._estimate_json_size(word, data)
 
-            # If this is the first word in the volume, track it
-            if not self.current_volume_words:
+            # If this is the first entry in the volume, track it
+            if not self.current_volume_entries:
                 self.first_word = word
 
-            # Check if adding this word would exceed the limit
+            # Check if adding this entry would exceed the limit
             elif self.current_volume_size + size > self.max_volume_bytes:
-                self._save_volume()
-                self.first_word = word
+                # Keep identical words together in the same volume
+                last_word = self.current_volume_entries[-1][0]
+                if word != last_word:
+                    self._save_volume()
+                    self.first_word = word
 
-            # Add word to current volume
-            self.current_volume_words[word] = data
+            # Add entry to current volume
+            self.current_volume_entries.append((word, data))
             self.current_volume_size += size
 
         # Save the last volume
-        if self.current_volume_words:
+        if self.current_volume_entries:
             self._save_volume()
 
         self._save_manifest()
@@ -132,16 +134,16 @@ class JSONVolumeFormat(BaseFormat):
 
         return result
 
-    def _estimate_json_size(self, data: dict[str, dict[str, Any]]) -> int:
-        """Estimate the size of JSON data in bytes."""
-        json_str = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    def _estimate_json_size(self, word: str, data: dict[str, Any]) -> int:
+        """Estimate the size of JSON data in bytes for a pair."""
+        json_str = json.dumps([word, data], ensure_ascii=False, separators=(",", ":"))
         return len(json_str.encode("utf-8"))
 
     def _save_volume(self) -> None:
         """Save a single volume and return its metadata."""
-        words = self.current_volume_words
-        last_word = list(words.keys())[-1]
-        volume_data = {"words": words}
+        entries = self.current_volume_entries
+        last_word = entries[-1][0]
+        volume_data = {"words": entries}
         file = self.tmp_dir / f"vol-{self.volume_num:08d}.json.gz"
 
         # Write gzipped JSON
@@ -151,12 +153,12 @@ class JSONVolumeFormat(BaseFormat):
         file_size = file.stat().st_size  # Get actual compressed file size
 
         log.info(
-            "[%s] Volume %s: %r → %r (%s words, %sKB)",
+            "[%s] Volume %s: %r → %r (%s entries, %sKB)",
             self.id(),
             f"{self.volume_num:08d}",
             self.first_word,
             last_word,
-            f"{len(words):,}",
+            f"{len(entries):,}",
             f"{file_size / 1024:.1f}",
         )
 
@@ -166,14 +168,14 @@ class JSONVolumeFormat(BaseFormat):
                 "volumeNum": self.volume_num,
                 "firstWord": self.first_word,
                 "lastWord": last_word,
-                "wordCount": len(words),
+                "wordCount": len(entries),
                 "sizeBytes": file_size,
             }
         )
 
         # Start new volume
         self.volume_num += 1
-        self.current_volume_words.clear()
+        self.current_volume_entries.clear()
         self.current_volume_size = 0
 
     def _save_manifest(self) -> None:
