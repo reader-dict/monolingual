@@ -1392,6 +1392,8 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
     '==== Значение ====\n# \n==== Антонимы ===='
     >>> attach_synonyms("==== Значение ====\n# {{прич.|перекроить|прош|страд}}\n# \n==== Синонимы ====\n#перешитый\n#переделанный", "значение", "синонимы", "син.", forms=("{{прич.",))
     '==== Значение ====\n# {{прич.|перекроить|прош|страд}}\n# '
+    >>> attach_synonyms("==== význam ====\n# smysl\n==== synonyma ====\n# [[a]]\n\n[[Kategorie:Česká substantiva]]", "význam", "synonyma", "syn.")
+    "==== význam ====\n# smysl\n## ''syn.:'' [[a]]"
     """
     lines = code.split("\n")
 
@@ -1429,7 +1431,12 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
         if not any(lines[n][1:].strip() and not lines[n][1:].lstrip().startswith(forms or ("\0",)) for n in items):
             drop.update(range(syn_start, syn_end))
             continue
-        syn_lines = [lines[n] for n in range(syn_start + 1, syn_end) if lines[n].strip()]
+        # The categories of the page can follow the last section: `[[Kategorie:Česká substantiva]]`
+        syn_lines = [
+            lines[n]
+            for n in range(syn_start + 1, syn_end)
+            if lines[n].strip() and not re.fullmatch(r"\[\[[^\[\]|:]++:[^\[\]]*+\]\]", lines[n].strip())
+        ]
         if not all(is_item(line) and is_balanced(line) for line in syn_lines):
             continue
         texts = ["" if re.fullmatch(r"[—\-?]?", text := line[1:].strip()) else text for line in syn_lines]
