@@ -44,16 +44,14 @@ def setup_lua_ctx() -> None:
             {
                 "Význam": [
                     "kus horniny",
+                    ("<i>syn.:</i> (v&nbsp;obecném jazyce) šutr, <i>(velký:)</i> balvan, (zdrobněle) kamínek",),
                     "(<i>hromadné, jen singulár</i>) materiál tvořený kameny (1)",
+                    ("<i>syn.:</i> kamení, skála, kamenivo",),
                     "vzácný nebo dekorativní minerál",
+                    ("<i>syn.:</i> drahokam, polodrahokam",),
                     "herní figura v deskových hrách, curlingu apod.",
                     "(dříve) stará jednotka hmotnosti",
                     "druh pozdravu, kdy se dva zdravící lidé navzájem dotknou čelní stranou své sevřené pěsti",
-                ],
-                "Synonyma": [
-                    "(v&nbsp;obecném jazyce) šutr, <i>(velký:)</i> balvan, (zdrobněle) kamínek",
-                    "kamení, skála, kamenivo",
-                    "drahokam, polodrahokam",
                 ],
             },
             [],
@@ -93,9 +91,9 @@ def setup_lua_ctx() -> None:
             ["Ze slovesa popřít."],
             {
                 "Význam": [
-                    "výrok resp. akce, představující nesouhlas s existencí nebo pravdivostí (také účelově, kvůli vlastnímu prospěchu) něčeho; prohlášení něčeho za neplatné, vyvrácení"
+                    "výrok resp. akce, představující nesouhlas s existencí nebo pravdivostí (také účelově, kvůli vlastnímu prospěchu) něčeho; prohlášení něčeho za neplatné, vyvrácení",
+                    ("<i>syn.:</i> negace, vyvrácení; ~zapření, ~zamítnutí",),
                 ],
-                "Synonyma": ["negace, vyvrácení; ~zapření, ~zamítnutí"],
             },
             ["popřený"],
             ["popřeních", "popřením", "popřeními"],

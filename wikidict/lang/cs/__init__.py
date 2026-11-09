@@ -2,7 +2,7 @@
 
 import re
 
-from ... import lang
+from ... import lang, utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
 random_word_url = "https://cs.wiktionary.org/wiki/Speci%C3%A1ln%C3%AD:N%C3%A1hodn%C3%A1_str%C3%A1nka"
@@ -148,10 +148,10 @@ def adjust_wikicode(
     '# {{rev-flexion|Singapuřané}}\n# {{rev-flexion|Singapuřani}}'
     >>> adjust_wikicode("{{Sloveso (cs)\n  | acc = [[toho]] {{Upřesnění|životný}}/<br />ten {{Upřesnění|neživotný}}\n}}", "cs", word="ten")
     '# {{rev-flexion|toho}}'
-    """
-    # Delete empty synonyms
-    code = re.sub(r"^#[ ]*+(?:—|–|-|\?)[ ]*+$", "", code, flags=re.MULTILINE)
 
+    >>> adjust_wikicode("==== význam ====\n# smysl 1\n# smysl 2\n\n==== synonyma ====\n# —\n# [[b]]", "cs")
+    "==== význam ====\n# smysl 1\n# smysl 2\n## ''syn.:'' [[b]]\n"
+    """
     #
     # Variants
     #
@@ -165,6 +165,13 @@ def adjust_wikicode(
                     break
         lines.append(line)
     code = "\n".join(lines)
+
+    # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings.
+    # Before the empty ones are deleted, as they keep the lines in step with the meanings.
+    code = utils.attach_synonyms(code, "význam", "synonyma", "syn.", forms=variant_templates)
+
+    # Delete empty synonyms
+    code = re.sub(r"^#[ ]*+(?:—|–|-|\?)[ ]*+$", "", code, flags=re.MULTILINE)
 
     #
     # Reverse variants
