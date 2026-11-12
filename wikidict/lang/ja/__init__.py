@@ -27,8 +27,7 @@ section_sublevels = (3, 4, 5)
 etyl_section = ("{{etym}}", "字源")
 sections = (
     *etyl_section,
-    "{{adjc",
-    "{{adjective",
+    "{{adj",
     "{{adv",
     "{{colloc",
     "{{conjug",
@@ -38,6 +37,7 @@ sections = (
     "{{prov",
     "{{syn",
     "{{verb",
+    "形容詞",  # adjective
     "形容動詞",  # adjective
     "副詞",  # adverb
     "造語成分",  # coined word

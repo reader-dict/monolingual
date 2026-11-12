@@ -334,6 +334,7 @@ MERGE = {
         "verb form": "verbo",
     },
     "ja": {
+        "adj": "形容動詞",
         "adjc": "形容動詞",
         "adjective": "形容動詞",
         "adjectivenoun": "形容動詞",
