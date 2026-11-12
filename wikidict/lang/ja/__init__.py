@@ -38,6 +38,7 @@ sections = (
     "{{pron",
     "{{prov",
     "{{syn",
+    "{{usage",
     "{{verb",
     "形容詞",  # adjective
     "形容動詞",  # adjective
@@ -64,6 +65,7 @@ sections = (
     "意義",  # significance
     "記号",  # symbol
     "類義語",  # synonyms
+    "用法",  # usage
     "動詞",  # verb
 )
 
