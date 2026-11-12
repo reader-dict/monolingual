@@ -176,6 +176,7 @@ def test_parse_word(
     page: Callable[[str, str], str],
 ) -> None:
     """Test the sections finder and definitions getter."""
+    print(f"{word = }")
     code = page(word, LANG)
     details = parse_word(word, code, LANG, force=True)
     assert details

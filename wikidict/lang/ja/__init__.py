@@ -138,16 +138,18 @@ def adjust_wikicode(
     '=={{L|ja}}==\n==={{etym}}==='
     >>> adjust_wikicode("=={{L|ja}}==\n=== {{etym}}1 ===", "ja", word="いる")
     '=={{L|ja}}==\n==={{etym}}==='
+    >>> adjust_wikicode("=={{L|ja}}==\n===形容詞：硬い　固い　堅い===", "ja", word="かたい")
+    '=={{L|ja}}==\n===形容詞==='
 
     >>> adjust_wikicode("=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号", "ja", word="いる")
     '=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号'
 
     >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id="語義1"></span> [[月]]', "ja", word="新月")
-    '=={{L|ja}}==\n=== {{noun}} ===\n# [[月]]'
+    '=={{L|ja}}==\n==={{noun}}===\n# [[月]]'
     >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id=\"yadoru\"><b>やどる</b></span>。一晩宿泊する。', "ja", word="新月")
-    '=={{L|ja}}==\n=== {{noun}} ===\n#<b>やどる</b>。一晩宿泊する。'
+    '=={{L|ja}}==\n==={{noun}}===\n#<b>やどる</b>。一晩宿泊する。'
     >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span style="font-size:smaller;">（全濁字）</span>', "ja", word="重")
-    '=={{L|ja}}==\n=== {{noun}} ===\n#<small>（全濁字）</small>'
+    '=={{L|ja}}==\n==={{noun}}===\n#<small>（全濁字）</small>'
 
     >>> from ... import context
     >>> _ = context.reset("ja")
@@ -172,7 +174,7 @@ def adjust_wikicode(
     code = re.sub(r"</?span[^>]*+>", "", code)
 
     # `==={{etym}}:いる===` → `==={{etym}}===`
-    code = re.sub(r"^={3,}[ ]*+\{\{etym\}\}.*+", "==={{etym}}===", code, flags=re.MULTILINE)
+    code = re.sub(r"(^={3,})[ ]*+([^：:}=]++\}*+)[^\n]++", r"\1\2\1", code, flags=re.MULTILINE)
 
     # `==記号==` → `==記号==\n===記号===`
     code = re.sub(r"^(==[ ]*+記号[ ]*+==)", r"\1\n===記号===", code)
