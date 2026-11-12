@@ -100,6 +100,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ja-pron|acc=1}}", "ja")
     ['みる (頭高型 – [1])']
 
+    >>> context.new_word("貴様")
+    >>> find_pronunciations("{{ja-pron|きさま|acc=0|dev=1}}", "ja")
+    ['きさま (平板型 – [0])']
+
     >>> context.new_word("て")
     >>> find_pronunciations("{{ipa|te|lang=ja}}", "ja")
     ['/te/']
@@ -117,6 +121,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     for lookup in lookups:
         for tpl in re.findall(lookup, code):
             expanded = context.expand(tpl, "ja")
+
+            if "<del>" in expanded:
+                expanded = re.sub(r"<del>[^<]++</del>", "", expanded)
+
             if locale == "ja":
                 line = expanded.splitlines()[0]
                 if "東京式" in line:
