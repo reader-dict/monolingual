@@ -355,6 +355,7 @@ MERGE = {
         "pronoun": "代名詞",
         "prov": "ことわざ",
         "proverb": "ことわざ",
+        "suffix": "接尾辞",
         "syn": "類義語",
         "top": "名詞",  # noun
         "usage": "用法",

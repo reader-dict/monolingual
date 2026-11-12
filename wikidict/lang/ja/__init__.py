@@ -37,6 +37,7 @@ sections = (
     "{{noun",
     "{{pron",
     "{{prov",
+    "{{suffix",
     "{{syn",
     "{{usage",
     "{{verb",
@@ -65,6 +66,7 @@ sections = (
     "句読点",  # punctuation mark
     # "備考",  # remark (example with the word "麒麟竭", but it requires more work)
     "意義",  # significance
+    "接尾辞",  # suffix
     "記号",  # symbol
     "類義語",  # synonyms
     "用法",  # usage
