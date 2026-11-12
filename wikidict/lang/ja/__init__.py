@@ -28,6 +28,7 @@ etyl_section = ("{{etym}}", "字源")
 sections = (
     *etyl_section,
     "{{abbr",
+    "{{adnominal",
     "{{adj",
     "{{adv",
     "{{auxverb",
