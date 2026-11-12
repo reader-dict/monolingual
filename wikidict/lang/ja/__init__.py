@@ -45,6 +45,7 @@ sections = (
     "副詞",  # adverb
     "造語成分",  # coined word
     "連語",  # collocation
+    "複合助辞",  # compound particle
     "活用",  # conjugation
     "接続詞",  # conjunction
     "漢字混り表記",  # kanji mixed notation
