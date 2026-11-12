@@ -351,6 +351,8 @@ MERGE = {
         "interjection": "感動詞",
         "name": "固有名詞",
         "noun": "名詞",
+        "pron": "代名詞",
+        "pronoun": "代名詞",
         "prov": "ことわざ",
         "proverb": "ことわざ",
         "top": "名詞",  # noun
