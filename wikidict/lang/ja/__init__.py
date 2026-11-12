@@ -32,6 +32,7 @@ sections = (
     "{{colloc",
     "{{conj",
     "{{idiom",
+    "{{interj",
     "{{name",
     "{{noun",
     "{{prov",
@@ -46,6 +47,7 @@ sections = (
     "接続詞",  # conjunction
     "漢字混り表記",  # kanji mixed notation
     "成句",  # idiom
+    "感動詞",  # interjection
     "呼称",  # name
     "固有名詞",  # proper name
     "名詞",  # noun
@@ -141,6 +143,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{L|ja}}==\n===形容詞：硬い　固い　堅い===", "ja", word="かたい")
     '=={{L|ja}}==\n===形容詞==='
 
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{interj|ja}}===", "ja")
+    '=={{L|ja}}==\n==={{interj==='
+
     >>> adjust_wikicode("=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号", "ja", word="いる")
     '=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号'
 
@@ -174,7 +179,7 @@ def adjust_wikicode(
     code = re.sub(r"</?span[^>]*+>", "", code)
 
     # `==={{etym}}:いる===` → `==={{etym}}===`
-    code = re.sub(r"(^={3,})[ ]*+([^：:}=]++\}*+)[^\n]++", r"\1\2\1", code, flags=re.MULTILINE)
+    code = re.sub(r"(^={3,})[ ]*+([^：:}=|]++\}*+)[^\n]++", r"\1\2\1", code, flags=re.MULTILINE)
 
     # `==記号==` → `==記号==\n===記号===`
     code = re.sub(r"^(==[ ]*+記号[ ]*+==)", r"\1\n===記号===", code)

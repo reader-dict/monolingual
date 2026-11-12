@@ -347,6 +347,8 @@ MERGE = {
         "conjug": "活用",
         "conjugation": "活用",
         "idiom": "成句",
+        "interj": "感動詞",
+        "interjection": "感動詞",
         "name": "固有名詞",
         "noun": "名詞",
         "prov": "ことわざ",
