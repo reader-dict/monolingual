@@ -48,6 +48,7 @@ sections = (
     "活用",  # conjugation
     "接続詞",  # conjunction
     "漢字混り表記",  # kanji mixed notation
+    "和語の漢字表記",  # kanji representation of native Japanese words
     "成句",  # idiom
     "感動詞",  # interjection
     "呼称",  # name
