@@ -53,6 +53,8 @@ sections = (
     "助動詞",  # auxiliary verb
     "造語成分",  # coined word
     "連語",  # collocation
+    "普通名詞",  # common noun
+    "普通{{noun",  # common noun
     "複合助辞",  # compound particle
     "活用",  # conjugation
     "接続詞",  # conjunction

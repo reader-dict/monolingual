@@ -365,6 +365,7 @@ MERGE = {
         "top": "名詞",  # noun
         "usage": "用法",
         "verb": "動詞",
+        "普通noun": "普通名詞",  # common noun
         "活用形": "活用",  # conjugation form
         "慣用句": "成句",  # idiom
         "名詞形": "名詞",  # noun form
