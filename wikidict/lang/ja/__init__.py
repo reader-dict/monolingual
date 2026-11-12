@@ -30,7 +30,7 @@ sections = (
     "{{adj",
     "{{adv",
     "{{colloc",
-    "{{conjug",
+    "{{conj",
     "{{idiom",
     "{{name",
     "{{noun",
@@ -43,6 +43,7 @@ sections = (
     "造語成分",  # coined word
     "連語",  # collocation
     "活用",  # conjugation
+    "接続詞",  # conjunction
     "漢字混り表記",  # kanji mixed notation
     "成句",  # idiom
     "呼称",  # name

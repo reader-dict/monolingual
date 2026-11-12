@@ -342,6 +342,8 @@ MERGE = {
         "adverb": "副詞",
         "colloc": "連語",
         "collocation": "連語",
+        "conj": "接続詞",
+        "conjunction": "接続詞",
         "conjug": "活用",
         "conjugation": "活用",
         "idiom": "成句",
