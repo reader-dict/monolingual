@@ -356,6 +356,7 @@ MERGE = {
         "noun": "名詞",
         "parti": "助詞",
         "particle": "不変化詞",
+        "prefix": "接頭辞",
         "pron": "代名詞",
         "pronoun": "代名詞",
         "prov": "ことわざ",

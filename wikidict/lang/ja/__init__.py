@@ -39,6 +39,7 @@ sections = (
     "{{name",
     "{{noun",
     "{{parti",
+    "{{prefix",
     "{{pron",
     "{{prov",
     "{{suffix",
@@ -70,6 +71,7 @@ sections = (
     "助詞",  # particle
     "慣用句",  # phrase
     "地名語",  # place name
+    "接頭辞",  # prefix
     "代名詞",  # pronoun
     "固有名詞",  # proper noun
     "ことわざ",  # proverb
