@@ -36,6 +36,7 @@ sections = (
     "{{interj",
     "{{name",
     "{{noun",
+    "{{parti",
     "{{pron",
     "{{prov",
     "{{suffix",
