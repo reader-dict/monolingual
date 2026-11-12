@@ -40,7 +40,7 @@ sections = (
     "{{prov",
     "{{suffix",
     "{{syn",
-    "{{usage",
+    # "{{usage",
     "{{verb",
     "形容詞",  # adjective
     "形容動詞",  # adjective
@@ -71,7 +71,7 @@ sections = (
     "接尾辞",  # suffix
     "記号",  # symbol
     "類義語",  # synonyms
-    "用法",  # usage
+    # "用法",  # usage
     "動詞",  # verb
 )
 

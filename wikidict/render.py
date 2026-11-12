@@ -175,7 +175,7 @@ POS_SYNONYMS = {
 }
 POS_NOTES = {
     "en": "Usage Note",
-    "ja": "用法",
+    # "ja": "用法",
     "nl": "Opmerkingen",
 }
 
