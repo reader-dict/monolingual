@@ -57,6 +57,7 @@ sections = (
     "和語の漢字表記",  # kanji representation of native Japanese words
     "成句",  # idiom
     "感動詞",  # interjection
+    "不変化詞",  # invariable particle
     "呼称",  # name
     "固有名詞",  # proper name
     "名詞",  # noun
