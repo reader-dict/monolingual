@@ -134,6 +134,15 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     """
     >>> render_reverse_variant("rev-flexion", ["коро́ль"], defaultdict(str), "")
     'коро́ль'
+
+    The analytic forms of an English adjective ("more plaintive") give no form, the others do:
+    >>> _ = context.reset("ru")
+    >>> context.new_word("plaintive")
+    >>> render_reverse_variant("прил en m", [], defaultdict(str, {"слоги": "plaintive"}), "plaintive")
+    ''
+    >>> context.new_word("happy")
+    >>> sorted(render_reverse_variant("прил en y", [], defaultdict(str, {"основа": "happ"}), "happy").split("|"))
+    ['happier', 'happiest']
     """
     if tpl == "rev-flexion":
         return parts[0].strip()
@@ -183,9 +192,16 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     # A letter that can be added in front, as after a preposition: `(н)ея́же` → `ея́же, нея́же`
     forms = {re.sub(r"^\(([^\s().,;]++)\)([^\s()]++)$", r"\2, \1\2", form.strip()) for form in forms}
     forms = {cleanup(form) for form in forms}
-    # One cell can hold several forms: "его́, него́"
+    # One cell can hold several forms: "его́, него́", "ва́шей ва́шею". But an analytic form holds the word itself,
+    # "more plaintive", and its other words are not forms of it: "more" would find "plaintive".
     if " " not in word:
-        forms = {part for form in forms for part in re.split(r"[\s,;]+", form)}
+        forms = {
+            part
+            for form in forms
+            for chunk in re.split(r"[,;]+", form)
+            if word not in (parts := chunk.split()) or len(parts) == 1
+            for part in parts
+        }
     # Analytic forms: "буду/будешь… сидеть"
     forms = {form for form in forms if "/" not in form and "…" not in form}
     forms.discard("&")
