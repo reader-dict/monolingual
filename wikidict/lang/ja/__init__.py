@@ -57,6 +57,7 @@ sections = (
     "地名語",  # place name
     "固有名詞",  # proper noun
     "ことわざ",  # proverb
+    "句読点",  # punctuation mark
     # "備考",  # remark (example with the word "麒麟竭", but it requires more work)
     "意義",  # significance
     "記号",  # symbol
