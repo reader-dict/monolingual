@@ -29,6 +29,7 @@ sections = (
     *etyl_section,
     "{{adj",
     "{{adv",
+    "{{auxverb",
     "{{colloc",
     "{{conj",
     "{{idiom",
@@ -44,6 +45,7 @@ sections = (
     "形容詞",  # adjective
     "形容動詞",  # adjective
     "副詞",  # adverb
+    "助動詞",  # auxiliary verb
     "造語成分",  # coined word
     "連語",  # collocation
     "複合助辞",  # compound particle

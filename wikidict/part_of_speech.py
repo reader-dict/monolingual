@@ -340,6 +340,7 @@ MERGE = {
         "adjectivenoun": "形容動詞",
         "adv": "副詞",
         "adverb": "副詞",
+        "auxverb": "助動詞",
         "colloc": "連語",
         "collocation": "連語",
         "conj": "接続詞",
