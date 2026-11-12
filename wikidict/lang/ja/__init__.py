@@ -157,6 +157,84 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return []
 
 
+def attach_synonyms(code: str) -> str:
+    r"""
+    Put the synonyms under their meaning, as a sub-definition, when they give its number ("語義1").
+    The list is kept as it is when one of its lines can't be matched with a meaning.
+
+    >>> attach_synonyms("==={{interj|ja}}===\n#考え込む様子。\n#*「ふうん、なるほど。」\n#冷淡な反応。\n===={{syn}}====\n*語義1：[[ふむ]]、[[なるほど]]\n*語義2：[[あっそ]]\n==註==")
+    "==={{interj|ja}}===\n#考え込む様子。\n#*「ふうん、なるほど。」\n## ''類義語:'' [[ふむ]]、[[なるほど]]\n#冷淡な反応。\n## ''類義語:'' [[あっそ]]\n==註=="
+    >>> attach_synonyms("==={{suffix}}===\n# 学年。\n# 年数。\n===={{syn}}====\n語義1\n*第…[[学年]]\n*[[回生]]\n語義2\n*[[年草]]\n===={{trans}}====")
+    "==={{suffix}}===\n# 学年。\n## ''類義語:'' 第…[[学年]]、[[回生]]\n# 年数。\n## ''類義語:'' [[年草]]\n===={{trans}}===="
+    >>> attach_synonyms("==={{noun}}===\n# 一。\n# 二。\n===={{syn}}====\n*（語義1）[[退職]]、[[辞職]]\n*[[気楽]]（語義1、語義2）")
+    "==={{noun}}===\n# 一。\n## ''類義語:'' [[退職]]、[[辞職]]、[[気楽]]\n# 二。\n## ''類義語:'' [[気楽]]"
+    >>> attach_synonyms("==={{noun}}===\n# 一。\n===={{syn}}====\n*[[気楽]]\n*（語義1）[[退職]]")
+    '==={{noun}}===\n# 一。\n===={{syn}}====\n*[[気楽]]\n*（語義1）[[退職]]'
+    >>> attach_synonyms("==={{noun}}===\n# 一。\n===={{syn}}====\n*（語義2）[[退職]]")
+    '==={{noun}}===\n# 一。\n===={{syn}}====\n*（語義2）[[退職]]'
+    """
+    numbers = r"語義\s*+(\d++(?:\s*+[、,・]\s*+(?:語義)?\s*+\d++)*+)"
+    heading = re.compile(rf"^[;:*]?\s*+[（(]?{numbers}[）)]?\s*+[:：]?\s*+$")
+    prefix = re.compile(rf"^\*\s*+(?:\{{\{{sense\|{numbers}\}}\}}|[（(]{numbers}[）)]|{numbers}\s*+[:：])\s*+(.+)$")
+    suffix = re.compile(rf"^\*\s*+(.+?)\s*+[（(]{numbers}[）)]\s*+$")
+    lines = code.split("\n")
+
+    def level(line: str) -> int:
+        return len(line) - len(line.lstrip("=")) if line.startswith("=") else 0
+
+    def refs(text: str) -> list[int]:
+        return [int(number) for number in re.findall(r"\d++", text)]
+
+    drop: set[int] = set()
+    insert: dict[int, str] = {}
+    for start, line in enumerate(lines):
+        if not re.fullmatch(r"(=++)\s*+(?:\{\{syn\}\}|類義語)\s*+\1\s*+", line):
+            continue
+        end = next((n for n in range(start + 1, len(lines)) if level(lines[n])), len(lines))
+        # The meanings: the "#" items of the section this one belongs to, before its first sub-section
+        parent = next((n for n in range(start - 1, -1, -1) if 0 < level(lines[n]) < level(line)), -1)
+        first_sub = next((n for n in range(parent + 1, start + 1) if level(lines[n])), start)
+        items = [n for n in range(parent + 1, first_sub) if lines[n].startswith("#") and lines[n][1:2] not in "#*:"]
+        synonyms: dict[int, list[str]] = {}
+        current: list[int] = []
+        for text in (lines[n].strip() for n in range(start + 1, end)):
+            if not text or re.fullmatch(r"\{\{(?:top|mid|bottom|stub)[^}]*+\}\}|\[\[[^\[\]|:]++:[^\[\]]*+\]\]", text):
+                continue
+            if match := heading.match(text):
+                current = refs(match[1])
+                continue
+            if match := prefix.match(text):
+                found, synonym = refs(match[1] or match[2] or match[3]), match[4]
+            elif match := suffix.match(text):
+                found, synonym = refs(match[2]), match[1]
+            elif text.startswith("*") and current:
+                found, synonym = current, text.lstrip("* ")
+            else:
+                break
+            if not found or any(not 0 < number <= len(items) for number in found):
+                break
+            for number in found:
+                synonyms.setdefault(number, []).append(synonym)
+        else:
+            if synonyms:
+                for number, texts in synonyms.items():
+                    # After the meaning and its own sub-items
+                    item = items[number - 1]
+                    after = next(
+                        (n for n in range(item + 1, first_sub) if lines[n][:2] not in ("#*", "#:", "##")), first_sub
+                    )
+                    insert[after - 1] = f"## ''類義語:'' {'、'.join(texts)}"
+                drop.update(range(start, end))
+
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        if n not in drop:
+            out.append(line)
+        if n in insert:
+            out.append(insert[n])
+    return "\n".join(out)
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -206,6 +284,9 @@ def adjust_wikicode(
     # `<span id="語義1"></span>` → ``
     # `<span id="語義1"><b>語義</b></span> ` → `<b>語義</b>`
     code = re.sub(r"</?span[^>]*+>", "", code)
+
+    # Synonyms go under their meaning when they give its number: `*語義1：[[ふむ]]`
+    code = attach_synonyms(code)
 
     # `==={{etym}}:いる===` → `==={{etym}}===`
     code = re.sub(r"(^={3,})[ ]*+([^：:}=|]++\}*+)[^\n]++", r"\1\2\1", code, flags=re.MULTILINE)
