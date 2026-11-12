@@ -33,6 +33,7 @@ sections = (
     "{{colloc",
     "{{conjug",
     "{{idiom",
+    "{{name",
     "{{noun",
     "{{prov",
     "{{syn",
@@ -45,6 +46,7 @@ sections = (
     "漢字混り表記",  # kanji mixed notation
     "成句",  # idiom
     "呼称",  # name
+    "固有名詞",  # proper name
     "名詞",  # noun
     "由来",  # origin
     "助詞",  # particle
