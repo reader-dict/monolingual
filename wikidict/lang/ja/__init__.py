@@ -29,6 +29,7 @@ sections = (
     *etyl_section,
     "{{adjc",
     "{{adjective",
+    "{{adv",
     "{{colloc",
     "{{conjug",
     "{{idiom",

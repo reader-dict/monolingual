@@ -337,6 +337,8 @@ MERGE = {
         "adjc": "形容動詞",
         "adjective": "形容動詞",
         "adjectivenoun": "形容動詞",
+        "adv": "副詞",
+        "adverb": "副詞",
         "colloc": "連語",
         "collocation": "連語",
         "conjug": "活用",
