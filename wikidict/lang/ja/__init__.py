@@ -44,6 +44,7 @@ sections = (
     "{{verb",
     "形容詞",  # adjective
     "形容動詞",  # adjective
+    "連体詞",  # adnominal word
     "副詞",  # adverb
     "助動詞",  # auxiliary verb
     "造語成分",  # coined word
