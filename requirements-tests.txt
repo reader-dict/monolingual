@@ -3,6 +3,6 @@ mobi==0.4.1
 mypy==2.4.1
 pytest==9.2.0
 responses==0.26.3
-ruff==0.17.3
+ruff==0.17.4
 ruff-api==0.2.1
 types-requests==2.33.0.20261030
