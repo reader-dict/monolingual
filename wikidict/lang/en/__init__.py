@@ -81,8 +81,6 @@ variant_templates = (
 
 definitions_to_ignore = (
     "rfdef",
-    "translation hub",
-    "translation only",
 )
 
 templates_ignored = (
@@ -112,6 +110,8 @@ templates_ignored = (
     "{{rf",
     "{{see",
     "{{t-needed",
+    "{{translation hub",
+    "{{translation only",
     "{{unsupported",
     "{{wiki",
     "{{Wiktionary:Picture",
