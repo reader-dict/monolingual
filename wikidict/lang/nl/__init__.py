@@ -26,7 +26,7 @@ sections = (
     "{{conj",
     "{{decl",
     "{{expr",
-    "{{interj",
+    "{{inter",
     "{{name",
     "{{note",
     "{{noun",

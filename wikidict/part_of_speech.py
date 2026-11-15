@@ -422,6 +422,7 @@ MERGE = {
         "conj": "coegwoord",
         "decl": "verbuiging",
         "expr": "uitdrukkingen en gezegden",
+        "interf": "invoegsel",
         "interj": "tussenwerpsel",
         "name": "eigennaam",
         "note": "opmerkingen",
