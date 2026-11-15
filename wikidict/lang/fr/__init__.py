@@ -44,6 +44,7 @@ core_sections = [
     "conjonction de coordination",
     "conjonction",
     "déterminant démonstratif",
+    "déterminant possessif",
     "erreur",
     "infixe",
     "interfixe",
