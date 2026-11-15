@@ -10,7 +10,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     >>> render_variant("flexion", ["[B] cokes"], defaultdict(str), "cokes")
     'cokes'
     """
-    return re.sub(r"^\[\w\] ", "", parts[-1].strip(), flags=re.MULTILINE)
+    return re.sub(r"^\[\w\] ", "", parts[0].strip(), flags=re.MULTILINE)
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -55,12 +55,15 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 handlers = {
     **dict.fromkeys(
         {
+            "1ps",
+            "1ps-bijz",
             "flexion",
             "noun-dim",
             "noun-dim-pl",
             "noun-pl",
             "ovt-enk",
             "ovt-enk-bijz",
+            "ovt-mv",
             "volt-d",
         },
         render_variant,
