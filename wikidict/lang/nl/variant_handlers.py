@@ -60,6 +60,8 @@ handlers = {
             "noun-dim-pl",
             "noun-pl",
             "ovt-enk",
+            "ovt-enk-bijz",
+            "volt-d",
         },
         render_variant,
     ),
