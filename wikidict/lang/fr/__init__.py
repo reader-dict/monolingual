@@ -50,6 +50,7 @@ core_sections = [
     "interfixe",
     "interjection",
     # "lettre",  # See #2634
+    "locution",
     "locution-phrase",
     "locution phrase",
     "nom commun",
