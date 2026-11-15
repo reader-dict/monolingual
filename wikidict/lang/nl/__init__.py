@@ -48,12 +48,15 @@ sections = (
 
 variant_templates = (
     "{{1ps",
+    "{{2ps",
     "{{flexion",
+    "{{nl-adjc-form",
     "{{noun-dim",
     "{{noun-dim-pl",
     "{{noun-pl",
     "{{ovt-enk",
     "{{ovt-mv",
+    "{{tps",
     "{{volt-d",
 )
 
