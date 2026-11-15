@@ -22,6 +22,7 @@ core_sections = (
     "adjective",
     "adverb",
     "articol",
+    "comp",
     "conjuncție",
     "cuvânt compus",
     "expr",

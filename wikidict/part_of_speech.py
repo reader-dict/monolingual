@@ -461,6 +461,7 @@ MERGE = {
     },
     "ro": {
         "abr": "abreviere",
+        "comp": "cuvinte compuse",
         "expr": "expresie",
         "sin": "sinonime",
         "top": "substantiv",
