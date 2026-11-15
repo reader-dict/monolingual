@@ -33,6 +33,7 @@ core_sections = [
     "adjectif relatif",
     "adjectif",
     "adj",
+    "adverbe indéfini",
     "adverbe interrogatif",
     "adverbe relatif",
     "adverbe",
