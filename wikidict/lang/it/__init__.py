@@ -10,6 +10,7 @@ random_word_url = "https://it.wiktionary.org/wiki/Speciale:RandomRootpage"
 
 module_trans = "Modulo"
 
+section_patterns = ("#", r"\*")
 head_sections = ("{{-it-}}",)
 etyl_section = ("{{etim}}",)
 sections = (
