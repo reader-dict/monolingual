@@ -428,6 +428,7 @@ MERGE = {
         "note": "opmerkingen",
         "noun": "zelfstandig naamwoord",
         "num": "hoofdtelwoord",
+        "ordn": "rangtelwoord",
         "phrase": "frase",
         "pref": "voorvoegsel",
         "prep": "voorzetsel",

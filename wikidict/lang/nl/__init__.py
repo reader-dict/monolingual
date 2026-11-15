@@ -31,6 +31,7 @@ sections = (
     "{{note",
     "{{noun",
     "{{num",
+    "{{ordn",
     "{{pref",
     "{{prep",
     "{{phrase",
