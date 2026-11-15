@@ -420,6 +420,7 @@ MERGE = {
         "adjc": "bijvoeglijk naamwoord",
         "art": "lidwoord",
         "conj": "coegwoord",
+        "cont": "contractie",
         "decl": "verbuiging",
         "expr": "uitdrukkingen en gezegden",
         "interf": "invoegsel",

@@ -24,6 +24,7 @@ sections = (
     "{{adverb",
     "{{art",
     "{{conj",
+    "{{cont",
     "{{decl",
     "{{expr",
     "{{inter",
