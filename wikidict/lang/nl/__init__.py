@@ -47,6 +47,7 @@ variant_templates = (
     "{{noun-dim",
     "{{noun-dim-pl",
     "{{noun-pl",
+    "{{ovt-enk",
 )
 
 reverse_variant_titles = ("{{adjcomp", "{{-nlnoun-", "{{-nlverb-")

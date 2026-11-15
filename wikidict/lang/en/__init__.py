@@ -79,9 +79,7 @@ variant_templates = (
     "{{verb form of",
 )
 
-definitions_to_ignore = (
-    "rfdef",
-)
+definitions_to_ignore = ("rfdef",)
 
 templates_ignored = (
     "{{#lsth",

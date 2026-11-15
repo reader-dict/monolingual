@@ -59,6 +59,7 @@ handlers = {
             "noun-dim",
             "noun-dim-pl",
             "noun-pl",
+            "ovt-enk",
         },
         render_variant,
     ),
