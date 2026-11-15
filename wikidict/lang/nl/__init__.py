@@ -36,6 +36,7 @@ sections = (
     "{{pref",
     "{{prep",
     "{{phrase",
+    "{{pron-adv",
     "{{pronom",
     "{{prov",
     "{{suff",

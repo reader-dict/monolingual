@@ -433,6 +433,7 @@ MERGE = {
         "phrase": "frase",
         "pref": "voorvoegsel",
         "prep": "voorzetsel",
+        "pron": "voornaamwoordelijk bijwoord",
         "pronom": "voornaamwoord",
         "prov": "spreekwoorden",
         "suff": "achtervoegsel",
