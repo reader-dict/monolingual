@@ -143,6 +143,91 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return [re.sub(r"[()]", "", pron.replace("/ ", "/").replace(" /", "/")) for pron in res]
 
 
+def attach_synonyms(code: str) -> str:
+    r"""
+    Put the synonyms under their meaning, as a sub-definition, when they give its number: `*[1] [[bijgevolg]]`.
+    The list is kept as it is when one of its lines has no number, or a number that is not the one of a meaning:
+    `[1.1]` refers to a sub-meaning.
+
+    >>> attach_synonyms("=== {{adverb|nld}} ===\n'''daardoor'''\n#door dat\n#: voorbeeld\n{{bijv-1|Het is warm.}}\n#fysiek\n=== {{syn}} ===\n\n*[1] [[bijgevolg]], [[dientengevolge]]\n=== {{trans}} ===")
+    "=== {{adverb|nld}} ===\n'''daardoor'''\n#door dat\n#: voorbeeld\n## ''syn.:'' [[bijgevolg]], [[dientengevolge]]\n{{bijv-1|Het is warm.}}\n#fysiek\n=== {{trans}} ==="
+    >>> attach_synonyms("=== {{verb|nld}} ===\n# een\n# twee\n# drie\n=== {{homo}} ===\n*[[x]]\n=== {{syn}} ===\n* [1, 3] [[a]],\n* [2]: [[b]]\n*[2-3] [[c]]")
+    "=== {{verb|nld}} ===\n# een\n## ''syn.:'' [[a]]\n# twee\n## ''syn.:'' [[b]], [[c]]\n# drie\n## ''syn.:'' [[a]], [[c]]\n=== {{homo}} ===\n*[[x]]"
+    >>> attach_synonyms("=== {{noun|nld}} ===\n# een\n## een.een\n=== {{syn}} ===\n*[1] [[a]]\n*[1.1] [[b]]")
+    '=== {{noun|nld}} ===\n# een\n## een.een\n=== {{syn}} ===\n*[1] [[a]]\n*[1.1] [[b]]'
+    >>> attach_synonyms("=== {{noun|nld}} ===\n# een\n=== {{syn}} ===\n*[1] [[a]]\n*[[b]]")
+    '=== {{noun|nld}} ===\n# een\n=== {{syn}} ===\n*[1] [[a]]\n*[[b]]'
+    >>> attach_synonyms("=== {{noun|nld}} ===\n# een\n=== {{syn}} ===\n*[2] [[a]]")
+    '=== {{noun|nld}} ===\n# een\n=== {{syn}} ===\n*[2] [[a]]'
+    >>> attach_synonyms("=== {{verb|nld}} ===\n# een\n#{{volt-d|bezweten}}\n=== {{syn}} ===\n*[2] [[bezweet]]")
+    '=== {{verb|nld}} ===\n# een\n#{{volt-d|bezweten}}\n=== {{syn}} ===\n*[2] [[bezweet]]'
+    """
+    lines = code.split("\n")
+    numbered = re.compile(r"\*\s*+((?:\[[\d\s,+–-]++\][\s,]*+)++):?\s*+(\S.*+)")
+    headers = [n for n, line in enumerate(lines) if line.startswith("=")] + [len(lines)]
+
+    def level(n: int) -> int:
+        return len(lines[n]) - len(lines[n].lstrip("="))
+
+    def meanings(start: int, end: int) -> list[int]:
+        return [n for n in range(start + 1, end) if lines[n].startswith("#") and lines[n][1:2] not in "#*:"]
+
+    def is_form(n: int) -> bool:
+        return lines[n][1:].lstrip().startswith(variant_templates)
+
+    def numbers(text: str) -> list[int]:
+        """`[1, 3-4]` gives `[1, 3, 4]`."""
+        return [
+            number
+            for first, last in re.findall(r"(\d++)(?:\s*+[–-]\s*+(\d++))?", text)
+            for number in range(int(first), int(last or first) + 1)
+        ]
+
+    drop: set[int] = set()
+    insert: dict[int, str] = {}
+    for i, start in enumerate(headers[:-1]):
+        if lines[start].strip("= ") != "{{syn}}":
+            continue
+        # The meanings: the "#" items of the nearest section above that has some, as other sections
+        # (homophones, notes) can come in between, but not above the section of the language, nor in another
+        # list of synonyms: meanings in there lack the header of their part of speech
+        items: list[int] = []
+        for j in range(i - 1, -1, -1):
+            if level(headers[j]) < level(start) or lines[headers[j]].strip("= ") == "{{syn}}":
+                break
+            if items := meanings(headers[j], headers[j + 1]):
+                break
+        synonyms: dict[int, list[str]] = {}
+        for n in range(start + 1, headers[i + 1]):
+            if not (text := lines[n].strip()):
+                continue
+            if not (match := numbered.fullmatch(text)) or not (found := numbers(match[1])):
+                break
+            # A meaning that is the form of another word goes to the variants, its synonyms would be lost with it
+            if any(not 0 < k <= len(items) or is_form(items[k - 1]) for k in found):
+                break
+            for k in found:
+                synonyms.setdefault(k, []).append(match[2].rstrip(", "))
+        else:
+            for k, texts in synonyms.items():
+                # After the meaning and its own sub-items
+                item = items[k - 1]
+                after = next(
+                    (n for n in range(item + 1, len(lines)) if not lines[n].startswith(("#*", "#:", "##"))), len(lines)
+                )
+                insert[after - 1] = f"## ''syn.:'' {', '.join(texts)}"
+            if synonyms:
+                drop.update(range(start, headers[i + 1]))
+
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        if n not in drop:
+            out.append(line)
+        if n in insert:
+            out.append(insert[n])
+    return "\n".join(out)
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -250,6 +335,9 @@ def adjust_wikicode(
 
     # {{-noun-|LOCALE|...}} → === {{noun|LOCALE|...}} ===
     code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3}\|[^}\[\]{}]++)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
+
+    # Synonyms go under their meaning when they give its number: `*[1] [[bijgevolg]]`
+    code = attach_synonyms(code)
 
     #
     # Variants
