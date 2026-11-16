@@ -1244,13 +1244,23 @@ def formula_to_svg(formula: str, *, cat: str = "tex") -> str:
     return svg.optimize(svg_raw)
 
 
+def strip_formula(formula: str) -> str:
+    r"""
+    Strip the spaces around a formula, but not the one of a control space: `\varepsilon\ `.
+
+    >>> strip_formula(" x < \\varepsilon\\  ")
+    'x < \\varepsilon\\ '
+    """
+    return re.sub(r"^\s+|(?<!\\)\s+$", "", formula)
+
+
 def convert_chem(match: str | re.Match[str], word: str) -> str:
     """Convert chemistry symbols to a base64 encoded GIF file.
 
     >>> convert_chem("<chem>foo</chem>", "foo")
     '<chem>foo</chem>'
     """
-    formula: str = (match.group(1) if isinstance(match, re.Match) else match).strip()
+    formula = strip_formula(match.group(1) if isinstance(match, re.Match) else match)
     if "<chem>" in formula or "</chem>" in formula:
         return formula
     try:
@@ -1272,7 +1282,7 @@ def convert_math(match: str | re.Match[str], word: str) -> str:
     >>> convert_math("<math>foo</math>", "foo")
     '<math>foo</math>'
     """
-    formula: str = (match.group(1) if isinstance(match, re.Match) else match).strip()
+    formula = strip_formula(match.group(1) if isinstance(match, re.Match) else match)
     if "<math>" in formula or "</math>" in formula:
         return formula
     try:
