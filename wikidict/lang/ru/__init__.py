@@ -4,6 +4,7 @@ import re
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
+from .template_adapters import adapters as template_adapters  # noqa: F401
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
