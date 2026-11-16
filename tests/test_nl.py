@@ -31,6 +31,7 @@ def setup_lua_ctx() -> None:
                     "het op de eerste plaats genoemde",
                     "(muziek) de standaardmuziektoon van 440 Hz",
                     "(muziek) de tiende toon van de chromatische, en de zesde toon van de diatonische toonladder",
+                    ("<i>syn.:</i> la",),
                     "(muziek), (afkorting) afkorting van “a-mineur”",
                     "het eerste element van een opsomming",
                 ],
@@ -51,7 +52,6 @@ def setup_lua_ctx() -> None:
                     "(natuurkunde) het symbool voor versnelling.",
                     "(kristallografie) het symbool voor een glijspiegelvlak waarbij een spiegeling gevolgd wordt door een halve verschuiving in de richting van de a-as.",
                 ],
-                "Synoniemen": ["[4] la"],
             },
             [],
             ["a's", "a'tje", "a'tjes"],
@@ -178,13 +178,14 @@ def setup_lua_ctx() -> None:
                         "beide volgende talen)</i>"
                     ),
                     "(taal), <i>(specifiek)</i> officiële taal van de deelstaat Goa in India",
+                    ("<i>syn.:</i> Goa-Konkani",),
                     (
                         "(taal), <i>(specifiek)</i> taal met verschillende dialecten in "
                         "de deelstaat Maharashtra in India, die samen een overgang "
                         "tussen Marathi en het Goa-Konkani vormen"
                     ),
+                    ("<i>syn.:</i> Maharashtra-Konkani",),
                 ],
-                "Synoniemen": ["[2] Goa-Konkani", "[3] Maharashtra-Konkani"],
             },
             [],
             [],
