@@ -148,7 +148,7 @@ def adjust_wikicode(
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
                     for tpl_sub in extract_templates(tpl_code):
-                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip()
+                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip().strip("\u200e")
                         variant_handlers_mod.append_to_reverse_variants(tpl_name)
                         forms = utils.process_templates(
                             word,
