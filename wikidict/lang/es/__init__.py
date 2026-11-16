@@ -187,7 +187,7 @@ def adjust_wikicode(
                     in_tpl = False
                     tpl_code = tpl_code.rsplit("}}", 1)[0]
                     tpl_code += "}}"
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
+                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().strip("\u200e")
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
                     forms = utils.process_templates(
                         word,

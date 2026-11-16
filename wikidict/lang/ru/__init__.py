@@ -163,6 +163,8 @@ _IPA = re.compile(r"&#91;([^&]++)&#93;")
 
 
 _EXAMPLE = re.compile(r"[ ]*\{\{(?:[Пп]ример|[Цц]итата)\b")
+# Braces in there are not the ones of a template: `<math>2^{P(x)}</math>`
+_NOT_WIKICODE = re.compile(r"<(math|chem|nowiki)\b[^>]*+>.*?</\1>|<!--.*?-->")
 
 
 def strip_examples(line: str) -> str:
@@ -182,6 +184,8 @@ def strip_examples(line: str) -> str:
     '# a b'
     >>> strip_examples("# a {{примерно}}")
     '# a {{примерно}}'
+    >>> strip_examples("# a {{пример|x <math>2^{-P(x)log{P(x)}}</math> y}} b")
+    '# a b'
     """
     out: list[str] = []
     pos = 0
@@ -189,7 +193,9 @@ def strip_examples(line: str) -> str:
         out.append(line[pos : m.start()])
         i, stack = m.end(), [2]
         while stack and i < len(line):
-            if line.startswith("{{{", i):
+            if line[i] == "<" and (skipped := _NOT_WIKICODE.match(line, i)):
+                i = skipped.end()
+            elif line.startswith("{{{", i):
                 stack.append(3)
                 i += 3
             elif line.startswith("{{", i):
@@ -414,7 +420,12 @@ def adjust_wikicode(
                     # `{{сущ ru m a 4a|...}} {{собств.|ru|тип=отчество}}` → `{{сущ ru m a 4a|...}}`
                     tpl_code = extract_templates(tpl_code)[0]
 
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
+                    tpl_name = (
+                        tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")]
+                        .strip()
+                        .strip("\u200e")
+                        .replace("''", "")
+                    )
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
                     forms = utils.process_templates(

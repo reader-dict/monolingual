@@ -196,7 +196,9 @@ def adjust_wikicode(
                     if "{{{" in tpl_code:
                         forms = variant_handlers_mod.render_reverse_variant(tpl_code, [], defaultdict(str), word)
                     else:
-                        tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip()
+                        tpl_name = (
+                            tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().strip("\u200e")
+                        )
                         variant_handlers_mod.append_to_reverse_variants(tpl_name)
                         forms = utils.process_templates(
                             word,

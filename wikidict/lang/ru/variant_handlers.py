@@ -149,7 +149,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
 
     forms: set[str]
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "ru")
-    if table.startswith("{"):
+    if table.startswith("{|"):
         table = "\n".join(
             line
             for raw_line in table.splitlines()

@@ -366,7 +366,12 @@ def adjust_wikicode(
                 tpl_code += line
                 if tpl_code.count("{") == tpl_code.count("}"):
                     in_tpl = False
-                    tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
+                    tpl_name = (
+                        tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")]
+                        .strip()
+                        .strip("\u200e")
+                        .replace("''", "")
+                    )
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
                     forms = utils.process_templates(

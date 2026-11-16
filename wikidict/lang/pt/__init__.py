@@ -403,7 +403,7 @@ def adjust_wikicode(
                             lines.append(tpl_sub)
                             continue
 
-                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip()
+                        tpl_name = tpl_sub[2 : max(0, tpl_sub.find("|")) or tpl_sub.find("}")].strip().strip("\u200e")
                         variant_handlers_mod.append_to_reverse_variants(tpl_name)
                         if forms := utils.process_templates(
                             word,
