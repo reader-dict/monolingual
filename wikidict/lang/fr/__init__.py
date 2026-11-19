@@ -100,6 +100,7 @@ reverse_variant_titles = (
     "{{fr-adj-",
     "{{fr-conj-",
     "{{fr-rég",
+    "{{fr-tab",
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
