@@ -4,6 +4,7 @@ import atexit
 import logging
 import os
 import re
+from collections import defaultdict
 from collections.abc import Generator
 from functools import lru_cache
 from pathlib import Path
@@ -61,6 +62,8 @@ class Context:
         execute("PRAGMA cache_size = 1000000000;")
         execute("PRAGMA temp_store = memory;")
 
+        self._template_prefixes = self.ctx.namespace_prefixes(10)
+
         if db_already_setup:
             self._cache: dict[str, str] = {}
             self._cache_exclusions = self._get_cache_exclusions()
@@ -74,7 +77,7 @@ class Context:
     def expand(self, wikitext: str, locale: str, *, skip_cache: bool = False) -> str:
         if wikitext.startswith("{{rev-flexion"):
             return ""
-        elif skip_cache or wikitext.startswith(self._cache_exclusions):
+        elif skip_cache or self._uses_current_word(wikitext):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
         elif not (expanded := self._cache.get(wikitext, "")):
             expanded = clean_html_output(self.ctx.expand(wikitext, quiet=True), locale)
@@ -159,22 +162,8 @@ class Context:
                 );
         """)
 
-        # Handle redirections (a template redirecting to an uncachable template must also be uncacheable)
-        conn.execute("""
-            UPDATE pages
-               SET cacheable = 0
-             WHERE cacheable = 1
-               AND namespace_id = 10
-               AND redirect_to IS NOT NULL
-               AND redirect_to <> ''
-               AND EXISTS (
-                    SELECT 1
-                      FROM pages AS target
-                     WHERE target.cacheable = 0
-                       AND target.namespace_id = 10
-                       AND target.title = pages.redirect_to
-                   )
-        """)
+        # Templates calling, or redirecting to, an uncacheable template, at any depth
+        self._set_template_callers_uncacheable()
 
         # Finally, create the partial covering index to speed-up read queries
         conn.execute("""
@@ -185,17 +174,53 @@ class Context:
         conn.execute("ANALYZE")
         conn.commit()
 
-    def _get_cache_exclusions(self) -> tuple[str, ...]:
-        """Templates/Modules using the current word should not be cached."""
-        query = "SELECT title FROM pages WHERE cacheable = 0"
-        return (
-            "{{FULLPAGENAME",
-            "{{PAGENAME",
-            *(
-                f"{{{{{page[0].split(':', 1)[1]}"  # `Template:foo` → `{{foo`
-                for page in self.ctx.db_conn.execute(query).fetchall()
-            ),
+    def _set_template_callers_uncacheable(self) -> None:
+        """Set uncacheable the templates calling, or redirecting to, an uncacheable template, at any depth.
+
+        [RU] "синонимы:Украина" only contains `{{синонимы|...}}` calls, and "синонимы" redirects to
+        "ссылки с пометой" that drops the current word from the list, so all of them must be excluded.
+        """
+        conn = self.ctx.db_conn
+        name = self._template_name
+        callers: defaultdict[str, set[str]] = defaultdict(set)
+        todo: list[str] = []
+        for title, body, redirect_to, cacheable in conn.execute(
+            "SELECT title, body, redirect_to, cacheable FROM pages WHERE namespace_id = 10"
+        ):
+            if not cacheable:
+                todo.append(name(title))
+            callees: list[str] = RE_TEMPLATE_CALL.findall(body or "")
+            if redirect_to:
+                callees.append(redirect_to)
+            for callee in callees:
+                callers[name(callee)].add(title)
+
+        uncacheable: set[str] = set()
+        while todo:
+            new = callers.pop(todo.pop(), set()) - uncacheable
+            uncacheable |= new
+            todo.extend(map(name, new))
+
+        conn.executemany(
+            "UPDATE pages SET cacheable = 0 WHERE namespace_id = 10 AND title = ?",
+            [(title,) for title in uncacheable],
         )
+
+    def _get_cache_exclusions(self) -> set[str]:
+        """Templates using the current word should not be cached."""
+        query = "SELECT title FROM pages WHERE namespace_id = 10 AND cacheable = 0"
+        return {self._template_name(title) for (title,) in self.ctx.db_conn.execute(query)}
+
+    def _template_name(self, title: str) -> str:
+        """The name of a template, without the namespace: `Template:foo`, `template:foo` and `foo` are `foo`."""
+        title = title.replace("_", " ").strip()
+        return title.split(":", 1)[1].strip() if title.lower().startswith(self._template_prefixes) else title
+
+    def _uses_current_word(self, wikitext: str) -> bool:
+        if wikitext.startswith(("{{FULLPAGENAME", "{{PAGENAME")):
+            return True
+        call = RE_TEMPLATE_CALL.match(wikitext)
+        return call is not None and self._template_name(call[1]) in self._cache_exclusions
 
     def translate_requires(self, current_value: str, new_value: str) -> None:
         """Translate Lua inline module imports.
@@ -418,6 +443,8 @@ def _get_file_namespace_re(locale: str) -> re.Pattern[str]:
 
 
 RE_COMMENTS = re.compile(r"<!--[\s\S]*?-->")
+# The name of a called template: `{{foo|...}}` or `{{foo}}`, but not `{{{foo}}}` nor `{{#if:...}}`
+RE_TEMPLATE_CALL = re.compile(r"(?<!\{)\{\{(?!\{)([^{}|#]+)[|}]")
 RE_REFERENCES = re.compile(r"<references[^>]++>[\s\S]*?</references>")
 RE_REF_COLON = re.compile(r"<ref:[^>]++>++")
 RE_REF_SELF_CLOSE = re.compile(r"<ref[^/>]++/>")
