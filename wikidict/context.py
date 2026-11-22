@@ -6,7 +6,7 @@ import os
 import re
 from collections import defaultdict
 from collections.abc import Generator
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from pathlib import Path
 from threading import Lock
 
@@ -90,12 +90,16 @@ class Context:
         return expanded
 
     def set_cache_exclusions(self) -> None:
-        # sourcery skip: extract-duplicate-method
-        """Update the database to set the cacheable state of templates/modules.
-        Ones using the current word should not be cached.
+        """Update the database to set the cacheable state of templates & modules.
 
-        We first fetch templates & modules using the current word themselves,
-        then the ones using them, as the upper call will not know it.
+        Ones using the current word should not be cached, and neither the ones using them, at any depth,
+        as the upper call will not know it.
+
+        [EN] The "ms-pron" module uses the current word, and the "ms-IPA" template only contains
+        `{{#invoke:ms-pron|show}}`, so both must be excluded.
+
+        [RU] "синонимы:Украина" only contains `{{синонимы|...}}` calls, and "синонимы" redirects to
+        "ссылки с пометой" that drops the current word from the list, so all of them must be excluded.
         """
         conn = self.ctx.db_conn
 
@@ -107,27 +111,23 @@ class Context:
             COMMIT;
         """)
 
-        # Modules to exclude
-        conn.execute(
-            """
-            UPDATE pages
-               SET cacheable = 0
-             WHERE namespace_id = 828
-               AND instr(body, 'getCurrentTitle') > 0
-            """
-        )
+        callers: defaultdict[Page, set[Page]] = defaultdict(set)
+        todo: list[Page] = []
+        for namespace_id, title, body, redirect_to in conn.execute(
+            "SELECT namespace_id, title, body, redirect_to FROM pages WHERE namespace_id IN (10, 828)"
+        ):
+            body = self._rendered_part(namespace_id, body or "")
+            if "PAGENAME" in body or (namespace_id == 828 and "getCurrentTitle" in body):
+                todo.append((namespace_id, title))
+            for callee in self._callees(namespace_id, body, redirect_to):
+                callers[callee].add((namespace_id, title))
 
-        # Templates & modules to exclude, simple cases
-        conn.execute("""
-            UPDATE pages
-               SET cacheable = 0
-             WHERE cacheable != 0
-               AND namespace_id IN (10, 828)
-               AND (instr(body, 'FULLPAGENAME') > 0 OR instr(body, 'PAGENAME') > 0)
-        """)
-
-        # Templates & modules using, or redirecting to, an uncacheable one, at any depth
-        self._set_callers_uncacheable()
+        uncacheable = set(todo)
+        while todo:
+            new = callers.pop(self._page(*todo.pop()), set()) - uncacheable
+            uncacheable |= new
+            todo.extend(new)
+        conn.executemany("UPDATE pages SET cacheable = 0 WHERE namespace_id = ? AND title = ?", uncacheable)
 
         # Finally, create the partial covering index to speed-up read queries
         conn.execute("""
@@ -138,33 +138,25 @@ class Context:
         conn.execute("ANALYZE")
         conn.commit()
 
-    def _set_callers_uncacheable(self) -> None:
-        """Set uncacheable the templates & modules using, or redirecting to, an uncacheable one, at any depth.
+    def _rendered_part(self, namespace_id: int, body: str) -> str:
+        """The part of a template or a module that can change what we keep from an article.
 
-        [EN] The "ms-pron" module uses the current word, and the "ms-IPA" template only contains
-        `{{#invoke:ms-pron|show}}`, so both must be excluded.
-
-        [RU] "синонимы:Украина" only contains `{{синонимы|...}}` calls, and "синонимы" redirects to
-        "ссылки с пометой" that drops the current word from the list, so all of them must be excluded.
+        The docs of a template are not transcluded, category links are dropped from the output,
+        and the current page is always in the main namespace.
         """
-        conn = self.ctx.db_conn
-        callers: defaultdict[Page, set[Page]] = defaultdict(set)
-        todo: list[Page] = []
-        for namespace_id, title, body, redirect_to, cacheable in conn.execute(
-            "SELECT namespace_id, title, body, redirect_to, cacheable FROM pages WHERE namespace_id IN (10, 828)"
-        ):
-            if not cacheable:
-                todo.append(self._page(namespace_id, title))
-            for callee in self._callees(namespace_id, body or "", redirect_to):
-                callers[callee].add((namespace_id, title))
+        if namespace_id == 828:
+            return RE_CURRENT_NAMESPACE.sub("", body)
+        body = RE_COMMENTS.sub("", body)
+        parts = RE_ONLYINCLUDE.findall(body)
+        body = "".join(parts) if parts else RE_NOINCLUDE.sub("", body)
+        return self._category_link.sub("", body)
 
-        uncacheable: set[Page] = set()
-        while todo:
-            new = callers.pop(todo.pop(), set()) - uncacheable
-            uncacheable |= new
-            todo.extend(self._page(*page) for page in new)
-
-        conn.executemany("UPDATE pages SET cacheable = 0 WHERE namespace_id = ? AND title = ?", uncacheable)
+    @cached_property
+    def _category_link(self) -> re.Pattern[str]:
+        """A link to a category, even with templates & parameters in it: `[[Category:foo|{{PAGENAME}}]]`."""
+        prefixes = "|".join(map(re.escape, self.ctx.namespace_prefixes(14)))
+        braces = r"\{\{\{?(?:[^{}]|\{\{\{?[^{}]*\}\}\}?)*+\}\}\}?"
+        return re.compile(rf"\[\[\s*(?:{prefixes})(?:[^\[\]{{}}\n]|{braces})*+\]\]", flags=re.IGNORECASE)
 
     def _callees(self, namespace_id: int, body: str, redirect_to: str | None) -> Generator[Page]:
         """The templates & modules used by a template or a module."""
@@ -418,6 +410,10 @@ def _get_file_namespace_re(locale: str) -> re.Pattern[str]:
 
 
 RE_COMMENTS = re.compile(r"<!--[\s\S]*?-->")
+RE_NOINCLUDE = re.compile(r"<noinclude>[\s\S]*?(?:</noinclude>|$)", flags=re.IGNORECASE)
+RE_ONLYINCLUDE = re.compile(r"<onlyinclude>([\s\S]*?)</onlyinclude>", flags=re.IGNORECASE)
+# In a module, what only reads the namespace of the current page: `mw.title.getCurrentTitle().nsText`
+RE_CURRENT_NAMESPACE = re.compile(r"mw\.title\.getCurrentTitle\(\)\.(?:nsText|namespace)\b")
 # The name of a called template: `{{foo|...}}` or `{{foo}}`, but not `{{{foo}}}` nor `{{#if:...}}`
 RE_TEMPLATE_CALL = re.compile(r"(?<!\{)\{\{(?!\{)([^{}|#]+)[|}]")
 # The name of an invoked module: `{{#invoke:foo|...}}`

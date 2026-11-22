@@ -579,7 +579,11 @@ def test_cache_exclusions(tmp_path: Path) -> None:
         ("Template:redirect", 10, None, "Template:caller"),
         # Not using them
         ("Module:static", 828, "return {show = function() return 'static' end}", None),
-        ("Template:static", 10, "{{#invoke:static|show}} {{wordy}}", None),
+        ("Module:namespace", 828, "return {show = function() return mw.title.getCurrentTitle().nsText end}", None),
+        ("Template:static", 10, "{{#invoke:static|show}} {{#invoke:namespace|show}} {{wordy}}", None),
+        ("Template:docs", 10, "static<noinclude>{{word}} <!-- {{PAGENAME}} --></noinclude>", None),
+        ("Template:only", 10, "{{word}}<onlyinclude>static</onlyinclude>", None),
+        ("Template:category", 10, "static[[Category:Foo{{#if:{{{1|}}}|/{{{1}}}}}|{{PAGENAME}}]]", None),
     ]:
         ctx.new_page(title, namespace_id, body, redirect_to)
     ctx.set_cache_exclusions()
@@ -588,7 +592,8 @@ def test_cache_exclusions(tmp_path: Path) -> None:
     ctx = context.Context(db, "en")
     excluded = {(828, "title"), (828, "caller"), (10, "word"), (10, "invoke"), (10, "caller"), (10, "redirect")}
     assert excluded <= ctx._cache_exclusions
-    assert {(828, "static"), (10, "static")}.isdisjoint(ctx._cache_exclusions)
+    cached = {(828, "static"), (828, "namespace"), (10, "static"), (10, "docs"), (10, "only"), (10, "category")}
+    assert cached.isdisjoint(ctx._cache_exclusions)
     assert ctx._uses_current_word("{{#invoke:caller|show}}")
     assert ctx._uses_current_word("{{template:redirect}}")
     assert not ctx._uses_current_word("{{#invoke:static|show}}")
