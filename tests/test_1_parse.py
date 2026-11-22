@@ -562,3 +562,35 @@ def test_handle_matcher_unescapes_titles(element: str, expected: tuple[str, int,
     with patch.object(context, "new_page") as new_page, pytest.raises(parse.MatcherHasMatched):
         parse.handle_matcher(matcher, element, 10)
     new_page.assert_called_once_with(*expected)
+
+
+def test_cache_exclusions(tmp_path: Path) -> None:
+    db = tmp_path / "pages-20201217.sqlite"
+    with patch.object(context, "init_interwiki_map", Mock()):
+        ctx = context.Context(db, "en", db_already_setup=False)
+    for title, namespace_id, body, redirect_to in [
+        # Using the current word
+        ("Module:title", 828, "return {show = function() return mw.title.getCurrentTitle().text end}", None),
+        ("Template:word", 10, "{{PAGENAME}}", None),
+        # Using them, at any depth
+        ("Module:caller", 828, 'local title = require("Module:title")\nreturn {show = title.show}', None),
+        ("Template:invoke", 10, "{{#invoke:caller|show}}", None),
+        ("Template:caller", 10, "({{Template:invoke}}, {{word}})", None),
+        ("Template:redirect", 10, None, "Template:caller"),
+        # Not using them
+        ("Module:static", 828, "return {show = function() return 'static' end}", None),
+        ("Template:static", 10, "{{#invoke:static|show}} {{wordy}}", None),
+    ]:
+        ctx.new_page(title, namespace_id, body, redirect_to)
+    ctx.set_cache_exclusions()
+    ctx.close()
+
+    ctx = context.Context(db, "en")
+    excluded = {(828, "title"), (828, "caller"), (10, "word"), (10, "invoke"), (10, "caller"), (10, "redirect")}
+    assert excluded <= ctx._cache_exclusions
+    assert {(828, "static"), (10, "static")}.isdisjoint(ctx._cache_exclusions)
+    assert ctx._uses_current_word("{{#invoke:caller|show}}")
+    assert ctx._uses_current_word("{{template:redirect}}")
+    assert not ctx._uses_current_word("{{#invoke:static|show}}")
+    assert not ctx._uses_current_word("{{static}}")
+    ctx.close()
