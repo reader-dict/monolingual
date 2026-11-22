@@ -10,10 +10,12 @@ from collections import defaultdict
 from functools import cache, partial
 from pathlib import Path
 from typing import TYPE_CHECKING
+from xml.etree import ElementTree
 
 import jaconv
 import regex
 import wikitextparser
+import ziamath
 
 from . import constants, context, lang, part_of_speech, svg
 from .hiero_utils import render_hiero
@@ -22,6 +24,18 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
+
+# Font size in pixels used to render formulas, only its ratio to the rendered size matters
+FORMULA_SIZE = 100
+# Plain paths: no <symbol> and no IDs that would clash between the formulas of an article
+ziamath.config.svg2 = False
+# Parts of the chemical formulas in the mhchem syntax that `chem_to_tex()` handles
+CHEM_TOKEN = re.compile(
+    r"(?P<arrow> ?-> ?)|(?P<plus> \+ )|(?P<dot> ?[*·] ?|\.)|(?P<letters>[A-Za-z]+)|(?P<digits>\d+)"
+    r"|(?P<charge>\^(?:\d*[+-]|\{\d*[+-]\})|[+-](?= |$))|(?P<bond>[-=])|(?P<bracket>[()\[\]])"
+)
+# Parts after which digits are a coefficient, not a subscript
+CHEM_COEFFICIENT_AFTER = {"", "arrow", "plus", "dot"}
 
 log = logging.getLogger(__name__)
 
@@ -1206,40 +1220,75 @@ def transform_variant(word: str, template: str, locale: str) -> str:
     return ""
 
 
-def render_formula(formula: str, *, cat: str = "tex", output_format: str = "svg") -> str:
+def render_formula(formula: str) -> str:
     """
-    Convert mathematic/chemical symbols to a SVG string.
+    Convert a mathematic formula to a SVG string.
 
-    Technical details can be found on those websites:
-        - https://en.wikipedia.org/api/rest_v1/#/Math
-        - https://github.com/maxbuchan/viv/blob/d9dc1f95348b458e0251bcf908084f2e0b8baf1f/apps/mediawiki/htdocs/extensions/Math/math/texutil.ml#L513
-        - https://github.com/wikimedia/restbase/blob/ecef17bda6f4efc0d6e187fb05b1eeb389bf7120/sys/mathoid.js#L33
-        - https://phabricator.wikimedia.org/diffusion/GMAT/browse/master/lib/math.js
+    Sizes are in `em`, so the formula follows the size of the text around it.
     """
+    math = ziamath.Latex(formula, size=FORMULA_SIZE, color="currentColor")
+    width, height = math.getsize()
+    root = math.svgxml()
+    root.set("width", f"{width / FORMULA_SIZE:.3f}em")
+    root.set("height", f"{height / FORMULA_SIZE:.3f}em")
+    root.set("style", f"vertical-align: {math.getyofst() / FORMULA_SIZE:.3f}em")
+    return ElementTree.tostring(root, encoding="unicode")
 
-    if cat == "chem":
-        formula = f"\\ce{{{formula}}}"
 
-    # 1. Get the formula hash (type can be tex, inline-tex, or chem)
-    url_hash = constants.WIKIMEDIA_URL_MATH_CHECK.format(type=cat)
-    with constants.SESSION.post(url_hash, json={"q": formula}) as req:
-        req.raise_for_status()
-        res = req.json()
-        assert res["success"]
-        formula_hash = req.headers["x-resource-location"]
+def chem_to_tex(formula: str) -> str:
+    r"""
+    Convert a chemical formula in the mhchem syntax to TeX, ziamath has no mhchem support.
 
-    # 2. Get the rendered formula (format can be svg, mml, or png)
-    url_render = constants.WIKIMEDIA_URL_MATH_RENDER.format(format=output_format, hash=formula_hash)
-    with constants.SESSION.get(url_render) as req:
-        req.raise_for_status()
-        return req.text
+    Only the plain formulas: molecules, charges, bonds, hydrates, plus signs and arrows.
+
+    >>> chem_to_tex("(CH3)2SO")
+    '(\\mathrm{CH}_{3})_{2}\\mathrm{SO}'
+    >>> chem_to_tex("SO4^2-")
+    '\\mathrm{SO}_{4}^{2-}'
+    >>> chem_to_tex("Na2CO3.10H2O")
+    '\\mathrm{Na}_{2}\\mathrm{CO}_{3} \\cdot 10\\,\\mathrm{H}_{2}\\mathrm{O}'
+    >>> chem_to_tex("2H2 + O2 -> 2H2O")
+    '2\\,\\mathrm{H}_{2} + \\mathrm{O}_{2} \\longrightarrow 2\\,\\mathrm{H}_{2}\\mathrm{O}'
+    >>> chem_to_tex("CO2 <=> CO")
+    Traceback (most recent call last):
+    ...
+    ValueError: Unsupported chemical formula 'CO2 <=> CO'
+    """
+    tex = ""
+    prev = ""
+    pos = 0
+    for match in CHEM_TOKEN.finditer(formula):
+        if match.start() != pos:
+            break
+        pos = match.end()
+        kind = match.lastgroup or ""
+        text = match[0]
+        if kind == "arrow":
+            tex += r" \longrightarrow "
+        elif kind == "plus":
+            tex += " + "
+        elif kind == "dot":
+            tex += r" \cdot "
+        elif kind == "letters":
+            tex += rf"\mathrm{{{text}}}"
+        elif kind == "digits":
+            tex += rf"{text}\," if prev in CHEM_COEFFICIENT_AFTER else f"_{{{text}}}"
+        elif kind == "charge":
+            tex += f"^{{{text.strip('^{}')}}}"
+        elif kind == "bond":
+            tex += f"{{{text}}}"
+        else:
+            tex += text
+        prev = kind
+    if pos != len(formula):
+        raise ValueError(f"Unsupported chemical formula {formula!r}")
+    return tex
 
 
 def formula_to_svg(formula: str, *, cat: str = "tex") -> str:
     """Return an optimized SVG file as a string."""
-    force = "FORCE_FORMULA_RENDERING" in os.environ
-    if force or not (svg_raw := svg.get(formula)):
-        svg_raw = render_formula(formula, cat=cat, output_format="svg")
+    if "FORCE_FORMULA_RENDERING" in os.environ or not (svg_raw := svg.get(formula)):
+        svg_raw = render_formula(chem_to_tex(formula) if cat == "chem" else formula)
         svg.set(formula, svg_raw)
     return svg.optimize(svg_raw)
 
