@@ -22,6 +22,9 @@ def test_formula_to_svg() -> None:
         with patch.dict("os.environ", {"FORCE_FORMULA_RENDERING": "1"}):
             assert utils.formula_to_svg(formula) == svg
 
+        assert utils.formula_to_svg("(CH3)2SO", cat="chem").startswith("<svg")
+        assert "(CH3)2SO" in utils.svg.CACHE
+
 
 def test_convert_chem_error(caplog: pytest.LogCaptureFixture) -> None:
     assert utils.convert_chem("bad formula", "word") == "bad formula"

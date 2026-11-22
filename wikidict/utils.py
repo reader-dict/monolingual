@@ -29,6 +29,13 @@ KEEP_UNFINISHED = os.getenv("KEEP_UNFINISHED", "0") == "1"
 FORMULA_SIZE = 100
 # Plain paths: no <symbol> and no IDs that would clash between the formulas of an article
 ziamath.config.svg2 = False
+# Parts of the chemical formulas in the mhchem syntax that `chem_to_tex()` handles
+CHEM_TOKEN = re.compile(
+    r"(?P<arrow> ?-> ?)|(?P<plus> \+ )|(?P<dot> ?[*·] ?|\.)|(?P<letters>[A-Za-z]+)|(?P<digits>\d+)"
+    r"|(?P<charge>\^(?:\d*[+-]|\{\d*[+-]\})|[+-](?= |$))|(?P<bond>[-=])|(?P<bracket>[()\[\]])"
+)
+# Parts after which digits are a coefficient, not a subscript
+CHEM_COEFFICIENT_AFTER = {"", "arrow", "plus", "dot"}
 
 log = logging.getLogger(__name__)
 
@@ -1228,14 +1235,60 @@ def render_formula(formula: str) -> str:
     return ElementTree.tostring(root, encoding="unicode")
 
 
+def chem_to_tex(formula: str) -> str:
+    r"""
+    Convert a chemical formula in the mhchem syntax to TeX, ziamath has no mhchem support.
+
+    Only the plain formulas: molecules, charges, bonds, hydrates, plus signs and arrows.
+
+    >>> chem_to_tex("(CH3)2SO")
+    '(\\mathrm{CH}_{3})_{2}\\mathrm{SO}'
+    >>> chem_to_tex("SO4^2-")
+    '\\mathrm{SO}_{4}^{2-}'
+    >>> chem_to_tex("Na2CO3.10H2O")
+    '\\mathrm{Na}_{2}\\mathrm{CO}_{3} \\cdot 10\\,\\mathrm{H}_{2}\\mathrm{O}'
+    >>> chem_to_tex("2H2 + O2 -> 2H2O")
+    '2\\,\\mathrm{H}_{2} + \\mathrm{O}_{2} \\longrightarrow 2\\,\\mathrm{H}_{2}\\mathrm{O}'
+    >>> chem_to_tex("CO2 <=> CO")
+    Traceback (most recent call last):
+    ...
+    ValueError: Unsupported chemical formula 'CO2 <=> CO'
+    """
+    tex = ""
+    prev = ""
+    pos = 0
+    for match in CHEM_TOKEN.finditer(formula):
+        if match.start() != pos:
+            break
+        pos = match.end()
+        kind = match.lastgroup or ""
+        text = match[0]
+        if kind == "arrow":
+            tex += r" \longrightarrow "
+        elif kind == "plus":
+            tex += " + "
+        elif kind == "dot":
+            tex += r" \cdot "
+        elif kind == "letters":
+            tex += rf"\mathrm{{{text}}}"
+        elif kind == "digits":
+            tex += rf"{text}\," if prev in CHEM_COEFFICIENT_AFTER else f"_{{{text}}}"
+        elif kind == "charge":
+            tex += f"^{{{text.strip('^{}')}}}"
+        elif kind == "bond":
+            tex += f"{{{text}}}"
+        else:
+            tex += text
+        prev = kind
+    if pos != len(formula):
+        raise ValueError(f"Unsupported chemical formula {formula!r}")
+    return tex
+
+
 def formula_to_svg(formula: str, *, cat: str = "tex") -> str:
     """Return an optimized SVG file as a string."""
-    if cat == "chem":
-        # Only the cached ones: ziamath has no mhchem support, and the Wikimedia Math API they come from is gone
-        if not (svg_raw := svg.get(formula)):
-            raise ValueError(f"No cached SVG for the chemical formula {formula!r}")
-    elif "FORCE_FORMULA_RENDERING" in os.environ or not (svg_raw := svg.get(formula)):
-        svg_raw = render_formula(formula)
+    if "FORCE_FORMULA_RENDERING" in os.environ or not (svg_raw := svg.get(formula)):
+        svg_raw = render_formula(chem_to_tex(formula) if cat == "chem" else formula)
         svg.set(formula, svg_raw)
     return svg.optimize(svg_raw)
 
