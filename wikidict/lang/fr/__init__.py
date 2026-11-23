@@ -197,28 +197,40 @@ FORMS = "|".join(ALL_FORMS)
 START = rf"^(?:{'|'.join(section_patterns)})[ ]*+'*+"
 PATTERNS = [
     # ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.
-    r".+(?:première|deuxième|troisième) personne du (?:pluriel|singulier).+du verbe''\s*+\{\{lien\|([^\|}]++)",
+    re.compile(
+        r"(?i).+(?:première|deuxième|troisième) personne du (?:pluriel|singulier).+du verbe''\s*+\{\{lien\|([^\|}]++)"
+    ),
     # ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.
-    r".+Agglutination du verbe''\s*+\{\{lien\|([^\|}]++)",
+    re.compile(r"(?i).+Agglutination du verbe''\s*+\{\{lien\|([^\|}]++)"),
     # ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?) du verbe''\s*+\{\{lien\|([^\|}]++)",
+    re.compile(r"(?i).+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?) du verbe''\s*+\{\{lien\|([^\|}]++)"),
     # ''Féminin singulier de'' {{lien|terne|fr}}.
     # ''Féminin (singulier) de'' {{lien|terne|fr}}.
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\{\{lien\|([^\|}]++)",
+    re.compile(r"(?i).+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\{\{lien\|([^\|}]++)"),
     # ''Participe passé masculin singulier du verbe'' [[pouvoir]].
     # ''Participe passé masculin (singulier) du verbe'' [[pouvoir]].
-    r".+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
+    re.compile(r"(?i).+(?:(?:masculin|féminin) \(?(?:pluriel|singulier)\)?).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]"),
     # ''Pluriel de ''[[anisophylle]]''.''
-    rf"(?:{FORMS}).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
+    re.compile(rf"(?i)(?:{FORMS}).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]"),
     # ''Pluriel de'' {{lien|anisophylle|fr}}.
-    rf"(?:{FORMS}).*'\s*+\{{\{{lien\|([^\|\}}]++)",
+    re.compile(rf"(?i)(?:{FORMS}).*'\s*+\{{\{{lien\|([^\|\}}]++)"),
     # ''Pluriel'' ''de ''[[nécrophage]].
-    r"(?:féminin|masculin|pluriel)'++\s++'++de.*'\s*+\[\[([^\]#]++)(?:#.+)?]]",
+    re.compile(r"(?i)(?:féminin|masculin|pluriel)'++\s++'++de.*'\s*+\[\[([^\]#]++)(?:#.+)?]]"),
     # ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].
     # ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].
-    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]",
+    re.compile(
+        r"(?i)(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\[\[([^\]#]++)(?:#.+)?\]\]"
+    ),
     # ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|venir|fr}}.
-    r"(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\{\{lien\|([^\|}]++)",
+    re.compile(
+        r"(?i)(?:(?:Forme de la )?(?:première|deuxième|troisième) personne du (?:pluriel|singulier)).*'\s*+\{\{lien\|([^\|}]++)"
+    ),
+]
+RE_CLEANUPS = [
+    # <li value="2"> → ''
+    (re.compile(r"(?m)<li [^>]++>"), ""),
+    # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
+    (re.compile(r"(?m)^\{\{sinogram-noimg"), "# {{sinogram-noimg"),
 ]
 
 
@@ -236,12 +248,6 @@ def adjust_wikicode(
 
     >>> adjust_wikicode("== {{langue|fr}} ==\n{{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}", "fr")
     '== {{langue|fr}} ==\n# {{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}'
-
-    >>> adjust_wikicode("== {{caractère}} ==", "fr")
-    '== {{caractère}} ==\n=== {{s|caractère}} ==='
-
-    >>> adjust_wikicode("== {{langue|fr}} ==\n=== {{s|caractère}} ===\n{{hangeul unicode}}", "fr")
-    '== {{langue|fr}} ==\n=== {{s|caractère}} ===\n# {{hangeul unicode}}'
 
     >>> adjust_wikicode("== {{langue|fr}} ==\n* ''Féminin (singulier) de'' {{lien|terne|fr}}.", "fr")
     '== {{langue|fr}} ==\n# {{flexion|terne}}'
@@ -287,17 +293,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.", "fr")
     '== {{langue|fr}} ==\n# {{flexion|sparlare}}'
     """
-    # == {{caractère}} == → '== {{caractère}} ==\n=== {{s|caractère}} ==='
-    code = re.sub(r"(==\s*+{{caractère}}\s*+==)", r"\1\n=== {{s|caractère}} ===", code)
-
-    # === {{s|caractère}} ===\n{{hangeul unicode}} → '=== {{s|caractère}} ===\n# {{hangeul unicode}}'
-    code = re.sub(r"=== \{\{s\|caractère}} ===\n\s*+\{\{", "=== {{s|caractère}} ===\n# {{", code, flags=re.MULTILINE)
-
-    # <li value="2"> → ''
-    code = re.sub(r"<li [^>]++>", "", code)
-
-    # {{sinogram-noimg|... → '# {{sinogram-noimg|...'
-    code = re.sub(r"^\{\{sinogram-noimg", "# {{sinogram-noimg", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # Simplify genders
     if "{{msing}}" in code:
@@ -311,7 +308,7 @@ def adjust_wikicode(
     for line in code.splitlines():
         if re.match(START, line) and "Ancienne forme" not in line and "Forme courante" not in line:
             for pattern in PATTERNS:
-                line, count = re.subn(pattern, r"##\1##", line, count=1, flags=re.IGNORECASE)
+                line, count = pattern.subn(r"##\1##", line, count=1)
                 if count:
                     parts = line.split("##", 2)
                     line = f"# {{{{flexion|{parts[1]}}}}}"

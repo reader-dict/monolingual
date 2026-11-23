@@ -33,6 +33,8 @@ templates_ignored = (
     "{{vang-",
 )
 
+RE_FIND_PRONS = re.compile(r"\{\{IPA\|\w++\|\[([^\]]++)\]")
+
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
@@ -45,7 +47,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     return [
         f"/{pron}/" for pron in re.findall(rf"\{{\{{fanononana\|([^|]++)\|{locale}\}}\}}", code) if "}" not in pron
-    ] or [f"/{pron}/" for pron in re.findall(r"\{\{IPA\|\w++\|\[([^\]]++)\]", code)]
+    ] or [f"/{pron}/" for pron in RE_FIND_PRONS.findall(code)]
 
 
 VAR_PATTERNS = [
@@ -59,11 +61,15 @@ VAR_PATTERNS = [
     # Endrika ho avin'ny ny matoantenin'ny atao mampitranga mampita avy amin'ny anarana iombonana ''[[fandrodahana]]''.
     # Endrika ho avin'ny ny matoantenin'ny atao mifampivoho avy amin'ny anarana iombonana ''[[fanatsembohana]]''.
     re.compile(
-        r"^#[ ]*+.*? (?:endrika|mampitranga|matoantenin|matoanteny|mpanao|ploraly|singiolary).*? (?:anarana|matoanteny|teny).*?\[\[([^\]#]++).*",
-        flags=re.MULTILINE,
+        r"(?m)^#[ ]*+.*? (?:endrika|mampitranga|matoantenin|matoanteny|mpanao|ploraly|singiolary).*? (?:anarana|matoanteny|teny).*?\[\[([^\]#]++).*"
     ),
     # ''[[famadidirana]]'' mifanao.
-    re.compile(r"#[ ']*+\[\[([^\]]++)\]\]'*+ mifanao.", flags=re.MULTILINE),
+    re.compile(r"(?m)#[ ']*+\[\[([^\]]++)\]\]'*+ mifanao."),
+]
+RE_CLEANUPS = [
+    # {{-ana-|mg}} → ===ana===
+    # {{-ana-}} → ===ana===e
+    (re.compile(r"(?m)^\{\{-(.+)-(?:\|\w++)?\}\}"), r"===\1==="),
 ]
 
 
@@ -108,9 +114,9 @@ def adjust_wikicode(
     >>> adjust_wikicode("# ''[[foo]]'' mifanao.", "mg")
     '# {{flexion|foo}}'
     """
-    # {{-ana-|mg}} → ===ana===
-    # {{-ana-}} → ===ana===e
-    code = re.sub(r"^\{\{-(.+)-(?:\|\w++)?\}\}", r"===\1===", code, flags=re.MULTILINE)
+
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # We do not want to keep anagrams
     code = code.replace("===anagr===", "=====anagr=====")

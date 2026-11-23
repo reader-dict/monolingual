@@ -67,6 +67,10 @@ templates_ignored = (
     "{{tarkistettava/lainaus",  # to be verified
 )
 
+RE_FIND_PRONS1 = re.compile(r"\{\{IPA\|.([^/\]}]++)")
+RE_FIND_PRONS2 = re.compile(r"/([^/]++)/")
+RE_PARENS = re.compile(r"[()]")
+
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
@@ -90,7 +94,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈmɑrsːiɑˣ/']
     """
     res: list[str] = []
-    if prons := re.findall(r"\{\{IPA\|.([^/\]}]++)", code):
+    if prons := RE_FIND_PRONS1.findall(code):
         pron = prons[0]
         if "{{" in pron:
             pron = pron.split("|")[-1]
@@ -101,9 +105,13 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
         expanded = context.expand(templates[0], LANG, skip_cache=True)
         if line := next((l_ for l_ in expanded.splitlines() if "|IPA" in l_), ""):
-            res.extend(re.findall(r"/([^/]++)/", line))
+            res.extend(RE_FIND_PRONS2.findall(line))
 
-    return [re.sub(r"[()]", "", f"/{pron}/") for pron in res]
+    return [RE_PARENS.sub("", f"/{pron}/") for pron in res]
+
+
+RE_FIND_VARIANTS = re.compile(r"'+\[\[([^\]]++)\]\]'++$")
+RE_NO_POS = re.compile(r"(?m)^\{\{subs-taivm\|Suomen\|.+")
 
 
 def adjust_wikicode(
@@ -128,7 +136,7 @@ def adjust_wikicode(
     """
     # Fix POS-less words
     if "{{subs-taivm|Suomen|" in code:
-        code = re.sub(r"^\{\{subs-taivm\|Suomen\|.+", r"===Substantiivi===", code, flags=re.MULTILINE)
+        code = RE_NO_POS.sub(r"===Substantiivi===", code)
 
     #
     # Variants
@@ -141,10 +149,7 @@ def adjust_wikicode(
             if not (line := raw_line.strip()):
                 continue
             elif line.startswith(("# {{taivm}}", "#{{taivm}}", "# (''taivutusmuoto'')", "#(''taivutusmuoto'')")) and (
-                forms_ := (
-                    re.findall(r"'+\[\[([^\]]++)\]\]'++$", line)
-                    or re.findall(rf"'++\{{\{{l\|{locale}\|([^|}}]++)", line)
-                )
+                forms_ := (RE_FIND_VARIANTS.findall(line) or re.findall(rf"'++\{{\{{l\|{locale}\|([^|}}]++)", line))
             ):
                 line = f"# {{{{flexion|{forms_[0]}}}}}"
             lines.append(line)
@@ -153,8 +158,8 @@ def adjust_wikicode(
     # Given that variants templates are very well formatted, and there are a LOT of them,
     # it is simpler to automatically add handlers for them.
     interesting_variant_templates = lang.variant_templates[locale]
-    pattern = rf"\{{\{{((?:{'|'.join(tpl[2:] for tpl in interesting_variant_templates)})[^|}}]*+)"
-    for tpl_name in set(re.findall(pattern, code)):
+    pattern = re.compile(rf"\{{\{{((?:{'|'.join(tpl[2:] for tpl in interesting_variant_templates)})[^|}}]*+)")
+    for tpl_name in set(pattern.findall(code)):
         variant_handlers_mod.append_to_variants(tpl_name)
 
     #
@@ -163,7 +168,7 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)}).+)"
+        pattern = re.compile(rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)}).+)")
         lines.clear()
 
         for line in code.splitlines():
@@ -171,7 +176,7 @@ def adjust_wikicode(
                 lines.append(line)
                 continue
 
-            for tpl in re.findall(pattern, line):
+            for tpl in pattern.findall(line):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)

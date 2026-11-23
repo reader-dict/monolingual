@@ -28,6 +28,10 @@ def cleanup(form: str) -> str:
     return "" if cleaned.endswith("-") else cleaned
 
 
+RE_FIND_FORMS1 = re.compile(r"\[\[([^#]++)#")
+RE_FIND_FORMS2 = re.compile(r"#\w++\|([^\]]++)\]\]")
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     lines = "\n".join(
         [
@@ -36,8 +40,8 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|}"))
         ]
     )
-    forms = {cleanup(form) for form in re.findall(r"\[\[([^#]++)#", lines)}
-    forms.update(cleanup(form) for form in re.findall(r"#\w++\|([^\]]++)\]\]", lines))
+    forms = {cleanup(form) for form in RE_FIND_FORMS1.findall(lines)}
+    forms.update(cleanup(form) for form in RE_FIND_FORMS2.findall(lines))
 
     forms.discard(word)
     forms.discard("-")
@@ -45,6 +49,9 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     forms.discard("")
 
     return sorted(forms)
+
+
+RE_REV_VARIANTS = re.compile(r"\[\[([^#]++)#")
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -64,7 +71,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     'monistaa'
     """
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "fi")
-    return bases[0] if (bases := re.findall(r"\[\[([^#]++)#", expanded)) else ""
+    return bases[0] if (bases := RE_REV_VARIANTS.findall(expanded)) else ""
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:

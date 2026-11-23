@@ -89,6 +89,8 @@ GENDERS = {
     "ж": "ж",
 }
 
+RE_FIND_GENDERS = re.compile(r"===род===\n(\w++)")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     r"""
@@ -109,7 +111,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("===род===\nж\n===род===\nж", LANG)
     ['ж']
     """
-    if (gender_raw := re.search(r"===род===\n(\w++)", code)) and (gender := GENDERS.get(gender_raw[1].lower().strip())):
+    if (gender_raw := RE_FIND_GENDERS.search(code)) and (gender := GENDERS.get(gender_raw[1].lower().strip())):
         return [gender]
     return []
 
@@ -122,6 +124,9 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ei/']
     """
     return sorted(f"/{pron}/" for pron in set(re.findall(rf"\{{\{{МФА\|.(.*?).\|{locale}\}}\}}", code)))
+
+
+RE_VARIANTS = re.compile(r"ОСНОВНА ФОРМА =([^\n]++)")
 
 
 def adjust_wikicode(
@@ -150,7 +155,7 @@ def adjust_wikicode(
 
     if "{{Форма|" in code:
         bases: set[str] = set()
-        for base_form_raw in re.findall(r"ОСНОВНА ФОРМА =([^\n]++)", code):
+        for base_form_raw in RE_VARIANTS.findall(code):
             if base_form := base_form_raw.strip():
                 bases.add(base_form)
         if bases:

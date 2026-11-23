@@ -86,4 +86,4 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈjestədeɪ/']
     """
     pattern = re.compile(rf"\{{\{{IPA\|{locale}\|(/[^/]++/)")
-    return sorted(set(re.findall(pattern, code)))
+    return sorted(set(pattern.findall(code)))

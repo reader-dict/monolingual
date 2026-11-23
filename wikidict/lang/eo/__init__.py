@@ -103,6 +103,8 @@ templates_ignored = (
     "{{X",
 )
 
+RE_FING_GENDERS = re.compile(r"\{\{g\|(\w++)")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
@@ -111,8 +113,11 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{g|m}}", "eo")
     ['m']
     """
-    pattern = re.compile(r"\{\{g\|(\w++)")
-    return utils.unique(pattern.findall(code))
+    return utils.unique(RE_FING_GENDERS.findall(code))
+
+
+RE_FIND_PRONS1 = re.compile(r"\{\{PRON\|`([^`]++)`")
+RE_FIND_PRONS2 = re.compile(r"\{\{IFA\|([^}]++)}}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -136,15 +141,32 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IFA|nenk=1|ˈbɛʁɡŋ̩}}", "eo")
     ['ˈbɛʁɡŋ̩']
     """
-    if prons := [
-        utils.process_templates("", match.rstrip("."), locale) for match in re.findall(r"\{\{PRON\|`([^`]++)`", code)
-    ]:
+    if prons := [utils.process_templates("", match.rstrip("."), locale) for match in RE_FIND_PRONS1.findall(code)]:
         return prons
 
     return [
-        utils.process_templates("", match.rstrip(".").split("|")[-1], locale)
-        for match in re.findall(r"\{\{IFA\|([^}]++)}}", code)
+        utils.process_templates("", match.rstrip(".").split("|")[-1], locale) for match in RE_FIND_PRONS2.findall(code)
     ]
+
+
+UNWANTED_SECTIONS = (
+    r"\{\{Anagramoj",
+    r"\{\{Ekzemploj",
+    r"\{\{Fontoj",
+    r"\{\{Derivaĵoj",
+    r"\{\{Referencoj",
+    r"\{\{Similaĵoj",
+    r"\{\{Vortfaradoj",
+)
+RE_UNWANTED_SECTIONS = re.compile(rf"(?m)^[= ]*+(?:{'|'.join(UNWANTED_SECTIONS)})")
+RE_SECTION_PATTERNS = re.compile(rf"(?m)^(?:{'|'.join(section_patterns)})")
+RE_CLEANUPS = [
+    # {{xxx}} → ==== {{xxx}} ====
+    # {{xx-x}} → ==== {{xx-x}} ====
+    (re.compile(r"(?m)^(\{\{[\w\-]++\}\})"), r"==== \1 ===="),
+    # Easier pronunciation
+    (re.compile(r"(?m)==== {{Vorterseparo}} ====\s*+:(.+)\s*+"), r"\n{{PRON|`\1`}}\n"),
+]
 
 
 def adjust_wikicode(
@@ -179,18 +201,9 @@ def adjust_wikicode(
     # Wipe out unwanted sub-sections
     cleaned: list[str] = []
     in_unwanted_section = False
-    unwanted = (
-        r"\{\{Anagramoj",
-        r"\{\{Ekzemploj",
-        r"\{\{Fontoj",
-        r"\{\{Derivaĵoj",
-        r"\{\{Referencoj",
-        r"\{\{Similaĵoj",
-        r"\{\{Vortfaradoj",
-    )
     for line in code.splitlines():
         if line.startswith(("{{", "=")):
-            in_unwanted_section = bool(re.search(rf"^[= ]*+(?:{'|'.join(unwanted)})", line, flags=re.MULTILINE))
+            in_unwanted_section = bool(RE_UNWANTED_SECTIONS.search(line))
         if not in_unwanted_section:
             cleaned.append(line)
     code = "\n".join(cleaned)
@@ -207,7 +220,7 @@ def adjust_wikicode(
             elif in_section:
                 if line.startswith(("{{", "=")):
                     in_section = False
-                elif not bool(re.search(rf"^(?:{'|'.join(section_patterns)})", line, flags=re.MULTILINE)):
+                elif not bool(RE_SECTION_PATTERNS.search(line)):
                     line = f"# {line}"
             cleaned.append(line)
         code = "\n".join(cleaned)
@@ -218,12 +231,8 @@ def adjust_wikicode(
     for tpl in lang.reverse_variant_titles[locale]:
         code = code.replace(tpl, f"# {tpl}")
 
-    # {{xxx}} → ==== {{xxx}} ====
-    # {{xx-x}} → ==== {{xx-x}} ====
-    code = re.sub(r"^(\{\{[\w\-]++\}\})", r"==== \1 ====", code, flags=re.MULTILINE)
-
-    # Easier pronunciation
-    code = re.sub(r"==== {{Vorterseparo}} ====\s*+:(.+)\s*+", r"\n{{PRON|`\1`}}\n", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     #
     # Reverse variants

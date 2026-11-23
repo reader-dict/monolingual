@@ -325,7 +325,7 @@ def setup_lua_ctx() -> None:
             [],
             {"Abreviatura": ["<i>Abreviatura lexicográfica convencional de la palabra</i> música."]},
             [],
-            [],
+            ["Mús"],
         ),
         (
             "ruego",

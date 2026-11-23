@@ -11,9 +11,17 @@ def cleanup(form: str) -> str:
     return cleaned
 
 
+RE_CLEANUPS = [
+    re.compile(r'(?:class|colspan|rowspan)="[^"]*+"'),
+    re.compile(r"<sup>\d++</sup>"),
+    re.compile(r'\|style="([^|]++)'),
+]
+RE_FIND_FORMS = re.compile(r"\[\[([^#]++)#[^|]++\|")
+
+
 def table_to_forms(word: str, wikitext: str, *, is_tpl_flex: bool = False) -> list[str]:
-    wikitext = re.sub(r'(?:class|colspan|rowspan)="[^"]*+"', "", wikitext)
-    wikitext = re.sub(r"<sup>\d++</sup>", "", wikitext)
+    for pattern in RE_CLEANUPS:
+        wikitext = pattern.sub("", wikitext)
     wikitext = wikitext.replace("|| ", "\n| ")
     lines = [
         line
@@ -28,7 +36,6 @@ def table_to_forms(word: str, wikitext: str, *, is_tpl_flex: bool = False) -> li
             and "#F5ECCE" not in line
             and "#F6CECE" not in line
             and "background-color: white" not in line
-            and (line := re.sub(r'\|style="([^|]++)', "", line))
             and line != "|"
         )
     ]
@@ -41,12 +48,12 @@ def table_to_forms(word: str, wikitext: str, *, is_tpl_flex: bool = False) -> li
     for line in lines:
         if "]], [[" in line:
             for subline in line.split("]], [["):
-                forms.add(cleanup((re.findall(r"\[\[([^#]++)#[^|]++\|", subline) or [subline.strip(" '")])[0]))
+                forms.add(cleanup((RE_FIND_FORMS.findall(subline) or [subline.strip(" '")])[0]))
         elif "<br/>" in line:
             for subline in line.split("<br/>"):
-                forms.add(cleanup((re.findall(r"\[\[([^#]++)#[^|]++\|", subline) or [subline.strip(" '")])[0]))
+                forms.add(cleanup((RE_FIND_FORMS.findall(subline) or [subline.strip(" '")])[0]))
         else:
-            forms.add(cleanup((re.findall(r"\[\[([^#]++)#[^|]++\|", line) or [line.strip(" '|")])[0]))
+            forms.add(cleanup((RE_FIND_FORMS.findall(line) or [line.strip(" '|")])[0]))
 
     forms.discard(word)
     forms.discard("&ndash;")

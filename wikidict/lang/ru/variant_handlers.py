@@ -72,6 +72,18 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return strip_accents(variant)
 
 
+RE_CLEANUPS1 = [
+    (re.compile(r"(?s)<!--.*?-->|<sup>.*?</sup>"), " "),
+    (re.compile(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]"), r"\1"),
+    (re.compile(r"<[^>]*+>|''+"), " "),
+]
+RE_SPLIT1 = re.compile(r"[,;:/—]")
+RE_SPLIT2 = re.compile(r"[\s,;:/—]+")
+RE_PARENS1 = re.compile(r"\([^()]*+\)")
+RE_PARENS2 = re.compile(r"\(([^()]*+)\)")
+RE_SPACE = re.compile(r"\s")
+
+
 def comparative_forms(text: str, word: str = "") -> list[str]:
     """
     The forms given by `|степень=`, without the markup of the templates it holds,
@@ -102,9 +114,8 @@ def comparative_forms(text: str, word: str = "") -> list[str]:
     >>> comparative_forms("1")  # not a form
     []
     """
-    text = re.sub(r"<!--.*?-->|<sup>.*?</sup>", " ", text, flags=re.DOTALL)
-    text = re.sub(r"\[\[(?:[^|\]]*+\|)?([^\]]*+)\]\]", r"\1", text)
-    text = re.sub(r"<[^>]*+>|''+", " ", text)
+    for pattern, rpl in RE_CLEANUPS1:
+        text = pattern.sub(rpl, text)
 
     def is_form(part: str) -> bool:
         # Not a label: "устар.", "и"; nor the word itself: "более смра́дный"
@@ -118,16 +129,39 @@ def comparative_forms(text: str, word: str = "") -> list[str]:
     def start(form: str) -> str:
         return strip_accents(form).removeprefix("по")[:3]
 
-    parts = [part.strip() for part in re.split(r"[,;:/—]", re.sub(r"\([^()]*+\)", ",", text))]
-    forms = [part for part in parts if is_form(part) and not re.search(r"\s", part)]
+    parts = [part.strip() for part in RE_SPLIT1.split(RE_PARENS1.sub(",", text))]
+    forms = [part for part in parts if is_form(part) and not RE_SPACE.search(part)]
     # The words of a longer part or of a note in parentheses are kept when they look like the other forms or
     # the word: "деше́вле и подеше́вле", "(поме́ньше)", but not "Превосходная степень" or "(вкус)"
     starts = {start(form) for form in forms} | ({start(word)} if word else set())
-    longer = [part for part in parts if re.search(r"\s", part)] + re.findall(r"\(([^()]*+)\)", text)
-    forms.extend(
-        form for part in longer for form in re.split(r"[\s,;:/—]+", part) if is_form(form) and start(form) in starts
-    )
+    longer = [part for part in parts if RE_SPACE.search(part)] + RE_PARENS2.findall(text)
+    forms.extend(form for part in longer for form in RE_SPLIT2.split(part) if is_form(form) and start(form) in starts)
     return forms
+
+
+RE_CLEANUPS2A = [
+    (re.compile(r'(?m)^\| class="grey"[^\n]++'), ""),
+    (re.compile(r"(?m)^\|\}[ ]*+<b>[^\n]++"), ""),
+]
+RE_CLEANUPS2B = [
+    (re.compile(r'(?m)^\|[ ]*+bgcolor="[^|\n]++'), ""),
+    # Cell attributes: `| colspan=2| дву́х`
+    (re.compile(r"(?m)^\|[ ]*+[a-z]++=[^|\n]*+\|(?!\|)"), "| "),
+]
+RE_CLEANUPS3 = [
+    (re.compile(r"<br[ ]*+/?>"), "</td><td>"),
+    # Labels inside a cell: `не́кой<br />[[Викисловарь:Условные сокращения|<i>устар.</i>]]&nbsp;не́коей`
+    (re.compile(r"\[\[[^\]|]*+\|<i>[^<]*+</i>\]\]"), ""),
+    # Drop cell attributes (`<td rowspan="3">`)
+    (re.compile(r"<td [^>]*+>"), "<td>"),
+    # Drop footnote marks (`<sup>△</sup>`)
+    (re.compile(r"<sup>[^<]*+</sup>"), ""),
+]
+RE_FIND_FORMS = re.compile(r"<td>([^<]++)</td>")
+RE_CLEANUP_FORM1 = re.compile(r"\[\[(?:[^|\]]*+\|)?([^|\]]*+)\]\]")
+RE_CLEANUP_FORM2 = re.compile(r"^([^\s()]++)[ ]*+\(([^\s().,;]++)\)$")
+RE_CLEANUP_FORM3 = re.compile(r"^\(([^\s().,;]++)\)([^\s()]++)$")
+RE_SPLIT3 = re.compile(r"[,;]+")
 
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -155,8 +189,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             for raw_line in table.splitlines()
             if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith(("|-", "|}")))
         )
-        table = re.sub(r'^\| class="grey"[^\n]++', "", table, flags=re.MULTILINE)
-        table = re.sub(r"^\|\}[ ]*+<b>[^\n]++", "", table, flags=re.MULTILINE)
+        for pattern, rpl in RE_CLEANUPS2A:
+            table = pattern.sub(rpl, table)
         table = (
             table.replace("<br>", "\n| ")
             .replace("<br/>", "\n| ")
@@ -164,23 +198,18 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             .replace("||", "\n| ")
             .replace("(по) ", "\n| ")
         )
-        table = re.sub(r'^\|[ ]*+bgcolor="[^|\n]++', "", table, flags=re.MULTILINE)
-        # Cell attributes: `| colspan=2| дву́х`
-        table = re.sub(r"^\|[ ]*+[a-z]++=[^|\n]*+\|(?!\|)", "| ", table, flags=re.MULTILINE)
+        for pattern, rpl in RE_CLEANUPS2B:
+            table = pattern.sub(rpl, table)
         forms = {form[1:].strip() for form in table.splitlines()}
     else:
-        table = re.sub(r"<br[ ]*+/?>", "</td><td>", table)
-        # Labels inside a cell: `не́кой<br />[[Викисловарь:Условные сокращения|<i>устар.</i>]]&nbsp;не́коей`
-        table = re.sub(r"\[\[[^\]|]*+\|<i>[^<]*+</i>\]\]", "", table)
-        # Drop cell attributes (`<td rowspan="3">`) and footnote marks (`<sup>△</sup>`)
-        table = re.sub(r"<td [^>]*+>", "<td>", table)
-        table = re.sub(r"<sup>[^<]*+</sup>", "", table)
-        forms = set(re.findall(r"<td>([^<]++)</td>", table))
+        for pattern, rpl in RE_CLEANUPS3:
+            table = pattern.sub(rpl, table)
+        forms = set(RE_FIND_FORMS.findall(table))
         # Links in a cell, only the first one was kept as the form is cut at "#":
         # `[[погасший#пога́сший|пога́сший]], [[погаснувший#пога́снувший|пога́снувший]]` → `пога́сший, пога́снувший`
-        forms = {re.sub(r"\[\[(?:[^|\]]*+\|)?([^|\]]*+)\]\]", r"\1", form) for form in forms}
+        forms = {RE_CLEANUP_FORM1.sub(r"\1", form) for form in forms}
         # A second form in parentheses, it was dropped with them: `пога́снул (пога́с)` → `пога́снул, пога́с`
-        forms = {re.sub(r"^([^\s()]++)[ ]*+\(([^\s().,;]++)\)$", r"\1, \2", form.strip()) for form in forms}
+        forms = {RE_CLEANUP_FORM2.sub(r"\1, \2", form.strip()) for form in forms}
 
     # Comparative degree of adjectives: `|степень=[[шире|ши́ре]]`
     if comparative := data.get("степень", ""):
@@ -190,7 +219,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return ""
 
     # A letter that can be added in front, as after a preposition: `(н)ея́же` → `ея́же, нея́же`
-    forms = {re.sub(r"^\(([^\s().,;]++)\)([^\s()]++)$", r"\2, \1\2", form.strip()) for form in forms}
+    forms = {RE_CLEANUP_FORM3.sub(r"\2, \1\2", form.strip()) for form in forms}
     forms = {cleanup(form) for form in forms}
     # One cell can hold several forms: "его́, него́", "ва́шей ва́шею". But an analytic form holds the word itself,
     # "more plaintive", and its other words are not forms of it: "more" would find "plaintive".
@@ -198,7 +227,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         forms = {
             part
             for form in forms
-            for chunk in re.split(r"[,;]+", form)
+            for chunk in RE_SPLIT3.split(form)
             if word not in (parts := chunk.split()) or len(parts) == 1
             for part in parts
         }

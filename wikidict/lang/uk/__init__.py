@@ -69,6 +69,9 @@ def find_genders(code: str, locale: str) -> list[str]:
     )
 
 
+RE_FIND_PRONS = re.compile(r"&#91;([^&]++)&#93;")
+
+
 def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     """
     The pronunciations, the first one of each transcription starting with the word and its stress.
@@ -91,13 +94,17 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     res: list[str] = []
     seen: set[str] = set()
     for tpl in pattern.finditer(code):
-        prons = [f"[{pron}]" for pron in re.findall(r"&#91;([^&]++)&#93;", context.expand(tpl[0], "uk"))]
+        prons = [f"[{pron}]" for pron in RE_FIND_PRONS.findall(context.expand(tpl[0], "uk"))]
         prons = [pron for pron in dict.fromkeys(prons) if pron not in seen]
         seen.update(prons)
         if prons and word and (stressed := utils.stress_word(word, tpl[1] or "")):
             prons[0] = f"{stressed} {prons[0]}"
         res.extend(prons)
     return res
+
+
+RE_REUCE_SPACES = re.compile(r"[ ]{2,}")
+RE_STRIP = re.compile(r"(?m)^'++[^']++'++[: –—\-]*+")
 
 
 def adjust_wikicode(
@@ -123,9 +130,6 @@ def adjust_wikicode(
     # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings
     code = utils.attach_synonyms(code, "значення", "синоніми", "син.", forms=variant_templates)
 
-    # Delete empty synonyms
-    code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
-
     #
     # Reverse variants
     #
@@ -146,7 +150,7 @@ def adjust_wikicode(
                     in_tpl = False
                     tpl_code = extract_templates(tpl_code)[0]
                     tpl_name = tpl_code[2 : max(0, tpl_code.find("|")) or tpl_code.find("}")].strip().replace("''", "")
-                    tpl_name = re.sub(r"[ ]{2,}", " ", tpl_name).rstrip("\u200e")
+                    tpl_name = RE_REUCE_SPACES.sub(" ", tpl_name).rstrip("\u200e")
                     variant_handlers_mod.append_to_reverse_variants(tpl_name)
 
                     forms = utils.process_templates(
@@ -167,12 +171,6 @@ def adjust_wikicode(
     if "#" not in code:
         lines = [line for raw_line in code.strip().splitlines() if (line := raw_line.strip())]
         if len(lines) > 1 and lines[0].startswith("=") and not lines[1].startswith(("#", "=")):
-            code = "\n".join(
-                [
-                    lines[0],
-                    "====значення====",
-                    f"""# {re.sub(r"^'++[^']++'++[: –—\-]*+", "", lines[1], flags=re.MULTILINE)}""",
-                ]
-            )
+            code = "\n".join([lines[0], "====значення====", f"""# {RE_STRIP.sub("", lines[1])}"""])
 
     return code

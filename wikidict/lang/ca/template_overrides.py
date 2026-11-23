@@ -81,6 +81,10 @@ table_dual = {
 }
 
 
+RE_ACCENTS = re.compile(r"[áéíóúgḱdâřŝ]")
+RE_NUMBERS = re.compile(r"[123456789]")
+
+
 def module_xib_trans(args: tuple[str, ...]) -> str:
     """
     Source: https://ca.wiktionary.org/w/index.php?title=M%C3%B2dul:xib-trans&oldid=2349253
@@ -92,13 +96,7 @@ def module_xib_trans(args: tuple[str, ...]) -> str:
     syllabic = {"b", "k", "g", "t", "d"}
     sign = ""
     tr = []
-    table = (
-        table_epigraphy
-        if re.search(r"[123456789]", text)
-        else table_dual
-        if re.search(r"[áéíóúgḱdâřŝ]", text)
-        else table_no_dual
-    )
+    table = table_epigraphy if RE_NUMBERS.search(text) else table_dual if RE_ACCENTS.search(text) else table_no_dual
 
     for i in range(len(text)):
         letter = text[i]

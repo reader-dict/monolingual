@@ -61,6 +61,9 @@ templates_ignored = (
 )
 
 
+RE_FIND_PRONS = re.compile(r"\{\{IPA(?:-Telaffuz)?\|[^\}\n]*+\}\}")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "tr")
@@ -72,7 +75,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA-Telaffuz|dil=tr|bacca:li'je|bacca:lijeˈleɾ}}", "tr")
     ["/bacca:li'je/", '/bacca:lijeˈleɾ/']
     """
-    if tpl := re.search(r"\{\{IPA(?:-Telaffuz)?\|[^\}\n]*+\}\}", code):
+    if tpl := RE_FIND_PRONS.search(code):
         parts = tpl[0][2:-2].split("|")[1:]
         utils.extract_keywords_from(parts)
         for idx in range(len(parts)):
@@ -80,6 +83,9 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
         return sorted(parts)
 
     return []
+
+
+RE_FIND_VARIANT = re.compile(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>")
 
 
 def adjust_wikicode(
@@ -121,7 +127,7 @@ def adjust_wikicode(
     for line in code.splitlines():
         if line.startswith("#") and line.endswith(("-çekimi}}", "-çekim}}")):
             expanded = context.expand(line.removeprefix("#").strip(), "tr")
-            if variant := re.search(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>", expanded):
+            if variant := RE_FIND_VARIANT.search(expanded):
                 line = f"# {{{{flexion|{variant[1]}}}}}"
         lines.append(line)
     code = "\n".join(lines)
@@ -132,7 +138,9 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]*+\}}\}})"
+        pattern = re.compile(
+            rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]*+\}}\}})"
+        )
         cleaned: list[str] = []
 
         for line in code.splitlines():
@@ -140,7 +148,7 @@ def adjust_wikicode(
                 cleaned.append(line)
                 continue
 
-            for tpl in re.findall(pattern, line):
+            for tpl in pattern.findall(line):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)

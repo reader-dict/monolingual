@@ -143,6 +143,8 @@ templates_ignored = (
     "{{Rf",
 )
 
+RE_FIND_PRONS = re.compile(r"\[\[[^#]++#官話\|([^\]]++)\]\]")
+
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
@@ -158,17 +160,26 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     from wikidict import context
 
     res: set[str] = set()
-    pattern = r"\[\[[^#]++#官話\|([^\]]++)\]\]"
     for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]++}}}})", code):
-        if pron := re.search(pattern, context.expand(tpl, "zh")):
+        if pron := RE_FIND_PRONS.search(context.expand(tpl, "zh")):
             res.add(pron[1])
     return sorted(f"/{pron}/" for pron in res)
 
 
-# Example: 興{xīng}
-HAN_FOLLOWED_BY_BRACKETS = regex.compile(r"(?<=\[?\p{Han}\]?)(\{[^{}]++\})")
-# Example: -{适}-
-HAN_SURROUNDED_BY_BRACKETS = regex.compile(r"-\{\p{Han}\}-")
+RE_CLEANUPS = [
+    # `{{zh-pron...` → `# {{zh-pron...`
+    (re.compile(r"(?m)^\{\{zh-pron"), "# {{zh-pron"),
+    # `# {{zh-pron\n|...` → `# {{zh-pron|...`
+    (re.compile(r"(?m)^# \{\{zh-pron[^\}]*+\}\}"), lambda m: m[0].replace("\n", "")),
+    # `; '''限定代詞'''` → `:: 限定代詞`
+    # `;限定代詞` → `:: 限定代詞`
+    # (skipped due to #2655)
+    # (re.compile(r"(?m)^[;:][ ]*'*[^' {]+'*"), ""),
+    # Example: 興{xīng}
+    (regex.compile(r"(?<=\[?\p{Han}\]?)(\{[^{}]++\})"), ""),
+    # Example: -{适}-
+    (regex.compile(r"-\{\p{Han}\}-"), ""),
+]
 
 
 def adjust_wikicode(
@@ -178,7 +189,6 @@ def adjust_wikicode(
     templates_status: list[tuple[str, str]] | None = None,
     word: str = "",
 ) -> str:
-    # sourcery skip: inline-immediately-returned-variable
     r"""
     >>> adjust_wikicode("==漢語==\n{{zh-pron\n|m=huángmǎguà,er=y\n|c=wong4 maa5 kwaa3-2\n|cat=n\n}}", "zh")
     '==漢語==\n# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
@@ -202,17 +212,6 @@ def adjust_wikicode(
     >> adjust_wikicode("==漢語==\n; “位置，立場”\n: 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n; “意識形態”\n:{{wasei kango|主%義|しゅ%ぎ}}。", "zh")
     "==漢語==\n 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n{{wasei kango|主%義|しゅ%ぎ}}。"
     """
-    # `{{zh-pron...` → `# {{zh-pron...`
-    code = re.sub(r"^\{\{zh-pron", "# {{zh-pron", code, flags=re.MULTILINE)
-    # `# {{zh-pron\n|...` → `# {{zh-pron|...`
-    code = re.sub(r"^# \{\{zh-pron[^\}]*+\}\}", lambda m: m[0].replace("\n", ""), code, flags=re.MULTILINE)
-
-    # `; '''限定代詞'''` → `:: 限定代詞`
-    # `;限定代詞` → `:: 限定代詞`
-    # (skipped due to #2655)
-    # code = re.sub(r"^[;:][ ]*'*[^' {]+'*", "", code, flags=re.MULTILINE)
-
-    code = HAN_FOLLOWED_BY_BRACKETS.sub("", code)
-    code = HAN_SURROUNDED_BY_BRACKETS.sub("", code)
-
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
     return code

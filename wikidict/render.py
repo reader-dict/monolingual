@@ -225,14 +225,8 @@ def find_definitions(
 def es_replace_defs_list_with_numbered_lists(
     lst: wtp.WikiList,
     *,
-    regex_item: re.Pattern[str] = re.compile(
-        r"(^|\\n);\d++[ |:]++",  # `;1:`
-        flags=re.MULTILINE,
-    ),
-    regex_subitem: re.Pattern[str] = re.compile(
-        r"(^|\\n):;\s*+[a-z]:++\s++",  # `:;a:`
-        flags=re.MULTILINE,
-    ),
+    regex_item: re.Pattern[str] = re.compile(r"(?m)(^|\\n);\d++[ |:]++"),  # `;1:`
+    regex_subitem: re.Pattern[str] = re.compile(r"(?m)(^|\\n):;\s*+[a-z]:++\s++"),  # `:;a:`
 ) -> str:
     """
     ES uses definition lists, not well supported by the parser...
@@ -627,6 +621,9 @@ def prettify_pos(top_title: str, section: wtp.Section, lang_src: str, lang_dst: 
     return pretty_pos
 
 
+RE_DE_FIND_POS = re.compile(r"\{\{\w++\|([^|}]++)")
+
+
 def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[list[wtp.Section], Sections]:
     """Find the correct section(s) holding the current locale definition(s)."""
     ret = defaultdict(list)
@@ -656,7 +653,7 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
             title = title.strip("'")
 
         if lang_src == "de" and section.level == 3:
-            current_pos = "/".join(re.findall(r"\{\{\w++\|([^|}]++)", title)) or current_pos
+            current_pos = "/".join(RE_DE_FIND_POS.findall(title)) or current_pos
             continue
 
         # Filter on interesting sections
@@ -689,6 +686,9 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
             assert 0  # Break the rendering to report the word as an error and be able to look into it
 
     return top_sections, ret
+
+
+RE_VARIANT = re.compile(r"\b\(I*+\)\b")
 
 
 def add_potential_variant(
@@ -744,7 +744,7 @@ def add_potential_variant(
             any(char in variant_cleaned for char in "<>|={}")
             or any(char in variant_cleaned for char in "()")
             and all(char not in word for char in "()")
-            and not (locale == "nl" and re.search(r"\b\(I*+\)\b", variant_cleaned))
+            and not (locale == "nl" and RE_VARIANT.search(variant_cleaned))
         ):
             kind = "variant"
             if is_reverse_variant:
@@ -1072,8 +1072,7 @@ def load_words(lang_src: str, lang_dst: str) -> tuple[str, list[tuple[str, str]]
             return any(hs in wikicode for hs in lang.head_sections[lang_dst])
     else:
         has_interesting_sections = re.compile(
-            rf"^={{{lang.section_level[lang_dst]}}}[ ]*+(?:{'|'.join(re.escape(hs) for hs in lang.head_sections[lang_dst])})",
-            flags=re.IGNORECASE | re.MULTILINE,
+            rf"(?im)^={{{lang.section_level[lang_dst]}}}[ ]*+(?:{'|'.join(re.escape(hs) for hs in lang.head_sections[lang_dst])})"
         ).search  # type: ignore[assignment]
 
     ctx = context.get_ctx()

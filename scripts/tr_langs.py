@@ -4,7 +4,7 @@ from scripts_utils import get_content
 
 data = get_content("https://tr.wiktionary.org/wiki/Mod%C3%BCl:diller/veri2?action=raw")
 pattern = re.compile(r'm\["([^"]+)"\][^"]+"([^"]+)",')
-langs = re.findall(pattern, data)
+langs = pattern.findall(data)
 
 # Missing langs (https://tr.wiktionary.org/wiki/Modül:diller/veri3/LETTER)
 langs.extend(

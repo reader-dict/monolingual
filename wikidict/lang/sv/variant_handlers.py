@@ -18,6 +18,9 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[1 if tpl.endswith("avledning") else -1]
 
 
+RE_FIND_FORMS = re.compile(r"\[\[([^\]#]++)")
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
@@ -33,7 +36,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     for line in table.splitlines():
         if not line.startswith("|") or line.startswith(("|-", "|}", '|colspan="2" rowspan="5"')):
             continue
-        forms.update(cleanup(form) for form in re.findall(r"\[\[([^\]#]++)", line))
+        forms.update(cleanup(form) for form in RE_FIND_FORMS.findall(line))
 
     forms.discard(word)
 

@@ -58,15 +58,9 @@ definitions_to_ignore = (
 )
 
 PRON_PATTERNS = [
-    re.compile(r"^:\*[ ]*+\{\{IPA\|([^|}]++)", flags=re.MULTILINE),
-    re.compile(
-        r"^:\*[ ]*+\[\[International Phonetic Alphabet\|IPA\]\]:[ ']*+(?:\{\{Azpimarratu\|)?/([^/]++)",
-        flags=re.MULTILINE,
-    ),
-    re.compile(
-        r"^:?\*[ ]*+\[\[International Phonetic Alphabet\|IPA\]\]:[ ]*+/'++([^']++)'''/",
-        flags=re.MULTILINE,
-    ),
+    re.compile(r"(?m)^:\*[ ]*+\{\{IPA\|([^|}]++)"),
+    re.compile(r"(?m)^:\*[ ]*+\[\[International Phonetic Alphabet\|IPA\]\]:[ ']*+(?:\{\{Azpimarratu\|)?/([^/]++)"),
+    re.compile(r"(?m)^:?\*[ ]*+\[\[International Phonetic Alphabet\|IPA\]\]:[ ]*+/'++([^']++)'''/"),
 ]
 
 
@@ -84,10 +78,13 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈpɔlak/']
     """
     pron = next(
-        (f"/{item.strip("/'")}/" for pattern in PRON_PATTERNS for item in re.findall(pattern, code)),
+        (f"/{item.strip("/'")}/" for pattern in PRON_PATTERNS for item in pattern.findall(code)),
         "",
     )
     return [pron] if pron else []
+
+
+RE_BASE_FORM = re.compile(r"\[\[([^\]]++)\]\]")
 
 
 def adjust_wikicode(
@@ -103,7 +100,7 @@ def adjust_wikicode(
 
     lines: list[str] = []
     for line in code.splitlines():
-        if "hitzaren deklinabide forma" in line and (base_form_raw := re.search(r"\[\[([^\]]++)\]\]", line)):
+        if "hitzaren deklinabide forma" in line and (base_form_raw := RE_BASE_FORM.search(line)):
             base_form = context.expand(base_form_raw[1], "eu").strip().lower()
             line = f"# {{{{flexion|{base_form}}}}}"
         lines.append(line)

@@ -117,6 +117,9 @@ templates_ignored = (
 )
 
 
+RE_FIND_GENDERS = re.compile(r"\{\{taxoninfl\|(?:i=\d++\|)?g=(\w++).*")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "en")
@@ -124,8 +127,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{taxoninfl|i=1|g=f}}", "en")
     ['f']
     """
-    pattern = re.compile(r"\{\{taxoninfl\|(?:i=\d++\|)?g=(\w++).*")
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    return utils.unique(utils.flatten(RE_FIND_GENDERS.findall(code)))
+
+
+RE_FIND_PRONS = re.compile(r"(?m)^.*?\{\{IPA\|en\|([^}]++)\}\}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -190,9 +195,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     if not lines:
         return []
 
-    interesting_code = "\n".join(lines)
-    pattern = re.compile(r"^.*?\{\{IPA\|en\|([^}]++)\}\}", flags=re.MULTILINE)
-    if not (matches := list(re.finditer(pattern, interesting_code))):
+    if not (matches := list(RE_FIND_PRONS.finditer("\n".join(lines)))):
         return []
 
     pronunciations = defaultdict(list)
@@ -226,7 +229,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             if (
                 kind
                 and "strong form" in line
-                and (match_ := re.search(pattern, line))
+                and (match_ := RE_FIND_PRONS.search(line))
                 and (pron := next((p_ for p_ in match_[1].split("|") if p_.startswith("/") and p_.endswith("/")), ""))
             ):
                 pronunciations[pron].append(kind)
@@ -242,7 +245,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
             if (
                 inteteresting
-                and (match_ := re.search(pattern, line))
+                and (match_ := RE_FIND_PRONS.search(line))
                 and (pron := next((p_ for p_ in match_[1].split("|") if p_.startswith("/") and p_.endswith("/")), ""))
             ):
                 pronunciations[pron].append("")
@@ -276,6 +279,9 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return final
 
 
+RE_TABLES = re.compile(r"(?sm)^\{\|.*?\|\}")
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -293,7 +299,7 @@ def adjust_wikicode(
     '== English ==\n<math>\\frac{|AP|}{|BP|} = \\frac{|AC|}{|BC|}</math>'
     """
     # Remove tables (cf issue #2073)
-    code = re.sub(r"^\{\|.*?\|\}", "", code, flags=re.DOTALL | re.MULTILINE)
+    code = RE_TABLES.sub("", code)
 
     # Wipe out `{{text float box|...}}`
     if "{{text float box" in code:

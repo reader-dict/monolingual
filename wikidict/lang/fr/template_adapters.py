@@ -1,5 +1,6 @@
 import re
 
+RE_CAT = re.compile(r"\[\[Catégorie:[^\]]+\]\]")
 adapters = {
     "Modèle:date": lambda _: "{{#ifeq:{{{1|}}}|?||{{#if:{{{1|}}}|<i>({{UCFIRST: {{{1}}} }})</i>|}}}}",
     **dict.fromkeys(
@@ -8,7 +9,7 @@ adapters = {
             "Modèle:lexique",
             "Modèle:term",
         },
-        lambda body: re.sub(r"\[\[Catégorie:[^\]]+\]\]", "", body),
+        lambda body: RE_CAT.sub("", body),
     ),
     "Modèle:nom w pc": lambda body: body.removesuffix(
         """<sup style="color: red">Le modèle ''nom w pc'' est désuet. Supprimez-le de cette ligne, ou remplacez-le par le modèle w si un lien vers Wikipédia est nécessaire.</sup>"""

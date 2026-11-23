@@ -8,16 +8,16 @@ def cleanup(form: str) -> str:
     return utils.cleanup_rev_variant(form, rpl=["haber ", "(о) "])
 
 
+RE_FIND_FORMS1 = re.compile(r"\[\[([^#|]++)")
+RE_FIND_FORMS2 = re.compile(r"(?m)^\|[ ]*+([^|=\n]++)$")
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     lines = "\n".join(
         [line for line in wikitext.splitlines() if line.startswith("|") and not line.startswith(("|-", "|}"))]
     )
 
-    forms = {
-        cleanup(form)
-        for form in re.findall(r"\[\[([^#|]++)", lines)
-        or re.findall(r"^\|[ ]*+([^|=\n]++)$", lines, flags=re.MULTILINE)
-    }
+    forms = {cleanup(form) for form in RE_FIND_FORMS1.findall(lines) or RE_FIND_FORMS1.findall(lines)}
     forms.discard(word)
     forms.discard("―")
     forms.discard("-")
@@ -36,6 +36,14 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return data["v"] or parts[0]
 
 
+RE_CLEANUPS = [
+    (re.compile(r"<sup>[^<]+</sup>"), ""),
+    # Prevent keeping the "haber" auxiliary
+    # `[[habrías|habrías]][[ superscripto| superscripto]]` → `[[superscripto|superscripto]]`
+    (re.compile(r"\[\[(h[^|]++)\|\1\]\]\[\[ ([^|]++)\| \2\]\]"), r"[[\2|\2]]"),
+]
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
@@ -50,11 +58,8 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             return ""
         table = table[idx:]
 
-        table = re.sub(r"<sup>[^<]+</sup>", "", table)
-
-        # Prevent keeping the "haber" auxiliary
-        # `[[habrías|habrías]][[ superscripto| superscripto]]` → `[[superscripto|superscripto]]`
-        table = re.sub(r"\[\[(h[^|]++)\|\1\]\]\[\[ ([^|]++)\| \2\]\]", r"[[\2|\2]]", table)
+        for patter, rpl in RE_CLEANUPS:
+            table = patter.sub(rpl, table)
 
     return "|".join(table_to_forms(word, table))
 

@@ -34,17 +34,12 @@ if TYPE_CHECKING:
 log = logging.getLogger(__name__)
 
 RE_REDIRECT = re.compile(r'<redirect title="([^"]++)" />').search
-RE_TEXT = re.compile(r"<text[^>]*+>(.*?)</text>", flags=re.DOTALL).search
+RE_TEXT = re.compile(r"(?s)<text[^>]*+>(.*?)</text>").search
 RE_TITLE_WORD = re.compile(r"<title>([^:<]++)</title>").search
 
 # To list all words not taken into account with current head sections:
 #    DEBUG_PARSE=1 python -m wikidict LOCALE --parse >out.log
 DEBUG_PARSE = "DEBUG_PARSE" in os.environ
-
-RE_LANGS_DA = re.compile(
-    rf"^\{{\{{-({'|'.join(langs_da)})-\}}\}}",
-    flags=re.MULTILINE,
-)
 
 
 def xml_iter_parse(file: Path, locale: str) -> Generator[str]:
@@ -153,6 +148,9 @@ def xml_parse_element(
     return empty
 
 
+RE_BG_TITLE_WITH_SPACES = re.compile(r"^\s*+\|?\s*+([A-ZА-Я0-9_]++(?:[ ]++[A-ZА-Я0-9_]++)*+)\s*+=\s*+(.*)$")
+
+
 def preprocess_bg(body: str) -> str:
     lines: list[str] = []
     in_template = False
@@ -214,7 +212,7 @@ def preprocess_bg(body: str) -> str:
             continue
 
         # Match section titles allowing spaces (e.g., СРОДНИ ДУМИ)
-        if section_match := re.match(r"^\s*+\|?\s*+([A-ZА-Я0-9_]++(?:[ ]++[A-ZА-Я0-9_]++)*+)\s*+=\s*+(.*)$", raw_line):
+        if section_match := RE_BG_TITLE_WITH_SPACES.match(raw_line):
             flush_section()
             current_section_title = section_match.group(1)
             if initial_value := section_match.group(2).strip():
@@ -231,80 +229,102 @@ def preprocess_bg(body: str) -> str:
     return "\n".join(lines)
 
 
+RE_CLEANUPS: dict[str, list[tuple[re.Pattern[str], str | Callable[[re.Match[str]], str]]]] = {
+    "bg": [
+        # `{{-bg-}}` → `={{-bg-}}=`
+        (re.compile(r"(?m)^\{\{(-\w++-)\}\}"), "={{\\1}}="),
+        # `={{-bg-}}={{...}}` → `={{-bg-}}=\n{{...}}`
+        (re.compile(r"(?m)^(=\{\{-\w++-\}\}=)([^\n]++)"), "\\1\n\\2"),
+    ],
+    "da": [
+        # `{{=da=}}` → `=={{da}}==`
+        (re.compile(r"(?m)^\{\{=(\w+)=\}\}"), "=={{\\1}}=="),
+        # Transform sub-locales into their own section to prevent mixing stuff
+        # `{{-da-}}` → `=={{da}}==`
+        # `{{-mul-}}` → `=={{mul}}==`
+        (re.compile(rf"(?m)^\{{\{{-({'|'.join(langs_da)})-\}}\}}"), "=={{\\1}}=="),
+    ],
+    "de": [
+        # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
+        (re.compile(r"(?m)^==\s*[^(]*+\((\{\{Sprache\|[^}]++\}\})\)\s*=="), "== \\1 =="),
+    ],
+    "eu": [
+        # `{{-eu-}}` → `==eu==`
+        (re.compile(r"(?m)^\{\{-(\w+)-\}\}"), r"=={{\1}}=="),
+        # `=== {{Izena}} ===` → `===izena===`
+        (
+            re.compile(r"(?m)^(=++)[ ]*+\{\{([^=]++)=++"),
+            lambda m: f"{m[1]}{m[2].replace('{', '').replace('}', '').strip().lower()}{m[1]}",
+        ),
+    ],
+    "la": [
+        # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
+        (re.compile(r"(?m)^\{\{lingua2\|([^|\n]++)[^\n]*+"), "=={{-\\1-}}=="),
+    ],
+    "nl": [
+        # `{{=nld=}}` → `=={{nld}}==`
+        (re.compile(r"(?m)^\{\{=(\w+)=\}\}"), "=={{\\1}}=="),
+    ],
+    "pl": [
+        # `== piękny ({{język polski}}) ==` → `==polski==`
+        (re.compile(r"(?m)^==[ ]*+[^(]*+\(\{\{język ([^}]++)\}\}\)[ ]*+=="), "==\\1=="),
+        # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
+        (re.compile(r"(?m)^==[ ]*+[^(]*+\(\{\{użycie ([^}]++)\}\}\)[ ]*+=="), "==\\1=="),
+    ],
+    "ru": [
+        # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
+        (re.compile(r"(?m)^=[ ]*+\{\{(-\w++-)\|[^}]++\}\}[ ]*+="), "={{\\1}}="),
+    ],
+    "tr": [
+        # Lower all section titles to workaround regexp with unicode diacritics being lost.
+        # See https://stackoverflow.com/q/79169550/1117028 for more details.
+        (re.compile(r"(?m)^==[ {]*+(\w++)[} ]*+=="), lambda m: f"=={m[1].lower()}=="),
+    ],
+    "uk": [
+        # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
+        (re.compile(r"(?m)^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}"), "=\\1="),
+        # `{{=uk=}}` → `=uk=`
+        (re.compile(r"(?m)^\{\{=(\w+)=\}\}"), "=\\1="),
+    ],
+}
+RE_BG_REDIR = re.compile(r"(?m)^\* \[\[([^\]]++)\]\]")
+RE_RU_REDIR = re.compile(r"#перенаправление\s*+\[\[([^\]]++)\]\]")
+
+
 def preprocess(locale: str, title: str, body: str) -> str:
     body = body.strip()
 
+    # First pass
     match locale:
         case "bg":
             # Redirections (`{{Пояснение|TITLE}}\n* [[BASE_FORM]]\n* [[BASE_FORM]]`)
-            if body.startswith("{{Пояснение|") and (
-                base_forms := re.findall(r"^\* \[\[([^\]]++)\]\]", body, flags=re.MULTILINE)
-            ):
+            if body.startswith("{{Пояснение|") and (base_forms := RE_BG_REDIR.findall(body)):
                 body = "={{-bg-}}=\n==съществително име=="
                 for base_form in base_forms:
                     body += f"\n# {{{{flexion|{base_form}}}}}"
-            elif body.count("\n") == 0:
+                return body
+
+            # Catch single-line word (malformed)
+            if body.count("\n") == 0:
                 if not body.startswith(("{{бързо", "[[Категория")):
                     log.warning("Single-line word: %r", title)
                 return ""
-            else:
-                # `{{-bg-}}` → `={{-bg-}}=`
-                body = re.sub(r"^\{\{(-\w++-)\}\}", r"={{\1}}=", body, flags=re.MULTILINE)
-
-                # `={{-bg-}}={{...}}` → `={{-bg-}}=\n{{...}}`
-                body = re.sub(r"^(=\{\{-\w++-\}\}=)([^\n]++)", r"\1\n\2", body, flags=re.MULTILINE)
-
-                # Transform spaghetti templates into more structured data
-                body = preprocess_bg(body)
-        case "da":
-            # `{{=da=}}` → `=={{da}}==`
-            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
-
-            # Transform sub-locales into their own section to prevent mixing stuff
-            # `{{-da-}}` → `=={{da}}==`
-            # `{{-mul-}}` → `=={{mul}}==`
-            body = RE_LANGS_DA.sub(r"=={{\1}}==", body)
-        case "de":
-            # `== CIA ({{Sprache|Deutsch}}) ==` → `== {{Sprache|Deutsch}} ==`
-            body = re.sub(r"^==\s*[^(]*+\((\{\{Sprache\|[^}]++\}\})\)\s*==", r"== \1 ==", body, flags=re.MULTILINE)
-        case "eu":
-            # `{{-eu-}}` → `==eu==`
-            body = re.sub(r"^\{\{-(\w+)-\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
-            # `=== {{Izena}} ===` → `===izena===`
-            body = re.sub(
-                r"^(=++)[ ]*+\{\{([^=]++)=++",
-                lambda m: f"{m[1]}{m[2].replace('{', '').replace('}', '').strip().lower()}{m[1]}",
-                body,
-                flags=re.MULTILINE,
-            )
-        case "la":
-            # `{{lingua2|la|Gaius Plinius Secundus}}` → `=={{-la-}}==`
-            body = re.sub(r"^\{\{lingua2\|([^|\n]++)[^\n]*+", r"=={{-\1-}}==", body, flags=re.MULTILINE)
-            # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
-            body = body.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", 1)
-        case "pl":
-            # `== piękny ({{język polski}}) ==` → `==polski==`
-            body = re.sub(r"^==[ ]*+[^(]*+\(\{\{język ([^}]++)\}\}\)[ ]*+==", r"==\1==", body, flags=re.MULTILINE)
-            # `== a ({{użycie międzynarodowe}}) ==` → `==międzynarodowe==`
-            body = re.sub(r"^==[ ]*+[^(]*+\(\{\{użycie ([^}]++)\}\}\)[ ]*+==", r"==\1==", body, flags=re.MULTILINE)
         case "ja":
             if "{{kanji header" in body:
                 body = f"=={{{{kanji}}}}==\n{body}"
-        case "nl":
-            # `{{=nld=}}` → `=={{nld}}==`
-            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=={{\1}}==", body, flags=re.MULTILINE)
-        case "ru":
-            # `= {{-ru-|WORD}} =` → `={{-ru-}}=`
-            body = re.sub(r"^=[ ]*+\{\{(-\w++-)\|[^}]++\}\}[ ]*+=", r"={{\1}}=", body, flags=re.MULTILINE)
-        case "tr":
-            # Lower all section titles to workaround regexp with unicode diacritics being lost.
-            # See https://stackoverflow.com/q/79169550/1117028 for more details.
-            body = re.sub(r"^==[ {]*+(\w++)[} ]*+==", lambda m: f"=={m[1].lower()}==", body, flags=re.MULTILINE)
-        case "uk":
-            # `{{=uk=|{{PAGENAME}}}}` → `=uk=`
-            body = re.sub(r"^\{\{=(\w+)=\|\{\{PAGENAME\}\}\}\}", r"=\1=", body, flags=re.MULTILINE)
-            # `{{=uk=}}` → `=uk=`
-            body = re.sub(r"^\{\{=(\w+)=\}\}", r"=\1=", body, flags=re.MULTILINE)
+
+    # Second pass
+    for pattern, rpl in RE_CLEANUPS.get(locale, []):
+        body = pattern.sub(rpl, body)
+
+    # Third pass
+    match locale:
+        case "bg":
+            # Transform spaghetti templates into more structured data
+            body = preprocess_bg(body)
+        case "la":
+            # `=={{int:wikt-affines}}==` → `==={{int:wikt-affines}}===`
+            body = body.replace("=={{int:wikt-affines}}==", "==={{int:wikt-affines}}===", 1)
 
     return body
 
@@ -350,11 +370,7 @@ def process(file: Path, locale: str) -> bool:
             continue
 
         # [RU] Redirections (`#перенаправление [[REDIRECT_TO]]`)
-        if (
-            lang_dst == "ru"
-            and body.startswith("#перенаправление")
-            and (m := re.search(r"#перенаправление\s*+\[\[([^\]]++)\]\]", body))
-        ):
+        if lang_dst == "ru" and body.startswith("#перенаправление") and (m := RE_RU_REDIR.search(body)):
             context.new_page(title, 0, None, m.group(1))
             continue
 

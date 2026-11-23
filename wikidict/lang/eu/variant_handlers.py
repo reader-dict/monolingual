@@ -11,10 +11,17 @@ def cleanup(word: str, form: str) -> str:
     return cleaned
 
 
+RE_CLEANUP1 = re.compile(r"\[//\w++.wiktionary.org[^ ]++ ([^\]]++)\]")
+RE_CLEANUP2 = re.compile(r"<sup>[^<]++</sup>")
+RE_CLEANUP3 = re.compile(r"(?m)\| colspan[^|]++")
+RE_FIND_FORMS1 = re.compile(r"(?m)\[\[([^#|\]]++)")
+RE_FIND_FORMS2 = re.compile(r"(?m)^\|[ ]*+([^|=\n]++)$")
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     wikitext = wikitext.replace(" || ", "\n| ")
-    wikitext = re.sub(r"\[//\w++.wiktionary.org[^ ]++ ([^\]]++)\]", r"[[\1]]", wikitext)
-    wikitext = re.sub(r"<sup>[^<]++</sup>", "", wikitext)
+    wikitext = RE_CLEANUP1.sub(r"[[\1]]", wikitext)
+    wikitext = RE_CLEANUP2.sub("", wikitext)
     lines = "\n".join(
         [
             line
@@ -26,13 +33,9 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             and "edota:" not in line
         ]
     )
-    lines = re.sub(r"\| colspan[^|]++", "", lines, flags=re.MULTILINE)
+    lines = RE_CLEANUP3.sub("", lines)
 
-    forms = {
-        cleanup(word, form)
-        for form in re.findall(r"\[\[([^#|\]]++)", lines)
-        or re.findall(r"^\|[ ]*+([^|=\n]++)$", lines, flags=re.MULTILINE)
-    }
+    forms = {cleanup(word, form) for form in RE_FIND_FORMS1.findall(lines) or RE_FIND_FORMS2.findall(lines)}
     forms.discard(word)
     forms.discard("―")
     forms.discard("—")

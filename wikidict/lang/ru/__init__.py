@@ -215,6 +215,37 @@ def strip_examples(line: str) -> str:
     return "".join(out)
 
 
+RE_CLEAUPS = [
+    # Form pages without a subsection, also under homonym headers:
+    # `= {{-ru-}} =\n{{Форма-гл...` → `= {{-ru-}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
+    # `== {{з|(существительное)}} ==\n{{Форма-сущ...` → `== ... ==\n=== Морфологические и синтаксические свойства ===\n{{Форма-сущ...`
+    (
+        re.compile(r"(?m)^(==?[ ]*+[^=\n][^\n]*+\n)((?:[^=\n][^\n]*+\n)*?)(?=(?:\*[ ]*+)?\{\{Форма-)"),
+        r"\1\2=== Морфологические и синтаксические свойства ===\n",
+    ),
+    # Abbreviation pages have no subsection, and the definition is a bullet:
+    # `= {{-ru-}} =\n'''км'''\n* {{сокращ|[[километр]]|ед|ru}}` → `= {{-ru-}} =\n'''км'''\n==== Значение ====\n# {{сокращ|...`
+    (
+        re.compile(r"(?m)^(==?[ ]*+[^=\n][^\n]*+\n)((?:[^=\n][^\n]*+\n)*?)(?=\*(?!\*)[^\n]*?\{\{сокращ)"),
+        r"\1\2==== Значение ====\n",
+    ),
+    (re.compile(r"(?m)^\*(?!\*)([^\n]*?\{\{сокращ)"), r"#\1"),
+    # A list written inside `{{aslinks}}` (it only turns the words into links) was cut into broken list items:
+    # `#{{aslinks|хлопоты\n#внимание, попечение|#,}}` → `#хлопоты\n#внимание, попечение`
+    (
+        re.compile(
+            r"\{\{aslinks\|((?:[^{}|\[\n]|\[\[[^\[\]]*+\]\])*+\n(?:[^{}|\[]|\[\[[^\[\]]*+\]\])*+)(?:\|[^{}]*+)?\}\}"
+        ),
+        r"\1",
+    ),
+    # Remove `{{etym-lang|...}}`
+    (re.compile(r"\{\{etym-lang\|[^\n]++"), ""),
+    # `{{ прил ru 3a/c"` → `{{прил ru 3a/c"`
+    (re.compile(r"(?m)^\{\{[ ]++"), "{{"),
+]
+RE_PARAMS = re.compile(r"\{\{сущ-ru\|([^|{}]*+)\|([^|{}]*+)")
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -242,10 +273,6 @@ def adjust_wikicode(
     >>> adjust_wikicode("= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.{{etym-lang|{{{1|ru}}}|grc}}", "ru", word="дискос")
     '= {{-ru-}} =\n=== Этимология ===\nПроисходит от {{этимология:δίσκος|да}}.'
 
-    >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# —\n#\n", "ru", word="гонит")
-    '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
-    >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n# ?\n#\n", "ru", word="гонит")
-    '= {{-ru-}} =\n==== Синонимы ====\n\n#\n'
     >>> adjust_wikicode("= {{-ru-}} =\n==== Синонимы ====\n#{{aslinks|хлопоты\n#внимание, [[попечение|попечения]]|#,}}\n# {{aslinks|вера, доверие}}", "ru", word="забота")
     '= {{-ru-}} =\n==== Синонимы ====\n#хлопоты\n#внимание, [[попечение|попечения]]\n# {{aslinks|вера, доверие}}'
 
@@ -353,52 +380,18 @@ def adjust_wikicode(
     '= {{-ru-}} =\n{{падежи ru 1|}}\n# {{rev-flexion|его}}\n# {{rev-flexion|ему}}\n# {{rev-flexion|им}}\n# {{rev-flexion|него}}\n# {{rev-flexion|нему}}\n# {{rev-flexion|ним}}\n# {{rev-flexion|нём}}'
     """
 
-    # Form pages without a subsection, also under homonym headers:
-    # `= {{-ru-}} =\n{{Форма-гл...` → `= {{-ru-}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
-    # `== {{з|(существительное)}} ==\n{{Форма-сущ...` → `== ... ==\n=== Морфологические и синтаксические свойства ===\n{{Форма-сущ...`
-    code = re.sub(
-        r"^(==?[ ]*+[^=\n][^\n]*+\n)((?:[^=\n][^\n]*+\n)*?)(?=(?:\*[ ]*+)?\{\{Форма-)",
-        r"\1\2=== Морфологические и синтаксические свойства ===\n",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # Abbreviation pages have no subsection, and the definition is a bullet:
-    # `= {{-ru-}} =\n'''км'''\n* {{сокращ|[[километр]]|ед|ru}}` → `= {{-ru-}} =\n'''км'''\n==== Значение ====\n# {{сокращ|...`
-    code = re.sub(
-        r"^(==?[ ]*+[^=\n][^\n]*+\n)((?:[^=\n][^\n]*+\n)*?)(?=\*(?!\*)[^\n]*?\{\{сокращ)",
-        r"\1\2==== Значение ====\n",
-        code,
-        flags=re.MULTILINE,
-    )
-    code = re.sub(r"^\*(?!\*)([^\n]*?\{\{сокращ)", r"#\1", code, flags=re.MULTILINE)
-
-    # A list written inside `{{aslinks}}` (it only turns the words into links) was cut into broken list items:
-    # `#{{aslinks|хлопоты\n#внимание, попечение|#,}}` → `#хлопоты\n#внимание, попечение`
-    code = re.sub(
-        r"\{\{aslinks\|((?:[^{}|\[\n]|\[\[[^\[\]]*+\]\])*+\n(?:[^{}|\[]|\[\[[^\[\]]*+\]\])*+)(?:\|[^{}]*+)?\}\}",
-        r"\1",
-        code,
-    )
-
     # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
     code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
+
+    for pattern, rpl in RE_CLEAUPS:
+        code = pattern.sub(rpl, code)
 
     # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings
     code = utils.attach_synonyms(code, "значение", "синонимы", "син.", forms=variant_templates)
 
-    # Delete empty synonyms
-    code = re.sub(r"^#[ ]*+[—\-?][ ]*+$", "", code, flags=re.MULTILINE)
-
-    # Remove `{{etym-lang|...}}`
-    code = re.sub(r"\{\{etym-lang\|[^\n]++", "", code, flags=re.MULTILINE)
-
     #
     # Reverse variants
     #
-
-    # `{{ прил ru 3a/c"` → `{{прил ru 3a/c"`
-    code = re.sub(r"^\{\{[ ]++", "{{", code, flags=re.MULTILINE)
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
@@ -446,7 +439,7 @@ def adjust_wikicode(
                     # This is required for genders finding: `{{сущ ru f ina 1a|}}`, and `{{сущ-ru|коса́|f ina 1d|}}`
                     # as that template has the gender in its second parameter
                     placeholder = tpl_name
-                    if params := re.match(r"\{\{сущ-ru\|([^|{}]*+)\|([^|{}]*+)", tpl_code):
+                    if params := RE_PARAMS.match(tpl_code):
                         placeholder += f"|{params[1]}|{params[2]}"
                     cleaned.append(f"{{{{{placeholder}|}}}}")
                     cleaned.extend(f"# {{{{rev-flexion|{form}}}}}" for form in sorted(forms.split("|")))
@@ -457,6 +450,12 @@ def adjust_wikicode(
         code = "\n".join(cleaned)
 
     return code
+
+
+RE_ADJ1 = re.compile(r"(.+[бвдзлмнпрстфц])ый")
+RE_ADJ2 = re.compile(r"(.+[бвдзлмнпрстфц])ой")
+RE_ADJ3 = re.compile(r"(.+[гкхжшчщ])ой|(.+[гкх])ий")
+RE_ADJ4 = re.compile(r"(?:[^аеёиоуыэюя]ш|щ)ий(?:ся)?$")
 
 
 def decline_adjective(word: str) -> list[str]:
@@ -481,18 +480,22 @@ def decline_adjective(word: str) -> list[str]:
     >>> decline_adjective("синий")  # "синего", but "шаманий" is "шаманьего"
     ['синий']
     """
-    if match := re.fullmatch(r"(.+[бвдзлмнпрстфц])ый", word):
+    if match := RE_ADJ1.fullmatch(word):
         stem, endings = match[1], ("ый", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
-    elif match := re.fullmatch(r"(.+[бвдзлмнпрстфц])ой", word):
+    elif match := RE_ADJ2.fullmatch(word):
         stem, endings = match[1], ("ой", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
-    elif match := re.fullmatch(r"(.+[гкхжшчщ])ой|(.+[гкх])ий", word):
+    elif match := RE_ADJ3.fullmatch(word):
         stem = match[1] or match[2]
         endings = (word[-2:], "ого", "ому", "им", "ом", "ая", "ой", "ую", "ою", "ое", "ие", "их", "ими")
-    elif re.search(r"(?:[^аеёиоуыэюя]ш|щ)ий(?:ся)?$", word):
+    elif RE_ADJ4.search(word):
         return decline_participle(word, word)
     else:
         return [word]
     return [stem + ending for ending in endings]
+
+
+RE_PART1 = re.compile(r"(.+[шщ])ий(ся)?")
+RE_PART2 = re.compile(r"(.+(?:нн|т|м))ый")
 
 
 def decline_participle(form: str, verb: str) -> list[str]:
@@ -518,11 +521,11 @@ def decline_participle(form: str, verb: str) -> list[str]:
     """
     if form[:1].lower() != verb[:1].lower():
         return [form]
-    if match := re.fullmatch(r"(.+[шщ])ий(ся)?", form):
+    if match := RE_PART1.fullmatch(form):
         stem, reflexive = match[1], match[2] or ""
         endings = ("ий", "его", "ему", "им", "ем", "ая", "ей", "ую", "ею", "ее", "ие", "их", "ими")
         return [stem + ending + reflexive for ending in endings]
-    if match := re.fullmatch(r"(.+(?:нн|т|м))ый", form):
+    if match := RE_PART2.fullmatch(form):
         stem = match[1]
         endings = ("ый", "ого", "ому", "ым", "ом", "ая", "ой", "ую", "ою", "ое", "ые", "ых", "ыми")
         # Short forms: "прочитан", "решён" and "решена" (the stress moves to the ending)

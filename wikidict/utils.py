@@ -729,6 +729,7 @@ _RE_NOWIKI = re.compile(r"(<nowiki>.+?</nowiki>)")
 _RE_NOINCLUDE = re.compile(r"<noinclude>[^<]+</noinclude>")
 _RE_GALLERY = re.compile(r"<gallery>[\s\S]*?</gallery>")
 _RE_BR_CONSECUTIVE = re.compile(r"(<br[^>]*/?>)+")
+_RE_ARABIC_PERSIAN = re.compile(r"<i>([^<]*[\u0627-\u064a]+[^<]*)</i>")
 
 # Wikitext bold and italic formatting
 _REGEX_BOLD = regex.compile(r"'''(\0*+[^'\n]++.*?)(?:''')")
@@ -963,11 +964,9 @@ def clean(text: str) -> str:
     # Headings
     # == a == → a
     # text = _RE_HEADING.sub(lambda m: m.group(1).strip(), text)
-    # text = sub(r"^=+\s?([^=]+)\s?=+", lambda matches: matches.group(1).strip(), text)
 
     # Lists
     # text = _RE_LIST_ITEM.sub("", text)
-    # text = sub(r"^\*+\s?", "", text)
 
     # Magic words
     # __TOC__
@@ -1016,6 +1015,9 @@ def clean(text: str) -> str:
         text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
 
     return text.strip()
+
+
+RE_FIND_TEMPLATES = re.compile(r"(\{\{[^{}]*+\}\})")
 
 
 def process_templates(
@@ -1081,7 +1083,7 @@ def process_templates(
     last_template_idx = text.count("{{")
     current_template_idx = 0
     templates_ignored = lang.templates_ignored[locale]
-    while templates := re.findall(r"(\{\{[^{}]*+\}\})", text):
+    while templates := RE_FIND_TEMPLATES.findall(text):
         for tpl in templates:
             # Skip undesired templates
             if tpl.startswith(templates_ignored):
@@ -1117,7 +1119,7 @@ def process_templates(
             raise ValueError(f"Missed <{tag}> HTML tag in {word!r}") from None
 
     # Issue #584: move Arabic/Persian characters out of italic tags
-    text = sub(r"<i>([^<]*[\u0627-\u064a]+[^<]*)</i>", r"\1", text)
+    text = _RE_ARABIC_PERSIAN.sub(r"\1", text)
 
     # Remove extra spaces (it happens when a template is ignored for instance)
     text = _RE_MULTIPLE_SPACES.sub(" ", text)
@@ -1192,8 +1194,7 @@ def extract_relevant_sections(wikitext: str, locale: str) -> str:
     equals = "=" * level
 
     interesting_sections = re.compile(
-        rf"^{equals}++[ ]*+(?:{'|'.join(re.escape(section) for section in lang.head_sections[locale])})",
-        flags=re.IGNORECASE | re.MULTILINE,
+        rf"(?im)^{equals}++[ ]*+(?:{'|'.join(re.escape(section) for section in lang.head_sections[locale])})"
     )
 
     cleaned: list[str] = []
@@ -1293,6 +1294,9 @@ def formula_to_svg(formula: str, *, cat: str = "tex") -> str:
     return svg.optimize(svg_raw)
 
 
+RE_STRIP_FORMULA = re.compile(r"^\s+|(?<!\\)\s+$")
+
+
 def strip_formula(formula: str) -> str:
     r"""
     Strip the spaces around a formula, but not the one of a control space: `\varepsilon\ `.
@@ -1300,7 +1304,7 @@ def strip_formula(formula: str) -> str:
     >>> strip_formula(" x < \\varepsilon\\  ")
     'x < \\varepsilon\\ '
     """
-    return re.sub(r"^\s+|(?<!\\)\s+$", "", formula)
+    return RE_STRIP_FORMULA.sub("", formula)
 
 
 def convert_chem(match: str | re.Match[str], word: str) -> str:
@@ -1421,6 +1425,10 @@ def reconstruct_tpl(tpl: str, parts: list[str], data: defaultdict[str, str]) -> 
     return template
 
 
+_RE_CATEGORY = re.compile(r"\[\[[^\[\]|:]++:[^\[\]]*+\]\]")
+_RE_EMPTY = re.compile(r"[—\-?]?")
+
+
 def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, forms: tuple[str, ...] = ()) -> str:
     r"""
     Put the synonyms under their meaning, as a sub-definition, for Wiktionaries that write one line of synonyms
@@ -1494,11 +1502,11 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
         syn_lines = [
             lines[n]
             for n in range(syn_start + 1, syn_end)
-            if lines[n].strip() and not re.fullmatch(r"\[\[[^\[\]|:]++:[^\[\]]*+\]\]", lines[n].strip())
+            if lines[n].strip() and not _RE_CATEGORY.fullmatch(lines[n].strip())
         ]
         if not all(is_item(line) and is_balanced(line) for line in syn_lines):
             continue
-        texts = ["" if re.fullmatch(r"[—\-?]?", text := line[1:].strip()) else text for line in syn_lines]
+        texts = ["" if _RE_EMPTY.fullmatch(text := line[1:].strip()) else text for line in syn_lines]
         while texts and not texts[-1]:
             texts.pop()
         pairs = list(zip(items, texts))
@@ -1518,6 +1526,9 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
         if n in insert:
             out.append(insert[n])
     return "\n".join(out)
+
+
+_RE_NUMBERS = re.compile(r"\s*+(\d++)\s*+(?:[–-]\s*+(\d++)\s*+)?")
 
 
 def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str, *, number: str) -> str:
@@ -1557,7 +1568,7 @@ def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str
         """`1, 3–5` → `[1, 3, 4, 5]`, or an empty list when it is not only numbers."""
         found: list[int] = []
         for part in text.split(","):
-            if not (match := re.fullmatch(r"\s*+(\d++)\s*+(?:[–-]\s*+(\d++)\s*+)?", part)):
+            if not (match := _RE_NUMBERS.fullmatch(part)):
                 return []
             first, last = int(match[1]), int(match[2] or match[1])
             found.extend(range(first, last + 1))
@@ -1585,7 +1596,7 @@ def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str
         attached: defaultdict[int, list[str]] = defaultdict(list)
         for n in range(syn_start + 1, syn_end):
             # The categories of the page can follow the last section: `[[Kategorie:Deutsch]]`
-            if not (text := lines[n].strip()) or re.fullmatch(r"\[\[[^\[\]|:]++:[^\[\]]*+\]\]", text):
+            if not (text := lines[n].strip()) or _RE_CATEGORY.fullmatch(text):
                 continue
             match = line_number.match(lines[n])
             refs = numbers(match[1]) if match else []

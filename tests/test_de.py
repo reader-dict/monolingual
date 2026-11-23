@@ -54,7 +54,7 @@ def setup_lua_ctx() -> None:
                 "Symbol": [
                     "<i>Mathematik&#58;</i> Zeichen zur Kennzeichnung der Mächtigkeit (Kardinalität) einer Menge",
                     (
-                        '<i>Syn.:</i> <svg width="2.973ex" height="2.843ex" style="vertical-align:-0.838ex" aria-labelledby="MathJax-SVG-1-Title" focusable="false" role="img" viewBox="0 -863.1 1279.9 1223.9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs aria-hidden="true"><path id="E1-MJMAIN-7C" d="m139-249h-2q-12 0-18 14v486l1 486q10 13 19 13 13 0 20-15v-970q-8-14-18-14h-2z"/><path id="E1-MJMAIN-22C5" d="m78 250q0 24 17 42t43 18q24 0 42-16t19-43q0-25-17-43t-43-18-43 17-18 43z"/></defs><g transform="scale(1 -1)" fill="currentColor" stroke="currentColor" stroke-width="0" aria-hidden="true"><use xlink:href="#E1-MJMAIN-7C"/><use x="500" xlink:href="#E1-MJMAIN-22C5"/><use x="1001" xlink:href="#E1-MJMAIN-7C"/></g></svg>',
+                        '<i>Syn.:</i> <svg width="1.155em" height=".926em" style="vertical-align:-0.220em" viewBox="9.5 -71.6 117.53 94.6" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor"><path d="m16.2 22h-5.7v-92.6h5.7z"/><path d="m68.917-25.5q0 2.3-1.55 4t-4.45 1.7-4.35-1.65-1.45-4.15 1.55-4.3 4.35-1.8q2.9 0 4.4 1.85t1.5 4.35z"/><path d="m115.53 22h-5.7v-92.6h5.7z"/></g></svg>',
                     ),
                 ]
             },

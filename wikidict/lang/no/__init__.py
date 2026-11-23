@@ -127,6 +127,12 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     return result
 
 
+RE_CLEANUPS = [
+    # <includeonly>...</includeonly> → ''
+    (re.compile(r"(?sm)(<includeonly>(?:(?!<\/includeonly>)[\s\S])*+<\/includeonly>)"), ""),
+]
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -174,10 +180,8 @@ def adjust_wikicode(
     """
     code = code.replace("----", "")
 
-    # <includeonly>...</includeonly> → ''
-    code = re.sub(
-        r"(<includeonly>(?:(?!<\/includeonly>)[\s\S])*+<\/includeonly>)", "", code, flags=re.DOTALL | re.MULTILINE
-    )
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # Synonyms
     if "Synonymer" in code:

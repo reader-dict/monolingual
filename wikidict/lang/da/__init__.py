@@ -123,7 +123,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     pron = next(
         (
             item.replace("[", "/").replace("]", "/")
-            for sublist in (re.findall(pattern, code) or [])
+            for sublist in (pattern.findall(code) or [])
             for item in sublist.split("|")
             if item
         ),
@@ -168,6 +168,17 @@ ALL_FORMS = [
     "ubestemt ental af",
     "ubestemt flertal af",
 ]
+RE_CLEANUPS = [
+    # `=== Alternativ form ===\n* {{l|...}}` → `=== Alternativ form ===\n* {{flexion|...}}`
+    (
+        re.compile(r"(?m)^(={3,}[ ]*+Alternativ form[ ]*+={3,})\n\* \{\{l\|[^|]++\|([^}]++)\}\}"),
+        r"\1\n* {{flexion|\2}}",
+    ),
+    # {{-avv-|ANY}} → === {{avv}} ===
+    (re.compile(r"(?m)^\{\{-(.+)-\|(\w++)\}\}"), r"=== {{\1}} ==="),
+    # {{-avv-}} → === {{avv}} ===
+    (re.compile(r"(?m)^\{\{-(\w++)-\}\}"), r"=== {{\1}} ==="),
+]
 
 
 def adjust_wikicode(
@@ -188,7 +199,7 @@ def adjust_wikicode(
     '=={{da}}==\n=== {{avv}} ==='
 
     >>> adjust_wikicode("=={{da}}==\n{{-avv-|ANY}}", "da")
-    '=={{da}}==\n=== {{avv|ANY}} ==='
+    '=={{da}}==\n=== {{avv}} ==='
 
     >>> adjust_wikicode("=={{da}}==\n{{-avv-}}", "da")
     '=={{da}}==\n=== {{avv}} ==='
@@ -260,22 +271,8 @@ def adjust_wikicode(
     """
     code = code.replace("----", "")
 
-    # `=== Alternativ form ===\n* {{l|...}}` → `=== Alternativ form ===\n* {{flexion|...}}`
-    code = re.sub(
-        r"^(={3,}[ ]*+Alternativ form[ ]*+={3,})\n\* \{\{l\|[^|]++\|([^}]++)\}\}",
-        r"\1\n* {{flexion|\2}}",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # {{-avv-|da}} → === {{avv}} ===
-    code = re.sub(rf"^\{{\{{-(.+)-\|{locale}\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # {{-avv-|ANY}} → === {{avv|ANY}} ===
-    code = re.sub(r"^\{\{-(.+)-\|(\w++)\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
-
-    # {{-avv-}} → === {{avv}} ===
-    code = re.sub(r"^\{\{-(\w++)-\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     #
     # Variants
@@ -283,20 +280,20 @@ def adjust_wikicode(
 
     patterns = [
         # Pluralis af [[tale#Substantiv|tale]]
-        rf"(?:{forms})\s++\[\[([^\]#|]++)(?:[#|].+)?\]\]",
+        re.compile(rf"(?i){start}(?:{forms})\s++\[\[([^\]#|]++)(?:[#|].+)?\]\].*"),
         # {{flertal af}} '''[[tale]]'''
-        rf"\{{\{{(?:{forms})\}}\}} '*+\[\[([^\]]++)",
+        re.compile(rf"(?i){start}\{{\{{(?:{forms})\}}\}} '*+\[\[([^\]]++).*"),
         #''præsens participium af'' '''[[abandonnere]]'''.
-        rf"'++(?:{forms})[\s']++\[\[([^\]]++)",
+        re.compile(rf"(?i){start}'++(?:{forms})[\s']++\[\[([^\]]++).*"),
         # {{flertal af}} {{l|da|tale}}
-        rf".*\{{\{{(?:{forms})\}}\}}\s++(\{{\{{[^}}]++\}}\}})",
+        re.compile(rf"(?i){start}.*\{{\{{(?:{forms})\}}\}}\s++(\{{\{{[^}}]++\}}\}}).*"),
     ]
 
     lines: list[str] = []
     for line in code.splitlines():
         if re.match(start, line):
             for pattern in patterns:
-                line, count = re.subn(rf"{start}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)
+                line, count = pattern.subn(r"# {{flexion|\1}}", line, count=1)
                 if count:
                     break
         lines.append(line)
@@ -308,7 +305,9 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        pattern = re.compile(
+            rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        )
         cleaned: list[str] = []
 
         for line in code.splitlines():
@@ -316,7 +315,7 @@ def adjust_wikicode(
                 cleaned.append(line)
                 continue
 
-            for tpl in re.findall(pattern, line):
+            for tpl in pattern.findall(line):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)

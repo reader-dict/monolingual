@@ -37,6 +37,8 @@ templates_ignored = (
     "{{Wikipedia",
 )
 
+RE_FIND_GENDERS = re.compile(r",\s++\{\{([fmnu]++)\}\}")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
@@ -45,14 +47,16 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", "de")
     ['f', 'm']
     """
-    pattern = re.compile(r",\s++\{\{([fmnu]++)\}\}")
     res: set[str] = set()
-    for gender in pattern.findall(code):
+    for gender in RE_FIND_GENDERS.findall(code):
         if "".join(sgen := sorted(gender)) in {"fm", "fmn"}:
             res.update(sgen)
         else:
             res.add(gender)
     return utils.unique(sorted(res))
+
+
+RE_FIND_PRONS = re.compile(r"\{\{Lautschrift\|([^=}]++)}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -69,8 +73,22 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     for line in code.splitlines():
         if "{{IPA}}" not in line:
             continue
-        return [f"[{p}]" for p in re.findall(r"\{\{Lautschrift\|([^=}]++)}", line)]
+        return [f"[{p}]" for p in RE_FIND_PRONS.findall(line)]
     return []
+
+
+RE_CLEANUPS = [
+    # `{{Grundformverweis Konj|tragen}}` → `{{flexion|tragen}}`
+    (
+        re.compile(r"(?m)^\{\{(?:Alte Schreibweise|Grundformverweis)[^|]*+\|([^}]++)\}\}"),
+        r"==== {{Variant}} ====\n# {{flexion|\1}}",
+    ),
+    # `{{Bedeutungen}}` → `==== {{Bedeutungen}} ====`
+    (re.compile(r"(?m)^\{\{(.+)\}\}"), r"==== {{\1}} ===="),
+]
+RE_NUMBERED_LIST = re.compile(r":\[\d++\][ ]*+")
+RE_REV_VARIANTS1 = re.compile(r"(?sm)^=++[ ]*+\{\{Nebenformen\}\}[ ]*+=++([^=]++)")
+RE_REV_VARIANTS2 = re.compile(r"\[\[([^\]]++)\]\]")
 
 
 def adjust_wikicode(
@@ -95,16 +113,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("{{Bedeutungen}}\n==== {{Nebenformen}} ====\n:[[rev var 1]], [[rev var 2]]", "de")
     '==== {{Bedeutungen}} ====\n==== {{Nebenformen}} ====\n# {{rev-flexion|rev var 1}}\n# {{rev-flexion|rev var 2}}\n'
     """
-    # `{{Grundformverweis Konj|tragen}}` → `{{flexion|tragen}}`
-    code = re.sub(
-        r"^\{\{(?:Alte Schreibweise|Grundformverweis)[^|]*+\|([^}]++)\}\}",
-        r"==== {{Variant}} ====\n# {{flexion|\1}}",
-        code,
-        flags=re.MULTILINE,
-    )
-
-    # `{{Bedeutungen}}` → `==== {{Bedeutungen}} ====`
-    code = re.sub(r"^\{\{(.+)\}\}", r"==== {{\1}} ====", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # Synonyms go under their meaning: `:[1, 2] [[flink]]` as a sub-definition of the meanings 1 and 2
     code = utils.attach_numbered_synonyms(
@@ -114,21 +124,16 @@ def adjust_wikicode(
     # Definition lists are not well supported by the parser, replace them by numbered lists.
     # Note: using `[ ]*` rather than `\s*` to bypass issues when a section above another one
     #       contains an empty item.
-    code = re.sub(r":\[\d++\][ ]*+", "# ", code)
+    code = RE_NUMBERED_LIST.sub("# ", code)
 
     #
     # Reverse variants
     #
 
     if "{{Nebenformen}" in code:
-        for section_code in re.findall(
-            r"^=++[ ]*+\{\{Nebenformen\}\}[ ]*+=++([^=]++)",
-            code,
-            flags=re.DOTALL | re.MULTILINE,
-        ):
+        for section_code in RE_REV_VARIANTS1.findall(code):
             new_code = "\n".join(
-                f"# {{{{rev-flexion|{form.split('#', 1)[0]}}}}}"
-                for form in re.findall(r"\[\[([^\]]++)\]\]", section_code)
+                f"# {{{{rev-flexion|{form.split('#', 1)[0]}}}}}" for form in RE_REV_VARIANTS2.findall(section_code)
             )
             code = code.replace(section_code, f"\n{new_code}\n", count=1)
 

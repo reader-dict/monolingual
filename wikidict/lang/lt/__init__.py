@@ -98,6 +98,11 @@ def find_pronunciations(
     return utils.flatten(pattern.findall(code))
 
 
+RE_CLEANUPS = [
+    (re.compile(r"<br clear=all[ ]*+/?>"), ""),
+]
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -163,7 +168,8 @@ def adjust_wikicode(
     code = "\n".join(lines)
 
     # More clean-up
-    code = re.sub(r"<br clear=all[ ]*+/?>", "", code)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
     code = code.replace("----", "")
     code = code.replace(f"'''[[{word}]]''' - ", "")
     code = code.replace(f"'''[[{word}]]'''", "")

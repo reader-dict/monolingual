@@ -42,6 +42,9 @@ sections = (
 )
 
 
+RE_FIND_PRONS = re.compile(r"발음: (\[[^\]]+\])")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "ko")
@@ -60,11 +63,20 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     for tpl in re.findall(rf"(\{{\{{{locale}-IPA[^}}]*}}}})", code):
         expanded = context.expand(tpl, "ko")
-        if not (prons := re.findall(r"발음: (\[[^\]]+\])", expanded)):
+        if not (prons := RE_FIND_PRONS.findall(expanded)):
             continue
         return sorted(set(prons))
 
     return []
+
+
+RE_CLEANUPS = [
+    # Convert manual lists to automatic ones
+    # `* '''1.''' (...)` → `# (...)`
+    (re.compile(r"(?m)^\*[ ]*'+\d+\.'+[ ]*"), "# "),
+    # `:[1, 2]: (...)` → `# (...)`
+    (re.compile(r"(?m)^:[ ]*\[\d+, \d+\]:[ ]*"), "# "),
+]
 
 
 def adjust_wikicode(
@@ -80,10 +92,7 @@ def adjust_wikicode(
     >>> adjust_wikicode(":[1, 2]: [[당구]].", "ko")
     '# [[당구]].'
     """
-    # Convert manual lists to automatic ones
-    # `* '''1.''' (...)` → `# (...)`
-    code = re.sub(r"^\*[ ]*'+\d+\.'+[ ]*", "# ", code, flags=re.MULTILINE)
-    # `:[1, 2]: (...)` → `# (...)`
-    code = re.sub(r"^:[ ]*\[\d+, \d+\]:[ ]*", "# ", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     return code

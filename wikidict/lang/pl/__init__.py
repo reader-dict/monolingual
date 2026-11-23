@@ -1,6 +1,7 @@
 """Polish language."""
 
 import re
+from collections.abc import Callable
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -87,6 +88,15 @@ def pos_and_gender(matches: re.Match[str]) -> str:
     return f"==={match.strip()}==="
 
 
+RE_CLEANUPS: list[tuple[re.Pattern[str], str | Callable[[re.Match[str]], str]]] = [
+    # Extract POS, and gender
+    (re.compile(r"(?m)^(''([^']++)'').*$"), pos_and_gender),
+    # {{synonimy}} → ===synonimy===
+    (re.compile(r"(?m)^\{\{(\w+)\}\}"), "===\\1==="),
+]
+RE_VARIANT = re.compile(r"\[\[([^\]]++)\]\]$")
+
+
 def adjust_wikicode(
     code: str,
     locale: str,
@@ -105,11 +115,8 @@ def adjust_wikicode(
     """
     has_variants = "''{{forma " in code
 
-    # Extract POS, and gender
-    code = re.sub("^(''([^']++)'').*$", pos_and_gender, code, flags=re.MULTILINE)
-
-    # {{synonimy}} → ===synonimy===
-    code = re.sub(r"^\{\{(\w+)\}\}", r"===\1===", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     #
     # Variants
@@ -123,7 +130,7 @@ def adjust_wikicode(
                 in_tpl = "forma " in line
                 lines.append(line)
             elif in_tpl:
-                if variant := re.search(r"\[\[([^\]]++)\]\]$", line):
+                if variant := RE_VARIANT.search(line):
                     lines.append(f": (0.0) {{{{flexion|{variant[1]}}}}}")
             else:
                 lines.append(line)

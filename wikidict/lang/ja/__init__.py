@@ -2,7 +2,7 @@
 
 import re
 
-from ... import lang, utils
+from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
@@ -95,9 +95,21 @@ templates_ignored = (
 )
 
 
+RE_FIND_PRONS_LOOKUPS = [
+    re.compile(r"(\{\{ipa\|[^}]++\}\})"),
+]
+RE_FIND_PRONS_PATTERNS = [
+    re.compile(r"(?m): (/[^/]++/)$"),
+    re.compile(r"(?m)<samp>(\[[^\]]++\])</samp>"),
+    re.compile(r"(?m)&#32;([\[/][^\]/]++[\]/])(?!\])"),
+]
+RE_DEL_TAGS = re.compile(r"<del>[^<]++</del>")
+RE_SAMP_TAGS = re.compile(r"[ ]++<samp>[^<]++</samp>")
+RE_EXTRACT_PRON = re.compile(r"\[\[([^\]]++)\]\]")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> from wikidict import context
     >>> _ = context.reset("ja")
 
     >>> find_pronunciations("", "ja")
@@ -123,38 +135,46 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ipa|te|lang=ja}}", "ja")
     ['/te/']
     """
-    from wikidict import context
-
     lookups = [
-        r"(\{\{ipa\|[^}]++\}\})",
-        rf"(\{{\{{{locale}-pron\|[^}}]++\}}\}})",
-        # rf"(\{{\{{IPA\|{locale}\|[^}}]++\}}\}})",
-        # rf"(\{{\{{{locale}-IPA[^}}]*+\}}\}})",
+        *RE_FIND_PRONS_LOOKUPS,
+        re.compile(rf"(\{{\{{{locale}-pron\|[^}}]++\}}\}})"),
+        # re.compile(rf"(\{{\{{IPA\|{locale}\|[^}}]++\}}\}})"),
+        # re.compile(rf"(\{{\{{{locale}-IPA[^}}]*+\}}\}})"),
     ]
-    patterns = [r": (/[^/]++/)$", r"<samp>(\[[^\]]++\])</samp>", r"&#32;([\[/][^\]/]++[\]/])(?!\])"]
 
     for lookup in lookups:
-        for tpl in re.findall(lookup, code):
+        for tpl in lookup.findall(code):
             expanded = context.expand(tpl, "ja")
 
             if "<del>" in expanded:
-                expanded = re.sub(r"<del>[^<]++</del>", "", expanded)
+                expanded = RE_DEL_TAGS.sub("", expanded)
 
             if locale == "ja":
                 line = expanded.splitlines()[0]
                 if "東京式" in line:
-                    line = re.sub(r"\[\[([^\]]++)\]\]", r"\1", line.split(" ", 1)[1], count=1)
-                    line = re.sub(r"[ ]++<samp>[^<]++</samp>", "", line)
+                    line = RE_EXTRACT_PRON.sub(r"\1", line.split(" ", 1)[1], count=1)
+                    line = RE_SAMP_TAGS.sub("", line)
                     if "[[" in line:
                         line = line.split("[[", 1)[0]
                     return [line.replace("&#8203;", "")]
 
-            for pattern in patterns:
-                if not (prons := re.findall(pattern, expanded, flags=re.MULTILINE)):
+            for pattern in RE_FIND_PRONS_PATTERNS:
+                if not (prons := pattern.findall(expanded)):
                     continue
                 return sorted(set(prons))
 
     return []
+
+
+RE_FIND_NUMBER = re.compile(r"\d++")
+RE_FIND_SYNONYMS = re.compile(r"(=++)\s*+(?:\{\{syn\}\}|類義語)\s*+\1\s*+")
+RE_NUMBERS = r"語義\s*+(\d++(?:\s*+[、,・]\s*+(?:語義)?\s*+\d++)*+)"
+RE_HEADING = re.compile(rf"^[;:*]?\s*+[（(]?{RE_NUMBERS}[）)]?\s*+[:：]?\s*+$")
+RE_PREFIX = re.compile(
+    rf"^\*\s*+(?:\{{\{{sense\|{RE_NUMBERS}\}}\}}|[（(]{RE_NUMBERS}[）)]|{RE_NUMBERS}\s*+[:：])\s*+(.+)$"
+)
+RE_SUFFIX = re.compile(rf"^\*\s*+(.+?)\s*+[（(]{RE_NUMBERS}[）)]\s*+$")
+RE_TABLES = re.compile(r"\{\{(?:top|mid|bottom|stub)[^}]*+\}\}|\[\[[^\[\]|:]++:[^\[\]]*+\]\]")
 
 
 def attach_synonyms(code: str) -> str:
@@ -173,22 +193,18 @@ def attach_synonyms(code: str) -> str:
     >>> attach_synonyms("==={{noun}}===\n# 一。\n===={{syn}}====\n*（語義2）[[退職]]")
     '==={{noun}}===\n# 一。\n===={{syn}}====\n*（語義2）[[退職]]'
     """
-    numbers = r"語義\s*+(\d++(?:\s*+[、,・]\s*+(?:語義)?\s*+\d++)*+)"
-    heading = re.compile(rf"^[;:*]?\s*+[（(]?{numbers}[）)]?\s*+[:：]?\s*+$")
-    prefix = re.compile(rf"^\*\s*+(?:\{{\{{sense\|{numbers}\}}\}}|[（(]{numbers}[）)]|{numbers}\s*+[:：])\s*+(.+)$")
-    suffix = re.compile(rf"^\*\s*+(.+?)\s*+[（(]{numbers}[）)]\s*+$")
     lines = code.split("\n")
 
     def level(line: str) -> int:
         return len(line) - len(line.lstrip("=")) if line.startswith("=") else 0
 
     def refs(text: str) -> list[int]:
-        return [int(number) for number in re.findall(r"\d++", text)]
+        return [int(number) for number in RE_FIND_NUMBER.findall(text)]
 
     drop: set[int] = set()
     insert: dict[int, str] = {}
     for start, line in enumerate(lines):
-        if not re.fullmatch(r"(=++)\s*+(?:\{\{syn\}\}|類義語)\s*+\1\s*+", line):
+        if not RE_FIND_SYNONYMS.fullmatch(line):
             continue
         end = next((n for n in range(start + 1, len(lines)) if level(lines[n])), len(lines))
         # The meanings: the "#" items of the section this one belongs to, before its first sub-section
@@ -198,14 +214,14 @@ def attach_synonyms(code: str) -> str:
         synonyms: dict[int, list[str]] = {}
         current: list[int] = []
         for text in (lines[n].strip() for n in range(start + 1, end)):
-            if not text or re.fullmatch(r"\{\{(?:top|mid|bottom|stub)[^}]*+\}\}|\[\[[^\[\]|:]++:[^\[\]]*+\]\]", text):
+            if not text or RE_TABLES.fullmatch(text):
                 continue
-            if match := heading.match(text):
+            if match := RE_HEADING.match(text):
                 current = refs(match[1])
                 continue
-            if match := prefix.match(text):
+            if match := RE_PREFIX.match(text):
                 found, synonym = refs(match[1] or match[2] or match[3]), match[4]
-            elif match := suffix.match(text):
+            elif match := RE_SUFFIX.match(text):
                 found, synonym = refs(match[2]), match[1]
             elif text.startswith("*") and current:
                 found, synonym = current, text.lstrip("* ")
@@ -233,6 +249,21 @@ def attach_synonyms(code: str) -> str:
         if n in insert:
             out.append(insert[n])
     return "\n".join(out)
+
+
+RE_CLEANUPS = [
+    # `<span style="font-size:smaller;">` → ``
+    (re.compile(r'<span style="font-size:[ ]*+small[^"]*+">([^<]++)</span>'), r"<small>\1</small>"),
+    # `<span id="語義1"></span>` → ``
+    # `<span id="語義1"><b>語義</b></span> ` → `<b>語義</b>`
+    (re.compile(r"</?span[^>]*+>"), ""),
+    # `==={{etym}}:いる===` → `==={{etym}}===`
+    (re.compile(r"(?m)(^={3,})[ ]*+([^：:}=|]++\}*+)[^\n]++"), r"\1\2\1"),
+    # `==記号==` → `==記号==\n===記号===`
+    (re.compile(r"^(==[ ]*+記号[ ]*+==)"), r"\1\n===記号==="),
+    # Remove ruby tags: `{{日本語変格活用|{{ruby|有|ゆう}}|する}}}}` → `{{日本語変格活用|有|する}}`
+    (re.compile(r"\{\{ruby\|([^|]++)\|[^}]++\}\}"), r"\1"),
+]
 
 
 def adjust_wikicode(
@@ -263,7 +294,6 @@ def adjust_wikicode(
     >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span style="font-size:smaller;">（全濁字）</span>', "ja", word="重")
     '=={{L|ja}}==\n==={{noun}}===\n#<small>（全濁字）</small>'
 
-    >>> from ... import context
     >>> _ = context.reset("ja")
 
     >>> context.new_word("みる")
@@ -278,21 +308,11 @@ def adjust_wikicode(
     >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{ruby|有|ゆう}}|する}}", "ja", word="有する")
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|有される}}\n# {{rev-flexion|有した}}\n# {{rev-flexion|有しない}}\n# {{rev-flexion|有します}}\n# {{rev-flexion|有しろ}}\n# {{rev-flexion|有すること}}\n# {{rev-flexion|有すれば}}\n# {{rev-flexion|有せず}}\n# {{rev-flexion|有せよ}}'
     """
-    # `<span style="font-size:smaller;">` → ``
-    code = re.sub(r'<span style="font-size:[ ]*+small[^"]*+">([^<]++)</span>', r"<small>\1</small>", code)
-
-    # `<span id="語義1"></span>` → ``
-    # `<span id="語義1"><b>語義</b></span> ` → `<b>語義</b>`
-    code = re.sub(r"</?span[^>]*+>", "", code)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # Synonyms go under their meaning when they give its number: `*語義1：[[ふむ]]`
     code = attach_synonyms(code)
-
-    # `==={{etym}}:いる===` → `==={{etym}}===`
-    code = re.sub(r"(^={3,})[ ]*+([^：:}=|]++\}*+)[^\n]++", r"\1\2\1", code, flags=re.MULTILINE)
-
-    # `==記号==` → `==記号==\n===記号===`
-    code = re.sub(r"^(==[ ]*+記号[ ]*+==)", r"\1\n===記号===", code)
 
     #
     # Reverse variants
@@ -300,7 +320,9 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"^(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        pattern = re.compile(
+            rf"(?m)^(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        )
         cleaned: list[str] = []
 
         for line in code.splitlines():
@@ -314,11 +336,7 @@ def adjust_wikicode(
             if "{{PAGENAME" in line:
                 line = line.replace("{{PAGENAME}}", word)
 
-            # Remove ruby tags: `{{日本語変格活用|{{ruby|有|ゆう}}|する}}}}` → `{{日本語変格活用|有|する}}`
-            if "{{ruby" in line:
-                line = re.sub(r"\{\{ruby\|([^|]++)\|[^}]++\}\}", r"\1", line)
-
-            for tpl in re.findall(pattern, line, flags=re.MULTILINE):
+            for tpl in pattern.findall(line):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)

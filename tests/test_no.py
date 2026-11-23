@@ -262,7 +262,7 @@ def setup_lua_ctx() -> None:
             [],
             {"Forkortelse": ["forkortelse for <i>videregående</i>/<i>videregåande</i>"]},
             [],
-            [],
+            ["vg"],
         ),
         (
             "Øyvind",

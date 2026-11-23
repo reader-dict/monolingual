@@ -59,6 +59,8 @@ templates_ignored = (
     "{{Překlady",  # translations
 )
 
+RE_FIND_PRONS = re.compile(r"\{\{IPA\|([^}]++)")
+
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
@@ -67,15 +69,14 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|patɔliːzaluːf}}", "cs")
     ['[patɔliːzaluːf]']
     """
-    res = set(re.findall(r"\{\{IPA\|([^}]++)", code))
+    res = set(RE_FIND_PRONS.findall(code))
     return sorted(f"[{pron}]" for pron in res)
 
 
 VAR_PATTERNS = [
-    re.compile(r"^#[ ']*.+ (?:plurálu|singuláru) substantiva \[\[([^\]#]++).*", flags=re.IGNORECASE),
+    re.compile(r"(?i)^#[ ']*.+ (?:plurálu|singuláru) substantiva \[\[([^\]#]++).*"),
     re.compile(
-        r"^#[ ']*+.+ (?:čísla|číslo).+(?:adjektiva|číslovky|jména|jnéna|podstata|přídavného|propria|psoun|rodu|slova|slovesa|sloveso|spojení|substantiva|zájmena|způsobu)'*+ \[\[([^\]#]++).*",
-        flags=re.IGNORECASE,
+        r"(?i)^#[ ']*+.+ (?:čísla|číslo).+(?:adjektiva|číslovky|jména|jnéna|podstata|přídavného|propria|psoun|rodu|slova|slovesa|sloveso|spojení|substantiva|zájmena|způsobu)'*+ \[\[([^\]#]++).*"
     ),
 ]
 
@@ -95,6 +96,13 @@ REV_VAR_RPL = {
     "<sup>*</sup>",
     "<sup>**</sup>",
 }
+
+
+RE_CLEANUPS = [
+    (re.compile(r"\{\{(?:Doplňte|Příznak|#tag|Upřesnění)[^}]++\}\}"), ""),
+    (re.compile(r"<br[ ]++/>"), "<br/>"),
+]
+RE_POTENTIALLY = re.compile(r"<br/> ++\{\{Potenciálně\|([^}]++)\}\}")
 
 
 def adjust_wikicode(
@@ -170,9 +178,6 @@ def adjust_wikicode(
     # Before the empty ones are deleted, as they keep the lines in step with the meanings.
     code = utils.attach_synonyms(code, "význam", "synonyma", "syn.", forms=variant_templates)
 
-    # Delete empty synonyms
-    code = re.sub(r"^#[ ]*+(?:—|–|-|\?)[ ]*+$", "", code, flags=re.MULTILINE)
-
     #
     # Reverse variants
     #
@@ -192,15 +197,15 @@ def adjust_wikicode(
                 elif "=" not in line or "= skrýt" in line or "= ano" in line:
                     continue
 
-                line = re.sub(r"\{\{(?:Doplňte|Příznak|#tag|Upřesnění)[^}]++\}\}", "", line)
-                line = re.sub(r"<br[ ]++/>", "<br/>", line)
+                for pattern, rpl in RE_CLEANUPS:
+                    line = pattern.sub(rpl, line)
 
                 _, rest = line.split("=", 1)
                 for rpl in REV_VAR_RPL:
                     rest = rest.replace(rpl, "")
 
                 if "<br/>" in rest:
-                    rest, count = re.subn(r"<br/> ++\{\{Potenciálně\|([^}]++)\}\}", r"\1", rest, count=1)
+                    rest, count = RE_POTENTIALLY.subn(r"\1", rest, count=1)
                     if not count:
                         rest = rest.replace("<br/>", "/")
 

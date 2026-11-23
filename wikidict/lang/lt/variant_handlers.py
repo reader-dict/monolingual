@@ -12,6 +12,10 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[0]
 
 
+RE_FIND_FORMS1 = re.compile(r"\[\[([^\]]++)\]\]")
+RE_FIND_FORMS2 = re.compile(r"\| \[\[([^\]]++)\]\]")
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
@@ -41,10 +45,10 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             if not line[line.find("'''") :].startswith(f"'''{word}'''"):
                 return "SKIP WORD"
         elif line.startswith("* taip pat žr."):
-            forms.update(re.findall(r"\[\[([^\]]++)\]\]", line.split("'''")[1]))
+            forms.update(RE_FIND_FORMS1.findall(line.split("'''")[1]))
         elif line.startswith("| ") and "style=" not in line:
             if "[[" in line:
-                forms.update(re.findall(r"\| \[\[([^\]]++)\]\]", line))
+                forms.update(RE_FIND_FORMS2.findall(line))
             else:
                 forms.add(line.lstrip("| "))
 

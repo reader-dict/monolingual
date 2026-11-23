@@ -18,6 +18,10 @@ def cleanup(form: str) -> str:
     )
 
 
+RE_FORM1 = re.compile(r"<b>\[\[([^\]#]++)")
+RE_FORM2 = re.compile(r"\[\[([^\]#]++)")
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     forms: set[str] = set()
     tables = wtp.parse(wikitext).get_tables(recursive=True)
@@ -25,7 +29,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     # Try 1
     for table in tables:
         line = str(table).splitlines()[2]
-        for form in re.findall(r"<b>\[\[([^\]#]++)", line):
+        for form in RE_FORM1.findall(line):
             if "<br/>" in form:
                 forms.update([cleanup(f) for f in form.split("<br/>")])
             elif "/" in form:
@@ -41,7 +45,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
                 for line in lines:
                     if not line or "''" in line:
                         continue
-                    if form := re.findall(r"\[\[([^\]#]++)", line):
+                    if form := RE_FORM2.findall(line):
                         forms.add(cleanup(form[0]))
                     # Try 3
                     elif line.strip("[]()"):

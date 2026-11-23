@@ -89,10 +89,22 @@ PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
     # gerundio presente di [[abalienare]
-    r".*?(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]++)",
+    re.compile(rf"(?i){START}.*?(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]++).*"),
     # participio presente di [[amare]]
     # participio passato di [[amare]]
-    r"participio (?:passato|presente)[^\n]+di \[\[([^#\]]++)",
+    re.compile(rf"(?i){START}participio (?:passato|presente)[^\n]+di \[\[([^#\]]++).*"),
+]
+RE_CLEANUPS = [
+    # [[en:foo]] → ''
+    (re.compile(r"(\[\[:?\w++:\w++\]\])"), ""),
+    # ` ([[:it:foo|italian]])` → ''
+    (re.compile(r"[ ]*+\(?\[\[:\w++:[^|]++\|[^\]]++\]\]\)?"), ""),
+    # {{-verb form-}} → === {{verb form}} ===
+    (re.compile(r"(?m)^\{\{[ ]*+-(.+)-[ ]*+\}\}"), r"=== {{\1}} ==="),
+    # {{-avv-|ANY}} → === {{avv}} ===
+    (re.compile(r"(?m)^\{\{[ ]*+-(.+)-[ ]*+\|[ ]*+(\w++)[ ]*+\}\}"), r"=== {{\1}} ==="),
+    # {{-avv-}} → === {{avv}} ===
+    (re.compile(r"(?m)^\{\{[ ]*+-(\w++)-[ ]*+\}\}"), r"=== {{\1}} ==="),
 ]
 
 
@@ -125,7 +137,7 @@ def adjust_wikicode(
     '== {{-it-}} ==\n=== {{avv}} ==='
 
     >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv-| ANY }}", "it")
-    '== {{-it-}} ==\n=== {{avv|ANY}} ==='
+    '== {{-it-}} ==\n=== {{avv}} ==='
 
     >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv- }}", "it")
     '== {{-it-}} ==\n=== {{avv}} ==='
@@ -155,23 +167,8 @@ def adjust_wikicode(
     '== {{-it-}} ==\n# {{flexion|abalienare}}'
     """
 
-    # [[en:foo]] → ''
-    code = re.sub(r"(\[\[:?\w++:\w++\]\])", "", code)
-
-    # ` ([[:it:foo|italian]])` → ''
-    code = re.sub(r"[ ]*+\(?\[\[:\w++:[^|]++\|[^\]]++\]\]\)?", "", code)
-
-    # {{-verb form-}} → === {{verb form}} ===
-    code = re.sub(r"^\{\{[ ]*+-(.+)-[ ]*+\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # {{-avv-|it}} → === {{avv}} ===
-    code = re.sub(rf"^\{{\{{[ ]*+-(.+)-[ ]*+\|[ ]*+{locale}[ ]*+\}}\}}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
-
-    # {{-avv-|ANY}} → === {{avv|ANY}} ===
-    code = re.sub(r"^\{\{[ ]*+-(.+)-[ ]*+\|[ ]*+(\w++)[ ]*+\}\}", r"=== {{\1|\2}} ===", code, flags=re.MULTILINE)
-
-    # {{-avv-}} → === {{avv}} ===
-    code = re.sub(r"^\{\{[ ]*+-(\w++)-[ ]*+\}\}", r"=== {{\1}} ===", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # [[w:A|B]] → [[A|B]]
     code = code.replace("[[w:", "[[")
@@ -199,7 +196,7 @@ def adjust_wikicode(
     for line in code.splitlines():
         if re.match(START, line):
             for pattern in PATTERNS:
-                line, count = re.subn(rf"{START}{pattern}.*", r"# {{flexion|\1}}", line, count=1, flags=re.IGNORECASE)
+                line, count = pattern.subn(r"# {{flexion|\1}}", line, count=1)
                 if count:
                     break
         lines.append(line)

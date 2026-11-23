@@ -149,6 +149,9 @@ _genders = {
 }
 
 
+RE_FIND_GENDERS = re.compile(r"\{\{([^{}]*+)\}\}")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "el")
@@ -166,14 +169,16 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''{{PAGENAME}}''' {{α}} ({{ετ|ιδιωματικό|0=-}}, Κάλυμνος)", "el")
     ['α']
     """
-    pattern = re.compile(r"\{\{([^{}]*+)\}\}")
     line_pattern = "'''{{PAGENAME}}''' "
     return [
         g
         for line in code.splitlines()
-        for gender in pattern.findall(line[len(line_pattern) :])
+        for gender in RE_FIND_GENDERS.findall(line[len(line_pattern) :])
         if line.startswith(line_pattern) and (g := _genders.get(gender.split("|")[0]))
     ]
+
+
+RE_FIND_PRONS = re.compile(r"\{\{(ΔΦΑ\|[^\}]++)\}\}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -190,7 +195,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈni.ði.mos/']
     """
     res: list[str] = []
-    for tpl in re.findall(r"\{\{(ΔΦΑ\|[^\}]++)\}\}", code):
+    for tpl in RE_FIND_PRONS.findall(code):
         parts = [part.strip() for part in tpl.split("|")]
         if f"γλ={locale}" not in parts and locale not in parts:
             continue

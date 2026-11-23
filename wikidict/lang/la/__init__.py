@@ -79,6 +79,8 @@ reverse_variant_titles = (
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
+RE_FIND_GENDERS = re.compile(r"\{\{([cfmn])\}\}")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
@@ -87,7 +89,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''ger'''|'''ō, -ōnis''' ''{{m}}''", LANG)
     ['m']
     """
-    return sorted(set(re.findall(r"\{\{([cfmn])\}\}", code)))
+    return sorted(set(RE_FIND_GENDERS.findall(code)))
+
+
+RE_REMOVE_TAGS = re.compile(r"<[^>]++>")
 
 
 def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
@@ -145,7 +150,7 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     prons = []
     for line in lines:
         expanded = context.expand(line, LANG)
-        expanded = re.sub(r"<[^>]++>", "", expanded)
+        expanded = RE_REMOVE_TAGS.sub("", expanded)
         if expanded.startswith(":[[Auxilium"):
             continue
 
@@ -167,6 +172,9 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
         else:
             prons.append(f"/{pron}/")
     return prons
+
+
+RE_FIX_MALFORMATION = re.compile(r".*?\[\[([^\]]++).+")
 
 
 def adjust_wikicode(
@@ -210,7 +218,7 @@ def adjust_wikicode(
             if line == "==={{int:wikt-affines}}===":
                 in_section = True
             if in_section and line.startswith("*"):
-                line = re.sub(r".*?\[\[([^\]]++).+", r"# {{flexion|\1}}", line)
+                line = RE_FIX_MALFORMATION.sub(r"# {{flexion|\1}}", line)
             lines.append(line)
         code = "\n".join(lines)
 
@@ -241,7 +249,9 @@ def adjust_wikicode(
 
     interesting_reverse_variant_titles = lang.reverse_variant_titles[locale]
     if any(tpl in code for tpl in interesting_reverse_variant_titles):
-        pattern = rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        pattern = re.compile(
+            rf"(\{{\{{(?:{'|'.join(tpl[2:] for tpl in interesting_reverse_variant_titles)})[^}}]++\}}\}})"
+        )
         lines.clear()
 
         # Drop the collapsable tables template (`{{collabi|{{la-declinatio-comp|amāri|or}}|caput=''amarus'' comparativus}}`)
@@ -252,7 +262,7 @@ def adjust_wikicode(
                 lines.append(line)
                 continue
 
-            for tpl in re.findall(pattern, line):
+            for tpl in pattern.findall(line):
                 tpl_name = tpl[2 : max(0, tpl.find("|")) or tpl.find("}")].strip(" \u200e")
                 variant_handlers_mod.append_to_reverse_variants(tpl_name)
                 forms = utils.process_templates(word, tpl, locale, templates_status=templates_status, variant_only=True)

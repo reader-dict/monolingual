@@ -149,6 +149,10 @@ def setup_lua_ctx() -> None:
                     "stare fiziologică constantă a corpului animal, reprezentând echilibrul dintre căldura produsă și cea pierdută.",
                     "gradul de căldură ridicată a corpului omenesc, reprezentând un simptom patologic; fierbințeală, febră.",
                 ],
+                "Cuvinte Compuse": [
+                    "temperatură absolută",
+                    "temperatura camerei",
+                ],
                 "Unități": [
                     "Metric (Sistemul Internațional): grad Celsius/centigrade (°C), kelvin (K).",
                     "Imperial: grade Fahrenheit (°F), grade Rankine (°R).",

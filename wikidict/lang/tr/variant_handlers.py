@@ -3,13 +3,19 @@ from collections import defaultdict
 
 from ... import context, utils
 
+RE_CLEANUP = re.compile(r"""(?m)^\| style=["'][^"']++["']\s*+""")
+RE_LOOP = re.compile(r"(?m)\|.+Template loop detected:.+\]\](.*)")
+RE_FIND_FORMS1 = re.compile(r"\[\[([^#\]]++)\]\]")  # `[[foo]]` or `[[föo|foo]]`
+RE_FIND_FORMS2 = re.compile(r"(?m)^\|[ ]*+([^\n]++)")
+RE_FIND_FORMS3 = re.compile(r"\[\[[^#]++[^|]++\|([^\]]++)\]\]")  # `[[foö#Türkçe|foo]]``
+
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
-    lines = re.sub(r"""^\| style=["'][^"']++["']\s*+""", "", wikitext, flags=re.MULTILINE)
+    lines = RE_CLEANUP.sub("", wikitext)
 
     if "Template loop detected" in lines:
         # `| (...) Template loop detected: [[&#x3a;Template&#x3a;SAYFAADI#Türkçe|:Template:SAYFAADI]]es` → `| [[WORDes]]`
-        lines = re.sub(r"\|.+Template loop detected:.+\]\](.*)", rf"| [[{word}\1]]", lines, flags=re.MULTILINE)
+        lines = RE_LOOP.sub(rf"| [[{word}\1]]", lines)
 
     lines = "\n".join(
         line
@@ -19,25 +25,26 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
     forms: set[str] = set()
-    for form in re.findall(r"\[\[([^#\]]++)\]\]", lines):  # `[[foo]]` or `[[föo|foo]]`
+    for form in RE_FIND_FORMS1.findall(lines):
         if "|" in form:
             forms.update(utils.cleanup_rev_variant(f_) for f_ in form.split("|"))
         else:
             forms.add(utils.cleanup_rev_variant(form))
 
     if not forms:
-        forms.update(
-            utils.cleanup_rev_variant(form) for form in re.findall(r"^\|[ ]*+([^\n]++)", lines, flags=re.MULTILINE)
-        )
+        forms.update(utils.cleanup_rev_variant(form) for form in RE_FIND_FORMS2.findall(lines))
 
     if "#" in lines:
-        for form in re.findall(r"\[\[[^#]++[^|]++\|([^\]]++)\]\]", lines):  # `[[foö#Türkçe|foo]]`
+        for form in RE_FIND_FORMS3.findall(lines):
             forms.add(utils.cleanup_rev_variant(form))
 
     forms.discard(word)
     forms.discard(f"'''{word}'''")
 
     return sorted(forms)
+
+
+RE_VARIANT = re.compile(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>")
 
 
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
@@ -69,7 +76,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         return parts[0] if parts else word.split("'", 1)[0]
 
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "tr")
-    if base := re.search(r"<i>\[\[[^|]++\|([^\]]++)\]\]</i>", expanded):
+    if base := RE_VARIANT.search(expanded):
         return base[1]
     return ""
 

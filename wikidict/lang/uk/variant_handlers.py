@@ -46,6 +46,22 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[0]
 
 
+RE_CLEANUPS1 = [
+    # Several cells on one line in the adjective tables: `|| [[називний|Н.]] ||  class="declension-white" | вірогі́дний`
+    (re.compile(r"[ ]*+\|\|[ ]*+class=\"declension-white\"[ ]*+\|"), "\n|"),
+    (re.compile(r"(?m)^<td[^>]*?bgcolor=\"#ffffff\"[^>]*+>([^<]++)</td>"), r"| \1"),
+    # The past tense and the imperative of the verbs, the line was removed with its attributes:
+    # `| bgcolor="#ffffff" align="left" | чита́в<br />чита́ла` → `| чита́в<br />чита́ла`
+    (re.compile(r"(?m)^\|[^|\n]*?bgcolor=\"#ffffff\"[^|\n]*+\|[ ]*+"), "| "),
+]
+RE_CLEANUPS2 = [
+    (re.compile(r"(?m)^\|[^|]*?declension-white[^|]*+"), ""),
+    (re.compile(r"(?m)^\|[^\n]*?bgcolor=.*+$"), ""),
+    (re.compile(r"<br[^>]*?>"), "\n| "),
+    (re.compile(r"(?m)^\|[ ]*+\[\[([^|#]++)\|.++"), r"| \1"),
+]
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["коро́ль"], defaultdict(str), "")
@@ -85,12 +101,10 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         parts.append(parts[0])
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "uk")
-    # Several cells on one line in the adjective tables: `|| [[називний|Н.]] ||  class="declension-white" | вірогі́дний`
-    table = re.sub(r"[ ]*+\|\|[ ]*+class=\"declension-white\"[ ]*+\|", "\n|", table)
-    table = re.sub(r"^<td[^>]*?bgcolor=\"#ffffff\"[^>]*+>([^<]++)</td>", r"| \1", table, flags=re.MULTILINE)
-    # The past tense and the imperative of the verbs, the line was removed with its attributes:
-    # `| bgcolor="#ffffff" align="left" | чита́в<br />чита́ла` → `| чита́в<br />чита́ла`
-    table = re.sub(r"^\|[^|\n]*?bgcolor=\"#ffffff\"[^|\n]*+\|[ ]*+", "| ", table, flags=re.MULTILINE)
+
+    for pattern, rpl in RE_CLEANUPS1:
+        table = pattern.sub(rpl, table)
+
     table = "\n".join(
         line
         for raw_line in table.splitlines()
@@ -103,10 +117,10 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
             and "#eef9ff" not in line
         )
     )
-    table = re.sub(r"^\|[^|]*?declension-white[^|]*+", "", table, flags=re.MULTILINE)
-    table = re.sub(r"^\|[^\n]*?bgcolor=.*+$", "", table, flags=re.MULTILINE)
-    table = table.replace("<br>", "\n| ").replace("<br/>", "\n| ").replace("<br />", "\n| ").replace(" | ", "\n| ")
-    table = re.sub(r"^\|[ ]*+\[\[([^|#]++)\|.++", r"| \1", table, flags=re.MULTILINE)
+
+    for pattern, rpl in RE_CLEANUPS2:
+        table = pattern.sub(rpl, table)
+    table = table.replace(" | ", "\n| ")
 
     forms = {form[1:].strip() for form in table.splitlines() if form and "[[" not in form}
     for form in forms.copy():

@@ -59,6 +59,9 @@ def cleanup(form: str) -> str:
     return "" if "=" in cleaned else cleaned
 
 
+RE_PARENS = re.compile(r"[()]")
+
+
 def escape(value: str) -> str:
     """
     >>> escape("ζυγός")
@@ -72,8 +75,11 @@ def escape(value: str) -> str:
     """
     res = value.split("|")[-1].rstrip("]")
     if "(" in res:
-        res = re.sub(r"[()]", "", res)
+        res = RE_PARENS.sub("", res)
     return res
+
+
+RE_CLEANUP = re.compile(r"\([^)]++\)")
 
 
 def add_form(form: str | None, forms: set[str], word_spaces_count: int) -> None:
@@ -86,7 +92,7 @@ def add_form(form: str | None, forms: set[str], word_spaces_count: int) -> None:
     forms.add(cleanup(escape(form)))
 
     if "(" in form:
-        forms.add(cleanup(escape(re.sub(r"\([^)]++\)", "", form))))
+        forms.add(cleanup(escape(RE_CLEANUP.sub("", form))))
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:

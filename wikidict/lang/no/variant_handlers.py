@@ -3,6 +3,9 @@ from collections import defaultdict
 
 from ... import context, utils
 
+RE_USEFUL_LINE = re.compile(r"(?m)^\|[ ]*+(?:å |eit |har |'*+)?+\[++")
+RE_FIND_FORMS = re.compile(r"\[\[([^#\]]++)")
+
 
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
@@ -13,12 +16,10 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
         return parts[0]
 
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "no")
-    lines = [
-        line for line in table.splitlines() if re.match(r"^\|[ ]*+(?:å |eit |har |'*+)?+\[++", line, flags=re.MULTILINE)
-    ]
+    lines = [line for line in table.splitlines() if RE_USEFUL_LINE.match(line)]
     forms: set[str] = set()
     for line in lines:
-        forms.update(re.findall(r"\[\[([^#\]]++)", line))
+        forms.update(RE_FIND_FORMS.findall(line))
 
     forms.discard(word)
     forms.discard("-")

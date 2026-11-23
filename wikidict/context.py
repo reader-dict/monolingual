@@ -156,7 +156,9 @@ class Context:
         """A link to a category, even with templates & parameters in it: `[[Category:foo|{{PAGENAME}}]]`."""
         prefixes = "|".join(map(re.escape, self.ctx.namespace_prefixes(14)))
         braces = r"\{\{\{?(?:[^{}]|\{\{\{?[^{}]*\}\}\}?)*+\}\}\}?"
-        return re.compile(rf"\[\[\s*(?:{prefixes})(?:[^\[\]{{}}\n]|{braces})*+\]\]", flags=re.IGNORECASE)
+        return re.compile(
+            rf"(?i)\[\[\s*(?:{prefixes})(?:[^\[\]{{}}\n]|{braces})*+\]\]",
+        )
 
     def _callees(self, namespace_id: int, body: str, redirect_to: str | None) -> Generator[Page]:
         """The templates & modules used by a template or a module."""
@@ -386,7 +388,7 @@ def all_namespaces(locale: str) -> str:
 def _get_file_namespace_re(locale: str) -> re.Pattern[str]:
     return re.compile(
         # Courtesy of Casimir et Hippolyte & Wiktor Stribiżew from https://stackoverflow.com/q/79006887/1117028
-        rf"""
+        rf"""(?x)
         # Match [[
         \[\[
 
@@ -404,20 +406,19 @@ def _get_file_namespace_re(locale: str) -> re.Pattern[str]:
 
         # Match ]]
         ]]
-        """,
-        flags=re.VERBOSE,
+        """
     )
 
 
 RE_COMMENTS = re.compile(r"<!--[\s\S]*?-->")
-RE_NOINCLUDE = re.compile(r"<noinclude>[\s\S]*?(?:</noinclude>|$)", flags=re.IGNORECASE)
-RE_ONLYINCLUDE = re.compile(r"<onlyinclude>([\s\S]*?)</onlyinclude>", flags=re.IGNORECASE)
+RE_NOINCLUDE = re.compile(r"(?i)<noinclude>[\s\S]*?(?:</noinclude>|$)")
+RE_ONLYINCLUDE = re.compile(r"(?i)<onlyinclude>([\s\S]*?)</onlyinclude>")
 # In a module, what only reads the namespace of the current page: `mw.title.getCurrentTitle().nsText`
 RE_CURRENT_NAMESPACE = re.compile(r"mw\.title\.getCurrentTitle\(\)\.(?:nsText|namespace)\b")
 # The name of a called template: `{{foo|...}}` or `{{foo}}`, but not `{{{foo}}}` nor `{{#if:...}}`
 RE_TEMPLATE_CALL = re.compile(r"(?<!\{)\{\{(?!\{)([^{}|#]+)[|}]")
 # The name of an invoked module: `{{#invoke:foo|...}}`
-RE_INVOKE = re.compile(r"\{\{\s*#invoke:([^{}|]+)[|}]", flags=re.IGNORECASE)
+RE_INVOKE = re.compile(r"(?i)\{\{\s*#invoke:([^{}|]+)[|}]")
 # In a module, the name of a loaded module: `require("Module:foo")`, `mw.loadData("Module:foo")`
 RE_REQUIRE = re.compile(r"""\b(?:require|loadData|loadJsonData)\s*\(?\s*["']([^"'\n]+)["']""")
 # In a module, the name of an expanded template: `frame:expandTemplate{title = "foo", ...}`
@@ -533,7 +534,7 @@ RE_NBSP_LINK = re.compile(r"&nbsp;\[\[:[^\]]++\]\]")
 RE_NBSP_SUP = re.compile(r"&nbsp;<sup[^>]*+>→&nbsp;\w++</sup>")
 RE_NOWIKI = re.compile(r"<nowiki[^>]++>")
 RE_SPAN_ITALIC = re.compile(r'<span class="(?:ib-content|label)[^>]++>([^<]*+)</span>')
-RE_ETYTREE = re.compile(r'<div class="etytree[^>]*+>.*?</ul>', flags=re.DOTALL)
+RE_ETYTREE = re.compile(r'(?s)<div class="etytree[^>]*+>.*?</ul>')
 RE_STRIP_TAGS = re.compile(r"</?(?:a|bdi|cite|div|em|li|ol|p|span|strong|templatestyles|ul)[^>]*+>")
 RE_CLEAN_ATTRS = re.compile(r"<(b|dl|i|small|sub|sup)\s++[^>]*+>")
 

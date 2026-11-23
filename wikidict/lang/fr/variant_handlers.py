@@ -4,16 +4,22 @@ from collections import defaultdict
 from wikidict import context, utils
 
 REPLACEMENTS: list[str] = []
+RE_NUMBER = re.compile(r"\{\{\{\d\}\}\}")
 
 
 def cleanup(form: str) -> str:
-    cleaned = re.sub(r"\{\{\{\d\}\}\}", r"", form)
+    cleaned = RE_NUMBER.sub("", form)
     return utils.cleanup_rev_variant(cleaned, rpl=REPLACEMENTS)
+
+
+RE_BR = re.compile(r"<br[^>]*+>")
+RE_FORMS1 = re.compile(r"\[\[([^#|]++)[^|]++\|([^\]]++)")
+RE_FORMS2 = re.compile(r"\[\[([^#|\]]++)")
 
 
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     if "<br" in wikitext:
-        wikitext = re.sub(r"<br[^>]*+>", "\n| ", wikitext)
+        wikitext = RE_BR.sub("\n| ", wikitext)
 
     lines = [
         line
@@ -28,11 +34,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
 
     forms: set[str] = set()
     for line in lines:
-        if (
-            form := re.search(r"\[\[([^#|]++)[^|]++\|([^\]]++)", line)
-            or re.search(r"\[\[([^#|\]]++)", line)
-            or re.search(rf"'''({word})'''", line)
-        ):
+        if form := RE_FORMS1.search(line) or RE_FORMS2.search(line) or re.search(rf"'''({word})'''", line):
             findings = form.groups()
             cleaned = cleanup(findings[0])
             # We want reverse variants for the base word only (the first occurrence in the table)

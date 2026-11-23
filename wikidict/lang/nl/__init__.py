@@ -104,6 +104,13 @@ def find_genders(code: str, locale: str) -> list[str]:
     return utils.unique(sorted(res))
 
 
+RE_FIND_PRONS_PATTERNS = [
+    re.compile(r"\{\{IPA-nl-standaard\|[^}]++\}\}"),
+    re.compile(r"\{\{IPA\|([^|}]++)"),
+]
+RE_PARENS = re.compile(r"[()]")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     r"""
     >>> find_pronunciations("", LANG)
@@ -127,11 +134,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['/ˈera/']
     """
     res: list[str] = []
-    for pattern in [
-        r"\{\{IPA-nl-standaard\|[^}]++\}\}",
-        r"\{\{IPA\|([^|}]++)",
-    ]:
-        for match in re.findall(pattern, code):
+    for pattern in RE_FIND_PRONS_PATTERNS:
+        for match in pattern.findall(code):
             if "IPA-nl-standaard" in match:
                 expanded = context.expand(match, LANG)
                 if "&#x202F;" in expanded:
@@ -140,7 +144,11 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
                 res.append(match)
         if res:
             break
-    return [re.sub(r"[()]", "", pron.replace("/ ", "/").replace(" /", "/")) for pron in res]
+    return [RE_PARENS.sub("", pron.replace("/ ", "/").replace(" /", "/")) for pron in res]
+
+
+RE_NUMBERED = re.compile(r"\*\s*+((?:\[[\d\s,+–-]++\][\s,]*+)++):?\s*+(\S.*+)")
+RE_FIND_NUMBERS = re.compile(r"(\d++)(?:\s*+[–-]\s*+(\d++))?")
 
 
 def attach_synonyms(code: str) -> str:
@@ -163,7 +171,6 @@ def attach_synonyms(code: str) -> str:
     '=== {{verb|nld}} ===\n# een\n#{{volt-d|bezweten}}\n=== {{syn}} ===\n*[2] [[bezweet]]'
     """
     lines = code.split("\n")
-    numbered = re.compile(r"\*\s*+((?:\[[\d\s,+–-]++\][\s,]*+)++):?\s*+(\S.*+)")
     headers = [n for n, line in enumerate(lines) if line.startswith("=")] + [len(lines)]
 
     def level(n: int) -> int:
@@ -179,7 +186,7 @@ def attach_synonyms(code: str) -> str:
         """`[1, 3-4]` gives `[1, 3, 4]`."""
         return [
             number
-            for first, last in re.findall(r"(\d++)(?:\s*+[–-]\s*+(\d++))?", text)
+            for first, last in RE_FIND_NUMBERS.findall(text)
             for number in range(int(first), int(last or first) + 1)
         ]
 
@@ -201,7 +208,7 @@ def attach_synonyms(code: str) -> str:
         for n in range(start + 1, headers[i + 1]):
             if not (text := lines[n].strip()):
                 continue
-            if not (match := numbered.fullmatch(text)) or not (found := numbers(match[1])):
+            if not (match := RE_NUMBERED.fullmatch(text)) or not (found := numbers(match[1])):
                 break
             # A meaning that is the form of another word goes to the variants, its synonyms would be lost with it
             if any(not 0 < k <= len(items) or is_form(items[k - 1]) for k in found):
@@ -226,6 +233,21 @@ def attach_synonyms(code: str) -> str:
         if n in insert:
             out.append(insert[n])
     return "\n".join(out)
+
+
+RE_CLEANUPS = [
+    # {{=nld=}} → == {{nld}} ==
+    (re.compile(r"(?m)^\{\{=(.+)=\}\}"), r"== {{\1}} ==\n"),
+    # {{-etym-}} → === {{etym}} ===
+    (re.compile(r"(?m)^\{\{-([\w-]+)(?=-\}\})\-\}\}"), r"=== {{\1}} ===\n"),
+    # {{-noun-|0}} → === {{noun}} ===
+    (re.compile(r"(?m)^\{\{-([\w-]+)(?=-\|0\}\})\-\|0\}\}"), r"=== {{\1}} ===\n"),
+    # {{-noun-|LOCALE}} → === {{noun|LOCALE}} ===
+    (re.compile(r"(?m)^\{\{-([\w-]+)-\|(\w{3})\}\}"), r"=== {{\1|\2}} ===\n"),
+    # {{-noun-|LOCALE|...}} → === {{noun|LOCALE|...}} ===
+    (re.compile(r"(?m)^\{\{-([\w-]+)-\|(\w{3}\|[^}\[\]{}]++)\}\}"), r"=== {{\1|\2}} ===\n"),
+]
+RE_VARIANTS = re.compile(r"(?m)^(\{\{noun-pl\|[^}]++\}\})")
 
 
 def adjust_wikicode(
@@ -322,19 +344,8 @@ def adjust_wikicode(
     code = code.replace("{{pn}}", word)
 
     # {{=nld=}} → == {{nld}} ==
-    code = re.sub(r"^\{\{=(.+)=\}\}", r"== {{\1}} ==\n", code, flags=re.MULTILINE)
-
-    # {{-etym-}} → === {{etym}} ===
-    code = re.sub(r"^\{\{-([\w-]+)(?=-\}\})\-\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
-
-    # {{-noun-|0}} → === {{noun}} ===
-    code = re.sub(r"^\{\{-([\w-]+)(?=-\|0\}\})\-\|0\}\}", r"=== {{\1}} ===\n", code, flags=re.MULTILINE)
-
-    # {{-noun-|LOCALE}} → === {{noun|LOCALE}} ===
-    code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3})\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
-
-    # {{-noun-|LOCALE|...}} → === {{noun|LOCALE|...}} ===
-    code = re.sub(r"^\{\{-([\w-]+)-\|(\w{3}\|[^}\[\]{}]++)\}\}", r"=== {{\1|\2}} ===\n", code, flags=re.MULTILINE)
+    for pattern, rpl in RE_CLEANUPS:
+        code = pattern.sub(rpl, code)
 
     # Synonyms go under their meaning when they give its number: `*[1] [[bijgevolg]]`
     code = attach_synonyms(code)
@@ -345,7 +356,7 @@ def adjust_wikicode(
 
     # {{noun-pl|isolatiebedrijf}} → # {{noun-pl|isolatiebedrijf}}
     if "noun-pl" in code:
-        code = re.sub(r"^(\{\{noun-pl\|[^}]++\}\})", r"# \1", code, flags=re.MULTILINE)
+        code = RE_VARIANTS.sub(r"# \1", code)
 
     #
     # Reverse variants

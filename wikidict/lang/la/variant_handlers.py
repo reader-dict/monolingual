@@ -8,6 +8,9 @@ def cleanup(form: str) -> str:
     return utils.cleanup_rev_variant(form)
 
 
+RE_FIND_FORMS = re.compile(r"\[\[([^|]++)")
+
+
 def table_to_forms(word: str, wikitext: str) -> list[str]:
     lines = "\n".join(
         [
@@ -16,7 +19,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             if (line := raw_line.strip()) and line.startswith("|") and not line.startswith(("|-", "|}"))
         ]
     )
-    forms = {cleanup(form) for form in re.findall(r"\[\[([^|]++)", lines)}
+    forms = {cleanup(form) for form in RE_FIND_FORMS.findall(lines)}
 
     forms.discard(word)
     forms.discard("-")
@@ -34,6 +37,9 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     return "|".join(table_to_forms(word, table))
 
 
+RE_VARIANTS = re.compile(r"\[\[([^#]++)")
+
+
 def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_variant("coniug", ["la", "agitandus", "agitō", "", "", "", "gndv", "pas", "(agitāre)"], defaultdict(str, {"casu": "nom"}), "agitandus")
@@ -43,7 +49,7 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
         return parts[0].strip()
 
     expanded = context.expand(utils.reconstruct_tpl(tpl, parts, data), "la")
-    if base := re.search(r"\[\[([^#]++)", expanded.splitlines()[-1]):
+    if base := RE_VARIANTS.search(expanded.splitlines()[-1]):
         return base[1]
     return ""
 

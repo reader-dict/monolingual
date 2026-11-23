@@ -23,6 +23,9 @@ def render_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word
     return parts[0]
 
 
+RE_FIND_FORMS = re.compile(r"<td\s*>([^<]++)</td>")
+
+
 def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, str], word: str) -> str:
     """
     >>> render_reverse_variant("rev-flexion", ["foo"], defaultdict(str), "")
@@ -34,7 +37,7 @@ def render_reverse_variant(tpl: str, parts: list[str], data: defaultdict[str, st
     table = context.expand(utils.reconstruct_tpl(tpl, parts, data), "pl")
     table = table.replace(' colspan="2"', "")
 
-    forms = {cleanup(form) for form in re.findall(r"<td\s*>([^<]++)</td>", table)}
+    forms = {cleanup(form) for form in RE_FIND_FORMS.findall(table)}
     forms.discard(word)
 
     return "|".join(sorted(forms))

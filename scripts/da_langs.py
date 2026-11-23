@@ -5,7 +5,7 @@ from scripts_utils import get_content
 # Primary
 data = get_content("https://da.wiktionary.org/wiki/Modul:lang/data?action=raw")
 pattern = re.compile(r'data\["([^"]+)"\]\s+=\s+\{\s+name\s+=\s+"([^"]+)",')
-langs = re.findall(pattern, data)
+langs = pattern.findall(data)
 
 # Missing langs
 langs.append(("enm", "middelengelsk"))
@@ -14,8 +14,8 @@ langs.append(("syr", "assyrisk"))
 
 # Aliases
 data = get_content("https://da.wiktionary.org/wiki/Bruger:PolyBot~dawiktionary/Languages?action=raw")
-pattern = re.compile(r"^\| (\w+)\|\|\|\|(\w+)\|\|", flags=re.MULTILINE)
-langs.extend(re.findall(pattern, data))
+pattern = re.compile(r"(?m)^\| (\w+)\|\|\|\|(\w+)\|\|")
+langs.extend(pattern.findall(data))
 
 known_langs: set[str] = set()
 print("langs = {")

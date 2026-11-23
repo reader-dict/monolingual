@@ -83,6 +83,8 @@ templates_ignored = (
     "{{uso",
 )
 
+RE_FIND_PRONS = re.compile(r"\|(\[[^\[\]]++\])")
+
 
 def find_pronunciations(
     code: str,
@@ -117,7 +119,7 @@ def find_pronunciations(
     for tpl in pattern.findall(code):
         expanded = context.expand(tpl, "es").splitlines()
         for line1, line2 in itertools.pairwise(expanded):
-            if not (prons := re.findall(r"\|(\[[^\[\]]++\])", line2)):
+            if not (prons := RE_FIND_PRONS.findall(line2)):
                 continue
 
             if "seseante'''" not in line1 or "'''no sheísta'''" in line1:  # No system

@@ -2,6 +2,8 @@ import re
 
 from .hiero import wh_files, wh_hiero, wh_phonemes, wh_prefabs
 
+RE_DEL_COMMENT = re.compile(r"<!--(?:.+-->)?")
+
 
 class HieroTokenizer:
     currentBlock: list[str]
@@ -23,7 +25,7 @@ class HieroTokenizer:
         self.token = ""
 
         # remove HTML comments
-        text = re.sub(r"<!--(?:.+-->)?", "", self.text)
+        text = RE_DEL_COMMENT.sub("", self.text)
 
         for i in range(len(text)):
             char = text[i]
@@ -100,19 +102,25 @@ def isMirrored(glyph: str) -> bool:
     return glyph[-1] == "\\"
 
 
+RE_NO_CODE = re.compile("\\\\.*$")
+
+
 def extractCode(glyph: str) -> str:
-    return re.sub("\\\\.*$", "", glyph)
+    return RE_NO_CODE.sub("", glyph)
 
 
 def renderVoidBlock(width: int) -> str:
     return f'<table class="mw-hiero-table" style="width: {width}px; {TABLE_STYLE}"><tr><td style="{TD_STYLE}">&#160;</td></tr></table>'
 
 
+RE_TITLE = re.compile(r"/^[A-Za-z0-9]+$/")
+
+
 def renderGlyphImage(glyph: str, height: int, margin: int, moreStyle: str) -> str:
     if glyph in wh_phonemes:
         code = wh_phonemes[glyph]
         filename = code
-        title = f"{code} [{glyph}]" if re.match(r"/^[A-Za-z0-9]+$/", glyph) else glyph
+        title = f"{code} [{glyph}]" if RE_TITLE.match(glyph) else glyph
     else:
         filename = title = glyph
 
@@ -164,6 +172,9 @@ def resizeGlyph(item: str, *, is_cartouche: bool = False, total: int = 0) -> int
             return int(MAX_HEIGHT * MAX_HEIGHT / height) - margin
 
     return MAX_HEIGHT - margin
+
+
+RE_SPECIAL_CHARS = re.compile(r"[*:!()]")
 
 
 def render_hiero(hiero: str, *, scale: float = 100, line: bool = False) -> str:
@@ -230,7 +241,7 @@ def render_hiero(hiero: str, *, scale: float = 100, line: bool = False) -> str:
         # block contains more than 1 glyph
         else:
             # convert all codes into '&' to test prefabs glyph
-            prefabs = "".join("&" if re.search("[*:!()]", t[0]) else t for t in code)
+            prefabs = "".join("&" if RE_SPECIAL_CHARS.search(t[0]) else t for t in code)
 
             # test if block exists in the prefabs list
             if prefabs in wh_prefabs:
