@@ -35,4 +35,5 @@ def set(formula: str, svg_raw: str) -> None:
 
 def optimize(svg_raw: str) -> str:
     """Optimize a given SVG."""
-    return str(scourString(svg_raw, options=SCOUR_OPTIONS))
+    # Without the final newline of scour, that would show as a space before the punctuation after a formula
+    return str(scourString(svg_raw, options=SCOUR_OPTIONS)).rstrip()

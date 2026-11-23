@@ -17,6 +17,7 @@ def test_formula_to_svg() -> None:
         assert re.match(r'<svg width="[\d.]+em" height="[\d.]+em" style="vertical-align:-[\d.]+em"', svg)
         assert 'fill="currentColor"' in svg
         assert "<symbol" not in svg
+        assert svg.endswith("</svg>")
         assert formula in utils.svg.CACHE
 
         with patch.dict("os.environ", {"FORCE_FORMULA_RENDERING": "1"}):
