@@ -89,7 +89,7 @@ PATTERNS = [
     # plurale di [[-ectomia]]
     # terza persona plurale del congiuntivo presente di [[brillantare]]
     # gerundio presente di [[abalienare]
-    r".+?(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]++)",
+    r".*?(?:femminile|gerundio|singolare|plurale)[^\n]+(?:di|del verbo) \[\[([^#\]]++)",
     # participio presente di [[amare]]
     # participio passato di [[amare]]
     r"participio (?:passato|presente)[^\n]+di \[\[([^#\]]++)",
@@ -130,6 +130,8 @@ def adjust_wikicode(
     >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv- }}", "it")
     '== {{-it-}} ==\n=== {{avv}} ==='
 
+    >>> adjust_wikicode("== {{-it-}} ==\n#plurale di [[infermiera]]", "it")
+    '== {{-it-}} ==\n# {{flexion|infermiera}}'
     >>> adjust_wikicode("== {{-it-}} ==\n# plurale di [[-ectomia]]", "it")
     '== {{-it-}} ==\n# {{flexion|-ectomia}}'
 
