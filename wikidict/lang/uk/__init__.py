@@ -1,6 +1,7 @@
 """Ukranian language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, lang, utils
 from ..ru import extract_templates
@@ -41,6 +42,20 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_gender_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{імен.{locale}.[\w-]++.([fmnplмжс]++)")
+
+
+# https://uk.wiktionary.org/wiki/Категорія:Шаблони_словозміни/uk/Іменники
+GENDERS = {
+    "f": "ж",
+    "m": "ч",
+    "n": "с",
+    "pl": "мн",
+}
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "uk")
@@ -54,22 +69,17 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{імен uk 3a-city m una|склади={{склади|Бо́б|рик}}|Бо́брик|Бобрик}}", "uk")
     ['ч']
     """
-    # https://uk.wiktionary.org/wiki/Категорія:Шаблони_словозміни/uk/Іменники
-    pattern = re.compile(rf"\{{\{{імен.{locale}.[\w-]++.([fmnplмжс]++)")
     return utils.unique(
-        [
-            {
-                "f": "ж",
-                "m": "ч",
-                "n": "с",
-                "pl": "мн",
-            }.get(gender, gender)
-            for gender in utils.flatten(pattern.findall(code))
-        ]
+        [GENDERS.get(gender, gender) for gender in utils.flatten(cache_gender_pattern(locale).findall(code))]
     )
 
 
 RE_FIND_PRONS = re.compile(r"&#91;([^&]++)&#93;")
+
+
+@lru_cache
+def cache_pron_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{transcriptions?(?:-{locale})?(?:\|([^|}}\n]*+))?[^}}\n]*+}}}}")
 
 
 def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
@@ -90,10 +100,9 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     >>> find_pronunciations("{{transcriptions-uk|}}", "uk", "Бобрик")
     ['[bɔbrek]']
     """
-    pattern = re.compile(rf"\{{\{{transcriptions?(?:-{locale})?(?:\|([^|}}\n]*+))?[^}}\n]*+}}}}")
     res: list[str] = []
     seen: set[str] = set()
-    for tpl in pattern.finditer(code):
+    for tpl in cache_pron_pattern(locale).finditer(code):
         prons = [f"[{pron}]" for pron in RE_FIND_PRONS.findall(context.expand(tpl[0], "uk"))]
         prons = [pron for pron in dict.fromkeys(prons) if pron not in seen]
         seen.update(prons)

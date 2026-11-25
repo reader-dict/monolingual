@@ -1,6 +1,7 @@
 """Thai language."""
 
 import re
+from functools import lru_cache
 
 random_word_url = (
     "https://th.wiktionary.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:%E0%B8%AA%E0%B8%B8%E0%B9%88%E0%B8%A1"
@@ -78,6 +79,11 @@ _sections.extend(f"{{{{{s}" for s in _sections.copy())
 sections = tuple(_sections)
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{IPA\|{locale}\|(/[^/]++/)")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "th")
@@ -85,5 +91,4 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|th|/ˈjestədeɪ/}}", "th")
     ['/ˈjestədeɪ/']
     """
-    pattern = re.compile(rf"\{{\{{IPA\|{locale}\|(/[^/]++/)")
-    return sorted(set(pattern.findall(code)))
+    return sorted(set(cache_pattern(locale).findall(code)))

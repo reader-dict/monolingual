@@ -1,6 +1,7 @@
 """Latin language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -95,6 +96,12 @@ def find_genders(code: str, locale: str) -> list[str]:
 RE_REMOVE_TAGS = re.compile(r"<[^>]++>")
 
 
+@lru_cache(maxsize=2)
+def cache_pattern(char: str) -> re.Pattern[str]:
+    sep_start, sep_end = ("/", "/") if char == "/" else (r"\[", r"\]")
+    return re.compile(rf"{sep_start}([^{sep_end}]++){sep_end}")
+
+
 def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     r"""
     >>> find_pronunciations("", LANG, "")
@@ -155,8 +162,7 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
             continue
 
         expanded = expanded.split(" ", 1)[1].strip()
-        sep_start, sep_end = ("/", "/") if expanded[0] == "/" else (r"\[", r"\]")
-        if not (pronunciations := re.findall(rf"{sep_start}([^{sep_end}]++){sep_end}", expanded)):
+        if not (pronunciations := cache_pattern(expanded[0]).findall(expanded)):
             continue
 
         pron = pronunciations[0]

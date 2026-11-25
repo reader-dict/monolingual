@@ -1,6 +1,7 @@
 """Finnish language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -72,6 +73,11 @@ RE_FIND_PRONS2 = re.compile(r"/([^/]++)/")
 RE_PARENS = re.compile(r"[()]")
 
 
+@lru_cache
+def cache_pron_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"({{{{{locale}-äänt[^}}]*+}}}})")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("{{IPA|[ʃɑtobriã]}}", LANG)
@@ -100,7 +106,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
             pron = pron.split("|")[-1]
         res.append(pron)
     else:
-        if not (templates := re.findall(rf"({{{{{locale}-äänt[^}}]*+}}}})", code)):
+        if not (templates := cache_pron_pattern(locale).findall(code)):
             templates = [f"{{{{{locale}-äänt}}}}"]
 
         expanded = context.expand(templates[0], LANG, skip_cache=True)
@@ -112,6 +118,11 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
 
 RE_FIND_VARIANTS = re.compile(r"'+\[\[([^\]]++)\]\]'++$")
 RE_NO_POS = re.compile(r"(?m)^\{\{subs-taivm\|Suomen\|.+")
+
+
+@lru_cache
+def cache_variant_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"'++\{{\{{l\|{locale}\|([^|}}]++)")
 
 
 def adjust_wikicode(
@@ -149,7 +160,7 @@ def adjust_wikicode(
             if not (line := raw_line.strip()):
                 continue
             elif line.startswith(("# {{taivm}}", "#{{taivm}}", "# (''taivutusmuoto'')", "#(''taivutusmuoto'')")) and (
-                forms_ := (RE_FIND_VARIANTS.findall(line) or re.findall(rf"'++\{{\{{l\|{locale}\|([^|}}]++)", line))
+                forms_ := (RE_FIND_VARIANTS.findall(line) or cache_variant_pattern(locale).findall(line))
             ):
                 line = f"# {{{{flexion|{forms_[0]}}}}}"
             lines.append(line)

@@ -1,6 +1,7 @@
 """Romanian language."""
 
 import re
+from functools import lru_cache
 
 from ... import lang, utils
 from .template_overrides import overrides as template_overrides  # noqa: F401
@@ -68,6 +69,8 @@ reverse_variant_titles = (
 )
 reverse_variant_templates = ("{{rev-flexion",)
 
+RE_GENDERS = re.compile(r"gen=\{\{([fmsingp]++)(?: \?\|)*\}")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
@@ -78,8 +81,15 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{substantiv-ron|gen={{n}}}}", "ro")
     ['n']
     """
-    pattern = re.compile(r"gen=\{\{([fmsingp]++)(?: \?\|)*\}")
-    return utils.unique(utils.flatten(pattern.findall(code)))
+    return utils.unique(utils.flatten(RE_GENDERS.findall(code)))
+
+
+@lru_cache
+def cache_patterns(locale: str) -> list[re.Pattern[str]]:
+    return [
+        re.compile(r"\{AFI\|(/[^/\n]++\/)(?:\|(/[^/\n]++\/))*+"),
+        re.compile(rf"\{{IPA\|{locale}\|([^}}\n]++)"),
+    ]
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -92,10 +102,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     ['[fruˈmoʃʲ]']
     """
     res = []
-    for pattern in (
-        re.compile(r"\{AFI\|(/[^/\n]++\/)(?:\|(/[^/\n]++\/))*+"),
-        re.compile(rf"\{{IPA\|{locale}\|([^}}\n]++)"),
-    ):
+    for pattern in cache_patterns(locale):
         res.extend(pattern.findall(code))
 
     return utils.flatten(res)

@@ -80,6 +80,12 @@ templates_ignored = (
 )
 
 
+RE_GENDERS = [
+    re.compile(r"\{\{n[bon]-sub\|(\w++)\}\}"),
+    re.compile(r"\{\{n[bon]-sub\|\w++=(\w++)"),
+]
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "no")
@@ -95,13 +101,13 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{no-sub|nb=f|nn=f}}", "no")
     ['f']
     """
-    for pattern in [
-        re.compile(r"\{\{n[bon]-sub\|(\w++)\}\}"),
-        re.compile(r"\{\{n[bon]-sub\|\w++=(\w++)"),
-    ]:
+    for pattern in RE_GENDERS:
         if genders := pattern.findall(code):
             return utils.unique(utils.flatten(genders))
     return []
+
+
+RE_PRONS = re.compile(r"\{\{\s*+IPA\s*+\|[^}]*+\}\}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -115,9 +121,8 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|['klɑɾ]||['kɽɑɾ] (tykk ''L'' (østnorsk)|språk=no}}", "no")
     ["['klɑɾ]"]
     """
-    pattern = re.compile(r"\{\{\s*+IPA\s*+\|[^}]*+\}\}")
     result: list[str] = []
-    for f in pattern.findall(code):
+    for f in RE_PRONS.findall(code):
         fsplit = f.split("|")
         for fs in fsplit:
             if not fs:

@@ -1,6 +1,7 @@
 """Japanese language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -95,9 +96,6 @@ templates_ignored = (
 )
 
 
-RE_FIND_PRONS_LOOKUPS = [
-    re.compile(r"(\{\{ipa\|[^}]++\}\})"),
-]
 RE_FIND_PRONS_PATTERNS = [
     re.compile(r"(?m): (/[^/]++/)$"),
     re.compile(r"(?m)<samp>(\[[^\]]++\])</samp>"),
@@ -106,6 +104,16 @@ RE_FIND_PRONS_PATTERNS = [
 RE_DEL_TAGS = re.compile(r"<del>[^<]++</del>")
 RE_SAMP_TAGS = re.compile(r"[ ]++<samp>[^<]++</samp>")
 RE_EXTRACT_PRON = re.compile(r"\[\[([^\]]++)\]\]")
+
+
+@lru_cache
+def cache_patterns(locale: str) -> list[re.Pattern[str]]:
+    return [
+        re.compile(r"(\{\{ipa\|[^}]++\}\})"),
+        re.compile(rf"(\{{\{{{locale}-pron\|[^}}]++\}}\}})"),
+        # re.compile(rf"(\{{\{{IPA\|{locale}\|[^}}]++\}}\}})"),
+        # re.compile(rf"(\{{\{{{locale}-IPA[^}}]*+\}}\}})"),
+    ]
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -135,14 +143,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ipa|te|lang=ja}}", "ja")
     ['/te/']
     """
-    lookups = [
-        *RE_FIND_PRONS_LOOKUPS,
-        re.compile(rf"(\{{\{{{locale}-pron\|[^}}]++\}}\}})"),
-        # re.compile(rf"(\{{\{{IPA\|{locale}\|[^}}]++\}}\}})"),
-        # re.compile(rf"(\{{\{{{locale}-IPA[^}}]*+\}}\}})"),
-    ]
-
-    for lookup in lookups:
+    for lookup in cache_patterns(locale):
         for tpl in lookup.findall(code):
             expanded = context.expand(tpl, "ja")
 

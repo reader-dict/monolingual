@@ -1,6 +1,7 @@
 """Bulgarian language."""
 
 import re
+from functools import lru_cache
 
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -116,6 +117,11 @@ def find_genders(code: str, locale: str) -> list[str]:
     return []
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{МФА\|.(.*?).\|{locale}\}}\}}")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("{{МФА|[ei]|bg}}", LANG)
@@ -123,7 +129,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{МФА|/ei/|bg}}", LANG)
     ['/ei/']
     """
-    return sorted(f"/{pron}/" for pron in set(re.findall(rf"\{{\{{МФА\|.(.*?).\|{locale}\}}\}}", code)))
+    return sorted(f"/{pron}/" for pron in set(cache_pattern(locale).findall(code)))
 
 
 RE_VARIANTS = re.compile(r"ОСНОВНА ФОРМА =([^\n]++)")

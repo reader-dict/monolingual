@@ -1,6 +1,7 @@
 """Swedish language."""
 
 import re
+from functools import lru_cache
 
 from ... import lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -59,6 +60,11 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{uttal\|{locale}\|(?:[^|\n]++\|)?ipa=([^}}|\n]++)")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "sv")
@@ -70,8 +76,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{uttal|sv|ipa=ɛn|uttalslänk=-}}", "sv")
     ['/ɛn/']
     """
-    pattern = re.compile(rf"\{{\{{uttal\|{locale}\|(?:[^|\n]++\|)?ipa=([^}}|\n]++)")
-    return sorted(f"/{p}/" for p in pattern.findall(code))
+    return sorted(f"/{p}/" for p in cache_pattern(locale).findall(code))
 
 
 def adjust_wikicode(

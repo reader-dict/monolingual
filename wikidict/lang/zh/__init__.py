@@ -1,6 +1,7 @@
 """Chinese language."""
 
 import re
+from functools import lru_cache
 
 import regex
 
@@ -146,6 +147,11 @@ templates_ignored = (
 RE_FIND_PRONS = re.compile(r"\[\[[^#]++#官話\|([^\]]++)\]\]")
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"(\{{\{{{locale}-pron[^}}]++}}}})")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> from wikidict import context
@@ -160,7 +166,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     from wikidict import context
 
     res: set[str] = set()
-    for tpl in re.findall(rf"(\{{\{{{locale}-pron[^}}]++}}}})", code):
+    for tpl in cache_pattern(locale).findall(code):
         if pron := RE_FIND_PRONS.search(context.expand(tpl, "zh")):
             res.add(pron[1])
     return sorted(f"/{pron}/" for pron in res)

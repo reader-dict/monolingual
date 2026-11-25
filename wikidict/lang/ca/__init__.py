@@ -1,6 +1,7 @@
 """Catalan language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, utils
 from .template_adapters import adapters as template_adapters  # noqa: F401
@@ -64,6 +65,11 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_gender_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{{locale}-\w++\|([fm]++)")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", LANG)
@@ -73,9 +79,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{ca-nom|m}} {{ca-nom|m}}", LANG)
     ['m']
     """
-    pattern = re.compile(rf"\{{{locale}-\w++\|([fm]++)")
     res: set[str] = set()
-    for gender in pattern.findall(code):
+    for gender in cache_gender_pattern(locale).findall(code):
         if gender in ("mf", "fm"):
             res.update(("f", "m"))
         else:
@@ -84,6 +89,11 @@ def find_genders(code: str, locale: str) -> list[str]:
 
 
 RE_FIND_PRONS = re.compile(r"(/[^/]++/)$")
+
+
+@lru_cache
+def cache_pron_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"(?sm)(\{{\{{{locale}-pron[^}}]*+\}}\}})")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -102,7 +112,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ca-pron|tipus=inf\n|f-centr=LL-Q7026 (cat)-Marvives-miolar.wav\n}}", LANG)
     ['/mi.uˈɫa/']
     """
-    if not (templates := re.findall(rf"(?sm)(\{{\{{{locale}-pron[^}}]*+\}}\}})", code)):
+    if not (templates := cache_pron_pattern(locale).findall(code)):
         return []
 
     lines = [line.strip() for line in context.expand(templates[0], LANG).splitlines()]

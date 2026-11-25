@@ -35,6 +35,9 @@ reverse_variant_templates = ("{{rev-flexion",)
 templates_ignored = ("{{???}}",)
 
 
+RE_PRONS = re.compile(r"\{\{gykyvysym.\|/([^/]+)/")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "jbo")
@@ -42,8 +45,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{gykyvysym.|/ˈfor.ʃa/|bau=jbo}}", "jbo")
     ['/ˈfor.ʃa/']
     """
-    pattern = re.compile(r"\{\{gykyvysym.\|/([^/]+)/")
-    return [f"/{pron}/" for pron in pattern.findall(code)]
+    return [f"/{pron}/" for pron in RE_PRONS.findall(code)]
 
 
 def adjust_wikicode(

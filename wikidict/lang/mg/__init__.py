@@ -1,6 +1,7 @@
 """Malagasy language."""
 
 import re
+from functools import lru_cache
 
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
@@ -36,6 +37,11 @@ templates_ignored = (
 RE_FIND_PRONS = re.compile(r"\{\{IPA\|\w++\|\[([^\]]++)\]")
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{fanononana\|([^|]++)\|{locale}\}}\}}")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "mg")
@@ -45,9 +51,9 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("* {{IPA|mul|[ˈkilo]|ref={{cite-book |title=DIN 5009:2022-06 |page=Anhang B: Buchstabiertafel der ICAO („Radiotelephony Spelling Alphabet“) |publisher=Deutsches Institut für Normung |date=June 2022 }}}}", "mg")
     ['/ˈkilo/']
     """
-    return [
-        f"/{pron}/" for pron in re.findall(rf"\{{\{{fanononana\|([^|]++)\|{locale}\}}\}}", code) if "}" not in pron
-    ] or [f"/{pron}/" for pron in RE_FIND_PRONS.findall(code)]
+    return [f"/{pron}/" for pron in cache_pattern(locale).findall(code) if "}" not in pron] or [
+        f"/{pron}/" for pron in RE_FIND_PRONS.findall(code)
+    ]
 
 
 VAR_PATTERNS = [

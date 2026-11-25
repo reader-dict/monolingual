@@ -33,8 +33,9 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     ]
 
     forms: set[str] = set()
+    just_the_word = re.compile(rf"'''({word})'''")
     for line in lines:
-        if form := RE_FORMS1.search(line) or RE_FORMS2.search(line) or re.search(rf"'''({word})'''", line):
+        if form := RE_FORMS1.search(line) or RE_FORMS2.search(line) or just_the_word.search(line):
             findings = form.groups()
             cleaned = cleanup(findings[0])
             # We want reverse variants for the base word only (the first occurrence in the table)

@@ -76,6 +76,9 @@ GENDERS = {
 }
 
 
+RE_GENDERS = re.compile(r"\{\{-l-\|(\w++)\}\}")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", LANG)
@@ -89,9 +92,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{-l-|mfn}}", LANG)
     ['m', 'o', 'v']
     """
-    pattern = re.compile(r"\{\{-l-\|(\w++)\}\}")
     res: set[str] = set()
-    for gender in pattern.findall(code):
+    for gender in RE_GENDERS.findall(code):
         if gender == "0":
             continue
         if "".join(sgen := sorted(gender)) in {"fm", "fmn", "mv"}:

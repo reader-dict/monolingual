@@ -1,6 +1,7 @@
 """Danish language."""
 
 import re
+from functools import lru_cache
 
 from ... import lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -110,6 +111,11 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{IPA(?:\|(.*?))?\|lang={locale}\}}\}}")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "da")
@@ -119,11 +125,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|/fuːl/|[fuːˀl]|lang=da}}", "da")
     ['/fuːl/']
     """
-    pattern = re.compile(rf"\{{\{{IPA(?:\|(.*?))?\|lang={locale}\}}\}}")
     pron = next(
         (
             item.replace("[", "/").replace("]", "/")
-            for sublist in (pattern.findall(code) or [])
+            for sublist in (cache_pattern(locale).findall(code) or [])
             for item in sublist.split("|")
             if item
         ),

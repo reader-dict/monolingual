@@ -1,6 +1,7 @@
 """Korean language."""
 
 import re
+from functools import lru_cache
 
 from ... import context
 
@@ -45,6 +46,11 @@ sections = (
 RE_FIND_PRONS = re.compile(r"발음: (\[[^\]]+\])")
 
 
+@lru_cache
+def cache_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"(\{{\{{{locale}-IPA[^}}]*}}}})")
+
+
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> find_pronunciations("", "ko")
@@ -61,7 +67,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{ko-IPA}}", "ko")
     ['[신진대사/신진<b>데</b>사]']
     """
-    for tpl in re.findall(rf"(\{{\{{{locale}-IPA[^}}]*}}}})", code):
+    for tpl in cache_pattern(locale).findall(code):
         expanded = context.expand(tpl, "ko")
         if not (prons := RE_FIND_PRONS.findall(expanded)):
             continue

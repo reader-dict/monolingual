@@ -58,6 +58,9 @@ definitions_to_ignore = (
 )
 
 
+RE_GENDER = re.compile(r"\{\{Pn\|?w?\}\} ''([fm])[singvol ]*+''")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "it")
@@ -65,8 +68,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{Pn}} ''m sing''", "it")
     ['m']
     """
-    pattern = re.compile(r"\{\{Pn\|?w?\}\} ''([fm])[singvol ]*+''")
-    return utils.unique(pattern.findall(code))
+    return utils.unique(RE_GENDER.findall(code))
+
+
+RE_PRON = re.compile(r"\{\{IPA\|/([^}]+)/\}\}")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -80,8 +85,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA|/ undiˈt͡ʃɛzimo/}} o {{IPA|/uniˈt͡ʃezimo/}}", "it")
     ['/undiˈt͡ʃɛzimo/']
     """
-    pattern = re.compile(r"\{\{IPA\|/([^}]+)/\}\}")
-    return [f"/{pron[1].strip()}/"] if (pron := pattern.search(code)) else []
+    return [f"/{pron[1].strip()}/"] if (pron := RE_PRON.search(code)) else []
 
 
 START = rf"^(?:{'|'.join(defaults.section_patterns)})\s*"

@@ -109,6 +109,8 @@ templates_ignored = (
     "{{cont",  # incomplete
 )
 
+RE_GENDERS = re.compile(r"\{\{(?:(?:g|gramática)\|)?+([fmc2g]++)(?:\|id=\w++)?\}\}")
+
 
 def find_genders(code: str, locale: str) -> list[str]:
     r"""
@@ -137,9 +139,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", "pt")
     ['f', 'm']
     """
-    pattern = re.compile(r"\{\{(?:(?:g|gramática)\|)?+([fmc2g]++)(?:\|id=\w++)?\}\}")
     res: set[str] = set()
-    for gender in pattern.findall(code):
+    for gender in RE_GENDERS.findall(code):
         if gender in ("2g", "c2g", "mf", "fm"):
             res.update(("f", "m"))
         elif gender == "gc":

@@ -1,6 +1,7 @@
 """French language."""
 
 import re
+from functools import lru_cache
 
 from ... import lang, utils
 from ...lang.pl import extract_templates
@@ -134,6 +135,11 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_gender_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{([fmpinvar]++)(?:[ ]\?\|{locale})*+\}}")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "fr")
@@ -147,9 +153,8 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{pp}}", "fr")
     []
     """
-    pattern = re.compile(rf"\{{([fmpinvar]++)(?:[ ]\?\|{locale})*+\}}")
     res: set[str] = set()
-    for gender in pattern.findall(code):
+    for gender in cache_gender_pattern(locale).findall(code):
         if "".join(sgen := sorted(gender)) == "fm":
             res.update(sgen)
         elif gender == "invar":
@@ -157,6 +162,11 @@ def find_genders(code: str, locale: str) -> list[str]:
         elif gender not in {"i", "pp"}:
             res.add(gender)
     return utils.unique(sorted(res))
+
+
+@lru_cache
+def cache_pron_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]++)")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -172,11 +182,10 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("'''papa''' {{pron|paˈpa|conv}}", "fr")
     ['\\paˈpa\\']
     """
-    pattern = re.compile(rf"\{{\{{pron(?:\|lang={locale})?\|([^}}\|]++)")
     for line in code.splitlines():
         if not line.startswith("'''"):
             continue
-        for pron in pattern.findall(line):
+        for pron in cache_pron_pattern(locale).findall(line):
             return [f"\\{pron}\\"]
     return []
 

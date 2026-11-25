@@ -7,7 +7,7 @@ import os
 import re
 import unicodedata
 from collections import defaultdict
-from functools import cache, partial
+from functools import cache, lru_cache, partial
 from pathlib import Path
 from typing import TYPE_CHECKING
 from xml.etree import ElementTree
@@ -101,6 +101,9 @@ def unique(seq: list[str]) -> list[str]:
     return res
 
 
+RE_WORD = re.compile(r'<span class="mw-page-title-main">([^<]+)</span>')
+
+
 def get_random_word(locale: str) -> str:
     """Retrieve a random word."""
     url = lang.random_word_url[locale]
@@ -108,7 +111,7 @@ def get_random_word(locale: str) -> str:
     while True:
         with constants.SESSION.get(url) as req:
             req.raise_for_status()
-            if match := re.search(r'<span class="mw-page-title-main">([^<]+)</span>', req.text):
+            if match := RE_WORD.search(req.text):
                 word: str = match[1]
                 if ":" not in word and "/" not in word:
                     log.info(f"Got random: {word!r}")
@@ -1017,210 +1020,6 @@ def clean(text: str) -> str:
     return text.strip()
 
 
-RE_FIND_TEMPLATES = re.compile(r"(\{\{[^{}]*+\}\})")
-
-
-def process_templates(
-    word: str,
-    wikicode: str,
-    locale: str,
-    *,
-    callback: Callable[[str], str] = clean,
-    templates_status: list[tuple[str, str]] | None = None,
-    variant_only: bool = False,
-) -> str:
-    r"""Process all templates.
-
-    It will also handle the <math> HTML tag as it is not part of the *clean()* function on purpose.
-
-    >>> _ = context.reset("fr")
-    >>> context.new_word("word")
-
-    >>> process_templates("foo", "{{}}", "fr")
-    '&lbrace;&lbrace;&rbrace;&rbrace;'
-    >>> process_templates("foo", "{{unknown}}", "fr")
-    ''
-    >>> process_templates("foo", "{{!}}", "fr")
-    '|'
-    >>> process_templates("foo", "{{fchim|OH|2|{{!}}OH|2}}", "fr")  # TODO: this is wrong, `{{!}}` should be converted to `|`
-    'OH<sub>2</sub><sub>OH</sub>2'
-    >>> process_templates("EPR=ER", "{{fchim|ER{{=}}EPR}}", "fr")  # TODO: this is wrong, expecting `ER=EPR`
-    'ER=EPR'
-
-    >>> process_templates("octonion", " <math>V^n</math>", "fr")  # doctest: +ELLIPSIS
-    '<svg ...'
-    >>> process_templates("", r"<chem>C10H14N2O4</chem>", "fr") # doctest: +ELLIPSIS
-    '<svg ...'
-    >>> process_templates("test", r"<hiero>R11</hiero>", "fr")
-    '<table class="mw-hiero-table mw-hiero-outer" dir="ltr" style=" border: 0; border-spacing: 0; font-size:1em;"><tr><td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;">\n<table class="mw-hiero-table" style="border: 0; border-spacing: 0; font-size:1em;"><tr>\n<td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;"><img src="data:image/gif;base64...'
-
-    >>> process_templates("hasta", "<i>حتى</i>", "fr")
-    'حتى'
-    >>> process_templates("tasse", "<i>س tas'</i>", "fr")
-    "س tas'"
-
-    >>> process_templates("foo", "{{flexion|{{lien|terne|fr}}}}", "fr", variant_only=True)
-    'terne'
-    >>> process_templates("foo", "{{flexion|terne}}", "fr", variant_only=True)
-    'terne'
-    """
-    # Clean-up the code
-    if not (text := callback(wikicode)):
-        return ""
-
-    formulas, text = save_formulas(text)
-
-    # Special handling for `{{=}}` since it breaks template arguments logic
-    text = text.replace("{{=}}", "SPECIALEQ")
-
-    # {{foo}}
-    # {{foo|bar}}
-    # {{foo|{{bar}}|123}}
-    # {{foo|{{bar|baz}}|123}}
-    # {{foo|{{bar|lang|{{baz|args}}}}|123}}
-
-    # Handle all templates
-    last_template_idx = text.count("{{")
-    current_template_idx = 0
-    templates_ignored = lang.templates_ignored[locale]
-    while templates := RE_FIND_TEMPLATES.findall(text):
-        for tpl in templates:
-            # Skip undesired templates
-            if tpl.startswith(templates_ignored):
-                new_text = ""
-
-            # `variant_only` is True only when:
-            #   1. It is predefined;
-            #   2. And it is the last template in nested templates.
-            #      Example: [FR] `{{flexion|{{lien|foo}}}}` where:
-            #          - `lien` should be handled normaly;
-            #          - while `flexion` should be handled as variant-specific.
-            elif variant_only and current_template_idx == last_template_idx - 1:
-                new_text = transform_variant(word, tpl[2:-2], locale)
-
-            # Expand the template
-            else:
-                new_text = callback(context.expand(tpl, locale))
-
-            text = text.replace(tpl, new_text)
-
-        current_template_idx += len(templates)
-
-    text = restore_formulas(formulas, text)
-
-    text = text.replace("SPECIALEQ", "=")
-
-    # Handle <chem>, <hiero>, and <math>, HTML tags
-    text = text.replace("&#92;", "\\")
-    sub = re.sub
-    for tag, func in [("chem", convert_chem), ("hiero", convert_hiero), ("math", convert_math)]:
-        text = sub(rf"<{tag}>(.+?)</{tag}>", partial(func, word=word), text)
-        if f"<{tag}>" in text or f"</{tag}>" in text:
-            raise ValueError(f"Missed <{tag}> HTML tag in {word!r}") from None
-
-    # Issue #584: move Arabic/Persian characters out of italic tags
-    text = _RE_ARABIC_PERSIAN.sub(r"\1", text)
-
-    # Remove extra spaces (it happens when a template is ignored for instance)
-    text = _RE_MULTIPLE_SPACES.sub(" ", text)
-    text = _RE_SPACE_BEFORE_DOT.sub(".", text)
-
-    # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
-    if not KEEP_UNFINISHED and (
-        bool(context.get_then_clear_errors())
-        or f":{lang.module_trans[locale]}:" in text
-        or f":{lang.template_trans[locale]}:" in text
-        or "{{" in text
-        or "}}" in text
-        or "<h1>" in text
-        or "<h2>" in text
-        or "<h3>" in text
-        or "#ifeq:" in text
-        or "⧼wikt" in text
-        or "too deep recursion" in text
-    ):
-        if templates_status is not None:
-            templates_status.append((word, "skipped"))
-        return ""
-
-    return text.strip()
-
-
-def extract_keywords_from(parts: list[str]) -> defaultdict[str, str]:
-    """
-    Given a list of strings, extract strings containing an equal sign ("=").
-
-    Return a *defaultdict(str)* with key=value extracted from the original list.
-
-    The left part of the sign is used as the dict key and the right part as the value.
-    When a string contains the sign, it is removed from the original list.
-
-        >>> extract_keywords_from([])
-        defaultdict(<class 'str'>, {})
-        >>> extract_keywords_from(["foo"])
-        defaultdict(<class 'str'>, {})
-        >>> extract_keywords_from(["foo", "bar=baz"])
-        defaultdict(<class 'str'>, {'bar': 'baz'})
-        >>> extract_keywords_from(["foo", "bar=baz=ouf"])
-        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
-        >>> extract_keywords_from(["foo", "bar = baz=ouf"])
-        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
-        >>> extract_keywords_from(["foo", "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s."])
-        defaultdict(<class 'str'>, {})
-        >>> extract_keywords_from(["foo", "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle"])
-        defaultdict(<class 'str'>, {})
-        >>> extract_keywords_from(["foo", "bar='baz'"])
-        defaultdict(<class 'str'>, {'bar': "'baz'"})
-    """
-    data = defaultdict(str)
-    for part in parts.copy():
-        if "=" in part:
-            key, value = part.split("=", 1)
-
-            # Prevent splitting such parts:
-            #   "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s.".
-            #   "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle".
-            if key.endswith("<span style"):
-                continue
-
-            data[key.strip()] = value.strip()
-            parts.pop(parts.index(part))
-    return data
-
-
-def extract_relevant_sections(wikitext: str, locale: str) -> str:
-    """Extract relevant sections for the chosen locale from a given wikitext."""
-    level = lang.section_level[locale]
-    equals = "=" * level
-
-    interesting_sections = re.compile(
-        rf"(?im)^{equals}++[ ]*+(?:{'|'.join(re.escape(section) for section in lang.head_sections[locale])})"
-    )
-
-    cleaned: list[str] = []
-    in_expected_section = False
-    for raw_line in wikitext.splitlines():
-        if not (line := raw_line.strip()):
-            continue
-        if line.startswith(equals) and line[level] != "=":
-            in_expected_section = interesting_sections.match(line) is not None
-        if in_expected_section:
-            cleaned.append(line)
-    return "\n".join(cleaned) if cleaned else ""
-
-
-def transform_variant(word: str, template: str, locale: str) -> str:
-    parts_raw = template.split("|")
-    parts = [p.strip().strip("\u200e") for p in parts_raw]
-    tpl, *parts = parts
-
-    if funcs := lang.variant_handlers[locale]:
-        data = extract_keywords_from(parts)
-        return funcs[tpl](tpl, parts, data, word)
-
-    return ""
-
-
 def render_formula(formula: str) -> str:
     """
     Convert a mathematic formula to a SVG string.
@@ -1343,6 +1142,219 @@ def convert_math(match: str | re.Match[str], word: str) -> str:
     except Exception:
         log.exception("<math> ERROR with %r in [%s]", formula, word)
         return formula
+
+
+RE_FIND_TEMPLATES = re.compile(r"(\{\{[^{}]*+\}\})")
+RE_FORMULAS = [
+    ("chem", re.compile(r"<chem>(.+?)</chem>"), convert_chem),
+    ("hiero", re.compile(r"<hiero>(.+?)</hiero>"), convert_hiero),
+    ("math", re.compile(r"<math>(.+?)</math>"), convert_math),
+]
+
+
+def process_templates(
+    word: str,
+    wikicode: str,
+    locale: str,
+    *,
+    callback: Callable[[str], str] = clean,
+    templates_status: list[tuple[str, str]] | None = None,
+    variant_only: bool = False,
+) -> str:
+    r"""Process all templates.
+
+    It will also handle the <math> HTML tag as it is not part of the *clean()* function on purpose.
+
+    >>> _ = context.reset("fr")
+    >>> context.new_word("word")
+
+    >>> process_templates("foo", "{{}}", "fr")
+    '&lbrace;&lbrace;&rbrace;&rbrace;'
+    >>> process_templates("foo", "{{unknown}}", "fr")
+    ''
+    >>> process_templates("foo", "{{!}}", "fr")
+    '|'
+    >>> process_templates("foo", "{{fchim|OH|2|{{!}}OH|2}}", "fr")  # TODO: this is wrong, `{{!}}` should be converted to `|`
+    'OH<sub>2</sub><sub>OH</sub>2'
+    >>> process_templates("EPR=ER", "{{fchim|ER{{=}}EPR}}", "fr")  # TODO: this is wrong, expecting `ER=EPR`
+    'ER=EPR'
+
+    >>> process_templates("octonion", " <math>V^n</math>", "fr")  # doctest: +ELLIPSIS
+    '<svg ...'
+    >>> process_templates("", r"<chem>C10H14N2O4</chem>", "fr") # doctest: +ELLIPSIS
+    '<svg ...'
+    >>> process_templates("test", r"<hiero>R11</hiero>", "fr")
+    '<table class="mw-hiero-table mw-hiero-outer" dir="ltr" style=" border: 0; border-spacing: 0; font-size:1em;"><tr><td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;">\n<table class="mw-hiero-table" style="border: 0; border-spacing: 0; font-size:1em;"><tr>\n<td style="padding: 0; text-align: center; vertical-align: middle; font-size:1em;"><img src="data:image/gif;base64...'
+
+    >>> process_templates("hasta", "<i>حتى</i>", "fr")
+    'حتى'
+    >>> process_templates("tasse", "<i>س tas'</i>", "fr")
+    "س tas'"
+
+    >>> process_templates("foo", "{{flexion|{{lien|terne|fr}}}}", "fr", variant_only=True)
+    'terne'
+    >>> process_templates("foo", "{{flexion|terne}}", "fr", variant_only=True)
+    'terne'
+    """
+    # Clean-up the code
+    if not (text := callback(wikicode)):
+        return ""
+
+    formulas, text = save_formulas(text)
+
+    # Special handling for `{{=}}` since it breaks template arguments logic
+    text = text.replace("{{=}}", "SPECIALEQ")
+
+    # {{foo}}
+    # {{foo|bar}}
+    # {{foo|{{bar}}|123}}
+    # {{foo|{{bar|baz}}|123}}
+    # {{foo|{{bar|lang|{{baz|args}}}}|123}}
+
+    # Handle all templates
+    last_template_idx = text.count("{{")
+    current_template_idx = 0
+    templates_ignored = lang.templates_ignored[locale]
+    while templates := RE_FIND_TEMPLATES.findall(text):
+        for tpl in templates:
+            # Skip undesired templates
+            if tpl.startswith(templates_ignored):
+                new_text = ""
+
+            # `variant_only` is True only when:
+            #   1. It is predefined;
+            #   2. And it is the last template in nested templates.
+            #      Example: [FR] `{{flexion|{{lien|foo}}}}` where:
+            #          - `lien` should be handled normaly;
+            #          - while `flexion` should be handled as variant-specific.
+            elif variant_only and current_template_idx == last_template_idx - 1:
+                new_text = transform_variant(word, tpl[2:-2], locale)
+
+            # Expand the template
+            else:
+                new_text = callback(context.expand(tpl, locale))
+
+            text = text.replace(tpl, new_text)
+
+        current_template_idx += len(templates)
+
+    text = restore_formulas(formulas, text)
+
+    text = text.replace("SPECIALEQ", "=")
+
+    # Handle <chem>, <hiero>, and <math>, HTML tags
+    text = text.replace("&#92;", "\\")
+    for tag, pattern, func in RE_FORMULAS:
+        text = pattern.sub(partial(func, word=word), text)
+        if f"<{tag}>" in text or f"</{tag}>" in text:
+            raise ValueError(f"Missed <{tag}> HTML tag in {word!r}") from None
+
+    # Issue #584: move Arabic/Persian characters out of italic tags
+    text = _RE_ARABIC_PERSIAN.sub(r"\1", text)
+
+    # Remove extra spaces (it happens when a template is ignored for instance)
+    text = _RE_MULTIPLE_SPACES.sub(" ", text)
+    text = _RE_SPACE_BEFORE_DOT.sub(".", text)
+
+    # Catch incorrect wikitext, likely to be fixed on the Wiktionary directly
+    if not KEEP_UNFINISHED and (
+        bool(context.get_then_clear_errors())
+        or f":{lang.module_trans[locale]}:" in text
+        or f":{lang.template_trans[locale]}:" in text
+        or "{{" in text
+        or "}}" in text
+        or "<h1>" in text
+        or "<h2>" in text
+        or "<h3>" in text
+        or "#ifeq:" in text
+        or "⧼wikt" in text
+        or "too deep recursion" in text
+    ):
+        if templates_status is not None:
+            templates_status.append((word, "skipped"))
+        return ""
+
+    return text.strip()
+
+
+def extract_keywords_from(parts: list[str]) -> defaultdict[str, str]:
+    """
+    Given a list of strings, extract strings containing an equal sign ("=").
+
+    Return a *defaultdict(str)* with key=value extracted from the original list.
+
+    The left part of the sign is used as the dict key and the right part as the value.
+    When a string contains the sign, it is removed from the original list.
+
+        >>> extract_keywords_from([])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo"])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "bar=baz"])
+        defaultdict(<class 'str'>, {'bar': 'baz'})
+        >>> extract_keywords_from(["foo", "bar=baz=ouf"])
+        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
+        >>> extract_keywords_from(["foo", "bar = baz=ouf"])
+        defaultdict(<class 'str'>, {'bar': 'baz=ouf'})
+        >>> extract_keywords_from(["foo", "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s."])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle"])
+        defaultdict(<class 'str'>, {})
+        >>> extract_keywords_from(["foo", "bar='baz'"])
+        defaultdict(<class 'str'>, {'bar': "'baz'"})
+    """
+    data = defaultdict(str)
+    for part in parts.copy():
+        if "=" in part:
+            key, value = part.split("=", 1)
+
+            # Prevent splitting such parts:
+            #   "<span style='font-variant:small-caps'>xix</span><sup>e</sup> s.".
+            #   "À partir du <span style='font-variant:small-caps'>xix</span><sup>e</sup> siècle".
+            if key.endswith("<span style"):
+                continue
+
+            data[key.strip()] = value.strip()
+            parts.pop(parts.index(part))
+    return data
+
+
+@lru_cache
+def cache_interesting_sections(locale: str) -> re.Pattern[str]:
+    equals = "=" * lang.section_level[locale]
+    return re.compile(
+        rf"(?im)^{equals}++[ ]*+(?:{'|'.join(re.escape(section) for section in lang.head_sections[locale])})"
+    )
+
+
+def extract_relevant_sections(wikitext: str, locale: str) -> str:
+    """Extract relevant sections for the chosen locale from a given wikitext."""
+    level = lang.section_level[locale]
+    equals = "=" * level
+    interesting_sections = cache_interesting_sections(locale)
+
+    cleaned: list[str] = []
+    in_expected_section = False
+    for raw_line in wikitext.splitlines():
+        if not (line := raw_line.strip()):
+            continue
+        if line.startswith(equals) and line[level] != "=":
+            in_expected_section = interesting_sections.match(line) is not None
+        if in_expected_section:
+            cleaned.append(line)
+    return "\n".join(cleaned) if cleaned else ""
+
+
+def transform_variant(word: str, template: str, locale: str) -> str:
+    parts_raw = template.split("|")
+    parts = [p.strip().strip("\u200e") for p in parts_raw]
+    tpl, *parts = parts
+
+    if funcs := lang.variant_handlers[locale]:
+        data = extract_keywords_from(parts)
+        return funcs[tpl](tpl, parts, data, word)
+
+    return ""
 
 
 def table2html(word: str, locale: str, table: wikitextparser.Table) -> str:
@@ -1531,7 +1543,7 @@ def attach_synonyms(code: str, meanings: str, synonyms: str, label: str, *, form
 _RE_NUMBERS = re.compile(r"\s*+(\d++)\s*+(?:[–-]\s*+(\d++)\s*+)?")
 
 
-def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str, *, number: str) -> str:
+def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str, *, number: re.Pattern[str]) -> str:
     r"""
     Put the synonyms under their meaning, as a sub-definition, for Wiktionaries that write the numbers of the
     meanings in front of each line of synonyms, like `:[1, 2] [[flink]]` in DE.
@@ -1541,19 +1553,20 @@ def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str
     A line of synonyms goes under every meaning it refers to: `[1, 2]`, `[1–3]`. The list is kept as it is when
     a line has no number, or a number that is not the one of a meaning: `[1a]` refers to a sub-meaning, `[*]`.
 
-    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n:[3] jung\n==== {{Herkunft}} ====\n:von x\n==== {{Synonyme}} ====\n:[1] [[rasch]]\n:[1, 3] [[flink]]\n==== {{Beispiele}} ====\n:[1] Er ist schnell.", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    >>> number = re.compile(r":\[([^\]]*+)\][ ]*+")
+
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n:[3] jung\n==== {{Herkunft}} ====\n:von x\n==== {{Synonyme}} ====\n:[1] [[rasch]]\n:[1, 3] [[flink]]\n==== {{Beispiele}} ====\n:[1] Er ist schnell.", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=number)
     "==== {{Bedeutungen}} ====\n:[1] schnell\n## ''Syn.:'' [[rasch]]\n## ''Syn.:'' [[flink]]\n:[2] klug\n:[3] jung\n## ''Syn.:'' [[flink]]\n==== {{Herkunft}} ====\n:von x\n==== {{Beispiele}} ====\n:[1] Er ist schnell."
-    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n==== {{Synonyme}} ====\n:[1–2] [[gescheit]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n:[2] klug\n==== {{Synonyme}} ====\n:[1–2] [[gescheit]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=number)
     "==== {{Bedeutungen}} ====\n:[1] schnell\n## ''Syn.:'' [[gescheit]]\n:[2] klug\n## ''Syn.:'' [[gescheit]]"
-    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n::[1a] sehr schnell\n==== {{Synonyme}} ====\n:[1a] [[rasant]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n::[1a] sehr schnell\n==== {{Synonyme}} ====\n:[1a] [[rasant]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=number)
     '==== {{Bedeutungen}} ====\n:[1] schnell\n::[1a] sehr schnell\n==== {{Synonyme}} ====\n:[1a] [[rasant]]'
-    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:[2] [[klug]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:[2] [[klug]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=number)
     '==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:[2] [[klug]]'
-    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:''siehe auch:'' [[flott]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=r":\[([^\]]*+)\][ ]*+")
+    >>> attach_numbered_synonyms("==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:''siehe auch:'' [[flott]]", "{{bedeutungen}}", "{{synonyme}}", "Syn.", number=number)
     "==== {{Bedeutungen}} ====\n:[1] schnell\n==== {{Synonyme}} ====\n:''siehe auch:'' [[flott]]"
     """
     lines = code.split("\n")
-    line_number = re.compile(number)
 
     def section_end(start: int) -> int:
         return next((n for n in range(start + 1, len(lines)) if lines[n].startswith("=")), len(lines))
@@ -1591,14 +1604,14 @@ def attach_numbered_synonyms(code: str, meanings: str, synonyms: str, label: str
         syn_end = section_end(syn_start)
         meaning_lines: dict[int, int] = {}
         for n in range(start + 1, end):
-            if (match := line_number.match(lines[n])) and len(found := numbers(match[1])) == 1:
+            if (match := number.match(lines[n])) and len(found := numbers(match[1])) == 1:
                 meaning_lines[found[0]] = n
         attached: defaultdict[int, list[str]] = defaultdict(list)
         for n in range(syn_start + 1, syn_end):
             # The categories of the page can follow the last section: `[[Kategorie:Deutsch]]`
             if not (text := lines[n].strip()) or _RE_CATEGORY.fullmatch(text):
                 continue
-            match = line_number.match(lines[n])
+            match = number.match(lines[n])
             refs = numbers(match[1]) if match else []
             synonym = lines[n][match.end() :].strip() if match else ""
             if not refs or not synonym or any(ref not in meaning_lines for ref in refs):

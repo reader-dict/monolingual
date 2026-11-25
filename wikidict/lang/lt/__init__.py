@@ -63,6 +63,9 @@ templates_ignored = (
 )
 
 
+RE_GENDERS = re.compile(r"\{\{([fm]++)\}\}")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "lt")
@@ -78,7 +81,7 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("(<i>vyr. g.</i>)", "lt")
     ['m']
     """
-    res: list[str] = re.compile(r"\{\{([fm]++)\}\}").findall(code)
+    res: list[str] = RE_GENDERS.findall(code)
     if "(<i>mot. g.</i>)" in code:
         res.append("f")
     if "(<i>vyr. g.</i>)" in code:

@@ -54,6 +54,9 @@ reverse_variant_titles = ("{{alternatywna", "{{nieodm-", "{{odmiana-")
 reverse_variant_templates = ("{{rev-flexion",)
 
 
+RE_GENDERS = re.compile(r"\{\{gender\|rodzaj (\w+)\}\}")
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "pl")
@@ -61,8 +64,10 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{gender|rodzaj żeński}}", "pl")
     ['ż']
     """
-    pattern = re.compile(r"\{\{gender\|rodzaj (\w+)\}\}")
-    return [gender[0] for gender in utils.unique(pattern.findall(code))]
+    return [gender[0] for gender in utils.unique(RE_GENDERS.findall(code))]
+
+
+RE_PRONS = re.compile(r"\{\{IPA\d*\|([^}]++)")
 
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
@@ -74,8 +79,7 @@ def find_pronunciations(code: str, locale: str) -> list[str]:
     >>> find_pronunciations("{{IPA3|ˈ[[a]][[d]][[r]][[ɛ]][[s]]}}", "pl")
     []
     """
-    pattern = re.compile(r"\{\{IPA\d*\|([^}]++)")
-    return [f"[{pron}]" for pron in pattern.findall(code) if "[" not in pron]
+    return [f"[{pron}]" for pron in RE_PRONS.findall(code) if "[" not in pron]
 
 
 def pos_and_gender(matches: re.Match[str]) -> str:

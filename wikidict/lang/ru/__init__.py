@@ -1,6 +1,7 @@
 """Russian language."""
 
 import re
+from functools import lru_cache
 
 from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
@@ -67,6 +68,29 @@ templates_ignored = (
 )
 
 
+@lru_cache
+def cache_gender_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{сущ(?: {locale} ([^ |}}\n]++)|-{locale}\|[^|{{}}\n]*+\|[ ]*+([^ |{{}}\n/,]++))")
+
+
+# https://ru.wiktionary.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D1%81%D1%83%D1%89-ru
+GENDERS = {
+    "f": ["ж"],
+    "ж": ["ж"],
+    "жо": ["ж"],
+    "m": ["м"],
+    "м": ["м"],
+    "мо": ["м"],
+    "n": ["ср"],
+    "с": ["ср"],
+    "со": ["ср"],
+    "mf": ["м", "ж"],
+    "мо-жо": ["м", "ж"],
+    "мн": ["мн"],
+    "мн.": ["мн"],
+}
+
+
 def find_genders(code: str, locale: str) -> list[str]:
     """
     >>> find_genders("", "ru")
@@ -96,26 +120,18 @@ def find_genders(code: str, locale: str) -> list[str]:
     >>> find_genders("{{сущ-ru|сепу́лька|hide-text=1|}}", "ru")
     []
     """
-    # https://ru.wiktionary.org/wiki/%D0%A8%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD:%D1%81%D1%83%D1%89-ru
-    pattern: re.Pattern[str] = re.compile(
-        rf"\{{\{{сущ(?: {locale} ([^ |}}\n]++)|-{locale}\|[^|{{}}\n]*+\|[ ]*+([^ |{{}}\n/,]++))"
+    return utils.unique(
+        [
+            gender
+            for match in cache_gender_pattern(locale).findall(code)
+            for gender in GENDERS.get(match[0] or match[1], [])
+        ]
     )
-    genders = {
-        "f": ["ж"],
-        "ж": ["ж"],
-        "жо": ["ж"],
-        "m": ["м"],
-        "м": ["м"],
-        "мо": ["м"],
-        "n": ["ср"],
-        "с": ["ср"],
-        "со": ["ср"],
-        "mf": ["м", "ж"],
-        "мо-жо": ["м", "ж"],
-        "мн": ["мн"],
-        "мн.": ["мн"],
-    }
-    return utils.unique([gender for match in pattern.findall(code) for gender in genders.get(match[0] or match[1], [])])
+
+
+@lru_cache
+def cache_pron_pattern(locale: str) -> re.Pattern[str]:
+    return re.compile(rf"\{{\{{transcriptions?-{locale}\|([^|}}\n]*+)[^}}\n]*+}}}}")
 
 
 def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
@@ -147,7 +163,7 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     # Each stressed spelling with its first pronunciation: homonyms stressed differently get one each,
     # a word with several pronunciations ("провожжа́ться" [ʑː] and [ʐː]) only the first one, as before
     found: dict[str, str] = {}
-    for tpl in re.finditer(rf"\{{\{{transcriptions?-{locale}\|([^|}}\n]*+)[^}}\n]*+}}}}", code):
+    for tpl in cache_pron_pattern(locale).finditer(code):
         lines = context.expand(tpl[0], "ru").splitlines()
         ipa = next((f"[{m[1]}]" for line in lines if (m := _IPA_SINGULAR.search(line))), "")
         ipa = ipa or next((f"[{m[1]}]" for line in lines if (m := _IPA.search(line))), "")
@@ -215,7 +231,7 @@ def strip_examples(line: str) -> str:
     return "".join(out)
 
 
-RE_CLEAUPS = [
+RE_CLEANUPS = [
     # Form pages without a subsection, also under homonym headers:
     # `= {{-ru-}} =\n{{Форма-гл...` → `= {{-ru-}} =\n=== Морфологические и синтаксические свойства ===\n{{Форма-гл...`
     # `== {{з|(существительное)}} ==\n{{Форма-сущ...` → `== ... ==\n=== Морфологические и синтаксические свойства ===\n{{Форма-сущ...`
@@ -383,7 +399,7 @@ def adjust_wikicode(
     # Usage examples are not kept anyway, and a broken one (an unbalanced brace) dropped the whole definition
     code = "\n".join(strip_examples(line) if line.startswith("#") else line for line in code.split("\n"))
 
-    for pattern, rpl in RE_CLEAUPS:
+    for pattern, rpl in RE_CLEANUPS:
         code = pattern.sub(rpl, code)
 
     # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings
