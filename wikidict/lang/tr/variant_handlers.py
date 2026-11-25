@@ -20,7 +20,13 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
     lines = "\n".join(
         line
         for raw_line in lines.splitlines()
-        if (line := raw_line.strip()) and (line[0] == "|" and not line.startswith(("|-", "|}")))
+        if (line := raw_line.strip())
+        and (
+            line[0] == "|"
+            and not line.startswith(("|-", "|+", "| —", "| '''", "|}"))
+            and "rowspan" not in line
+            and "colspan" not in line
+        )
     )
     lines = lines.replace("]]<br>[[", "]]\n| [[")
 
@@ -39,7 +45,6 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
             forms.add(utils.cleanup_rev_variant(form))
 
     forms.discard(word)
-    forms.discard(f"'''{word}'''")
 
     return sorted(forms)
 
