@@ -17,7 +17,7 @@ def table_to_forms(word: str, wikitext: str) -> list[str]:
         [line for line in wikitext.splitlines() if line.startswith("|") and not line.startswith(("|-", "|}"))]
     )
 
-    forms = {cleanup(form) for form in RE_FIND_FORMS1.findall(lines) or RE_FIND_FORMS1.findall(lines)}
+    forms = {cleanup(form) for form in RE_FIND_FORMS1.findall(lines) or RE_FIND_FORMS2.findall(lines)}
     forms.discard(word)
     forms.discard("―")
     forms.discard("-")
