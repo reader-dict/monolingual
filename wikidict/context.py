@@ -582,6 +582,9 @@ def clean_html_output(html: str, locale: str) -> str:
 
     # Remove etymology tree
     html = RE_ETYTREE.sub("", html)
+    if '"etytree' in html:
+        msg = "Etymology tree not properly removed."
+        raise ValueError(msg)
 
     # Remove those tags
     html = RE_STRIP_TAGS.sub("", html)
