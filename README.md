@@ -95,10 +95,10 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 
 ## Stars ✨
 
-<a href="https://star-history.dera.page/#reader-dict/monolingual&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date" />
-    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=reader-dict/monolingual&type=Date" />
-  </picture>
+<a href="https://simrepo.dera.page/?repos=255039105&type=timeline&legend=bottom-right&style=github">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://simrepo.dera.page/svg?repos=255039105&type=timeline&theme=dark&legend=bottom-right&style=github" />
+   <source media="(prefers-color-scheme: light)" srcset="https://simrepo.dera.page/svg?repos=255039105&type=timeline&legend=bottom-right&style=github" />
+   <img alt="Star History Chart" src="https://simrepo.dera.page/svg?repos=255039105&type=timeline&legend=bottom-right&style=github" />
+ </picture>
 </a>
