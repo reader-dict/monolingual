@@ -92,6 +92,112 @@ def pos_and_gender(matches: re.Match[str]) -> str:
     return f"==={match.strip()}==="
 
 
+RE_HEADER = re.compile(r"\{\{(\w++)\}\}")
+RE_POS = re.compile(r"''([^',]++)")
+RE_DEFINITION = re.compile(r":\s*+\((\d++\.\d++)\)")
+RE_SYNONYMS = re.compile(r":\s*+((?:\([\d.,\s–-]++\)[\s,]*+)++)(\S.*+)")
+RE_NUMBERS = re.compile(r"(?:(\d++)\.)?(\d++)(?:[–-](?:(\d++)\.)?(\d++))?")
+
+
+def meaning_numbers(text: str) -> list[str]:
+    """
+    The meanings that synonyms refer to, or nothing when one of them can't be read.
+
+    >>> meaning_numbers("(1.1-2, 2.1)")
+    ['1.1', '1.2', '2.1']
+    >>> meaning_numbers("(1.4-5,7)")
+    ['1.4', '1.5', '1.7']
+    >>> meaning_numbers("(1.1) (2.1)")
+    ['1.1', '2.1']
+    >>> meaning_numbers("(1.1-1.2)")
+    ['1.1', '1.2']
+    >>> meaning_numbers("(1.1-3.1)")
+    []
+    >>> meaning_numbers("(1-2)")
+    []
+    """
+    numbers: list[str] = []
+    pos = ""
+    for token in filter(None, re.split(r"[\s,()]++", text)):
+        if not (match := RE_NUMBERS.fullmatch(token)):
+            return []
+        # `1.1,3` is `1.1` and `1.3`
+        pos = match[1] or pos
+        first, last = int(match[2]), int(match[4] or match[2])
+        if not pos or match[3] not in {None, pos} or last < first:
+            return []
+        numbers.extend(f"{pos}.{number}" for number in range(first, last + 1))
+    return numbers
+
+
+def attach_synonyms(code: str) -> str:
+    r"""
+    Put the synonyms under their meaning, as a sub-definition: `: (1.1) [[trusia]]`.
+    The list of a language is kept as it is when one of its lines doesn't give the number of a meaning,
+    or gives the one of a meaning that isn't shown: a form of another word goes to the variants, and a part of
+    speech like a suffix is left out, so its synonyms would be lost with it.
+
+    >>> attach_synonyms("==polski==\n{{znaczenia}}\n''rzeczownik''\n: (1.1) zwierzę\n''rzeczownik''\n: (2.1) władca\n: (2.2) mężczyzna\n{{synonimy}}\n: (1.1) [[trusia]]\n: (2.1-2) [[kacyk]]\n: (2.1) [[władyka]]\n{{antonimy}}")
+    "==polski==\n{{znaczenia}}\n''rzeczownik''\n: (1.1) zwierzę\n: (1.1)# ''syn.:'' [[trusia]]\n''rzeczownik''\n: (2.1) władca\n: (2.1)# ''syn.:'' [[kacyk]]; [[władyka]]\n: (2.2) mężczyzna\n: (2.2)# ''syn.:'' [[kacyk]]\n{{synonimy}}\n{{antonimy}}"
+    >>> attach_synonyms("==międzynarodowe==\n{{znaczenia}}\n''symbol''\n: (1.1) litera\n==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n{{synonimy}}\n: (1.1) [[oraz]]")
+    "==międzynarodowe==\n{{znaczenia}}\n''symbol''\n: (1.1) litera\n==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n: (1.1)# ''syn.:'' [[oraz]]\n{{synonimy}}"
+    >>> attach_synonyms("==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n{{synonimy}}\n: (1.1) [[oraz]]\n: {{gwara}} [[ä]]")
+    "==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n{{synonimy}}\n: (1.1) [[oraz]]\n: {{gwara}} [[ä]]"
+    >>> attach_synonyms("==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n{{synonimy}}\n: (1.2) [[oraz]]")
+    "==polski==\n{{znaczenia}}\n''spójnik''\n: (1.1) i\n{{synonimy}}\n: (1.2) [[oraz]]"
+    >>> attach_synonyms("==polski==\n{{znaczenia}}\n''{{forma rzeczownika}}''\n: (1.1) {{lm|pies}}\n{{synonimy}}\n: (1.1) [[kundle]]")
+    "==polski==\n{{znaczenia}}\n''{{forma rzeczownika}}''\n: (1.1) {{lm|pies}}\n{{synonimy}}\n: (1.1) [[kundle]]"
+    >>> attach_synonyms("==polski==\n{{znaczenia}}\n''przyrostek''\n: (1.1) tworzy nazwy\n{{synonimy}}\n: (1.1) [[-ok]]")
+    "==polski==\n{{znaczenia}}\n''przyrostek''\n: (1.1) tworzy nazwy\n{{synonimy}}\n: (1.1) [[-ok]]"
+    """
+    lines = code.split("\n")
+    insert: dict[int, str] = {}
+    drop: set[int] = set()
+
+    def attach(definitions: dict[str, int], synonyms: list[int]) -> None:
+        texts: dict[str, list[str]] = {}
+        for n in synonyms:
+            if not (match := RE_SYNONYMS.fullmatch(lines[n])) or not (numbers := meaning_numbers(match[1])):
+                return
+            if any(number not in definitions for number in numbers):
+                return
+            for number in numbers:
+                texts.setdefault(number, []).append(match[2])
+        for number, synonym_texts in texts.items():
+            # The `#` after the number makes it a sub-list of the meaning
+            insert[definitions[number]] = f": ({number})# ''syn.:'' {'; '.join(synonym_texts)}"
+        drop.update(synonyms)
+
+    # Number of a shown meaning: its line
+    definitions: dict[str, int] = {}
+    synonyms: list[int] = []
+    section = ""
+    is_shown = False
+    for n, line in enumerate(lines):
+        if line.startswith("==") and not line.startswith("==="):
+            # Each language numbers its own meanings
+            attach(definitions, synonyms)
+            definitions, synonyms, section, is_shown = {}, [], "", False
+        elif header := RE_HEADER.match(line):
+            section = header[1]
+        elif section == "znaczenia":
+            if pos := RE_POS.match(line):
+                is_shown = pos[1].strip().lower().startswith(sections)
+            elif is_shown and (definition := RE_DEFINITION.match(line)) and definition[1] not in definitions:
+                definitions[definition[1]] = n
+        elif section == "synonimy" and line.strip():
+            synonyms.append(n)
+    attach(definitions, synonyms)
+
+    out: list[str] = []
+    for n, line in enumerate(lines):
+        if n not in drop:
+            out.append(line)
+        if n in insert:
+            out.append(insert[n])
+    return "\n".join(out)
+
+
 RE_CLEANUPS: list[tuple[re.Pattern[str], str | Callable[[re.Match[str]], str]]] = [
     # Extract POS, and gender
     (re.compile(r"(?m)^(''([^']++)'').*$"), pos_and_gender),
@@ -118,6 +224,9 @@ def adjust_wikicode(
     '===synonimy==='
     """
     has_variants = "''{{forma " in code
+
+    # Synonyms go under their meaning: `: (1.1) [[trusia]]`
+    code = attach_synonyms(code)
 
     for pattern, rpl in RE_CLEANUPS:
         code = pattern.sub(rpl, code)
