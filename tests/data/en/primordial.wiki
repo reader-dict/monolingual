@@ -1,0 +1,53 @@
+==English==
+[[File:Primorial n plot.png|right|thumb|Comparison of factorial (yellow) and '''primorial''', both plotted logarithmically]]
+{{wp}}
+
+===Etymology===
+{{blend|en|prime|factorial}}. Coined by American [[engineer]] and [[mathematician]] {{w|Harvey Dubner}}.
+
+===Pronunciation===
+* {{IPA|en|/pɹaɪ̯ˈmɔːɹi.əl/}}
+* {{rhymes|en|ɔːɹiəl|s=4}}
+
+===Noun===
+{{en-noun}}
+
+# {{lb|en|number theory}} Any number belonging to the integer [[sequence]] whose ''n''th element is the product of the first ''n'' [[prime]]s.
+#: {{synonyms|en|primorial number}}
+#* {{quote-book|en|year=2017|author=Kevin Broughan|title=Equivalents of the Riemann Hypothesis: Volume 1, Arithmetic Equivalents|pageurl=https://books.google.com.au/books?id=vgRADwAAQBAJ&pg=PA97&dq=%22primorial%22%7C%22primorials%22&hl=en&newbks=1&newbks_redir=0&sa=X&ved=2ahUKEwialeaT_8P7AhW2JrkGHVxNCxEQ6AF6BAhWEAI#v=onepage&q=%22primorial%22%7C%22primorials%22&f=false|page=97|publisher=w:Cambridge University Press
+|passage=For example, up to <math>10^9</math>, every positive integer which is a multiple of a '''primorial''' and is less than the following '''primorial''' satisfies the given inequality. There has also been little discussion on which '''primorials''' qualify in the different situations when RH fails.}}
+# {{lb|en|number theory}} A [[unary operation]], denoted by the [[postfix]] symbol # and defined on the [[nonnegative]] [[integers]], which maps 0 to 1, 1 to 1, and each subsequent number to the product of all primes [[less than]] or [[equal]] to it; the value mapped to by said operation for a given input.
+#: {{ux|en|The '''primorial''' of <math>6</math> is <math>\textstyle 6\# = 2\times 3\times 5 = 30</math>.}}
+#* '''2020''', Rong Pan, Qinheping Hu, Rishabh Singh, Loris D'Antoni, ''Solving Problem Sketches with Large Integer Values'', Peter Müller (editor), ''Programming Languages and Systems: 29th European Symposium, Proceedings'', Springer, {{w|Lecture Notes in Computer Science|LNCS}} 12075, [https://books.google.com.au/books?id=GKvdDwAAQBAJ&pg=PA587&dq=%22primorial%22%7C%22primorials%22&hl=en&newbks=1&newbks_redir=0&sa=X&ved=2ahUKEwialeaT_8P7AhW2JrkGHVxNCxEQ6AF6BAhhEAI#v=onepage&q=%22primorial%22%7C%22primorials%22&f=false page 587],
+#*: The following number theory result relates the '''primorial''' to the Chebyshev function.
+#*:: <math>\vartheta(n) = \log(n\#) = \log{2^{(1+o(n))n}} = (1+o(n))n</math>
+
+====Usage notes====
+The primorial operation may be defined as:
+:<math>n\# = \prod_{p \le n\atop p~\mathsf{prime}} p = \prod_{i=1}^{\pi(n)} p_i = p_{\pi(n)}\# </math>,
+
+where <math>\pi(n)</math> denotes the [[prime-counting function]], which gives the number of primes <math>\le n</math>.
+
+It can also be defined recursively:
+:<math>n\# =
+\begin{cases}
+    1 & \mathsf{if}~n = 0,\ 1 \\
+    (n-1)\# \times n & \mathsf{if}~n~\mathsf{is~prime} \\
+    (n-1)\# & \mathsf{if }~n~\mathsf{is~composite}.
+\end{cases}</math>
+
+====Related terms====
+* {{l|en|primorial prime}}
+
+====Translations====
+{{trans-top|product of primes}}
+* French: {{t-needed|fr}}
+* German: {{t|de|Primorial|f}}, {{t|de|Primfakultät|f}} {{qualifier|rare}}
+* Italian: {{t+|it|primoriale|m}}
+* Turkish: {{t|tr|primoriyel}}
+{{trans-bottom}}
+
+===Further reading===
+* Sequence [https://oeis.org/A002110 A002110] of the {{w|On-Line Encyclopedia of Integer Sequences}}
+* {{pedia|Chebyshev function}} {{qualifier|Particularly|'''first Chebyshev function'''.}}
+* {{pedia|Sparsely totient number}}

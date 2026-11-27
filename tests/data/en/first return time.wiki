@@ -1,0 +1,6 @@
+==English==
+
+===Noun===
+{{en-noun|~}}
+
+# {{lb|en|mathematics|stochastic process}}The [[first hit time]] for the [[singleton]] set {{math|{''X''<sub>0</sub>(''ω'')},}} which is usually a [[given]] [[deterministic]] [[element]] of the [[state space]], such as the [[origin]] of the [[coordinate system]].

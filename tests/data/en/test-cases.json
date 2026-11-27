@@ -109,6 +109,17 @@
         [],
         []
     ],
+    "first return time": [
+        [],
+        [],
+        {
+            "Noun": [
+                "(mathematics,&#32;stochastic process)The first hit time for the singleton set {<i>X</i><sub>0</sub>(<i>ω</i>)}, which is usually a given deterministic element of the state space, such as the origin of the coordinate system."
+            ]
+        },
+        [],
+        []
+    ],
     "humans": [
         [],
         [],
@@ -210,6 +221,21 @@
             ],
             "Verb": [
                 "(<i>transitive</i>) To create a portmanteau word."
+            ]
+        },
+        [],
+        []
+    ],
+    "primordial": [
+        ["/pɹaɪ̯ˈmɔːɹi.əl/"],
+        ["Blend of <i>prime</i> +\u200e <i>factorial</i>. Coined by American engineer and mathematician Harvey Dubner."],
+        {
+            "Noun": [
+                "(<i>number theory</i>) Any number belonging to the integer sequence whose <i>n</i>th element is the product of the first <i>n</i> primes.",
+                [
+                    "Synonym: primorial number"
+                ],
+                "(<i>number theory</i>) A unary operation, denoted by the postfix symbol # and defined on the nonnegative integers, which maps 0 to 1, 1 to 1, and each subsequent number to the product of all primes less than or equal to it; the value mapped to by said operation for a given input."
             ]
         },
         [],

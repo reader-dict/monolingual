@@ -1144,7 +1144,7 @@ def convert_math(match: str | re.Match[str], word: str) -> str:
         return formula
 
 
-RE_FIND_TEMPLATES = re.compile(r"(\{\{[^{}]*+\}\})")
+RE_FIND_TEMPLATES = re.compile(r"(\{\{(?!\}\})(?:[^{}]++|\{(?!\{)|\}(?!\}))++\}\})")
 RE_FORMULAS = [
     ("chem", re.compile(r"<chem>(.+?)</chem>"), convert_chem),
     ("hiero", re.compile(r"<hiero>(.+?)</hiero>"), convert_hiero),
@@ -1204,6 +1204,7 @@ def process_templates(
 
     # Special handling for `{{=}}` since it breaks template arguments logic
     text = text.replace("{{=}}", "SPECIALEQ")
+    text = text.replace("{{}}", "&lbrace;&lbrace;&rbrace;&rbrace;")
 
     # {{foo}}
     # {{foo|bar}}
