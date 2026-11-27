@@ -22,14 +22,18 @@ from wikidict.stubs import Variants, Word, Words
 
 WORDS = {
     "empty": Word(),
-    "foo": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1",)]})),
-    "foos": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1", ("ssdef 1",))]}), ["baz"]),
-    "baz": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ("sdef 1",)]}), ["foobar"]),
+    "foo": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ["sdef 1"]]})),
+    "foos": Word(
+        ["pron"],
+        [],
+        ["etyl"],
+        OrderedDict({"Noun": ["def 1", ["sdef 1", ["ssdef 1"]]]}),  # type: ignore[list-item]
+        ["baz"],
+    ),
+    "baz": Word(["pron"], [], ["etyl"], OrderedDict({"Noun": ["def 1", ["sdef 1"]]}), ["foobar"]),
     "empty1": Word(variants=["foo"]),
     "empty2": Word(variants=["empty1"]),
-    "Multiple Etymologies": Word(
-        ["pron"], [], ["etyl 1", ("setyl 1",)], OrderedDict({"Noun|m": ["def 1", ("sdef 1",)]})
-    ),
+    "Multiple Etymologies": Word(["pron"], [], ["etyl 1", ["setyl 1"]], OrderedDict({"Noun|m": ["def 1", ["sdef 1"]]})),
     "Multiple Etymology": Word(["pron0"], [], ["etyl0"], OrderedDict({"Noun": ["def 0"]}), ["Multiple Etymologies"]),
     "GIF": Word(
         ["pron"],

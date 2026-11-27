@@ -335,10 +335,10 @@ def find_section_definitions(
                                     subsubdefinitions.append(subsubdefinition)
 
                         if subsubdefinitions:
-                            subdefinitions.append(tuple(subsubdefinitions))
+                            subdefinitions.append(subsubdefinitions)
 
                 if subdefinitions:
-                    definitions.append(tuple(subdefinitions))
+                    definitions.append(subdefinitions)
 
     return definitions
 
@@ -442,7 +442,7 @@ def find_etymology(
                                 )
                             )
                         if subdefinitions:
-                            definitions.append(tuple(subdefinitions))
+                            definitions.append(subdefinitions)
             return definitions
         case "it":
             items = get_items(("",), skip=("=== {{etim",))
@@ -881,7 +881,7 @@ def parse_word(
         if etymology:
             # Remove duplicates
             seen = set()
-            etymology = [e for e in etymology if not (e in seen or seen.add(e))]  # type: ignore[func-returns-value]
+            etymology = [e for e in etymology if isinstance(e, list) or not (e in seen or seen.add(e))]  # type: ignore[func-returns-value]
 
     return Word(prons, [], etymology, definitions, variants, reverse_variants)
 

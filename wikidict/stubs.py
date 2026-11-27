@@ -3,8 +3,8 @@
 from collections import OrderedDict
 from dataclasses import dataclass, field
 
-SubDefinition = str | tuple[str, ...]
-Definition = str | tuple[str, ...] | tuple[SubDefinition, ...]
+SubDefinition = str | list[str]
+Definition = str | list[str] | list[SubDefinition]
 Definitions = OrderedDict[str, list[Definition]]
 Parts = tuple[str, ...]
 Variants = dict[str, set[str]]

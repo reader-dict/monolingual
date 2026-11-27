@@ -56,6 +56,7 @@ addopts = """
     --strict-markers
     -vvv
 """
+disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
 filterwarnings = [
     "error",
     "ignore:.*imghdr was removed in Python 3.13",

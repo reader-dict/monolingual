@@ -111,13 +111,13 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool
 
         index = 1
         for definition in definitions:
-            if not isinstance(definition, tuple):
+            if not isinstance(definition, list):
                 print(f"{index}.".rjust(4), strip_html(definition))
                 index = index + 1
                 continue
 
             for a, subdef in zip("abcdefghijklmopqrstuvwxz", definition):
-                if not isinstance(subdef, tuple):
+                if not isinstance(subdef, list):
                     print(f"{a}.".rjust(8), strip_html(subdef))
                     continue
 
@@ -127,12 +127,13 @@ def get_and_parse_word(word: str, locale: str, *, raw: bool = False, local: bool
     if details.etymology:
         print("\n")
         for etymology in details.etymology:
-            if not isinstance(etymology, tuple):
+            if not isinstance(etymology, list):
                 print(strip_html(etymology))
                 continue
 
             for i, sub_etymology in enumerate(etymology, 1):
-                print(f"{i}.".rjust(8), strip_html(sub_etymology))  # type: ignore[arg-type]
+                assert isinstance(sub_etymology, str)  # For Mypy
+                print(f"{i}.".rjust(8), strip_html(sub_etymology))
 
     if details.variants:
         print("\n[variants]", ", ".join(iter(details.variants)))
