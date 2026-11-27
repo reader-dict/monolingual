@@ -82,6 +82,7 @@ Thanks go to these wonderful people ([emoji key](https://allcontributors.org/doc
     <tr>
       <td align="center" valign="top" width="16.66%"><a href="https://dera.page"><img src="https://avatars.githubusercontent.com/u/42696684?v=4&size=100" width="100px" height="100px" alt="Mubelotix"/><br /><sub><b>Mubelotix</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=Mubelotix" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="16.66%"><a href="https://monosans.ru"><img src="https://avatars.githubusercontent.com/u/76561516?v=4&size=100" width="100px" height="100px" alt="Almaz"/><br /><sub><b>Almaz</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=monosans" title="Code">💻</a></td>
+      <td align="center" valign="top" width="16.66%"><a href="https://github.com/6801318d8d"><img src="https://avatars.githubusercontent.com/u/144167388?v=4&size=100" width="100px" height="100px" alt="6801318d8d"/><br /><sub><b>6801318d8d</b></sub></a><br /><a href="https://github.com/reader-dict/monolingual/commits?author=6801318d8d" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
