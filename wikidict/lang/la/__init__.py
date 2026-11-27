@@ -8,7 +8,7 @@ from . import variant_handlers as variant_handlers_mod
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-LANG = __file__.rsplit("/", 2)[-2]
+LANG = __name__.rsplit(".", 1)[-1]  # the folder name, on any OS
 
 random_word_url = "https://la.wiktionary.org/wiki/Specialis:Pagina_fortuita"
 
