@@ -5,6 +5,8 @@ from functools import lru_cache
 
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://mg.wiktionary.org/wiki/Manokana:Kisendra"
 
 template_trans = "Endrika"
@@ -44,11 +46,11 @@ def cache_pattern(locale: str) -> re.Pattern[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "mg")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{fanononana|t͡situnɖ͡ʐuit͡sikʲạ|mg}}", "mg")
+    >>> find_pronunciations("{{fanononana|t͡situnɖ͡ʐuit͡sikʲạ|mg}}", LANG)
     ['/t͡situnɖ͡ʐuit͡sikʲạ/']
-    >>> find_pronunciations("* {{IPA|mul|[ˈkilo]|ref={{cite-book |title=DIN 5009:2022-06 |page=Anhang B: Buchstabiertafel der ICAO („Radiotelephony Spelling Alphabet“) |publisher=Deutsches Institut für Normung |date=June 2022 }}}}", "mg")
+    >>> find_pronunciations("* {{IPA|mul|[ˈkilo]|ref={{cite-book |title=DIN 5009:2022-06 |page=Anhang B: Buchstabiertafel der ICAO („Radiotelephony Spelling Alphabet“) |publisher=Deutsches Institut für Normung |date=June 2022 }}}}", LANG)
     ['/ˈkilo/']
     """
     return [f"/{pron}/" for pron in cache_pattern(locale).findall(code) if "}" not in pron] or [
@@ -87,37 +89,37 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("{{-ana-|mg}}", "mg")
+    >>> adjust_wikicode("{{-ana-|mg}}", LANG)
     '===ana==='
-    >>> adjust_wikicode("{{-e-ana-|mg}}", "mg")
+    >>> adjust_wikicode("{{-e-ana-|mg}}", LANG)
     '===e-ana==='
-    >>> adjust_wikicode("{{-ana-}}", "mg")
+    >>> adjust_wikicode("{{-ana-}}", LANG)
     '===ana==='
-    >>> adjust_wikicode("{{-anagr-}}", "mg")
+    >>> adjust_wikicode("{{-anagr-}}", LANG)
     '=====anagr====='
 
-    >>> adjust_wikicode("{{-dika-mitovy-}}\n* [[a]]\n* [[b]]", "mg")
+    >>> adjust_wikicode("{{-dika-mitovy-}}\n* [[a]]\n* [[b]]", LANG)
     '===dika-mitovy===\n# [[a]]\n# [[b]]'
 
-    >>> adjust_wikicode("# Mpanao faharoa ny ploraly ny endrika efa lasan'ny matoanteny ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Mpanao faharoa ny ploraly ny endrika efa lasan'ny matoanteny ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Mpanao voalohan'ny endrika ploraly (eksklioziva) ny teny [[foo]]", "mg")
+    >>> adjust_wikicode("# Mpanao voalohan'ny endrika ploraly (eksklioziva) ny teny [[foo]]", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("#  ploraly ny ova matoanteny efa lasa ny matoanteny [[foo]]", "mg")
+    >>> adjust_wikicode("#  ploraly ny ova matoanteny efa lasa ny matoanteny [[foo]]", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Mpandray anjara faharoa ny ploraly ny teny ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Mpandray anjara faharoa ny ploraly ny teny ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Mpanao voalohany singiolary ny teny ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Mpanao voalohany singiolary ny teny ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Endrika ankehitrin'ny matoantenin'ny atao mampitranga mpifampivoho ny matoanteny mifamoivoho avy amin'ny anarana iombonana ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Endrika ankehitrin'ny matoantenin'ny atao mampitranga mpifampivoho ny matoanteny mifamoivoho avy amin'ny anarana iombonana ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Anarana mpanao avy amin'ny matoanteny ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Anarana mpanao avy amin'ny matoanteny ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Endrika ho avin'ny ny matoantenin'ny atao mampitranga mampita avy amin'ny anarana iombonana ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Endrika ho avin'ny ny matoantenin'ny atao mampitranga mampita avy amin'ny anarana iombonana ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# Endrika ho avin'ny ny matoantenin'ny atao mifampivoho avy amin'ny anarana iombonana ''[[foo]]''.", "mg")
+    >>> adjust_wikicode("# Endrika ho avin'ny ny matoantenin'ny atao mifampivoho avy amin'ny anarana iombonana ''[[foo]]''.", LANG)
     '# {{flexion|foo}}'
-    >>> adjust_wikicode("# ''[[foo]]'' mifanao.", "mg")
+    >>> adjust_wikicode("# ''[[foo]]'' mifanao.", LANG)
     '# {{flexion|foo}}'
     """
 

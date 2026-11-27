@@ -8,6 +8,8 @@ from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://lt.wiktionary.org/wiki/Specialus:Atsitiktinis_puslapis"
 
 template_trans = "Šablonas"
@@ -68,17 +70,17 @@ RE_GENDERS = re.compile(r"\{\{([fm]++)\}\}")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "lt")
+    >>> find_genders("", LANG)
     []
 
-    >>> find_genders("{{ltdkt}} {{f}}", "lt")
+    >>> find_genders("{{ltdkt}} {{f}}", LANG)
     ['f']
-    >>> find_genders("{{ltdkt}} {{m}}", "lt")
+    >>> find_genders("{{ltdkt}} {{m}}", LANG)
     ['m']
 
-    >>> find_genders("(<i>mot. g.</i>)", "lt")
+    >>> find_genders("(<i>mot. g.</i>)", LANG)
     ['f']
-    >>> find_genders("(<i>vyr. g.</i>)", "lt")
+    >>> find_genders("(<i>vyr. g.</i>)", LANG)
     ['m']
     """
     res: list[str] = RE_GENDERS.findall(code)
@@ -93,9 +95,9 @@ def find_pronunciations(
     code: str, locale: str, *, pattern: re.Pattern[str] = re.compile(r"\{IPA\|([^}]++)")
 ) -> list[str]:
     """
-    >>> find_pronunciations("", "lt")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{IPA|[ˈsʲæːnɐs]}}", "lt")
+    >>> find_pronunciations("{{IPA|[ˈsʲæːnɐs]}}", LANG)
     ['[ˈsʲæːnɐs]']
     """
     return utils.flatten(pattern.findall(code))
@@ -114,34 +116,34 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("<br clear=all>", "lt")
+    >>> adjust_wikicode("<br clear=all>", LANG)
     ''
-    >>> adjust_wikicode("<br clear=all >", "lt")
+    >>> adjust_wikicode("<br clear=all >", LANG)
     ''
-    >>> adjust_wikicode("<br clear=all/>", "lt")
+    >>> adjust_wikicode("<br clear=all/>", LANG)
     ''
-    >>> adjust_wikicode("<br clear=all />", "lt")
-    ''
-
-    >>> adjust_wikicode("----", "lt")
+    >>> adjust_wikicode("<br clear=all />", LANG)
     ''
 
-    >>> adjust_wikicode("'''[[foo]]'''", "lt", word="foo")
-    ''
-    >>> adjust_wikicode("'''[[foo]]''' - ", "lt", word="foo")
+    >>> adjust_wikicode("----", LANG)
     ''
 
-    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n==== Etimologija ====\n{{Žodžiai|jung}}\n*[[Antigva]]\n*[[Barbuda]]", "lt", word="foo")
+    >>> adjust_wikicode("'''[[foo]]'''", LANG, word="foo")
+    ''
+    >>> adjust_wikicode("'''[[foo]]''' - ", LANG, word="foo")
+    ''
+
+    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n==== Etimologija ====\n{{Žodžiai|jung}}\n*[[Antigva]]\n*[[Barbuda]]", LANG, word="foo")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ===\n==== Etimologija ===="
 
-    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n'''Žodžių junginį sudaro žodžiai:'''\n* {{t+|lt|būtasis}}\n* {{t+|lt|laikas}}", "lt", word="foo")
+    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n'''Žodžių junginį sudaro žodžiai:'''\n* {{t+|lt|būtasis}}\n* {{t+|lt|laikas}}", LANG, word="foo")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ==="
 
     >>> from ... import context
-    >>> _ = context.reset("lt")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("Kvietkauskas")
-    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n{{ltdkt|forma=f-{{{forma|vyr-1l-as}}}|tikr=tikr|šakn=Kvietkausk|šakn2={{{sakn2}}}}}", "lt", word="Kvietkauskas")
+    >>> adjust_wikicode("== {{ltv}} ==\n=== ''Daiktavardis'' ===\n{{ltdkt|forma=f-{{{forma|vyr-1l-as}}}|tikr=tikr|šakn=Kvietkausk|šakn2={{{sakn2}}}}}", LANG, word="Kvietkauskas")
     "== {{ltv}} ==\n=== ''Daiktavardis'' ===\n# {{rev-flexion|Kvietkauskai}}\n# {{rev-flexion|Kvietkauskais}}\n# {{rev-flexion|Kvietkauskams}}\n# {{rev-flexion|Kvietkauske}}\n# {{rev-flexion|Kvietkausko}}\n# {{rev-flexion|Kvietkausku}}\n# {{rev-flexion|Kvietkauskui}}\n# {{rev-flexion|Kvietkauskuose}}\n# {{rev-flexion|Kvietkauskus}}\n# {{rev-flexion|Kvietkauską}}\n# {{rev-flexion|Kvietkauskų}}\n{{m}}"
     """
     # Drop "see also" inline text

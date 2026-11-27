@@ -6,6 +6,8 @@ from ... import utils
 from ...lang import defaults
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://it.wiktionary.org/wiki/Speciale:RandomRootpage"
 
 module_trans = "Modulo"
@@ -63,9 +65,9 @@ RE_GENDER = re.compile(r"\{\{Pn\|?w?\}\} ''([fm])[singvol ]*+''")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "it")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{Pn}} ''m sing''", "it")
+    >>> find_genders("{{Pn}} ''m sing''", LANG)
     ['m']
     """
     return utils.unique(RE_GENDER.findall(code))
@@ -76,13 +78,13 @@ RE_PRON = re.compile(r"\{\{IPA\|/([^}]+)/\}\}")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "it")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{IPA|/kondiˈvidere/}}", "it")
+    >>> find_pronunciations("{{IPA|/kondiˈvidere/}}", LANG)
     ['/kondiˈvidere/']
-    >>> find_pronunciations("{{IPA|/əˈtʃì:vəb<sup>lə</sup>/}}", "it")
+    >>> find_pronunciations("{{IPA|/əˈtʃì:vəb<sup>lə</sup>/}}", LANG)
     ['/əˈtʃì:vəb<sup>lə</sup>/']
-    >>> find_pronunciations("{{IPA|/ undiˈt͡ʃɛzimo/}} o {{IPA|/uniˈt͡ʃezimo/}}", "it")
+    >>> find_pronunciations("{{IPA|/ undiˈt͡ʃɛzimo/}} o {{IPA|/uniˈt͡ʃezimo/}}", LANG)
     ['/undiˈt͡ʃɛzimo/']
     """
     return [f"/{pron[1].strip()}/"] if (pron := RE_PRON.search(code)) else []
@@ -121,53 +123,53 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("== {{-it-}} ==\n[[w:A|B]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n[[w:A|B]]", LANG)
     '== {{-it-}} ==\n[[A|B]]'
 
-    >>> adjust_wikicode("== {{-it-}} ==\n[[en:foo]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n[[en:foo]]", LANG)
     '== {{-it-}} =='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n ([[:it:foo|italian]])", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n ([[:it:foo|italian]])", LANG)
     '== {{-it-}} =='
-    >>> adjust_wikicode("== {{-it-}} ==\n([[:it:foo|italian]])", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n([[:it:foo|italian]])", LANG)
     '== {{-it-}} =='
-    >>> adjust_wikicode("== {{-it-}} ==\n[[:it:foo|italian]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n[[:it:foo|italian]]", LANG)
     '== {{-it-}} =='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form- }}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-verb form- }}", LANG)
     '== {{-it-}} ==\n=== {{verb form}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv- |it }}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{-avv- |it }}", LANG)
     '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv-| ANY }}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv-| ANY }}", LANG)
     '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv- }}", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n{{ -avv- }}", LANG)
     '== {{-it-}} ==\n=== {{avv}} ==='
 
-    >>> adjust_wikicode("== {{-it-}} ==\n#plurale di [[infermiera]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n#plurale di [[infermiera]]", LANG)
     '== {{-it-}} ==\n# {{flexion|infermiera}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# plurale di [[-ectomia]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# plurale di [[-ectomia]]", LANG)
     '== {{-it-}} ==\n# {{flexion|-ectomia}}'
 
-    >>> adjust_wikicode("== {{-it-}} ==\n#participio presente di [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n#participio presente di [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n#participio passato di [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n#participio passato di [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# participio presente di [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# participio presente di [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n#2ª pers. singolare indicativo presente del verbo [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n#2ª pers. singolare indicativo presente del verbo [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# {{3}} singolare imperativo presente del verbo [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# {{3}} singolare imperativo presente del verbo [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# {{1}}, 2ª pers. e {{3}} singolare congiuntivo presente del verbo [[amare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# {{1}}, 2ª pers. e {{3}} singolare congiuntivo presente del verbo [[amare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|amare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# prima persona singolare dell'indicativo presente di [[ducere#Italiano|ducere]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# prima persona singolare dell'indicativo presente di [[ducere#Italiano|ducere]]", LANG)
     '== {{-it-}} ==\n# {{flexion|ducere}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# gerundio presente di [[abalienare]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# gerundio presente di [[abalienare]", LANG)
     '== {{-it-}} ==\n# {{flexion|abalienare}}'
-    >>> adjust_wikicode("== {{-it-}} ==\n# seconda persona plurale dell'[[indicativo]] [[presente]] di [[abalienare]]", "it")
+    >>> adjust_wikicode("== {{-it-}} ==\n# seconda persona plurale dell'[[indicativo]] [[presente]] di [[abalienare]]", LANG)
     '== {{-it-}} ==\n# {{flexion|abalienare}}'
     """
 

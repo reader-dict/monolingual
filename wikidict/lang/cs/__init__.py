@@ -5,6 +5,8 @@ import re
 from ... import lang, utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://cs.wiktionary.org/wiki/Speci%C3%A1ln%C3%AD:N%C3%A1hodn%C3%A1_str%C3%A1nka"
 
 module_trans = "Modul"
@@ -64,9 +66,9 @@ RE_FIND_PRONS = re.compile(r"\{\{IPA\|([^}]++)")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "cs")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{IPA|patɔliːzaluːf}}", "cs")
+    >>> find_pronunciations("{{IPA|patɔliːzaluːf}}", LANG)
     ['[patɔliːzaluːf]']
     """
     res = set(RE_FIND_PRONS.findall(code))
@@ -113,51 +115,51 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("# ''vokativ jednotného čísla podstatného jména [[mela]]''", "cs")
+    >>> adjust_wikicode("# ''vokativ jednotného čísla podstatného jména [[mela]]''", LANG)
     '# {{flexion|mela}}'
-    >>> adjust_wikicode("# ''genitiv množného čísla podstatného jména [[mela]]''", "cs")
+    >>> adjust_wikicode("# ''genitiv množného čísla podstatného jména [[mela]]''", LANG)
     '# {{flexion|mela}}'
-    >>> adjust_wikicode("# ''rozkazovací způsob druhé osoby jednotného čísla slovesa [[mela]]''", "cs")
+    >>> adjust_wikicode("# ''rozkazovací způsob druhé osoby jednotného čísla slovesa [[mela]]''", LANG)
     '# {{flexion|mela}}'
-    >>> adjust_wikicode("# ''akuzativ plurálu substantiva [[mela]]''", "cs")
+    >>> adjust_wikicode("# ''akuzativ plurálu substantiva [[mela]]''", LANG)
     '# {{flexion|mela}}'
-    >>> adjust_wikicode("# ''první osoba jednotného čísla budoucího času oznamovacího způsobu slovesa [[vypadat#sloveso (2)|vypadat]] (2)''", "cs")
+    >>> adjust_wikicode("# ''první osoba jednotného čísla budoucího času oznamovacího způsobu slovesa [[vypadat#sloveso (2)|vypadat]] (2)''", LANG)
     '# {{flexion|vypadat}}'
-    >>> adjust_wikicode("# ''nominativ množného čísla rodu mužského životného přídavného jména [[popřený]]''", "cs")
+    >>> adjust_wikicode("# ''nominativ množného čísla rodu mužského životného přídavného jména [[popřený]]''", LANG)
     '# {{flexion|popřený}}'
-    >>> adjust_wikicode("# ''vokativ množného čísla rodu mužského životného přídavného jména [[popřený]]''", "cs")
+    >>> adjust_wikicode("# ''vokativ množného čísla rodu mužského životného přídavného jména [[popřený]]''", LANG)
     '# {{flexion|popřený}}'
-    >>> adjust_wikicode("# ''množné číslo mužského životného rodu minulého činného příčestí slovesa [[mrskat]]", "cs")
+    >>> adjust_wikicode("# ''množné číslo mužského životného rodu minulého činného příčestí slovesa [[mrskat]]", LANG)
     '# {{flexion|mrskat}}'
-    >>> adjust_wikicode("# ''dativ množného čísla podstatného jména'' [[bor]]", "cs")
+    >>> adjust_wikicode("# ''dativ množného čísla podstatného jména'' [[bor]]", LANG)
     '# {{flexion|bor}}'
 
-    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = [[skanzen]] / [[skanzen2]]\n  | pins = [[skanzeny]]\n}}", "cs")
+    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = [[skanzen]] / [[skanzen2]]\n  | pins = [[skanzeny]]\n}}", LANG)
     '# {{rev-flexion|skanzen}}\n# {{rev-flexion|skanzen2}}\n# {{rev-flexion|skanzeny}}'
-    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen / skanzen2\n  | pins = (zastarale) skanzeny<sup>*</sup>\n}}", "cs")
+    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen / skanzen2\n  | pins = (zastarale) skanzeny<sup>*</sup>\n}}", LANG)
     '# {{rev-flexion|skanzen}}\n# {{rev-flexion|skanzen2}}\n# {{rev-flexion|skanzeny}}'
-    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen (''hovorově:'' skanzen2)\n  | pins = [[skanzeny]]\n}}", "cs")
+    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen (''hovorově:'' skanzen2)\n  | pins = [[skanzeny]]\n}}", LANG)
     '# {{rev-flexion|skanzen}}\n# {{rev-flexion|skanzen2}}\n# {{rev-flexion|skanzeny}}'
-    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen / skanzen2\n  | pins = skanzeny\n  | mtra = skrýt\n}}", "cs")
+    >>> adjust_wikicode("{{Substantivum (cs)\n  | snom = skanzen / skanzen2\n  | pins = skanzeny\n  | mtra = skrýt\n}}", LANG)
     '# {{rev-flexion|skanzen}}\n# {{rev-flexion|skanzen2}}\n# {{rev-flexion|skanzeny}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | spre1 = [[vopiju se]] /<br /> {{Příznak2|spis. skl.|okaz.}} {{Potenciálně|vopiji se}}\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | spre1 = [[vopiju se]] /<br /> {{Příznak2|spis. skl.|okaz.}} {{Potenciálně|vopiji se}}\n}}", LANG)
     '# {{rev-flexion|vopiju se}}\n# {{rev-flexion|vopiji se}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | sloc = samopalníku <br /> samopalníkovi\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | sloc = samopalníku <br /> samopalníkovi\n}}", LANG)
     '# {{rev-flexion|samopalníku}}\n# {{rev-flexion|samopalníkovi}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | mtram = utrh(nuv)\n  | mtraf = utrh(nuv)ši\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | mtram = utrh(nuv)\n  | mtraf = utrh(nuv)ši\n}}", LANG)
     '# {{rev-flexion|utrh}}\n# {{rev-flexion|utrhnuv}}\n# {{rev-flexion|utrhši}}\n# {{rev-flexion|utrhnuvši}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | pgen = [[kaleb]] ([[kalb]])\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | pgen = [[kaleb]] ([[kalb]])\n}}", LANG)
     '# {{rev-flexion|kaleb}}\n# {{rev-flexion|kalb}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | sloc = [[Londýně]] / (ve funkci předmětu) [[Londýnu]]\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | sloc = [[Londýně]] / (ve funkci předmětu) [[Londýnu]]\n}}", LANG)
     '# {{rev-flexion|Londýně}}\n# {{rev-flexion|Londýnu}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | pgen = [[kameníček#podstatné jméno (3)|kameníček]]\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | pgen = [[kameníček#podstatné jméno (3)|kameníček]]\n}}", LANG)
     '# {{rev-flexion|kameníček}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | pnom = Singapuřané / (''hovorově:'' Singapuřani)\n}}", "cs")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | pnom = Singapuřané / (''hovorově:'' Singapuřani)\n}}", LANG)
     '# {{rev-flexion|Singapuřané}}\n# {{rev-flexion|Singapuřani}}'
-    >>> adjust_wikicode("{{Sloveso (cs)\n  | acc = [[toho]] {{Upřesnění|životný}}/<br />ten {{Upřesnění|neživotný}}\n}}", "cs", word="ten")
+    >>> adjust_wikicode("{{Sloveso (cs)\n  | acc = [[toho]] {{Upřesnění|životný}}/<br />ten {{Upřesnění|neživotný}}\n}}", LANG, word="ten")
     '# {{rev-flexion|toho}}'
 
-    >>> adjust_wikicode("==== význam ====\n# smysl 1\n# smysl 2\n\n==== synonyma ====\n# —\n# [[b]]", "cs")
+    >>> adjust_wikicode("==== význam ====\n# smysl 1\n# smysl 2\n\n==== synonyma ====\n# —\n# [[b]]", LANG)
     "==== význam ====\n# smysl 1\n# smysl 2\n## ''syn.:'' [[b]]\n"
     """
     #

@@ -7,6 +7,8 @@ from ..fr import find_genders  # noqa: F401
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://eu.wiktionary.org/wiki/Berezi:Ausazkoa"
 
 module_trans = "Modulu"
@@ -14,7 +16,7 @@ template_trans = "Txantiloi"
 
 section_patterns = (":#", r":\*", "#", r"\*")
 section_sublevels = (3, 4)
-head_sections = ("eu",)
+head_sections = (LANG,)
 etyl_section = ("jatorria", "Jatorria")
 sections = (
     *etyl_section,
@@ -66,15 +68,15 @@ PRON_PATTERNS = [
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "eu")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations(":* {{IPA|ˈpɔlak}}", "eu")
+    >>> find_pronunciations(":* {{IPA|ˈpɔlak}}", LANG)
     ['/ˈpɔlak/']
-    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: '''/ˈpɔlak/'''", "eu")
+    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: '''/ˈpɔlak/'''", LANG)
     ['/ˈpɔlak/']
-    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: /'''ˈpɔlak'''/", "eu")
+    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: /'''ˈpɔlak'''/", LANG)
     ['/ˈpɔlak/']
-    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: '''{{Azpimarratu|/ˈpɔlak/}}'''", "eu")
+    >>> find_pronunciations(":* [[International Phonetic Alphabet|IPA]]: '''{{Azpimarratu|/ˈpɔlak/}}'''", LANG)
     ['/ˈpɔlak/']
     """
     pron = next(
@@ -101,7 +103,7 @@ def adjust_wikicode(
     lines: list[str] = []
     for line in code.splitlines():
         if "hitzaren deklinabide forma" in line and (base_form_raw := RE_BASE_FORM.search(line)):
-            base_form = context.expand(base_form_raw[1], "eu").strip().lower()
+            base_form = context.expand(base_form_raw[1], LANG).strip().lower()
             line = f"# {{{{flexion|{base_form}}}}}"
         lines.append(line)
     code = "\n".join(lines)

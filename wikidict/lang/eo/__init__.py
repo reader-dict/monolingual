@@ -7,6 +7,8 @@ from ... import lang, utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 from .variant_handlers import render_reverse_variant
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://eo.wiktionary.org/wiki/Speciala%C4%B5o:RandomRootpage"
 
 module_trans = "Modulo"
@@ -108,9 +110,9 @@ RE_FING_GENDERS = re.compile(r"\{\{g\|(\w++)")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "eo")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{g|m}}", "eo")
+    >>> find_genders("{{g|m}}", LANG)
     ['m']
     """
     return utils.unique(RE_FING_GENDERS.findall(code))
@@ -123,22 +125,22 @@ RE_FIND_PRONS2 = re.compile(r"\{\{IFA\|([^}]++)}}")
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> from ... import context
-    >>> _ = context.reset("eo")
+    >>> _ = context.reset(LANG)
     >>> context.new_word("word")
 
-    >>> find_pronunciations("", "eo")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{PRON|`luk/o.`}}", "eo")
+    >>> find_pronunciations("{{PRON|`luk/o.`}}", LANG)
     ['luk/o']
-    >>> find_pronunciations("{{PRON|`[[advent]]•[[o]]`}}", "eo")
+    >>> find_pronunciations("{{PRON|`[[advent]]•[[o]]`}}", LANG)
     ['advent•o']
-    >>> find_pronunciations("{{PRON|`{{radi|vultur}} + o`}}", "eo")
+    >>> find_pronunciations("{{PRON|`{{radi|vultur}} + o`}}", LANG)
     ['vultur + o']
-    >>> find_pronunciations("{{PRON|` {{radi|dekstr}} + {{fina|a}}`}}", "eo")
+    >>> find_pronunciations("{{PRON|` {{radi|dekstr}} + {{fina|a}}`}}", LANG)
     ['dekstr + a']
-    >>> find_pronunciations("{{IFA|/vitpunkto/}}", "eo")
+    >>> find_pronunciations("{{IFA|/vitpunkto/}}", LANG)
     ['/vitpunkto/']
-    >>> find_pronunciations("{{IFA|nenk=1|ˈbɛʁɡŋ̩}}", "eo")
+    >>> find_pronunciations("{{IFA|nenk=1|ˈbɛʁɡŋ̩}}", LANG)
     ['ˈbɛʁɡŋ̩']
     """
     if prons := [utils.process_templates("", match.rstrip("."), locale) for match in RE_FIND_PRONS1.findall(code)]:
@@ -178,24 +180,24 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{form-eo}}", "eo")
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{form-eo}}", LANG)
     '=={{Lingvo|eo}}==\n# {{form-eo}}'
 
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xxx}}", "eo")
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xxx}}", LANG)
     '=={{Lingvo|eo}}==\n==== {{xxx}} ===='
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xx-x}}", "eo")
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{xx-x}}", LANG)
     '=={{Lingvo|eo}}==\n==== {{xx-x}} ===='
 
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}:{{radi|tret}} + {{fina|i}}", "eo")
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}:{{radi|tret}} + {{fina|i}}", LANG)
     '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
-    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}\n:{{radi|tret}} + {{fina|i}}", "eo")
+    >>> adjust_wikicode("=={{Lingvo|eo}}==\n{{Vorterseparo}}\n:{{radi|tret}} + {{fina|i}}", LANG)
     '=={{Lingvo|eo}}==\n\n{{PRON|`{{radi|tret}} + {{fina|i}}`}}\n'
 
     >>> from ... import context
-    >>> _ = context.reset("eo")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("ekami")
-    >>> adjust_wikicode("{{Esperanta verbo}}", "eo", word="ekami")
+    >>> adjust_wikicode("{{Esperanta verbo}}", LANG, word="ekami")
     '# {{rev-flexion|ekamanta}}\n# {{rev-flexion|ekamante}}\n# {{rev-flexion|ekamanto}}\n# {{rev-flexion|ekamas}}\n# {{rev-flexion|ekamata}}\n# {{rev-flexion|ekamate}}\n# {{rev-flexion|ekamato}}\n# {{rev-flexion|ekaminta}}\n# {{rev-flexion|ekaminte}}\n# {{rev-flexion|ekaminto}}\n# {{rev-flexion|ekamis}}\n# {{rev-flexion|ekamita}}\n# {{rev-flexion|ekamite}}\n# {{rev-flexion|ekamito}}\n# {{rev-flexion|ekamonta}}\n# {{rev-flexion|ekamonte}}\n# {{rev-flexion|ekamonto}}\n# {{rev-flexion|ekamos}}\n# {{rev-flexion|ekamota}}\n# {{rev-flexion|ekamote}}\n# {{rev-flexion|ekamoto}}\n# {{rev-flexion|ekamu}}\n# {{rev-flexion|ekamus}}'
     """
     # Wipe out unwanted sub-sections

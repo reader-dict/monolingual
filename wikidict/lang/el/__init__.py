@@ -7,7 +7,7 @@ from ...lang.pl import extract_templates
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
-LANG = __name__.rsplit(".", 1)[-1]  # the folder name, on any OS
+LANG = __name__.rsplit(".", 1)[-1]
 
 random_word_url = "https://el.wiktionary.org/wiki/%CE%95%CE%B9%CE%B4%CE%B9%CE%BA%CF%8C:RandomRootpage"
 
@@ -154,19 +154,19 @@ RE_FIND_GENDERS = re.compile(r"\{\{([^{}]*+)\}\}")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "el")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("'''{{PAGENAME}}''' {{αθ}}", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{αθ}}", LANG)
     ['αθ']
-    >>> find_genders("'''{{PAGENAME}}''' {{αθ}}, {{ακλ|αθ}}", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{αθ}}, {{ακλ|αθ}}", LANG)
     ['αθ', 'ακλ']
-    >>> find_genders("'''{{PAGENAME}}''' {{ακλ|αθ}}, {{αθ}}", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{ακλ|αθ}}, {{αθ}}", LANG)
     ['ακλ', 'αθ']
-    >>> find_genders("'''{{PAGENAME}}''' {{θο}} {{ακλ}}", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{θο}} {{ακλ}}", LANG)
     ['θο', 'ακλ']
-    >>> find_genders("'''{{PAGENAME}}''' {{αο}} {{ακλ}} {{ακρ}}", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{αο}} {{ακλ}} {{ακρ}}", LANG)
     ['αο', 'ακλ', 'ακρ']
-    >>> find_genders("'''{{PAGENAME}}''' {{α}} ({{ετ|ιδιωματικό|0=-}}, Κάλυμνος)", "el")
+    >>> find_genders("'''{{PAGENAME}}''' {{α}} ({{ετ|ιδιωματικό|0=-}}, Κάλυμνος)", LANG)
     ['α']
     """
     line_pattern = "'''{{PAGENAME}}''' "
@@ -183,15 +183,15 @@ RE_FIND_PRONS = re.compile(r"\{\{(ΔΦΑ\|[^\}]++)\}\}")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "el")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{ΔΦΑ|tɾeˈlos|γλ=el}}", "el")
+    >>> find_pronunciations("{{ΔΦΑ|tɾeˈlos|γλ=el}}", LANG)
     ['/tɾeˈlos/']
-    >>> find_pronunciations("{{ΔΦΑ|γλ=el|ˈni.xta}}", "el")
+    >>> find_pronunciations("{{ΔΦΑ|γλ=el|ˈni.xta}}", LANG)
     ['/ˈni.xta/']
-    >>> find_pronunciations("{{ΔΦΑ|el|ˈni.ði.mos}}", "el")
+    >>> find_pronunciations("{{ΔΦΑ|el|ˈni.ði.mos}}", LANG)
     ['/ˈni.ði.mos/']
-    >>> find_pronunciations("{{ΔΦΑ|0=-|el|ˈni.ði.mos}}", "el")
+    >>> find_pronunciations("{{ΔΦΑ|0=-|el|ˈni.ði.mos}}", LANG)
     ['/ˈni.ði.mos/']
     """
     res: list[str] = []

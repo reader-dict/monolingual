@@ -5,6 +5,8 @@ import re
 from ... import utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://de.wiktionary.org/wiki/Spezial:Zuf%C3%A4llige_Stammseite"
 
 module_trans = "Modul"
@@ -42,9 +44,9 @@ RE_FIND_GENDERS = re.compile(r",\s++\{\{([fmnu]++)\}\}")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "de")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", "de")
+    >>> find_genders("=== {{Wortart|Abkürzung|Deutsch}}, {{mf}}, {{Wortart|Substantiv|Deutsch}} ===", LANG)
     ['f', 'm']
     """
     res: set[str] = set()
@@ -61,13 +63,13 @@ RE_FIND_PRONS = re.compile(r"\{\{Lautschrift\|([^=}]++)}")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "de")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations(":{{IPA}} {{Lautschrift||spr=de}}", "de")
+    >>> find_pronunciations(":{{IPA}} {{Lautschrift||spr=de}}", LANG)
     []
-    >>> find_pronunciations(":{{IPA}} {{Lautschrift|ˈʁɪndɐˌsteːk}}", "de")
+    >>> find_pronunciations(":{{IPA}} {{Lautschrift|ˈʁɪndɐˌsteːk}}", LANG)
     ['[ˈʁɪndɐˌsteːk]']
-    >>> find_pronunciations(":{{IPA}} {{Lautschrift|ˈʁɪndɐˌsteːk}}, {{Lautschrift|ˈʁɪndɐˌʃteːk}}, {{Lautschrift|ˈʁɪndɐˌsteɪ̯k}}", "de")
+    >>> find_pronunciations(":{{IPA}} {{Lautschrift|ˈʁɪndɐˌsteːk}}, {{Lautschrift|ˈʁɪndɐˌʃteːk}}, {{Lautschrift|ˈʁɪndɐˌsteɪ̯k}}", LANG)
     ['[ˈʁɪndɐˌsteːk]', '[ˈʁɪndɐˌʃteːk]', '[ˈʁɪndɐˌsteɪ̯k]']
     """
     for line in code.splitlines():
@@ -101,17 +103,17 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("{{Grundformverweis Konj|tragen}}", "de")
+    >>> adjust_wikicode("{{Grundformverweis Konj|tragen}}", LANG)
     '==== {{Variant}} ====\n# {{flexion|tragen}}'
 
-    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] \n\n{{Herkunft}}\n:[[Abkürzung]] von [[Sturmkanone]]", "de")
+    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] \n\n{{Herkunft}}\n:[[Abkürzung]] von [[Sturmkanone]]", LANG)
     '==== {{Bedeutungen}} ====\n# \n\n==== {{Herkunft}} ====\n:[[Abkürzung]] von [[Sturmkanone]]'
-    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", "de")
+    >>> adjust_wikicode("{{Bedeutungen}}\n:[1] {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}", LANG)
     '==== {{Bedeutungen}} ====\n# {{K|Handwerk|Architektur|ft=[[defektives Verb{{!}}defektiv]]}}'
 
-    >>> adjust_wikicode("{{Bedeutungen}}\n=== {{Wortart|Konjugierte Form|Deutsch}} ===\n{{Nebenformen}}\n:''2. Person Plural Konjunktiv I Präsens Aktiv:'' [[kartlet]]", "de")
+    >>> adjust_wikicode("{{Bedeutungen}}\n=== {{Wortart|Konjugierte Form|Deutsch}} ===\n{{Nebenformen}}\n:''2. Person Plural Konjunktiv I Präsens Aktiv:'' [[kartlet]]", LANG)
     '==== {{Bedeutungen}} ====\n=== {{Wortart|Konjugierte Form|Deutsch}} ===\n==== {{Nebenformen}} ====\n# {{rev-flexion|kartlet}}\n'
-    >>> adjust_wikicode("{{Bedeutungen}}\n==== {{Nebenformen}} ====\n:[[rev var 1]], [[rev var 2]]", "de")
+    >>> adjust_wikicode("{{Bedeutungen}}\n==== {{Nebenformen}} ====\n:[[rev var 1]], [[rev var 2]]", LANG)
     '==== {{Bedeutungen}} ====\n==== {{Nebenformen}} ====\n# {{rev-flexion|rev var 1}}\n# {{rev-flexion|rev var 2}}\n'
     """
     for pattern, rpl in RE_CLEANUPS:

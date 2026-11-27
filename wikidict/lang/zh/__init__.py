@@ -7,6 +7,8 @@ import regex
 
 from .template_overrides import overrides as template_overrides  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://zh.wiktionary.org/wiki/Special:RandomRootpage"
 
 section_patterns = ("#", ":")
@@ -155,19 +157,19 @@ def cache_pattern(locale: str) -> re.Pattern[str]:
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
     >>> from wikidict import context
-    >>> _ = context.reset("zh")
+    >>> _ = context.reset(LANG)
     >>> context.new_word("word")
 
-    >>> find_pronunciations("{{zh-pron|m=bǎi jiàzi|c=baai2 gaa3 zi2|j=bai2 jia3 zeh|cat=v}}", "zh")
+    >>> find_pronunciations("{{zh-pron|m=bǎi jiàzi|c=baai2 gaa3 zi2|j=bai2 jia3 zeh|cat=v}}", LANG)
     ['/bǎi jiàzi/']
-    >>> find_pronunciations("{{zh-pron|m=shāohòu|c=saau2 hau6|cat=adv,v}}", "zh")
+    >>> find_pronunciations("{{zh-pron|m=shāohòu|c=saau2 hau6|cat=adv,v}}", LANG)
     ['/shāohòu/']
     """
     from wikidict import context
 
     res: set[str] = set()
     for tpl in cache_pattern(locale).findall(code):
-        if pron := RE_FIND_PRONS.search(context.expand(tpl, "zh")):
+        if pron := RE_FIND_PRONS.search(context.expand(tpl, LANG)):
             res.add(pron[1])
     return sorted(f"/{pron}/" for pron in res)
 
@@ -196,26 +198,26 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("==漢語==\n{{zh-pron\n|m=huángmǎguà,er=y\n|c=wong4 maa5 kwaa3-2\n|cat=n\n}}", "zh")
+    >>> adjust_wikicode("==漢語==\n{{zh-pron\n|m=huángmǎguà,er=y\n|c=wong4 maa5 kwaa3-2\n|cat=n\n}}", LANG)
     '==漢語==\n# {{zh-pron|m=huángmǎguà,er=y|c=wong4 maa5 kwaa3-2|cat=n}}'
 
-    >>> adjust_wikicode("興{xīng}", "zh")
+    >>> adjust_wikicode("興{xīng}", LANG)
     '興'
-    >>> adjust_wikicode("[群]{Qún}", "zh")
+    >>> adjust_wikicode("[群]{Qún}", LANG)
     '[群]'
-    >>> adjust_wikicode("月亮是眾生不停輪迴轉世的象徵{{...}}所以用“月亮”這", "zh")
+    >>> adjust_wikicode("月亮是眾生不停輪迴轉世的象徵{{...}}所以用“月亮”這", LANG)
     '月亮是眾生不停輪迴轉世的象徵{{...}}所以用“月亮”這'
 
-    >>> adjust_wikicode("-{适}-", "zh")
+    >>> adjust_wikicode("-{适}-", LANG)
     ''
 
-    >> adjust_wikicode("==漢語==\n; '''限定代詞'''", "zh")
+    >> adjust_wikicode("==漢語==\n; '''限定代詞'''", LANG)
     '==漢語==\n'
-    >> adjust_wikicode("==漢語==\n;限定代詞", "zh")
+    >> adjust_wikicode("==漢語==\n;限定代詞", LANG)
     '==漢語==\n'
-    >> adjust_wikicode("==漢語==\n:限定代詞", "zh")
+    >> adjust_wikicode("==漢語==\n:限定代詞", LANG)
     '==漢語==\n'
-    >> adjust_wikicode("==漢語==\n; “位置，立場”\n: 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n; “意識形態”\n:{{wasei kango|主%義|しゅ%ぎ}}。", "zh")
+    >> adjust_wikicode("==漢語==\n; “位置，立場”\n: 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n; “意識形態”\n:{{wasei kango|主%義|しゅ%ぎ}}。", LANG)
     "==漢語==\n 來自《{{w|史記}}》：\n:{{zh-x|敢 犯 顏色 以 達 主義，不-顧 其 身。為 國家 樹 長-畫。|[一個人]敢於触犯[君主]威嚴的面孔，這樣才能讓[君主]理解[自己]的'''立場'''；一個人不在乎自己的生命，而是為國家做長遠打算。|ref=Shiji|collapsed=yes}}\n{{wasei kango|主%義|しゅ%ぎ}}。"
     """
     for pattern, rpl in RE_CLEANUPS:

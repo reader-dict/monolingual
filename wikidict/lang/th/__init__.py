@@ -3,6 +3,8 @@
 import re
 from functools import lru_cache
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = (
     "https://th.wiktionary.org/wiki/%E0%B8%9E%E0%B8%B4%E0%B9%80%E0%B8%A8%E0%B8%A9:%E0%B8%AA%E0%B8%B8%E0%B9%88%E0%B8%A1"
 )
@@ -86,9 +88,9 @@ def cache_pattern(locale: str) -> re.Pattern[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "th")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{IPA|th|/ˈjestədeɪ/}}", "th")
+    >>> find_pronunciations("{{IPA|th|/ˈjestədeɪ/}}", LANG)
     ['/ˈjestədeɪ/']
     """
     return sorted(set(cache_pattern(locale).findall(code)))

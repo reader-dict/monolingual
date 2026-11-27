@@ -9,6 +9,8 @@ from . import variant_handlers as variant_handlers_mod
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://uk.wiktionary.org/wiki/%D0%A1%D0%BF%D0%B5%D1%86%D1%96%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0:%D0%92%D0%B8%D0%BF%D0%B0%D0%B4%D0%BA%D0%BE%D0%B2%D0%B0_%D1%81%D1%82%D0%BE%D1%80%D1%96%D0%BD%D0%BA%D0%B0"
 
 module_trans = "Модуль"
@@ -16,7 +18,7 @@ template_trans = "Шаблон"
 
 section_level = 1
 section_sublevels = (3, 4)
-head_sections = ("uk", "mul")
+head_sections = (LANG, "mul")
 etyl_section = ("етимологія",)
 sections = (
     *etyl_section,
@@ -58,15 +60,15 @@ GENDERS = {
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "uk")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{імен uk 3a m una|склади={{склади|аль|бо́м|чик}}|альбо́мчик|альбо́мчик|альбо́мчик}}", "uk")
+    >>> find_genders("{{імен uk 3a m una|склади={{склади|аль|бо́м|чик}}|альбо́мчик|альбо́мчик|альбо́мчик}}", LANG)
     ['ч']
-    >>> find_genders("{{імен uk 4a pl una|склади={{склади|аль|бо́м|чик}}|альбо́мчик|альбо́мчик|альбо́мчик}}", "uk")
+    >>> find_genders("{{імен uk 4a pl una|склади={{склади|аль|бо́м|чик}}|альбо́мчик|альбо́мчик|альбо́мчик}}", LANG)
     ['мн']
-    >>> find_genders("{{імен uk 1a n ina|склади={{склади|мі|сто}}|мі́ст|мі́ст}}", "uk")
+    >>> find_genders("{{імен uk 1a n ina|склади={{склади|мі|сто}}|мі́ст|мі́ст}}", LANG)
     ['с']
-    >>> find_genders("{{імен uk 3a-city m una|склади={{склади|Бо́б|рик}}|Бо́брик|Бобрик}}", "uk")
+    >>> find_genders("{{імен uk 3a-city m una|склади={{склади|Бо́б|рик}}|Бо́брик|Бобрик}}", LANG)
     ['ч']
     """
     return utils.unique(
@@ -87,23 +89,23 @@ def find_pronunciations(code: str, locale: str, word: str) -> list[str]:
     The pronunciations, the first one of each transcription starting with the word and its stress.
 
     >>> from ... import context
-    >>> _ = context.reset("uk")
+    >>> _ = context.reset(LANG)
 
-    >>> find_pronunciations("", "uk", "")
+    >>> find_pronunciations("", LANG, "")
     []
 
     >>> context.new_word("Бобрик")
-    >>> find_pronunciations("{{transcription-uk|Бо́брик}}", "uk", "Бобрик")
+    >>> find_pronunciations("{{transcription-uk|Бо́брик}}", LANG, "Бобрик")
     ['Бо́брик [ˈbɔbrek]']
-    >>> find_pronunciations("{{transcription|ˈbɔbrek}}", "uk", "Бобрик")
+    >>> find_pronunciations("{{transcription|ˈbɔbrek}}", LANG, "Бобрик")
     ['[ˈbɔbrek]']
-    >>> find_pronunciations("{{transcriptions-uk|}}", "uk", "Бобрик")
+    >>> find_pronunciations("{{transcriptions-uk|}}", LANG, "Бобрик")
     ['[bɔbrek]']
     """
     res: list[str] = []
     seen: set[str] = set()
     for tpl in cache_pron_pattern(locale).finditer(code):
-        prons = [f"[{pron}]" for pron in RE_FIND_PRONS.findall(context.expand(tpl[0], "uk"))]
+        prons = [f"[{pron}]" for pron in RE_FIND_PRONS.findall(context.expand(tpl[0], LANG))]
         prons = [pron for pron in dict.fromkeys(prons) if pron not in seen]
         seen.update(prons)
         if prons and word and (stressed := utils.stress_word(word, tpl[1] or "")):
@@ -124,16 +126,16 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("=uk=\n'''Адсóрбція''': ракцією.", "uk")
+    >>> adjust_wikicode("=uk=\n'''Адсóрбція''': ракцією.", LANG)
     '=uk=\n====значення====\n# ракцією.'
-    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' — ракцією.", "uk")
+    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' — ракцією.", LANG)
     '=uk=\n====значення====\n# ракцією.'
-    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' – ракцією.", "uk")
+    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' – ракцією.", LANG)
     '=uk=\n====значення====\n# ракцією.'
-    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' - ракцією.", "uk")
+    >>> adjust_wikicode("=uk=\n'''Адсóрбція''' - ракцією.", LANG)
     '=uk=\n====значення====\n# ракцією.'
 
-    >>> adjust_wikicode("=uk=\n==== Значення ====\n# [[пристрій]]\n==== Синоніми ====\n# —\n# —", "uk")
+    >>> adjust_wikicode("=uk=\n==== Значення ====\n# [[пристрій]]\n==== Синоніми ====\n# —\n# —", LANG)
     '=uk=\n==== Значення ====\n# [[пристрій]]'
     """
     # Synonyms go under their meaning: as a list of their own, they were not numbered like the meanings

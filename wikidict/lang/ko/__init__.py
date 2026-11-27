@@ -5,6 +5,8 @@ from functools import lru_cache
 
 from ... import context
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://ko.wiktionary.org/wiki/%ED%8A%B9%EC%88%98:%EC%9E%84%EC%9D%98%EB%AC%B8%EC%84%9C"
 
 module_trans = "모듈"
@@ -53,22 +55,22 @@ def cache_pattern(locale: str) -> re.Pattern[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "ko")
+    >>> find_pronunciations("", LANG)
     []
 
     >>> from wikidict import context
-    >>> _ = context.reset("ko")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("교육자")
-    >>> find_pronunciations("{{ko-IPA}}", "ko")
+    >>> find_pronunciations("{{ko-IPA}}", LANG)
     ['[교육<b>짜</b>]']
 
     >>> context.new_word("신진대사")
-    >>> find_pronunciations("{{ko-IPA}}", "ko")
+    >>> find_pronunciations("{{ko-IPA}}", LANG)
     ['[신진대사/신진<b>데</b>사]']
     """
     for tpl in cache_pattern(locale).findall(code):
-        expanded = context.expand(tpl, "ko")
+        expanded = context.expand(tpl, LANG)
         if not (prons := RE_FIND_PRONS.findall(expanded)):
             continue
         return sorted(set(prons))
@@ -93,9 +95,9 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     """
-    >>> adjust_wikicode("* '''1.''' [[당구]].", "ko")
+    >>> adjust_wikicode("* '''1.''' [[당구]].", LANG)
     '# [[당구]].'
-    >>> adjust_wikicode(":[1, 2]: [[당구]].", "ko")
+    >>> adjust_wikicode(":[1, 2]: [[당구]].", LANG)
     '# [[당구]].'
     """
     for pattern, rpl in RE_CLEANUPS:

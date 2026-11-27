@@ -5,6 +5,8 @@ import re
 from ... import lang, utils
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://jbo.wiktionary.org/wiki/rirci:Random"
 
 template_trans = "termo'a"
@@ -40,9 +42,9 @@ RE_PRONS = re.compile(r"\{\{gykyvysym.\|/([^/]+)/")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "jbo")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{gykyvysym.|/ˈfor.ʃa/|bau=jbo}}", "jbo")
+    >>> find_pronunciations("{{gykyvysym.|/ˈfor.ʃa/|bau=jbo}}", LANG)
     ['/ˈfor.ʃa/']
     """
     return [f"/{pron}/" for pron in RE_PRONS.findall(code)]

@@ -7,6 +7,8 @@ from ... import lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://sv.wiktionary.org/wiki/Special:RandomRootpage"
 
 module_trans = "Modul"
@@ -67,13 +69,13 @@ def cache_pattern(locale: str) -> re.Pattern[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "sv")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{uttal|sv|ipa=eːn/, /ɛn/, /en}}", "sv")
+    >>> find_pronunciations("{{uttal|sv|ipa=eːn/, /ɛn/, /en}}", LANG)
     ['/eːn/, /ɛn/, /en/']
-    >>> find_pronunciations("{{uttal|sv|ipa=en|uttalslänk=-|tagg=vissa dialekter}}", "sv")
+    >>> find_pronunciations("{{uttal|sv|ipa=en|uttalslänk=-|tagg=vissa dialekter}}", LANG)
     ['/en/']
-    >>> find_pronunciations("{{uttal|sv|ipa=ɛn|uttalslänk=-}}", "sv")
+    >>> find_pronunciations("{{uttal|sv|ipa=ɛn|uttalslänk=-}}", LANG)
     ['/ɛn/']
     """
     return sorted(f"/{p}/" for p in cache_pattern(locale).findall(code))
@@ -89,18 +91,18 @@ def adjust_wikicode(
     # sourcery skip: inline-immediately-returned-variable
     r"""
     >>> from ... import context
-    >>> _ = context.reset("sv")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("dribbla")
-    >>> adjust_wikicode("{{sv-verb-ar|perfpart=(av)[[dribblad]]}}", "sv", word="dribbla")
+    >>> adjust_wikicode("{{sv-verb-ar|perfpart=(av)[[dribblad]]}}", LANG, word="dribbla")
     '# {{rev-flexion|dribblad}}\n# {{rev-flexion|dribblade}}\n# {{rev-flexion|dribblades}}\n# {{rev-flexion|dribblande}}\n# {{rev-flexion|dribblandes}}\n# {{rev-flexion|dribblar}}\n# {{rev-flexion|dribblas}}\n# {{rev-flexion|dribblat}}\n# {{rev-flexion|dribblats}}'
 
     >>> context.new_word("parentestecken")
-    >>> adjust_wikicode("{{sv-subst-t-0|rot=parentesteckn}}", "sv", word="parentestecken")
+    >>> adjust_wikicode("{{sv-subst-t-0|rot=parentesteckn}}", LANG, word="parentestecken")
     '# {{rev-flexion|parentesteckens}}\n# {{rev-flexion|parentestecknen}}\n# {{rev-flexion|parentestecknens}}\n# {{rev-flexion|parentestecknet}}\n# {{rev-flexion|parentestecknets}}'
 
     >>> context.new_word("SM")
-    >>> adjust_wikicode("{{sv-subst-t-0|grundform=:SM|:=:}}", "sv", word="SM")
+    >>> adjust_wikicode("{{sv-subst-t-0|grundform=:SM|:=:}}", LANG, word="SM")
     ''
     """
     #

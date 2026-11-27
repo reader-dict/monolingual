@@ -7,6 +7,8 @@ from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://pl.wiktionary.org/wiki/Specjalna:Losowa_strona"
 
 module_trans = "Moduł"
@@ -59,9 +61,9 @@ RE_GENDERS = re.compile(r"\{\{gender\|rodzaj (\w+)\}\}")
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "pl")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{gender|rodzaj żeński}}", "pl")
+    >>> find_genders("{{gender|rodzaj żeński}}", LANG)
     ['ż']
     """
     return [gender[0] for gender in utils.unique(RE_GENDERS.findall(code))]
@@ -72,11 +74,11 @@ RE_PRONS = re.compile(r"\{\{IPA\d*\|([^}]++)")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> find_pronunciations("", "pl")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("{{IPA3|ˈpʲjɛ̃ŋknɨ}}", "pl")
+    >>> find_pronunciations("{{IPA3|ˈpʲjɛ̃ŋknɨ}}", LANG)
     ['[ˈpʲjɛ̃ŋknɨ]']
-    >>> find_pronunciations("{{IPA3|ˈ[[a]][[d]][[r]][[ɛ]][[s]]}}", "pl")
+    >>> find_pronunciations("{{IPA3|ˈ[[a]][[d]][[r]][[ɛ]][[s]]}}", LANG)
     []
     """
     return [f"[{pron}]" for pron in RE_PRONS.findall(code) if "[" not in pron]
@@ -88,7 +90,7 @@ def pos_and_gender(matches: re.Match[str]) -> str:
         return f"==={pos.strip()}===\n{{{{gender|{gender.strip()}}}}}"
 
     if match.startswith("{"):
-        match = context.expand(match, "pl").replace("<i>", "").replace("</i>", "")
+        match = context.expand(match, LANG).replace("<i>", "").replace("</i>", "")
     return f"==={match.strip()}==="
 
 
@@ -216,11 +218,11 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("{{znaczenia}}\n''przymiotnik jakościowy''", "pl")
+    >>> adjust_wikicode("{{znaczenia}}\n''przymiotnik jakościowy''", LANG)
     '===znaczenia===\n===przymiotnik jakościowy==='
-    >>> adjust_wikicode("{{znaczenia}}\n''rzeczownik, rodzaj żeński''", "pl")
+    >>> adjust_wikicode("{{znaczenia}}\n''rzeczownik, rodzaj żeński''", LANG)
     '===znaczenia===\n===rzeczownik===\n{{gender|rodzaj żeński}}'
-    >>> adjust_wikicode("{{synonimy}}", "pl")
+    >>> adjust_wikicode("{{synonimy}}", LANG)
     '===synonimy==='
     """
     has_variants = "''{{forma " in code

@@ -9,6 +9,8 @@ from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://pt.wiktionary.org/wiki/Especial:RandomRootpage"
 
 module_trans = "Módulo"
@@ -114,29 +116,29 @@ RE_GENDERS = re.compile(r"\{\{(?:(?:g|gramática)\|)?+([fmc2g]++)(?:\|id=\w++)?\
 
 def find_genders(code: str, locale: str) -> list[str]:
     r"""
-    >>> find_genders("", "pt")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("{{oxítona|ca|brum}}, {{mf}}", "pt")
+    >>> find_genders("{{oxítona|ca|brum}}, {{mf}}", LANG)
     ['f', 'm']
-    >>> find_genders("'''COPOM''', {{m}}", "pt")
+    >>> find_genders("'''COPOM''', {{m}}", LANG)
     ['m']
-    >>> find_genders("{{oxítona|ta|tu}}, {{gramática|f}}", "pt")
+    >>> find_genders("{{oxítona|ta|tu}}, {{gramática|f}}", LANG)
     ['f']
-    >>> find_genders("{{oxítona|ta|tu}}, {{g|f}}", "pt")
+    >>> find_genders("{{oxítona|ta|tu}}, {{g|f}}", LANG)
     ['f']
-    >>> find_genders("{{oxítona|ta|tu}}, {{g|c}}", "pt")
+    >>> find_genders("{{oxítona|ta|tu}}, {{g|c}}", LANG)
     ['c']
-    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{c2g}}", "pt")
+    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{c2g}}", LANG)
     ['f', 'm']
-    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{gramática|2g}}", "pt")
+    >>> find_genders("{{paroxítona|pau|lis|ta}}, {{gramática|2g}}", LANG)
     ['f', 'm']
-    >>> find_genders("{{oxítona|co|tur|niz|id=pt}}, {{gramática|f|id=pt}}", "pt")
+    >>> find_genders("{{oxítona|co|tur|niz|id=pt}}, {{gramática|f|id=pt}}", LANG)
     ['f']
-    >>> find_genders("'''ANTT''', {{gramática|f}}\n'''ANTT''', {{gramática|m}}", "pt")
+    >>> find_genders("'''ANTT''', {{gramática|f}}\n'''ANTT''', {{gramática|m}}", LANG)
     ['f', 'm']
-    >>> find_genders("{{paroxítona|an|go|la}} {{gramática|2g}}\n{{paroxítona|an|go|la}} {{gramática|m}}\n{{paroxítona|an|go|la}} {{gramática|f}}", "pt")
+    >>> find_genders("{{paroxítona|an|go|la}} {{gramática|2g}}\n{{paroxítona|an|go|la}} {{gramática|m}}\n{{paroxítona|an|go|la}} {{gramática|f}}", LANG)
     ['f', 'm']
-    >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", "pt")
+    >>> find_genders("{{paroxítona|chi|no|ca}}, {{g|f}}\n{{paroxítona|chi|no|ca}}, {{g|mf}}", LANG)
     ['f', 'm']
     """
     res: set[str] = set()
@@ -156,18 +158,18 @@ RE_PRONS2 = re.compile(r"\{AFI\|\[([^\]]++)\]")
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     r"""
-    >>> find_pronunciations("", "pt")
+    >>> find_pronunciations("", LANG)
     []
 
-    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: {{AFI|/bu.'se.ta/}}", "pt")
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: {{AFI|/bu.'se.ta/}}", LANG)
     ["BR: /bu.'se.ta/"]
-    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: /bu.'se.ta/", "pt")
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Brasil===\n* [[AFI]]: /bu.'se.ta/", LANG)
     ["BR: /bu.'se.ta/"]
 
-    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Portugal===\n* AFI: {{AFI|/bɐ.ˈteɾ/}}", "pt")
+    >>> find_pronunciations("=={{pronúncia|pt}}==\n===Portugal===\n* AFI: {{AFI|/bɐ.ˈteɾ/}}", LANG)
     ['PT: /bɐ.ˈteɾ/']
 
-    >>> find_pronunciations("=={{Pronúncia|pt}}==\n===Brasil===\n====Paulistana e Caipira====\n* [[AFI]]: {{AFI|[aw.ˈgẽj]}}\n* [[X-SAMPA]]: /aw.\"ge~j/\n===Portugal===\n* AFI: {{AFI|/aɫ.ˈɡɐ̃j̃/}}", "pt")
+    >>> find_pronunciations("=={{Pronúncia|pt}}==\n===Brasil===\n====Paulistana e Caipira====\n* [[AFI]]: {{AFI|[aw.ˈgẽj]}}\n* [[X-SAMPA]]: /aw.\"ge~j/\n===Portugal===\n* AFI: {{AFI|/aɫ.ˈɡɐ̃j̃/}}", LANG)
     ['PT: /aɫ.ˈɡɐ̃j̃/', 'BR: /aw.ˈgẽj/']
     """
     lines: list[str] = []
@@ -253,82 +255,82 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode("={{-pt-}}=\n=={{Substantivo|pt}}<sup>1</sup>==", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n=={{Substantivo|pt}}<sup>1</sup>==", LANG)
     '={{-pt-}}=\n=={{Substantivo 1|pt}}=='
-    >>> adjust_wikicode("={{-pt-}}=\n==Substantivo<sup>2</sup>==", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n==Substantivo<sup>2</sup>==", LANG)
     '={{-pt-}}=\n=={{Substantivo 2}}=='
 
-    >>> adjust_wikicode('={{-pt-}}=\n#<li value="2"> [[toca]], [[covil]]', "pt")
+    >>> adjust_wikicode('={{-pt-}}=\n#<li value="2"> [[toca]], [[covil]]', LANG)
     '={{-pt-}}=\n# [[toca]], [[covil]]'
 
-    >>> adjust_wikicode("={{-pt-}}=\n:# [[plural]] [[de]] '''[[anão]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n:# [[plural]] [[de]] '''[[anão]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|anão}}'
-    >>> adjust_wikicode("={{-pt-}}=\n* [[plural]] [[de]] '''[[anão]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n* [[plural]] [[de]] '''[[anão]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|anão}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# [[plural]] [[de]] '''[[anão]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[plural]] [[de]] '''[[anão]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|anão}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", LANG)
     '={{-pt-}}=\n# {{flexion|anão}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n*{{f}} de [[objetivo]]", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n*{{f}} de [[objetivo]]", LANG)
     '={{-pt-}}=\n# {{flexion|objetivo}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# plural de [[anão]]", LANG)
     '={{-pt-}}=\n# {{flexion|anão}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# feminino plural de [[sardenho]]", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# feminino plural de [[sardenho]]", LANG)
     '={{-pt-}}=\n# {{flexion|sardenho}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# feminino de '''[[frito#Português|frito]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# feminino de '''[[frito#Português|frito]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|frito}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# [[feminino]] de [[rígido]]", "pt", word="rígida")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[feminino]] de [[rígido]]", LANG, word="rígida")
     '={{-pt-}}=\n# {{flexion|rígido}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da segunda pessoa do plural do verbo '''amar'''", LANG)
     '={{-pt-}}=\n# {{flexion|amar}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[terceira pessoa]] do [[plural]] do [[futuro do pretérito]] do verbo '''[[ensimesmar]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("={{-pt-}}=\n#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n#[[terceira]] [[pessoa]] do [[singular]]  do [[presente]] [[indicativo]]  do [[verbo]] '''[[ensimesmar]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("={{-pt-}}=\n#terceira pessoa do singular  do presente indicativo  do verbo [[ensimesmar]]", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n#terceira pessoa do singular  do presente indicativo  do verbo [[ensimesmar]]", LANG)
     '={{-pt-}}=\n# {{flexion|ensimesmar}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da [[terceira pessoa]] do [[plural]] do verbo '''[[acarretar]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[infinitivo pessoal]] da [[terceira pessoa]] do [[plural]] do verbo '''[[acarretar]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|acarretar}}'
-    >>> adjust_wikicode("={{-pt-}}=\n# [[masculino]] [[singular]] do [[particípio]] [[passado]] do [[verbo]] '''[[achatar#{{pt}}|achatar]]'''.", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[masculino]] [[singular]] do [[particípio]] [[passado]] do [[verbo]] '''[[achatar#{{pt}}|achatar]]'''.", LANG)
     '={{-pt-}}=\n# {{flexion|achatar}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n# [[particípio]] do verbo '''[[abotecar]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n# [[particípio]] do verbo '''[[abotecar]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|abotecar}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n#plural de '''[[úlcera#{{pt}}|úlcera]]'''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n#plural de '''[[úlcera#{{pt}}|úlcera]]'''", LANG)
     '={{-pt-}}=\n# {{flexion|úlcera}}'
 
-    >>> adjust_wikicode("={{-pt-}}=\n'''anões''' ''masculino ''", "pt")
+    >>> adjust_wikicode("={{-pt-}}=\n'''anões''' ''masculino ''", LANG)
     "={{-pt-}}=\n'''anões''' '{{m}}"
 
     >>> from ... import context
-    >>> _ = context.reset("pt")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("formolado")
-    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", "pt", word="formolado")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=formolado|mp=formolados|fs=formolada|fp=formoladas}}", LANG, word="formolado")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|formolada}}\n# {{rev-flexion|formoladas}}\n# {{rev-flexion|formolados}}'
 
     >>> context.new_word("focinho")
-    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}", "pt", word="focinho")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=focinho|mp=focinhos|ms-div=fo.<u>ci</u>.nho{{#if:|<br/>{{{3}}}o}}|mp-div=fo.<u>ci</u>.nhos{{#if:|<br/>{{{3}}}os}}}}", LANG, word="focinho")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|focinhos}}'
 
     >>> context.new_word("che")
-    >>> adjust_wikicode("={{-pt-}}=\n{{flex.gl|ms=che|mp=ches}} (è)", "pt", word="che")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.gl|ms=che|mp=ches}} (è)", LANG, word="che")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|ches}}'
 
     >>> context.new_word("kelvinometria")
-    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", "pt", word="kelvinometria")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|fs=kelvinometria|fp=kelvinometrias|fs-div={{{2}}}a|fp-div={{{2}}}as}}", LANG, word="kelvinometria")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|kelvinometrias}}'
 
     >>> context.new_word("abaixador")
-    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", "pt", word="abaixador")
+    >>> adjust_wikicode("={{-pt-}}=\n{{flex.pt|ms=abaixador|mp=abaixadores|fs=abaixadora|fp=abaixadoras |ms-div=a.bai.xa.<u>dor</u>|mp-div=a.bai.xa.<u>do</u>.res|fs-div=a.bai.xa.<u>do</u>.ra|fp-div=a.bai.xa.<u>do</u>.ras}}{{oxítona|a|bai|xa|dor}} {{datação|século XIV|pt}}", LANG, word="abaixador")
     '={{-pt-}}=\n==Substantivo==\n# {{rev-flexion|abaixadora}}\n# {{rev-flexion|abaixadoras}}\n# {{rev-flexion|abaixadores}}\n{{oxítona|a|bai|xa|dor}}\n{{datação|século XIV|pt}}'
 
     >>> context.new_word("ị")
-    >>> adjust_wikicode("{{flex.mult}}", "pt", word="ị")
+    >>> adjust_wikicode("{{flex.mult}}", LANG, word="ị")
     ''
     """
     for pattern, rpl in RE_CLEANUPS:

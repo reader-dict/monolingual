@@ -8,6 +8,8 @@ from . import variant_handlers as variant_handlers_mod
 from .template_adapters import adapters as template_adapters  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = (
     "https://ja.wiktionary.org/wiki/%E7%89%B9%E5%88%A5:%E3%81%8A%E3%81%BE%E3%81%8B%E3%81%9B%E8%A1%A8%E7%A4%BA"
 )
@@ -118,39 +120,39 @@ def cache_patterns(locale: str) -> list[re.Pattern[str]]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     """
-    >>> _ = context.reset("ja")
+    >>> _ = context.reset(LANG)
 
-    >>> find_pronunciations("", "ja")
+    >>> find_pronunciations("", LANG)
     []
 
     >>> context.new_word("みる")
-    >>> find_pronunciations("{{ja-pron|acc=1}}", "ja")
+    >>> find_pronunciations("{{ja-pron|acc=1}}", LANG)
     ['みる (頭高型 – [1])']
 
     >>> context.new_word("麒麟竭")
-    >>> find_pronunciations("{{ja-pron|きりんけつ|acc=2}}", "ja")
+    >>> find_pronunciations("{{ja-pron|きりんけつ|acc=2}}", LANG)
     ['きりんけつ (中高型 – [2])']
 
     >>> context.new_word("みる")
-    >>> find_pronunciations("{{ja-pron|acc=1}}", "ja")
+    >>> find_pronunciations("{{ja-pron|acc=1}}", LANG)
     ['みる (頭高型 – [1])']
 
     >>> context.new_word("貴様")
-    >>> find_pronunciations("{{ja-pron|きさま|acc=0|dev=1}}", "ja")
+    >>> find_pronunciations("{{ja-pron|きさま|acc=0|dev=1}}", LANG)
     ['きさま (平板型 – [0])']
 
     >>> context.new_word("て")
-    >>> find_pronunciations("{{ipa|te|lang=ja}}", "ja")
+    >>> find_pronunciations("{{ipa|te|lang=ja}}", LANG)
     ['/te/']
     """
     for lookup in cache_patterns(locale):
         for tpl in lookup.findall(code):
-            expanded = context.expand(tpl, "ja")
+            expanded = context.expand(tpl, LANG)
 
             if "<del>" in expanded:
                 expanded = RE_DEL_TAGS.sub("", expanded)
 
-            if locale == "ja":
+            if locale == LANG:
                 line = expanded.splitlines()[0]
                 if "東京式" in line:
                     line = RE_EXTRACT_PRON.sub(r"\1", line.split(" ", 1)[1], count=1)
@@ -275,38 +277,38 @@ def adjust_wikicode(
     word: str = "",
 ) -> str:
     r"""
-    >>> adjust_wikicode("=={{L|ja}}==\n==={{etym}}:いる===", "ja", word="いる")
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{etym}}:いる===", LANG, word="いる")
     '=={{L|ja}}==\n==={{etym}}==='
-    >>> adjust_wikicode("=={{L|ja}}==\n=== {{etym}}1 ===", "ja", word="いる")
+    >>> adjust_wikicode("=={{L|ja}}==\n=== {{etym}}1 ===", LANG, word="いる")
     '=={{L|ja}}==\n==={{etym}}==='
-    >>> adjust_wikicode("=={{L|ja}}==\n===形容詞：硬い　固い　堅い===", "ja", word="かたい")
+    >>> adjust_wikicode("=={{L|ja}}==\n===形容詞：硬い　固い　堅い===", LANG, word="かたい")
     '=={{L|ja}}==\n===形容詞==='
 
-    >>> adjust_wikicode("=={{L|ja}}==\n==={{interj|ja}}===", "ja")
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{interj|ja}}===", LANG)
     '=={{L|ja}}==\n==={{interj==='
 
-    >>> adjust_wikicode("=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号", "ja", word="いる")
+    >>> adjust_wikicode("=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号", LANG, word="いる")
     '=={{L|ja}}==\n==記号==\n{{Wikipedia|V}}\n\n# [[バナジウム]]の元素記号'
 
-    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id="語義1"></span> [[月]]', "ja", word="新月")
+    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id="語義1"></span> [[月]]', LANG, word="新月")
     '=={{L|ja}}==\n==={{noun}}===\n# [[月]]'
-    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id=\"yadoru\"><b>やどる</b></span>。一晩宿泊する。', "ja", word="新月")
+    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span id=\"yadoru\"><b>やどる</b></span>。一晩宿泊する。', LANG, word="新月")
     '=={{L|ja}}==\n==={{noun}}===\n#<b>やどる</b>。一晩宿泊する。'
-    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span style="font-size:smaller;">（全濁字）</span>', "ja", word="重")
+    >>> adjust_wikicode('=={{L|ja}}==\n=== {{noun}} ===\n#<span style="font-size:smaller;">（全濁字）</span>', LANG, word="重")
     '=={{L|ja}}==\n==={{noun}}===\n#<small>（全濁字）</small>'
 
-    >>> _ = context.reset("ja")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("みる")
-    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語上一段活用}}", "ja", word="みる")
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語上一段活用}}", LANG, word="みる")
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|みた}}\n# {{rev-flexion|みない}}\n# {{rev-flexion|みます}}\n# {{rev-flexion|みよ}}\n# {{rev-flexion|みよう}}\n# {{rev-flexion|みること}}\n# {{rev-flexion|みれば}}\n# {{rev-flexion|みろ}}'
 
     >>> context.new_word("存続")
-    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{PAGENAME}}|する}}", "ja", word="存続")
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{PAGENAME}}|する}}", LANG, word="存続")
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|存続される}}\n# {{rev-flexion|存続した}}\n# {{rev-flexion|存続しない}}\n# {{rev-flexion|存続します}}\n# {{rev-flexion|存続しろ}}\n# {{rev-flexion|存続する}}\n# {{rev-flexion|存続すること}}\n# {{rev-flexion|存続すれば}}\n# {{rev-flexion|存続せず}}\n# {{rev-flexion|存続せよ}}'
 
     >>> context.new_word("有する")
-    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{ruby|有|ゆう}}|する}}", "ja", word="有する")
+    >>> adjust_wikicode("=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n{{日本語変格活用|{{ruby|有|ゆう}}|する}}", LANG, word="有する")
     '=={{L|ja}}==\n==={{verb}}===\n===={{conjug}}====\n# {{rev-flexion|有される}}\n# {{rev-flexion|有した}}\n# {{rev-flexion|有しない}}\n# {{rev-flexion|有します}}\n# {{rev-flexion|有しろ}}\n# {{rev-flexion|有すること}}\n# {{rev-flexion|有すれば}}\n# {{rev-flexion|有せず}}\n# {{rev-flexion|有せよ}}'
     """
     for pattern, rpl in RE_CLEANUPS:

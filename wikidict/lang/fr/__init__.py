@@ -10,6 +10,8 @@ from .template_adapters import adapters as template_adapters  # noqa: F401
 from .template_overrides import overrides as template_overrides  # noqa: F401
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "http://tools.wmflabs.org/anagrimes/hasard.php?langue=fr"
 
 template_trans = "Modèle"
@@ -142,15 +144,15 @@ def cache_gender_pattern(locale: str) -> re.Pattern[str]:
 
 def find_genders(code: str, locale: str) -> list[str]:
     """
-    >>> find_genders("", "fr")
+    >>> find_genders("", LANG)
     []
-    >>> find_genders("'''-eresse''' {{pron|(ə).ʁɛs|fr}} {{f}}", "fr")
+    >>> find_genders("'''-eresse''' {{pron|(ə).ʁɛs|fr}} {{f}}", LANG)
     ['f']
-    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{invar}}", "fr")
+    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{invar}}", LANG)
     ['inv']
-    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{i}}", "fr")
+    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{i}}", LANG)
     []
-    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{pp}}", "fr")
+    >>> find_genders("'''42''' {{pron|ka.ʁɑ̃t.dø|fr}} {{pp}}", LANG)
     []
     """
     res: set[str] = set()
@@ -171,15 +173,15 @@ def cache_pron_pattern(locale: str) -> re.Pattern[str]:
 
 def find_pronunciations(code: str, locale: str) -> list[str]:
     r"""
-    >>> find_pronunciations("", "fr")
+    >>> find_pronunciations("", LANG)
     []
-    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}", "fr")
+    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}", LANG)
     ['\\ɑ\\']
-    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}, {{pron|a|fr}}", "fr")
+    >>> find_pronunciations("'''a''' {{pron|ɑ|fr}}, {{pron|a|fr}}", LANG)
     ['\\ɑ\\']
-    >>> find_pronunciations("{{pron|un|fr} {{pron|ɔ̃|fr}}\n'''fongus''' {{pron|fɔ̃.ɡys|fr}} {{m}}", "fr")
+    >>> find_pronunciations("{{pron|un|fr} {{pron|ɔ̃|fr}}\n'''fongus''' {{pron|fɔ̃.ɡys|fr}} {{m}}", LANG)
     ['\\fɔ̃.ɡys\\']
-    >>> find_pronunciations("'''papa''' {{pron|paˈpa|conv}}", "fr")
+    >>> find_pronunciations("'''papa''' {{pron|paˈpa|conv}}", LANG)
     ['\\paˈpa\\']
     """
     for line in code.splitlines():
@@ -252,54 +254,54 @@ def adjust_wikicode(
 ) -> str:
     # sourcery skip: inline-immediately-returned-variable
     r"""
-    >>> adjust_wikicode('== {{langue|fr}} ==\n<li value="2"> Qui a rapport avec un type de [[discours]].', "fr")
+    >>> adjust_wikicode('== {{langue|fr}} ==\n<li value="2"> Qui a rapport avec un type de [[discours]].', LANG)
     '== {{langue|fr}} ==\n Qui a rapport avec un type de [[discours]].'
 
-    >>> adjust_wikicode("== {{langue|fr}} ==\n{{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n{{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}", LANG)
     '== {{langue|fr}} ==\n# {{sinogram-noimg|它|\\nclefhz1=宀|clefhz2=2|\\nnbthz1=1-5|nbthz2=5|\\nm4chz1=3|m4chz2=3071<sub>1</sub>|\\nunihz=5B83|\\ngbhz1= |gbhz2=-|\\nb5hz1=A1|b5hz2=A5A6|\\ncjhz1=J|cjhz2=十心|cjhz3=JP}}'
 
-    >>> adjust_wikicode("== {{langue|fr}} ==\n* ''Féminin (singulier) de'' {{lien|terne|fr}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n* ''Féminin (singulier) de'' {{lien|terne|fr}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|terne}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Féminin singulier de'' {{lien|terne|fr}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Féminin singulier de'' {{lien|terne|fr}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|terne}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Féminin singulier de l’[[adjectif]]'' [[pressant]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Féminin singulier de l’[[adjectif]]'' [[pressant]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|pressant}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Féminin (singulier) de '' [[chacun]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Féminin (singulier) de '' [[chacun]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|chacun}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de ''[[anisophylle]]''.''", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de ''[[anisophylle]]''.''", LANG)
     '== {{langue|fr}} ==\n# {{flexion|anisophylle}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' [[antiproton#fr|antiproton]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' [[antiproton#fr|antiproton]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|antiproton}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' {{lien|anisophylle|fr}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|anisophylle}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel'' ''de ''[[nécrophage]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel'' ''de ''[[nécrophage]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|nécrophage}}'
 
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir#fr|venir]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir#fr|venir]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|venir}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|venir}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Participe passé masculin singulier du verbe'' [[pouvoir]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Participe passé masculin singulier du verbe'' [[pouvoir]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|pouvoir}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Participe passé masculin singulier du verbe'' [[pouvoir#fr|pouvoir]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Participe passé masculin singulier du verbe'' [[pouvoir#fr|pouvoir]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|pouvoir}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Forme de la deuxième personne du singulier de l’impératif [[mange]], de'' [[manger]], employée devant [[en]] et [[y]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|manger}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|manger|fr}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Troisième personne du singulier du subjonctif présent du verbe'' {{lien|manger|fr}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|manger}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''[[troisième personne du singulier|Troisième personne du singulier]] du [[subjonctif présent]] du [[verbe auxiliaire]] '' [[avoir]].", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''[[troisième personne du singulier|Troisième personne du singulier]] du [[subjonctif présent]] du [[verbe auxiliaire]] '' [[avoir]].", LANG)
     '== {{langue|fr}} ==\n# {{flexion|avoir}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'').", LANG)
     "== {{langue|fr}} ==\n#''Ancienne forme de la troisième personne du pluriel de l’indicatif imparfait du verbe'' [[venir]] (on écrit maintenant ''[[venaient]]'')."
 
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' {{lien|anisophylle|fr}}.\n*''Pluriel de'' {{lien|anisophylle|fr}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Pluriel de'' {{lien|anisophylle|fr}}.\n*''Pluriel de'' {{lien|anisophylle|fr}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|anisophylle}}\n# {{flexion|anisophylle}}'
 
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination du participe présent au féminin singulier du verbe'' {{lien|interpolare|it}} ''avec le pronom'' {{lien|mi|it|sens=me}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|interpolare}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination de la deuxième personne du singulier de l’impératif présent du verbe'' {{lien|agguagliare|it}}'' avec le pronom personnel masculin singulier'' {{lien|lo|it|sens=le}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|agguagliare}}'
-    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.", "fr")
+    >>> adjust_wikicode("== {{langue|fr}} ==\n# ''Agglutination du verbe'' {{lien|sparlare|it}} ''avec le pronom personnel féminin singulier'' {{lien|la|it}}.", LANG)
     '== {{langue|fr}} ==\n# {{flexion|sparlare}}'
     """
     for pattern, rpl in RE_CLEANUPS:
@@ -366,10 +368,10 @@ def test_regressions() -> None:
     """
     >>> from ... import context
 
-    >>> _ = context.reset("fr")
+    >>> _ = context.reset(LANG)
 
     Issue #2716:
     >>> context.new_word("magnéton de Bohr")
-    >>> context.expand("{{unité|μ<sub>B</sub>}}", "fr")
+    >>> context.expand("{{unité|μ<sub>B</sub>}}", LANG)
     'μ<sub>B</sub>'
     """

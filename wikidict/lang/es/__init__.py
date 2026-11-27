@@ -8,6 +8,8 @@ from ... import context, lang, utils
 from . import variant_handlers as variant_handlers_mod
 from .variant_handlers import handlers as variant_handlers  # noqa: F401
 
+LANG = __name__.rsplit(".", 1)[-1]
+
 random_word_url = "https://es.wiktionary.org/wiki/Especial:Aleatorio_en_categor%C3%ADa/Espa%C3%B1ol"
 
 module_trans = "Módulo"
@@ -93,31 +95,31 @@ def find_pronunciations(
     pattern: re.Pattern[str] = re.compile(r"(\{\{pron-graf[^\}]*+\}\})"),
 ) -> list[str]:
     r"""
-    >>> _ = context.reset("es")
+    >>> _ = context.reset(LANG)
 
-    >>> find_pronunciations("", "es")
+    >>> find_pronunciations("", LANG)
     []
 
     >>> context.new_word("también")
-    >>> find_pronunciations("{{pron-graf}}", "es")
+    >>> find_pronunciations("{{pron-graf}}", LANG)
     ['[t̪ãmˈbjẽn]']
 
     >>> context.new_word("hala")
-    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321_(spa)-Rodelar-ala.wav|h1=ala}}", "es")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321_(spa)-Rodelar-ala.wav|h1=ala}}", LANG)
     ['[ˈala]']
 
     >>> context.new_word("bicicleta")
-    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-AdrianAbdulBaha-bicicleta.wav|1aunota1=Colombia}}", "es")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-AdrianAbdulBaha-bicicleta.wav|1aunota1=Colombia}}", LANG)
     ['Esp.: [biθiˈklet̪a]', 'Am.: [bisiˈklet̪a]']
 
     >>> context.new_word("Guyana")
-    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-Rodelar-Guyana.wav|v1=Guayana|p1=Guyena}}", "es")
+    >>> find_pronunciations("{{pron-graf|1audio1=LL-Q1321 (spa)-Rodelar-Guyana.wav|v1=Guayana|p1=Guyena}}", LANG)
     ['[guˈʝana]']
     """
     pronunciations = defaultdict(set)
 
     for tpl in pattern.findall(code):
-        expanded = context.expand(tpl, "es").splitlines()
+        expanded = context.expand(tpl, LANG).splitlines()
         for line1, line2 in itertools.pairwise(expanded):
             if not (prons := RE_FIND_PRONS.findall(line2)):
                 continue
@@ -156,14 +158,14 @@ def adjust_wikicode(
     # sourcery skip: inline-immediately-returned-variable
     r"""
     >>> from ... import context
-    >>> _ = context.reset("es")
+    >>> _ = context.reset(LANG)
 
     >>> context.new_word("autocompletar")
-    >>> adjust_wikicode("== {{lengua|es}} ==\n{{es.v}}", "es", word="autocompletar")
+    >>> adjust_wikicode("== {{lengua|es}} ==\n{{es.v}}", LANG, word="autocompletar")
     '== {{lengua|es}} ==\n;1: {{rev-flexion|autocompleta}}\n;1: {{rev-flexion|autocompletaba}}\n;1: {{rev-flexion|autocompletabais}}\n;1: {{rev-flexion|autocompletaban}}\n;1: {{rev-flexion|autocompletabas}}\n;1: {{rev-flexion|autocompletad}}\n;1: {{rev-flexion|autocompletado}}\n;1: {{rev-flexion|autocompletamos}}\n;1: {{rev-flexion|autocompletan}}\n;1: {{rev-flexion|autocompletando}}\n;1: {{rev-flexion|autocompletara}}\n;1: {{rev-flexion|autocompletarais}}\n;1: {{rev-flexion|autocompletaran}}\n;1: {{rev-flexion|autocompletaras}}\n;1: {{rev-flexion|autocompletare}}\n;1: {{rev-flexion|autocompletareis}}\n;1: {{rev-flexion|autocompletaremos}}\n;1: {{rev-flexion|autocompletaren}}\n;1: {{rev-flexion|autocompletares}}\n;1: {{rev-flexion|autocompletaron}}\n;1: {{rev-flexion|autocompletará}}\n;1: {{rev-flexion|autocompletarán}}\n;1: {{rev-flexion|autocompletarás}}\n;1: {{rev-flexion|autocompletaré}}\n;1: {{rev-flexion|autocompletaréis}}\n;1: {{rev-flexion|autocompletaría}}\n;1: {{rev-flexion|autocompletaríais}}\n;1: {{rev-flexion|autocompletaríamos}}\n;1: {{rev-flexion|autocompletarían}}\n;1: {{rev-flexion|autocompletarías}}\n;1: {{rev-flexion|autocompletas}}\n;1: {{rev-flexion|autocompletase}}\n;1: {{rev-flexion|autocompletaseis}}\n;1: {{rev-flexion|autocompletasen}}\n;1: {{rev-flexion|autocompletases}}\n;1: {{rev-flexion|autocompletaste}}\n;1: {{rev-flexion|autocompletasteis}}\n;1: {{rev-flexion|autocomplete}}\n;1: {{rev-flexion|autocompletemos}}\n;1: {{rev-flexion|autocompleten}}\n;1: {{rev-flexion|autocompletes}}\n;1: {{rev-flexion|autocompleto}}\n;1: {{rev-flexion|autocompletá}}\n;1: {{rev-flexion|autocompletábamos}}\n;1: {{rev-flexion|autocompletáis}}\n;1: {{rev-flexion|autocompletáramos}}\n;1: {{rev-flexion|autocompletáremos}}\n;1: {{rev-flexion|autocompletás}}\n;1: {{rev-flexion|autocompletásemos}}\n;1: {{rev-flexion|autocompleté}}\n;1: {{rev-flexion|autocompletéis}}\n;1: {{rev-flexion|autocompletés}}\n;1: {{rev-flexion|autocompletó}}'
 
     >>> context.new_word("superscribir")
-    >>> adjust_wikicode("== {{lengua|es}} ==\n{{es.v}}", "es", word="superscribir")
+    >>> adjust_wikicode("== {{lengua|es}} ==\n{{es.v}}", LANG, word="superscribir")
     '== {{lengua|es}} ==\n;1: {{rev-flexion|superscriba}}\n;1: {{rev-flexion|superscribamos}}\n;1: {{rev-flexion|superscriban}}\n;1: {{rev-flexion|superscribas}}\n;1: {{rev-flexion|superscribe}}\n;1: {{rev-flexion|superscriben}}\n;1: {{rev-flexion|superscribes}}\n;1: {{rev-flexion|superscribid}}\n;1: {{rev-flexion|superscribiendo}}\n;1: {{rev-flexion|superscribiera}}\n;1: {{rev-flexion|superscribierais}}\n;1: {{rev-flexion|superscribieran}}\n;1: {{rev-flexion|superscribieras}}\n;1: {{rev-flexion|superscribiere}}\n;1: {{rev-flexion|superscribiereis}}\n;1: {{rev-flexion|superscribieren}}\n;1: {{rev-flexion|superscribieres}}\n;1: {{rev-flexion|superscribieron}}\n;1: {{rev-flexion|superscribiese}}\n;1: {{rev-flexion|superscribieseis}}\n;1: {{rev-flexion|superscribiesen}}\n;1: {{rev-flexion|superscribieses}}\n;1: {{rev-flexion|superscribimos}}\n;1: {{rev-flexion|superscribiremos}}\n;1: {{rev-flexion|superscribirá}}\n;1: {{rev-flexion|superscribirán}}\n;1: {{rev-flexion|superscribirás}}\n;1: {{rev-flexion|superscribiré}}\n;1: {{rev-flexion|superscribiréis}}\n;1: {{rev-flexion|superscribiría}}\n;1: {{rev-flexion|superscribiríais}}\n;1: {{rev-flexion|superscribiríamos}}\n;1: {{rev-flexion|superscribirían}}\n;1: {{rev-flexion|superscribirías}}\n;1: {{rev-flexion|superscribiste}}\n;1: {{rev-flexion|superscribisteis}}\n;1: {{rev-flexion|superscribiéramos}}\n;1: {{rev-flexion|superscribiéremos}}\n;1: {{rev-flexion|superscribiésemos}}\n;1: {{rev-flexion|superscribió}}\n;1: {{rev-flexion|superscribo}}\n;1: {{rev-flexion|superscribáis}}\n;1: {{rev-flexion|superscribás}}\n;1: {{rev-flexion|superscribí}}\n;1: {{rev-flexion|superscribía}}\n;1: {{rev-flexion|superscribíais}}\n;1: {{rev-flexion|superscribíamos}}\n;1: {{rev-flexion|superscribían}}\n;1: {{rev-flexion|superscribías}}\n;1: {{rev-flexion|superscribís}}\n;1: {{rev-flexion|superscripto}}\n;1: {{rev-flexion|superscrito}}'
     """
     # Synonyms
