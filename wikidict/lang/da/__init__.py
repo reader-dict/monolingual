@@ -52,6 +52,7 @@ sections = (
     "symbol",
     "synonymer",
     "sætning",
+    "tegn",
     "ubestemt prononmen",
     "ubestemt pronomen",
     "ubestemt talord",
