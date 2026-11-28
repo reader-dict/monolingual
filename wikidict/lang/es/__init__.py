@@ -38,6 +38,7 @@ core_sections = (
     "preposición",
     "pronombre",
     "refrán",
+    "sigla",
     "sufijo",
     "sustantivo",
     "verbo",
