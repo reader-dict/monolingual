@@ -662,6 +662,8 @@ def find_sections(word: str, code: str, lang_src: str, lang_dst: str) -> tuple[l
                     )
                     if pos != "Trans" and genders and "|" not in pos:
                         pos += f"|{fmt_genders(genders)}"
+                elif lang_src == "es" and pos != "Trans" and "femenino" in title:
+                    pos += f"|{fmt_genders(['f'])}"
             ret[pos].append(section)
         elif DEBUG_SECTIONS == "1":
             print(f"Title section rejected: {title!r} {word=}", flush=True)
