@@ -1016,6 +1016,9 @@ def clean(text: str) -> str:
     # ES - clean-up synonyms
     if ":*<b>Sinónimo" in text:
         text = text.replace(":*<b>Sinónimo", "<b>Sinónimo")
+    # ES - clean-up usage
+    if ":*<b>Uso" in text:
+        text = text.replace(":*<b>Uso", "<b>Uso")
 
     return text.strip()
 

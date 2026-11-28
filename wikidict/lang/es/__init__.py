@@ -88,7 +88,6 @@ templates_ignored = (
     "{{revisar línea",
     "{{revisión",
     "{{sin referencias",
-    "{{uso",
 )
 
 RE_FIND_PRONS = re.compile(r"\|(\[[^\[\]]++\])")
@@ -184,6 +183,9 @@ def adjust_wikicode(
 
     # Synonyms
     code = code.replace("{{sinónimo", "## {{sinónimo")
+
+    # Usage
+    code = code.replace("{{uso", "## {{uso")
 
     # Remove templates used a sublist since they interfer with how list are retreived
     code = re.sub(rf"(?m)^(?:{'|'.join(templates_ignored)})[^\n]++", "", code)

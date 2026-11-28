@@ -8,7 +8,10 @@
         ],
         {
             "Sufijo": [
-                "Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos."
+                "Forma aumentativos, a veces despectivos, a partir de adjetivos y sustantivos.",
+                [
+                    "<b>Uso:</b> a veces se combina con -ar formando <i>-aracho</i>: \"vivaracho\", \"dicharacho\"."
+                ]
             ]
         },
         [],
@@ -64,6 +67,9 @@
                     "<b>Sinónimos:</b> pasquín, cedulón."
                 ],
                 "Escrito que se fija sobre un cartel en un lugar público, en donde se invita a otra persona a una contienda.",
+                [
+                    "<b>Uso:</b> anticuado."
+                ],
                 "Escrito que se fija sobre un cartel en un lugar público, en donde se extorsiona al enemigo en una negociación, por ejemplo, en lo que respecta a la liberación de prisioneros.",
                 "Prestigio.",
                 [
@@ -87,6 +93,7 @@
             "Verbo": [
                 "Ingerir o tomar alimentos.",
                 [
+                    "<b>Uso:</b> se emplea también como transitivo, se emplea también como pronominal. comerse.",
                     "<b>Sinónimo:</b> meterse entre pecho y espalda&nbsp;(coloquial).."
                 ],
                 "Tomar la principal comida del día.",
@@ -101,9 +108,13 @@
                 ],
                 "Juegos: En los juegos de mesa, eliminar una pieza del contrario.",
                 "Omitir elementos de información cuando se habla o escribe.",
+                [
+                    "<b>Uso:</b> se emplea también como pronominal. comerse."
+                ],
                 "Llevar encogidas algunas prendas de ropa, como los calcetines.",
                 "Tener relaciones sexuales con alguien.",
                 [
+                    "<b>Uso:</b> coloquial, malsonante, se emplea también como pronominal. comerse (a alguien).",
                     "<b>Sinónimos:</b> coger, cachar&nbsp;(Perú), follar, hacer el amor.."
                 ]
             ]
@@ -197,6 +208,9 @@
                 "En ciertos juegos de naipes, acción de indicar qué cartas se guardan y por qué.",
                 "Autorización para ingresar en ciertos recintos reservados, tales como oficinas, recámaras, etc., en especial de palacios o sitios de gobierno.",
                 "Anatomía: Zona sin cabello en la parte superior de la frente.",
+                [
+                    "<b>Uso:</b> se emplea con frecuencia en plural.."
+                ],
                 "Comercio: Cantidad de dinero que ingresa en una caja o cuenta.",
                 "Comercio: Anotación o partida en el haber que indica dinero entrante (el aumento de un activo o la disminución de un pasivo).",
                 "Comercio: Cuota inicial; primer pago que se hace en la compra de algo a crédito o a plazos.",
@@ -261,7 +275,10 @@
         {
             "Interjección": [
                 "Úsase para expresar agradecimiento.",
-                "Irónicamente expresa desagrado, desprecio o enfado."
+                "Irónicamente expresa desagrado, desprecio o enfado.",
+                [
+                    "<b>Uso:</b> coloquial, irónico."
+                ]
             ]
         },
         ["gracia"],
@@ -347,8 +364,14 @@
                 "Zootomía: Parte más o menos prolongada de la cabeza de algunos animales en que están la boca y las narices.",
                 "Anatomía: Hocico de una persona cuando tiene muy abultados los labios.",
                 "Cara.",
+                [
+                    "<b>Uso:</b> coloquial.."
+                ],
                 "Gesto que denota enojo o enfado.",
                 "Forma despectiva para referirse a la boca de alguien.",
+                [
+                    "<b>Uso:</b> despectivo, malsonante."
+                ],
                 "Boca de una persona, especialmente de la que dice malas palabras."
             ]
         },
@@ -364,10 +387,16 @@
         ],
         {
             "Artículo": [
-                "Artículo determinado masculino plural. El singular es lo."
+                "Artículo determinado masculino plural. El singular es lo.",
+                [
+                    "<b>Uso:</b> generalmente cuando el sustantivo se toma por conocido entre el emisor y receptor."
+                ]
             ],
             "Pronombre": [
-                "<i>Pronombre personal masculino de objeto directo (acusativo), tercera persona del plural.</i>"
+                "<i>Pronombre personal masculino de objeto directo (acusativo), tercera persona del plural.</i>",
+                [
+                    "<b>Uso:</b> puede emplearse como enclítico, pero no se usa como objeto de preposición, se usa la forma masculina para referirse, cualquier grupo del que al menos un miembro es de género masculino."
+                ]
             ]
         },
         [],
