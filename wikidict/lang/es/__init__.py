@@ -32,6 +32,8 @@ core_sections = (
     "locución",
     "onomatopeya",
     "partícula",
+    "posposición",
+    "postposición",
     "prefijo",
     "preposición",
     "pronombre",
