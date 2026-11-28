@@ -58,7 +58,7 @@ variant_templates = (
 )
 
 reverse_variant_titles = (
-    "{{es.v",
+    "{{es.",
     "{{inflect.",
 )
 reverse_variant_templates = ("{{rev-flexion",)
