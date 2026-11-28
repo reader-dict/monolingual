@@ -1148,7 +1148,7 @@ RE_FIND_TEMPLATES = re.compile(r"(\{\{(?!\}\})(?:[^{}]++|\{(?!\{)|\}(?!\}))++\}\
 RE_FORMULAS = [
     ("chem", re.compile(r"<chem>(.+?)</chem>"), convert_chem),
     ("hiero", re.compile(r"<hiero>(.+?)</hiero>"), convert_hiero),
-    ("math", re.compile(r"<math>(.+?)</math>"), convert_math),
+    ("math", re.compile(r"(?s)<math>(.+?)</math>"), convert_math),
 ]
 
 

@@ -44,6 +44,10 @@ def test_parse_word(
     code = page(word, locale)
     details = parse_word(word, code, locale, force=True)
     assert details
+
+    # To know what to put in test-cases.json, you can use this helper:
+    # assert 0, details.tojson()
+
     assert pronunciations == details.pronunciations
     assert etymology == details.etymology
     assert OrderedDict(definitions) == details.definitions

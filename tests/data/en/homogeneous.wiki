@@ -1,0 +1,153 @@
+==English==
+{{wikidata lexeme|L253930}}
+
+===Alternative forms===
+* {{alt|en|homogenous||may be considered incorrect; see usage note at [[homogenous#Usage notes|§ Usage notes]]}}
+
+===Etymology===
+From {{der|en|la-med|homogeneus}}, from {{der|en|grc|ὁμογενής||of the same race, family or kind}}, from {{m|grc|ὁμός||same}} + {{m|grc|γένος||kind}}. Compare {{m|en|homo-||same}} and {{m|en|-ous|pos=adjectival suffix}}.
+
+===Pronunciation===
+* {{IPA|en|/ˌhɒm.ə(ʊ)ˈd͡ʒiː.nɪəs/|/ˌhəʊ.mə(ʊ)ˈd͡ʒiː.nɪəs/|a=UK}}
+** {{audio|en|En-uk-homogeneous.ogg|a=Gloucestershire}}
+* {{IPA|en|/ˌhoʊ.moʊˈd͡ʒi.ni.əs/|/ˌhoʊ.mə-/|/-ˈd͡ʒɛ-/|/-njəs/|/həˈmɑ.d͡ʒə.nəs/|a=US}}
+** {{audio|en|LL-Q1860 (eng)-Knabrupt-homogeneous (5 syll).wav|IPA=/ˌhoʊ.moʊˈd͡ʒi.ni.əs/|a=GA}}
+** {{audio|en|LL-Q1860 (eng)-Knabrupt-homogeneous (4 syll).wav|IPA=/ˌhoʊ.moʊˈd͡ʒi.njəs/|a=GA}}
+** {{audio|en|LL-Q1860 (eng)-Knabrupt-homogeneous (4 syll, antepenult).wav|IPA=/həˈmɑ.d͡ʒə.nəs/|a=GA}}
+
+===Adjective===
+{{en-adj|-}}
+
+# Of the same kind; [[alike]], [[similar]].
+# Having the same [[composition]] throughout; of [[uniform]] make-up.
+#* {{quote-book|en|year=1946|author=w:Bertrand Russell|title=History of Western Philosophy|section=I.25
+|passage=Their citizens were not of '''homogeneous''' origin, but were from all parts of Greece.}}
+#* {{quote-journal|en|author=Jirapornchai Suksaeree, Laksana Charoenchai, Chaowalit Monton, Tun Chusut, Apirak Sakunpak, Wiwat Pichayakorn and Prapaporn Boonme|title=Preparation of a Pseudolatex-Membrane for Ketoprofen Transdermal Drug Delivery Systems|journal=Industrial & Engineering Chemistry Research|volume=52|issue=45|doi=10.1021/ie402345a|date=2013-10-14|passage=All pseudolatex formulations were '''homogeneous''' and smooth in texture and elegant in appearance.}}
+# {{lb|en|chemistry}} In the same [[state of matter]].
+# {{lb|en|mathematics}} ''In any of several technical senses'' [[uniform]]; [[scalable]]; having its behavior or form [[determined]] by, or the same as, its behavior on or form at a smaller component (of its domain of definition, of itself, etc.).
+## {{non-gloss|Of [[polynomial]]s, [[function]]s, [[equation]]s, [[system]]s of equations, or [[linear]] [[map]]s:}}
+### {{lb|en|algebra|of a [[polynomial]]}} Such that all its nonzero [[terms]] have the same [[degree]].
+###: ''The polynomial <math>x^2+5xy+y^2</math> is '''homogeneous''' of degree 2, because <math>x^2</math>, <math>xy</math>{{,}} and <math>y^2</math> are all degree 2 monomials''
+### {{lb|en|linear algebra|by specialization|of a [[system]] of [[linear equation]]s}} Such that all the [[constant]] terms are zero.
+### {{lb|en|analysis|generalizing the case of polynomial functions|of a [[function]] <math>f</math>}} Such that if each of <math>f</math> 's inputs are multiplied by the same [[scalar]], <math>f</math> 's output is multiplied by the same scalar to some fixed power (called the ''degree of homogeneity'' or ''degree'' of <math>f</math>). {{lb|en|Formally and more generally|of a [[partial function]] <math>f</math> between [[vector spaces]] whose [[domain]] is a [[linear cone]]}} Satisfying the equality <math>f(s\mathbf{x}) = s^kf(
+\mathbf{x})</math> for some integer <math>k</math> and for all <math>\mathbf{x}</math> in the domain and <math>s</math> scalars.
+###: {{ux|en|The function <math>f(x,y)=x^2 + x^2y + y^2</math> is not '''homogeneous''' on all of <math>\mathbb{R}^2</math> because <math>f(2,2)=16 \neq 2^k*3 = 2^k f(1,1)</math> for any <math>k</math>, but <math>f</math> is '''homogeneous''' on the subspace of <math>\mathbb{R}^2</math> spanned by <math>(1,0)</math> because <math>f(\alpha x,\alpha y)=\alpha x^2 = \alpha^2 f(x,y)</math> for all <math>(x,y) \in \operatorname{Span}\{(1,0) \}</math>.}}
+### {{non-gloss|In [[ordinary differential equation]]s (by analogy with the case for polynomial and functional homogeneity):}}
+#### {{lb|en|of a [[first-order]] [[differential equation]]}} Capable of being written in the form <math>f(x,y) \mathop{dy} = g(x,y) \mathop{dx}</math> where <math>f</math> and <math>g</math> are homogeneous functions of the same degree as each other.
+#### {{lb|en|of a [[linear]] differential equation}} Having its degree-zero term equal to zero; admitting the [[trivial]] solution.
+#### {{lb|en|of a general differential equation}} Homogeneous as a function of the dependent variable and its derivatives.
+## {{non-gloss|In [[abstract algebra]] and [[geometry]]:}}
+### {{C|en|Algebra}}{{lb|en|[[ring theory]]|of an [[element]] of a [[graded ring]]}} Belonging to one of the [[summand]]s of the grading (''if the ring is graded over the [[natural number]]s and the element is in the ''k''th summand, it is said to be ''homogeneous'' of ''degree k''; if the ring is graded over a [[commutative]] [[monoid]] ''I'', and the element is an element of the ''i''th summand, it is said to be ''of grade'' i'')
+### {{lb|en|of a [[linear]] [[map]] <math>f</math> between [[vector spaces]] [[grading|graded]] by a [[commutative]] [[monoid]] <math>I</math>}} Which [[respect]]s the grading of its domain and codomain. ''Formally:'' Satisfying <math>f(V_j) \subseteq W_{i+j}</math> for fixed <math>i</math> (called the ''degree'' or ''grade'' of <math>f</math>), <math>V_j</math> the <math>j</math>th component of the grading of <math>f</math> 's domain, <math>W_k</math> the <math>k</math>th component of the grading of <math>f</math> 's codomain, and + representing the monoid operation in <math>I</math>.
+### {{lb|en|geometry|of a [[space]] [[equip]]ped with a [[group action]]}} ''Informally'': Everywhere the same, uniform, in the sense that any [[point]] can be moved to any other (via the group action) while respecting the [[structure]] of the space. ''Formally'': Such that the [[group action]] is [[transitively]] and acts by [[automorphism]]s on the space (some authors also require that the action be [[faithful]]).
+### {{lb|en|geometry}} Of or relating to [[homogeneous coordinate]]s.
+## {{non-gloss|In miscellaneous other senses:}}
+### {{lb|en|probability theory| [[Fourier analysis]]|of a [[distribution]] <math>S</math> on [[Euclidean]] n-space (or on <math>\mathbb{R}^n\backslash\{\mathbf{0}\}</math>)}} ''Informally'': Determined by its restriction to the unit sphere. ''Formally'': Such that, for all real <math>t>0</math> and [[test function]]s <math>\phi(\mathbf{x})</math>, the equality <math>S[t^{-n} \phi(\mathbf{x}/t)] = t^mS[\phi(\mathbf{x})]</math> holds for some fixed real or complex <math>m</math>.
+### {{lb|en|set theory|[[order theory]]|of a [[relation]]}} Holding between a [[set]] and itself; being an [[endorelation]].
+<!--There are also order and model theoretic and senses (see "Homogeneous (large cardinal property)" and "Model theory" on wp), but I do not understand them-->
+
+====Antonyms====
+* {{l|en|heterogeneous}}
+* {{l|en|inhomogeneous}}
+
+====Derived terms====
+{{col|en|dishomogeneous|quasihomogeneous
+|homogeneous function|time-homogeneous Markovian type
+|homogeneous polynomial
+|homogeneous mixture
+|homogeneously
+|homogeneous space
+|inhomogeneous
+|homogeneousness
+|homogeneous number
+|nonhomogeneous
+|bihomogeneous
+|homogeneous catalysis
+|prehomogeneous
+|subhomogeneous
+|superhomogeneous
+|ultrahomogeneous
+|unhomogeneous
+|homogeneous broadening
+|homogeneous coordinate
+|homogeneous radiation
+|homogeneous society
+|homogeneous ideal
+|homogeneous system
+|homogeneous equilibrium|homogeneous width}}
+
+====Related terms====
+{{col3|en
+|homogenesis
+|homogeneity
+|homogenise,homogenize
+|homogeny
+}}
+
+====Translations====
+{{trans-top|of the same kind; alike, similar}}
+* Afrikaans: {{t|af|homogeen}}
+* Albanian: {{t+|sq|homogjen}}
+* Arabic: {{t+|ar|مُتَجَانِس|m}}
+* Armenian: {{t+|hy|միատարր}}, {{t+|hy|համասեռ}}
+* Bulgarian: {{t+|bg|еднороден}}
+* Catalan: {{t+|ca|homogeni}}
+* Chinese:
+*: Mandarin: {{t+|cmn|同質|tr=tóngzhí, tóngzhì}}
+* Czech: {{t|cs|stejnorodý}}, {{t|cs|homogenní}}
+* Dutch: {{t+|nl|homogeen}}
+* Finnish: {{t+|fi|samanlainen}}, {{t+|fi|homogeeninen}}
+* French: {{t+|fr|homogène}}
+* Galician: {{t+|gl|homoxéneo}}
+* German: {{t+|de|homogen}}, {{t+|de|gleichartig}}
+* Greek: {{t+|el|ομογενής}}, {{t+|el|ομοιογενής}}
+* Hungarian: {{t+|hu|homogén}}
+* Icelandic: {{t|is|einsleitur}}, {{t|is|einleitur}}, {{t|is|eingerður}}, {{t|is|samkynja}}, {{t|is|samleitur}}
+* Indonesian: {{t+|id|homogen}}
+* Irish: {{t|ga|aonchineálach}}
+* Italian: {{t+|it|omogeneo}}
+* Japanese: {{t+|ja|均質|tr=きんしつ, kinshitsu}}, {{t+|ja|同質|tr=どうしつ, dōshitsu}}
+* Kazakh: {{t|kk|гомогендік}}, {{t|kk|біртекті}}
+* Macedonian: {{t|mk|еднообразен}}, {{t|mk|еднороден}}, {{t|mk|хомоген}}
+* Manx: {{t|gv|cocheintagh}}
+* Norwegian:
+*: Bokmål: {{t+|nb|homogen}}
+*: Nynorsk: {{t|nn|homogen}}
+* Polish: {{t+|pl|jednorodny}}, {{t+|pl|jednolity}}
+* Portuguese: {{t+|pt|homogêneo}}, {{t+|pt|homogéneo}}
+* Romanian: {{t+|ro|omogen}}
+* Russian: {{t+|ru|одноро́дный}}, {{t+|ru|гомоге́нный}}, {{t+|ru|единообра́зный}}
+* Spanish: {{t+|es|homogéneo}}
+* Swedish: {{t+|sv|homogen}}, {{t+|sv|enhetlig}}
+* Tagalog: {{t|tl|tulad-uriin}}
+* Telugu: {{t+|te|సజాతి}}
+{{trans-bottom}}
+
+{{trans-top|having the same composition throughout}}
+* Arabic: {{t+|ar|مُتَجَانِس|m}}
+* Armenian: {{t+|hy|համասեռ}}
+* Bulgarian: {{t+|bg|еднороден}}, {{t+|bg|хомогенен}}
+* Catalan: {{t+|ca|homogeni}}
+* Finnish: {{t|fi|tasa-aineinen}}, {{t+|fi|homogeeninen}}
+* French: {{t+|fr|homogène}}
+* Italian: {{t+|it|omogeneo}}
+* Macedonian: {{t|mk|еднороден}}, {{t|mk|еднообразен}}, {{t|mk|хомоген}}
+* Māori: {{t|mi|kanorite}}
+* Persian: {{t|fa|همگن|tr=hamgen}}
+* Portuguese: {{t+|pt|homogêneo}}
+* Spanish: {{t+|es|homogéneo}}
+* Swedish: {{t+|sv|homogen}}
+* Tagalog: {{t|tl|tulad-uriin}}
+{{trans-bottom}}
+
+{{checktrans-top}}
+* Urdu: {{t-check|ur|ایک جیسا|tr=aik jaisa}}
+{{trans-bottom}}
+
+===Further reading===
+* {{R:Webster 1913}}
+* {{R:Century}}
+* {{R:OneLook}}
+
+{{cln|en|terms prefixed with homo-}}
+{{C|en|Systems theory}}
