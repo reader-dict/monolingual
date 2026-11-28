@@ -222,20 +222,6 @@ def find_definitions(
     return OrderedDict(definitions)
 
 
-def es_replace_defs_list_with_numbered_lists(
-    lst: wtp.WikiList,
-    *,
-    regex_item: re.Pattern[str] = re.compile(r"(?m)(^|\\n);\d++[ |:]++"),  # `;1:`
-    regex_subitem: re.Pattern[str] = re.compile(r"(?m)(^|\\n):;\s*+[a-z]:++\s++"),  # `:;a:`
-) -> str:
-    """
-    ES uses definition lists, not well supported by the parser...
-    replace them by numbered lists.
-    """
-    res = regex_item.sub(r"\1# ", lst.string)
-    return regex_subitem.sub(r"\1## ", res)
-
-
 def find_section_definitions(
     word: str,
     section: wtp.Section,
@@ -247,11 +233,8 @@ def find_section_definitions(
     """Find definitions from the given *section*, with eventual sub-definitions."""
     definitions: list[Definition] = []
 
-    if lang_src == "es":
-        if str(section.title).lstrip().lower().startswith("forma"):
-            return []
-        if lists := section.get_lists(pattern="[:;]"):
-            section.contents = "".join(es_replace_defs_list_with_numbered_lists(lst) for lst in lists)
+    if lang_src == "es" and str(section.title).lstrip().lower().startswith("forma"):
+        return []
 
     ignored_terms = get_ignored_terms(lang_src, lang_dst)
 
@@ -402,7 +385,7 @@ def find_etymology(
         case "eo":
             items = get_items((":", "#"))
         case "es":
-            items = get_items((r";\d",), skip=("=== etimología",))
+            items = get_items(("#",), skip=("=== etimología",))
         case "eu":
             items = [
                 line.lstrip(":#* ")
