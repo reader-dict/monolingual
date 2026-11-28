@@ -27,6 +27,7 @@ core_sections = (
     "artículo",
     "conjugación",
     "conjunción",
+    "contracción",
     "interjección",
     "locución",
     "onomatopeya",
